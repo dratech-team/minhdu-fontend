@@ -5,7 +5,7 @@ import {Store} from '@ngrx/store';
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {Actions} from '@datorama/akita-ng-effects';
 import {AppState} from '../../../../reducers';
-import {CategoryAction, CategoryQuery} from '../../../category/state';
+import {CategoryAction, CategoryQuery} from '../../../warehouse/state';
 import {SupplierActions, SupplierQuery} from '../../../supplier/state';
 import {ProductEntity} from "../../entities";
 import {ProductActions} from "../../state/product.actions";

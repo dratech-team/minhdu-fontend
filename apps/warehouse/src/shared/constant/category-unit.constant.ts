@@ -1,4 +1,4 @@
-import {CategoryUnitEnum} from "../../app/pages/category/enums";
+import { CategoryUnitEnum } from '../../app/pages/warehouse/enums';
 
 export const CategoryUnitConstant = [
   {

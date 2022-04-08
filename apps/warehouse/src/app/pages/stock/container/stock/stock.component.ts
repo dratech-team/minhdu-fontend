@@ -7,13 +7,13 @@ import {debounceTime, map} from 'rxjs/operators';
 import {PaginationDto} from '@minhdu-fontend/constants';
 import {StockActions} from '../../state/stock.actions';
 import {StockQuery} from '../../state/stock.query';
-import {CategoryAction, CategoryQuery} from '../../../category/state';
 import {InventoryTitleConstants} from '../../constants';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {StockStore} from '../../state/stock.store';
 import {StockEntity} from "../../entities";
 import {StockEnum} from "../../../../../shared/enums";
+import { CategoryAction, CategoryQuery } from '../../../warehouse/state';
 
 @Component({
   selector: 'minhdu-fontend-category',

@@ -1,5 +1,5 @@
 import {BaseEntity} from '@minhdu-fontend/base-entity';
-import {CategoryUnitEnum} from "../../category/enums";
+import {CategoryUnitEnum} from "../../warehouse/enums";
 import {Branch} from "@minhdu-fontend/data-models";
 import {TypeProductEnum} from "../enums";
 

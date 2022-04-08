@@ -8,7 +8,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {AkitaNgEffectsModule} from '@datorama/akita-ng-effects';
 import {ConsignmentService} from './services';
 import {ConsignmentEffect} from './state/consignment.effect';
-import {CategoryService} from '../category/services';
+import {CategoryService} from '../warehouse/services';
 import {NgxCurrencyModule} from 'ngx-currency';
 import {customCurrencyMaskConfig} from '@minhdu-fontend/config';
 import {MatExpansionModule} from '@angular/material/expansion';
