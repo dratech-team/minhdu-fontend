@@ -1,1 +1,1 @@
-export * from './category-unit.enum';
+export * from './warehouse-unit.enum';

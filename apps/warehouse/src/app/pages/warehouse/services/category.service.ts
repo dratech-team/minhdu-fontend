@@ -4,24 +4,24 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import {ResponsePaginate} from '@minhdu-fontend/data-models';
-import {CategoryEntity} from "../entities";
+import {WarehouseEntity} from "../entities";
 import {AddWarehouseDto} from "../dto";
 
 @Injectable()
-export class CategoryService extends BaseService<CategoryEntity> {
+export class CategoryService extends BaseService<WarehouseEntity> {
   constructor(public readonly http: HttpClient) {
     super(Api.WAREHOUSE.CATEGORY, http);
   }
 
-  addOne(props: AddWarehouseDto): Observable<CategoryEntity> {
+  addOne(props: AddWarehouseDto): Observable<WarehouseEntity> {
     return super.addOne(props.body);
   }
 
-  getAll(params?: any): Observable<CategoryEntity[]> {
+  getAll(params?: any): Observable<WarehouseEntity[]> {
     return super.getAll(params);
   }
 
-  pagination(params?: any): Observable<ResponsePaginate<CategoryEntity>> {
+  pagination(params?: any): Observable<ResponsePaginate<WarehouseEntity>> {
     return super.pagination(params);
   }
 }

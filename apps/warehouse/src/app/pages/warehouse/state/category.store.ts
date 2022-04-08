@@ -1,8 +1,8 @@
-import { CategoryEntity } from '../entities';
+import { WarehouseEntity } from '../entities';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
 
-export interface WarehouseState extends EntityState<CategoryEntity> {
+export interface WarehouseState extends EntityState<WarehouseEntity> {
   loading: boolean;
   selected?: number;
 }

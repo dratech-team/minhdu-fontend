@@ -1,21 +1,21 @@
-import { CategoryUnitEnum } from '../../app/pages/warehouse/enums';
+import { WarehouseUnitEnum } from '../../app/pages/warehouse/enums';
 
 export const CategoryUnitConstant = [
   {
     name: 'Lít',
-    value: CategoryUnitEnum.LIT
+    value: WarehouseUnitEnum.LIT
   },
   {
     name: 'Viên',
-    value: CategoryUnitEnum.VIEN
+    value: WarehouseUnitEnum.VIEN
   },
   {
     name: 'Kilogam',
-    value: CategoryUnitEnum.KG
+    value: WarehouseUnitEnum.KG
   },
   {
     name: 'Bao',
-    value: CategoryUnitEnum.BAO
+    value: WarehouseUnitEnum.BAO
   },
 
 ];

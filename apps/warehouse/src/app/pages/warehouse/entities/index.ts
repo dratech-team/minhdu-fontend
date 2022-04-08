@@ -1,1 +1,1 @@
-export * from './category.entity';
+export * from './warehouse.entity';
