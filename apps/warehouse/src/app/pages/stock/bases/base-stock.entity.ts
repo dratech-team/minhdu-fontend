@@ -13,5 +13,4 @@ export interface BaseStockEntity extends BaseEntity {
   readonly completedAt?: Date
   readonly approvedAt?: Date
   readonly note?: string
-  readonly tax: number
 }

@@ -2,8 +2,6 @@ import {VisibleEntity} from "@minhdu-fontend/data-models";
 
 export interface StockVisibleEntity {
   readonly stt: VisibleEntity;
-  readonly price: VisibleEntity;
-  readonly amount: VisibleEntity;
   readonly discount: VisibleEntity;
   readonly createdAt: VisibleEntity;
   readonly type: VisibleEntity

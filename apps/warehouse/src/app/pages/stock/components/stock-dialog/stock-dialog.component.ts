@@ -14,8 +14,6 @@ import {BaseUpdateStockDto} from "../../dto";
 import {DiscountTypeConstant} from "../../constants";
 import {DiscountTypeEnum, StockEnum} from "../../../../../shared/enums";
 import {PaginationDto} from "@minhdu-fontend/constants";
-import {ProductActions} from "../../../product/state/product.actions";
-import {ProductQuery} from "../../../product/state/product.query";
 
 @Component({
   templateUrl: 'stock-dialog.component.html'

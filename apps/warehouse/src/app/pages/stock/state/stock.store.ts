@@ -26,14 +26,6 @@ export function createInitialState(): StockState {
         pinned: true,
         visible: true
       },
-      price: {
-        pinned: false,
-        visible: true
-      },
-      amount: {
-        pinned: false,
-        visible: true
-      },
       discount: {
         pinned: false,
         visible: true
