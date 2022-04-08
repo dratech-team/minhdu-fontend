@@ -1,5 +1,5 @@
-import {BaseProductEntity} from "../bases";
 import {BaseAddDto} from "@minhdu-fontend/base-dto";
+import {BaseProductEntity} from "../bases";
 
 export interface BaseAddProductDto extends Omit<BaseProductEntity,'id'>  {
   readonly categoryId: number

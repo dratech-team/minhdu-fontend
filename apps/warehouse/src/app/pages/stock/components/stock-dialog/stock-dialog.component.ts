@@ -26,7 +26,6 @@ export class StockDialogComponent implements OnInit {
   formGroup!: FormGroup
   discountTypeConstant = DiscountTypeConstant
   pageSizeTable = 5
-  uiProduct$ =this.productQuery.select(state => state.ui);
 
   constructor(
     private readonly formBuilder: FormBuilder,

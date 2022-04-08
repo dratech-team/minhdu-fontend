@@ -2,10 +2,10 @@
           nzSize='small'
           [nzData]="products"
           (nzPageIndexChange)="onPagination($event)"
-          [nzLoading]="loading$|async"
+          [nzLoading]="loading"
           [nzScroll]="{ x: '1700px',y: '60vh'}"
           [nzPageSize]="pageSize"
-          *ngIf="(ui$|async) as ui"
+          *ngIf="(ui$|async)as ui"
 >
   <thead>
   <tr>

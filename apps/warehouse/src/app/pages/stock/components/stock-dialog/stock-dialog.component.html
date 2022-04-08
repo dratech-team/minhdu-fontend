@@ -15,9 +15,8 @@
       <div class="col" style="width: 70vw">
         <minhdu-fontend-table-product
           [products]="(products$|async)||[]"
-          [loading$]="loadingProduct$"
+          [loading]="(loadingProduct$|async)||false"
           [pageSize]="pageSizeTable"
-          [ui$]="uiProduct$"
           [isPickMultiple]="true"
           (eventPagination)="onPaginationProduct($event)"
         >

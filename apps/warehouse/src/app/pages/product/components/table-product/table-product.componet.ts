@@ -6,8 +6,8 @@ import {ProductActions} from "../../state/product.actions";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {MatDialog} from "@angular/material/dialog";
 import {Actions} from "@datorama/akita-ng-effects";
-import {Observable} from "rxjs";
 import {ConsignmentEntity} from "../../../consignment/entities";
+import {ProductQuery} from "../../state/product.query";
 
 @Component({
   selector: 'minhdu-fontend-table-product',
@@ -15,19 +15,21 @@ import {ConsignmentEntity} from "../../../consignment/entities";
 })
 export class TableProductComponet {
   @Input() products: ProductEntity[] = [];
-  @Input() ui$!: Observable<ProductVisibleEntity>
-  @Input() loading$!: Observable<boolean>
+  @Input() loading = false
   @Input() pageSize = 7
   @Input() isPickMultiple = false
   @Output() eventPagination = new EventEmitter<number>()
+  ui$ = this.productQuery.select(state => state.ui)
   checked = false;
   indeterminate = false;
   currentPageData: readonly ConsignmentEntity[] = [];
   idsSelected = new Set<number>();
+
   constructor(
     private readonly modal: NzModalService,
     private readonly dialog: MatDialog,
     private actions$: Actions,
+    private productQuery: ProductQuery,
   ) {
   }
 
@@ -66,6 +68,7 @@ export class TableProductComponet {
       nzFooter: null
     })
   }
+
   onAllChecked(checked: boolean): void {
     this.currentPageData.forEach(({id}) => this.updateCheckedSet(id, checked));
     this.refreshCheckedStatus();

@@ -24,7 +24,6 @@ export class ProductComponent implements OnInit {
   branches$ = this.store.select(getAllOrgchart)
   products$ = this.productQuery.selectAll();
   loading$ = this.productQuery.selectLoading();
-  ui$ = this.productQuery.select(state => state.ui);
   stateSearch = this.productQuery.getValue().search;
   formGroup = new FormGroup(
     {

@@ -81,8 +81,7 @@
       <minhdu-fontend-table-product
         [products]="(products$|async)|| []"
         [pageSize]="pageSizeTable"
-        [loading$]="loading$"
-        [ui$]="ui$"
+        [loading]="(loading$|async)||false"
         (eventPagination)="onPagination($event)"
       ></minhdu-fontend-table-product>
     </div>
