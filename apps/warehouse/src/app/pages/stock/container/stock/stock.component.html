@@ -25,20 +25,18 @@
     </div>
   </div>
   <div class="d-flex flex-column ml-2" style="width: 80vw">
-    <div class="ml-2 d-flex justify-content-between">
+    <div class="ml-2 d-flex justify-content-end">
       <div>
-        <div>
-          <button nz-button nzType="primary" (click)='import()'>Nhập</button>
-          <button nz-button nzType="primary" class="ml-2">Xuất</button>
-          <button nz-button nzType="primary" class="ml-2">Kiểm</button>
-          <button nz-button nzType="primary" class="ml-2">Chuyển</button>
-          <button class='ml-2' nz-button nz-popover nzPopoverTitle='Ghim'
-                  [(nzPopoverVisible)]='visible'
-                  nzPopoverPlacement='bottomRight'
-                  [nzPopoverContent]='pinned'
-                  nzPopoverTrigger='click'>Ghim
-          </button>
-        </div>
+        <button nz-button nzType="primary" (click)='import()'>Nhập</button>
+        <button nz-button nzType="primary" class="ml-2">Xuất</button>
+        <button nz-button nzType="primary" class="ml-2">Kiểm</button>
+        <button nz-button nzType="primary" class="ml-2">Chuyển</button>
+        <button class='ml-2' nz-button nz-popover nzPopoverTitle='Ghim'
+                [(nzPopoverVisible)]='visible'
+                nzPopoverPlacement='bottomRight'
+                [nzPopoverContent]='pinned'
+                nzPopoverTrigger='click'>Ghim
+        </button>
       </div>
     </div>
     <nz-table #tableDashBoard class="mt-2"
@@ -47,76 +45,67 @@
               [formGroup]='formGroup'
               (nzPageIndexChange)="onPagination($event)"
               [nzLoading]="(loading$|async)"
-              [nzScroll]="{ x: '2000px',y: '60vh'}"
+              [nzScroll]="{ x: '3000px',y: '60vh'}"
               [nzPageSize]="pageSizeTable"
               *ngIf="(ui$|async) as ui"
     >
       <thead>
       <tr>
         <th [nzWidth]="'60px'" *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false'>STT</th>
-        <th *ngIf="ui.code.visible" [nzLeft]='ui.code?.pinned||false'>Mã hàng</th>
-        <th *ngIf="ui.name.visible" [nzLeft]='ui.name?.pinned||false'>Tên hàng</th>
-        <th *ngIf="ui.warehouseType.visible" [nzLeft]='ui.warehouseType?.pinned||false'>Loại kho</th>
+        <th *ngIf="ui.type.visible" [nzLeft]='ui.type?.pinned||false'>Loại phiếu</th>
+        <th *ngIf="ui.completedAt.visible" [nzLeft]='ui.completedAt?.pinned||false'>Ngày tạo</th>
         <th *ngIf="ui.price.visible" [nzLeft]='ui.price?.pinned||false'>Đơn giá</th>
         <th *ngIf="ui.amount.visible" [nzLeft]='ui.amount?.pinned||false'>Số lượng</th>
-        <th *ngIf="ui.totalCash.visible" [nzLeft]='ui.totalCash?.pinned||false'>Tổng tiền</th>
-        <th *ngIf="ui.barcode.visible" [nzLeft]='ui.barcode?.pinned||false'>Mã vạch</th>
-        <th *ngIf="ui.provider.visible" [nzLeft]='ui.provider?.pinned||false'>Nhà cung cấp</th>
-        <th *ngIf="ui.exp.visible" [nzLeft]='ui.exp?.pinned||false'>Hạn sử dụng</th>
+        <th *ngIf="ui.accountedAt.visible" [nzLeft]='ui.accountedAt?.pinned||false'>Ngày hạch toán</th>
+        <th *ngIf="ui.billCode.visible" [nzLeft]='ui.billCode?.pinned||false'>Mã hoá đơn</th>
+        <th *ngIf="ui.billedAt.visible" [nzLeft]='ui.billedAt?.pinned||false'>Ngày thanh toán</th>
         <th *ngIf="ui.discount.visible" [nzLeft]='ui.discount?.pinned||false'>Chiếc khấu</th>
-        <!--          <th>-->
-        <!--            <div class='border-top text-center'>Số chứng từ</div>-->
-        <!--            <input disabled>-->
-        <!--          </th>-->
-        <th *ngIf="ui.unit.visible" [nzLeft]='ui.unit?.pinned||false'>Đơn vị</th>
-        <th *ngIf="ui.createdAt.visible" [nzLeft]='ui.createdAt?.pinned||false'>Ngày nhập kho</th>
+        <th *ngIf="ui.discount.visible" [nzLeft]='ui.discount?.pinned||false'>Loại chiếc khấu</th>
+        <th *ngIf="ui.tax.visible" [nzLeft]='ui.tax?.pinned||false'>Thuế</th>
+        <th *ngIf="ui.product.visible" [nzLeft]='ui.product?.pinned||false'>Tên sản phẩm</th>
+        <th *ngIf="ui.branch.visible" [nzLeft]='ui.branch?.pinned||false'>Đơn vị</th>
+        <th *ngIf="ui.orderedAt.visible" [nzLeft]='ui.orderedAt?.pinned||false'>Ngày đặt hàng</th>
+        <th *ngIf="ui.importedAt.visible" [nzLeft]='ui.importedAt?.pinned||false'>Ngày nhập kho</th>
+        <th *ngIf="ui.approvedAt.visible" [nzLeft]='ui.approvedAt?.pinned||false'>Ngày chấp nhận</th>
+        <th *ngIf="ui.completedAt.visible" [nzLeft]='ui.completedAt?.pinned||false'>Ngày hoàn thành</th>
+        <th *ngIf="ui.consignment.visible" [nzLeft]='ui.consignment?.pinned||false'>Lô hàng</th>
+        <th *ngIf="ui.attachment.visible" [nzLeft]='ui.attachment?.pinned||false'>Đính kèm</th>
+        <th *ngIf="ui.note.visible" [nzLeft]='ui.note?.pinned||false'>Chú ý</th>
       </tr>
       </thead>
       <tbody>
-      <ng-template ngFor let-product [ngForOf]="tableDashBoard.data" let-i='index'>
-        <tr class="pointer" (contextmenu)='child.onContextMenu($event,product)' (click)='onUpdate(product)'>
+      <ng-template ngFor let-stock [ngForOf]="tableDashBoard.data" let-i='index'>
+        <tr class="pointer" (contextmenu)='child.onContextMenu($event,stock)' (click)='onUpdate(stock)'>
           <td *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false'>
             {{(i + 1) + ((tableDashBoard.nzPageIndex - 1) * 10)}}
           </td>
-          <td *ngIf="ui.code.visible" [nzLeft]='ui.code?.pinned||false'>
-            {{product?.code}}
-          </td>
-          <td *ngIf="ui.name.visible" [nzLeft]='ui.name?.pinned||false'>
-            {{product?.name}}
-          </td>
-          <td *ngIf="ui.warehouseType.visible" [nzLeft]='ui.warehouseType?.pinned||false'>
-            {{product.warehouse?.name}}
-          </td>
-          <td *ngIf="ui.price.visible" [nzLeft]='ui.price?.pinned||false'>
-            {{product.price | number:'1.0'|notEmpty:'0'}} đ
-          </td>
-          <td *ngIf="ui.amount.visible" [nzLeft]='ui.amount?.pinned||false'>
-            {{product?.amount}}
-          </td>
-          <td *ngIf="ui.totalCash.visible" [nzLeft]='ui.totalCash?.pinned||false' style='color: #4dbd74'>
-            {{(product.price * product.amount) - ((product.price + product.amount) * (product?.discount || 0)) | number:'1.0'|notEmpty:'0'}}
-          </td>
-          <td *ngIf="ui.barcode.visible" [nzLeft]='ui.barcode?.pinned||false'>
-            {{product?.barcode}}
-          </td>
-          <td *ngIf="ui.provider.visible" [nzLeft]='ui.provider?.pinned||false'>
-            {{product?.provider?.name}}
-          </td>
-          <td *ngIf="ui.exp.visible" [nzLeft]='ui.exp?.pinned||false'>
-            {{(product?.exp | date: 'dd/MM/yyyy') || 'Chưa có thông tin'}}
-          </td>
-          <td *ngIf="ui.discount.visible" [nzLeft]='ui.discount?.pinned||false' style='color: #4dbd74'>
-            {{(product.discount || 0) * 100 + '%' }}
-          </td>
-          <!--          <th class='pointer'>-->
-          <!--            {{consignment?.billCode}}-->
-          <!--          </th>-->
-          <td *ngIf="ui.unit.visible" [nzLeft]='ui.unit?.pinned||false'>
-            {{product.unit | transform:medicineConstant}}
-          </td>
-          <td *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false'>
-            {{(product?.createdAt | date: 'dd/MM/yyyy') || 'Đang cập nhật'}}
-          </td>
+          <td *ngIf="ui.type.visible" [nzLeft]='ui.type?.pinned||false'>{{stock.type}}</td>
+          <td *ngIf="ui.createdAt.visible"
+              [nzLeft]='ui.createdAt?.pinned||false'>{{stock.createdAt|date:'dd-MM-yyyy'}}</td>
+          <td *ngIf="ui.price.visible" [nzLeft]='ui.price?.pinned||false'>{{stock.price|number:'1.0-0'}}</td>
+          <td *ngIf="ui.amount.visible" [nzLeft]='ui.amount?.pinned||false'>{{stock?.amount|number:'1.0-0'}}</td>
+          <td *ngIf="ui.accountedAt.visible"
+              [nzLeft]='ui.accountedAt?.pinned||false'>{{stock.accountedAt|date:'dd-MM-yyyy'}}</td>
+          <td *ngIf="ui.billCode.visible" [nzLeft]='ui.billCode?.pinned||false'>{{stock.billCode}}</td>
+          <td *ngIf="ui.billedAt.visible"
+              [nzLeft]='ui.billedAt?.pinned||false'>{{stock.billedAt|date:'dd-MM-yyyy'}}</td>
+          <td *ngIf="ui.billCode.visible" [nzLeft]='ui.billCode?.pinned||false'>{{stock.billCode}}</td>
+          <td *ngIf="ui.discountType.visible" [nzLeft]='ui.discountType?.pinned||false'>{{stock.discountType}}</td>
+          <td *ngIf="ui.tax.visible" [nzLeft]='ui.tax?.pinned||false'>{{stock?.tax|number:'1.0-0'}}</td>
+          <td *ngIf="ui.product.visible" [nzLeft]='ui.product?.pinned||false'>{{stock.product?.name}}</td>
+          <td *ngIf="ui.branch.visible" [nzLeft]='ui.branch?.pinned||false'>{{stock.branch?.name}}</td>
+          <td *ngIf="ui.orderedAt.visible"
+              [nzLeft]='ui.orderedAt?.pinned||false'>{{stock.orderedAt|date:'dd-MM-yyyy'}}</td>
+          <td *ngIf="ui.importedAt.visible"
+              [nzLeft]='ui.importedAt?.pinned||false'>{{stock.importedAt|date:'dd-MM-yyyy'}}</td>
+          <td *ngIf="ui.approvedAt.visible"
+              [nzLeft]='ui.approvedAt?.pinned||false'>{{stock.approvedAt|date:'dd-MM-yyyy'}}</td>
+          <td *ngIf="ui.completedAt.visible"
+              [nzLeft]='ui.completedAt?.pinned||false'>{{stock.completedAt|date:'dd-MM-yyyy'}}</td>
+          <td *ngIf="ui.consignment.visible" [nzLeft]='ui.consignment?.pinned||false'>{{stock.consignment?.code}}</td>
+          <td *ngIf="ui.attachment.visible" [nzLeft]='ui.attachment?.pinned||false'>{{stock.attachment}}</td>
+          <td *ngIf="ui.note.visible" [nzLeft]='ui.note?.pinned||false'>{{stock?.note}}</td>
+
         </tr>
       </ng-template>
       </tbody>

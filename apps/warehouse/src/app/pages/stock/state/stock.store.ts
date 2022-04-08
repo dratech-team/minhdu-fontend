@@ -26,18 +26,6 @@ export function createInitialState(): StockState {
         pinned: true,
         visible: true
       },
-      code: {
-        pinned: false,
-        visible: true
-      },
-      name: {
-        pinned: true,
-        visible: true
-      },
-      warehouseType: {
-        pinned: true,
-        visible: true
-      },
       price: {
         pinned: false,
         visible: true
@@ -46,31 +34,71 @@ export function createInitialState(): StockState {
         pinned: false,
         visible: true
       },
-      totalCash: {
-        pinned: false,
-        visible: true
-      },
-      barcode: {
-        pinned: false,
-        visible: true
-      },
-      provider: {
-        pinned: false,
-        visible: true
-      },
       discount: {
         pinned: false,
         visible: true
       },
-      exp: {
-        pinned: false,
-        visible: true
-      },
-      unit: {
-        pinned: false,
-        visible: true
-      },
       createdAt: {
+        pinned: false,
+        visible: true
+      },
+      branch: {
+        pinned: false,
+        visible: true
+      },
+      type: {
+        pinned: false,
+        visible: true
+      },
+      accountedAt: {
+        pinned: false,
+        visible: true
+      },
+      approvedAt: {
+        pinned: false,
+        visible: true
+      },
+      attachment: {
+        pinned: false,
+        visible: true
+      },
+      billCode: {
+        pinned: false,
+        visible: true
+      },
+      billedAt: {
+        pinned: false,
+        visible: true
+      },
+      completedAt: {
+        pinned: false,
+        visible: true
+      },
+      consignment: {
+        pinned: false,
+        visible: true
+      },
+      discountType: {
+        pinned: false,
+        visible: true
+      },
+      importedAt: {
+        pinned: false,
+        visible: true
+      },
+      note: {
+        pinned: false,
+        visible: true
+      },
+      orderedAt: {
+        pinned: false,
+        visible: true
+      },
+      product: {
+        pinned: false,
+        visible: true
+      },
+      tax: {
         pinned: false,
         visible: true
       }
