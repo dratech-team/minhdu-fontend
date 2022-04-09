@@ -1,5 +1,5 @@
 import {BaseProductEntity} from '../bases';
-import {IoiReceiptEntity} from "../../IOI-receipt/entities";
+import {IoiReceiptEntity} from "../../ioi-receipt/entities";
 import {WarehouseEntity} from "../../warehouse/entities";
 import {SupplierEntity} from "../../supplier/entities";
 import {Branch} from "@minhdu-fontend/data-models";

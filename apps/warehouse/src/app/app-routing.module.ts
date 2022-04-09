@@ -30,7 +30,7 @@ const routes: Routes = [
       },
       {
         path: 'phieu-xuat-nhap-kho',
-        loadChildren: () => import('./pages/IOI-receipt/ioi-receipt.module').then(m => m.IoiReceiptModule),
+        loadChildren: () => import('./pages/ioi-receipt/ioi-receipt.module').then(m => m.IoiReceiptModule),
         canActivate: [RouteGuard]
       },
       {

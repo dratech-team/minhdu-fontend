@@ -4,7 +4,7 @@ import {IoiReceiptQuery} from "../../state/ioi-receipt.query";
 import {IoiReceiptStore} from "../../state/ioi-receipt.store";
 
 @Component({
-  selector: 'minhdu-fontend-pinned-IOI-receipt',
+  selector: 'minhdu-fontend-pinned-ioi-receipt',
   templateUrl: 'visible-ioi-receipt.component.html'
 })
 export class VisibleIoiReceiptComponent {
