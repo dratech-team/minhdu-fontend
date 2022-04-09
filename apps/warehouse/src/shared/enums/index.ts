@@ -1,2 +1,2 @@
-export * from './stock.enum';
+export * from './ioi-receipt.enum';
 export * from './discount-type.enum';
