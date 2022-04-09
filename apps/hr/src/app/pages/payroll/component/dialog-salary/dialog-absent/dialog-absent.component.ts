@@ -65,7 +65,6 @@ export class DialogAbsentComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    console.log(this.data.salary)
     if (!this.data?.updateMultiple) {
       this.firstDayInMonth = this.datePipe.transform(
         getFirstDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
