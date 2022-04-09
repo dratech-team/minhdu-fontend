@@ -1,17 +1,17 @@
-import { DatePipe } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { PartialDayEnum, SalaryPayroll } from '@minhdu-fontend/data-models';
-import { ConvertBooleanFrontEnd, DatetimeUnitEnum, partialDay, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { select, Store } from '@ngrx/store';
-import { PayrollAction } from '../../../+state/payroll/payroll.action';
+import {DatePipe} from '@angular/common';
+import {Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {PartialDayEnum, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {ConvertBooleanFrontEnd, DatetimeUnitEnum, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {select, Store} from '@ngrx/store';
+import {PayrollAction} from '../../../+state/payroll/payroll.action';
 import {selectedAddedPayroll, selectedAddingPayroll} from '../../../+state/payroll/payroll.selector';
-import { AppState } from '../../../../../reducers';
+import {AppState} from '../../../../../reducers';
 import * as moment from 'moment';
-import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
-import { SalaryService } from '../../../service/salary.service';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
+import {SalaryService} from '../../../service/salary.service';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Component({
   templateUrl: 'dialog-absent.component.html'
@@ -46,25 +46,26 @@ export class DialogAbsentComponent implements OnInit {
 
   //DUMMY DATA Không thay đổi thứ tự index hiện tại -> thêm title ở cuối mảng
   titleAbsents = [
-    { title: 'Vắng', unit: this.datetimeUnit.DAY, type: this.type.ABSENT },
+    {title: 'Vắng', unit: this.datetimeUnit.DAY, type: this.type.ABSENT},
     {
       title: 'Không đi làm',
       unit: this.datetimeUnit.DAY,
       type: this.type.DAY_OFF
     },
-    { title: 'Đi trễ', unit: this.datetimeUnit.MINUTE, type: this.type.ABSENT },
-    { title: 'Về Sớm', unit: this.datetimeUnit.MINUTE, type: this.type.ABSENT },
-    { title: 'Quên bổ sung công', unit: this.datetimeUnit.TIMES, type: this.type.ABSENT },
-    { title: 'Khác', unit: this.datetimeUnit.OTHER, type: this.type.DEDUCTION }
+    {title: 'Đi trễ', unit: this.datetimeUnit.MINUTE, type: this.type.ABSENT},
+    {title: 'Về Sớm', unit: this.datetimeUnit.MINUTE, type: this.type.ABSENT},
+    {title: 'Quên bổ sung công', unit: this.datetimeUnit.TIMES, type: this.type.ABSENT},
+    {title: 'Khác', unit: this.datetimeUnit.OTHER, type: this.type.DEDUCTION}
   ];
   //Dummy data select các buổi trong ngày
   titleSession = [
-    { title: 'buổi sáng', type: PartialDayEnum.MORNING, times: partialDay.PARTIAL },
-    { title: 'buổi chiều', type: PartialDayEnum.AFTERNOON, times: partialDay.PARTIAL },
-    { title: 'nguyên ngày', type: PartialDayEnum.ALL_DAY, times: partialDay.ALL_DAY }
+    {title: 'buổi sáng', type: PartialDayEnum.MORNING, times: partialDay.PARTIAL},
+    {title: 'buổi chiều', type: PartialDayEnum.AFTERNOON, times: partialDay.PARTIAL},
+    {title: 'nguyên ngày', type: PartialDayEnum.ALL_DAY, times: partialDay.ALL_DAY}
   ];
 
   ngOnInit(): void {
+    console.log(this.data.salary)
     if (!this.data?.updateMultiple) {
       this.firstDayInMonth = this.datePipe.transform(
         getFirstDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
@@ -241,7 +242,7 @@ export class DialogAbsentComponent implements OnInit {
           salaryIds: this.salariesSelected.map(
             (e: SalaryPayroll) => e.salary.id)
         });
-        this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
+        this.store.dispatch(PayrollAction.updateStatePayroll({added: ConvertBooleanFrontEnd.FALSE}));
         this.salaryService.updateMultipleSalaryOvertime(salary).subscribe(val => {
           if (val) {
             this.message.success(val.message);
@@ -278,13 +279,14 @@ export class DialogAbsentComponent implements OnInit {
         return this.message.error('Chưa chọn ngày');
       }
       if (
-        this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.DAY
-        && value.partialDay === PartialDayEnum.ALL_DAY
+        ((this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.DAY
+            && value.partialDay === PartialDayEnum.ALL_DAY) ||
+          this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.OTHER
+        )
         && (!value.startedAt || !value.endedAt)
       ) {
         return this.message.error('Chưa chọn từ ngày đến ngày');
       }
-
       if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.TIMES) {
         Object.assign(salary, {
           title: this.titleAbsents[this.selectedIndex]?.title,
@@ -294,7 +296,6 @@ export class DialogAbsentComponent implements OnInit {
       if (
         this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY
       ) {
-
         if (value.partialDay === PartialDayEnum.ALL_DAY) {
           if (moment(value.startedAt).format('YYYY-MM-DD')
             === moment(value.endedAt).format('YYYY-MM-DD')) {
@@ -340,13 +341,26 @@ export class DialogAbsentComponent implements OnInit {
 
       if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.OTHER) {
         delete salary.unit;
-        Object.assign(salary, {
-          title: value.title,
-          price: typeof value.price === 'string'
-            ? Number(value.price.replace(this.numberChars, ''))
-            : value.price,
-          datetime: value.datetime ? new Date(value.datetime) : undefined
-        });
+        if (moment(value.startedAt).format('YYYY-MM-DD')
+          === moment(value.endedAt).format('YYYY-MM-DD')) {
+          Object.assign(salary, {
+            title: value.title,
+            price: typeof value.price === 'string'
+              ? Number(value.price.replace(this.numberChars, ''))
+              : value.price,
+            datetime: new Date(value.startedAt + '-00'),
+          });
+        } else {
+          Object.assign(salary, {
+            title: value.title,
+            price: typeof value.price === 'string'
+              ? Number(value.price.replace(this.numberChars, ''))
+              : value.price,
+            startedAt: new Date(value.startedAt + '-00'),
+            endedAt: new Date(value.endedAt + '-00'),
+          });
+        }
+
       }
       this.store.dispatch(
         PayrollAction.addSalary({
