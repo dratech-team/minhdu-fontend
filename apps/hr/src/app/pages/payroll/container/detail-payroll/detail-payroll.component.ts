@@ -21,7 +21,7 @@ import {DialogAbsentComponent} from '../../component/dialog-salary/dialog-absent
 import {DialogStayComponent} from '../../component/dialog-salary/dialog-stay/dialog-stay.component';
 import {DialogAllowanceComponent} from '../../component/dialog-salary/dialog-allowance/dialog-allowance.component';
 import {ConfirmPayrollComponent} from '../../component/confirm-payroll/confirm-payroll.component';
-import {getDaysInMonth} from '../../../../../../../../libs/utils/daytime.until';
+import {getDaysInMonth} from '@minhdu-fontend/utils';
 import {LoadingComponent} from '../../component/popup-loading/loading.component';
 import {DialogSeasonalComponent} from '../../component/dialog-salary/dialog-seasonal/dialog-seasonal.component';
 import {

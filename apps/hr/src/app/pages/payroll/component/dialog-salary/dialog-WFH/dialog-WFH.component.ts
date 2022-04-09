@@ -53,9 +53,17 @@ export class DialogWFHComponent implements OnInit {
         note: [this.data.salary?.note],
       });
     } else {
+      this.firstDayInMonth = this.datePipe.transform(
+        getFirstDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
+      this.lastDayInMonth = this.datePipe.transform(
+        getLastDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
       this.formGroup = this.formBuilder.group({
         title: ['', Validators.required],
-        datetime: [
+        startedAt: [
+          this.datePipe.transform(
+            this.data.payroll.createdAt, 'yyyy-MM-dd')
+          , Validators.required],
+        endedAt: [
           this.datePipe.transform(
             this.data.payroll.createdAt, 'yyyy-MM-dd')
           , Validators.required],
@@ -79,11 +87,13 @@ export class DialogWFHComponent implements OnInit {
       title: value.title,
       type: SalaryTypeEnum.WFH,
       note: value.note,
-      datetime: value.datetime,
       unit: DatetimeUnitEnum.DAY,
       payrollId: this.data.payroll.id
     };
     if (this.data.isUpdate) {
+      Object.assign(salary, {
+        datetime: value.datetime
+      })
       this.store.dispatch(
         PayrollAction.updateSalary({
           id: this.data.salary.id,
@@ -92,7 +102,19 @@ export class DialogWFHComponent implements OnInit {
         })
       );
     } else {
-      this.store.dispatch(
+      if (moment(value.startedAt).format('YYYY-MM-DD')
+        === moment(value.endedAt).format('YYYY-MM-DD')){
+        console.log(value.startedAt)
+        Object.assign(salary, {
+          datetime: value.startedAt,
+        })
+      }else{
+        Object.assign(salary, {
+          startedAt:moment(value.startedAt).format('YYYY-MM-DD'),
+          endedAt: moment(value.endedAt).format('YYYY-MM-DD'),
+        })
+      }
+        this.store.dispatch(
         PayrollAction.addSalary({
           payrollId: this.data.payroll.id,
           salary: salary
