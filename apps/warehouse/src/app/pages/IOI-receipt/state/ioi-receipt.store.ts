@@ -4,14 +4,14 @@ import {IoiReceiptEntity, IoiReceiptVisibleEntity} from '../entities';
 import {updateStateUiUtil} from '../../../../../../sell/src/app/utils/update-state-ui.util';
 import {SupplierEntity} from '../../supplier/entities';
 
-export interface IoiReceipt extends EntityState<IoiReceiptEntity> {
+export interface IoiReceiptState extends EntityState<IoiReceiptEntity> {
   loading: boolean;
   added: boolean;
   search: Partial<SupplierEntity>;
   ui: IoiReceiptVisibleEntity;
 }
 
-export function createInitialState(): IoiReceipt {
+export function createInitialState(): IoiReceiptState {
   return {
     loading: true,
     added: false,
@@ -99,8 +99,8 @@ export function createInitialState(): IoiReceipt {
 }
 
 @Injectable({providedIn: 'root'})
-@StoreConfig({name: 'stock'})
-export class IoiReceiptStore extends EntityStore<IoiReceipt> {
+@StoreConfig({name: 'ioi-receipt'})
+export class IoiReceiptStore extends EntityStore<IoiReceiptState> {
   constructor() {
     super(createInitialState());
   }

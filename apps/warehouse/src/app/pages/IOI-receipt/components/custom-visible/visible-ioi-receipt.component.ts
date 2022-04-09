@@ -8,13 +8,13 @@ import {IoiReceiptStore} from "../../state/ioi-receipt.store";
   templateUrl: 'visible-ioi-receipt.component.html'
 })
 export class VisibleIoiReceiptComponent {
-  ui$ = this.productQuery.select(state => state.ui);
+  ui$ = this.ioiReceiptQuery.select(state => state.ui);
   formGroup!: FormGroup;
   visibleEntity: any = {};
 
   constructor(
-    private readonly productQuery: IoiReceiptQuery,
-    private readonly productStore: IoiReceiptStore
+    private readonly ioiReceiptQuery: IoiReceiptQuery,
+    private readonly ioiReceiptStore: IoiReceiptStore
   ) {
   }
 
@@ -23,11 +23,11 @@ export class VisibleIoiReceiptComponent {
   }
 
   onUpdateVisible() {
-    this.productStore.updateUI(this.visibleEntity,'visible');
+    this.ioiReceiptStore.updateUI(this.visibleEntity,'visible');
   }
 
   onUpdatePinned() {
-    this.productStore.updateUI(this.visibleEntity,'pinned');
+    this.ioiReceiptStore.updateUI(this.visibleEntity,'pinned');
   }
 
   visible(key: 'visible' | 'pinned'): boolean {

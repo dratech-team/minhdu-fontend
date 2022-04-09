@@ -12,7 +12,7 @@ export class IoiReceiptEffect {
   constructor(
     private readonly action$: Actions,
     private readonly service: IoiReceiptService,
-    private readonly productStore: IoiReceiptStore,
+    private readonly ioiReceiptStore: IoiReceiptStore,
     private readonly message: NzMessageService
   ) {
   }
@@ -21,7 +21,7 @@ export class IoiReceiptEffect {
   addOne$ = this.action$.pipe(
     ofType(IoiReceiptActions.addOne),
     switchMap(props => {
-      this.productStore.update(state => ({
+      this.ioiReceiptStore.update(state => ({
         ...state, added: true
       }))
       if (!props.body?.branchId) {
@@ -30,10 +30,10 @@ export class IoiReceiptEffect {
       return this.service.addOne(props);
     }),
     tap(res => {
-      this.productStore.update(state => ({
+      this.ioiReceiptStore.update(state => ({
         ...state, added: false
       }))
-      this.productStore.upsert(res.id, res);
+      this.ioiReceiptStore.upsert(res.id, res);
     })
   );
 
@@ -41,17 +41,17 @@ export class IoiReceiptEffect {
   loadAll$ = this.action$.pipe(
     ofType(IoiReceiptActions.loadAll),
     switchMap((props) => {
-      this.productStore.update(state => ({...state, loading: true}))
+      this.ioiReceiptStore.update(state => ({...state, loading: true}))
       return this.service.pagination(props.params).pipe(
         tap((res) => {
-          this.productStore.update(state => ({...state, loading: false}))
+          this.ioiReceiptStore.update(state => ({...state, loading: false}))
           if (res.data.length === 0) {
             this.message.warning('Đã lấy hết hàng hoá')
           }
           if (props.isPagination) {
-            this.productStore.add(res.data);
+            this.ioiReceiptStore.add(res.data);
           } else {
-            this.productStore.set(res.data);
+            this.ioiReceiptStore.set(res.data);
           }
         }),
       );
@@ -66,7 +66,7 @@ export class IoiReceiptEffect {
       return this.service.getOne(props.id);
     }),
     tap(res => {
-      this.productStore.update(res?.id, res);
+      this.ioiReceiptStore.update(res?.id, res);
     }),
     catchError(err => {
       return throwError(err)
@@ -77,16 +77,16 @@ export class IoiReceiptEffect {
   update$ = this.action$.pipe(
     ofType(IoiReceiptActions.update),
     switchMap(props => {
-      this.productStore.update(state => ({
+      this.ioiReceiptStore.update(state => ({
         ...state, added: false
       }))
       return this.service.update(props);
     }),
     tap(res => {
-      this.productStore.update(state => ({
+      this.ioiReceiptStore.update(state => ({
         ...state, added: true
       }))
-      this.productStore.update(res?.id, res);
+      this.ioiReceiptStore.update(res?.id, res);
     }),
     catchError(err => {
       return throwError(err)
@@ -99,7 +99,7 @@ export class IoiReceiptEffect {
     switchMap(props => {
       return this.service.delete(props.id).pipe(
         tap(_ => {
-          this.productStore.remove(props?.id);
+          this.ioiReceiptStore.remove(props?.id);
         }),
       );
     }),
