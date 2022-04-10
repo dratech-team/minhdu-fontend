@@ -5,14 +5,11 @@ import {DatePipe} from '@angular/common';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../../reducers';
 import {HolidayAction} from '../../+state/holiday/holiday.action';
-import {getAllPosition, PositionActions} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Position} from '@minhdu-fontend/data-models';
 import * as lodash from 'lodash';
-import {PositionService} from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
-import {startWith} from 'rxjs/operators';
 import {selectHolidayAdded} from '../../+state/holiday/holiday.selector';
-import {searchAndAddAutocomplete} from '../../../../../../../../libs/utils/orgchart.ultil';
 
 
 @Component({
@@ -24,10 +21,10 @@ export class AddHolidayComponent implements OnInit {
   submitted = false;
   formGroup!: FormGroup;
   positions$ = this.store.pipe(select(getAllPosition));
+  formPosition = new FormControl()
   positions = new FormControl('');
-  positionSelected: Position[] = [];
   hidePrice = true;
-
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
   constructor(
     public datePipe: DatePipe,
     private readonly formBuilder: FormBuilder,
@@ -35,7 +32,6 @@ export class AddHolidayComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly dialogRef: MatDialogRef<AddHolidayComponent>,
     private readonly snackBar: MatSnackBar,
-    private readonly positionService: PositionService
   ) {
   }
 
@@ -43,7 +39,7 @@ export class AddHolidayComponent implements OnInit {
     this.store.dispatch(PositionActions.loadPosition());
     if (this.data?.holiday) {
       if (this.data.holiday.positions) {
-        this.positionSelected = [...this.data.holiday.positions];
+        this.formPosition.setValue(this.data.holiday.positions)
       }
       this.hidePrice = this.data.holiday.rate <= 1;
       this.formGroup = this.formBuilder.group({
@@ -68,11 +64,9 @@ export class AddHolidayComponent implements OnInit {
       });
     }
 
-
-    this.positions$ = searchAndAddAutocomplete(
-      this.positions.valueChanges.pipe(startWith('')),
-      this.positions$
-    );
+    this.formPosition.valueChanges.subscribe(val => {
+      console.log(val)
+    })
 
     this.formGroup.get('rate')?.valueChanges.subscribe(
       rate => this.hidePrice = rate <= 1
@@ -88,18 +82,15 @@ export class AddHolidayComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    if (this.positionSelected.length === 0) {
-      return this.snackBar.open('Chưa chọn chức vụ', '', {duration: 2000});
-    }
-    if (this.positions.value) {
-     return  this.snackBar.open('Chức vụ phải chọn không đqược nhập', '', {duration: 1500})
+    if(this.formPosition.value.length === 0){
+      return this.snackBar.open('Chưa chọn chức vụ')
     }
     const val = this.formGroup.value;
     const holiday = {
       name: val.name,
       datetime: val.datetime,
       rate: val.rate,
-      positionIds: this.positionSelected.map(val => val.id),
+      positionIds: this.formPosition.value.map((val:Position) => val.id),
       isConstraint: val.isConstraint,
       price: val.rate <= 1
         ? typeof val.price === 'string'
@@ -119,35 +110,5 @@ export class AddHolidayComponent implements OnInit {
         this.dialogRef.close();
       }
     });
-  }
-
-  onCreatePosition(event: any, position: any, positionInput: HTMLElement): any {
-    if (event.isUserInput) {
-      if (position.id) {
-        if (this.positionSelected.some(item => item.id === position.id)) {
-          this.snackBar.open('chức vụ đã được chọn', '', {duration: 1000});
-        } else {
-          this.positionSelected.push(position);
-        }
-      } else {
-        this.positionService
-          .addOne({
-            name: this.inputPosition.nativeElement.value
-          })
-          .subscribe((position) => (
-            this.positionSelected.push(position)
-          ));
-        this.snackBar.open('Đã tạo', '', {duration: 2500});
-      }
-      setTimeout(() => {
-          this.positions.setValue('');
-          positionInput.blur();
-        }
-      );
-    }
-  }
-
-  removePosition(position: Position) {
-    lodash.remove(this.positionSelected, position);
   }
 }
