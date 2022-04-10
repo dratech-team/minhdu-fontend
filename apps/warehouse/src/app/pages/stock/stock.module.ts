@@ -8,15 +8,14 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {AkitaNgEffectsModule} from '@datorama/akita-ng-effects';
-import {ContainerService} from './services';
-import {ProductEffect} from './state/product.effect';
+import {StockService} from './services';
+import {StockEffect} from './state/stock.effect';
 import {CategoryService} from '../warehouse/services';
 import {NgxCurrencyModule} from 'ngx-currency';
 import {customCurrencyMaskConfig} from '@minhdu-fontend/config';
 import {NzAutocompleteModule} from 'ng-zorro-antd/auto-complete';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatRadioModule} from '@angular/material/radio';
-import {ContainerRoutingModule} from './container-routing.module';
 import {NzCollapseModule} from 'ng-zorro-antd/collapse';
 import {NzTableModule} from 'ng-zorro-antd/table';
 import {WarehouseEffect} from '../warehouse/state';
@@ -28,10 +27,11 @@ import {NzButtonModule} from 'ng-zorro-antd/button';
 import {ConsignmentModule} from "../consignment/consignment.module";
 import {NzRadioModule} from "ng-zorro-antd/radio";
 import {SupplierEffect} from "../supplier/state";
+import {StockRoutingModule} from "./stock-routing.module";
 
 @NgModule({
   imports: [
-    ContainerRoutingModule,
+    StockRoutingModule,
     NzAutocompleteModule,
     ComponentsModule,
     ReactiveFormsModule,
@@ -40,7 +40,7 @@ import {SupplierEffect} from "../supplier/state";
     MatSelectModule,
     MatDialogModule,
     NgxSkeletonLoaderModule,
-    AkitaNgEffectsModule.forFeature([ProductEffect, WarehouseEffect, SupplierEffect]),
+    AkitaNgEffectsModule.forFeature([StockEffect, WarehouseEffect, SupplierEffect]),
     MatAutocompleteModule,
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
     MatExpansionModule,
@@ -60,8 +60,8 @@ import {SupplierEffect} from "../supplier/state";
   providers: [
     DatePipe,
     CategoryService,
-    ContainerService
+    StockService
   ]
 })
-export class ContainerModule {
+export class StockModule {
 }

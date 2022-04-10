@@ -1,30 +1,30 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
-import {AddContainerDto, SearchContainerDto, UpdateContainerDto} from '../dto';
-import { ContainerEntity } from '../entities';
+import {AddStockDto, SearchStockDto, UpdateStockDto} from '../dto';
+import { StockEntity } from '../entities';
 
 const addOne = createAction(
   '[STOCK] Add One',
-  props<AddContainerDto>()
+  props<AddStockDto>()
 );
 
 const loadAll = createAction(
   '[STOCK] Load All',
-  props<SearchContainerDto>()
+  props<SearchStockDto>()
 );
 
 const getOne = createAction(
   '[STOCK] Get One',
-  props<{ id: ContainerEntity['id'] }>()
+  props<{ id: StockEntity['id'] }>()
 );
 
 const update = createAction(
   '[STOCK] Update',
-  props<UpdateContainerDto>()
+  props<UpdateStockDto>()
 );
 
 const remove = createAction(
   '[STOCK] Delete',
-  props<{ id: ContainerEntity['id'] }>()
+  props<{ id: StockEntity['id'] }>()
 );
 
 const error = createAction(
@@ -32,4 +32,4 @@ const error = createAction(
   props<{ error: string }>()
 );
 
-export const ProductActions = { addOne, loadAll, getOne, update, remove, error };
+export const StockActions = { addOne, loadAll, getOne, update, remove, error };

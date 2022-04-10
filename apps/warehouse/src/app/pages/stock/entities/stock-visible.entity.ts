@@ -1,6 +1,6 @@
 import {VisibleEntity} from "@minhdu-fontend/data-models";
 
-export interface ContainerVisibleEntity {
+export interface StockVisibleEntity {
   readonly stt: VisibleEntity;
   readonly code: VisibleEntity;
   readonly name: VisibleEntity;
