@@ -25,7 +25,7 @@ const routes: Routes = [
       },
       {
         path: 'ton-kho',
-        loadChildren: () => import('./pages/container/container.module').then(m => m.ContainerModule),
+        loadChildren: () => import('./pages/stock/stock.module').then(m => m.StockModule),
         canActivate: [RouteGuard]
       },
       {

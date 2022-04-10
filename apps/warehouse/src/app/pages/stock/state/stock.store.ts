@@ -1,18 +1,17 @@
 import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
 import {Injectable} from '@angular/core';
-import {ContainerEntity, ContainerVisibleEntity} from '../entities';
+import {StockEntity, StockVisibleEntity} from '../entities';
 import {updateStateUiUtil} from '../../../../../../sell/src/app/utils/update-state-ui.util';
-import {SupplierEntity} from '../../supplier/entities';
-import {BaseSearchContainerDto, SearchContainerDto} from "../dto";
+import {BaseSearchStockDto} from "../dto";
 
-export interface ProductState extends EntityState<ContainerEntity> {
+export interface StockState extends EntityState<StockEntity> {
   loading: boolean;
   added: boolean|null;
-  search: Partial<BaseSearchContainerDto>;
-  ui: ContainerVisibleEntity;
+  search: Partial<BaseSearchStockDto>;
+  ui: StockVisibleEntity;
 }
 
-export function createInitialState(): ProductState {
+export function createInitialState(): StockState {
   return {
     loading: true,
     added: null,
@@ -51,17 +50,17 @@ export function createInitialState(): ProductState {
 }
 
 @Injectable({providedIn: 'root'})
-@StoreConfig({name: 'product'})
-export class ProductStore extends EntityStore<ProductState> {
+@StoreConfig({name: 'stock'})
+export class StockStore extends EntityStore<StockState> {
   constructor() {
     super(createInitialState());
   }
 
-  updateUI(newState: Partial<ContainerVisibleEntity>, type: 'visible' | 'pinned') {
+  updateUI(newState: Partial<StockVisibleEntity>, type: 'visible' | 'pinned') {
     return this.update(state => {
       return {
         ...state,
-        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), updateStateUiUtil<ContainerVisibleEntity>(newState, type)) : state.ui
+        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), updateStateUiUtil<StockVisibleEntity>(newState, type)) : state.ui
       };
     });
   }

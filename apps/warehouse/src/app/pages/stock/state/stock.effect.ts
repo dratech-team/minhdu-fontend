@@ -2,40 +2,40 @@ import {Injectable, OnInit} from '@angular/core';
 import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
 import {catchError, switchMap, tap} from 'rxjs/operators';
 import {of, throwError} from 'rxjs';
-import {ProductActions} from './product.actions';
-import {ProductStore} from './product.store';
-import {ContainerService} from '../services/container.service';
+import {StockActions} from './stock.actions';
+import {StockStore} from './stock.store';
+import {StockService} from '../services/stock.service';
 import {NzMessageService} from "ng-zorro-antd/message";
 
 @Injectable()
-export class ProductEffect {
+export class StockEffect {
   constructor(
     private readonly action$: Actions,
-    private readonly service: ContainerService,
-    private readonly productStore: ProductStore,
+    private readonly service: StockService,
+    private readonly stockStore: StockStore,
     private readonly message: NzMessageService
   ) {
   }
 
   @Effect()
   addOne$ = this.action$.pipe(
-    ofType(ProductActions.addOne),
+    ofType(StockActions.addOne),
     switchMap(props => {
-      this.productStore.update(state => ({
+      this.stockStore.update(state => ({
         ...state, added: false
       }))
       return this.service.addOne(props).pipe(
         tap(res => {
-          this.productStore.update(state => ({
+          this.stockStore.update(state => ({
             ...state, added: true
           }))
-          this.productStore.upsert(res.id, res);
+          this.stockStore.upsert(res.id, res);
         }),
         catchError(err => {
-          this.productStore.update(state => ({
+          this.stockStore.update(state => ({
             ...state, added: null
           }))
-          return of(ProductActions.error(err))
+          return of(StockActions.error(err))
         })
       );
     }),
@@ -44,24 +44,24 @@ export class ProductEffect {
 
   @Effect()
   loadAll$ = this.action$.pipe(
-    ofType(ProductActions.loadAll),
+    ofType(StockActions.loadAll),
     switchMap((props) => {
-      this.productStore.update(state => ({...state, loading: true}))
+      this.stockStore.update(state => ({...state, loading: true}))
       return this.service.pagination(props).pipe(
         tap((res) => {
-          this.productStore.update(state => ({...state, loading: false}))
+          this.stockStore.update(state => ({...state, loading: false}))
           if (res.data.length === 0) {
             this.message.warning('Đã lấy hết hàng hoá')
           }
           if (props.isPaginate) {
-            this.productStore.add(res.data);
+            this.stockStore.add(res.data);
           } else {
-            this.productStore.set(res.data);
+            this.stockStore.set(res.data);
           }
         }),
         catchError((err) => {
-          this.productStore.update(state => ({...state, loading: false}))
-          return of(ProductActions.error(err))
+          this.stockStore.update(state => ({...state, loading: false}))
+          return of(StockActions.error(err))
         })
       );
     }),
@@ -69,14 +69,14 @@ export class ProductEffect {
 
   @Effect()
   getOne$ = this.action$.pipe(
-    ofType(ProductActions.getOne),
+    ofType(StockActions.getOne),
     switchMap(props => {
       return this.service.getOne(props.id).pipe(
         tap(res => {
-          this.productStore.update(res?.id, res);
+          this.stockStore.update(res?.id, res);
         }),
         catchError(err => {
-          return of(ProductActions.error(err))
+          return of(StockActions.error(err))
         })
       );
     }),
@@ -84,23 +84,23 @@ export class ProductEffect {
 
   @Effect()
   update$ = this.action$.pipe(
-    ofType(ProductActions.update),
+    ofType(StockActions.update),
     switchMap(props => {
-      this.productStore.update(state => ({
+      this.stockStore.update(state => ({
         ...state, added: false
       }))
       return this.service.update(props).pipe(
         tap(res => {
-          this.productStore.update(state => ({
+          this.stockStore.update(state => ({
             ...state, added: true
           }))
-          this.productStore.update(res?.id, res);
+          this.stockStore.update(res?.id, res);
         }),
         catchError(err => {
-          this.productStore.update(state => ({
+          this.stockStore.update(state => ({
             ...state, added: null
           }))
-          return of(ProductActions.error(err))
+          return of(StockActions.error(err))
         })
       );
     }),
@@ -108,14 +108,14 @@ export class ProductEffect {
 
   @Effect()
   delete$ = this.action$.pipe(
-    ofType(ProductActions.remove),
+    ofType(StockActions.remove),
     switchMap(props => {
       return this.service.delete(props.id).pipe(
         tap(_ => {
-          this.productStore.remove(props?.id);
+          this.stockStore.remove(props?.id);
         }),
         catchError(err => {
-          return of(ProductActions.error(err))
+          return of(StockActions.error(err))
         })
       );
     }),

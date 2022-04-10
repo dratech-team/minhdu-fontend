@@ -1,6 +1,6 @@
 import {BaseProductEntity} from "../../product/bases";
 
-export interface BaseContainerEntity extends BaseProductEntity {
+export interface BaseStockEntity extends BaseProductEntity {
   readonly price: number,
   readonly amount: number
 }
