@@ -9,7 +9,7 @@
   [infiniteScrollThrottle]='10'
   [scrollWindow]='false'
   (scrolled)='onScroll()'>
-  <table matSort (matSortChange)='sortPayroll()' [formGroup]='formGroup' class='main-table' style='width: 2500px;'>
+  <table matSort (matSortChange)='sortPayroll()' [formGroup]='formGroup' class='main-table' style='width: 2700px;'>
     <thead>
     <tr>
       <th>
@@ -103,6 +103,10 @@
         <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị tính</div>
         <input type='text' disabled>
       </th>
+      <th style="width: 170px">
+        <div class='border-top d-flex justify-content-center align-items-center'>Hệ số</div>
+        <input type='text' disabled>
+      </th>
       <th>
         <div class='border-top d-flex justify-content-center align-items-center'>Đơn giá</div>
         <input type='text' disabled>
@@ -141,6 +145,10 @@
       </th>
       <th style='min-width: 300px'>
         <div class='text-center'></div>
+      </th>
+      <th>
+        <div class='text-center'>
+        </div>
       </th>
       <th>
         <div class='text-center'>
@@ -261,6 +269,20 @@
                [ngStyle]='{"background": selectSalary(item) ? "#ffcccc" : ""}'
           >
             {{item?.times}} {{item.unit === "HOUR" ? "Giờ" : item.unit === 'DAY' ?"Ngày" : 'Lần'}}
+          </div>
+        </th>
+        <th class='pointer'>
+          <div class=' d-flex align-items-center justify-content-center pointer '
+               [ngClass]='{
+                "border-top":payrollOvertime.salaries.length > 1 && index  !== 0
+                }'
+               *ngFor='let item of payrollOvertime.salaries; let index = index'
+               [ngStyle]='{"background": selectSalary(item) ? "#ffcccc" : ""}'
+               (contextmenu)='child.onContextMenu($event,item)'
+               (click)='detailPayroll(payrollOvertime.payrollId)'>
+            <div>
+              {{item.rate}}
+            </div>
           </div>
         </th>
         <th class='pointer'>
