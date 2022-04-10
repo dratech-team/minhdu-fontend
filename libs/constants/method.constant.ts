@@ -1,6 +1,5 @@
 import { ActivityType } from '../enums';
 
-
 export const MethodConstant = [
   {
     name: 'Thêm',

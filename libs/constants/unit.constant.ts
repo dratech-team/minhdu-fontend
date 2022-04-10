@@ -2,7 +2,7 @@ import { DatetimeUnitEnum, } from '../enums';
 
 export const UnitsConstant = [
   {
-    name: 'năm',
+    name: 'Năm',
     type: DatetimeUnitEnum.YEAR
   },
   {
@@ -22,7 +22,7 @@ export const UnitsConstant = [
     type: DatetimeUnitEnum.HOUR
   },
   {
-    name: 'Giờ',
+    name: 'Phút',
     type: DatetimeUnitEnum.MINUTE
   },
 ];

@@ -8,8 +8,8 @@ export interface TitleDatePicker {
 
 interface Children {
   title: string,
-  startedAt: Date|null,
-  endedAt: Date|null
+  startedAt: Date | null,
+  endedAt: Date | null
 }
 
 export const titleDatepicker: TitleDatePicker[] = [

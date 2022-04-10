@@ -1,22 +1,22 @@
-import {Component, OnInit, ViewContainerRef} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {Router} from '@angular/router';
-import {Api, ResourcesConstant} from '@minhdu-fontend/constants';
-import {CustomerType, ItemContextMenu, SortCustomerEnum} from '@minhdu-fontend/enums';
-import {ExportService} from '@minhdu-fontend/service';
-import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
-import {debounceTime, map, tap} from 'rxjs/operators';
-import {CustomerActions, CustomerQuery, CustomerStore} from '../../+state';
-import {CustomerDialogComponent, PaymentDialogComponent} from '../../component';
-import {Actions} from '@datorama/akita-ng-effects';
-import {NzModalService} from 'ng-zorro-antd/modal';
-import {RadiosStatusRouteConstant} from '../../../../../../../../libs/constants/gender.constant';
-import {CustomerConstant, PotentialsConstant} from '../../constants';
-import {Sort} from '@minhdu-fontend/data-models';
-import {OrderActions} from '../../../order/+state';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { Api } from '@minhdu-fontend/constants';
+import { CustomerType, ItemContextMenu, SortCustomerEnum } from '@minhdu-fontend/enums';
+import { ExportService } from '@minhdu-fontend/service';
+import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
+import { debounceTime, map, tap } from 'rxjs/operators';
+import { CustomerActions, CustomerQuery, CustomerStore } from '../../+state';
+import { CustomerDialogComponent, PaymentDialogComponent } from '../../component';
+import { Actions } from '@datorama/akita-ng-effects';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { RadiosStatusRouteConstant } from '../../enums/gender.constant';
+import { CustomerConstant, PotentialsConstant, ResourcesConstant } from '../../constants';
+import { Sort } from '@minhdu-fontend/data-models';
+import { OrderActions } from '../../../order/+state';
 import * as _ from 'lodash';
-import {OrderEntity} from "../../../order/enitities/order.entity";
+import { OrderEntity } from '../../../order/enitities/order.entity';
 
 @Component({
   templateUrl: 'customer.component.html'
@@ -63,14 +63,14 @@ export class CustomerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(CustomerActions.loadAll({search: this.mapCustomer(this.formGroup.value, false)}));
+    this.actions$.dispatch(CustomerActions.loadAll({ search: this.mapCustomer(this.formGroup.value, false) }));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          console.log(val)
+          console.log(val);
           this.actions$.dispatch(
-            CustomerActions.loadAll({search: this.mapCustomer(val, false)})
+            CustomerActions.loadAll({ search: this.mapCustomer(val, false) })
           );
         })
       )
@@ -106,7 +106,7 @@ export class CustomerComponent implements OnInit {
       delete val.orderBy;
       delete val.orderType;
     }
-    return Object.assign({},val, {
+    return Object.assign({}, val, {
       take: this.pageSize,
       skip: isPagination ? this.customerQuery.getCount() : 0
     });
@@ -121,10 +121,10 @@ export class CustomerComponent implements OnInit {
   }
 
   deleteCustomer($event: any) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent, {width: '25%'});
+    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '25%' });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
-        this.actions$.dispatch(CustomerActions.remove({id: $event.id}));
+        this.actions$.dispatch(CustomerActions.remove({ id: $event.id }));
       }
     });
   }
@@ -132,7 +132,7 @@ export class CustomerComponent implements OnInit {
   payment($event: any) {
     this.dialog.open(PaymentDialogComponent, {
       width: '55%',
-      data: {id: $event.id}
+      data: { id: $event.id }
     });
   }
 
@@ -142,10 +142,10 @@ export class CustomerComponent implements OnInit {
       data: {
         filename: 'danh sách khác hàng',
         title: 'Xuât bảng khác hàng',
-        params: _.omit(this.mapCustomer(this.formGroup.value,false),['take','skip']),
-        api: Api.SELL.CUSTOMER.CUSTOMER_EXPORT,
+        params: _.omit(this.mapCustomer(this.formGroup.value, false), ['take', 'skip']),
+        api: Api.SELL.CUSTOMER.CUSTOMER_EXPORT
       }
-    })
+    });
   }
 
   onPagination(pageIndex: number) {
