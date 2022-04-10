@@ -45,7 +45,6 @@ export class TemplateOvertimeComponent implements OnInit {
     employeeType: new FormControl('')
   });
   templateOverConstant = TemplateOverConstant
-  priceTypeEnum = PriceTypeEnum
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   itemContextMenu = ItemContextMenu;
