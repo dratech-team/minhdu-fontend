@@ -30,9 +30,9 @@
             <!--            </div>-->
             <div class='row d-flex flex-column '>
               <div class='d-flex justify-content-between font-weight-bold'>
-                <div class="ml-3"
+                <div class='ml-3'
                      routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}'>{{payroll.employee.lastName}}</div>
-                <div (click)="updatePayroll(payroll)" style="background: #1b8eb7" class="p-1 rounded">
+                <div (click)='updatePayroll(payroll)' style='background: #1b8eb7' class='p-1 rounded'>
                   <img style='height: 10px; width:15px' src='/assets/img/share/pencil-fill.svg' alt='edit icon'>
                 </div>
               </div>
@@ -92,8 +92,8 @@
           <div class='col' style='min-width: 170px'>
             <div class='row justify-content-center'> Thuộc diện hợp đồng</div>
             <div class='row' style='display: flex;justify-content: center;align-items: center;height: 43px;'>
-              <div *ngIf="payroll.tax > 0 else tax"
-                   class="font-weight-bold font-lg">{{payroll.tax | percent:'0.0-3':'vi'}}</div>
+              <div *ngIf='payroll.tax > 0 else tax'
+                   class='font-weight-bold font-lg'>{{payroll.tax | percent:'0.0-3':'vi'}}</div>
               <ng-template #tax>
                 <img [src]="'../../../../../assets/img/share/x-lg.svg'" [alt]="'not contract' ">
               </ng-template>
@@ -243,15 +243,18 @@
       </div>
       <!--Tăng ca -->
       <div #overtime class='col-12 mt-5'>
-        <table matSort (matSortChange)="sortData($event)">
+        <table matSort (matSortChange)='sortData($event)'>
           <thead>
           <tr style='background-color: #dddddd66;'>
-            <th mat-sort-header="title"
-                width='25%' class=' title text-center '>Tăng ca</th>
-            <th mat-sort-header="datetime"
-              width='15%' class=' title text-center '>Thời gian</th>
-            <th mat-sort-header="unit"
-              width='10%' class=' title text-center '>Đơn vị</th>
+            <th mat-sort-header='title'
+                width='25%' class=' title text-center '>Tăng ca
+            </th>
+            <th mat-sort-header='datetime'
+                width='15%' class=' title text-center '>Thời gian
+            </th>
+            <th mat-sort-header='unit'
+                width='10%' class=' title text-center '>Đơn vị
+            </th>
             <th width='15%' class=' title text-center '>Thành tiền</th>
             <th width='25%' class=' title text-center '>Chú thích</th>
             <th width='10%' class='text-center' style='padding: 0; color: #1b8eb7'
@@ -262,7 +265,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let salary of sortedSalaryOver"
+          <tr *ngFor='let salary of sortedSalaryOver'
               style='background: white !important;'>
             <td width='25%'>
               <div>
@@ -389,11 +392,11 @@
         <table>
           <thead>
           <tr style='background-color: #dddddd66;'>
-            <th width='3%' class=' title text-center '>STT</th>
-            <th width='22%' class=' title text-center '>Đi làm ngày lễ</th>
-            <th width='15%' class=' title text-center '>Ngày</th>
-            <th width='9%' class=' title text-center '>Hệ số</th>
-            <th width='15%' class=' title text-center '>Đơn giá</th>
+            <th width='3%' class='title text-center'>STT</th>
+            <th width='22%' class='title text-center'>Đi làm ngày lễ</th>
+            <th width='15%' class='title text-center'>Ngày</th>
+            <th width='9%' class='title text-center'>Hệ số</th>
+            <th width='15%' class='title text-center'>Đơn giá</th>
             <th width='10%' style='color: #1b8eb7' (click)='scanHoliday(payroll.id)'><span
               class='mx-2 pointer'>Quét</span>
               <img class='pointer' style='margin-left: 2px;width: 13px;' src='./assets/icon/search.svg'
@@ -405,21 +408,19 @@
           <tr *ngFor="let salary of payroll.salaries | filterTypeSalary:['HOLIDAY']; let i = index "
               style='background: white !important;'>
             <th width='25%'>
-              <div>
-                <span>{{salary.title}}</span>
-                <span class='ml-2' *ngIf='salary.allowance'></span>
-              </div>
+              {{i + 1}}
             </th>
-            <th width='15%' class=' text-center '>
-                <span>
-                  {{salary.times}} ngày {{salary.datetime | date: "dd/MM/yyyy"}}
-                </span>
+            <th width='15%' class=' text-center'>
+              {{salary.datetime | date: "dd/MM/yyyy"}}
             </th>
-            <th width='10%' class=' text-center '>
+            <th width='10%' class=' text-center'>
+              {{salary.times}} ngày
+            </th>
+            <th width='10%' class=' text-center'>
               <span>{{salary.rate}}</span>
             </th>
-            <th width='25%' class=' text-center '>
-              {{salary.price || "Theo hệ số lương cơ bản"}}
+            <th width='25%' class=' text-center'>
+              {{salary.price| number:'1.0' | notEmpty:'Theo hệ số lương cơ bản'}}
             </th>
             <th width='10%'>
             </th>
@@ -500,7 +501,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngIf="payroll?.note" style='background: white !important;'>
+          <tr *ngIf='payroll?.note' style='background: white !important;'>
             <th>
               <div>
                 <span>{{payroll?.note}}</span>
@@ -609,7 +610,7 @@
         </button>
         <button (click)='confirmPayroll(payroll)' class='mb-5 create-salary'>
           <img class='mr-2' style='height: 12px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
-          {{role === roleEnum.HUMAN_RESOURCE ? 'Khôi phục phiếu lương': 'Xác nhận phiếu lương'}}
+          {{role === roleEnum.HUMAN_RESOURCE ? 'Khôi phục phiếu lương' : 'Xác nhận phiếu lương'}}
         </button>
       </div>
     </div>
