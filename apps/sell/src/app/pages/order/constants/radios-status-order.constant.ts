@@ -8,7 +8,7 @@ export const radiosStatusOrderConstant = [
     value: 1
   },
   {
-    name: 'tất cả',
+    name: 'Tất cả',
     value: -1
   }
 ]
