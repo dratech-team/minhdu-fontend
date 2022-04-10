@@ -281,13 +281,11 @@
             <td width='10%' class=' text-center '>
               <span *ngIf='salary.unit === datetimeUnit.HOUR'> {{salary.times}} Giờ </span>
               <span *ngIf='salary.unit === datetimeUnit.DAY'>Ngày</span>
-              <span *ngIf='!salary.unit'>{{
-                salary.partial === "ALL_DAY" ? (salary.times) + " Ngày" : (salary.times * 2) + " buổi"
-                }}</span>
+              <span *ngIf='salary.unit === datetimeUnit.TIMES'>{{salary.times}} Lần</span>
             </td>
             <td width='15%' class=' text-center ' style='color: #29CC97'>
                 <span>
-                  {{ salary.price ? ((salary.times * salary.price)|number:'1.0') + 'đ' : ''}}
+                  {{ salary.price ? ((salary.times * salary.price * salary.rate)|number:'1.0') + 'đ' : 'Theo lương chuẩn'}}
                 </span>
               <span *ngIf='salary.allowance'>
                   + {{salary.allowance.price}}

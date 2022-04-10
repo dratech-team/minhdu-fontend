@@ -9,10 +9,10 @@ export const TemplateOverConstant = [
     name:'Giờ',
     value: DatetimeUnitEnum.HOUR
   },
-  {
-    name:'Tháng',
-    value: DatetimeUnitEnum.MONTH
-  },
+  // {
+  //   name:'Tháng',
+  //   value: DatetimeUnitEnum.MONTH
+  // },
   {
     name:'Lần',
     value: DatetimeUnitEnum.TIMES

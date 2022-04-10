@@ -50,14 +50,7 @@ export class DialogOvertimeComponent implements OnInit {
   ) {
   }
 
-  titleSession = [
-    {title: 'buổi sáng', type: PartialDayEnum.MORNING, times: partialDay.PARTIAL},
-    {title: 'buổi chiều', type: PartialDayEnum.AFTERNOON, times: partialDay.PARTIAL},
-    {title: 'buổi tối', type: PartialDayEnum.NIGHT, times: partialDay.PARTIAL},
-    {title: 'nguyên ngày', type: PartialDayEnum.ALL_DAY, times: partialDay.ALL_DAY}
-  ];
   compareFN = (o1: any, o2: any) => (typeof o1 === 'string' ? o1 == o2.title : o1.id === o2.id);
-  comparePartialFN = (o1: any, o2: any) => (typeof o1 === 'string' ? o1 == o2.type : o1 === o2);
 
   ngOnInit(): void {
     if (!this.data?.updateMultiple) {
@@ -78,19 +71,13 @@ export class DialogOvertimeComponent implements OnInit {
           this.datePipe.transform(
             this.data.salary.datetime, 'yyyy-MM-dd')],
         note: [this.data.salary.note],
-        times: [!this.data.salary?.unit && this.data.salary.partial !== PartialDayEnum.ALL_DAY ?
-          this.data.salary.times * 2
-          : this.data.salary.times
-        ],
+        times: [this.data.salary?.times],
         rate: [this.data.salary?.rate],
-        unit: [this.data?.payroll.recipeType === RecipeType.CT4 && !this.data.salary.unit ?
-          DatetimeUnitEnum.OPTION
-          : this.data.salary.unit],
+        unit: [this.data.salary.unit],
         price: [this.data.salary.price],
         days: [this.data.salary.times],
         priceAllowance: [this.data.salary.allowance?.price],
         titleAllowance: [this.data.salary.allowance?.title],
-        partial: [this.titleSession.find(title => title.type === this.data.salary?.partial)]
       });
     } else {
       this.formGroup = this.formBuilder.group({
@@ -110,8 +97,9 @@ export class DialogOvertimeComponent implements OnInit {
       });
     }
     this.formGroup.get('title')?.valueChanges.subscribe(title => {
-      this.formGroup.get('price')?.setValue(title.price),
-        this.formGroup.get('unit')?.setValue(title.unit, {emitEvent: false})
+      this.formGroup.get('price')?.setValue(title.price)
+      this.formGroup.get('rate')?.setValue(title.rate)
+      this.formGroup.get('unit')?.setValue(title.unit, {emitEvent: false})
     })
 
     this.formGroup.get('unit')?.valueChanges.subscribe(val => {
@@ -135,7 +123,7 @@ export class DialogOvertimeComponent implements OnInit {
     if (!value.unit) {
       return this.message.warning('Chưa chọn đơn vị tăng ca')
     }
-    if (value.unit === DatetimeUnitEnum.OPTION && !value.partial || value.unit !== DatetimeUnitEnum.OPTION && !value.title) {
+    if (!value.title) {
       return this.message.warning('Chưa chọn loại tăng ca')
     }
     this.submitted = true;
@@ -143,8 +131,7 @@ export class DialogOvertimeComponent implements OnInit {
       return;
     }
     const salary = {
-      title: value.unit === DatetimeUnitEnum.OPTION ?
-        'Tăng ca ' + value.partial?.title : value.title?.title || this.data.salary.title,
+      title: value.title?.title || this.data.salary.title,
       price: value.price,
       type: this.data.type,
       rate: value.rate,
@@ -169,12 +156,7 @@ export class DialogOvertimeComponent implements OnInit {
           }
       });
     }
-    if (value.unit === DatetimeUnitEnum.OPTION) {
-      Object.assign(salary, {
-        times: value.partial.times * value.times,
-        partial: value.partial.type
-      });
-      delete salary.unit;
+    if (value.unit === DatetimeUnitEnum.TIMES) {
       delete salary.datetime;
     } else {
       if (!value.datetime) {

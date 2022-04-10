@@ -29,14 +29,13 @@
                     <nz-select style="width: 100%" formControlName="unit" [nzDisabled]="data.isUpdate">
                       <nz-option [nzValue]='datetimeUnitEnum.DAY' [nzLabel]="'Ngày'"></nz-option>
                       <nz-option [nzValue]='datetimeUnitEnum.HOUR' [nzLabel]="'Giờ'"></nz-option>
-                      <nz-option *ngIf="data.payroll?.recipeType === recipeType.CT4"
-                                 [nzValue]='datetimeUnitEnum.OPTION' [nzLabel]="'Tuỳ chọn'"></nz-option>
+                      <nz-option [nzValue]='datetimeUnitEnum.TIMES' [nzLabel]="'Lần'"></nz-option>
                     </nz-select>
                   </div>
                 </div>
               </div>
               <div>
-                <div *ngIf='formGroup?.value.unit!== datetimeUnitEnum.OPTION'>
+                <div>
                   <div class=' title-item mb-1'>
                     <span> Loại tăng ca</span><span class='star'>*</span>
                   </div>
@@ -59,14 +58,8 @@
                     </nz-select>
                   </div>
                 </div>
-                <!--                  <div *ngIf='data.isUpdate'>-->
-                <!--                    <div class=' title-item mb-1'>-->
-                <!--                      <span> Loại tăng ca</span><span class='star'>*</span>-->
-                <!--                    </div>-->
-                <!--                    <div class=' form-control mb-3' style='background: #e4e7ea '>{{data.salary.title}}</div>-->
-                <!--                  </div>-->
               </div>
-              <div *ngIf='formGroup.value.unit !== datetimeUnitEnum.OPTION'>
+              <div>
                 <div class='d-flex row'>
                   <div *ngIf='formGroup.value.unit === datetimeUnitEnum.DAY' class='col'>
                     <div class=' title-item mb-1 '>
@@ -91,7 +84,8 @@
                       </div>
                     </div>
                   </div>
-                  <div *ngIf='!(formGroup.get("days")?.value > 1) || formGroup.value.unit === datetimeUnitEnum.HOUR  '
+                  <div *ngIf='formGroup.value.unit !== datetimeUnitEnum.TIMES && (!(formGroup.get("days")?.value > 1) ||
+                   formGroup.value.unit === datetimeUnitEnum.HOUR)'
                        class='date-or-time col'>
                     <div class=' title-item mb-1'>
                       <span>Ngày</span>
@@ -107,7 +101,18 @@
                     </div>
                   </div>
                 </div>
-                <div *ngIf="formGroup.value.unit === 'DAY'">
+                <div *ngIf="formGroup.value.unit === datetimeUnitEnum.TIMES">
+                  <div class='unit-price'>
+                    <div class='d-flex title-item mb-1'>
+                      <span>Tổng tăng ca</span>
+                      <div class='star'>*</div>
+                    </div>
+                    <div class=' mb-3' [formGroup]='formGroup'>
+                      <input class="form-control" formControlName="times" type="number">
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="formGroup.value.unit === 'DAY' || formGroup.value.unit === datetimeUnitEnum.TIMES">
                   <div class='unit-price'>
                     <div class='d-flex title-item mb-1'>
                       <span>Giá tăng ca</span>
@@ -115,7 +120,7 @@
                     </div>
                     <div class=' mb-3' [formGroup]='formGroup'>
                       <div  class="form-control px-1" style="pointer-events: none; background: #eee">
-                        {{formGroup.value.price|number:'1.0-0'}} đ
+                        {{formGroup.value.price ? (formGroup.value.price  |number:'1.0-0') : 'Theo lương chuẩn'}}
                       </div>
                       </div>
                   </div>
@@ -155,28 +160,11 @@
                   </div>
                 </div>
               </div>
-              <div *ngIf='formGroup.value.unit === datetimeUnitEnum.OPTION'>
-                <div class='mb-2' [formGroup]='formGroup'>
-                  <span class=' title-item mb-1'>Buổi </span>
-                  <nz-select nzShowSearch
-                             style='width:100%'
-                             nzPlaceHolder='Chọn buổi'
-                             [compareWith]='comparePartialFN'
-                             formControlName='partial'>
-                    <nz-option *ngFor='let item of titleSession'
-                               [nzLabel]="item.title"
-                               [nzValue]="item">
-                      {{item.title}}
-                    </nz-option>
-                  </nz-select>
-                </div>
-                <div class=' title-item mb-1'>
-                  <span>Số ngày</span>
-                  <span class='star'>*</span>
-                </div>
-                <div class=' mb-3' [formGroup]='formGroup'>
-                  <input type='number' class='form-control ' formControlName='times'>
-                </div>
+              <div class=' title-item mb-1 mt-3'>
+                <span>Hệ số</span>
+              </div>
+              <div class=' mb-3' [formGroup]='formGroup'>
+                <input class='form-control' formControlName='rate' style="pointer-events: none; background: #eee">
               </div>
               <div class=' title-item mb-1 mt-3'>
                 <span>Chú thích</span>
