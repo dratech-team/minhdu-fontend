@@ -1,6 +1,6 @@
 export const radiosStatusOrderConstant = [
   {
-    name: 'Đang giao',
+    name: 'Đang / chưa giao',
     value: 0
   },
   {
