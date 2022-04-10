@@ -48,10 +48,10 @@ export const createInitialState = () => ({
       pinned: false,
       visible: true
     },
-    customer: {
-      pinned: false,
-      visible: true
-    },
+    // customer: {
+    //   pinned: false,
+    //   visible: true
+    // },
     bsx: {
       pinned: false,
       visible: true

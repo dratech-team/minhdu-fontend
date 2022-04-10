@@ -6,7 +6,7 @@ export interface routeVisibleEntity {
   readonly startedAt: VisibleEntity;
   readonly endedAt: VisibleEntity;
   readonly driver: VisibleEntity;
-  readonly customer: VisibleEntity;
+  // readonly customer: VisibleEntity;
   readonly bsx: VisibleEntity;
   readonly garage: VisibleEntity;
   readonly status: VisibleEntity;

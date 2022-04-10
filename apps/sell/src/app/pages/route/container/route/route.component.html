@@ -39,7 +39,7 @@
       <div class='d-flex justify-content-between mt-3'>
         <button (click)='onAdd()' nz-button nzType='primary' class='mr-2'>Thêm</button>
         <button (click)='printRouter()' nz-button nzType='default'>Xuất</button>
-        <button class='ml-2' nz-button nz-popover nzPopoverTitle='Thêm cột'
+        <button class='ml-2' nz-button nz-popover nzPopoverTitle='Chọn cột hiển thị / ghim'
                 [(nzPopoverVisible)]='visible'
                 nzPopoverPlacement='bottomRight'
                 [nzPopoverContent]='pinColumn'
@@ -86,10 +86,10 @@
               [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.DRIVER ,orderType:$event})'>
             Tên Tài xế
           </th>
-          <th *ngIf="ui.customer.visible" [nzLeft]='ui.customer?.pinned||false'
-              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.CUSTOMER ,orderType:$event})'>
-            Khách hàng
-          </th>
+<!--          <th *ngIf="ui.customer.visible" [nzLeft]='ui.customer?.pinned||false'-->
+<!--              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.CUSTOMER ,orderType:$event})'>-->
+<!--            Khách hàng-->
+<!--          </th>-->
           <th *ngIf="ui.bsx.visible" [nzLeft]='ui.bsx?.pinned||false'
               [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.BSX ,orderType:$event})'>
             Biển số xe
@@ -129,14 +129,14 @@
                 (click)='onDetail(route.id, false)'>
               {{route?.driver || route?.employee?.lastName}}
             </td>
-            <td *ngIf="ui.customer.visible" [nzLeft]='ui.customer?.pinned||false'
-                (click)='onDetail(route.id, false)'>
-              <div class=' d-flex align-items-center justify-content-center pointer ' [ngClass]='{
-              "border-top": route.orders.length > 1 && index  !== 0
-              }' *ngFor='let order of route.orders; let index = index'>
-                {{order.customer.lastName}}
-              </div>
-            </td>
+<!--            <td *ngIf="ui.customer.visible" [nzLeft]='ui.customer?.pinned||false'-->
+<!--                (click)='onDetail(route.id, false)'>-->
+<!--              <div class=' d-flex align-items-center justify-content-center pointer ' [ngClass]='{-->
+<!--              "border-top": route.orders.length > 1 && index  !== 0-->
+<!--              }' *ngFor='let order of route.orders; let index = index'>-->
+<!--                {{order.customer.lastName}}-->
+<!--              </div>-->
+<!--            </td>-->
             <td *ngIf="ui.bsx.visible" [nzLeft]='ui.bsx?.pinned||false'
                 (click)='onDetail(route.id, false)'>{{route?.bsx || 'Chưa cập nhật'}}</td>
             <td *ngIf="ui.garage.visible" [nzLeft]='ui.garage?.pinned||false'

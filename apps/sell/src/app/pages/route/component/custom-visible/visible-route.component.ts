@@ -1,7 +1,6 @@
-import {Component} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {RouteQuery} from "../../+state/route.query";
-import {RouteStore} from "../../+state/route.store";
+import { Component } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { RouteQuery, RouteStore } from '../../+state';
 
 @Component({
   selector: 'minhdu-fontend-pinned-route',
@@ -27,7 +26,7 @@ export class VisibleRouteComponent {
   }
 
   onUpdatePinned() {
-    this.routeStore.updateUI(this.visibleEntity,'pinned');
+    this.routeStore.updateUI(this.visibleEntity, 'pinned');
   }
 
   visible(key: 'visible' | 'pinned'): boolean {
