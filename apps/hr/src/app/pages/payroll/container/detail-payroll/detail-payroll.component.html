@@ -253,10 +253,13 @@
                 width='15%' class=' title text-center '>Thời gian
             </th>
             <th mat-sort-header='unit'
-                width='10%' class=' title text-center '>Đơn vị
+                width='8%' class=' title text-center '>Hệ số
             </th>
-            <th width='15%' class=' title text-center '>Thành tiền</th>
-            <th width='25%' class=' title text-center '>Chú thích</th>
+            <th mat-sort-header='unit'
+                width='8%' class=' title text-center '>Đơn vị
+            </th>
+            <th width='13%' class=' title text-center '>Thành tiền</th>
+            <th width='21%' class=' title text-center '>Chú thích</th>
             <th width='10%' class='text-center' style='padding: 0; color: #1b8eb7'
                 (click)='addSalary(type.OVERTIME, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
               <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
@@ -267,34 +270,37 @@
           <tbody>
           <tr *ngFor='let salary of sortedSalaryOver'
               style='background: white !important;'>
-            <td width='25%'>
+            <td>
               <div>
                 <span>{{salary.title}}</span>
                 <span class='ml-2' *ngIf='salary.allowance'> + {{salary.allowance.title}}</span>
               </div>
             </td>
-            <td width='15%' class=' text-center '>
+            <td class=' text-center '>
                 <span *ngIf='salary.unit'>
                   {{salary.datetime ? (salary.datetime|date:'dd-MM-yyyy') : '-'}}
                 </span>
             </td>
-            <td width='10%' class=' text-center '>
+            <td class=' text-center '>
+              <span>{{salary.rate}}</span>
+            </td>
+            <td class=' text-center '>
               <span *ngIf='salary.unit === datetimeUnit.HOUR'> {{salary.times}} Giờ </span>
-              <span *ngIf='salary.unit === datetimeUnit.DAY'>Ngày</span>
+              <span *ngIf='salary.unit === datetimeUnit.DAY'>{{salary.times}} Ngày</span>
               <span *ngIf='salary.unit === datetimeUnit.TIMES'>{{salary.times}} Lần</span>
             </td>
-            <td width='15%' class=' text-center ' style='color: #29CC97'>
+            <td class=' text-center ' style='color: #29CC97'>
                 <span>
-                  {{ salary.price ? ((salary.price)|number:'1.0') + 'đ' : 'Theo lương chuẩn'}}
+                  {{ salary.price ? ((salary.price * salary.times * salary.rate)|number:'1.0') + 'đ' : 'Theo lương chuẩn'}}
                 </span>
               <span *ngIf='salary.allowance'>
-                  + {{salary.allowance.price}}
+                  + {{salary.allowance.price * salary.times}}
                 </span>
             </td>
-            <td width='25%' class=' text-center '>
+            <td class=' text-center '>
               <span>{{salary.note}}</span>
             </td>
-            <th width='10%'>
+            <th>
               <div class='d-flex justify-content-around '>
                 <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
                         (click)='updateSalary(type.OVERTIME, salary,payroll)'>
