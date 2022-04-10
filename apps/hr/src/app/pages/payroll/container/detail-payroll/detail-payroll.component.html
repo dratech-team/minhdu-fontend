@@ -397,6 +397,7 @@
             <th width='15%' class='title text-center'>Ngày</th>
             <th width='9%' class='title text-center'>Hệ số</th>
             <th width='15%' class='title text-center'>Đơn giá</th>
+            <th width='15%' class='title text-center'>Tổng tiền</th>
             <th width='10%' style='color: #1b8eb7' (click)='scanHoliday(payroll.id)'><span
               class='mx-2 pointer'>Quét</span>
               <img class='pointer' style='margin-left: 2px;width: 13px;' src='./assets/icon/search.svg'
@@ -420,7 +421,10 @@
               <span>{{salary.rate}}</span>
             </th>
             <th width='25%' class=' text-center'>
-              {{salary.price| number:'1.0' | notEmpty:'Theo hệ số lương cơ bản'}}
+              {{salary.price | number:'1.0' | notEmpty:'Theo hệ số lương cơ bản'}}
+            </th>
+            <th width='25%' class=' text-center'>
+              {{(salary.price * salary.times) | number:'1.0' | notEmpty:'Theo hệ số lương cơ bản'}}
             </th>
             <th width='10%'>
             </th>
