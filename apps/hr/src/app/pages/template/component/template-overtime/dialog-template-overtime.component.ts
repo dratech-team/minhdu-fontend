@@ -7,14 +7,16 @@ import {Branch, Position} from '@minhdu-fontend/data-models';
 import {DatetimeUnitEnum, EmployeeType} from '@minhdu-fontend/enums';
 import {getAllPosition, PositionActions} from 'libs/orgchart/src/lib/+state/position';
 import {startWith} from 'rxjs/operators';
-import {PositionService} from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
+import {PositionService} from '@minhdu-fontend/orgchart';
 import {BranchService} from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
 import {TemplateOvertimeAction} from '../../+state/template-overtime/template-overtime.action';
 import {ReqOvertime} from '../../+state/template-overtime/template-overtime.interface';
 import * as lodash from 'lodash';
 import {selectTemplateAdded} from '../../+state/template-overtime/template-overtime.selector';
-import {searchAndAddAutocomplete} from '../../../../../../../../libs/utils/orgchart.ultil';
+import {searchAndAddAutocomplete} from '@minhdu-fontend/utils';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {TemplateOverConstant} from "../../constants";
+import {PriceTypeEnum} from "../../enums";
 
 @Component({
   templateUrl: 'dialog-template-overtime.component.html'
@@ -33,6 +35,8 @@ export class DialogTemplateOvertimeComponent implements OnInit {
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   submitted = false;
+  templateOverConstant = TemplateOverConstant
+  priceTypeEnum = PriceTypeEnum
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -54,20 +58,35 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     if (this.data?.template?.positions) {
       this.positionSelected = [...this.data.template.positions];
     }
-    this.formGroup = this.formBuilder.group({
-      title: [this.data?.template?.title, Validators.required],
-      employeeType: [this.data?.template?.employeeType ?
-        this.data?.template?.employeeType
-        : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
-      price: [this.data?.template?.price, Validators.required],
-      unit: [this.data?.template?.unit, Validators.required],
-      rate: [this.data?.template?.rate ? this.data.template.rate : 1, Validators.required],
-      note: [this.data?.template?.note]
-    });
+    if (this.data?.isUpdate) {
+      this.formGroup = this.formBuilder.group({
+        title: [this.data?.template?.title, Validators.required],
+        employeeType: [this.data?.template?.employeeType ?
+          this.data?.template?.employeeType
+          : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
+        price: [this.data?.template?.price],
+        priceType: [this.data?.template?.price ? PriceTypeEnum.PRICE : PriceTypeEnum.NORMAL, Validators.required],
+        unit: [this.data?.template?.unit, Validators.required],
+        rate: [this.data?.template?.rate ? this.data.template.rate : 1, Validators.required],
+        note: [this.data?.template?.note]
+      });
+    } else {
+      this.formGroup = this.formBuilder.group({
+        title: ['', Validators.required],
+        employeeType: [EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
+        price: [''],
+        priceType: [PriceTypeEnum.PRICE, Validators.required],
+        unit: ['', Validators.required],
+        rate: [1, Validators.required],
+        note: ['']
+      });
+    }
+
 
     this.formGroup.get('employeeType')?.valueChanges.subscribe(val => {
       if (val === EmployeeType.EMPLOYEE_SEASONAL) {
         this.formGroup.get('unit')?.patchValue(DatetimeUnitEnum.HOUR);
+        this.formGroup.get('priceType')?.patchValue(PriceTypeEnum.PRICE)
       }
     });
 
@@ -103,20 +122,26 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     if (this.branches.value) {
       return this.message.error('đơn vị phải chọn không được nhập');
     }
-
     const value = this.formGroup.value;
+    if (value.priceType === PriceTypeEnum.PRICE && !value.price) {
+      return this.message.error('Chưa nhập mức tăng ca')
+    }
     const template = {
-        title: value.title,
-        employeeType: value.employeeType,
-        positionIds: this.positionSelected.map(val => val.id),
-        branchIds: this.branchesSelected?.map(val => val.id),
-        price: typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
-        unit: value.unit,
-        note: value.note,
-        rate: value.rate
-    }as ReqOvertime;
+      title: value.title,
+      employeeType: value.employeeType,
+      positionIds: this.positionSelected.map(val => val.id),
+      branchIds: this.branchesSelected?.map(val => val.id),
+      unit: value.unit,
+      note: value.note,
+      rate: value.rate,
+      price: value.priceType === PriceTypeEnum.PRICE ?
+        (typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price) : null,
+    } as ReqOvertime;
     if (this.data?.isUpdate) {
-      this.store.dispatch(TemplateOvertimeAction.updateTemplate({id: this.data.template.id, templateOvertime: template}));
+      this.store.dispatch(TemplateOvertimeAction.updateTemplate({
+        id: this.data.template.id,
+        templateOvertime: template
+      }));
     } else {
       this.store.dispatch(TemplateOvertimeAction.AddTemplate({template: template}));
     }

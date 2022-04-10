@@ -40,15 +40,14 @@
           <div class=' mt-1'>
             <mat-select
               [ngStyle]='{
-              "background":this.formGroup.value.employeeType ===employeeTypeEnum.EMPLOYEE_SEASONAL?"#dddddd":"white",
-               "pointer-events":this.formGroup.value.employeeType ===employeeTypeEnum.EMPLOYEE_SEASONAL ?"none":"auto"
+              "background":formGroup.value.employeeType ===employeeTypeEnum.EMPLOYEE_SEASONAL?"#dddddd":"white",
+               "pointer-events":formGroup.value.employeeType ===employeeTypeEnum.EMPLOYEE_SEASONAL ?"none":"auto"
               }'
               class='form-control col'
               formControlName='unit'
               [ngClass]="{ 'is-invalid': submitted && f.unit.errors?.required }"
             >
-              <mat-option value='DAY'>Ngày</mat-option>
-              <mat-option value='HOUR'>Giờ</mat-option>
+              <mat-option *ngFor="let item of templateOverConstant" [value]="item.value">{{item.name}}</mat-option>
             </mat-select>
             <div *ngIf='submitted && f.unit.errors?.required' class='invalid-feedback'>
               <div>Chưa chọn loại tăng ca</div>
@@ -68,18 +67,18 @@
             </mat-option>
           </mat-autocomplete>
           <div *ngIf="positionSelected.length > 0" class="border p-1 mt-1 " style="height: 120px ; overflow-y: scroll">
-          <mat-chip-list>
-            <mat-chip
-              *ngFor='let position of positionSelected'
-              [selectable]='true'
-              [removable]='true'
-              (removed)='removePosition(position)'>
-              {{position.name}}
-              <button class='btn' matChipRemove *ngIf='true'>
-                <mat-icon style='position: absolute; top:4px ; right: 5px'>cancel</mat-icon>
-              </button>
-            </mat-chip>
-          </mat-chip-list>
+            <mat-chip-list>
+              <mat-chip
+                *ngFor='let position of positionSelected'
+                [selectable]='true'
+                [removable]='true'
+                (removed)='removePosition(position)'>
+                {{position.name}}
+                <button class='btn' matChipRemove *ngIf='true'>
+                  <mat-icon style='position: absolute; top:4px ; right: 5px'>cancel</mat-icon>
+                </button>
+              </mat-chip>
+            </mat-chip-list>
           </div>
           <!-- <div *ngIf="submitted && f.position.errors" class="invalid-feedback">
             <div *ngIf="f.position.errors?.required">Chưa chọn chức vụ</div>
@@ -95,8 +94,9 @@
               {{branch.name}}
             </mat-option>
           </mat-autocomplete>
-          <div class="mt-2" *ngIf="branchesSelected.length > 0" class="border p-1 mt-1 " style="height: 120px ; overflow-y: scroll">
-            <mat-chip-list >
+          <div class="mt-2" *ngIf="branchesSelected.length > 0" class="border p-1 mt-1 "
+               style="height: 120px ; overflow-y: scroll">
+            <mat-chip-list>
               <mat-chip
                 *ngFor="let branch of branchesSelected"
                 [removable]='true'
@@ -115,6 +115,25 @@
             <div *ngIf="f.branch.errors?.required">Chưa chọn đơn vị</div>
           </div> -->
         </div>
+        <div class='main-popup mt-2'>
+          <div class=' main-title mb-1'>
+            <label class='main-title'>Loại đơn giá<span class='star'>*</span></label>
+          </div>
+          <div class=' mt-1'>
+            <nz-radio-group
+              [ngStyle]='{
+              "background":formGroup.value.employeeType ===employeeTypeEnum.EMPLOYEE_SEASONAL?"#dddddd":"white",
+               "pointer-events":formGroup.value.employeeType ===employeeTypeEnum.EMPLOYEE_SEASONAL ?"none":"auto"
+              }'
+              formControlName="priceType">
+              <label nz-radio nzValue="{{priceTypeEnum.PRICE}}">Theo đơn giá</label>
+              <label nz-radio nzValue="{{priceTypeEnum.NORMAL}}">Theo lương chuẩn</label>
+            </nz-radio-group>
+            <div *ngIf='submitted && f.priceType.errors?.required' class='invalid-feedback'>
+              <div>Chưa chọn loại tăng ca</div>
+            </div>
+          </div>
+        </div>
         <div class=' main-popup mt-2' [formGroup]='formGroup'>
           <div><span class='main-title'>Hệ số</span><span class='star'>*</span></div>
           <input class='form-control mt-1' type='number' formControlName='rate'
@@ -123,7 +142,7 @@
             <div>Chưa nhập hệ số</div>
           </div>
         </div>
-        <div class=' main-popup mt-2' [formGroup]='formGroup'>
+        <div class=' main-popup mt-2' [formGroup]='formGroup' *ngIf="formGroup.value.priceType === priceTypeEnum.PRICE">
           <div><span class='main-title'>Mức tăng ca</span><span class='star'>*</span></div>
           <input class='form-control mt-1' type='text' formControlName='price' placeholder='200,000' inputCurrency
                  [ngClass]="{ 'is-invalid': submitted && f.price.errors?.required }">

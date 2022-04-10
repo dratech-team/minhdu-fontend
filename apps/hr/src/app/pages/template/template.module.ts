@@ -35,6 +35,7 @@ import { DetailHoliday } from './container/detail-holiday/detail-holiday';
 import { ContextMenuModule } from 'ngx-contextmenu';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import {NzSelectModule} from "ng-zorro-antd/select";
+import {NzRadioModule} from "ng-zorro-antd/radio";
 
 @NgModule({
     imports: [
@@ -66,7 +67,8 @@ import {NzSelectModule} from "ng-zorro-antd/select";
         SystemModule,
         ContextMenuModule,
         NzMessageModule,
-        NzSelectModule
+        NzSelectModule,
+        NzRadioModule
     ],
   declarations: [
     TemplateOvertimeComponent,
