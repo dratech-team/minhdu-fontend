@@ -23,7 +23,7 @@ export class OvertimeSalaryComponent implements OnInit {
   lastDayInMonth!: string | null;
   salariesSelected: SalaryPayroll[] = [];
   isAllowanceOvertime = false;
-  titleSession =TitleSessionConstant
+  titleSession = TitleSessionConstant
   constructor(
     public datePipe: DatePipe,
     private readonly store: Store<AppState>,
@@ -40,7 +40,6 @@ export class OvertimeSalaryComponent implements OnInit {
       multiple?: {
         salariesSelected: SalaryPayroll[]
       }, },
-
   ) {
   }
 

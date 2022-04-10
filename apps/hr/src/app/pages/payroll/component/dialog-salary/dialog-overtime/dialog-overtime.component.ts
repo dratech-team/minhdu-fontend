@@ -186,7 +186,6 @@ export class DialogOvertimeComponent implements OnInit {
       Object.assign(salary, {
         allowanceDeleted: !!(!this.isAllowanceOvertime && this.data.salary?.allowance)
       });
-      console.log(salary)
       if (this.data?.updateMultiple) {
         Object.assign(salary, {
           salaryIds: this.salariesSelected.map(e => e.salary.id)
