@@ -406,25 +406,25 @@
           <tbody>
           <tr *ngFor="let salary of payroll.salaries | filterTypeSalary:['HOLIDAY']; let i = index "
               style='background: white !important;'>
-            <th width='25%'>
+            <th>
               {{i + 1}}
             </th>
-            <th width='15%' class=' text-center'>
+            <th class=' text-center'>
               {{salary.datetime | date: "dd/MM/yyyy"}}
             </th>
-            <th width='10%' class=' text-center'>
+            <th class=' text-center'>
               {{salary.times}} ngày
             </th>
-            <th width='10%' class=' text-center'>
+            <th class=' text-center'>
               <span>{{salary.rate}}</span>
             </th>
-            <th width='25%' class=' text-center'>
+            <th class=' text-center'>
               {{salary.price | number:'1.0' | notEmpty:'Theo hệ số lương cơ bản'}}
             </th>
-            <th width='25%' class=' text-center'>
+            <th class=' text-center'>
               {{(salary.price * salary.times) | number:'1.0' | notEmpty:'Theo hệ số lương cơ bản'}}
             </th>
-            <th width='10%'>
+            <th>
             </th>
           </tr>
           </tbody>
