@@ -1,7 +1,7 @@
 import {AfterContentChecked, ChangeDetectorRef, Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {DatetimeUnitEnum, EmployeeType, partialDay, RecipeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, EmployeeType, RecipeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../../../reducers';
 import {DatePipe} from '@angular/common';
@@ -16,13 +16,14 @@ import {startWith} from 'rxjs/operators';
 import {TemplateOvertime} from '../../../../template/+state/template-overtime/template-overtime.interface';
 import {getAllPosition, PositionActions} from '../../../../../../../../../libs/orgchart/src/lib/+state/position';
 import {MatStepper} from '@angular/material/stepper';
-import {PartialDayEnum, Position} from '@minhdu-fontend/data-models';
+import {Position} from '@minhdu-fontend/data-models';
 import {searchAutocomplete} from '../../../../../../../../../libs/utils/orgchart.ultil';
 import {SalaryService} from '../../../service/salary.service';
 import {getFirstDayInMonth, getLastDayInMonth} from '../../../../../../../../../libs/utils/daytime.until';
 import * as lodash from 'lodash';
 import {Payroll} from "../../../+state/payroll/payroll.interface";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {values} from "lodash";
 
 @Component({
   templateUrl: 'dialog-overtime-multiple.component.html'
@@ -63,15 +64,7 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
   ) {
   }
 
-  //Dummy data select các buổi trong ngày
-  titleSession = [
-    {title: 'buổi sáng', type: PartialDayEnum.MORNING, times: partialDay.PARTIAL},
-    {title: 'buổi chiều', type: PartialDayEnum.AFTERNOON, times: partialDay.PARTIAL},
-    {title: 'buổi tối', type: PartialDayEnum.NIGHT, times: partialDay.PARTIAL},
-    {title: 'nguyên ngày', type: PartialDayEnum.ALL_DAY, times: partialDay.ALL_DAY}
-  ];
   compareFN = (o1: any, o2: any) => (typeof o1 === 'string' ? o1 == o2.title : o1.id === o2.id);
-  comparePartialFN = (o1: any, o2: any) => (typeof o1 === 'string' ? o1 == o2.type : o1 === o2);
 
   ngOnInit(): void {
     this.store.dispatch(PositionActions.loadPosition())
@@ -83,7 +76,7 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
       if (this.data.salary?.allowance) {
         this.isAllowanceOvertime = true
       }
-      if( !this.data.salary?.unit) {
+      if (!this.data.salary?.unit) {
         this.recipeType = RecipeType.CT4
       }
       this.formGroup = this.formBuilder.group({
@@ -93,15 +86,12 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
             this.data.salary.datetime, 'yyyy-MM-dd'
           )],
         month: [!this.data.salary.unit ?
-          this.datePipe.transform( this.data.salary.datetime, 'yyyy-MM'):undefined ],
+          this.datePipe.transform(this.data.salary.datetime, 'yyyy-MM') : undefined],
         price: [this.data.salary.price],
-        unit: [this.data.salary.unit ? this.data.salary.unit : DatetimeUnitEnum.OPTION],
+        unit: [this.data.salary.unit],
         note: [''],
         rate: [this.data.salary?.rate],
-        partial: [this.data.salary?.partial ? this.titleSession.find(title => title.type === this.data.salary.partial) : ''],
-        times: [!this.data.salary?.unit && this.data.salary.partial !== PartialDayEnum.ALL_DAY ?
-          this.data.salary.times * 2
-          : this.data.salary.times],
+        times: [this.data.salary.times],
         days: [1],
         priceAllowance: [this.data.salary?.allowance?.price],
         titleAllowance: [this.data.salary?.allowance?.title]
@@ -117,7 +107,6 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
         price: [''],
         unit: [''],
         rate: [''],
-        partial: [''],
         priceAllowance: [],
         titleAllowance: []
       });
@@ -128,30 +117,16 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
       if (!val) {
         this.positionOfTempOver = [];
       }
-      if(val.unit){
-        this.formGroup.get('unit')?.setValue(val.unit,{emitEvent: false})
+      if (val.unit) {
+        this.formGroup.get('unit')?.setValue(val.unit, {emitEvent: false})
       }
       this.formGroup.get('rate')?.setValue(val.rate)
       this.formGroup.get('price')?.setValue(val.price)
       this.positionOfTempOver = val.positions ? val.positions : [];
-      const param = {
-        positionIds: this.positionsSelected.map(val => val.id),
-      }
-      if (val.unit) {
-        Object.assign(param, {unit: val.unit})
-      }
-      this.store.dispatch(
-        TemplateOvertimeAction.loadALlTemplate(param)
-      );
     })
 
     this.formGroup.get('unit')?.valueChanges.subscribe(val => {
-      if (val !== DatetimeUnitEnum.OPTION) {
-        this.formGroup.get('title')?.patchValue('');
-        this.recipeType = undefined;
-      } else {
-        this.recipeType = RecipeType.CT4;
-      }
+      this.formGroup.get('title')?.patchValue('');
       this.loadTemplateOvertime()
     })
 
@@ -248,7 +223,7 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
       });
     }
     const salary = {
-      title:  value.title?.title || this.data?.salary?.title,
+      title: value.title?.title || this.data?.salary?.title,
       price: value.price,
       type: SalaryTypeEnum.OVERTIME,
       rate: value.rate || this.data?.salary?.rate,
@@ -270,21 +245,6 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
                 : value.priceAllowance
           }
       });
-    }
-    if (value.unit === DatetimeUnitEnum.OPTION) {
-      if(!value.partial){
-        return this.message.warning('Chưa chọn buổi tăng ca')
-      }
-      if(!value.month){
-        return this.message.warning('Chưa chọn tháng')
-      }
-      Object.assign(salary, {
-        title: 'Tăng ca ' +  value.partial?.title,
-        times: value.partial.times * value.times,
-        partial: value.partial.type,
-        datetime: new Date(value.month)
-      });
-      delete salary.unit;
     }
     if (this.data?.isUpdate) {
       Object.assign(salary, {salaryIds: this.data.salaryIds});
@@ -322,10 +282,10 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
 
   loadTemplateOvertime() {
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate(
-      this.formGroup.value.unit && this.formGroup.value.unit !== DatetimeUnitEnum.OPTION ?
+      this.formGroup.value?.unit ?
         {
+          unit: this.formGroup.value.unit,
           positionIds: this.positionsSelected.map(value => value.id),
-          unit: this.formGroup.value.unit
         } : {
           positionIds: this.positionsSelected.map(value => value.id),
         }

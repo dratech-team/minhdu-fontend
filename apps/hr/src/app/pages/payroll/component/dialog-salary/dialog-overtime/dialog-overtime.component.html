@@ -119,10 +119,10 @@
                       <div class='star'>*</div>
                     </div>
                     <div class=' mb-3' [formGroup]='formGroup'>
-                      <div  class="form-control px-1" style="pointer-events: none; background: #eee">
+                      <div class="form-control px-1" style="pointer-events: none; background: #eee">
                         {{formGroup.value.price ? (formGroup.value.price  |number:'1.0-0') : 'Theo lương chuẩn'}}
                       </div>
-                      </div>
+                    </div>
                   </div>
                 </div>
                 <div *ngIf='formGroup.value.unit === datetimeUnitEnum.HOUR'>

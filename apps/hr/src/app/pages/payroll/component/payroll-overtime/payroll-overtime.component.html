@@ -260,7 +260,7 @@
                (click)='detailPayroll(payrollOvertime.payrollId)'
                [ngStyle]='{"background": selectSalary(item) ? "#ffcccc" : ""}'
           >
-            {{item?.times}}{{item.unit === "HOUR" ? "Giờ" : "Ngày"}}
+            {{item?.times}} {{item.unit === "HOUR" ? "Giờ" : item.unit === 'DAY' ?"Ngày" : 'Lần'}}
           </div>
         </th>
         <th class='pointer'>
@@ -272,7 +272,7 @@
                [ngStyle]='{"background": selectSalary(item) ? "#ffcccc" : ""}'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='detailPayroll(payrollOvertime.payrollId)'>
-            {{item?.price ? (item.price|number:'1.0-0') : 0}}VND
+            {{item?.price ? ((item.price|number:'1.0-0') + 'VND') : 'Theo lương chuẩn'}}
             {{ item.allowance ? '+ ' + (item.allowance.price |number:'1.0-0') + 'VND' : '' }}
           </div>
         </th>
