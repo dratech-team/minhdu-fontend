@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ConvertBooleanFrontEnd, DatetimeUnitEnum, partialDay, RecipeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {select, Store} from '@ngrx/store';

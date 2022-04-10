@@ -37,6 +37,7 @@ import {RestorePayrollComponent} from "../../component/restore-payroll/restore-p
 import {NzMessageService} from "ng-zorro-antd/message";
 import {Sort} from "@angular/material/sort";
 import {map} from "rxjs/operators";
+import {OvertimeSalaryComponent} from "../../../../shared/components/overtime-salary/overtime-salary.component";
 
 
 @Component({
@@ -124,7 +125,12 @@ export class DetailPayrollComponent implements OnInit {
         break;
       }
       case SalaryTypeEnum.OVERTIME: {
-        this.dialog.open(DialogOvertimeComponent, config);
+        Object.assign(config, {
+          data:{
+            createdAt: config.data.payroll.createdAt
+          }
+        })
+        this.dialog.open(OvertimeSalaryComponent, config);
         break;
       }
       case SalaryTypeEnum.ABSENT: {
