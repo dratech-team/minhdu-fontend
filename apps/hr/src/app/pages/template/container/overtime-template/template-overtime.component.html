@@ -51,8 +51,7 @@
           <th style="width: 150px">
             <div class='border-top text-center'>Đơn vị tính</div>
             <select class='select border-top' style='width: 100%' matNativeControl required formControlName='unit'>
-              <option value='{{unit.DAY}}'>Ngày</option>
-              <option value='{{unit.HOUR}}'>Giờ</option>
+              <option *ngFor="let item of templateOverConstant" [value]="item.value">{{item.name}}</option>
               <option value="''">Tất cả</option>
             </select>
           </th>
@@ -125,8 +124,7 @@
             <th
               class='pointer'
               (click)='templateOvertime(template,true)'>
-              {{template.price | number: '1.0-0'}}
-              VND
+              {{template.price ?(( template.price | number: '1.0-0')+' vnd'): 'Theo lương chuẩn'}}
             </th>
             <th
               class='pointer'
@@ -134,21 +132,8 @@
               {{template.employeeType === EmployeeType.EMPLOYEE_SEASONAL ? "Nhân viên thời vụ" : "Nhân viên chính thức"}}
             </th>
             <th
-              class='pointer'
-              *ngIf='template.unit === unit.DAY'
-              (click)='templateOvertime(template,true)'>
-              Ngày
-            </th>
-            <th
-              class='pointer'
-              *ngIf='template.unit === unit.HOUR || template.unit === unit.MINUTE'
-              (click)='templateOvertime(template,true)'>
-              Giờ
-            </th>
-            <th
-              class='pointer' *ngIf='template.unit === unit.MONTH'
-              (click)='templateOvertime(template,true)'>
-              Tháng
+              class='pointer'>
+              {{template.unit|transform:templateOverConstant}}
             </th>
             <th
               class='pointer '

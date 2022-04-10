@@ -20,6 +20,8 @@ import {PayrollAction} from '../../../payroll/+state/payroll/payroll.action';
 import {DialogTemplateOvertimeComponent} from '../../component/template-overtime/dialog-template-overtime.component';
 import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {TemplateOverConstant} from "../../constants";
+import {PriceTypeEnum} from "../../enums";
 
 @Component({
   templateUrl: 'template-overtime.component.html'
@@ -42,10 +44,11 @@ export class TemplateOvertimeComponent implements OnInit {
     position: new FormControl([]),
     employeeType: new FormControl('')
   });
+  templateOverConstant = TemplateOverConstant
+  priceTypeEnum = PriceTypeEnum
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
-  itemContextMenu = ItemContextMenu
-  ;
+  itemContextMenu = ItemContextMenu;
 
   constructor(
     private readonly dialog: MatDialog,
