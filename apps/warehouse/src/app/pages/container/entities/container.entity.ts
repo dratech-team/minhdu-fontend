@@ -1,8 +1,8 @@
 import {BaseContainerEntity} from '../bases';
-import {StockEntity} from "../../stock/entities";
+import {IoiReceiptEntity} from "../../ioi-receipt/entities";
 import {ProductEntity} from "../../product/entities";
 
 export interface ContainerEntity extends BaseContainerEntity {
-  readonly stocks: StockEntity[];
+  readonly stocks: IoiReceiptEntity[];
   readonly productId: ProductEntity["id"]
 }

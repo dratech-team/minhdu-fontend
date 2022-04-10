@@ -34,7 +34,7 @@ export const MenuWarehouseConstant: menuWarehouse[] = [
   {
     name: 'Phiếu xuất nhập kho',
     icon: '/assets/icon/menu/box.svg',
-    state: MenuWarehouseEum.STOCK,
+    state: MenuWarehouseEum.IOI_RECEIPT,
     href: 'phieu-xuat-nhap-kho'
   },
   {

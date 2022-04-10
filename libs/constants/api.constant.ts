@@ -87,7 +87,7 @@ export const Api = {
     PRODUCT: 'product',
     SUPPLIER: 'supplier',
     CONSIGNMENT: 'consignment',
-    STOCK: 'stock',
+    IOI_RECEIPT: 'ioi-receipt',
     HISTORY: 'category-history'
   },
   BREED: {
