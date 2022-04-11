@@ -3,14 +3,23 @@
     <div>
       {{selectedPayroll|transform:payrollConstant}}
     </div>
-    <div class="d-flex justify-content-center align-items-center ml-2" >
-      <nz-range-picker style="width: 250px" *ngIf="selectedPayroll === filterTypeEnum.OVERTIME ||
-                       selectedPayroll === filterTypeEnum.ABSENT else formCreated"
-                       [nzAllowClear]="false" nzFormat="dd-MM-yyyy" nzMode="date"
-                       [formControl]="formRangeDay"></nz-range-picker>
+    <div class='d-flex justify-content-center align-items-center ml-2'>
+      <nz-range-picker
+        style='width: 250px'
+        *ngIf='selectedPayroll === filterTypeEnum.OVERTIME || selectedPayroll === filterTypeEnum.ABSENT else formCreated'
+        [nzAllowClear]='false' nzFormat='dd-MM-yyyy' nzMode='date'
+      ></nz-range-picker>
       <ng-template #formCreated>
         <div>
-          <span>tháng</span>  <nz-date-picker class="ml-2" [nzAllowClear]="false" nzMode="month" nzFormat="MM-yyyy" [formControl]="formCreatedAt" ></nz-date-picker>
+          <span>tháng</span>
+          <nz-date-picker
+            class='ml-2'
+            [nzAllowClear]='false'
+            nzMode='month'
+            nzFormat='MM-yyyy'
+            [formControl]='formCreatedAt'
+            (ngModelChange)='onChange($event)'
+          ></nz-date-picker>
         </div>
       </ng-template>
 
@@ -140,27 +149,27 @@
                 <div class='border-top d-flex justify-content-center align-items-center'>Ngày công chuẩn</div>
                 <input class='form-control text-center ' type='number' disabled>
               </th>
-<!--              <th>-->
-<!--                <div class='border-top d-flex justify-content-center align-items-center'>Ngày đi làm trừ lễ tết-->
-<!--                </div>-->
-<!--                <input class='form-control text-center ' type='number' disabled>-->
-<!--              </th>-->
-<!--              <th>-->
-<!--                <div class='border-top d-flex justify-content-center align-items-center'>Ngày lễ đi làm</div>-->
-<!--                <input class='form-control text-center ' type='number' disabled>-->
-<!--              </th>-->
-<!--              <th>-->
-<!--                <div class='border-top d-flex justify-content-center align-items-center'>Ngày lễ không đi làm</div>-->
-<!--                <input class='form-control text-center ' type='number' disabled>-->
-<!--              </th>-->
-<!--              <th>-->
-<!--                <div class='border-top d-flex justify-content-center align-items-center'>Ngày công làm thêm</div>-->
-<!--                <input class='form-control text-center ' type='number' disabled>-->
-<!--              </th>-->
-<!--              <th>-->
-<!--                <div class='border-top d-flex justify-content-center align-items-center'>Vắng</div>-->
-<!--                <input class='form-control text-center ' type='number' disabled>-->
-<!--              </th>-->
+              <!--              <th>-->
+              <!--                <div class='border-top d-flex justify-content-center align-items-center'>Ngày đi làm trừ lễ tết-->
+              <!--                </div>-->
+              <!--                <input class='form-control text-center ' type='number' disabled>-->
+              <!--              </th>-->
+              <!--              <th>-->
+              <!--                <div class='border-top d-flex justify-content-center align-items-center'>Ngày lễ đi làm</div>-->
+              <!--                <input class='form-control text-center ' type='number' disabled>-->
+              <!--              </th>-->
+              <!--              <th>-->
+              <!--                <div class='border-top d-flex justify-content-center align-items-center'>Ngày lễ không đi làm</div>-->
+              <!--                <input class='form-control text-center ' type='number' disabled>-->
+              <!--              </th>-->
+              <!--              <th>-->
+              <!--                <div class='border-top d-flex justify-content-center align-items-center'>Ngày công làm thêm</div>-->
+              <!--                <input class='form-control text-center ' type='number' disabled>-->
+              <!--              </th>-->
+              <!--              <th>-->
+              <!--                <div class='border-top d-flex justify-content-center align-items-center'>Vắng</div>-->
+              <!--                <input class='form-control text-center ' type='number' disabled>-->
+              <!--              </th>-->
               <th>
                 <div class='border-top d-flex justify-content-center align-items-center'>Tổng ngày công thực nhận
                 </div>
@@ -224,7 +233,7 @@
             </thead>
             <tbody *ngIf='(payroll$|async) as payrolls'>
             <tr *ngIf='!(loaded$ | async)  ; else payroll'>
-              <th colSpan='100' style="z-index: -1!important;">
+              <th colSpan='100' style='z-index: -1!important;'>
                 <ngx-skeleton-loader count='10' appearance='line'>
                 </ngx-skeleton-loader>
               </th>
@@ -271,33 +280,33 @@
                     {{payroll.workday || 'Đang cập nhật'}}
                   </div>
                 </th>
-<!--                <th class='pointer' (click)='updatePayroll(payroll)'>-->
-<!--                  <div>-->
-<!--                    {{payroll.payslip?.workdayNotInHoliday ? payroll.payslip?.workdayNotInHoliday : 'Đang cập nhật' }}-->
-<!--                  </div>-->
-<!--                </th>-->
-<!--                <th class='pointer' (click)='updatePayroll(payroll)'>-->
-<!--                  <div>-->
-<!--                    {{payroll.payslip?.worksInHoliday ? payroll.payslip?.worksInHoliday?.length : 'Đang cập nhật' }}-->
-<!--                  </div>-->
-<!--                </th>-->
-<!--                <th class='pointer' (click)='updatePayroll(payroll)'>-->
-<!--                  <div>-->
-<!--                    {{payroll.payslip?.worksNotInHoliday ? payroll.payslip?.worksNotInHoliday?.length : 'Đang cập nhật'}}-->
-<!--                  </div>-->
-<!--                </th>-->
-<!--                <th class='pointer' (click)='updatePayroll(payroll)'>-->
-<!--                  <div>-->
-<!--                    {{payroll.payslip?.workdayNotInHoliday &&-->
-<!--                  payroll.payslip?.workday-->
-<!--                    ? payroll.payslip.workdayNotInHoliday - payroll.payslip.workday : 'Đang cập nhật' }}-->
-<!--                  </div>-->
-<!--                </th>-->
-<!--                <th class='pointer' (click)='updatePayroll(payroll)'>-->
-<!--                  <div>-->
-<!--                    {{payroll.payslip?.worksNotInHoliday ? payroll.payslip?.worksNotInHoliday?.length : 'Đang cập nhật'}}-->
-<!--                  </div>-->
-<!--                </th>-->
+                <!--                <th class='pointer' (click)='updatePayroll(payroll)'>-->
+                <!--                  <div>-->
+                <!--                    {{payroll.payslip?.workdayNotInHoliday ? payroll.payslip?.workdayNotInHoliday : 'Đang cập nhật' }}-->
+                <!--                  </div>-->
+                <!--                </th>-->
+                <!--                <th class='pointer' (click)='updatePayroll(payroll)'>-->
+                <!--                  <div>-->
+                <!--                    {{payroll.payslip?.worksInHoliday ? payroll.payslip?.worksInHoliday?.length : 'Đang cập nhật' }}-->
+                <!--                  </div>-->
+                <!--                </th>-->
+                <!--                <th class='pointer' (click)='updatePayroll(payroll)'>-->
+                <!--                  <div>-->
+                <!--                    {{payroll.payslip?.worksNotInHoliday ? payroll.payslip?.worksNotInHoliday?.length : 'Đang cập nhật'}}-->
+                <!--                  </div>-->
+                <!--                </th>-->
+                <!--                <th class='pointer' (click)='updatePayroll(payroll)'>-->
+                <!--                  <div>-->
+                <!--                    {{payroll.payslip?.workdayNotInHoliday &&-->
+                <!--                  payroll.payslip?.workday-->
+                <!--                    ? payroll.payslip.workdayNotInHoliday - payroll.payslip.workday : 'Đang cập nhật' }}-->
+                <!--                  </div>-->
+                <!--                </th>-->
+                <!--                <th class='pointer' (click)='updatePayroll(payroll)'>-->
+                <!--                  <div>-->
+                <!--                    {{payroll.payslip?.worksNotInHoliday ? payroll.payslip?.worksNotInHoliday?.length : 'Đang cập nhật'}}-->
+                <!--                  </div>-->
+                <!--                </th>-->
                 <th class='pointer' (click)='updatePayroll(payroll)'>
                   <div>
                     {{payroll.payslip?.totalWorkday ? payroll.payslip?.totalWorkday : 'Đang cập nhật' }}
@@ -384,7 +393,7 @@
 
     <div *ngIf='selectedPayroll === filterTypeEnum.OVERTIME'>
       <minhdu-fontend-payroll-overtime
-        [eventSelectRangeDay]="pickRangeDayOvertime"
+        [eventSelectRangeDay]='pickRangeDayOvertime'
         [overtimeTitle]='overtimeTitle'
         [eventSelectIsLeave]='selectIsLeaveOvertime'
         [eventSearchBranch]='searchBranchOvertime'
@@ -407,7 +416,7 @@
     </div>
     <div *ngIf='selectedPayroll === filterTypeEnum.BASIC '>
       <minhdu-fontend-payroll-basic
-        [eventSelectRangeDay]="pickRangeDayBasic"
+        [eventSelectRangeDay]='pickRangeDayBasic'
         [eventSelectIsLeave]='selectIsLeaveBasic'
         [eventSearchBranch]='searchBranchBasic'
         [eventExportBasic]='eventExportBasic'
@@ -416,7 +425,7 @@
 
     <div *ngIf='selectedPayroll === filterTypeEnum.STAY '>
       <app-payroll-stay
-        [eventSelectRangeDay]="pickRangeDayStay"
+        [eventSelectRangeDay]='pickRangeDayStay'
         [eventExportStay]='eventExportStay'
         [eventSelectIsLeave]='selectIsLeaveStay'
         [eventSearchBranch]='searchBranchStay'>
@@ -425,7 +434,7 @@
     </div>
     <div *ngIf='selectedPayroll === filterTypeEnum.ALLOWANCE '>
       <app-payroll-allowance
-        [eventSelectRangeDay]="pickRangeDayAllowance"
+        [eventSelectRangeDay]='pickRangeDayAllowance'
         [allowanceTitle]='allowanceTitle'
         [eventSelectIsLeave]='selectIsLeaveAllowance'
         [eventAddAllowance]='eventAddAllowance'
@@ -434,7 +443,7 @@
     </div>
     <div *ngIf='selectedPayroll === filterTypeEnum.ABSENT '>
       <app-payroll-absent
-        [eventSelectRangeDay]="pickRangeDayAbsent"
+        [eventSelectRangeDay]='pickRangeDayAbsent'
         [absentTitle]='absentTitle'
         [eventAddAbsent]='eventAddAbsent'
         [eventSearchBranch]='searchBranchAbsent'
@@ -450,7 +459,7 @@
     (onUpdate)='updatePayroll($event)'
     (onRestore)='restorePayroll($event)'
     (onHisPayroll)='historyPayroll($event)'
-    (onPrint)="confirmPayroll($event)"
+    (onPrint)='confirmPayroll($event)'
   >
   </app-mouse-right>
 </div>

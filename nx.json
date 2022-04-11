@@ -68,6 +68,13 @@
     },
     "dra-effects": {
       "tags": []
+    },
+    "farm": {
+      "tags": []
+    },
+    "farm-e2e": {
+      "tags": [],
+      "implicitDependencies": ["farm"]
     }
   }
 }
