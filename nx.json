@@ -75,6 +75,9 @@
     "farm-e2e": {
       "tags": [],
       "implicitDependencies": ["farm"]
+    },
+    "orgchart-v2": {
+      "tags": []
     }
   }
 }

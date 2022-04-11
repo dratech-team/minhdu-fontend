@@ -33,7 +33,8 @@
       "@minhdu-fontend/utils": ["libs/utils/index.ts"],
       "@minhdu-fontend/base-entity": ["libs/entities/index.ts"],
       "@minhdu-fontend/base-dto": ["libs/dto/index.ts"],
-      "@minhdu-fontend/dra-effects": ["libs/dra-effects/src/index.ts"]
+      "@minhdu-fontend/dra-effects": ["libs/dra-effects/src/index.ts"],
+      "@minhdu-fontend/orgchart-v2": ["libs/orgchart-v2/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
