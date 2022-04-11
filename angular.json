@@ -51,7 +51,10 @@
             "polyfills": "apps/hr/src/polyfills.ts",
             "tsConfig": "apps/hr/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["apps/hr/src/favicon.ico", "apps/hr/src/assets"],
+            "assets": [
+              "apps/hr/src/favicon.ico",
+              "apps/hr/src/assets"
+            ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "apps/hr/src/scss/style.scss"
@@ -105,7 +108,10 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/hr/src/**/*.ts", "apps/hr/src/**/*.html"]
+            "lintFilePatterns": [
+              "apps/hr/src/**/*.ts",
+              "apps/hr/src/**/*.html"
+            ]
           }
         },
         "test": {
@@ -204,13 +210,18 @@
             "polyfills": "apps/sell/src/polyfills.ts",
             "tsConfig": "apps/sell/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["apps/sell/src/favicon.ico", "apps/sell/src/assets"],
+            "assets": [
+              "apps/sell/src/favicon.ico",
+              "apps/sell/src/assets"
+            ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "apps/sell/src/styles.scss"
             ],
             "optimization": false,
-            "scripts": ["node_modules/apexcharts/dist/apexcharts.min.js"]
+            "scripts": [
+              "node_modules/apexcharts/dist/apexcharts.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -266,7 +277,9 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/sell"],
+          "outputs": [
+            "coverage/apps/sell"
+          ],
           "options": {
             "jestConfig": "apps/sell/jest.config.js",
             "passWithNoTests": true
@@ -282,7 +295,9 @@
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/employee"],
+          "outputs": [
+            "coverage/libs/employee"
+          ],
           "options": {
             "jestConfig": "libs/employee/jest.config.js",
             "passWithNoTests": true
@@ -307,7 +322,9 @@
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/location"],
+          "outputs": [
+            "coverage/libs/location"
+          ],
           "options": {
             "jestConfig": "libs/location/jest.config.js",
             "passWithNoTests": true
@@ -332,7 +349,9 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/warehouse",
             "index": "apps/warehouse/src/index.html",
@@ -416,7 +435,9 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/warehouse"],
+          "outputs": [
+            "coverage/apps/warehouse"
+          ],
           "options": {
             "jestConfig": "apps/warehouse/jest.config.js",
             "passWithNoTests": true
@@ -432,7 +453,9 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/admin",
             "index": "apps/admin/src/index.html",
@@ -440,7 +463,10 @@
             "polyfills": "apps/admin/src/polyfills.ts",
             "tsConfig": "apps/admin/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["apps/admin/src/favicon.ico", "apps/admin/src/assets"],
+            "assets": [
+              "apps/admin/src/favicon.ico",
+              "apps/admin/src/assets"
+            ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "apps/admin/src/styles.scss"
@@ -513,7 +539,9 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/admin"],
+          "outputs": [
+            "coverage/apps/admin"
+          ],
           "options": {
             "jestConfig": "apps/admin/jest.config.js",
             "passWithNoTests": true
@@ -529,7 +557,9 @@
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/system-history"],
+          "outputs": [
+            "coverage/libs/system-history"
+          ],
           "options": {
             "jestConfig": "libs/system-history/jest.config.js",
             "passWithNoTests": true
@@ -554,7 +584,9 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/breed",
             "index": "apps/breed/src/index.html",
@@ -562,7 +594,10 @@
             "polyfills": "apps/breed/src/polyfills.ts",
             "tsConfig": "apps/breed/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["apps/breed/src/favicon.ico", "apps/breed/src/assets"],
+            "assets": [
+              "apps/breed/src/favicon.ico",
+              "apps/breed/src/assets"
+            ],
             "styles": [
               "apps/breed/src/styles.scss",
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
@@ -631,7 +666,9 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/breed"],
+          "outputs": [
+            "coverage/apps/breed"
+          ],
           "options": {
             "jestConfig": "apps/breed/jest.config.js",
             "passWithNoTests": true
@@ -660,7 +697,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/breed-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "apps/breed-e2e/**/*.{js,ts}"
+            ]
           }
         }
       }
@@ -673,7 +712,9 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/hrv2",
             "index": "apps/hrv2/src/index.html",
@@ -681,8 +722,14 @@
             "polyfills": "apps/hrv2/src/polyfills.ts",
             "tsConfig": "apps/hrv2/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["apps/hrv2/src/favicon.ico", "apps/hrv2/src/assets"],
-            "styles": ["apps/hrv2/src/styles.scss"],
+            "assets": [
+              "apps/hrv2/src/favicon.ico",
+              "apps/hrv2/src/assets"
+            ],
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "apps/hrv2/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -747,7 +794,9 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/hrv2"],
+          "outputs": [
+            "coverage/apps/hrv2"
+          ],
           "options": {
             "jestConfig": "apps/hrv2/jest.config.js",
             "passWithNoTests": true
@@ -776,7 +825,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/hrv2-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "apps/hrv2-e2e/**/*.{js,ts}"
+            ]
           }
         }
       }
@@ -789,7 +840,9 @@
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/dra-effects"],
+          "outputs": [
+            "coverage/libs/dra-effects"
+          ],
           "options": {
             "jestConfig": "libs/dra-effects/jest.config.js",
             "passWithNoTests": true
@@ -814,7 +867,9 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/farm",
             "index": "apps/farm/src/index.html",
@@ -822,8 +877,13 @@
             "polyfills": "apps/farm/src/polyfills.ts",
             "tsConfig": "apps/farm/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["apps/farm/src/favicon.ico", "apps/farm/src/assets"],
-            "styles": ["apps/farm/src/styles.scss"],
+            "assets": [
+              "apps/farm/src/favicon.ico",
+              "apps/farm/src/assets"
+            ],
+            "styles": [
+              "apps/farm/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -888,7 +948,9 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/farm"],
+          "outputs": [
+            "coverage/apps/farm"
+          ],
           "options": {
             "jestConfig": "apps/farm/jest.config.js",
             "passWithNoTests": true
@@ -917,7 +979,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/farm-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "apps/farm-e2e/**/*.{js,ts}"
+            ]
           }
         }
       }

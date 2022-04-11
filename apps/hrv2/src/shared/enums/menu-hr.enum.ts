@@ -1,0 +1,9 @@
+export enum  MenuHrEnum {
+  DASHBOARD = 'DASHBOARD',
+  EMPLOYEE = 'EMPLOYEE',
+  PAYROLL = 'PAYROLL',
+  TEMPLATE = 'TEMPLATE',
+  SYSTEM = 'SYSTEM',
+  RANK = 'RANK',
+  ORGCHART = 'ORGCHART',
+}
