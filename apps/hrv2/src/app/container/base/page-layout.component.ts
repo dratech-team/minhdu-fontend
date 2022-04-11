@@ -12,7 +12,7 @@ import {AppQuery} from "../../state/app.query";
 export class PageLayoutComponent implements OnInit {
   role = localStorage.getItem('role');
   roleEnum = Role;
-  menuWarehouse = MenuHrConstant
+  menuHrConstants = MenuHrConstant
   appName$ = this.appQuery.select(state => state.appName)
   routerActive$ = this.appQuery.select(state => state.active)
 

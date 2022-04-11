@@ -9,24 +9,21 @@
         </div>
       </div>
       <div class=' col-md-5 col-xm-12   d-flex justify-content-end'>
-        <button class="mr-2">
+        <button class="mr-2" nz-button nzType="primary">
           Thiết lập
         </button>
       </div>
     </div>
   </div>
   <div class=' mt-2 ml-2 row '>
-    <div>
-
-    </div>
-    <div class='mr-3 position-relative' *ngFor='let item of menuWarehouse'
+    <div class='mr-3 position-relative' *ngFor='let item of menuHrConstants'
          routerLinkActive='active'>
       <div class="pointer" (click)="onUpdateStateAppName(item.name,item.href)">
         <img class='m-1' src='{{item.icon}}' alt='{{item.state}}'>{{item.name}}
       </div>
       <div *ngIf="(routerActive$|async) === item.href && item.children"
            class="submenu d-flex position-absolute ml-2 animate-submenu"
-           style="top:30px; width: 300%">
+           style="top:30px; width: 350%">
         <div class="pointer"
              style="margin-right:10px; font-weight: 500; font-size: 14px"
              *ngFor="let subMenu of item.children"
