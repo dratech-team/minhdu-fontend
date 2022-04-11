@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {MatDialog} from '@angular/material/dialog';
 import {HolidayAction} from '../../+state/holiday/holiday.action';
-import {AddHolidayComponent} from '../../component/add-holiday/add-holiday.component';
+import {DialogHolidayComponent} from '../../component/dialog-holiday/dialog-holiday.component';
 import {DialogDeleteComponent} from '@minhdu-fontend/components';
 import {AppState} from 'apps/hr/src/app/reducers';
 import {
@@ -80,7 +80,7 @@ export class HolidayComponent implements OnInit {
   }
 
   Holiday(holiday?: any) {
-    this.dialog.open(AddHolidayComponent, {
+    this.dialog.open(DialogHolidayComponent, {
       width: '35%',
       data: {holiday, title: 'Thêm ngày lễ'},
       panelClass: 'ccc',
@@ -89,7 +89,7 @@ export class HolidayComponent implements OnInit {
   }
 
   updateHoliday($event?: any) {
-     this.dialog.open(AddHolidayComponent, {
+     this.dialog.open(DialogHolidayComponent, {
       width: '35%',
       data: {holiday: $event, upDateDetail: false, isUpdate: true, title: 'Sửa ngày lễ'},
       panelClass: 'ccc',
