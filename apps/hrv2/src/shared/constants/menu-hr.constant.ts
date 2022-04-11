@@ -33,7 +33,7 @@ export const MenuHrConstant: MenuHrConstant[] = [
   },
   {
     name: 'Bảng mẫu',
-    icon: '/assets/icons/menu/diagram-3-fill.svg',
+    icon: '/assets/icons/menu/templates.png',
     state: MenuHrEnum.TEMPLATE,
     href: 'bang-mau',
     children: [
