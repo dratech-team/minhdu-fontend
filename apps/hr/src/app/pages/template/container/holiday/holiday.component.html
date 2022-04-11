@@ -85,9 +85,11 @@
             </th>
             <th class=' pointer p-1' (click)='detailHoliday(holiday.id)'>
               <mat-chip-list>
-                <mat-chip (click)='detailHoliday(holiday.id,position)'
-                          [style]='{"background": i%2  === 0? "#dddddd":"white"}'
-                          *ngFor='let position of holiday.positions'>
+                <mat-chip
+                  (click)='detailHoliday(holiday.id, position)'
+                  [style]='{"background": formGroup.get("position")?.value === position.name ? "red" : i % 2  === 0 ? "#dddddd":"white"}'
+                  *ngFor='let position of holiday.positions'
+                >
                   {{position.name}}
                 </mat-chip>
               </mat-chip-list>
