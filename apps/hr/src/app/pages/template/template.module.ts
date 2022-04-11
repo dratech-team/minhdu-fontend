@@ -25,7 +25,7 @@ import { TemplateOvertimeComponent } from './container/overtime-template/templat
 import { DialogTemplateOvertimeComponent } from './component/template-overtime/dialog-template-overtime.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HolidayComponent } from './container/holiday/holiday.component';
-import { AddHolidayComponent } from './component/add-holiday/add-holiday.component';
+import { DialogHolidayComponent } from './component/dialog-holiday/dialog-holiday.component';
 import { templateSalaryReducer } from './+state/teamlate-salary/template-salary.reducer';
 import { TemplateSalaryEffect } from './+state/teamlate-salary/template-salary.effect';
 import { SalaryComponent } from './container/salary/salary.component';
@@ -76,7 +76,7 @@ import {NzRadioModule} from "ng-zorro-antd/radio";
     TemplateSalaryComponent,
     DialogTemplateOvertimeComponent,
     HolidayComponent,
-    AddHolidayComponent,
+    DialogHolidayComponent,
     TransformBlockSalaryPipe,
     DetailHoliday
   ]

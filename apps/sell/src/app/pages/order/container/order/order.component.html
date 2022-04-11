@@ -64,8 +64,22 @@
         </button>
       </div>
     </div>
-    <div><span class='font-weight-bold'>Tổng đơn hàng:</span> {{totalOrder$ | async}}</div>
+
     <div>
+      <div class="d-flex mb-2">
+        <div class="mr-2">
+          <span class='font-weight-bold'>Tổng đơn hàng:</span> {{totalOrder$ | async}}</div>
+        <div class='d-flex'>
+          <div><span class='font-weight-bold'>Tổng hàng hoá:</span> <span class='ml-1'
+                                                                          style='color: red'>{{totalCommodity$|async}}</span>
+          </div>
+          <div class='ml-3 ' *ngFor='let item of commodityUniq$|async'>
+            <span class='font-weight-bold'>Tổng {{item.name}}:</span> <span class='ml-1'
+                                                                            style='color: red'>{{item.amount}}</span>
+          </div>
+        </div>
+      </div>
+
       <nz-table
         #tableOrder
         [nzScroll]="{ x: '2000px',y: '58vh'}"
@@ -215,17 +229,6 @@
       </ng-template>
       </tbody>
       </nz-table>
-    </div>
-    <div>
-    </div>
-    <div class='d-flex'>
-      <div><span class='font-weight-bold'>Tổng hàng hoá:</span> <span class='ml-1'
-                                                                      style='color: red'>{{totalCommodity$|async}}</span>
-      </div>
-      <div class='ml-3 ' *ngFor='let item of commodityUniq$|async'>
-        <span class='font-weight-bold'>Tổng {{item.name}}:</span> <span class='ml-1'
-                                                                        style='color: red'>{{item.amount}}</span>
-      </div>
     </div>
   </div>
 </div>

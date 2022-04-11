@@ -8,14 +8,13 @@ import {HolidayAction} from '../../+state/holiday/holiday.action';
 import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Position} from '@minhdu-fontend/data-models';
-import * as lodash from 'lodash';
 import {selectHolidayAdded} from '../../+state/holiday/holiday.selector';
 
 
 @Component({
-  templateUrl: 'add-holiday.component.html'
+  templateUrl: 'dialog-holiday.component.html'
 })
-export class AddHolidayComponent implements OnInit {
+export class DialogHolidayComponent implements OnInit {
   @ViewChild('positionInput') inputPosition!: ElementRef;
   numberChars = new RegExp('[^0-9]', 'g');
   submitted = false;
@@ -30,7 +29,7 @@ export class AddHolidayComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly store: Store<AppState>,
-    private readonly dialogRef: MatDialogRef<AddHolidayComponent>,
+    private readonly dialogRef: MatDialogRef<DialogHolidayComponent>,
     private readonly snackBar: MatSnackBar,
   ) {
   }
@@ -39,7 +38,7 @@ export class AddHolidayComponent implements OnInit {
     this.store.dispatch(PositionActions.loadPosition());
     if (this.data?.holiday) {
       if (this.data.holiday.positions) {
-        this.formPosition.setValue(this.data.holiday.positions)
+        this.formPosition.setValue([...this.data.holiday.positions])
       }
       this.hidePrice = this.data.holiday.rate <= 1;
       this.formGroup = this.formBuilder.group({
