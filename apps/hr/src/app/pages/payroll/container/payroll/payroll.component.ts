@@ -334,6 +334,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     })
   }
 
+  onChange(event: any){
+    console.log("eventradas", event);
+  }
+
   ngAfterContentChecked() {
     this.ref.detectChanges();
   }

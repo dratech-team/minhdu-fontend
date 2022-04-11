@@ -18,7 +18,7 @@
                       class="form-control"
                     />
                     <div *ngIf="f.username.errors" class="invalid-feedback">
-                      <div *ngIf="f.username.errors.required">Username is required</div>
+                      <div *ngIf="f.username.errors.required">Chưa nhập tài khoàn</div>
                     </div>
                   </div>
                   <div class="form-group">
@@ -30,7 +30,7 @@
                       class="form-control"
                     />
                     <div *ngIf="f.password.errors" class="invalid-feedback">
-                      <div *ngIf="f.password.errors.required">Password is required</div>
+                      <div *ngIf="f.password.errors.required">Chưa nhập mật khẩu</div>
                     </div>
                   </div>
                   <button (click)='onSubmit()' [disabled]="loading$ | async" class="btn btn-primary">

@@ -40,7 +40,7 @@ import {customCurrencyMaskConfig, customCurrencyMaskConfig2} from '@minhdu-fonte
 import { MatDialogConfig } from '@angular/material/dialog/dialog-config';
 import { NZ_CONFIG, NzConfig } from 'ng-zorro-antd/core/config';
 import { NZ_I18N, vi_VN } from 'ng-zorro-antd/i18n';
-
+//
 registerLocaleData(localeVi);
 
 @NgModule({

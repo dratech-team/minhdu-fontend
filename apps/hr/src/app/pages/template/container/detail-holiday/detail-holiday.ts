@@ -16,7 +16,7 @@ import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.
 import { SearchTypeConstant } from '@minhdu-fontend/constants';
 import { SearchTypeEnum } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { AddHolidayComponent } from '../../component/add-holiday/add-holiday.component';
+import { DialogHolidayComponent } from '../../component/dialog-holiday/dialog-holiday.component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -123,7 +123,7 @@ export class DetailHoliday implements OnInit {
   }
 
   updateHoliday(item: any) {
-    const dialogRef = this.dialog.open(AddHolidayComponent, {
+    const dialogRef = this.dialog.open(DialogHolidayComponent, {
       width: '35%',
       data: { holiday: item, updateDetail: true, isUpdate: true },
       panelClass: 'ccc',

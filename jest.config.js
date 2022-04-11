@@ -13,5 +13,6 @@ module.exports = {
     '<rootDir>/apps/breed',
     '<rootDir>/apps/hrv2',
     '<rootDir>/libs/dra-effects',
+    '<rootDir>/apps/farm',
   ],
 };
