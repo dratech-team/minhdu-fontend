@@ -11,7 +11,7 @@ import {
 } from '../../+state/payroll/payroll.selector';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {MatDialog} from '@angular/material/dialog';
-import {DatetimeUnitEnum, EmployeeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, EmployeeType, RecipeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {Salary} from '@minhdu-fontend/data-models';
 import {Payroll} from '../../+state/payroll/payroll.interface';
 import {DialogDeleteComponent} from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -69,6 +69,7 @@ export class DetailPayrollComponent implements OnInit {
   role!: string|null
   roleEnum =  Role;
   sortedSalaryOver: Salary[] = []
+  recipeType = RecipeType
   constructor(
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,

@@ -70,7 +70,7 @@
           </div>
 
         </div>
-        <div *ngIf='payroll.employee.type !== employeeTypeEnum.EMPLOYEE_SEASONAL' class='employee row col mt-3'>
+        <div *ngIf='payroll.recipeType !== recipeType.CT3' class='employee row col mt-3'>
           <div class='col' style='min-width: 170px'>
             <div class='row d-flex justify-content-center '>Ngày làm việc chuẩn</div>
             <div class='row content-title'>
@@ -112,7 +112,7 @@
       <div class='col' style='border-top: 2px dashed #9FA2B4; margin: 50px 0;'></div>
     </div>
     <div class='row d-flex flex-column'
-         *ngIf='payroll.employee.type !== employeeTypeEnum.EMPLOYEE_SEASONAL; else seasonal'>
+         *ngIf='payroll.recipeType !== recipeType.CT3; else seasonal'>
       <div #basic class='d-flex'>
         <!--Lương cơ bản-->
         <div class='col-6'>
