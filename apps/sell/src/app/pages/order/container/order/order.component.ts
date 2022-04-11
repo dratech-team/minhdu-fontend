@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import {Api, CurrenciesConstant, PaginationDto, WidthConstant} from '@minhdu-fontend/constants';
+import {Api, CurrenciesConstant, PaginationDto} from '@minhdu-fontend/constants';
 import {
   ConvertBoolean,
   ItemContextMenu,
@@ -24,6 +24,7 @@ import { OrderDialogComponent } from '../../component';
 import * as _ from 'lodash';
 import { OrderEntity } from '../../enitities/order.entity';
 import { radiosStatusOrderConstant } from '../../constants';
+import {WidthConstant} from "../../../../shared/constants";
 
 @Component({
   templateUrl: 'order.component.html'

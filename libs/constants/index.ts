@@ -10,7 +10,6 @@ export * from './recipeTypes.constant';
 export * from './searchType.constant';
 export * from './page.constant';
 export * from './option-data-picker.constant';
-export * from './width.constant';
 //hr
 export * from './HR/typePayrollExport.constant';
 export * from './HR/unitAllowance.constant';
