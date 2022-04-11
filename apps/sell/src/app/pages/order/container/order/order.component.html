@@ -127,11 +127,11 @@
               class='text-center font-weight-bold'>
             Xe xuất
           </th>
-          <th *ngIf="ui.totalCommodity.visible" [nzLeft]='ui.totalCommodity?.pinned||false'
-              class='text-center font-weight-bold' style='color: red'>
+          <th [nzWidth]="widthConstant.amount" *ngIf="ui.totalCommodity.visible" [nzLeft]='ui.totalCommodity?.pinned||false'
+              class='text-center font-weight-bold width-amount' style='color: red'>
             Tổng số lượng
           </th>
-          <th *ngIf="ui.commodityTotal.visible" [nzLeft]='ui.commodityTotal?.pinned||false'
+          <th [nzWidth]="widthConstant.price" *ngIf="ui.commodityTotal.visible" [nzLeft]='ui.commodityTotal?.pinned||false'
               class='text-center font-weight-bold'>
             Tiền hàng
           </th>
@@ -209,12 +209,12 @@
             </td>
           </tr>
           <tr [nzExpand]='order.expand'>
-            <nz-table #innerTable [nzData]='order.commodities' nzSize='small' [nzShowPagination]='false'>
+            <nz-table  #innerTable [nzData]='order.commodities' nzSize='small' [nzShowPagination]='false'>
         <thead>
         <tr>
-          <th class='text-center'>Hàng hoá</th>
-          <th class='text-center'>Số lượng</th>
-          <th class='text-center'>Giá</th>
+          <th class='text-center' >Hàng hoá</th>
+          <th class='text-center' [nzWidth]="widthConstant.amount">Số lượng</th>
+          <th class='text-center' [nzWidth]="widthConstant.price">Giá</th>
         </tr>
         </thead>
         <tbody>

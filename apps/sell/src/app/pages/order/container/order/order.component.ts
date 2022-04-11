@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Api, CurrenciesConstant } from '@minhdu-fontend/constants';
+import {Api, CurrenciesConstant, PaginationDto, WidthConstant} from '@minhdu-fontend/constants';
 import {
   ConvertBoolean,
   ItemContextMenu,
@@ -57,6 +57,7 @@ export class OrderComponent implements OnInit {
   expanedAll$ = this.orderQuery.select(state => state.expandedAll);
   stateSearch = this.orderQuery.getValue().search;
   valueSort?: Sort;
+  widthConstant = WidthConstant
   formGroup = new FormGroup({
     search: new FormControl(this.stateSearch.search),
     // paidType: new FormControl(this.stateSearch.paidType),
@@ -207,7 +208,7 @@ export class OrderComponent implements OnInit {
       ...state, search: dataFG
     }));
     const value = Object.assign(JSON.parse(JSON.stringify(dataFG)), {
-      skip: isPagination ? this.orderQuery.getCount() : 0,
+      skip: isPagination ? this.orderQuery.getCount() : PaginationDto.skip,
       take: this.pageSize
     });
     return Object.assign({},
