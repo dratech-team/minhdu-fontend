@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
-import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { AppState } from '../../../../reducers';
 

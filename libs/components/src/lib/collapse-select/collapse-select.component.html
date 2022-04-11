@@ -1,0 +1,12 @@
+<nz-collapse class='mt-2'>
+  <nz-collapse-panel
+    nzHeader='{{header}}'
+    nzActive='{{active}}'>
+    <div [formGroup]='formGroup'>
+      <nz-select [nzMode]="selectMultiple ? 'tags': 'default'" style="width: 100%"  [formControlName]="controlName" [compareWith]='compareFN'>
+        <nz-option  *ngFor='let item of data' [nzValue]="item" [nzLabel]="item.name"></nz-option>
+      </nz-select>
+    </div>
+  </nz-collapse-panel>
+</nz-collapse>
+
