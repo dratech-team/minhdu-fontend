@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
 import {Role} from 'libs/enums/hr/role.enum';
 import {Router} from '@angular/router';
 import {MenuHrConstant} from "../../../shared/constants";
@@ -18,7 +17,6 @@ export class PageLayoutComponent implements OnInit {
   routerActive$ = this.appQuery.select(state => state.active)
 
   constructor(
-    private readonly store: Store,
     private readonly appQuery: AppQuery,
     private readonly appStore: AppStore,
     private readonly router: Router,
@@ -26,7 +24,6 @@ export class PageLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('ssss')
     if (!this.role) {
       this.router.navigate(['/']).then();
     }
