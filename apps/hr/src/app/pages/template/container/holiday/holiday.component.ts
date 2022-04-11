@@ -82,7 +82,7 @@ export class HolidayComponent implements OnInit {
   Holiday(holiday?: any) {
     this.dialog.open(AddHolidayComponent, {
       width: '35%',
-      data: {holiday},
+      data: {holiday, title: 'Thêm ngày lễ'},
       panelClass: 'ccc',
       backdropClass: 'ggg'
     });
@@ -91,7 +91,7 @@ export class HolidayComponent implements OnInit {
   updateHoliday($event?: any) {
      this.dialog.open(AddHolidayComponent, {
       width: '35%',
-      data: {holiday: $event, upDateDetail: false, isUpdate: true},
+      data: {holiday: $event, upDateDetail: false, isUpdate: true, title: 'Sửa ngày lễ'},
       panelClass: 'ccc',
       backdropClass: 'ggg'
     });

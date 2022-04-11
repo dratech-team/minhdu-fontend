@@ -8,7 +8,6 @@ import {HolidayAction} from '../../+state/holiday/holiday.action';
 import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Position} from '@minhdu-fontend/data-models';
-import * as lodash from 'lodash';
 import {selectHolidayAdded} from '../../+state/holiday/holiday.selector';
 
 
@@ -39,7 +38,7 @@ export class AddHolidayComponent implements OnInit {
     this.store.dispatch(PositionActions.loadPosition());
     if (this.data?.holiday) {
       if (this.data.holiday.positions) {
-        this.formPosition.setValue(this.data.holiday.positions)
+        this.formPosition.setValue([...this.data.holiday.positions])
       }
       this.hidePrice = this.data.holiday.rate <= 1;
       this.formGroup = this.formBuilder.group({
