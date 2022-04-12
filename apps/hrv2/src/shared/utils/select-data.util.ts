@@ -1,17 +1,17 @@
-export const refreshCheckedStatusUtil = (listOfCurrentPageData: any[], setOfCheckedId: Set<number>, checked: boolean) => {
-  const check = listOfCurrentPageData.every(({id}) => setOfCheckedId.has(id));
-  const indeterminate = listOfCurrentPageData.some(({id}) => setOfCheckedId.has(id)) && checked;
+export const refreshCheckedStatusUtil = (listOfCurrentPageData: any[], setOfCheckedData: Set<any>, checked: boolean) => {
+  const check = listOfCurrentPageData.every((item) => setOfCheckedData.has(item));
+  const indeterminate = listOfCurrentPageData.some(({item}) => setOfCheckedData.has(item)) && checked;
   return {
     check,
     indeterminate
   }
 }
 
-export const updateCheckedSetUtil = (id: number, checked: boolean, setOfCheckedId: Set<number>) => {
+export const updateCheckedSetUtil = (item: any, checked: boolean, setOfCheckedData: Set<any>) => {
   if (checked) {
-    setOfCheckedId.add(id);
+    setOfCheckedData.add(item);
   } else {
-    setOfCheckedId.delete(id);
+    setOfCheckedData.delete(item);
   }
-  return setOfCheckedId
+  return setOfCheckedData
 }

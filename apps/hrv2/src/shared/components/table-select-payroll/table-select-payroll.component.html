@@ -1,5 +1,5 @@
 <div class="d-flex flex-column">
-  <div><span class="font-weight-bold">Đã chọn: </span> {{this.setOfCheckedId.size}}/{{this.total}}</div>
+  <div><span class="font-weight-bold">Đã chọn: </span> {{this.setOfPayrollSelected.size}}/{{this.total}}</div>
   <nz-table
     #tablePayroll
     [nzData]="payrolls"
@@ -31,8 +31,8 @@
     <ng-template ngFor let-payroll [ngForOf]="tablePayroll.data" let-i="index">
       <tr>
         <td nzWidth="70px" nzLeft
-            [nzChecked]="setOfCheckedId.has(payroll.id)"
-            (nzCheckedChange)="onItemChecked(payroll.id, $event)"
+            [nzChecked]="setOfPayrollSelected.has(payroll)"
+            (nzCheckedChange)="onItemChecked(payroll, $event)"
         ></td>
         <td>{{i + 1}}</td>
         <td>{{payroll.employee.lastName}}</td>

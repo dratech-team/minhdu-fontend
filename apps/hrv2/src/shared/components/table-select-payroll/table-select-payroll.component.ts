@@ -20,7 +20,6 @@ export class TableSelectPayrollComponent implements OnInit, OnChanges {
     employeeType?: EmployeeType,
     recipeType?: RecipeType,
   }
-  @Output() eventSelectPayroll = new EventEmitter<Payroll[]>()
   formTablePayroll = new FormGroup({
     name: new FormControl(''),
     position: new FormControl(''),
@@ -28,11 +27,10 @@ export class TableSelectPayrollComponent implements OnInit, OnChanges {
     isLeave: new FormControl(false)
   })
   payrolls: Payroll[] = []
-  payrollSelected : Payroll[] = []
   total = 0
   checked = false;
   indeterminate = false;
-  setOfCheckedId = new Set<number>();
+  setOfPayrollSelected = new Set<Payroll>();
 
   constructor(
     private readonly payrollService: PayrollService,
@@ -50,7 +48,7 @@ export class TableSelectPayrollComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.formGroup.get('payrollIds')?.value.map((id: number) => this.setOfCheckedId.add(id))
+    this.formGroup.get('payrolls')?.value.map((payroll: Payroll) => this.setOfPayrollSelected.add(payroll))
     this.formTablePayroll.valueChanges.subscribe(_ => {
       this.payrollService.paginationPayroll(this.mapPayroll(PaginationDto.take, PaginationDto.skip)).subscribe(res => {
         this.payrolls = res.data
@@ -101,36 +99,26 @@ export class TableSelectPayrollComponent implements OnInit, OnChanges {
   }
 
   onAllChecked(checked: boolean): void {
-    this.payrolls.forEach(({id}) => this.updateCheckedSet(id, checked));
+    this.payrolls.forEach((payroll) => this.updateCheckedSet(payroll, checked));
     this.refreshCheckedStatus();
-    this.getPayrollSelected()
+    this.formGroup.get('payrolls')?.setValue(Array.from(this.setOfPayrollSelected))
   }
 
-  updateCheckedSet(id: number, checked: boolean): void {
-    this.setOfCheckedId = updateCheckedSetUtil(id, checked, this.setOfCheckedId)
-    this.getPayrollSelected()
+  updateCheckedSet(payroll: Payroll, checked: boolean): void {
+    this.setOfPayrollSelected = updateCheckedSetUtil(payroll, checked, this.setOfPayrollSelected)
+    this.formGroup.get('payrolls')?.setValue(Array.from(this.setOfPayrollSelected))
   }
 
 
   refreshCheckedStatus(): void {
-    const value = refreshCheckedStatusUtil(this.payrolls, this.setOfCheckedId, this.checked)
+    const value = refreshCheckedStatusUtil(this.payrolls, this.setOfPayrollSelected, this.checked)
     this.checked = value.check
     this.indeterminate = value.indeterminate
+    this.formGroup.get('payrolls')?.setValue(Array.from(this.setOfPayrollSelected))
   }
 
-  onItemChecked(id: number, checked: boolean): void {
-    this.updateCheckedSet(id, checked);
+  onItemChecked(payroll: Payroll, checked: boolean): void {
+    this.updateCheckedSet(payroll, checked);
     this.refreshCheckedStatus();
-    this.getPayrollSelected()
-  }
-
-  getPayrollSelected(){
-   this.setOfCheckedId.forEach(id => {
-     this.payrolls.forEach(payroll => {
-       if(payroll.id === id){
-         this.payrollSelected.push(payroll)
-       }
-     })
-   })
   }
 }
