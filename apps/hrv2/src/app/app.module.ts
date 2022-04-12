@@ -12,12 +12,15 @@ import {NzButtonModule} from "ng-zorro-antd/button";
 import {RouteGuard} from "../../../warehouse/src/app/route.guard";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {ErrorInterceptor, JwtInterceptor} from "@minhdu-fontend/auth";
+import {HashLocationStrategy} from "@angular/common";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [AppComponent, PageLayoutComponent],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
     FormsModule,
     AppRoutingModule,
     RouterModule,
@@ -31,7 +34,6 @@ import {ErrorInterceptor, JwtInterceptor} from "@minhdu-fontend/auth";
     NzButtonModule,
   ],
   providers: [
-    RouteGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
@@ -42,6 +44,8 @@ import {ErrorInterceptor, JwtInterceptor} from "@minhdu-fontend/auth";
       useClass: ErrorInterceptor,
       multi: true
     },
+    RouteGuard,
+    HashLocationStrategy
   ],
   bootstrap: [AppComponent],
 })

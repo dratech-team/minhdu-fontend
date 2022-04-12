@@ -12,6 +12,7 @@ export class RankComponent implements OnInit{
   positions$ = new Observable<Position[]>()
   branches$ =  new Observable<Branch[]>()
   formGroup = new FormGroup({
+    search: new FormControl(''),
     name: new FormControl(''),
     gender: new FormControl(''),
     position: new FormControl([]),
