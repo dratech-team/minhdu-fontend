@@ -1,5 +1,6 @@
 export enum SalaryTypeEnum {
   BASIC = 'BASIC',
+  HISTORY = 'HISTORY',
   BASIC_INSURANCE = 'BASIC_INSURANCE',
   STAY = 'STAY',
   ALLOWANCE = 'ALLOWANCE',

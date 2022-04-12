@@ -4,6 +4,7 @@ import {MenuHrConstant} from "../../../shared/constants";
 import {AppStore} from "../../state/app.store";
 import {AppQuery} from "../../state/app.query";
 
+
 @Component({
   templateUrl: './page-layout.component.html',
   styleUrls: ['page-layout.component.scss']
