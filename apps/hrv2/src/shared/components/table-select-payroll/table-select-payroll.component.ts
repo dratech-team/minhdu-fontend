@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from "@angular/core";
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
 import {PayrollService} from "../../../../../hr/src/app/pages/payroll/service/payroll.service";
 import {EmployeeType, RecipeType} from "@minhdu-fontend/enums";
@@ -20,6 +20,7 @@ export class TableSelectPayrollComponent implements OnInit, OnChanges {
     employeeType?: EmployeeType,
     recipeType?: RecipeType,
   }
+  @Output() eventSelectPayroll = new EventEmitter<Payroll[]>()
   formTablePayroll = new FormGroup({
     name: new FormControl(''),
     position: new FormControl(''),
@@ -27,6 +28,7 @@ export class TableSelectPayrollComponent implements OnInit, OnChanges {
     isLeave: new FormControl(false)
   })
   payrolls: Payroll[] = []
+  payrollSelected : Payroll[] = []
   total = 0
   checked = false;
   indeterminate = false;
@@ -101,12 +103,12 @@ export class TableSelectPayrollComponent implements OnInit, OnChanges {
   onAllChecked(checked: boolean): void {
     this.payrolls.forEach(({id}) => this.updateCheckedSet(id, checked));
     this.refreshCheckedStatus();
-    this.formGroup.get('payrollIds')?.setValue(Array.from(this.setOfCheckedId));
+    this.getPayrollSelected()
   }
 
   updateCheckedSet(id: number, checked: boolean): void {
     this.setOfCheckedId = updateCheckedSetUtil(id, checked, this.setOfCheckedId)
-    this.formGroup.get('PayrollIds')?.setValue(Array.from(this.setOfCheckedId));
+    this.getPayrollSelected()
   }
 
 
@@ -119,6 +121,16 @@ export class TableSelectPayrollComponent implements OnInit, OnChanges {
   onItemChecked(id: number, checked: boolean): void {
     this.updateCheckedSet(id, checked);
     this.refreshCheckedStatus();
-    this.formGroup.get('PayrollIds')?.setValue(Array.from(this.setOfCheckedId));
+    this.getPayrollSelected()
+  }
+
+  getPayrollSelected(){
+   this.setOfCheckedId.forEach(id => {
+     this.payrolls.forEach(payroll => {
+       if(payroll.id === id){
+         this.payrollSelected.push(payroll)
+       }
+     })
+   })
   }
 }
