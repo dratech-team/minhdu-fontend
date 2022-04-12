@@ -8,7 +8,7 @@ import {FormGroup} from "@angular/forms";
 })
 export class TablePayrollSelectedComponent implements OnInit {
   @Input() formGroup!: FormGroup
-  setOfCheckedId = new Set<Payroll>();
+  setOfCheckedPayroll = new Set<Payroll>();
   payrolls: Payroll[] = []
   checked = true;
   indeterminate = true;
@@ -19,11 +19,11 @@ export class TablePayrollSelectedComponent implements OnInit {
 
   onAllChecked($event: boolean) {
     //util
-    this.formGroup.get('payrolls')?.setValue(Array.from(this.setOfCheckedId))
+    this.formGroup.get('payrolls')?.setValue(Array.from(this.setOfCheckedPayroll))
   }
 
   onItemChecked(payroll: Payroll, checked: boolean) {
     //util
-    this.formGroup.get('payrolls')?.setValue(Array.from(this.setOfCheckedId))
+    this.formGroup.get('payrolls')?.setValue(Array.from(this.setOfCheckedPayroll))
   }
 }
