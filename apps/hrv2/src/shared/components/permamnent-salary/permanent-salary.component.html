@@ -35,7 +35,7 @@
             <nz-select class='form-control col' formControlName='price'
                        [ngClass]="{ 'is-invalid':checkValid.price.errors }">
               <nz-option *ngFor='let item of formGroup.value.title.price' [nzValue]="item">
-                {{item|number:'1.0-0'}}đ
+                {{item | number:'1.0-0'}}đ
               </nz-option>
             </nz-select>
           </div>
@@ -73,7 +73,7 @@
     <button class="mr-2" nz-button nzType="primary" (click)="next()" *ngIf="stepIndex < 2">
       <span>Tiếp theo</span>
     </button>
-    <button nz-button nzType="primary" [nzLoading]="(added$|async) === false" (click)="onSubmit()">
+    <button nz-button nzType="primary" [nzLoading]="(added$ | async) === false" (click)="onSubmit()">
       <span>Xác nhận</span>
     </button>
   </div>
