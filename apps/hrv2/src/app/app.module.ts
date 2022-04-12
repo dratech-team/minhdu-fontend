@@ -17,6 +17,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {NZ_ICONS} from "ng-zorro-antd/icon";
 import * as AllIcons from "@ant-design/icons-angular/icons";
 import {IconDefinition} from "@ant-design/icons-angular";
+import {SharedModule} from "../shared/shared.module";
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -41,6 +42,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     AppBreadcrumbModule,
     AppFooterModule,
     NzButtonModule,
+    SharedModule
   ],
   providers: [
     {
