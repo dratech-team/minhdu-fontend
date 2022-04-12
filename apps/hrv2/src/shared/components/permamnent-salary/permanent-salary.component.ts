@@ -53,7 +53,7 @@ export class PermanentSalaryComponent implements OnInit {
         price: ['',Validators.required] ,
         rate: [],
         note: [],
-        payrollIds:[[this.idPayroll]],
+        payrollIds:[this.payrollId],
       })
     }
 
@@ -64,8 +64,8 @@ export class PermanentSalaryComponent implements OnInit {
     })
   }
 
-  get idPayroll():number{
-    return this.activatedRoute.snapshot.params.id
+  get payrollId():number{
+    return +this.activatedRoute.snapshot.params.id
   }
 
   get checkValid() {
