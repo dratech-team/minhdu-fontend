@@ -30,8 +30,8 @@
     <ng-template ngFor let-payroll [ngForOf]="tablePayroll.data" let-i="index">
       <tr>
         <td nzWidth="70px" nzLeft
-            [nzChecked]="setOfCheckedId.has(payroll.id)"
-            (nzCheckedChange)="onItemChecked(payroll.id, $event)"
+            [nzChecked]="setOfCheckedId.has(payroll)"
+            (nzCheckedChange)="onItemChecked(payroll, $event)"
         ></td>
         <td>{{i + 1}}</td>
         <td>{{payroll.employee.lastName}}</td>
