@@ -6,16 +6,13 @@ import {FormGroup} from "@angular/forms";
   selector: 'minhdu-fontend-table-payroll-selected',
   templateUrl: 'table-payroll-selected.component.html'
 })
-export class TablePayrollSelectedComponent implements OnInit {
+export class TablePayrollSelectedComponent {
   @Input() formGroup!: FormGroup
   setOfCheckedPayroll = new Set<Payroll>();
-  payrolls: Payroll[] = []
+  payrolls:Payroll[] = Array.from(this.formGroup.get('payrolls')?.value)
   checked = true;
   indeterminate = true;
 
-  ngOnInit() {
-    this.payrolls = Array.from(this.formGroup.get('payrolls')?.value)
-  }
 
   onAllChecked($event: boolean) {
     //util
