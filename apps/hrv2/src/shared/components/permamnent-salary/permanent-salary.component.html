@@ -59,7 +59,7 @@
         </div>
       </div>
     </ng-template>
-    <ng-template [ngIf]="stepIndex === 1">
+    <ng-template [ngIf]="stepIndex === 1 && !data.update">
       component chọn nhân viên
     </ng-template>
     <ng-template [ngIf]="stepIndex === 2">

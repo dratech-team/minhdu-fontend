@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from "@angular/core";
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
 import {PayrollService} from "../../../../../hr/src/app/pages/payroll/service/payroll.service";
 import {EmployeeType, RecipeType} from "@minhdu-fontend/enums";
@@ -48,7 +48,7 @@ export class TableSelectPayrollComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.formGroup.get('payrolls')?.value.map((payroll: Payroll) => this.setOfPayrollSelected.add(payroll))
+    this.formGroup.get('payrolls')?.value.map((payroll: any) => this.setOfPayrollSelected.add(payroll))
     this.formTablePayroll.valueChanges.subscribe(_ => {
       this.payrollService.paginationPayroll(this.mapPayroll(PaginationDto.take, PaginationDto.skip)).subscribe(res => {
         this.payrolls = res.data
