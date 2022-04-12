@@ -30,15 +30,4 @@ export class PageLayoutComponent {
       ...state, appName: appName
     }))
   }
-
-  test() {
-    this.modal.create({
-      nzTitle:'Tạo lương cơ bản',
-      nzContent:PermanentSalaryComponent,
-      nzComponentParams:{
-        data: {type: SalaryTypeEnum.BASIC}
-      },
-      nzFooter:null,
-    })
-  }
 }
