@@ -1,10 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+<div class="d-flex flex-column">
+  <div><span class="font-weight-bold">Đã chọn: </span> {{this.setOfCheckedId.size}}</div>
+  <nz-table
+    #tablePayroll
+    [nzData]="payrolls">
+    <thead>
+    <tr>
+      <th nzWidth="70px" nzLeft
+          [nzChecked]="checked"
+          [nzIndeterminate]="indeterminate"
+          (nzCheckedChange)="onAllChecked($event)"></th>
+      <th nzWidth="70px">
+        <div>stt</div>
+      </th>
+      <th>
+        <div>Tên nhân viên</div>
+        <input nz-input type="text" formControlName="name">
+      </th>
+      <th>
+        <div>Đơn vị</div>
+        <input nz-input type="text" formControlName="branch">
+      </th>
+      <th>
+        <div>Chức vụ</div>
+        <input nz-input type="text" formControlName="position">
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-template ngFor let-payroll [ngForOf]="tablePayroll.data" let-i="index">
+      <tr>
+        <td nzWidth="70px" nzLeft
+            [nzChecked]="setOfCheckedId.has(payroll.id)"
+            (nzCheckedChange)="onItemChecked(payroll.id, $event)"
+        ></td>
+        <td>{{i + 1}}</td>
+        <td>{{payroll.employee.lastName}}</td>
+        <td>{{payroll.branch}}</td>
+        <td>{{payroll.position}}</td>
+      </tr>
+    </ng-template>
+    </tbody>
+  </nz-table>
+</div>
 
-</body>
-</html>
