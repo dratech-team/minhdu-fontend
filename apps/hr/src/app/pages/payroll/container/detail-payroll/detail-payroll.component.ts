@@ -37,6 +37,7 @@ import {RestorePayrollComponent} from "../../component/restore-payroll/restore-p
 import {NzMessageService} from "ng-zorro-antd/message";
 import {Sort} from "@angular/material/sort";
 import {map} from "rxjs/operators";
+import {UpdateHolidayComponent} from "../../component/dialog-salary/dialog-holiday/update-holiday.component";
 
 
 @Component({
@@ -138,6 +139,10 @@ export class DetailPayrollComponent implements OnInit {
       }
       case SalaryTypeEnum.WFH: {
         this.dialog.open(DialogWFHComponent, Object.assign(config, {width: 'fit-content'}));
+        break;
+      }
+      case SalaryTypeEnum.HOLIDAY: {
+        this.dialog.open(UpdateHolidayComponent, Object.assign(config, {width: 'fit-content'}));
         break;
       }
       default: {

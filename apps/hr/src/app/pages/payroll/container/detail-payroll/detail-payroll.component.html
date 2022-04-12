@@ -428,9 +428,19 @@
               {{salary.price | number:'1.0' | notEmpty:'Theo hệ số lương cơ bản'}}
             </th>
             <th class=' text-center'>
-              {{(salary.price * salary.times) | number:'1.0' | notEmpty:'Theo hệ số lương cơ bản'}}
+              {{(salary.price * salary.times * salary.rate) | number:'1.0' | notEmpty:'Theo hệ số lương cơ bản'}}
             </th>
             <th>
+              <div class='d-flex justify-content-around '>
+                <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
+                        (click)='updateSalary(type.HOLIDAY, salary, payroll)'>
+                  <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+                </button>
+                <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
+                        (click)='removeSalary(salary.id, payroll.id)'>
+                  <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+                </button>
+              </div>
             </th>
           </tr>
           </tbody>

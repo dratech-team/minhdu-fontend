@@ -103,6 +103,7 @@ import {customCurrencyMaskConfig} from "@minhdu-fontend/config";
 import {ClassifyOvertimeComponent} from "./component/classify-overtime/classify-overtime.component";
 import {MatRadioModule} from "@angular/material/radio";
 import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
+import {UpdateHolidayComponent} from "./component/dialog-salary/dialog-holiday/update-holiday.component";
 
 @NgModule({
     imports: [
@@ -202,7 +203,8 @@ import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
     PickPayrollComponent,
     TablePayrollSelectedComponent,
     UpdatePayrollComponent,
-    ClassifyOvertimeComponent
+    ClassifyOvertimeComponent,
+    UpdateHolidayComponent
   ],
   providers: [MatDatepickerModule]
 })
