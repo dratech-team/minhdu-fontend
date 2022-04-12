@@ -6,10 +6,6 @@
     [formGroup]="formTablePayroll">
     <thead>
     <tr>
-      <th nzWidth="70px" nzLeft
-          [nzChecked]="checked"
-          [nzIndeterminate]="indeterminate"
-          (nzCheckedChange)="onAllChecked($event)"></th>
       <th nzWidth="70px">
         <div>stt</div>
       </th>
@@ -25,19 +21,32 @@
         <div>Chức vụ</div>
         <input nz-input type="text" formControlName="position">
       </th>
+      <th nzWidth="70px" nzLeft
+          [nzChecked]="checked"
+          [nzIndeterminate]="indeterminate"
+          (nzCheckedChange)="onAllChecked($event)"></th>
+      <th nzWidth="70px">
+      <th nzWidth="70px" nzLeft
+          [nzChecked]="subChecked"
+          [nzIndeterminate]="subIndeterminate"
+          (nzCheckedChange)="onAllSubChecked($event)"></th>
     </tr>
     </thead>
     <tbody>
     <ng-template ngFor let-payroll [ngForOf]="tablePayroll.data" let-i="index">
       <tr>
-        <td nzWidth="70px" nzLeft
-            [nzChecked]="setOfPayrollSelected.has(payroll)"
-            (nzCheckedChange)="onItemChecked(payroll, $event)"
-        ></td>
         <td>{{i + 1}}</td>
         <td>{{payroll.employee.lastName}}</td>
         <td>{{payroll.branch}}</td>
         <td>{{payroll.position}}</td>
+        <td nzWidth="70px" nzLeft
+            [nzChecked]="setOfPayrollSelected.has(payroll)"
+            (nzCheckedChange)="onItemChecked(payroll, $event)"
+        ></td>
+        <td nzWidth="70px" nzLeft
+            [nzChecked]="setOfSubPayrollSelected.has(payroll)"
+            (nzCheckedChange)="onItemSubChecked(payroll, $event)"
+        ></td>
       </tr>
     </ng-template>
     </tbody>

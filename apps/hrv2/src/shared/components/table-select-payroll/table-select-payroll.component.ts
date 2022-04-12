@@ -29,8 +29,11 @@ export class TableSelectPayrollComponent implements OnInit, OnChanges {
   payrolls: Payroll[] = []
   total = 0
   checked = false;
+  subChecked = false;
   indeterminate = false;
+  subIndeterminate = false;
   setOfPayrollSelected = new Set<Payroll>();
+  setOfSubPayrollSelected = new Set<Payroll>()
 
   constructor(
     private readonly payrollService: PayrollService,
@@ -49,6 +52,7 @@ export class TableSelectPayrollComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.formGroup.get('payrolls')?.value.map((payroll: any) => this.setOfPayrollSelected.add(payroll))
+    this.formGroup.get('subPayroll')?.value.map((payroll: any) => this.setOfSubPayrollSelected.add(payroll))
     this.formTablePayroll.valueChanges.subscribe(_ => {
       this.payrollService.paginationPayroll(this.mapPayroll(PaginationDto.take, PaginationDto.skip)).subscribe(res => {
         this.payrolls = res.data
@@ -104,11 +108,11 @@ export class TableSelectPayrollComponent implements OnInit, OnChanges {
     this.formGroup.get('payrolls')?.setValue(Array.from(this.setOfPayrollSelected))
   }
 
+
   updateCheckedSet(payroll: Payroll, checked: boolean): void {
     this.setOfPayrollSelected = updateCheckedSetUtil(payroll, checked, this.setOfPayrollSelected)
     this.formGroup.get('payrolls')?.setValue(Array.from(this.setOfPayrollSelected))
   }
-
 
   refreshCheckedStatus(): void {
     const value = refreshCheckedStatusUtil(this.payrolls, this.setOfPayrollSelected, this.checked)
@@ -120,5 +124,28 @@ export class TableSelectPayrollComponent implements OnInit, OnChanges {
   onItemChecked(payroll: Payroll, checked: boolean): void {
     this.updateCheckedSet(payroll, checked);
     this.refreshCheckedStatus();
+  }
+
+
+  //sub checked
+  onAllSubChecked(checked: boolean): void {
+    this.setOfPayrollSelected.forEach(payroll => this.updateSubCheckedSet(payroll, checked))
+    this.refreshCheckedStatus();
+    this.formGroup.get('payrolls')?.setValue(Array.from(this.setOfPayrollSelected))
+  }
+
+  updateSubCheckedSet(payroll: Payroll, checked: boolean): void {
+    this.setOfSubPayrollSelected = updateCheckedSetUtil(payroll, checked, this.setOfSubPayrollSelected)
+  }
+
+  refreshSubCheckedStatus(): void {
+    const value = refreshCheckedStatusUtil(this.payrolls, this.setOfSubPayrollSelected, this.subChecked)
+    this.subChecked = value.check
+    this.subIndeterminate = value.indeterminate
+  }
+
+  onItemSubChecked(payroll: Payroll, checked: boolean): void {
+    this.updateSubCheckedSet(payroll, checked);
+    this.refreshSubCheckedStatus();
   }
 }
