@@ -44,7 +44,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     AppBreadcrumbModule,
     AppFooterModule,
     NzButtonModule,
-    SharedModule
+    SharedModule,
     NzModalModule,
     NzMessageModule
   ],

@@ -14,6 +14,7 @@ import {NzModalModule} from "ng-zorro-antd/modal";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzMessageModule} from "ng-zorro-antd/message";
 import {NzInputModule} from "ng-zorro-antd/input";
+import {TableSelectPayrollComponent} from "./components/table-select-payroll/table-select-payroll.component";
 
 @NgModule({
   declarations: [
