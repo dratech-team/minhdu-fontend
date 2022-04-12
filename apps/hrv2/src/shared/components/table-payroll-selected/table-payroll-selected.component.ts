@@ -10,7 +10,7 @@ export class TablePayrollSelectedComponent implements OnInit{
   constructor() {
   }
   ngOnInit() {
-    this.formGroup.get('payrollIds')!.valueChanges.subscribe(idss => {
+    this.formGroup.get('payrollIds')!.value
 
     })
   }
