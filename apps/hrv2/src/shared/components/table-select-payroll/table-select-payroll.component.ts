@@ -48,6 +48,7 @@ export class TableSelectPayrollComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.formGroup.get('payrollIds')?.value.map((id: number) => this.setOfCheckedId.add(id))
     this.formTablePayroll.valueChanges.subscribe(_ => {
       this.payrollService.paginationPayroll(this.mapPayroll(PaginationDto.take, PaginationDto.skip)).subscribe(res => {
         this.payrolls = res.data
