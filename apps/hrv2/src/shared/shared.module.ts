@@ -1,23 +1,42 @@
 import {NgModule} from '@angular/core';
-import {TableSelectPayrollComponent} from "./components/table-select-payroll/table-select-payroll.component";
-import {NzMessageModule} from "ng-zorro-antd/message";
-import {NzTableModule} from "ng-zorro-antd/table";
-import {NzInputModule} from "ng-zorro-antd/input";
-import {ReactiveFormsModule} from "@angular/forms";
+
+import {PermanentSalaryComponent} from "./components/permamnent-salary/permanent-salary.component";
 import {CommonModule} from "@angular/common";
+import {RankRoutingModule} from "../app/pages/rank/rank-routing.module";
+import {NzTableModule} from "ng-zorro-antd/table";
+import {NzCollapseModule} from "ng-zorro-antd/collapse";
+import {ReactiveFormsModule} from "@angular/forms";
+import {NzDropDownModule} from "ng-zorro-antd/dropdown";
+import {NzIconModule} from "ng-zorro-antd/icon";
+import {NzStepsModule} from "ng-zorro-antd/steps";
+import {NzSelectModule} from "ng-zorro-antd/select";
+import {NzModalModule} from "ng-zorro-antd/modal";
+import {NzButtonModule} from "ng-zorro-antd/button";
+import {NzMessageModule} from "ng-zorro-antd/message";
+import {NzInputModule} from "ng-zorro-antd/input";
 
 @NgModule({
   declarations: [
+    PermanentSalaryComponent,
     TableSelectPayrollComponent
   ],
   imports: [
-    NzMessageModule,
+    CommonModule,
+    RankRoutingModule,
     NzTableModule,
-    NzInputModule,
+    NzCollapseModule,
     ReactiveFormsModule,
-    CommonModule
+    NzDropDownModule,
+    NzIconModule,
+    NzStepsModule,
+    NzSelectModule,
+    NzModalModule,
+    NzMessageModule,
+    NzButtonModule,
+    NzInputModule
   ],
   exports: [
+    PermanentSalaryComponent,
     TableSelectPayrollComponent
   ]
 })
