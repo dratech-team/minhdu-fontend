@@ -17,7 +17,7 @@
           <div class=' mb-3' [formGroup]='formGroup'>
             <nz-select style="width: 100%" formControlName='title'
                        [ngClass]="{ 'is-invalid':  checkValid.type.errors }">
-              <nz-option *ngFor='let salary of templateSalary$|async' [nzValue]="salary">
+              <nz-option *ngFor='let salary of templateSalaries$|async' [nzValue]="salary">
                 {{salary.title}}
               </nz-option>
             </nz-select>
@@ -49,7 +49,7 @@
             </div>
           </ng-template>
         </div>
-        <div *ngIf="data?.datetime">
+        <div *ngIf="data.type === salaryType.HISTORY">
           <div class=' title-item mt-2 mbt-2'>
             <span>Ngày tạo</span><span class='star'>*</span>
           </div>

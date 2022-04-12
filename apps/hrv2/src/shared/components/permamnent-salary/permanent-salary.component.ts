@@ -3,9 +3,10 @@ import {Salary} from "@minhdu-fontend/data-models";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {SalaryTypeEnum} from "@minhdu-fontend/enums";
-import {Payroll} from "../../../../../hr/src/app/pages/payroll/+state/payroll/payroll.interface";
-import {observable, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {DatePipe} from "@angular/common";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'minhdu-fontend-permanent-salary',
@@ -14,23 +15,19 @@ import {NzMessageService} from "ng-zorro-antd/message";
 export class PermanentSalaryComponent implements OnInit {
   @Input() data!: {
     update?: {
-      salary: Salary
+      salaryIds: number []
     },
-    payroll?: Payroll
-    type: SalaryTypeEnum.STAY | SalaryTypeEnum.BASIC,
-    datetime?: boolean,
-    isHistorySalary?: boolean,
-    multiple?: {
-      payrollIds: number []
-    },
+    type: SalaryTypeEnum.STAY | SalaryTypeEnum.BASIC | SalaryTypeEnum.HISTORY ,
   }
   formGroup!: FormGroup
   salaryType = SalaryTypeEnum
   stepIndex = 0
-  templateSalary$ = new Observable<any>() ;
+  templateSalaries$ = new Observable<any>();
   added$ = new Observable()
   constructor(
     private readonly modalRef: NzModalRef,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly datePipe: DatePipe,
     private readonly formBuilder: FormBuilder,
     private readonly message: NzMessageService,
   ) {
@@ -40,22 +37,23 @@ export class PermanentSalaryComponent implements OnInit {
   ngOnInit() {
     if(this.data.update){
       this.formGroup = this.formBuilder.group({
-        type: [this.data.type,Validators.required],
-        title:[this.data.update.salary.title,Validators.required] ,
-        price: [this.data.update.salary.price, Validators.required] ,
-        rate: [this.data.update.salary?.rate],
-        note: [this.data.update.salary?.note],
-        datetime:[this.data.update.salary?.datetime],
-        payrollIds:[this.data?.multiple?.payrollIds],
+        // type: [this.data.type,Validators.required],
+        // title:[salary.title,Validators.required] ,
+        // price: [salary.price, Validators.required] ,
+        // rate: [salary.rate],
+        // note: [salary.note],
+        // datetime:[this.data.type === SalaryTypeEnum.HISTORY ?
+        //   this.datePipe.transform(salary.datetime, 'yyyy-MM-dd') : ''],
+        // payrollIds:[this.data.update.salaries.map(salary => salary.PayrollId)],
       })
     }else{
       this.formGroup = this.formBuilder.group({
         type: [this.data.type,Validators.required],
         title:['',Validators.required] ,
         price: ['',Validators.required] ,
-        rate: [this.data?.payroll?.taxed],
+        rate: [],
         note: [],
-        payrollIds:[[this.data.payroll?.id]],
+        payrollIds:[[this.idPayroll]],
       })
     }
 
@@ -66,6 +64,10 @@ export class PermanentSalaryComponent implements OnInit {
     })
   }
 
+  get idPayroll():number{
+    return this.activatedRoute.snapshot.params.id
+  }
+
   get checkValid() {
     return this.formGroup.controls;
   }
@@ -74,18 +76,14 @@ export class PermanentSalaryComponent implements OnInit {
     if(this.formGroup.invalid){
       return
     }
-    if(this.data.isHistorySalary){
+    if(this.data.type === SalaryTypeEnum.HISTORY){
       return; //api update lịch sử lương cho nhân viên
     }
     if(this.data?.update){
-      if(this.data.multiple){
-        //update multiple
-      }
-      //api update
+     return; //api update
     }else{
-      //api add salary
+      return;//api add salary
     }
-    this.modalRef.close()
   }
 
   pre(): void {

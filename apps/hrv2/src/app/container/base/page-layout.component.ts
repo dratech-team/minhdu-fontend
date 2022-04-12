@@ -3,9 +3,7 @@ import {Router} from '@angular/router';
 import {MenuHrConstant} from "../../../shared/constants";
 import {AppStore} from "../../state/app.store";
 import {AppQuery} from "../../state/app.query";
-import {NzModalService} from "ng-zorro-antd/modal";
-import {PermanentSalaryComponent} from "../../../shared/components/permamnent-salary/permanent-salary.component";
-import {SalaryTypeEnum} from "@minhdu-fontend/enums";
+
 
 @Component({
   templateUrl: './page-layout.component.html',
@@ -20,7 +18,6 @@ export class PageLayoutComponent {
     private readonly appQuery: AppQuery,
     private readonly appStore: AppStore,
     private readonly router: Router,
-    private readonly modal: NzModalService,
   ) {
   }
 
