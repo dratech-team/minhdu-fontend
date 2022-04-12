@@ -147,4 +147,8 @@ export class TemplateOvertimeComponent implements OnInit {
       })
       .then();
   }
+
+  checkItemInArr(item: any , arr: any []): boolean {
+    return arr.some((val: any) => val.id === item.id)
+  }
 }
