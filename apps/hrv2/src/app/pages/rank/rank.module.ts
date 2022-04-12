@@ -6,6 +6,8 @@ import {NzTableModule} from "ng-zorro-antd/table";
 import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {ReactiveFormsModule} from "@angular/forms";
 import {ComponentsModule} from "@minhdu-fontend/components";
+import {NzDropDownModule} from "ng-zorro-antd/dropdown";
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @NgModule({
   imports: [
@@ -14,7 +16,9 @@ import {ComponentsModule} from "@minhdu-fontend/components";
     NzTableModule,
     NzCollapseModule,
     ReactiveFormsModule,
-    ComponentsModule
+    ComponentsModule,
+    NzDropDownModule,
+    NzIconModule
   ],
   declarations:[RankComponent],
 })
