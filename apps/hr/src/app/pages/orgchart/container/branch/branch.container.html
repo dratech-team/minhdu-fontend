@@ -68,7 +68,7 @@
                 (click)='detailBranch(branch)'
                 [contextMenu]='childChip'
                 [contextMenuSubject]='{position: position, branch: branch}'
-                [style]='{"background": i%2  === 0? "#dddddd":"white"}'
+                [style]='{"background": formGroup.get("position")?.value === position.name ? "red" : i%2  === 0? "#dddddd":"white"}'
                 *ngFor='let position of branch.positions'>
                 {{position.name}}
               </mat-chip>
