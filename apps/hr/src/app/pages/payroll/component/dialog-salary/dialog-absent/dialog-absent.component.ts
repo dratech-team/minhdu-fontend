@@ -98,7 +98,9 @@ export class DialogAbsentComponent implements OnInit {
         rate: [1, Validators.required],
         note: [],
         forgot: [],
-        partialDay: []
+        partialDay: [],
+        constraintHoliday: [],
+        constraintOvertime: [],
       });
     }
   }

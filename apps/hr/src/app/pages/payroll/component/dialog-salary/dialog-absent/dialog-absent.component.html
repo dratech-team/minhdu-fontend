@@ -69,8 +69,12 @@
             </nz-radio-group>
           </div>
           <div class='mb-3'>
-            <span class='font-weight-bold'>Ràng buộc ngày lễ</span>
-            <nz
+            <span class='font-weight-bold'>Ràng buộc ngày lễ:</span>
+            <label nz-checkbox nzDisabled="true" class="ml-2" formControlName="constraintHoliday"></label>
+          </div>
+          <div class='mb-3'>
+            <span class='font-weight-bold'>Ràng buộc theo tăng ca:</span>
+            <label nz-checkbox nzDisabled="true" class="ml-2" formControlName="constraintOvertime"></label>
           </div>
           <div class='mb-3'>
             <div [formGroup]='formGroup' class='col-12'>
