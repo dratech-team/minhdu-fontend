@@ -13,7 +13,7 @@ import {
   selectTotalTemplateSalary
 } from '../../+state/teamlate-salary/template-salary.selector';
 import {UnitsConstant} from '@minhdu-fontend/constants';
-import {TemplateSalary} from "../../+state/teamlate-salary/template-salary";
+import {SalarySetting} from "../../+state/teamlate-salary/salary-setting";
 import {blockSalariesConstant} from "../../constants";
 
 
@@ -68,7 +68,7 @@ export class SalaryComponent implements OnInit {
   }
 
 
-  addTemplateSalary(template?: TemplateSalary) {
+  addTemplateSalary(template?: SalarySetting) {
     this.dialog.open(TemplateSalaryComponent, {
       width: 'fit-content',
       data: {template}

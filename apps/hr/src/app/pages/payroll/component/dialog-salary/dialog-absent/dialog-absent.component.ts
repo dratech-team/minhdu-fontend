@@ -12,7 +12,7 @@ import {SalaryService} from '../../../service/salary.service';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {selectorAllTemplate} from "../../../../template/+state/teamlate-salary/template-salary.selector";
 import {SessionConstant} from "../../../constants";
-import {PriceTypeConstant} from "../../../../template/constants/price-type.constant";
+import {referencesTypeConstant} from "../../../../template/constants/references-type.constant";
 
 @Component({
   templateUrl: 'dialog-absent.component.html'
@@ -33,7 +33,7 @@ export class DialogAbsentComponent implements OnInit {
   salariesSelected: SalaryPayroll[] = [];
   titleSession = SessionConstant
   partialDayEnum = PartialDayEnum
-  priceTypeConstant = PriceTypeConstant
+  priceTypeConstant = referencesTypeConstant
   indexStep = 1;
 
   constructor(

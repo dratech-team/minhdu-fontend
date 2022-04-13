@@ -1,17 +1,17 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { TemplateSalary } from './template-salary';
+import { SalarySetting } from './salary-setting';
 import { TemplateSalaryAction } from './template-salary.action';
 
 
-export interface templateSalaryState extends EntityState<TemplateSalary> {
+export interface templateSalaryState extends EntityState<SalarySetting> {
   loaded: boolean,
   added?: boolean,
   adding?: boolean,
   total: number
 }
 
-export const adapter: EntityAdapter<TemplateSalary> = createEntityAdapter<TemplateSalary>();
+export const adapter: EntityAdapter<SalarySetting> = createEntityAdapter<SalarySetting>();
 
 export const initialTemplateBasic = adapter.getInitialState({ loaded: false, added: false, adding: false, total: 0 });
 

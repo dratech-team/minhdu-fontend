@@ -1,10 +1,10 @@
 import { createAction, props } from '@ngrx/store';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { TemplateSalary, TemplateSalaryDTO } from './template-salary';
+import { SalarySetting, TemplateSalaryDTO } from './salary-setting';
 
 export const AddTemplate = createAction(
   '[Add_Template_Salary] Add Template Salary',
-  props<{ template: Partial<TemplateSalary> }>()
+  props<{ template: Partial<SalarySetting> }>()
 );
 
 
@@ -14,7 +14,7 @@ export const HandelTemplateError = createAction(
 
 export const AddTemplateSuccess = createAction(
   '[Add_Template_Salary] Add Template Salary success',
-  props<{ template: TemplateSalary }>()
+  props<{ template: SalarySetting }>()
 );
 export const loadALlTemplate = createAction(
   '[LOAD_Template_Salary] Load All Template Salary',
@@ -27,7 +27,7 @@ export const loadInit = createAction(
 );
 export const loadInitTempLateSuccess = createAction(
   '[Load_Template_Salary] Load Template Salary Success',
-  props<{ templateSalary: TemplateSalary[], total: number }>()
+  props<{ templateSalary: SalarySetting[], total: number }>()
 );
 
 
@@ -37,12 +37,12 @@ export const loadMoreTemplateBasic = createAction(
 );
 export const loadMoreTempLateSuccess = createAction(
   '[Load_Template_Salary] Load More Template Salary Success',
-  props<{ templateSalary: TemplateSalary[], total: number }>()
+  props<{ templateSalary: SalarySetting[], total: number }>()
 );
 
 export const updateTemplate = createAction(
   '[UPDATE_Template_Salary] Update Template Salary',
-  props<{ id: number, template: Partial<TemplateSalary> }>()
+  props<{ id: number, template: Partial<SalarySetting> }>()
 );
 
 export const deleteTemplate = createAction(
