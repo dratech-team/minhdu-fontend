@@ -11,7 +11,7 @@ import * as lodash from 'lodash';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {salaryReference} from "../../enums";
 import {blockSalariesConstant} from "../../constants";
-import {SalarySetting} from "../../+state/teamlate-salary/salary-setting";
+import {SalaryConstraint, SalarySetting} from "../../+state/teamlate-salary/salary-setting";
 
 @Component({
   templateUrl: 'template-salary.component.html'
@@ -22,10 +22,11 @@ export class TemplateSalaryComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
   blockSalary = blockSalariesConstant;
+  salaryTypeEnum = SalaryTypeEnum
   branches = new FormControl();
   branchesSelected: Branch[] = [];
   constraint: SalaryTypeEnum[] = []
-  compareFN = (o1: any, o2: any) => (o1.type == o2.type || o1 === o2.type);
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type || o1.type === o2.type : o1 === o2);
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { template: SalarySetting, isUpdate: boolean },
@@ -38,31 +39,23 @@ export class TemplateSalaryComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
-    if (this.data?.template) {
-      this.formGroup = this.formBuilder.group({
-        block: [this.data.template.type, Validators.required],
-        price: [this.data.template.price],
-        title: [this.data.template.title],
-        reference: [this.data.template.reference],
-        workday: [],
-        rate: [this.data.template.rate],
-        constraintHoliday: [],
-        constraintOvertime: [],
-      });
-    } else {
-      this.formGroup = this.formBuilder.group({
-        block: ['', Validators.required],
-        price: [],
-        recipes: [],
-        reference: [{value: salaryReference.PRICE}],
-        title: [],
-        dive: [],
-        workday: [null],
-        rate: [],
-        constraintHoliday: [],
-        constraintOvertime: [],
-      });
-    }
+
+    const template = this.data?.template
+    this.formGroup = this.formBuilder.group({
+      block: [template?.type === SalaryTypeEnum.BASIC_INSURANCE ? this.blockSalary.find(block => block.type === SalaryTypeEnum.BASIC) :
+        this.blockSalary.find(block => block.type === template?.type)
+        , Validators.required],
+      price: [template?.price],
+      recipes: [],
+      reference: [''],
+      title: [template?.title, Validators.required],
+      dive: [],
+      workday: [template?.workday],
+      rate: [template?.rate, Validators.required],
+      constraintHoliday: [template?.constraints ? this.checkConstraint(template?.constraints, SalaryTypeEnum.HOLIDAY) : false],
+      constraintOvertime: [template?.constraints  ? this.checkConstraint(template?.constraints , SalaryTypeEnum.OVERTIME) : false],
+      insurance: [template?.type === SalaryTypeEnum.BASIC_INSURANCE]
+    });
     this.formGroup.get('block')?.valueChanges.subscribe(item => {
       if (item.type === SalaryTypeEnum.OVERTIME || item.type === SalaryTypeEnum.HOLIDAY) {
         this.message.info('Chức năng đang được phát triền')
@@ -71,7 +64,15 @@ export class TemplateSalaryComponent implements OnInit {
     })
   }
 
-  get f() {
+  checkConstraint(constraints: SalaryConstraint[] | undefined, constraint: SalaryTypeEnum) {
+    if (!constraints) {
+      return false
+    } else {
+      return constraints.some(val => val.type === constraint)
+    }
+  }
+
+  get checkValid() {
     return this.formGroup.controls;
   }
 
@@ -89,22 +90,35 @@ export class TemplateSalaryComponent implements OnInit {
     }
     const template = {
       title: value.title,
-      settingType: value.block.type,
+      settingType: value.block.type === SalaryTypeEnum.BASIC && value.insurance ?
+        SalaryTypeEnum.BASIC_INSURANCE :
+        value.block.type,
       rate: value.rate,
-      constraint: this.constraint
+      price: value.price
     };
     if (value.block.type === SalaryTypeEnum.ABSENT) {
+      if (!value.reference) {
+        return this.message.warning('Chưa chọn tổng của ')
+      }
+      Object.assign(template, {
+        constraint: this.constraint
+      })
       if (value.reference.value === salaryReference.PRICE) {
+        if (!value.price) {
+          return this.message.warning('Chưa nhập giá tiền')
+        }
         Object.assign(template, {
           workday: value.workday ? value.workday : null,
-          price: value.price,
           types: null,
         })
       } else {
+        if (!value.recipes) {
+          return this.message.warning('Chưa chọn loại lương')
+        }
         Object.assign(template, {
           workday: value.workday ? value.workday : null,
           price: null,
-          types: value.recipes
+          types: value.recipes.map((recipe: any) => recipe.value),
         })
       }
     }

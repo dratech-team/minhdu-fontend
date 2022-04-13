@@ -9,11 +9,13 @@ export interface SalarySetting {
   type: SalaryTypeEnum,
   rate: number,
   reference: salaryReference,
-  constraints: SalaryConstraint
+  constraints: SalaryConstraint[]
   positionId: any,
   branches?: Branch[]
   partialDay: PartialDayEnum,
   unit: DatetimeUnitEnum
+  types: SalaryTypeEnum [],
+  workday?: number
 }
 
 export interface SalaryConstraint {

@@ -25,12 +25,20 @@ interface BlockSalary {
     disabled?: boolean,
     show?: boolean
   }
+  insurance? :{
+    disabled?: boolean,
+    show?: boolean
+  }
 }
 
 export const blockSalariesConstant: BlockSalary[] = [
   {
     title: 'Lương cơ bản',
     type: SalaryTypeEnum.BASIC,
+    insurance:{
+      show: true,
+      disabled: false
+    },
     rate: {
       disabled: false,
       show: true

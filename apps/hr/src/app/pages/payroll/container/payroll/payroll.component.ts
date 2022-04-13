@@ -143,7 +143,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   pickRangeDayAllowance = new Subject<boolean>();
   pickRangeDayStay = new Subject<boolean>();
   pickRangeDayBasic = new Subject<boolean>();
-  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type : o1.type === o2.type);
 
 
   constructor(
