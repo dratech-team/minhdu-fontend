@@ -29,7 +29,7 @@ export class TemplateSalaryComponent implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart));
   branchesSelected: Branch[] = [];
   priceTypeEnum = PriceTypeEnum
-  compareFN = (o1: any, o2: any) => (o1.type == o2.type|| o1 === o2.type);
+  compareFN = (o1: any, o2: any) => (o1.type == o2.type || o1 === o2.type);
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -52,6 +52,7 @@ export class TemplateSalaryComponent implements OnInit {
         title: [this.data.template.title],
         priceType: [this.data.template?.priceType],
         days: [],
+        rate: [],
       });
     } else {
       this.formGroup = this.formBuilder.group({
@@ -60,6 +61,7 @@ export class TemplateSalaryComponent implements OnInit {
         priceType: [PriceTypeEnum.INPUT],
         title: [],
         days: [1],
+        rate: []
       });
     }
 

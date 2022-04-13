@@ -19,6 +19,14 @@
           <div><span class='main-title'>Tiêu đề</span><span class='star'>*</span></div>
           <input class='form-control mt-1' type='text' formControlName='title'>
         </div>
+        <div class=' main-popup mt-2' *ngIf="formGroup.value.block.showRate">
+          <div><span class='main-title'>Hệ số</span><span class='star'>*</span></div>
+          <input nz-input type='number' formControlName='rate'
+                 [ngStyle]="{
+                 'pointer-events':formGroup.value.block.showRate.disable ? 'none': 'auto',
+                 'background':formGroup.value.block.showRate.disable ? '#dddddd':'white'
+                  }">
+        </div>
         <div *ngIf="formGroup.value.block.priceTypes">
           <div class="mt-2">
             <div><span class='main-title'>Khấu trừ theo</span><span class='star'>*</span></div>
@@ -40,7 +48,7 @@
             </div>
           </div>
         </div>
-        <div class=' main-popup mt-2' *ngIf="formGroup.value.priceType === priceTypeEnum.INPUT">
+        <div class=' main-popup mt-2' *ngIf="formGroup.value.block.showPrice && formGroup.value.priceType === priceTypeEnum.INPUT">
           <div><span class='main-title'>Đơn giá</span></div>
           <input class='form-control mt-1' type='text' formControlName='price' placeholder='200,000' inputCurrency>
         </div>
