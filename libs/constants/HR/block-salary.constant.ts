@@ -9,20 +9,16 @@ export const BlockSalariesConstant = [
     title: 'Phụ cấp lương',
     type: SalaryTypeEnum.STAY
   },
-  // {
-  //   title: 'Phụ cấp khác ',
-  //   type: SalaryTypeEnum.BASIC
-  // },
-  // {
-  //   title: 'Khấu trừ vắng',
-  //   type: SalaryTypeEnum.ABSENT
-  // },
-  // {
-  //   title: 'Không đi làm',
-  //   type: SalaryTypeEnum.DAY_OFF
-  // },
-  // {
-  //   title: 'Khấu trừ đi sớm về trễ',
-  //   type: SalaryTypeEnum.DAY_OFF
-  // }
+  {
+    title: 'Khấu trừ',
+    type: SalaryTypeEnum.ABSENT
+  },
+  {
+    title: 'Tăng ca',
+    type: SalaryTypeEnum.OVERTIME
+  },
+  {
+    title: 'Ngày lễ',
+    type: SalaryTypeEnum.HOLIDAY
+  },
 ];
