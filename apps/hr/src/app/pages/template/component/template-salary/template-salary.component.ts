@@ -58,7 +58,7 @@ export class TemplateSalaryComponent implements OnInit {
       this.formGroup = this.formBuilder.group({
         block: ['', Validators.required],
         price: [],
-        priceType: [PriceTypeEnum.INPUT],
+        priceType: [{value: PriceTypeEnum.INPUT}],
         title: [],
         days: [1],
         rate: []

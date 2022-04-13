@@ -1,64 +1,100 @@
-import { SalaryTypeEnum } from '@minhdu-fontend/enums';
+import {SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {PriceTypeConstant} from "./price-type.constant";
 import {PriceTypeEnum} from "../enums";
 
-interface blockSalary{
+interface blockSalary {
   title: string,
   type: SalaryTypeEnum,
-  showRate?:{
-    disabled: boolean
+  rate?: {
+    disabled?: boolean,
+    show?: boolean
   }
-  constraintHoliday?: boolean,
-  constraintOvertime?: boolean
-  priceTypes?:{
+  constraintHoliday?: {
+    disabled?: boolean,
+    show?: boolean
+  },
+  constraintOvertime?: {
+    disabled?: boolean,
+    show?: boolean
+  }
+  priceTypes?: {
     name: string,
     value: PriceTypeEnum
   }[],
-  showPrice?: boolean
+  price?: {
+    disabled?: boolean,
+    show?: boolean
+  }
 }
 
-export const BlockSalariesConstant:blockSalary[] = [
+export const BlockSalariesConstant: blockSalary[] = [
   {
     title: 'Lương cơ bản',
     type: SalaryTypeEnum.BASIC,
-    showRate:{
-      disabled: false
+    rate: {
+      disabled: false,
+      show: true
     },
-    showPrice: true
+    price: {
+      disabled: false,
+      show: true
+    }
   },
   {
     title: 'Phụ cấp lương',
     type: SalaryTypeEnum.STAY,
-    showRate:{
-      disabled: false
+    rate: {
+      disabled: false,
+      show: true
     },
-    showPrice: true
+    price: {
+      disabled: false,
+      show: true
+    }
   },
   {
     title: 'Khấu trừ',
     type: SalaryTypeEnum.ABSENT,
-    priceTypes:PriceTypeConstant,
-    constraintHoliday: true,
-    showRate:{
-      disabled: false
+    priceTypes: PriceTypeConstant,
+    constraintHoliday: {
+      disabled: false,
+      show: true
     },
-    showPrice: true
+    rate: {
+      disabled: false,
+      show: true
+    },
+    price: {
+      disabled: false,
+      show: true
+    }
   },
   {
     title: 'Tăng ca',
     type: SalaryTypeEnum.OVERTIME,
-    constraintOvertime: true,
-    showRate:{
-      disabled: false
+    constraintOvertime: {
+      disabled: false,
+      show: true
     },
-    showPrice: true
+    rate: {
+      disabled: false,
+      show: true
+    },
+    price: {
+      disabled: false,
+      show: true
+    }
   },
   {
     title: 'Ngày lễ',
     type: SalaryTypeEnum.HOLIDAY,
-    showRate:{
-      disabled: false
+    rate: {
+      disabled: false,
+      show: true
     },
-    showPrice: true
+    price: {
+      disabled: false,
+      show: true
+    }
   },
 ];
