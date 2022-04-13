@@ -14,7 +14,7 @@ import {
 } from '../../+state/teamlate-salary/template-salary.selector';
 import {UnitsConstant} from '@minhdu-fontend/constants';
 import {TemplateSalary} from "../../+state/teamlate-salary/template-salary";
-import {BlockSalariesConstant} from "../../constants";
+import {blockSalariesConstant} from "../../constants";
 
 
 @Component({
@@ -28,7 +28,7 @@ export class SalaryComponent implements OnInit {
   type = SalaryTypeEnum;
   unit = DatetimeUnitEnum;
   unitsConstant = UnitsConstant;
-  blockSalaries = BlockSalariesConstant.concat({title: 'Tất cả', type: SalaryTypeEnum.ALL});
+  blockSalaries = blockSalariesConstant.concat({title: 'Tất cả', type: SalaryTypeEnum.ALL});
   pageSize = 30;
   pageIndexInit = 0;
   formGroup = new FormGroup(

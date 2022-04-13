@@ -2,7 +2,7 @@ import {SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {PriceTypeConstant} from "./price-type.constant";
 import {PriceTypeEnum} from "../enums";
 
-interface blockSalary {
+interface BlockSalary {
   title: string,
   type: SalaryTypeEnum,
   rate?: {
@@ -27,7 +27,7 @@ interface blockSalary {
   }
 }
 
-export const BlockSalariesConstant: blockSalary[] = [
+export const blockSalariesConstant: BlockSalary[] = [
   {
     title: 'Lương cơ bản',
     type: SalaryTypeEnum.BASIC,

@@ -11,9 +11,8 @@ import * as lodash from 'lodash';
 import {searchAutocomplete} from '@minhdu-fontend/utils';
 import {startWith} from 'rxjs/operators';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {PriceTypeConstant} from "../../constants/price-type.constant";
 import {PriceTypeEnum} from "../../enums";
-import {BlockSalariesConstant} from "../../constants";
+import {blockSalariesConstant} from "../../constants";
 
 @Component({
   templateUrl: 'template-salary.component.html'
@@ -22,9 +21,7 @@ export class TemplateSalaryComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
   formGroup!: FormGroup;
   submitted = false;
-  salaryTypeEnum = SalaryTypeEnum;
-  blockSalary = BlockSalariesConstant;
-  priceTypeConstant = PriceTypeConstant
+  blockSalary = blockSalariesConstant;
   branches = new FormControl();
   branches$ = this.store.pipe(select(getAllOrgchart));
   branchesSelected: Branch[] = [];
