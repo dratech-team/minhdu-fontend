@@ -1,4 +1,6 @@
 export enum PriceTypeEnum {
-  PRICE = 'PRICE',
-  NORMAL = 'NORMAL'
+  INPUT = 'INPUT',
+  STANDARD = 'STANDARD',
+  BASIC = 'BASIC',
+  INSURANCE = 'INSURANCE'
 }

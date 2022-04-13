@@ -65,7 +65,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
           this.data?.template?.employeeType
           : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
         price: [this.data?.template?.price],
-        priceType: [this.data?.template?.price ? PriceTypeEnum.PRICE : PriceTypeEnum.NORMAL, Validators.required],
+        priceType: [this.data?.template?.price ? PriceTypeEnum.INPUT : PriceTypeEnum.STANDARD, Validators.required],
         unit: [this.data?.template?.unit, Validators.required],
         rate: [this.data?.template?.rate ? this.data.template.rate : 1, Validators.required],
         note: [this.data?.template?.note]
@@ -75,7 +75,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
         title: ['', Validators.required],
         employeeType: [EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
         price: [''],
-        priceType: [PriceTypeEnum.PRICE, Validators.required],
+        priceType: [PriceTypeEnum.INPUT, Validators.required],
         unit: ['', Validators.required],
         rate: [1, Validators.required],
         note: ['']
@@ -86,7 +86,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     this.formGroup.get('employeeType')?.valueChanges.subscribe(val => {
       if (val === EmployeeType.EMPLOYEE_SEASONAL) {
         this.formGroup.get('unit')?.patchValue(DatetimeUnitEnum.HOUR);
-        this.formGroup.get('priceType')?.patchValue(PriceTypeEnum.PRICE)
+        this.formGroup.get('priceType')?.patchValue(PriceTypeEnum.INPUT)
       }
     });
 
@@ -123,7 +123,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
       return this.message.error('đơn vị phải chọn không được nhập');
     }
     const value = this.formGroup.value;
-    if (value.priceType === PriceTypeEnum.PRICE && !value.price) {
+    if (value.priceType === PriceTypeEnum.INPUT && !value.price) {
       return this.message.error('Chưa nhập mức tăng ca')
     }
     const template = {
@@ -134,7 +134,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
       unit: value.unit,
       note: value.note,
       rate: value.rate,
-      price: value.priceType === PriceTypeEnum.PRICE ?
+      price: value.priceType === PriceTypeEnum.INPUT ?
         (typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price) : null,
     } as ReqOvertime;
     if (this.data?.isUpdate) {
