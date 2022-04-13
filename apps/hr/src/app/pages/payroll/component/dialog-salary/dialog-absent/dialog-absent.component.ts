@@ -12,12 +12,17 @@ import * as moment from 'moment';
 import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
 import {SalaryService} from '../../../service/salary.service';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {selectorAllTemplate} from "../../../../template/+state/teamlate-salary/template-salary.selector";
+import {SessionConstant} from "../../../constants";
 
 @Component({
   templateUrl: 'dialog-absent.component.html'
 })
 export class DialogAbsentComponent implements OnInit {
   @ViewChild('titleAbsent') titleAbsent!: ElementRef;
+  adding$ = this.store.select(selectedAddingPayroll)
+  @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
+  templateSalary$ = this.store.select(selectorAllTemplate)
   numberChars = new RegExp('[^0-9]', 'g');
   type = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
@@ -29,8 +34,7 @@ export class DialogAbsentComponent implements OnInit {
   firstDayInMonth!: string | null;
   lastDayInMonth!: string | null;
   salariesSelected: SalaryPayroll[] = [];
-  adding$ = this.store.select(selectedAddingPayroll)
-  @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
+  titleSession = SessionConstant
 
   constructor(
     public readonly datePipe: DatePipe,
@@ -43,26 +47,6 @@ export class DialogAbsentComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data?: any
   ) {
   }
-
-  //DUMMY DATA Không thay đổi thứ tự index hiện tại -> thêm title ở cuối mảng
-  titleAbsents = [
-    {title: 'Vắng', unit: this.datetimeUnit.DAY, type: this.type.ABSENT},
-    {
-      title: 'Không đi làm',
-      unit: this.datetimeUnit.DAY,
-      type: this.type.DAY_OFF
-    },
-    {title: 'Đi trễ', unit: this.datetimeUnit.MINUTE, type: this.type.ABSENT},
-    {title: 'Về Sớm', unit: this.datetimeUnit.MINUTE, type: this.type.ABSENT},
-    {title: 'Quên bổ sung công', unit: this.datetimeUnit.TIMES, type: this.type.ABSENT},
-    {title: 'Khác', unit: this.datetimeUnit.OTHER, type: this.type.DEDUCTION}
-  ];
-  //Dummy data select các buổi trong ngày
-  titleSession = [
-    {title: 'buổi sáng', type: PartialDayEnum.MORNING, times: partialDay.PARTIAL},
-    {title: 'buổi chiều', type: PartialDayEnum.AFTERNOON, times: partialDay.PARTIAL},
-    {title: 'nguyên ngày', type: PartialDayEnum.ALL_DAY, times: partialDay.ALL_DAY}
-  ];
 
   ngOnInit(): void {
     if (!this.data?.updateMultiple) {

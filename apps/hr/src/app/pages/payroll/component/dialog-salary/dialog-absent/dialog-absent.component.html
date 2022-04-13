@@ -24,114 +24,22 @@
                 <span>Khoảng khấu trừ </span>
                 <span class='star'>*</span>
               </div>
-              <div class=' my-2 col-12 ' *ngIf='!data.isUpdate'>
-                <mat-select class='form-control' [value]='selectedIndex'>
-                  <mat-option *ngFor='let item of titleAbsents; let i = index'
-                              [value]='i'
-                              (onSelectionChange)='onSelectAbsent(i)'
-                              (click)='onSelectAbsent(i)'
-                  >{{item.title}}</mat-option>
-                </mat-select>
-              </div>
-              <div *ngIf='data.isUpdate' class='col-12'>
-                <div class='form-control ' style='background: #e4e7ea'> {{data.salary.title}}</div>
+              <div class=' my-2 col-12 '>
+                <nz-select style="width: 100%" formControlName="title" >
+                  <nz-option *ngFor='let item of templateSalary$|async'
+                              [nzValue]="item">{{item.title}}</nz-option>
+                </nz-select>
               </div>
             </div>
-            <div class='row mb-3 '
-                 *ngIf='( ((selectedIndex || selectedIndex === 0)
-            && titleAbsents[selectedIndex]?.unit === datetimeUnit.DAY)|| data?.salary?.unit === datetimeUnit.DAY )'>
-              <div class='col-6'>
+            <div class='row mb-3 '>
                 <span class=' title-item mb-1'>Buổi</span>
-                <mat-select class='form-control' formControlName='partialDay'>
-                  <mat-option *ngFor='let item of titleSession' [value]='item.type'>{{item.title}}</mat-option>
-                </mat-select>
-              </div>
+                <nz-select style="width: 100%" formControlName='partialDay'>
+                  <nz-option *ngFor='let item of titleSession' [nzValue]='item.type'>{{item.title}}</nz-option>
+                </nz-select>
             </div>
-            <div class='row mb-3 d-flex'
-                 *ngIf='(selectedIndex|| selectedIndex === 0 ) && titleAbsents[selectedIndex]?.unit  === datetimeUnit.MINUTE||unitMinute '>
-              <div [formGroup]='formGroup' class='col-6'>
-                <span class='title-item mb-1'>số giờ </span>
-                <input class='form-control' type='number' formControlName='times'>
-              </div>
-              <div [formGroup]='formGroup' class='col-5 ml-1'>
-                <span class='title-item'>số phút</span>
-                <input class='form-control' type='number' formControlName='minutes'>
-              </div>
-            </div>
-            <div class='row mb-3'
-                 *ngIf='( (selectedIndex || selectedIndex === 0)  && titleAbsents[selectedIndex]?.unit === datetimeUnit.TIMES)
-            || data?.salary?.unit === datetimeUnit.TIMES'>
-              <div [formGroup]='formGroup' class='col-12'>
-                <span class='title-item'>Số lần</span>
-                <input class='form-control' type='number' formControlName='times'>
-              </div>
-            </div>
-            <div *ngIf='( (selectedIndex || selectedIndex === 0)  && titleAbsents[selectedIndex]?.unit === datetimeUnit.OTHER)
-            || data?.salary?.type === "DEDUCTION" '>
-              <div class='row mb-3' *ngIf='!data.isUpdate'>
-                <div [formGroup]='formGroup' class='col-12'>
-                  <span class='title-item'>Tên khấu trừ</span> <span class='star'>*</span>
-                  <input class='form-control' type='text' formControlName='title'>
-                </div>
-              </div>
-              <div class='row mb-3'>
-                <div [formGroup]='formGroup' class='col-12'>
-                  <span class='title-item'>Giá tiền</span><span class='star'>*</span>
-                  <input type='text' class='form-control  px-1' placeholder='200,000' formControlName='price'
-                         inputCurrency>
-                </div>
-              </div>
-            </div>
-            <div class='row my-2 d-flex align-items-center'
-                 *ngIf='data?.salary?.unit !== datetimeUnit.TIMES '>
-              <div class=' title-item col-6'>
-                <mat-form-field
-                  *ngIf='((selectedIndex || selectedIndex === 0)&&
-                              (( titleAbsents[selectedIndex].unit ===datetimeUnit.DAY &&formGroup.value.partialDay === "ALL_DAY")||
-                              titleAbsents[selectedIndex].unit ===datetimeUnit.OTHER))else inputDatetime'
-                  appearance='fill'>
-                  <mat-label>Chọn từ ngày đến ngày</mat-label>
-                  <mat-date-range-input [formGroup]='formGroup' [rangePicker]='picker'
-                                        [min]='firstDayInMonth' [max]='lastDayInMonth'>
-                    <input matStartDate formControlName='startedAt' placeholder='ngày bắt đầu'>
-                    <input matEndDate formControlName='endedAt' placeholder='ngày kết thúc'>
-                  </mat-date-range-input>
-                  <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
-                  <mat-date-range-picker #picker></mat-date-range-picker>
-                  <div
-                    *ngIf='submitted && checkValid.startedAt.errors?.required && checkValid.endedAt.errors?.required '
-                    style='width: 100%;
-                   margin-top: 0.25rem;
-                   font-size: 80%;
-                   color: #f86c6b'>
-                    <div>Chưa chọn từ ngày đến ngày</div>
-                  </div>
-                </mat-form-field>
-                <ng-template #inputDatetime>
-                  <div *ngIf="(data?.isUpdate && data?.salary.unit !== datetimeUnit.TIMES )||
-                   (selectedIndex || selectedIndex === 0)&&( titleAbsents[selectedIndex].unit !==datetimeUnit.TIMES)">
-                    <span>Ngày</span>
-                    <span class='star'>*</span>
-                    <div class=' mb-3 mt-1' [formGroup]='formGroup'>
-                      <input type='date' class='form-control' formControlName='datetime'
-                             min='{{firstDayInMonth}}' max='{{lastDayInMonth}}'
-                             [ngClass]="{ 'is-invalid': submitted && checkValid.datetime.errors }">
-                      <div *ngIf='submitted && checkValid.datetime.errors?.required' class='invalid-feedback'>
-                        <div>Chưa chọn ngày</div>
-                      </div>
-                    </div>
-                  </div>
-                </ng-template>
-
-              </div>
-              <div [formGroup]='formGroup'
-                   *ngIf='selectedIndex  === 0 ||unitAbsent' class='col-5 ml-3'>
-                <mat-checkbox formControlName='forgot' labelPosition='before' class='example-margin'
-                              style='font-size: 12px'>
-                  Quên giấy phép
-                </mat-checkbox>
-              </div>
-            </div>
+            <div class='mb-3 d-flex'>
+              <nz-range-picker formControlName="rangeday" ></nz-range-picker>
+              
             <div class='row mb-3'>
               <div [formGroup]='formGroup' class='col-12'>
                 <span class='title-item'>Chú thích</span>
