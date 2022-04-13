@@ -1,17 +1,18 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { select, Store } from '@ngrx/store';
-import { SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { BlockSalariesConstant } from '@minhdu-fontend/constants';
-import { TemplateSalaryAction } from '../../+state/teamlate-salary/template-salary.action';
-import { selectTemplateAdded } from '../../+state/teamlate-salary/template-salary.selector';
-import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { Branch } from '@minhdu-fontend/data-models';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {select, Store} from '@ngrx/store';
+import {SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {TemplateSalaryAction} from '../../+state/teamlate-salary/template-salary.action';
+import {selectTemplateAdded} from '../../+state/teamlate-salary/template-salary.selector';
+import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {Branch} from '@minhdu-fontend/data-models';
 import * as lodash from 'lodash';
-import { searchAutocomplete } from '@minhdu-fontend/utils';
-import { startWith } from 'rxjs/operators';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {searchAutocomplete} from '@minhdu-fontend/utils';
+import {startWith} from 'rxjs/operators';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {PriceTypeEnum} from "../../enums";
+import {blockSalariesConstant} from "../../constants";
 
 @Component({
   templateUrl: 'template-salary.component.html'
@@ -20,11 +21,12 @@ export class TemplateSalaryComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
   formGroup!: FormGroup;
   submitted = false;
-  type = SalaryTypeEnum;
-  blockSalary = BlockSalariesConstant;
+  blockSalary = blockSalariesConstant;
   branches = new FormControl();
   branches$ = this.store.pipe(select(getAllOrgchart));
   branchesSelected: Branch[] = [];
+  priceTypeEnum = PriceTypeEnum
+  compareFN = (o1: any, o2: any) => (o1.type == o2.type || o1 === o2.type);
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -42,17 +44,31 @@ export class TemplateSalaryComponent implements OnInit {
         this.branchesSelected = [...this.data.template?.branches];
       }
       this.formGroup = this.formBuilder.group({
-        type: [this.data.template.type, Validators.required],
+        block: [this.data.template.type, Validators.required],
         price: [this.data.template.price],
-        title: [this.data.template.title]
+        title: [this.data.template.title],
+        priceType: [this.data.template?.priceType],
+        days: [],
+        rate: [],
       });
     } else {
       this.formGroup = this.formBuilder.group({
-        type: [SalaryTypeEnum.BASIC, Validators.required],
+        block: ['', Validators.required],
         price: [],
-        title: ['Lương cơ bản trích BH']
+        priceType: [{value: PriceTypeEnum.INPUT}],
+        title: [],
+        days: [1],
+        rate: []
       });
     }
+
+    this.formGroup.get('block')?.valueChanges.subscribe(item => {
+      if (item.type === SalaryTypeEnum.OVERTIME || item.type === SalaryTypeEnum.HOLIDAY) {
+        this.message.info('Chức năng đang được phát triền')
+        this.formGroup.get('block')?.setValue('')
+      }
+    })
+
     this.branches$ = searchAutocomplete(
       this.branches.valueChanges.pipe(startWith(this.data?.template?.branch?.name || '')),
       this.branches$
@@ -74,8 +90,8 @@ export class TemplateSalaryComponent implements OnInit {
     const value = this.formGroup.value;
     const template = {
       title: value.title,
-      price: typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
-      type: value.type,
+      price: value.price,
+      type: value.block.type,
       branchIds: this.branchesSelected.map(val => val.id)
     };
     if (this.data?.isUpdate) {
@@ -86,7 +102,7 @@ export class TemplateSalaryComponent implements OnInit {
         }));
     } else {
       this.store.dispatch(TemplateSalaryAction.AddTemplate(
-        { template: template }));
+        {template: template}));
     }
     this.store.pipe(select(selectTemplateAdded)).subscribe(added => {
       if (added) {

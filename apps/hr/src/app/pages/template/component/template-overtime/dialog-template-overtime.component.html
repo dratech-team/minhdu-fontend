@@ -134,15 +134,15 @@
                "pointer-events":formGroup.value.employeeType ===employeeTypeEnum.EMPLOYEE_SEASONAL ?"none":"auto"
               }'
               formControlName="priceType">
-              <label nz-radio nzValue="{{priceTypeEnum.PRICE}}">Theo đơn giá</label>
-              <label nz-radio nzValue="{{priceTypeEnum.NORMAL}}">Theo lương chuẩn</label>
+              <label nz-radio nzValue="{{priceTypeEnum.INPUT}}">Theo đơn giá</label>
+              <label nz-radio nzValue="{{priceTypeEnum.STANDARD}}">Theo lương chuẩn</label>
             </nz-radio-group>
             <div *ngIf='submitted && f.priceType.errors?.required' class='invalid-feedback'>
               <div>Chưa chọn loại tăng ca</div>
             </div>
           </div>
         </div>
-        <div class=' main-popup mt-2' [formGroup]='formGroup' *ngIf="formGroup.value.priceType === priceTypeEnum.PRICE">
+        <div class=' main-popup mt-2' [formGroup]='formGroup' *ngIf="formGroup.value.priceType === priceTypeEnum.INPUT">
           <div><span class='main-title'>Mức tăng ca</span><span class='star'>*</span></div>
           <input class='form-control mt-1' type='text' formControlName='price' placeholder='200,000' inputCurrency
                  [ngClass]="{ 'is-invalid': submitted && f.price.errors?.required }">

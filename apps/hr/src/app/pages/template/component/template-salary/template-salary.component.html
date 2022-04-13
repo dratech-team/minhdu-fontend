@@ -1,4 +1,4 @@
-<div class='main-popup' style='width: 400px'>
+<div class='main-popup' style='width: 500px'>
   <div mat-dialog-close class='close-popup'>
     <span class='mr-1'> close</span>
     <div class='x-popup'>
@@ -11,54 +11,66 @@
       <div class='m-4'>
         <div class=' main-popup mt-2'>
           <div><span class='main-title'>Khối lương</span><span class='star'>*</span></div>
-          <mat-select formControlName='type' class='form-control'>
-            <mat-option *ngFor='let item of blockSalary' [value]='item.type'>{{item.title}}</mat-option>
-          </mat-select>
+          <nz-select formControlName='block' style="width: 100%" [compareWith]="compareFN">
+            <nz-option *ngFor='let item of blockSalary' [nzValue]='item' [nzLabel]="item.title"></nz-option>
+          </nz-select>
         </div>
         <div class=' main-popup mt-2'>
           <div><span class='main-title'>Tiêu đề</span><span class='star'>*</span></div>
           <input class='form-control mt-1' type='text' formControlName='title'>
         </div>
-<!--        <div class=' mt-2 d-flex flex-column' [formGroup]='formGroup'>-->
-<!--          <div>-->
-<!--            <span class='ml-1 title-item'>Đơn vị</span>-->
-<!--          </div>-->
-<!--          <div>-->
-<!--            <input class='form-control mt-1' type='text' matInput [formControl]='branches' [matAutocomplete]='branch'-->
-<!--                   style='width: 100%'-->
-<!--                   [matChipInputFor]='chipList'-->
-<!--                   #branchesInput>-->
-<!--            <mat-autocomplete #branch='matAutocomplete'>-->
-<!--              <mat-option *ngFor='let branch of branches$ | async'-->
-<!--                          [value]='!branch.id ? branchesInput.value : branch.name '-->
-<!--                          (onSelectionChange)='onSelectBranch($event, branch, branchesInput)'>-->
-<!--                {{branch.name}}-->
-<!--              </mat-option>-->
-<!--            </mat-autocomplete>-->
-<!--            <mat-chip-list #chipList>-->
-<!--              <mat-chip-->
-<!--                *ngFor='let branch of branchesSelected'-->
-<!--                [selectable]='true'-->
-<!--                [removable]='true'-->
-<!--                (removed)='removeBranchSelected(branch)'>-->
-<!--                {{branch.name}}-->
-<!--                <button class='btn' matChipRemove *ngIf='true'>-->
-<!--                  <mat-icon style='position: absolute; top:4px ; right: 5px'>cancel</mat-icon>-->
-<!--                </button>-->
-<!--              </mat-chip>-->
-<!--            </mat-chip-list>-->
-<!--          </div>-->
-<!--        </div>-->
-        <div class=' main-popup mt-2'>
-          <div><span class='main-title'>Mức lương</span></div>
-          <input class='form-control mt-1' type='text' formControlName='price' placeholder='200,000' inputCurrency>
+        <div class=' main-popup mt-2' *ngIf="formGroup.value.block.rate">
+          <div><span class='main-title'>Hệ số</span><span class='star'>*</span></div>
+          <input nz-input type='number' formControlName='rate'
+                 [ngStyle]="{
+                 'pointer-events':formGroup.value.block.rate.disabled ? 'none': 'auto',
+                 'background':formGroup.value.block.rate.disabled ? '#dddddd':'white'
+                  }">
         </div>
-      </div>
-      <div class='footer-popup row ml-2'>
-        <button (click)='onSubmit()' class=' btn btn-ok ml-2'>Lưu</button>
+        <div *ngIf="formGroup.value.block.priceTypes">
+          <div class="mt-2">
+            <div><span class='main-title'>Khấu trừ theo</span><span class='star'>*</span></div>
+            <nz-radio-group formControlName="priceType">
+              <label nz-radio *ngFor="let item of formGroup.value.block.priceTypes"
+                     [nzValue]="item">{{item.name}}</label>
+            </nz-radio-group>
+          </div>
+          <div class="mt-2" *ngIf="formGroup.value.priceType?.days ">
+            <div><span class='main-title'>Số ngày</span><span class='star'>*</span></div>
+            <div class="d-flex">
+              <nz-radio-group formControlName="days">
+                <label *ngFor="let item of formGroup.value.priceType.days" nz-radio
+                       [nzValue]="item.value">{{item.name}}</label>
+              </nz-radio-group>
+              <input placeholder="Nhập số ngày" style="width: 150px" *ngIf="formGroup.value.days === 'OTHER'"
+                     type="number"
+                     nz-input/>
+            </div>
+          </div>
+        </div>
+        <div class=' main-popup mt-2' *ngIf="
+        formGroup.value.block.price?.show && formGroup.value.priceType.value === priceTypeEnum.INPUT">
+          <div><span class='main-title'>Đơn giá</span></div>
+          <input class='form-control mt-1' type='text' formControlName='price' placeholder='200,000'
+                 [ngStyle]="{
+                 'pointer-events':formGroup.value.block.price.disabled ? 'none': 'auto',
+                 'background':formGroup.value.block.price.disabled ? '#dddddd':'white'
+                  }">
+        </div>
+        <div class='d-flex mt-2' *ngIf="formGroup.value.block.constraintHoliday?.show">
+          <div><span class='main-title'>Ràng buộc ngày lễ:</span></div>
+          <label class="ml-2" nz-checkbox [nzDisabled]="formGroup.value.block.constraintHoliday.disabled"></label>
+        </div>
+        <div class='d-flex mt-2' *ngIf="formGroup.value.block.constraintOvertime?.show">
+          <div><span class='main-title'>Ràng buộc tăng ca:</span></div>
+          <label class="ml-2" nz-checkbox [nzDisabled]="formGroup.value.block.constraintOvertime.disabled"></label>
+        </div>
       </div>
     </form>
   </mat-dialog-content>
+  <div class='row ml-2 mt-2'>
+    <button (click)='onSubmit()' class=' btn btn-ok ml-2'>Lưu</button>
+  </div>
 </div>
 
 
