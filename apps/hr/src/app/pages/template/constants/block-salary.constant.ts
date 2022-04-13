@@ -57,7 +57,7 @@ export const BlockSalariesConstant: blockSalary[] = [
     type: SalaryTypeEnum.ABSENT,
     priceTypes: PriceTypeConstant,
     constraintHoliday: {
-      disabled: false,
+      disabled: true,
       show: true
     },
     rate: {
