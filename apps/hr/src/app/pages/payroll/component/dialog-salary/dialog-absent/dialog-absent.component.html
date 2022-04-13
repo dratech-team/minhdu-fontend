@@ -1,106 +1,94 @@
-<div class='px-2  main-popup'>
-  <div mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='../../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
-    </div>
-  </div>
-  <mat-stepper linear>
-    <mat-step *ngIf='data.updateMultiple'>
-      <ng-template matStepLabel>Nhân viên đã chọn ({{salariesSelected.length}})</ng-template>
-      <app-table-salaries-selected
-        [salaries]='salariesSelected'
-        (EmitSalariesSelected)='changeSalariesSelected($event)'>
-      </app-table-salaries-selected>
-      <button class='btn btn-primary' matStepperNext>Tiếp theo</button>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>khấu trừ</ng-template>
-      <mat-dialog-content style='max-height: 40vh'>
-        <form [formGroup]='formGroup' class="px-2 pt-2">
-          <div class='mb-2'>
-            <span class="font-weight-bold">Khoảng khấu trừ </span><span class='star'>*</span>
-            <nz-select class="mt-1" style="width: 100%" formControlName="title">
-              <nz-option *ngFor='let item of templateSalary$|async'
-                         [nzValue]="item">{{item.title}}</nz-option>
-            </nz-select>
-          </div>
-          <div class='mb-3'>
-            <span class='font-weight-bold'>Buổi</span><span class='star'>*</span>
-            <nz-select class="mt-1" style="width: 100%" formControlName='partialDay'>
-              <nz-option *ngFor='let item of titleSession' [nzValue]='item' [nzLabel]="item.name"></nz-option>
-            </nz-select>
-          </div>
-          <div class='mb-3 row'>
-            <div class="col">
-              <span class="font-weight-bold">Từ ngày đến ngày</span>
-              <nz-range-picker formControlName="rangeDay"></nz-range-picker>
-            </div>
-            <div class="col d-flex">
-              <div class="col">
-                <span class="font-weight-bold">Từ giờ</span>
-                <nz-time-picker
-                  [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.OTHER"
-                  formControlName="startTime"
-                  nzFormat="HH:mm"
-                ></nz-time-picker>
-              </div>
-              <div class="col">
-                <span class="font-weight-bold">Đến giờ</span>
-                <nz-time-picker
-                  [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.OTHER"
-                  formControlName="endTime"
-                  nzFormat="HH:mm"
-                ></nz-time-picker>
-              </div>
-            </div>
-          </div>
-          <div class='mb-3'>
-              <span class='font-weight-bold'>Hệ số</span><span class="star">*</span>
-              <div class="form-control mt-1" style="background: #dddddd">{{formGroup.value.rate}}</div>
-          </div>
-          <div class='mb-3 d-flex flex-column'>
-            <div>
-              <span class='font-weight-bold'>Khấu trừ theo</span><span class="star">*</span>
-            </div>
-            <nz-radio-group>
-              <label nz-radio nzValue="A">A</label>
-              <label nz-radio nzValue="A">b</label>
-              <label nz-radio nzValue="A">c</label>
-              <label nz-radio nzValue="A">d</label>
-            </nz-radio-group>
-          </div>
-          <div class='mb-3'>
-            <span class='font-weight-bold'>Ràng buộc ngày lễ:</span>
-            <label nz-checkbox nzDisabled="true" class="ml-2" formControlName="constraintHoliday"></label>
-          </div>
-          <div class='mb-3'>
-            <span class='font-weight-bold'>Ràng buộc theo tăng ca:</span>
-            <label nz-checkbox nzDisabled="true" class="ml-2" formControlName="constraintOvertime"></label>
-          </div>
-          <div class='mb-3'>
-            <span class='font-weight-bold'>Đơn giá</span>
+<div class='px-2'>
+  <nz-steps [nzCurrent]="indexStep">
+    <nz-step *ngIf="data?.isUpdate" nzTitle="Nhân viên đã chọn"></nz-step>
+    <nz-step nzTitle="Bảng khấu trừ"></nz-step>
+  </nz-steps>
 
-            <input nz-input type="number" formControlName='price'>
+  <ng-template [ngIf]="indexStep === 0 && data?.isUpdate">
+    <app-table-salaries-selected
+      [salaries]='salariesSelected'
+      (EmitSalariesSelected)='changeSalariesSelected($event)'>
+    </app-table-salaries-selected>
+  </ng-template>
+  <ng-template [ngIf]="indexStep === 1">
+    <form [formGroup]='formGroup' class="px-2 pt-2">
+      <div class='mb-2'>
+        <span class="font-weight-bold">Khoảng khấu trừ </span><span class='star'>*</span>
+        <nz-select class="mt-1" style="width: 100%" formControlName="template">
+          <nz-option *ngFor='let item of templateSalary$|async'
+                     [nzValue]="item">{{item.title}}</nz-option>
+        </nz-select>
+      </div>
+      <div class='mb-3'>
+        <span class='font-weight-bold'>Buổi</span><span class='star'>*</span>
+        <nz-select class="mt-1" style="width: 100%" formControlName='partialDay'>
+          <nz-option *ngFor='let item of titleSession' [nzValue]='item' [nzLabel]="item.name"></nz-option>
+        </nz-select>
+      </div>
+      <div class='mb-3 row'>
+        <div class="col">
+          <span class="font-weight-bold">Từ ngày đến ngày</span>
+          <nz-range-picker formControlName="rangeDay"></nz-range-picker>
+        </div>
+        <div class="col d-flex">
+          <div class="col">
+            <span class="font-weight-bold">Từ giờ</span>
+            <nz-time-picker
+              [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.OTHER"
+              formControlName="startTime"
+              nzFormat="HH:mm"
+            ></nz-time-picker>
           </div>
-          <div class='mb-3'>
-              <span class='font-weight-bold'>Chú thích</span>
-              <input nz-input placeholder='Nhập chú thích ' formControlName='note'>
+          <div class="col">
+            <span class="font-weight-bold">Đến giờ</span>
+            <nz-time-picker
+              [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.OTHER"
+              formControlName="endTime"
+              nzFormat="HH:mm"
+            ></nz-time-picker>
           </div>
-          <div class='row'>
-            <button *ngIf='data.updateMultiple' class='btn btn-primary mr-2' matStepperPrevious>Trở lại</button>
-            <button class='btn btn-ok '>Lưu</button>
-            <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
-              ?
-            </button>
-          </div>
-        </form>
-      </mat-dialog-content>
-    </mat-step>
-  </mat-stepper>
+        </div>
+      </div>
+      <div class='mb-3'>
+        <span class='font-weight-bold'>Hệ số</span><span class="star">*</span>
+        <div class="form-control mt-1" style="background: #dddddd">{{formGroup.value.rate}}</div>
+      </div>
+      <div class='mb-3 d-flex flex-column'>
+        <div>
+          <span class='font-weight-bold'>Khấu trừ theo</span><span class="star">*</span>
+        </div>
+        <nz-radio-group nzDisabled="{{true}}">
+          <label nz-radio [nzValue]="item.value" *ngFor="let item of priceTypeConstant">{{item.name}}</label>
+        </nz-radio-group>
+      </div>
+      <div class='mb-3'>
+        <span class='font-weight-bold'>Ràng buộc ngày lễ:</span>
+        <label nz-checkbox nzDisabled="true" class="ml-2" formControlName="constraintHoliday"></label>
+      </div>
+      <div class='mb-3'>
+        <span class='font-weight-bold'>Ràng buộc theo tăng ca:</span>
+        <label nz-checkbox nzDisabled="true" class="ml-2" formControlName="constraintOvertime"></label>
+      </div>
+      <div class='mb-3'>
+        <span class='font-weight-bold'>Đơn giá</span>
+        <input nz-input type="number" formControlName='price'>
+      </div>
+      <div class='mb-3'>
+        <span class='font-weight-bold'>Chú thích</span>
+        <input nz-input placeholder='Nhập chú thích ' formControlName='note'>
+      </div>
+    </form>
+  </ng-template>
+  <div class="steps-action">
+    <button nz-button nzType="default" (click)="pre()" *ngIf="indexStep > 0 && data?.isUpdate">
+      <span>Trở lại</span>
+    </button>
+    <button nz-button nzType="default" (click)="next()" *ngIf="indexStep < 1">
+      <span>Tiếp theo</span>
+    </button>
+    <button nz-button nzType="primary" (click)="onSubmit()" *ngIf="indexStep === 1">
+      <span>Xác nhận</span>
+    </button>
+  </div>
 </div>
-<style>
-  ::ng-deep .mat-step-header[aria-selected="true"] {
-    height: 30px !important;
-  }
-</style>
+

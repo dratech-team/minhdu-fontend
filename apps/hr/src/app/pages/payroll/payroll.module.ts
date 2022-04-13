@@ -107,6 +107,8 @@ import {UpdateHolidayComponent} from "./component/dialog-salary/dialog-holiday/u
 import {NzTimePickerModule} from "ng-zorro-antd/time-picker";
 import {NzRadioModule} from "ng-zorro-antd/radio";
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
+import {NzButtonModule} from "ng-zorro-antd/button";
+import {NzStepsModule} from "ng-zorro-antd/steps";
 
 @NgModule({
   imports: [
@@ -162,7 +164,9 @@ import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
     NzDatePickerModule,
     NzTimePickerModule,
     NzRadioModule,
-    NzCheckboxModule
+    NzCheckboxModule,
+    NzButtonModule,
+    NzStepsModule
   ],
   declarations: [
     PayrollComponent,
