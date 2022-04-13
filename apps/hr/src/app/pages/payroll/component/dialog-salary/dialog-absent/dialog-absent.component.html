@@ -25,34 +25,35 @@
                 <span class='star'>*</span>
               </div>
               <div class=' my-2 col-12 '>
-                <nz-select style="width: 100%" formControlName="title" >
+                <nz-select style="width: 100%" formControlName="title">
                   <nz-option *ngFor='let item of templateSalary$|async'
-                              [nzValue]="item">{{item.title}}</nz-option>
+                             [nzValue]="item">{{item.title}}</nz-option>
                 </nz-select>
               </div>
             </div>
             <div class='row mb-3 '>
-                <span class=' title-item mb-1'>Buổi</span>
-                <nz-select style="width: 100%" formControlName='partialDay'>
-                  <nz-option *ngFor='let item of titleSession' [nzValue]='item.type'>{{item.title}}</nz-option>
-                </nz-select>
+              <span class=' title-item mb-1'>Buổi</span>
+              <nz-select style="width: 100%" formControlName='partialDay'>
+                <nz-option *ngFor='let item of titleSession' [nzValue]='item.type'>{{item.title}}</nz-option>
+              </nz-select>
             </div>
             <div class='mb-3 d-flex'>
-              <nz-range-picker formControlName="rangeday" ></nz-range-picker>
-              
-            <div class='row mb-3'>
-              <div [formGroup]='formGroup' class='col-12'>
-                <span class='title-item'>Chú thích</span>
-                <input class='form-control' placeholder='Nhập chú thích ' formControlName='note'>
+              <nz-range-picker formControlName="rangeday"></nz-range-picker>
+
+              <div class='row mb-3'>
+                <div [formGroup]='formGroup' class='col-12'>
+                  <span class='title-item'>Chú thích</span>
+                  <input class='form-control' placeholder='Nhập chú thích ' formControlName='note'>
+                </div>
               </div>
             </div>
-          </div>
-          <div class=' row '>
-            <button *ngIf='data.updateMultiple' class='btn btn-primary mr-2' matStepperPrevious>Trở lại</button>
-            <button class='btn btn-ok '>Lưu</button>
-            <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
-              ?
-            </button>
+            <div class=' row '>
+              <button *ngIf='data.updateMultiple' class='btn btn-primary mr-2' matStepperPrevious>Trở lại</button>
+              <button class='btn btn-ok '>Lưu</button>
+              <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
+                ?
+              </button>
+            </div>
           </div>
         </form>
       </mat-dialog-content>

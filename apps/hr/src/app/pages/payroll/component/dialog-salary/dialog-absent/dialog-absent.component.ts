@@ -19,7 +19,6 @@ import {SessionConstant} from "../../../constants";
   templateUrl: 'dialog-absent.component.html'
 })
 export class DialogAbsentComponent implements OnInit {
-  @ViewChild('titleAbsent') titleAbsent!: ElementRef;
   adding$ = this.store.select(selectedAddingPayroll)
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
   templateSalary$ = this.store.select(selectorAllTemplate)
