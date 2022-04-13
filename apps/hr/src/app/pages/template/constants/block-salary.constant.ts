@@ -57,7 +57,11 @@ export const BlockSalariesConstant: blockSalary[] = [
     type: SalaryTypeEnum.ABSENT,
     priceTypes: PriceTypeConstant,
     constraintHoliday: {
-      disabled: true,
+      disabled: false,
+      show: true
+    },
+    constraintOvertime: {
+      disabled: false,
       show: true
     },
     rate: {
@@ -72,10 +76,6 @@ export const BlockSalariesConstant: blockSalary[] = [
   {
     title: 'Tăng ca',
     type: SalaryTypeEnum.OVERTIME,
-    constraintOvertime: {
-      disabled: false,
-      show: true
-    },
     rate: {
       disabled: false,
       show: true

@@ -93,7 +93,7 @@ export class TemplateSalaryComponent implements OnInit {
     const value = this.formGroup.value;
     const template = {
       title: value.title,
-      price: typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
+      price: value.price,
       type: value.block.type,
       branchIds: this.branchesSelected.map(val => val.id)
     };
