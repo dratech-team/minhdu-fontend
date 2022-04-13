@@ -5,19 +5,21 @@ export const BlockSalariesConstant = [
   {
     title: 'Lương cơ bản',
     type: SalaryTypeEnum.BASIC,
-    priceTypes:PriceTypeConstant
   },
   {
     title: 'Phụ cấp lương',
-    type: SalaryTypeEnum.STAY
+    type: SalaryTypeEnum.STAY,
   },
   {
     title: 'Khấu trừ',
-    type: SalaryTypeEnum.ABSENT
+    type: SalaryTypeEnum.ABSENT,
+    priceTypes:PriceTypeConstant,
+    constraintHoliday: true,
   },
   {
     title: 'Tăng ca',
-    type: SalaryTypeEnum.OVERTIME
+    type: SalaryTypeEnum.OVERTIME,
+    constraintOvertime: true,
   },
   {
     title: 'Ngày lễ',

@@ -29,7 +29,7 @@ export class TemplateSalaryComponent implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart));
   branchesSelected: Branch[] = [];
   priceTypeEnum = PriceTypeEnum
-  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
+  compareFN = (o1: any, o2: any) => (o1.type == o2.type|| o1 === o2.type);
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -55,7 +55,7 @@ export class TemplateSalaryComponent implements OnInit {
       });
     } else {
       this.formGroup = this.formBuilder.group({
-        block: [SalaryTypeEnum.BASIC, Validators.required],
+        block: ['', Validators.required],
         price: [],
         priceType: [PriceTypeEnum.INPUT],
         title: [],
@@ -63,10 +63,10 @@ export class TemplateSalaryComponent implements OnInit {
       });
     }
 
-    this.formGroup.get('type')?.valueChanges.subscribe(item => {
-      if (item === SalaryTypeEnum.OVERTIME || item === SalaryTypeEnum.HOLIDAY) {
+    this.formGroup.get('block')?.valueChanges.subscribe(item => {
+      if (item.type === SalaryTypeEnum.OVERTIME || item.type === SalaryTypeEnum.HOLIDAY) {
         this.message.info('Chức năng đang được phát triền')
-        this.formGroup.get('type')?.setValue('')
+        this.formGroup.get('block')?.setValue('')
       }
     })
 

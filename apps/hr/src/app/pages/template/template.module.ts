@@ -38,6 +38,7 @@ import {NzSelectModule} from "ng-zorro-antd/select";
 import {NzRadioModule} from "ng-zorro-antd/radio";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
+import {NzTypographyModule} from "ng-zorro-antd/typography";
 
 @NgModule({
   imports: [
@@ -72,7 +73,8 @@ import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
     NzSelectModule,
     NzRadioModule,
     NzInputModule,
-    NzCheckboxModule
+    NzCheckboxModule,
+    NzTypographyModule
   ],
   declarations: [
     TemplateOvertimeComponent,

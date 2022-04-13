@@ -12,14 +12,14 @@
         <div class=' main-popup mt-2'>
           <div><span class='main-title'>Khối lương</span><span class='star'>*</span></div>
           <nz-select formControlName='block' style="width: 100%" [compareWith]="compareFN">
-            <nz-option *ngFor='let item of blockSalary' [nzValue]='item'>{{item.title}}</nz-option>
+            <nz-option *ngFor='let item of blockSalary' [nzValue]='item' [nzLabel]="item.title"></nz-option>
           </nz-select>
         </div>
         <div class=' main-popup mt-2'>
           <div><span class='main-title'>Tiêu đề</span><span class='star'>*</span></div>
           <input class='form-control mt-1' type='text' formControlName='title'>
         </div>
-        <div *ngIf="formGroup.value.type === salaryTypeEnum.ABSENT">
+        <div *ngIf="formGroup.value.block.priceTypes">
           <div class="mt-2">
             <div><span class='main-title'>Khấu trừ theo</span><span class='star'>*</span></div>
             <nz-radio-group formControlName="priceType">
@@ -39,22 +39,18 @@
                      nz-input/>
             </div>
           </div>
-          <div class=' main-popup mt-2' *ngIf="formGroup.value.priceType === priceTypeEnum.INPUT">
-            <div><span class='main-title'>Đơn giá</span></div>
-            <input class='form-control mt-1' type='text' formControlName='price' placeholder='200,000' inputCurrency>
-          </div>
-          <div class='d-flex mt-2'>
-            <div><span class='main-title'>Ràng buộc ngày lễ:</span></div>
-            <label class="ml-2" nz-checkbox></label>
-          </div>
-          <div class='d-flex mt-2'>
-            <div><span class='main-title'>Ràng buộc tăng ca:</span></div>
-            <label class="ml-2" nz-checkbox></label>
-          </div>
         </div>
-        <div class=' main-popup mt-2' *ngIf="formGroup.value.type !== salaryTypeEnum.ABSENT">
+        <div class=' main-popup mt-2' *ngIf="formGroup.value.priceType === priceTypeEnum.INPUT">
           <div><span class='main-title'>Đơn giá</span></div>
           <input class='form-control mt-1' type='text' formControlName='price' placeholder='200,000' inputCurrency>
+        </div>
+        <div class='d-flex mt-2' *ngIf="formGroup.value.block.constraintHoliday">
+          <div><span class='main-title'>Ràng buộc ngày lễ:</span></div>
+          <label class="ml-2" nz-checkbox></label>
+        </div>
+        <div class='d-flex mt-2' *ngIf="formGroup.value.block.constraintOvertime">
+          <div><span class='main-title'>Ràng buộc tăng ca:</span></div>
+          <label class="ml-2" nz-checkbox></label>
         </div>
       </div>
     </form>
