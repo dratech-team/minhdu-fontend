@@ -19,12 +19,12 @@
           <div><span class='main-title'>Tiêu đề</span><span class='star'>*</span></div>
           <input class='form-control mt-1' type='text' formControlName='title'>
         </div>
-        <div class=' main-popup mt-2' *ngIf="formGroup.value.block.showRate">
+        <div class=' main-popup mt-2' *ngIf="formGroup.value.block.rate">
           <div><span class='main-title'>Hệ số</span><span class='star'>*</span></div>
           <input nz-input type='number' formControlName='rate'
                  [ngStyle]="{
-                 'pointer-events':formGroup.value.block.showRate.disable ? 'none': 'auto',
-                 'background':formGroup.value.block.showRate.disable ? '#dddddd':'white'
+                 'pointer-events':formGroup.value.block.rate.disabled ? 'none': 'auto',
+                 'background':formGroup.value.block.rate.disabled ? '#dddddd':'white'
                   }">
         </div>
         <div *ngIf="formGroup.value.block.priceTypes">
@@ -51,15 +51,27 @@
         <div class=' main-popup mt-2' *ngIf="
         formGroup.value.block.price?.show && formGroup.value.priceType.value === priceTypeEnum.INPUT">
           <div><span class='main-title'>Đơn giá</span></div>
-          <input class='form-control mt-1' type='text' formControlName='price' placeholder='200,000' inputCurrency>
+          <input class='form-control mt-1' type='text' formControlName='price' placeholder='200,000'
+                 [ngStyle]="{
+                 'pointer-events':formGroup.value.block.price.disabled ? 'none': 'auto',
+                 'background':formGroup.value.block.price.disabled ? '#dddddd':'white'
+                  }">
         </div>
         <div class='d-flex mt-2' *ngIf="formGroup.value.block.constraintHoliday?.show">
           <div><span class='main-title'>Ràng buộc ngày lễ:</span></div>
-          <label class="ml-2" nz-checkbox></label>
+          <label class="ml-2" nz-checkbox
+                 [ngStyle]="{
+                 'pointer-events':formGroup.value.block.constraintHoliday.disabled ? 'none': 'auto',
+                 'background':formGroup.value.block.constraintHoliday.disabled ? '#dddddd':'white'
+                  }"></label>
         </div>
         <div class='d-flex mt-2' *ngIf="formGroup.value.block.constraintOvertime?.show">
           <div><span class='main-title'>Ràng buộc tăng ca:</span></div>
-          <label class="ml-2" nz-checkbox></label>
+          <label class="ml-2" nz-checkbox
+                 [ngStyle]="{
+                 'pointer-events':formGroup.value.block.constraintOvertime.disabled ? 'none': 'auto',
+                 'background':formGroup.value.block.constraintOvertime.disabled ? '#dddddd':'white'
+                  }"></label>
         </div>
       </div>
     </form>
