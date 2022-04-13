@@ -38,12 +38,10 @@
               <input placeholder="Nhập số ngày" style="width: 150px" *ngIf="formGroup.value.days === 0"  type="number" nz-input />
             </div>
           </div>
-        </div>
-        <div class=' main-popup mt-2' *ngIf="formGroup.value.priceType === priceTypeEnum.INPUT" >
-          <div><span class='main-title'>Đơn giá</span></div>
-          <input class='form-control mt-1' type='text' formControlName='price' placeholder='200,000' inputCurrency>
-        </div>
-        <div *ngIf="formGroup.value.type === salaryTypeEnum.ABSENT">
+          <div class=' main-popup mt-2' *ngIf="formGroup.value.priceType === priceTypeEnum.INPUT" >
+            <div><span class='main-title'>Đơn giá</span></div>
+            <input class='form-control mt-1' type='text' formControlName='price' placeholder='200,000' inputCurrency>
+          </div>
           <div class='d-flex mt-2' >
             <div><span class='main-title'>Ràng buộc ngày lễ:</span></div>
             <label class="ml-2" nz-checkbox></label>
@@ -53,7 +51,10 @@
             <label class="ml-2" nz-checkbox></label>
           </div>
         </div>
-
+        <div class=' main-popup mt-2' *ngIf="formGroup.value.type !== salaryTypeEnum.ABSENT" >
+          <div><span class='main-title'>Đơn giá</span></div>
+          <input class='form-control mt-1' type='text' formControlName='price' placeholder='200,000' inputCurrency>
+        </div>
       </div>
     </form>
   </mat-dialog-content>
