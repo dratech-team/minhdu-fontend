@@ -11,9 +11,9 @@
       <div class='m-4'>
         <div class=' main-popup mt-2'>
           <div><span class='main-title'>Khối lương</span><span class='star'>*</span></div>
-          <mat-select formControlName='type' class='form-control'>
-            <mat-option *ngFor='let item of blockSalary' [value]='item.type'>{{item.title}}</mat-option>
-          </mat-select>
+          <nz-select formControlName='block' style="width: 100%" [compareWith]="compareFN">
+            <nz-option *ngFor='let item of blockSalary' [nzValue]='item'>{{item.title}}</nz-option>
+          </nz-select>
         </div>
         <div class=' main-popup mt-2'>
           <div><span class='main-title'>Tiêu đề</span><span class='star'>*</span></div>
@@ -22,36 +22,37 @@
         <div *ngIf="formGroup.value.type === salaryTypeEnum.ABSENT">
           <div class="mt-2">
             <div><span class='main-title'>Khấu trừ theo</span><span class='star'>*</span></div>
-            <nz-radio-group formControlName="priceType" >
-              <label nz-radio *ngFor="let item of priceTypeConstant" [nzValue]="item.value">{{item.name}}</label>
+            <nz-radio-group formControlName="priceType">
+              <label nz-radio *ngFor="let item of formGroup.value.block.priceTypes" [nzValue]="item.value">{{item.name}}</label>
             </nz-radio-group>
           </div>
-          <div class="mt-2" *ngIf="formGroup.value.priceType !== priceTypeEnum.INPUT" >
+          <div class="mt-2" *ngIf="formGroup.value.priceType !== priceTypeEnum.INPUT">
             <div><span class='main-title'>Số ngày</span><span class='star'>*</span></div>
             <div class="d-flex">
               <nz-radio-group formControlName="days">
                 <label nz-radio [nzValue]="1">Ngày công chuẩn</label>
-                <label nz-radio  [nzValue]="0">
+                <label nz-radio [nzValue]="0">
                   tuỳ chọn
                 </label>
               </nz-radio-group>
-              <input placeholder="Nhập số ngày" style="width: 150px" *ngIf="formGroup.value.days === 0"  type="number" nz-input />
+              <input placeholder="Nhập số ngày" style="width: 150px" *ngIf="formGroup.value.days === 0" type="number"
+                     nz-input/>
             </div>
           </div>
-          <div class=' main-popup mt-2' *ngIf="formGroup.value.priceType === priceTypeEnum.INPUT" >
+          <div class=' main-popup mt-2' *ngIf="formGroup.value.priceType === priceTypeEnum.INPUT">
             <div><span class='main-title'>Đơn giá</span></div>
             <input class='form-control mt-1' type='text' formControlName='price' placeholder='200,000' inputCurrency>
           </div>
-          <div class='d-flex mt-2' >
+          <div class='d-flex mt-2'>
             <div><span class='main-title'>Ràng buộc ngày lễ:</span></div>
             <label class="ml-2" nz-checkbox></label>
           </div>
-          <div class='d-flex mt-2' >
+          <div class='d-flex mt-2'>
             <div><span class='main-title'>Ràng buộc tăng ca:</span></div>
             <label class="ml-2" nz-checkbox></label>
           </div>
         </div>
-        <div class=' main-popup mt-2' *ngIf="formGroup.value.type !== salaryTypeEnum.ABSENT" >
+        <div class=' main-popup mt-2' *ngIf="formGroup.value.type !== salaryTypeEnum.ABSENT">
           <div><span class='main-title'>Đơn giá</span></div>
           <input class='form-control mt-1' type='text' formControlName='price' placeholder='200,000' inputCurrency>
         </div>

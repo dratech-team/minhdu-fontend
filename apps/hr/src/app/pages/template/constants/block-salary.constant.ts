@@ -1,9 +1,11 @@
-import { SalaryTypeEnum } from '../../enums';
+import { SalaryTypeEnum } from '@minhdu-fontend/enums';
+import {PriceTypeConstant} from "./price-type.constant";
 
 export const BlockSalariesConstant = [
   {
     title: 'Lương cơ bản',
-    type: SalaryTypeEnum.BASIC
+    type: SalaryTypeEnum.BASIC,
+    priceTypes:PriceTypeConstant
   },
   {
     title: 'Phụ cấp lương',

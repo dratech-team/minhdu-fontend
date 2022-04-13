@@ -14,6 +14,5 @@ export * from './option-data-picker.constant';
 export * from './HR/typePayrollExport.constant';
 export * from './HR/unitAllowance.constant';
 export * from './HR/employee.constant';
-export * from './HR/block-salary.constant';
 export * from './HR/payroll.constant';
 //sell

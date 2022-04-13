@@ -3,7 +3,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
 import {SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {BlockSalariesConstant} from '@minhdu-fontend/constants';
 import {TemplateSalaryAction} from '../../+state/teamlate-salary/template-salary.action';
 import {selectTemplateAdded} from '../../+state/teamlate-salary/template-salary.selector';
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
@@ -14,6 +13,7 @@ import {startWith} from 'rxjs/operators';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {PriceTypeConstant} from "../../constants/price-type.constant";
 import {PriceTypeEnum} from "../../enums";
+import {BlockSalariesConstant} from "../../constants";
 
 @Component({
   templateUrl: 'template-salary.component.html'
@@ -29,6 +29,7 @@ export class TemplateSalaryComponent implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart));
   branchesSelected: Branch[] = [];
   priceTypeEnum = PriceTypeEnum
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -46,7 +47,7 @@ export class TemplateSalaryComponent implements OnInit {
         this.branchesSelected = [...this.data.template?.branches];
       }
       this.formGroup = this.formBuilder.group({
-        type: [this.data.template.type, Validators.required],
+        block: [this.data.template.type, Validators.required],
         price: [this.data.template.price],
         title: [this.data.template.title],
         priceType: [this.data.template?.priceType],
@@ -54,7 +55,7 @@ export class TemplateSalaryComponent implements OnInit {
       });
     } else {
       this.formGroup = this.formBuilder.group({
-        type: [SalaryTypeEnum.BASIC, Validators.required],
+        block: [SalaryTypeEnum.BASIC, Validators.required],
         price: [],
         priceType: [PriceTypeEnum.INPUT],
         title: [],
@@ -91,7 +92,7 @@ export class TemplateSalaryComponent implements OnInit {
     const template = {
       title: value.title,
       price: typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
-      type: value.type,
+      type: value.block.type,
       branchIds: this.branchesSelected.map(val => val.id)
     };
     if (this.data?.isUpdate) {

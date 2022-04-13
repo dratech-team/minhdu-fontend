@@ -12,8 +12,9 @@ import {
   selectTemplateAdding, selectTemplateLoaded,
   selectTotalTemplateSalary
 } from '../../+state/teamlate-salary/template-salary.selector';
-import {BlockSalariesConstant, UnitsConstant} from '@minhdu-fontend/constants';
+import {UnitsConstant} from '@minhdu-fontend/constants';
 import {TemplateSalary} from "../../+state/teamlate-salary/template-salary";
+import {BlockSalariesConstant} from "../../constants";
 
 
 @Component({
