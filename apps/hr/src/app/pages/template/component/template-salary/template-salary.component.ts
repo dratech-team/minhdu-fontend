@@ -8,7 +8,6 @@ import { TemplateSalaryAction } from '../../+state/teamlate-salary/template-sala
 import { selectTemplateAdded } from '../../+state/teamlate-salary/template-salary.selector';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { Branch } from '@minhdu-fontend/data-models';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import * as lodash from 'lodash';
 import { searchAutocomplete } from '@minhdu-fontend/utils';
 import { startWith } from 'rxjs/operators';

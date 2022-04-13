@@ -1,14 +1,12 @@
 import {DatePipe} from '@angular/common';
-import {Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {PartialDayEnum, SalaryPayroll} from '@minhdu-fontend/data-models';
-import {ConvertBooleanFrontEnd, DatetimeUnitEnum, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {select, Store} from '@ngrx/store';
-import {PayrollAction} from '../../../+state/payroll/payroll.action';
-import {selectedAddedPayroll, selectedAddingPayroll} from '../../../+state/payroll/payroll.selector';
+import {DatetimeUnitEnum, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {Store} from '@ngrx/store';
+import {selectedAddingPayroll} from '../../../+state/payroll/payroll.selector';
 import {AppState} from '../../../../../reducers';
-import * as moment from 'moment';
 import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
 import {SalaryService} from '../../../service/salary.service';
 import {NzMessageService} from 'ng-zorro-antd/message';
@@ -34,7 +32,7 @@ export class DialogAbsentComponent implements OnInit {
   lastDayInMonth!: string | null;
   salariesSelected: SalaryPayroll[] = [];
   titleSession = SessionConstant
-
+  partialDayEnum = PartialDayEnum
   constructor(
     public readonly datePipe: DatePipe,
     private readonly dialog: MatDialog,
@@ -70,7 +68,6 @@ export class DialogAbsentComponent implements OnInit {
           this.datePipe.transform(this.data.salary?.datetime, 'yyyy-MM-dd')
         ],
         price: [this.data?.salary?.price],
-        forgot: [this.data.salary?.forgot],
         times: [
           this.data.salary?.unit === DatetimeUnitEnum.MINUTE
             ? Math.floor(this.data.salary.times / 60)
@@ -97,12 +94,29 @@ export class DialogAbsentComponent implements OnInit {
         type: [this.data.type, Validators.required],
         rate: [1, Validators.required],
         note: [],
-        forgot: [],
         partialDay: [],
         constraintHoliday: [],
         constraintOvertime: [],
       });
     }
+
+    this.formGroup.get('partialDay')?.valueChanges.subscribe(item => {
+      switch (item.value){
+        case PartialDayEnum.ALL_DAY:
+          this.formGroup.get('startTime')?.setValue(new Date(0, 0, 0, 7, 0, 0))
+          this.formGroup.get('endTime')?.setValue(new Date(0, 0, 0, 17, 0, 0))
+          break
+        case PartialDayEnum.MORNING:
+          this.formGroup.get('startTime')?.setValue(new Date(0, 0, 0, 7, 0, 0))
+          this.formGroup.get('endTime')?.setValue(new Date(0, 0, 0, 11, 30, 0))
+          break
+        case PartialDayEnum.AFTERNOON:
+          this.formGroup.get('startTime')?.setValue(new Date(0, 0, 0, 13, 30, 0))
+          this.formGroup.get('endTime')?.setValue(new Date(0, 0, 0, 17, 0, 0))
+          break
+      }
+
+    })
   }
 
   get checkValid() {

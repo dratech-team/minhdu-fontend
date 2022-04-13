@@ -28,7 +28,7 @@
           <div class='mb-3'>
             <span class='font-weight-bold'>Buổi</span><span class='star'>*</span>
             <nz-select class="mt-1" style="width: 100%" formControlName='partialDay'>
-              <nz-option *ngFor='let item of titleSession' [nzValue]='item.type'>{{item.title}}</nz-option>
+              <nz-option *ngFor='let item of titleSession' [nzValue]='item' [nzLabel]="item.name"></nz-option>
             </nz-select>
           </div>
           <div class='mb-3 row'>
@@ -40,15 +40,17 @@
               <div class="col">
                 <span class="font-weight-bold">Từ giờ</span>
                 <nz-time-picker
+                  [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.OTHER"
                   formControlName="startTime"
-                  nzFormat="h:mm a"
+                  nzFormat="HH:mm"
                 ></nz-time-picker>
               </div>
               <div class="col">
                 <span class="font-weight-bold">Đến giờ</span>
                 <nz-time-picker
+                  [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.OTHER"
                   formControlName="endTime"
-                  nzFormat="h:mm a"
+                  nzFormat="HH:mm"
                 ></nz-time-picker>
               </div>
             </div>
@@ -77,12 +79,15 @@
             <label nz-checkbox nzDisabled="true" class="ml-2" formControlName="constraintOvertime"></label>
           </div>
           <div class='mb-3'>
-            <div [formGroup]='formGroup' class='col-12'>
-              <span class='title-item'>Chú thích</span>
-              <input class='form-control' placeholder='Nhập chú thích ' formControlName='note'>
-            </div>
+            <span class='font-weight-bold'>Đơn giá</span>
+
+            <input nz-input type="number" formControlName='price'>
           </div>
-          <div class=' row '>
+          <div class='mb-3'>
+              <span class='font-weight-bold'>Chú thích</span>
+              <input nz-input placeholder='Nhập chú thích ' formControlName='note'>
+          </div>
+          <div class='row'>
             <button *ngIf='data.updateMultiple' class='btn btn-primary mr-2' matStepperPrevious>Trở lại</button>
             <button class='btn btn-ok '>Lưu</button>
             <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
