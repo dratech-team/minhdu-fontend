@@ -11,7 +11,7 @@
       <div class='m-4'>
         <div class=' main-popup mt-2'>
           <div><span class='main-title'>Khối lương</span><span class='star'>*</span></div>
-          <mat-select formControlName='type' class='form-control' [compareWith]="compareFn">
+          <mat-select formControlName='type' class='form-control'>
             <mat-option *ngFor='let item of blockSalary' [value]='item.type'>{{item.title}}</mat-option>
           </mat-select>
         </div>

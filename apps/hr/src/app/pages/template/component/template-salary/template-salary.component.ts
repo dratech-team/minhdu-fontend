@@ -29,7 +29,6 @@ export class TemplateSalaryComponent implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart));
   branchesSelected: Branch[] = [];
   priceTypeEnum = PriceTypeEnum
-  compareFn = (o1: any, o2: any) => (o1 && o2) ? o1 === o2.type : o1 === o2;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,

@@ -65,7 +65,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
           this.data?.template?.employeeType
           : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
         price: [this.data?.template?.price],
-        priceType: [this.data?.template?.price ? PriceTypeEnum.INPUT : PriceTypeEnum.INPUT, Validators.required],
+        priceType: [this.data?.template?.price ? PriceTypeEnum.INPUT : PriceTypeEnum.STANDARD, Validators.required],
         unit: [this.data?.template?.unit, Validators.required],
         rate: [this.data?.template?.rate ? this.data.template.rate : 1, Validators.required],
         note: [this.data?.template?.note]
