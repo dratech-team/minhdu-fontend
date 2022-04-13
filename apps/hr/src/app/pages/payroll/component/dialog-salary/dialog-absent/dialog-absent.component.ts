@@ -1,36 +1,40 @@
 import {DatePipe} from '@angular/common';
-import {Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {PartialDayEnum, SalaryPayroll} from '@minhdu-fontend/data-models';
-import {ConvertBooleanFrontEnd, DatetimeUnitEnum, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {select, Store} from '@ngrx/store';
-import {PayrollAction} from '../../../+state/payroll/payroll.action';
-import {selectedAddedPayroll, selectedAddingPayroll} from '../../../+state/payroll/payroll.selector';
+import {DatetimeUnitEnum, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {Store} from '@ngrx/store';
+import {selectedAddingPayroll} from '../../../+state/payroll/payroll.selector';
 import {AppState} from '../../../../../reducers';
-import * as moment from 'moment';
 import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
 import {SalaryService} from '../../../service/salary.service';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {selectorAllTemplate} from "../../../../template/+state/teamlate-salary/template-salary.selector";
+import {SessionConstant} from "../../../constants";
+import {PriceTypeConstant} from "../../../../template/constants/price-type.constant";
 
 @Component({
   templateUrl: 'dialog-absent.component.html'
 })
 export class DialogAbsentComponent implements OnInit {
-  @ViewChild('titleAbsent') titleAbsent!: ElementRef;
+  adding$ = this.store.select(selectedAddingPayroll)
+  @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
+  templateSalary$ = this.store.select(selectorAllTemplate)
   numberChars = new RegExp('[^0-9]', 'g');
   type = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
   formGroup!: FormGroup;
   submitted = false;
-  selectedIndex?: number;
   unitMinute = false;
   unitAbsent = false;
   firstDayInMonth!: string | null;
   lastDayInMonth!: string | null;
   salariesSelected: SalaryPayroll[] = [];
-  adding$ = this.store.select(selectedAddingPayroll)
-  @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
+  titleSession = SessionConstant
+  partialDayEnum = PartialDayEnum
+  priceTypeConstant = PriceTypeConstant
+  indexStep = 1;
 
   constructor(
     public readonly datePipe: DatePipe,
@@ -43,26 +47,6 @@ export class DialogAbsentComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data?: any
   ) {
   }
-
-  //DUMMY DATA Không thay đổi thứ tự index hiện tại -> thêm title ở cuối mảng
-  titleAbsents = [
-    {title: 'Vắng', unit: this.datetimeUnit.DAY, type: this.type.ABSENT},
-    {
-      title: 'Không đi làm',
-      unit: this.datetimeUnit.DAY,
-      type: this.type.DAY_OFF
-    },
-    {title: 'Đi trễ', unit: this.datetimeUnit.MINUTE, type: this.type.ABSENT},
-    {title: 'Về Sớm', unit: this.datetimeUnit.MINUTE, type: this.type.ABSENT},
-    {title: 'Quên bổ sung công', unit: this.datetimeUnit.TIMES, type: this.type.ABSENT},
-    {title: 'Khác', unit: this.datetimeUnit.OTHER, type: this.type.DEDUCTION}
-  ];
-  //Dummy data select các buổi trong ngày
-  titleSession = [
-    {title: 'buổi sáng', type: PartialDayEnum.MORNING, times: partialDay.PARTIAL},
-    {title: 'buổi chiều', type: PartialDayEnum.AFTERNOON, times: partialDay.PARTIAL},
-    {title: 'nguyên ngày', type: PartialDayEnum.ALL_DAY, times: partialDay.ALL_DAY}
-  ];
 
   ngOnInit(): void {
     if (!this.data?.updateMultiple) {
@@ -87,9 +71,6 @@ export class DialogAbsentComponent implements OnInit {
           this.datePipe.transform(this.data.salary?.datetime, 'yyyy-MM-dd')
         ],
         price: [this.data?.salary?.price],
-        startedAt: [this.datePipe.transform(this.data.salary?.startedAt, 'yyyy-MM-dd')],
-        endedAt: [this.datePipe.transform(this.data.salary?.endedAt, 'yyyy-MM-dd')],
-        forgot: [this.data.salary?.forgot],
         times: [
           this.data.salary?.unit === DatetimeUnitEnum.MINUTE
             ? Math.floor(this.data.salary.times / 60)
@@ -108,23 +89,44 @@ export class DialogAbsentComponent implements OnInit {
       });
     } else {
       this.formGroup = this.formBuilder.group({
-        title: [],
+        template: [],
         price: [],
-        datetime: [
-          this.datePipe.transform(
-            this.data.payroll.createdAt, 'yyyy-MM-dd')
-        ],
-        startedAt: [],
-        endedAt: [],
-        times: [],
-        minutes: [],
+        rangeDay: [[]],
+        startTime: [],
+        endTime: [],
         type: [this.data.type, Validators.required],
         rate: [1, Validators.required],
         note: [],
-        forgot: [],
-        partialDay: []
+        partialDay: [],
+        constraintHoliday: [],
+        constraintOvertime: [],
+        reference: []
       });
     }
+    this.formGroup.get('template')?.valueChanges.subscribe(template => {
+      this.formGroup.get('price')?.setValue(template.price)
+      this.formGroup.get('constraintHoliday')?.setValue('')
+      this.formGroup.get('constraintHoliday')?.setValue('')
+      this.formGroup.get('reference')?.setValue(template.reference)
+    })
+
+    this.formGroup.get('partialDay')?.valueChanges.subscribe(item => {
+      switch (item.value) {
+        case PartialDayEnum.ALL_DAY:
+          this.formGroup.get('startTime')?.setValue(new Date(0, 0, 0, 7, 0, 0))
+          this.formGroup.get('endTime')?.setValue(new Date(0, 0, 0, 17, 0, 0))
+          break
+        case PartialDayEnum.MORNING:
+          this.formGroup.get('startTime')?.setValue(new Date(0, 0, 0, 7, 0, 0))
+          this.formGroup.get('endTime')?.setValue(new Date(0, 0, 0, 11, 30, 0))
+          break
+        case PartialDayEnum.AFTERNOON:
+          this.formGroup.get('startTime')?.setValue(new Date(0, 0, 0, 13, 30, 0))
+          this.formGroup.get('endTime')?.setValue(new Date(0, 0, 0, 17, 0, 0))
+          break
+      }
+
+    })
   }
 
   get checkValid() {
@@ -136,252 +138,256 @@ export class DialogAbsentComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-
-    const value = this.formGroup.value;
-    const salary = {
-      title: this.data?.salary?.title,
-      type: this.data?.salary?.type ? this.data.salary.type :
-        typeof this.selectedIndex === 'number' ? this.titleAbsents[this.selectedIndex]?.type : undefined,
-      rate: value.rate,
-      forgot: value.forgot,
-      note: value.note,
-      unit: value.unit ? value.unit :
-        typeof this.selectedIndex === 'number' ? this.titleAbsents[this.selectedIndex]?.unit : undefined,
-      payrollId: this.data?.payroll
-        ? this.data.payroll.id
-        : this.data.salary.payrollId,
-      times: value.times
-    };
-
-    if (
-      (typeof this.selectedIndex === 'number' && this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.OTHER)
-      && !value.title
-    ) {
-      return this.message.error('Chưa nhập tên khấu trừ');
-    }
-
-    if (
-      (typeof this.selectedIndex === 'number' &&
-        this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.OTHER || this.data.salary?.type === 'DEDUCTION')
-      && (!value.price)
-    ) {
-      return this.message.error('Chưa nhập tiền khấu trừ');
-    }
-
-    if (
-      (typeof this.selectedIndex === 'number' && this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.TIMES
-        || this.data?.salary?.unit === DatetimeUnitEnum.TIMES)
-      && !value.times
-    ) {
-      return this.message.error('chưa nhập Số lần');
-    }
-    if (
-      typeof this.selectedIndex === 'number' && this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.MINUTE &&
-      !value.times &&
-      !value.minutes
-    ) {
-      return this.message.error('chưa nhập thời gian');
-    }
-
-    if (
-      value.unit === DatetimeUnitEnum.MINUTE ||
-      (typeof this.selectedIndex === 'number' && this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.MINUTE)) {
-      Object.assign(salary, {
-        datetime: new Date(value.datetime),
-        times: value.times ? value.times * 60 + value.minutes : value.minutes
-      });
-    }
-    if (this.data.isUpdate) {
-      if (this.data.salary.unit === DatetimeUnitEnum.DAY) {
-        if (this.data.salary?.startedAt) {
-          if (moment(value.startedAt).format('YYYY-MM-DD')
-            === moment(value.endedAt).format('YYYY-MM-DD')) {
-            return this.message.error('Không được sửa vắng từ ngày đến ngày thành một ngày');
-          } else {
-            Object.assign(salary, {
-              times: new Date(value.endedAt).getDate() - new Date(value.startedAt).getDate() + 1,
-              startedAt: new Date(value.startedAt + '-00'),
-              endedAt: new Date(value.endedAt + '-00')
-            });
-          }
-        } else {
-          Object.assign(salary, {
-            datetime: new Date(value.datetime)
-          });
-        }
-      }
-      if (this.data.salary.type === 'DEDUCTION') {
-        Object.assign(salary, {
-          price: typeof value.price === 'string'
-            ? Number(value.price.replace(this.numberChars, ''))
-            : value.price,
-          datetime: value.datetime ? new Date(value.datetime) : undefined
-        });
-      }
-      if (this.data.salary.unit === DatetimeUnitEnum.DAY) {
-        if (this.data.salary.type === 'ABSENT') {
-          Object.assign(salary,
-            {
-              title: 'Vắng ' + this.titleSession.find(item => item.type === value.partialDay)?.title,
-              partial: value.partialDay,
-              times: this.titleSession.find(item => item.type === value.partialDay)?.times
-            });
-        } else {
-          Object.assign(salary,
-            {
-              title: 'Không đi làm ' + this.titleSession.find(item => item.type === value.partialDay)?.title,
-              partial: value.partialDay,
-              times: this.titleSession.find(item => item.type === value.partialDay)?.times
-            });
-        }
-      }
-      if (this.data?.updateMultiple) {
-        delete salary.payrollId;
-        Object.assign(salary, {
-          salaryIds: this.salariesSelected.map(
-            (e: SalaryPayroll) => e.salary.id)
-        });
-        this.store.dispatch(PayrollAction.updateStatePayroll({added: ConvertBooleanFrontEnd.FALSE}));
-        this.salaryService.updateMultipleSalaryOvertime(salary).subscribe(val => {
-          if (val) {
-            this.message.success(val.message);
-            this.dialogRef.close({
-              datetime: value.datetime,
-              title: salary.title
-            });
-          }
-        });
-      } else {
-        this.store.dispatch(
-          PayrollAction.updateSalary({
-            id: this.data.salary.id,
-            payrollId: this.data.salary.payrollId,
-            salary: salary
-          })
-        );
-      }
-
-    } else {
-      if (typeof this.selectedIndex !== 'number') {
-        return this.message.error('Chưa chọn Loại');
-      }
-      if (
-        this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.DAY && !value.partialDay
-      ) {
-        return this.message.error('Chưa chọn buổi');
-      }
-
-      if (
-        this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.MINUTE &&
-        !value.datetime
-      ) {
-        return this.message.error('Chưa chọn ngày');
-      }
-      if (
-        ((this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.DAY
-            && value.partialDay === PartialDayEnum.ALL_DAY) ||
-          this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.OTHER
-        )
-        && (!value.startedAt || !value.endedAt)
-      ) {
-        return this.message.error('Chưa chọn từ ngày đến ngày');
-      }
-      if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.TIMES) {
-        Object.assign(salary, {
-          title: this.titleAbsents[this.selectedIndex]?.title,
-          datetime: getFirstDayInMonth(new Date()).toUTCString()
-        });
-      }
-      if (
-        this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY
-      ) {
-        if (value.partialDay === PartialDayEnum.ALL_DAY) {
-          if (moment(value.startedAt).format('YYYY-MM-DD')
-            === moment(value.endedAt).format('YYYY-MM-DD')) {
-            Object.assign(salary, {
-              title:
-                this.titleAbsents[this.selectedIndex]?.title +
-                ' ' +
-                this.titleSession.find(item => item.type === value.partialDay)?.title,
-              times: this.titleSession.find(item => item.type === value.partialDay)?.times,
-              datetime: new Date(value.startedAt + '-00'),
-              partial: this.titleSession.find(item => item.type === value.partialDay)?.type
-            });
-          } else {
-            Object.assign(salary, {
-              title:
-                this.titleAbsents[this.selectedIndex]?.title +
-                ' ' +
-                this.titleSession.find(item => item.type === value.partialDay)?.title,
-              times: this.titleSession.find(item => item.type === value.partialDay)?.times ?? (new Date(value.endedAt).getDate() - new Date(value.startedAt).getDate() + 1),
-              startedAt: new Date(value.startedAt + '-00'),
-              endedAt: new Date(value.endedAt + '-00'),
-              partial: this.titleSession.find(item => item.type === value.partialDay)?.type
-            });
-          }
-        } else {
-          Object.assign(salary, {
-            title:
-              this.titleAbsents[this.selectedIndex]?.title +
-              ' ' +
-              this.titleSession.find(item => item.type === value.partialDay)?.title,
-            times: this.titleSession.find(item => item.type === value.partialDay)?.times,
-            datetime: new Date(value.datetime),
-            partial: this.titleSession.find(item => item.type === value.partialDay)?.type
-          });
-        }
-      }
-      if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.MINUTE) {
-        Object.assign(salary, {
-          title: this.titleAbsents[this.selectedIndex]?.title,
-          times: value.times ? value.times * 60 + value.minutes : value.minutes
-        });
-      }
-
-      if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.OTHER) {
-        delete salary.unit;
-        if (moment(value.startedAt).format('YYYY-MM-DD')
-          === moment(value.endedAt).format('YYYY-MM-DD')) {
-          Object.assign(salary, {
-            title: value.title,
-            price: typeof value.price === 'string'
-              ? Number(value.price.replace(this.numberChars, ''))
-              : value.price,
-            datetime: new Date(value.startedAt + '-00'),
-          });
-        } else {
-          Object.assign(salary, {
-            title: value.title,
-            price: typeof value.price === 'string'
-              ? Number(value.price.replace(this.numberChars, ''))
-              : value.price,
-            startedAt: new Date(value.startedAt + '-00'),
-            endedAt: new Date(value.endedAt + '-00'),
-          });
-        }
-
-      }
-      this.store.dispatch(
-        PayrollAction.addSalary({
-          payrollId: this.data.payroll.id,
-          salary: salary
-        })
-      );
-    }
-    this.store.pipe(select(selectedAddedPayroll)).subscribe((added) => {
-      if (added) {
-        this.dialogRef.close();
-      }
-    });
+    this.dialogRef.close()
+    // const value = this.formGroup.value;
+    // const salary = {
+    //   title: this.data?.salary?.title,
+    //   type: this.data?.salary?.type ? this.data.salary.type :
+    //     typeof this.selectedIndex === 'number' ? this.titleAbsents[this.selectedIndex]?.type : undefined,
+    //   rate: value.rate,
+    //   forgot: value.forgot,
+    //   note: value.note,
+    //   unit: value.unit ? value.unit :
+    //     typeof this.selectedIndex === 'number' ? this.titleAbsents[this.selectedIndex]?.unit : undefined,
+    //   payrollId: this.data?.payroll
+    //     ? this.data.payroll.id
+    //     : this.data.salary.payrollId,
+    //   times: value.times
+    // };
+    //
+    // if (
+    //   (typeof this.selectedIndex === 'number' && this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.OTHER)
+    //   && !value.title
+    // ) {
+    //   return this.message.error('Chưa nhập tên khấu trừ');
+    // }
+    //
+    // if (
+    //   (typeof this.selectedIndex === 'number' &&
+    //     this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.OTHER || this.data.salary?.type === 'DEDUCTION')
+    //   && (!value.price)
+    // ) {
+    //   return this.message.error('Chưa nhập tiền khấu trừ');
+    // }
+    //
+    // if (
+    //   (typeof this.selectedIndex === 'number' && this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.TIMES
+    //     || this.data?.salary?.unit === DatetimeUnitEnum.TIMES)
+    //   && !value.times
+    // ) {
+    //   return this.message.error('chưa nhập Số lần');
+    // }
+    // if (
+    //   typeof this.selectedIndex === 'number' && this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.MINUTE &&
+    //   !value.times &&
+    //   !value.minutes
+    // ) {
+    //   return this.message.error('chưa nhập thời gian');
+    // }
+    //
+    // if (
+    //   value.unit === DatetimeUnitEnum.MINUTE ||
+    //   (typeof this.selectedIndex === 'number' && this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.MINUTE)) {
+    //   Object.assign(salary, {
+    //     datetime: new Date(value.datetime),
+    //     times: value.times ? value.times * 60 + value.minutes : value.minutes
+    //   });
+    // }
+    // if (this.data.isUpdate) {
+    //   if (this.data.salary.unit === DatetimeUnitEnum.DAY) {
+    //     if (this.data.salary?.startedAt) {
+    //       if (moment(value.startedAt).format('YYYY-MM-DD')
+    //         === moment(value.endedAt).format('YYYY-MM-DD')) {
+    //         return this.message.error('Không được sửa vắng từ ngày đến ngày thành một ngày');
+    //       } else {
+    //         Object.assign(salary, {
+    //           times: new Date(value.endedAt).getDate() - new Date(value.startedAt).getDate() + 1,
+    //           startedAt: new Date(value.startedAt + '-00'),
+    //           endedAt: new Date(value.endedAt + '-00')
+    //         });
+    //       }
+    //     } else {
+    //       Object.assign(salary, {
+    //         datetime: new Date(value.datetime)
+    //       });
+    //     }
+    //   }
+    //   if (this.data.salary.type === 'DEDUCTION') {
+    //     Object.assign(salary, {
+    //       price: typeof value.price === 'string'
+    //         ? Number(value.price.replace(this.numberChars, ''))
+    //         : value.price,
+    //       datetime: value.datetime ? new Date(value.datetime) : undefined
+    //     });
+    //   }
+    //   if (this.data.salary.unit === DatetimeUnitEnum.DAY) {
+    //     if (this.data.salary.type === 'ABSENT') {
+    //       Object.assign(salary,
+    //         {
+    //           title: 'Vắng ' + this.titleSession.find(item => item.type === value.partialDay)?.title,
+    //           partial: value.partialDay,
+    //           times: this.titleSession.find(item => item.type === value.partialDay)?.times
+    //         });
+    //     } else {
+    //       Object.assign(salary,
+    //         {
+    //           title: 'Không đi làm ' + this.titleSession.find(item => item.type === value.partialDay)?.title,
+    //           partial: value.partialDay,
+    //           times: this.titleSession.find(item => item.type === value.partialDay)?.times
+    //         });
+    //     }
+    //   }
+    //   if (this.data?.updateMultiple) {
+    //     delete salary.payrollId;
+    //     Object.assign(salary, {
+    //       salaryIds: this.salariesSelected.map(
+    //         (e: SalaryPayroll) => e.salary.id)
+    //     });
+    //     this.store.dispatch(PayrollAction.updateStatePayroll({added: ConvertBooleanFrontEnd.FALSE}));
+    //     this.salaryService.updateMultipleSalaryOvertime(salary).subscribe(val => {
+    //       if (val) {
+    //         this.message.success(val.message);
+    //         this.dialogRef.close({
+    //           datetime: value.datetime,
+    //           title: salary.title
+    //         });
+    //       }
+    //     });
+    //   } else {
+    //     this.store.dispatch(
+    //       PayrollAction.updateSalary({
+    //         id: this.data.salary.id,
+    //         payrollId: this.data.salary.payrollId,
+    //         salary: salary
+    //       })
+    //     );
+    //   }
+    //
+    // } else {
+    //   if (typeof this.selectedIndex !== 'number') {
+    //     return this.message.error('Chưa chọn Loại');
+    //   }
+    //   if (
+    //     this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.DAY && !value.partialDay
+    //   ) {
+    //     return this.message.error('Chưa chọn buổi');
+    //   }
+    //
+    //   if (
+    //     this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.MINUTE &&
+    //     !value.datetime
+    //   ) {
+    //     return this.message.error('Chưa chọn ngày');
+    //   }
+    //   if (
+    //     ((this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.DAY
+    //         && value.partialDay === PartialDayEnum.ALL_DAY) ||
+    //       this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.OTHER
+    //     )
+    //     && (!value.startedAt || !value.endedAt)
+    //   ) {
+    //     return this.message.error('Chưa chọn từ ngày đến ngày');
+    //   }
+    //   if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.TIMES) {
+    //     Object.assign(salary, {
+    //       title: this.titleAbsents[this.selectedIndex]?.title,
+    //       datetime: getFirstDayInMonth(new Date()).toUTCString()
+    //     });
+    //   }
+    //   if (
+    //     this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY
+    //   ) {
+    //     if (value.partialDay === PartialDayEnum.ALL_DAY) {
+    //       if (moment(value.startedAt).format('YYYY-MM-DD')
+    //         === moment(value.endedAt).format('YYYY-MM-DD')) {
+    //         Object.assign(salary, {
+    //           title:
+    //             this.titleAbsents[this.selectedIndex]?.title +
+    //             ' ' +
+    //             this.titleSession.find(item => item.type === value.partialDay)?.title,
+    //           times: this.titleSession.find(item => item.type === value.partialDay)?.times,
+    //           datetime: new Date(value.startedAt + '-00'),
+    //           partial: this.titleSession.find(item => item.type === value.partialDay)?.type
+    //         });
+    //       } else {
+    //         Object.assign(salary, {
+    //           title:
+    //             this.titleAbsents[this.selectedIndex]?.title +
+    //             ' ' +
+    //             this.titleSession.find(item => item.type === value.partialDay)?.title,
+    //           times: this.titleSession.find(item => item.type === value.partialDay)?.times ?? (new Date(value.endedAt).getDate() - new Date(value.startedAt).getDate() + 1),
+    //           startedAt: new Date(value.startedAt + '-00'),
+    //           endedAt: new Date(value.endedAt + '-00'),
+    //           partial: this.titleSession.find(item => item.type === value.partialDay)?.type
+    //         });
+    //       }
+    //     } else {
+    //       Object.assign(salary, {
+    //         title:
+    //           this.titleAbsents[this.selectedIndex]?.title +
+    //           ' ' +
+    //           this.titleSession.find(item => item.type === value.partialDay)?.title,
+    //         times: this.titleSession.find(item => item.type === value.partialDay)?.times,
+    //         datetime: new Date(value.datetime),
+    //         partial: this.titleSession.find(item => item.type === value.partialDay)?.type
+    //       });
+    //     }
+    //   }
+    //   if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.MINUTE) {
+    //     Object.assign(salary, {
+    //       title: this.titleAbsents[this.selectedIndex]?.title,
+    //       times: value.times ? value.times * 60 + value.minutes : value.minutes
+    //     });
+    //   }
+    //
+    //   if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.OTHER) {
+    //     delete salary.unit;
+    //     if (moment(value.startedAt).format('YYYY-MM-DD')
+    //       === moment(value.endedAt).format('YYYY-MM-DD')) {
+    //       Object.assign(salary, {
+    //         title: value.title,
+    //         price: typeof value.price === 'string'
+    //           ? Number(value.price.replace(this.numberChars, ''))
+    //           : value.price,
+    //         datetime: new Date(value.startedAt + '-00'),
+    //       });
+    //     } else {
+    //       Object.assign(salary, {
+    //         title: value.title,
+    //         price: typeof value.price === 'string'
+    //           ? Number(value.price.replace(this.numberChars, ''))
+    //           : value.price,
+    //         startedAt: new Date(value.startedAt + '-00'),
+    //         endedAt: new Date(value.endedAt + '-00'),
+    //       });
+    //     }
+    //
+    //   }
+    //   this.store.dispatch(
+    //     PayrollAction.addSalary({
+    //       payrollId: this.data.payroll.id,
+    //       salary: salary
+    //     })
+    //   );
+    // }
+    // this.store.pipe(select(selectedAddedPayroll)).subscribe((added) => {
+    //   if (added) {
+    //     this.dialogRef.close();
+    //   }
+    // });
   }
 
-
-  onSelectAbsent(index: number) {
-    this.selectedIndex = index;
-  }
 
   changeSalariesSelected($event: SalaryPayroll[]) {
     this.salariesSelected = $event;
     this.EmitSalariesSelected.emit(this.salariesSelected);
+  }
+
+  pre(): void {
+    this.indexStep -= 1;
+  }
+
+  next(): void {
+    this.indexStep += 1;
   }
 }

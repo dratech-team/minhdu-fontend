@@ -104,60 +104,70 @@ import {ClassifyOvertimeComponent} from "./component/classify-overtime/classify-
 import {MatRadioModule} from "@angular/material/radio";
 import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 import {UpdateHolidayComponent} from "./component/dialog-salary/dialog-holiday/update-holiday.component";
+import {NzTimePickerModule} from "ng-zorro-antd/time-picker";
+import {NzRadioModule} from "ng-zorro-antd/radio";
+import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
+import {NzButtonModule} from "ng-zorro-antd/button";
+import {NzStepsModule} from "ng-zorro-antd/steps";
 
 @NgModule({
-    imports: [
-        ComponentsModule,
-        PayrollRoutingModule,
-        ComponentsModule,
-        MatDialogModule,
-        StoreModule,
-        MatDialogModule,
-        EffectsModule,
-        InfiniteScrollModule,
-        StoreModule.forFeature(FeatureName.TEMPLATE_SALARY, templateSalaryReducer),
-        StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
-        StoreModule.forFeature(FeatureName.OVERTIME, OvertimeReducer),
-        StoreModule.forFeature(FeatureName.HOLIDAY, HolidayReducer),
-        StoreModule.forFeature(
-            FeatureName.TEMPLATE_OVERTIME,
-            templateOvertimeReducer
-        ),
-        EffectsModule.forFeature([
-            PayrollEffect,
-            HolidayEffect,
-            TemplateOvertimeEffect,
-            TemplateSalaryEffect
-        ]),
-        NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
-        CommonModule,
-        MatInputModule,
-        ReactiveFormsModule,
-        MatSelectModule,
-        MatCheckboxModule,
-        MatTabsModule,
-        MatChipsModule,
-        MatIconModule,
-        MatAutocompleteModule,
-        EmployeeModule,
-        FormsModule,
-        NgxSkeletonLoaderModule.forRoot(),
-        MatProgressBarModule,
-        MatFormFieldModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatProgressSpinnerModule,
-        MatStepperModule,
-        MatSlideToggleModule,
-        MatSortModule,
-        NzMessageModule,
-        NzSelectModule,
-        NzTableModule,
-        NzInputModule,
-        NgxCurrencyModule,
-        MatRadioModule,
-        NzDatePickerModule
-    ],
+  imports: [
+    ComponentsModule,
+    PayrollRoutingModule,
+    ComponentsModule,
+    MatDialogModule,
+    StoreModule,
+    MatDialogModule,
+    EffectsModule,
+    InfiniteScrollModule,
+    StoreModule.forFeature(FeatureName.TEMPLATE_SALARY, templateSalaryReducer),
+    StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
+    StoreModule.forFeature(FeatureName.OVERTIME, OvertimeReducer),
+    StoreModule.forFeature(FeatureName.HOLIDAY, HolidayReducer),
+    StoreModule.forFeature(
+      FeatureName.TEMPLATE_OVERTIME,
+      templateOvertimeReducer
+    ),
+    EffectsModule.forFeature([
+      PayrollEffect,
+      HolidayEffect,
+      TemplateOvertimeEffect,
+      TemplateSalaryEffect
+    ]),
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
+    CommonModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatTabsModule,
+    MatChipsModule,
+    MatIconModule,
+    MatAutocompleteModule,
+    EmployeeModule,
+    FormsModule,
+    NgxSkeletonLoaderModule.forRoot(),
+    MatProgressBarModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatProgressSpinnerModule,
+    MatStepperModule,
+    MatSlideToggleModule,
+    MatSortModule,
+    NzMessageModule,
+    NzSelectModule,
+    NzTableModule,
+    NzInputModule,
+    NgxCurrencyModule,
+    MatRadioModule,
+    NzDatePickerModule,
+    NzTimePickerModule,
+    NzRadioModule,
+    NzCheckboxModule,
+    NzButtonModule,
+    NzStepsModule
+  ],
   declarations: [
     PayrollComponent,
     DetailPayrollComponent,
