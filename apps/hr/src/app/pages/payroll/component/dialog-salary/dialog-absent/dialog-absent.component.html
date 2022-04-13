@@ -17,43 +17,73 @@
     <mat-step>
       <ng-template matStepLabel>khấu trừ</ng-template>
       <mat-dialog-content style='max-height: 40vh'>
-        <form [formGroup]='formGroup' (submit)='onSubmit()'>
-          <div>
-            <div class='row mb-2 d-flex flex-column '>
-              <div class='title-item col-12 mt-2 '>
-                <span>Khoảng khấu trừ </span>
-                <span class='star'>*</span>
+        <form [formGroup]='formGroup' class="px-2 pt-2">
+          <div class='mb-2'>
+            <span class="font-weight-bold">Khoảng khấu trừ </span><span class='star'>*</span>
+            <nz-select class="mt-1" style="width: 100%" formControlName="title">
+              <nz-option *ngFor='let item of templateSalary$|async'
+                         [nzValue]="item">{{item.title}}</nz-option>
+            </nz-select>
+          </div>
+          <div class='mb-3'>
+            <span class='font-weight-bold'>Buổi</span><span class='star'>*</span>
+            <nz-select class="mt-1" style="width: 100%" formControlName='partialDay'>
+              <nz-option *ngFor='let item of titleSession' [nzValue]='item.type'>{{item.title}}</nz-option>
+            </nz-select>
+          </div>
+          <div class='mb-3 row'>
+            <div class="col">
+              <span class="font-weight-bold">Từ ngày đến ngày</span>
+              <nz-range-picker formControlName="rangeDay"></nz-range-picker>
+            </div>
+            <div class="col d-flex">
+              <div class="col">
+                <span class="font-weight-bold">Từ giờ</span>
+                <nz-time-picker
+                  formControlName="startTime"
+                  nzFormat="h:mm a"
+                ></nz-time-picker>
               </div>
-              <div class=' my-2 col-12 '>
-                <nz-select style="width: 100%" formControlName="title">
-                  <nz-option *ngFor='let item of templateSalary$|async'
-                             [nzValue]="item">{{item.title}}</nz-option>
-                </nz-select>
+              <div class="col">
+                <span class="font-weight-bold">Đến giờ</span>
+                <nz-time-picker
+                  formControlName="endTime"
+                  nzFormat="h:mm a"
+                ></nz-time-picker>
               </div>
             </div>
-            <div class='row mb-3 '>
-              <span class=' title-item mb-1'>Buổi</span>
-              <nz-select style="width: 100%" formControlName='partialDay'>
-                <nz-option *ngFor='let item of titleSession' [nzValue]='item.type'>{{item.title}}</nz-option>
-              </nz-select>
+          </div>
+          <div class='mb-3'>
+              <span class='font-weight-bold'>Hệ số</span><span class="star">*</span>
+              <div class="form-control mt-1" style="background: #dddddd">{{formGroup.value.rate}}</div>
+          </div>
+          <div class='mb-3 d-flex flex-column'>
+            <div>
+              <span class='font-weight-bold'>Khấu trừ theo</span><span class="star">*</span>
             </div>
-            <div class='mb-3 d-flex'>
-              <nz-range-picker formControlName="rangeday"></nz-range-picker>
-
-              <div class='row mb-3'>
-                <div [formGroup]='formGroup' class='col-12'>
-                  <span class='title-item'>Chú thích</span>
-                  <input class='form-control' placeholder='Nhập chú thích ' formControlName='note'>
-                </div>
-              </div>
+            <nz-radio-group>
+              <label nz-radio nzValue="A">A</label>
+              <label nz-radio nzValue="A">b</label>
+              <label nz-radio nzValue="A">c</label>
+              <label nz-radio nzValue="A">d</label>
+            </nz-radio-group>
+          </div>
+          <div class='mb-3'>
+            <span class='font-weight-bold'>Ràng buộc ngày lễ</span>
+            <nz
+          </div>
+          <div class='mb-3'>
+            <div [formGroup]='formGroup' class='col-12'>
+              <span class='title-item'>Chú thích</span>
+              <input class='form-control' placeholder='Nhập chú thích ' formControlName='note'>
             </div>
-            <div class=' row '>
-              <button *ngIf='data.updateMultiple' class='btn btn-primary mr-2' matStepperPrevious>Trở lại</button>
-              <button class='btn btn-ok '>Lưu</button>
-              <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
-                ?
-              </button>
-            </div>
+          </div>
+          <div class=' row '>
+            <button *ngIf='data.updateMultiple' class='btn btn-primary mr-2' matStepperPrevious>Trở lại</button>
+            <button class='btn btn-ok '>Lưu</button>
+            <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
+              ?
+            </button>
           </div>
         </form>
       </mat-dialog-content>
