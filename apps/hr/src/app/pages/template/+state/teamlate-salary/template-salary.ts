@@ -4,12 +4,12 @@ import {Branch, PartialDayEnum} from '@minhdu-fontend/data-models';
 export interface TemplateSalary {
   id: number,
   title: string,
-  price: number,
+  price?: number,
   type: SalaryTypeEnum,
-  positionId: any,
+  positionId?: any,
   branches?: Branch[]
-  partialDay: PartialDayEnum,
-  unit: DatetimeUnitEnum
+  partialDay?: PartialDayEnum,
+  unit?: DatetimeUnitEnum
 }
 export interface TemplateSalaryDTO {
   take?: number,

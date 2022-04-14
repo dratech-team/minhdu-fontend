@@ -1,10 +1,10 @@
 <div class='px-2'>
   <nz-steps [nzCurrent]="indexStep">
-    <nz-step *ngIf="data?.isUpdate" nzTitle="Nhân viên đã chọn"></nz-step>
+    <nz-step *ngIf="data?.salary" nzTitle="Nhân viên đã chọn"></nz-step>
     <nz-step nzTitle="Bảng khấu trừ"></nz-step>
   </nz-steps>
 
-  <ng-template [ngIf]="indexStep === 0 && data?.isUpdate">
+  <ng-template [ngIf]="indexStep === 0 && data?.salary">
     <app-table-salaries-selected
       [salaries]='salariesSelected'
       (EmitSalariesSelected)='changeSalariesSelected($event)'>
@@ -14,7 +14,9 @@
     <form [formGroup]='formGroup' class="px-2 pt-2">
       <div class='mb-2'>
         <span class="font-weight-bold">Khoảng khấu trừ </span><span class='star'>*</span>
-        <nz-select class="mt-1" style="width: 100%" formControlName="template">
+        <nz-select class="mt-1" style="width: 100%" formControlName="template"
+                   [compareWith]="compareFN"
+        >
           <nz-option *ngFor='let item of templateSalary$|async'
                      [nzValue]="item">{{item.title}}</nz-option>
         </nz-select>
@@ -71,7 +73,10 @@
       </div>
       <div class='mb-3'>
         <span class='font-weight-bold'>Đơn giá</span>
-        <input nz-input type="number" formControlName='price'>
+        <input *ngIf="formGroup.value?.template?.id === 0 else price" nz-input type="number" formControlName='price'>
+        <ng-template #price>
+          <div>{{this.formGroup.value?.price || "Theo lương chuẩn" }} </div>
+        </ng-template>
       </div>
       <div class='mb-3'>
         <span class='font-weight-bold'>Chú thích</span>
@@ -80,7 +85,7 @@
     </form>
   </ng-template>
   <div class="steps-action">
-    <button nz-button nzType="default" (click)="pre()" *ngIf="indexStep > 0 && data?.isUpdate">
+    <button nz-button nzType="default" (click)="pre()" *ngIf="indexStep > 0 && data?.salary">
       <span>Trở lại</span>
     </button>
     <button nz-button nzType="default" (click)="next()" *ngIf="indexStep < 1">
@@ -88,6 +93,9 @@
     </button>
     <button nz-button nzType="primary" (click)="onSubmit()" *ngIf="indexStep === 1">
       <span>Xác nhận</span>
+    </button>
+    <button nz-button nzType="default" (click)="onClose()">
+      <span>Huỷ</span>
     </button>
   </div>
 </div>

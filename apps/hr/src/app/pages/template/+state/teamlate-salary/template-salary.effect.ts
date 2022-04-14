@@ -16,10 +16,13 @@ export class TemplateSalaryEffect {
     this.action$.pipe(
       ofType(TemplateSalaryAction.loadALlTemplate),
       switchMap((props: any) => {
-        console.log(props.SalaryType);
+       const param =  Object.assign(JSON.parse(JSON.stringify(props)),
+          { type: props.salaryType ? props.salaryType : '' })
+        if(props.salaryType){
+          delete param.salaryType
+        }
         return this.templateSalaryService.pagination(
-          Object.assign(JSON.parse(JSON.stringify(props)),
-            { type: props.salaryType ? props.salaryType : '' })
+          param
         );
       }),
       map((responsePagination) =>
