@@ -1,6 +1,6 @@
 import {SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {PriceTypeConstant} from "./price-type.constant";
-import {PriceTypeEnum} from "../enums";
+import {referencesTypeConstant} from "./references-type.constant";
+import {salaryReference} from "../enums";
 
 interface BlockSalary {
   title: string,
@@ -17,11 +17,15 @@ interface BlockSalary {
     disabled?: boolean,
     show?: boolean
   }
-  priceTypes?: {
+  references?: {
     name: string,
-    value: PriceTypeEnum
+    value: salaryReference
   }[],
   price?: {
+    disabled?: boolean,
+    show?: boolean
+  }
+  insurance? :{
     disabled?: boolean,
     show?: boolean
   }
@@ -31,6 +35,10 @@ export const blockSalariesConstant: BlockSalary[] = [
   {
     title: 'Lương cơ bản',
     type: SalaryTypeEnum.BASIC,
+    insurance:{
+      show: true,
+      disabled: false
+    },
     rate: {
       disabled: false,
       show: true
@@ -55,7 +63,7 @@ export const blockSalariesConstant: BlockSalary[] = [
   {
     title: 'Khấu trừ',
     type: SalaryTypeEnum.ABSENT,
-    priceTypes: PriceTypeConstant,
+    references: referencesTypeConstant,
     constraintHoliday: {
       disabled: false,
       show: true

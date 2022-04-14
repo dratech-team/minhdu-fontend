@@ -32,18 +32,18 @@
               <div class='border-top d-flex justify-content-center align-items-center'>Tên bản mẫu</div>
               <input class='form-control text-center' placeholder='Nhập tên bản mẫu' type='search'>
             </th>
-            <th style='width: 200px'>
-              <div class='border-top d-flex justify-content-center align-items-center'>Giá</div>
+            <th>
+              <div class='border-top d-flex justify-content-center align-items-center'>Đơn giá - Công thức tính</div>
               <input type='text' disabled>
             </th>
             <th style='width: 200px'>
-              <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị tính</div>
+              <div class='border-top d-flex justify-content-center align-items-center'>Hệ số</div>
               <input type='text' disabled>
             </th>
-<!--            <th>-->
-<!--              <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị</div>-->
-<!--              <input type='text' disabled>-->
-<!--            </th>-->
+            <!--            <th>-->
+            <!--              <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị</div>-->
+            <!--              <input type='text' disabled>-->
+            <!--            </th>-->
             <th style='width: 220px;'>
               <div class='border-top d-flex justify-content-center align-items-center'>Loại bản mẫu</div>
               <mat-select class='form-control border-top' formControlName='type'>
@@ -66,20 +66,24 @@
               {{templateSalary?.title}}
             </th>
             <th class='pointer' (click)='updateTemplateSalary(templateSalary)'>
-              {{templateSalary?.price ? (templateSalary?.price |number: '1.0-0') + 'VND' : '-' }}
+              {{templateSalary.type === salaryTypeEnum.ABSENT ?
+              (((templateSalary.price|number:'1.0-0')) || tranFormType(templateSalary.types))
+              + ' / ' +
+              (templateSalary.workday || 'Ngày công chuẩn') :
+              templateSalary.price}}
             </th>
             <th class='pointer' (click)='updateTemplateSalary(templateSalary)'>
-              {{templateSalary.unit|transformApp : unitsConstant }}
+              {{templateSalary.rate}}
             </th>
-<!--            <th class=' pointer p-1' (click)='updateTemplateSalary(templateSalary)'>-->
-<!--              <mat-chip-list>-->
-<!--                <mat-chip (click)='updateTemplateSalary(templateSalary)'-->
-<!--                          [style]='{"background": i%2  === 0? "#dddddd":"white"}'-->
-<!--                          *ngFor='let branch of templateSalary.branches'>-->
-<!--                  {{branch.name}}-->
-<!--                </mat-chip>-->
-<!--              </mat-chip-list>-->
-<!--            </th>-->
+            <!--            <th class=' pointer p-1' (click)='updateTemplateSalary(templateSalary)'>-->
+            <!--              <mat-chip-list>-->
+            <!--                <mat-chip (click)='updateTemplateSalary(templateSalary)'-->
+            <!--                          [style]='{"background": i%2  === 0? "#dddddd":"white"}'-->
+            <!--                          *ngFor='let branch of templateSalary.branches'>-->
+            <!--                  {{branch.name}}-->
+            <!--                </mat-chip>-->
+            <!--              </mat-chip-list>-->
+            <!--            </th>-->
             <th class='pointer' (click)='updateTemplateSalary(templateSalary)'>
               {{templateSalary.type|transformUBlockSalary: blockSalaries }}
             </th>
