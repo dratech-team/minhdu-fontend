@@ -56,7 +56,6 @@ export class DetailPayrollComponent implements OnInit {
         }
         this.sortedSalaryOver = JSON.parse(JSON.stringify(
           payroll?.salaries.filter(salary => salary.type === SalaryTypeEnum.OVERTIME)))
-        console.log(this.sortedSalaryOver)
       }
       return payroll
     })

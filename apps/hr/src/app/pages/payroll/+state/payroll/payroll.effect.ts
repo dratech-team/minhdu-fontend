@@ -126,7 +126,7 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.addSalary),
       switchMap((props) => {
-          if (props.salary.startedTime.getTime() > props.salary.endedTime.getTime()) {
+          if (props.salary.startTime.getTime() > props.salary.endTime.getTime()) {
             this.message.warning('Giờ bắt đầu phải nhỏ hơn giờ kết thúc')
             this.store.dispatch(PayrollAction.handleSalaryError());
             return throwError('Giờ bắt đầu phải nhỏ hơn giờ kết thúc')

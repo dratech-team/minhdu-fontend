@@ -169,8 +169,8 @@ export class DialogAbsentComponent implements OnInit {
       price: value.price || null,
       startedAt: value.rangeDay[0],
       endedAt: value.rangeDay[1],
-      startedTime: value.startTime,
-      endedTime: value.endTime,
+      startTime: value.startTime,
+      endTime: value.endTime,
       note: value.note,
       salarySettingId: value.template?.id || this.data?.salary?.salarySettingId
     }
