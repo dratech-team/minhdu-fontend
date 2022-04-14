@@ -57,6 +57,7 @@ import {Branch, Category, Position, RangeDay} from "@minhdu-fontend/data-models"
 import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 import {ExportService} from "@minhdu-fontend/service";
 import {ConfirmPayrollComponent} from "../../component/confirm-payroll/confirm-payroll.component";
+import {DialogAbsentComponent} from "../../component/dialog-salary/dialog-absent/dialog-absent.component";
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -755,5 +756,4 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   getRangeDay(): RangeDay {
     return getSelectors<RangeDay>(selectedRangeDayPayroll, this.store)
   }
-
 }

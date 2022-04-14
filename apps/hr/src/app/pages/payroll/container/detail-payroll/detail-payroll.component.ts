@@ -302,7 +302,6 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   compare(a: number | string| Date, b: number | string|Date, isAsc: boolean) {
-    console.log(typeof  a)
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 

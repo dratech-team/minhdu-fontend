@@ -1,4 +1,4 @@
-import {salaryReference} from "../enums";
+import {DiveTypeEnum, salaryReference} from "../enums";
 import {SalaryTypeEnum} from "@minhdu-fontend/enums";
 
 export interface RefernceType {
@@ -6,7 +6,7 @@ export interface RefernceType {
   value: salaryReference,
   dives?: {
     name: string,
-    value: 'STANDARD' | 'OTHER'
+    value: DiveTypeEnum
   }[],
   recipes?: {
     name: string,
@@ -14,14 +14,14 @@ export interface RefernceType {
   } []
 }
 
-const diveConstant: { name: string; value: 'STANDARD' | 'OTHER' }[] = [
+export const diveConstant: { name: string; value:DiveTypeEnum}[] = [
   {
     name: 'Ngày công chuẩn',
-    value: 'STANDARD'
+    value: DiveTypeEnum.STANDARD
   },
   {
     name: 'Tuỳ chọn',
-    value: 'OTHER'
+    value: DiveTypeEnum.OTHER
   }
 ]
 

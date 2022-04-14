@@ -5,15 +5,14 @@ import {salaryReference} from "../../enums";
 export interface SalarySetting {
   id: number,
   title: string,
-  price: number,
+  price?: number,
   type: SalaryTypeEnum,
   rate: number,
-  reference: salaryReference,
-  constraints: SalaryConstraint[]
-  positionId: any,
+  reference?: salaryReference,
+  constraints?: SalaryTypeEnum[]
+  positionId?: any,
   branches?: Branch[]
-  partialDay: PartialDayEnum,
-  unit: DatetimeUnitEnum
+  unit?: DatetimeUnitEnum
   types: SalaryTypeEnum [],
   workday?: number
 }

@@ -17,16 +17,19 @@ export interface Salary {
   datetime: Date,
   startedAt: Date,
   endedAt: Date,
+  startedTime: Date,
+  endedTime: Date,
   forgot: boolean,
   note: string,
   employeeId: number,
-  Payroll: Payroll,
-  PayrollId: number,
+  payroll: Payroll,
+  payrollId: number,
   salaryHistory: SalaryHistory,
   salaryHistoryId: number,
   allowance?: any,
   DAY?: PartialDayEnum,
-  employee?: Employee
+  employee?: Employee,
+  salarySettingId?: number
 }
 
 export interface SalaryPayroll {

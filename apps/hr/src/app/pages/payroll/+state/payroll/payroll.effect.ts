@@ -126,16 +126,21 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.addSalary),
       switchMap((props) => {
+          if (props.salary.startTime.getTime() > props.salary.endTime.getTime()) {
+            this.message.warning('Giờ bắt đầu phải nhỏ hơn giờ kết thúc')
+            this.store.dispatch(PayrollAction.handleSalaryError());
+            return throwError('Giờ bắt đầu phải nhỏ hơn giờ kết thúc')
+          }
           return this.salaryService.addOne(props.salary).pipe(
             map((res) => {
               if (props.branchId) {
-                return  PayrollAction.getPayroll({id: props.payrollId})
+                return PayrollAction.getPayroll({id: props.payrollId})
               }
               if (res?.status === 201) {
                 this.message.success(res.message);
-                if(props.isDetailPayroll){
+                if (props.isDetailPayroll) {
                   return PayrollAction.getPayroll({id: props.payrollId})
-                }else{
+                } else {
                   return PayrollAction.addSalaryMultipleSuccess();
                 }
               } else {

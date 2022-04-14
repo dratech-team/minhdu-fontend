@@ -9,9 +9,10 @@ import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {Branch} from '@minhdu-fontend/data-models';
 import * as lodash from 'lodash';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {salaryReference} from "../../enums";
+import {DiveTypeEnum, salaryReference} from "../../enums";
 import {blockSalariesConstant} from "../../constants";
 import {SalaryConstraint, SalarySetting} from "../../+state/teamlate-salary/salary-setting";
+import {diveConstant, referencesTypeConstant} from "../../constants/references-type.constant";
 
 @Component({
   templateUrl: 'template-salary.component.html'
@@ -47,15 +48,17 @@ export class TemplateSalaryComponent implements OnInit {
         , Validators.required],
       price: [template?.price],
       recipes: [],
-      reference: [''],
+      reference: [template?.types?.length > 0 ? this.getReference(salaryReference.BLOCK) : this.getReference(salaryReference.PRICE)],
       title: [template?.title, Validators.required],
-      dive: [],
+      dive: [template?.workday ? DiveTypeEnum.OTHER : DiveTypeEnum.STANDARD],
       workday: [template?.workday],
       rate: [template?.rate, Validators.required],
       constraintHoliday: [template?.constraints ? this.checkConstraint(template?.constraints, SalaryTypeEnum.HOLIDAY) : false],
-      constraintOvertime: [template?.constraints  ? this.checkConstraint(template?.constraints , SalaryTypeEnum.OVERTIME) : false],
+      constraintOvertime: [template?.constraints ? this.checkConstraint(template?.constraints, SalaryTypeEnum.OVERTIME) : false],
       insurance: [template?.type === SalaryTypeEnum.BASIC_INSURANCE]
     });
+
+    console.log(this.formGroup.value)
     this.formGroup.get('block')?.valueChanges.subscribe(item => {
       if (item.type === SalaryTypeEnum.OVERTIME || item.type === SalaryTypeEnum.HOLIDAY) {
         this.message.info('Chức năng đang được phát triền')
@@ -64,12 +67,17 @@ export class TemplateSalaryComponent implements OnInit {
     })
   }
 
-  checkConstraint(constraints: SalaryConstraint[] | undefined, constraint: SalaryTypeEnum) {
+  checkConstraint(constraints: SalaryTypeEnum[] | undefined, constraint: SalaryTypeEnum) {
     if (!constraints) {
       return false
     } else {
-      return constraints.some(val => val.type === constraint)
+      console.log(constraints)
+      return constraints.some(val => val === constraint)
     }
+  }
+
+  getReference(salaryReference: salaryReference) {
+    return referencesTypeConstant.find(referenceConstant => referenceConstant.value === salaryReference)
   }
 
   get checkValid() {
@@ -101,7 +109,7 @@ export class TemplateSalaryComponent implements OnInit {
         return this.message.warning('Chưa chọn tổng của ')
       }
       Object.assign(template, {
-        constraint: this.constraint
+        constraints: this.constraint
       })
       if (value.reference.value === salaryReference.PRICE) {
         if (!value.price) {
