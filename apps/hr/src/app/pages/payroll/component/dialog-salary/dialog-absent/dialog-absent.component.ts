@@ -40,7 +40,7 @@ export class DialogAbsentComponent implements OnInit {
   salariesSelected: SalaryPayroll[] = [];
   titleSession = SessionConstant
   partialDayEnum = PartialDayEnum
-  priceTypeConstant = PriceTypeConstant
+  priceTypeConstant = PriceTypeConstant;
   indexStep = 1;
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id || o1 === o2.type : false);
 
@@ -178,9 +178,11 @@ export class DialogAbsentComponent implements OnInit {
     });
   }
 
-  renderTypes(){
-
-  }
+  // tranFormType(salaryTypes: SalaryTypeEnum[]) {
+  //   return salaryTypes.map(val => {
+  //     return  this.blockSalaries.find((item: any) => item.type === val)?.title
+  //   }).join(' + ')
+  // }
 
   changeSalariesSelected($event: SalaryPayroll[]) {
     this.salariesSelected = $event;
