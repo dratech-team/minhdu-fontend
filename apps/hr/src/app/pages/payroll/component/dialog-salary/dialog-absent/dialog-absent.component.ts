@@ -16,7 +16,7 @@ import {Payroll} from "../../../+state/payroll/payroll.interface";
 import {PayrollAction} from "../../../+state/payroll/payroll.action";
 import {map} from "rxjs/operators";
 import {salaryReference} from "../../../../template/enums";
-import {SalaryConstraint} from "../../../../template/+state/teamlate-salary/salary-setting";
+import {SalaryConstraint, SalarySetting} from "../../../../template/+state/teamlate-salary/salary-setting";
 import {tranFormSalaryType} from "../../../utils";
 
 @Component({
@@ -25,12 +25,20 @@ import {tranFormSalaryType} from "../../../utils";
 export class DialogAbsentComponent implements OnInit {
   adding$ = this.store.select(selectedAddingPayroll)
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
+  templateSalaries: SalarySetting [] = []
   templateSalary$ = this.store.select(selectorAllTemplate).pipe(
     map(templates => {
-      templates.push({id: 0, title: 'Khác', type: SalaryTypeEnum.ABSENT, rate: 1, types: []})
-      return templates
+      this.templateSalaries = templates.concat([{
+        id: 0,
+        title: 'Khác',
+        type: SalaryTypeEnum.ABSENT,
+        rate: 1,
+        types: []
+      }])
+      return this.templateSalaries
     })
   )
+
   numberChars = new RegExp('[^0-9]', 'g');
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
@@ -42,7 +50,7 @@ export class DialogAbsentComponent implements OnInit {
   partialDayEnum = PartialDayEnum
   references = referencesTypeConstant;
   indexStep = 1;
-  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id || o1 === o2.type : false);
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
     public readonly datePipe: DatePipe,
@@ -69,12 +77,9 @@ export class DialogAbsentComponent implements OnInit {
     }
     const salary = this.data?.salary
     this.formGroup = this.formBuilder.group({
-      template: [salary?.salarySettingId, Validators.required],
-      datetime: [
-        salary ?
-          this.datePipe.transform(salary.datetime, 'yyyy-MM-dd') : ''
-      ],
-      rangeDay: [[], Validators.required],
+      template: ['', Validators.required],
+      rangeDay: [salary ?
+        [salary.startedAt, salary.endedAt,] : [], Validators.required],
       price: [this.data?.salary?.price],
       startTime: [
         salary?.startedAt ?
@@ -83,12 +88,16 @@ export class DialogAbsentComponent implements OnInit {
         salary?.endedAt ?
           new Date(0, 0, 0, salary?.startedAt.getHours(), salary?.startedAt.getMinutes()) : undefined],
       note: [salary?.note],
-      rate: [this.data?.salary?.rate, Validators.required],
+      rate: ['', Validators.required],
       partialDay: [salary ? this.transFormPartial(salary.startedAt, salary.endedAt) : ''],
       constraintHoliday: [],
       constraintOvertime: [],
       reference: []
     });
+
+    if (salary?.salarySettingId) {
+      this.formGroup.get('template')?.setValue(this.getTemplateSalary(salary.salarySettingId))
+    }
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
       this.formGroup.get('price')?.setValue(template.price)
       if (template.constraints) {
@@ -122,6 +131,10 @@ export class DialogAbsentComponent implements OnInit {
 
   get checkValid() {
     return this.formGroup.controls;
+  }
+
+  getTemplateSalary(id: number) {
+    this.templateSalaries.find(template => template.id === id)
   }
 
   transFormConstraintType(constraints: SalaryConstraint [], salaryTypeEnum: SalaryTypeEnum): boolean {
