@@ -18,7 +18,7 @@
                    [compareWith]="compareFN"
         >
           <nz-option *ngFor='let item of templateSalary$|async'
-                     [nzValue]="item">{{item.title}}</nz-option>
+                     [nzValue]="item" [nzLabel]="item.title"></nz-option>
         </nz-select>
       </div>
       <div class='mb-3'>
@@ -75,7 +75,10 @@
         <span class='font-weight-bold'>Đơn giá</span>
         <input *ngIf="formGroup.value?.template?.id === 0 else price" nz-input type="number" formControlName='price'>
         <ng-template #price>
-          <div>{{this.formGroup.value?.price || "Theo lương chuẩn" }} </div>
+          <div class="form-control" style="background: #dddddd">{{
+            this.formGroup.value?.price ?(this.formGroup.value?.price|number:'1.0-0' ):
+              formGroup.value.template.
+            }} </div>
         </ng-template>
       </div>
       <div class='mb-3'>

@@ -42,7 +42,7 @@ export class DialogAbsentComponent implements OnInit {
   partialDayEnum = PartialDayEnum
   priceTypeConstant = PriceTypeConstant
   indexStep = 1;
-  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.type == o2.type || o1 === o2.type : false);
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id || o1 === o2.type : false);
 
   constructor(
     public readonly datePipe: DatePipe,
@@ -178,6 +178,9 @@ export class DialogAbsentComponent implements OnInit {
     });
   }
 
+  renderTypes(){
+
+  }
 
   changeSalariesSelected($event: SalaryPayroll[]) {
     this.salariesSelected = $event;

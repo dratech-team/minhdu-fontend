@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import { select, Store } from '@ngrx/store';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { TemplateSalaryAction } from './template-salary.action';
-import { TemplateSalaryService } from '../../service/template-salary.service';
-import { selectorTemplateTotal } from './template-salary.selector';
-import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
+import {Injectable} from '@angular/core';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
+import {catchError, map, switchMap, withLatestFrom} from 'rxjs/operators';
+import {throwError} from 'rxjs';
+import {select, Store} from '@ngrx/store';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {TemplateSalaryAction} from './template-salary.action';
+import {TemplateSalaryService} from '../../service/template-salary.service';
+import {selectorTemplateTotal} from './template-salary.selector';
+import {SnackBarComponent} from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 
 @Injectable()
 export class TemplateSalaryEffect {
@@ -16,18 +16,13 @@ export class TemplateSalaryEffect {
     this.action$.pipe(
       ofType(TemplateSalaryAction.loadALlTemplate),
       switchMap((props: any) => {
-       const param =  Object.assign(JSON.parse(JSON.stringify(props)),
-          { type: props.salaryType ? props.salaryType : '' })
-        if(props.salaryType){
-          delete param.salaryType
-        }
         return this.templateSalaryService.pagination(
-          param
+          props
         );
       }),
       map((responsePagination) =>
         TemplateSalaryAction.loadInitTempLateSuccess({
-          templateSalary: responsePagination.data ,
+          templateSalary: responsePagination.data,
           total: responsePagination.total
         })),
       catchError((err) => throwError(err))
@@ -38,7 +33,7 @@ export class TemplateSalaryEffect {
       ofType(TemplateSalaryAction.loadInit),
       switchMap((props: any) => this.templateSalaryService.pagination(
         Object.assign(JSON.parse(JSON.stringify(props.templateSalaryDTO)),
-          { type: props.templateSalaryDTO.salaryType ? props.templateSalaryDTO.salaryType : '' })
+          {type: props.templateSalaryDTO.salaryType ? props.templateSalaryDTO.salaryType : ''})
       )),
       map((responsePagination) => {
           console.log(responsePagination);
@@ -57,7 +52,7 @@ export class TemplateSalaryEffect {
       withLatestFrom(this.store.pipe(select(selectorTemplateTotal))),
       map(([props, skip]) =>
         Object.assign(JSON.parse(JSON.stringify(props.templateSalaryDTO)),
-          { skip: skip, type: props.templateSalaryDTO.salaryType ? props.templateSalaryDTO.salaryType : '' })
+          {skip: skip, type: props.templateSalaryDTO.salaryType ? props.templateSalaryDTO.salaryType : ''})
       ),
       switchMap((props) => {
         return this.templateSalaryService.pagination(props);
@@ -65,7 +60,7 @@ export class TemplateSalaryEffect {
       map((responsePagination) => {
         if (responsePagination.data.length === 0) {
           this.snackBar.openFromComponent(SnackBarComponent, {
-            data: { content: 'Đã lấy hết bản mẫu lương cơ bản' },
+            data: {content: 'Đã lấy hết bản mẫu lương cơ bản'},
             duration: 2500,
             panelClass: ['background-snackbar']
           });
@@ -83,7 +78,7 @@ export class TemplateSalaryEffect {
     this.action$.pipe(
       ofType(TemplateSalaryAction.AddTemplate),
       switchMap((pram) => this.templateSalaryService.addOne(pram.template).pipe(
-        map(_ => TemplateSalaryAction.loadInit({ templateSalaryDTO: { take: 30, skip: 0 } })),
+        map(_ => TemplateSalaryAction.loadInit({templateSalaryDTO: {take: 30, skip: 0}})),
         catchError((err) => {
             this.store.dispatch(TemplateSalaryAction.HandelTemplateError());
             return throwError(err);
@@ -96,7 +91,7 @@ export class TemplateSalaryEffect {
     this.action$.pipe(
       ofType(TemplateSalaryAction.updateTemplate),
       switchMap((pram) => this.templateSalaryService.update(pram.id, pram.template).pipe(
-        map(_ => TemplateSalaryAction.loadInit({ templateSalaryDTO: { take: 30, skip: 0 } })),
+        map(_ => TemplateSalaryAction.loadInit({templateSalaryDTO: {take: 30, skip: 0}})),
         catchError((err) => {
             this.store.dispatch(TemplateSalaryAction.HandelTemplateError());
             return throwError(err);
@@ -110,7 +105,7 @@ export class TemplateSalaryEffect {
       ofType(TemplateSalaryAction.deleteTemplate),
       switchMap((pram) => {
           return this.templateSalaryService.delete(pram.id).pipe(
-            map(_ => TemplateSalaryAction.loadInit({ templateSalaryDTO: { take: 30, skip: 0 } }))
+            map(_ => TemplateSalaryAction.loadInit({templateSalaryDTO: {take: 30, skip: 0}}))
           );
         }
       )
