@@ -8,28 +8,28 @@ import {selectTemplateAdded} from '../../+state/teamlate-salary/template-salary.
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {Branch} from '@minhdu-fontend/data-models';
 import * as lodash from 'lodash';
-import {searchAutocomplete} from '@minhdu-fontend/utils';
-import {startWith} from 'rxjs/operators';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {PriceTypeEnum} from "../../enums";
+import {salaryReference} from "../../enums";
 import {blockSalariesConstant} from "../../constants";
+import {SalaryConstraint, SalarySetting} from "../../+state/teamlate-salary/salary-setting";
 
 @Component({
   templateUrl: 'template-salary.component.html'
 })
 export class TemplateSalaryComponent implements OnInit {
+  branches$ = this.store.pipe(select(getAllOrgchart));
   numberChars = new RegExp('[^0-9]', 'g');
   formGroup!: FormGroup;
   submitted = false;
   blockSalary = blockSalariesConstant;
+  salaryTypeEnum = SalaryTypeEnum
   branches = new FormControl();
-  branches$ = this.store.pipe(select(getAllOrgchart));
   branchesSelected: Branch[] = [];
-  priceTypeEnum = PriceTypeEnum
-  compareFN = (o1: any, o2: any) => (o1.type == o2.type || o1 === o2.type);
+  constraint: SalaryTypeEnum[] = []
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type || o1.type === o2.type : o1 === o2);
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: { template: SalarySetting, isUpdate: boolean },
     private readonly formBuilder: FormBuilder,
     private readonly store: Store,
     private readonly message: NzMessageService,
@@ -39,43 +39,40 @@ export class TemplateSalaryComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
-    if (this.data?.template) {
-      if (this.data.template?.branches) {
-        this.branchesSelected = [...this.data.template?.branches];
-      }
-      this.formGroup = this.formBuilder.group({
-        block: [this.data.template.type, Validators.required],
-        price: [this.data.template.price],
-        title: [this.data.template.title],
-        priceType: [this.data.template?.priceType],
-        days: [],
-        rate: [],
-      });
-    } else {
-      this.formGroup = this.formBuilder.group({
-        block: ['', Validators.required],
-        price: [],
-        priceType: [{value: PriceTypeEnum.INPUT}],
-        title: [],
-        days: [1],
-        rate: []
-      });
-    }
 
+    const template = this.data?.template
+    this.formGroup = this.formBuilder.group({
+      block: [template?.type === SalaryTypeEnum.BASIC_INSURANCE ? this.blockSalary.find(block => block.type === SalaryTypeEnum.BASIC) :
+        this.blockSalary.find(block => block.type === template?.type)
+        , Validators.required],
+      price: [template?.price],
+      recipes: [],
+      reference: [''],
+      title: [template?.title, Validators.required],
+      dive: [],
+      workday: [template?.workday],
+      rate: [template?.rate, Validators.required],
+      constraintHoliday: [template?.constraints ? this.checkConstraint(template?.constraints, SalaryTypeEnum.HOLIDAY) : false],
+      constraintOvertime: [template?.constraints  ? this.checkConstraint(template?.constraints , SalaryTypeEnum.OVERTIME) : false],
+      insurance: [template?.type === SalaryTypeEnum.BASIC_INSURANCE]
+    });
     this.formGroup.get('block')?.valueChanges.subscribe(item => {
       if (item.type === SalaryTypeEnum.OVERTIME || item.type === SalaryTypeEnum.HOLIDAY) {
         this.message.info('Chức năng đang được phát triền')
         this.formGroup.get('block')?.setValue('')
       }
     })
-
-    this.branches$ = searchAutocomplete(
-      this.branches.valueChanges.pipe(startWith(this.data?.template?.branch?.name || '')),
-      this.branches$
-    );
   }
 
-  get f() {
+  checkConstraint(constraints: SalaryConstraint[] | undefined, constraint: SalaryTypeEnum) {
+    if (!constraints) {
+      return false
+    } else {
+      return constraints.some(val => val.type === constraint)
+    }
+  }
+
+  get checkValid() {
     return this.formGroup.controls;
   }
 
@@ -84,16 +81,47 @@ export class TemplateSalaryComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    if (this.branches.value) {
-      return this.message.error('Đơn vị phải chọn không được nhập');
-    }
     const value = this.formGroup.value;
+    if (value.constraintHoliday) {
+      this.constraint.push(SalaryTypeEnum.HOLIDAY)
+    }
+    if (value.constraintOvertime) {
+      this.constraint.push(SalaryTypeEnum.OVERTIME)
+    }
     const template = {
       title: value.title,
-      price: value.price,
-      type: value.block.type,
-      branchIds: this.branchesSelected.map(val => val.id)
+      settingType: value.block.type === SalaryTypeEnum.BASIC && value.insurance ?
+        SalaryTypeEnum.BASIC_INSURANCE :
+        value.block.type,
+      rate: value.rate,
+      price: value.price
     };
+    if (value.block.type === SalaryTypeEnum.ABSENT) {
+      if (!value.reference) {
+        return this.message.warning('Chưa chọn tổng của ')
+      }
+      Object.assign(template, {
+        constraint: this.constraint
+      })
+      if (value.reference.value === salaryReference.PRICE) {
+        if (!value.price) {
+          return this.message.warning('Chưa nhập giá tiền')
+        }
+        Object.assign(template, {
+          workday: value.workday ? value.workday : null,
+          types: null,
+        })
+      } else {
+        if (!value.recipes) {
+          return this.message.warning('Chưa chọn loại lương')
+        }
+        Object.assign(template, {
+          workday: value.workday ? value.workday : null,
+          price: null,
+          types: value.recipes.map((recipe: any) => recipe.value),
+        })
+      }
+    }
     if (this.data?.isUpdate) {
       this.store.dispatch(TemplateSalaryAction.updateTemplate(
         {
@@ -109,22 +137,6 @@ export class TemplateSalaryComponent implements OnInit {
         this.dialogRef.close(template);
       }
     });
-  }
-
-  onSelectBranch(event: any, branch: Branch, branchesInput: HTMLInputElement) {
-    if (event.isUserInput) {
-      if (branch.id) {
-        if (this.branchesSelected.some(item => item.id === branch.id)) {
-          this.message.success('Đơn vị đã được chọn');
-        } else {
-          this.branchesSelected.push(branch);
-        }
-      }
-      setTimeout(() => {
-        this.branches.setValue('');
-        branchesInput.blur();
-      });
-    }
   }
 
   removeBranchSelected(branch: Branch) {

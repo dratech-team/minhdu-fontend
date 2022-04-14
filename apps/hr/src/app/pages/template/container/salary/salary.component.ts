@@ -9,11 +9,11 @@ import {TemplateSalaryAction} from '../../+state/teamlate-salary/template-salary
 import {TemplateSalaryComponent} from '../../component/template-salary/template-salary.component';
 import {
   selectorAllTemplate,
-  selectTemplateAdding, selectTemplateLoaded,
+  selectTemplateAdding,
+  selectTemplateLoaded,
   selectTotalTemplateSalary
 } from '../../+state/teamlate-salary/template-salary.selector';
-import {UnitsConstant} from '@minhdu-fontend/constants';
-import {TemplateSalary} from "../../+state/teamlate-salary/template-salary";
+import {SalarySetting} from "../../+state/teamlate-salary/salary-setting";
 import {blockSalariesConstant} from "../../constants";
 
 
@@ -27,8 +27,11 @@ export class SalaryComponent implements OnInit {
   templateSalaries$ = this.store.pipe(select(selectorAllTemplate));
   type = SalaryTypeEnum;
   unit = DatetimeUnitEnum;
-  unitsConstant = UnitsConstant;
-  blockSalaries = blockSalariesConstant.concat({title: 'Tất cả', type: SalaryTypeEnum.ALL});
+  salaryTypeEnum = SalaryTypeEnum
+  blockSalaries = blockSalariesConstant.concat([
+    {title: 'Tất cả', type: SalaryTypeEnum.ALL},
+    {title: 'Lương cơ bản trích bảo hiểm', type: SalaryTypeEnum.BASIC_INSURANCE}
+  ]);
   pageSize = 30;
   pageIndexInit = 0;
   formGroup = new FormGroup(
@@ -68,7 +71,7 @@ export class SalaryComponent implements OnInit {
   }
 
 
-  addTemplateSalary(template?: TemplateSalary) {
+  addTemplateSalary(template?: SalarySetting) {
     this.dialog.open(TemplateSalaryComponent, {
       width: 'fit-content',
       data: {template}
@@ -110,5 +113,11 @@ export class SalaryComponent implements OnInit {
         }
       )
     );
+  }
+
+  tranFormType(salaryTypes: SalaryTypeEnum[]) {
+  return salaryTypes.map(val => {
+       return  this.blockSalaries.find((item: any) => item.type === val)?.title
+    }).join(' + ')
   }
 }

@@ -1,20 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivityType, App, MenuWarehouseEum } from '@minhdu-fontend/enums';
-import { FormControl, FormGroup } from '@angular/forms';
-import { select, Store } from '@ngrx/store';
-import { debounceTime, tap } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {ActivityType, App} from '@minhdu-fontend/enums';
+import {FormControl, FormGroup} from '@angular/forms';
+import {select, Store} from '@ngrx/store';
+import {debounceTime, tap} from 'rxjs/operators';
 import {
   selectedSystemHistoryLoaded,
   selectedTotalSystemHistory,
-  selectorAllSystemHistory, selectorSystemHistoryTotal,
+  selectorAllSystemHistory,
+  selectorSystemHistoryTotal,
 } from '../../../+state/system-history/system-history/system-history.selectors';
-import { SystemHistoryActions } from '../../../+state/system-history/system-history/system-history.actions';
-import { appConstant, MethodConstant } from '@minhdu-fontend/constants';
-import {RouteActions} from "../../../../../../../apps/sell/src/app/pages/route/+state/routeActions";
+import {SystemHistoryActions} from '../../../+state/system-history/system-history/system-history.actions';
+import {appConstant, MethodConstant} from '@minhdu-fontend/constants';
 import {getSelectors} from "@minhdu-fontend/utils";
-import {
-  selectedRangeDayPayroll
-} from "../../../../../../../apps/hr/src/app/pages/payroll/+state/payroll/payroll.selector";
 
 @Component({
   selector: 'app-dashboard',
