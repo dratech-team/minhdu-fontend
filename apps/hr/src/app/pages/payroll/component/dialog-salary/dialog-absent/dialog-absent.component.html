@@ -11,7 +11,7 @@
     </app-table-salaries-selected>
   </ng-template>
   <ng-template [ngIf]="indexStep === 1">
-    <form [formGroup]='formGroup' class="px-2 pt-2">
+    <form [formGroup]='formGroup' class="px-2 pt-2" style="max-height: 40vh; overflow-y: scroll">
       <div class='mb-2'>
         <span class="font-weight-bold">Khoảng khấu trừ </span><span class='star'>*</span>
         <nz-select class="mt-1" style="width: 100%" formControlName="template"
@@ -20,17 +20,26 @@
           <nz-option *ngFor='let item of templateSalary$|async'
                      [nzValue]="item" [nzLabel]="item.title"></nz-option>
         </nz-select>
+        <div *ngIf='checkValid.template.errors ' class='invalid-feedback'>
+          <div>Chưa chọn loại khấu trừ</div>
+        </div>
       </div>
       <div class='mb-3'>
         <span class='font-weight-bold'>Buổi</span><span class='star'>*</span>
         <nz-select class="mt-1" style="width: 100%" formControlName='partialDay'>
           <nz-option *ngFor='let item of titleSession' [nzValue]='item' [nzLabel]="item.name"></nz-option>
         </nz-select>
+        <div *ngIf='checkValid.partialDay.errors ' class='invalid-feedback'>
+          <div>Chưa chọn buổi khấu trừ</div>
+        </div>
       </div>
       <div class='mb-3 row'>
         <div class="col d-flex flex-column">
           <div class="font-weight-bold">Từ ngày đến ngày <span class="star">*</span></div>
           <nz-range-picker class="mt-1" formControlName="rangeDay"></nz-range-picker>
+          <div *ngIf='checkValid.rangeDay.errors ' class='invalid-feedback'>
+            <div>Chưa chọn từ ngày đến ngày</div>
+          </div>
         </div>
         <div class="col d-flex">
           <div class="col">
@@ -41,6 +50,9 @@
               formControlName="startTime"
               nzFormat="HH:mm"
             ></nz-time-picker>
+            <div *ngIf='checkValid.startTime.errors ' class='invalid-feedback'>
+              <div>Chưa chọn từ giờ</div>
+            </div>
           </div>
           <div class="col">
             <span class="font-weight-bold">Đến giờ</span>
@@ -50,6 +62,9 @@
               formControlName="endTime"
               nzFormat="HH:mm"
             ></nz-time-picker>
+            <div *ngIf='checkValid.endTime.errors ' class='invalid-feedback'>
+              <div>Chưa chọn đến giờ</div>
+            </div>
           </div>
         </div>
       </div>
@@ -62,7 +77,7 @@
           <div>
             <span class='font-weight-bold'>Khấu trừ theo</span><span class="star">*</span>
           </div>
-          <nz-radio-group nzDisabled="{{true}}">
+          <nz-radio-group nzDisabled="{{true}}" formControlName="reference">
             <label nz-radio [nzValue]="item.value" *ngFor="let item of references">{{item.name}}</label>
           </nz-radio-group>
         </div>
@@ -80,10 +95,10 @@
         <input *ngIf="formGroup.value?.template?.id === 0 else price" nz-input
                type="text" formControlName='price'
                currencyMask
-               [options]="{ suffix: ' đ' }" >
+               [options]="{ suffix: ' đ' }">
         <ng-template #price>
           <div *ngIf="formGroup.value?.template" class="form-control" style="background: #dddddd">{{
-            (((formGroup.value.template?.price|number:'1.0-0')) || formGroup.value.template?.types)
+            (((formGroup.value.template?.price|number:'1.0-0')) || tranFormType(formGroup.value.template?.types))
             + ' / ' +
             (formGroup.value.template?.workday || 'Ngày công chuẩn')
             }} </div>

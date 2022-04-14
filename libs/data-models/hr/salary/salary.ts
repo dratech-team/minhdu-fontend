@@ -17,6 +17,8 @@ export interface Salary {
   datetime: Date,
   startedAt: Date,
   endedAt: Date,
+  startedTime: Date,
+  endedTime: Date,
   forgot: boolean,
   note: string,
   employeeId: number,

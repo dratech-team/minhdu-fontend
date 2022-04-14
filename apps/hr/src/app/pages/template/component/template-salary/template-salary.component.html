@@ -62,7 +62,7 @@
           </div>
           <div class=' main-popup mt-2' *ngIf="formGroup.value?.block?.price?.show">
             <input
-              *ngIf="!formGroup.value.reference.recipes else recipe"
+              *ngIf="!formGroup.value?.reference?.recipes else recipe"
               currencyMask
               [options]="{ suffix: ' đ' }"
               class='form-control mt-1' type='text' formControlName='price' placeholder='Đơn giá'

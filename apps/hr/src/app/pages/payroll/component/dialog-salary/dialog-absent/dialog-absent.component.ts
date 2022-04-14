@@ -18,6 +18,7 @@ import {map} from "rxjs/operators";
 import {salaryReference} from "../../../../template/enums";
 import {SalaryConstraint, SalarySetting} from "../../../../template/+state/teamlate-salary/salary-setting";
 import {tranFormSalaryType} from "../../../utils";
+import {values} from "lodash";
 
 @Component({
   templateUrl: 'dialog-absent.component.html'
@@ -79,17 +80,15 @@ export class DialogAbsentComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       template: ['', Validators.required],
       rangeDay: [salary ?
-        [salary.startedAt, salary.endedAt,] : [], Validators.required],
+        [salary.startedAt, salary.endedAt] : [], Validators.required],
       price: [this.data?.salary?.price],
       startTime: [
-        salary?.startedAt ?
-          new Date(0, 0, 0, salary?.startedAt.getHours(), salary?.startedAt.getMinutes()) : undefined],
+        salary?.startedTime ? salary.startedTime : undefined, Validators.required],
       endTime: [
-        salary?.endedAt ?
-          new Date(0, 0, 0, salary?.startedAt.getHours(), salary?.startedAt.getMinutes()) : undefined],
+        salary?.endedTime ? salary.endedTime : undefined, Validators.required],
       note: [salary?.note],
       rate: ['', Validators.required],
-      partialDay: [salary ? this.transFormPartial(salary.startedAt, salary.endedAt) : ''],
+      partialDay: [salary ? this.transFormPartial(salary.startedAt, salary.endedAt) : '', Validators.required],
       constraintHoliday: [],
       constraintOvertime: [],
       reference: []
@@ -101,6 +100,7 @@ export class DialogAbsentComponent implements OnInit {
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
       this.formGroup.get('price')?.setValue(template.price)
       if (template.constraints) {
+
         this.formGroup.get('constraintHoliday')?.setValue(
           this.transFormConstraintType(template.constraints, SalaryTypeEnum.HOLIDAY)
         )
@@ -109,6 +109,7 @@ export class DialogAbsentComponent implements OnInit {
         )
       }
       this.formGroup.get('rate')?.setValue(template.rate)
+
       this.formGroup.get('reference')?.setValue(template.types ? salaryReference.BLOCK : salaryReference.PRICE)
     })
     this.formGroup.get('partialDay')?.valueChanges.subscribe(item => {
@@ -137,8 +138,8 @@ export class DialogAbsentComponent implements OnInit {
     this.templateSalaries.find(template => template.id === id)
   }
 
-  transFormConstraintType(constraints: SalaryConstraint [], salaryTypeEnum: SalaryTypeEnum): boolean {
-    return constraints.some(constraint => constraint.type == salaryTypeEnum)
+  transFormConstraintType(constraints: SalaryTypeEnum [], salaryTypeEnum: SalaryTypeEnum): boolean {
+    return constraints.some(constraint => constraint === salaryTypeEnum)
   }
 
   transFormPartial(start: Date, end: Date): PartialDayEnum {
@@ -161,26 +162,15 @@ export class DialogAbsentComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
+
     const value = this.formGroup.value
-    const startedAt = value.rangeDay[0]
-    const endedAt = value.rangeDay[1]
-    const startTime = value.startTime
-    const endTime = value.endTime
     const salary = {
       type: value.template.type || value.template,
       price: value.price || null,
-      startedAt: new Date(
-        startedAt.getYear(),
-        startedAt.getMonth(),
-        startedAt.getDate(),
-        startTime.getHours(),
-        startTime.getMinutes()),
-      endedAt: new Date(
-        endedAt.getYear(),
-        endedAt.getMonth(),
-        endedAt.getDate(),
-        endTime.getHours(),
-        endTime.getMinutes()),
+      startedAt: value.rangeDay[0],
+      endedAt: value.rangeDay[1],
+      startedTime: value.startTime,
+      endedTime: value.endTime,
       note: value.note,
       salarySettingId: value.template?.id || this.data?.salary?.salarySettingId
     }
@@ -213,7 +203,7 @@ export class DialogAbsentComponent implements OnInit {
     });
   }
 
-  tranFormType(salaryTypes: SalaryTypeEnum[]) {
+  tranFormType(salaryTypes: SalaryTypeEnum[]): string {
     return tranFormSalaryType(salaryTypes)
   }
 

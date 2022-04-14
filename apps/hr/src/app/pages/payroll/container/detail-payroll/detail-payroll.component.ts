@@ -56,6 +56,7 @@ export class DetailPayrollComponent implements OnInit {
         }
         this.sortedSalaryOver = JSON.parse(JSON.stringify(
           payroll?.salaries.filter(salary => salary.type === SalaryTypeEnum.OVERTIME)))
+        console.log(this.sortedSalaryOver)
       }
       return payroll
     })
@@ -302,7 +303,6 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   compare(a: number | string| Date, b: number | string|Date, isAsc: boolean) {
-    console.log(typeof  a)
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 

@@ -756,8 +756,4 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   getRangeDay(): RangeDay {
     return getSelectors<RangeDay>(selectedRangeDayPayroll, this.store)
   }
-
-  test() {
-    this.dialog.open(DialogAbsentComponent)
-  }
 }

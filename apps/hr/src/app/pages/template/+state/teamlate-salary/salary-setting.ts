@@ -9,7 +9,7 @@ export interface SalarySetting {
   type: SalaryTypeEnum,
   rate: number,
   reference?: salaryReference,
-  constraints?: SalaryConstraint[]
+  constraints?: SalaryTypeEnum[]
   positionId?: any,
   branches?: Branch[]
   unit?: DatetimeUnitEnum
