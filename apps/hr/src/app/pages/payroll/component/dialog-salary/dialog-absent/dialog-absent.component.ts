@@ -90,7 +90,9 @@ export class DialogAbsentComponent implements OnInit {
       partialDay: [this.data.salary?.partial],
       constraintHoliday: [],
       constraintOvertime: [],
-      reference: []
+      reference: [
+        salary ?salary.price :''
+      ]
     });
 
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
@@ -177,7 +179,7 @@ export class DialogAbsentComponent implements OnInit {
       }
     });
   }
-
+    //Chờ pull request nhánh refactor template salary lấy hàm dùng chung
   // tranFormType(salaryTypes: SalaryTypeEnum[]) {
   //   return salaryTypes.map(val => {
   //     return  this.blockSalaries.find((item: any) => item.type === val)?.title
