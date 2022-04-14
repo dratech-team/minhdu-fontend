@@ -21,37 +21,39 @@
                      [nzValue]="item" [nzLabel]="item.title"></nz-option>
         </nz-select>
       </div>
-      <div *ngIf="formGroup.value.template?.id !== 0">
-        <div class='mb-3'>
-          <span class='font-weight-bold'>Buổi</span><span class='star'>*</span>
-          <nz-select class="mt-1" style="width: 100%" formControlName='partialDay'>
-            <nz-option *ngFor='let item of titleSession' [nzValue]='item' [nzLabel]="item.name"></nz-option>
-          </nz-select>
+      <div class='mb-3'>
+        <span class='font-weight-bold'>Buổi</span><span class='star'>*</span>
+        <nz-select class="mt-1" style="width: 100%" formControlName='partialDay'>
+          <nz-option *ngFor='let item of titleSession' [nzValue]='item' [nzLabel]="item.name"></nz-option>
+        </nz-select>
+      </div>
+      <div class='mb-3 row'>
+        <div class="col d-flex flex-column">
+          <div class="font-weight-bold">Từ ngày đến ngày <span class="star">*</span></div>
+          <nz-range-picker class="mt-1" formControlName="rangeDay"></nz-range-picker>
         </div>
-        <div class='mb-3 row'>
+        <div class="col d-flex">
           <div class="col">
-            <span class="font-weight-bold">Từ ngày đến ngày</span>
-            <nz-range-picker formControlName="rangeDay"></nz-range-picker>
+            <span class="font-weight-bold">Từ giờ</span>
+            <nz-time-picker
+              class="mt-1"
+              [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.OTHER"
+              formControlName="startTime"
+              nzFormat="HH:mm"
+            ></nz-time-picker>
           </div>
-          <div class="col d-flex">
-            <div class="col">
-              <span class="font-weight-bold">Từ giờ</span>
-              <nz-time-picker
-                [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.OTHER"
-                formControlName="startTime"
-                nzFormat="HH:mm"
-              ></nz-time-picker>
-            </div>
-            <div class="col">
-              <span class="font-weight-bold">Đến giờ</span>
-              <nz-time-picker
-                [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.OTHER"
-                formControlName="endTime"
-                nzFormat="HH:mm"
-              ></nz-time-picker>
-            </div>
+          <div class="col">
+            <span class="font-weight-bold">Đến giờ</span>
+            <nz-time-picker
+              class="mt-1"
+              [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.OTHER"
+              formControlName="endTime"
+              nzFormat="HH:mm"
+            ></nz-time-picker>
           </div>
         </div>
+      </div>
+      <div *ngIf="formGroup.value.template?.id !== 0">
         <div class='mb-3'>
           <span class='font-weight-bold'>Hệ số</span><span class="star">*</span>
           <div class="form-control mt-1" style="background: #dddddd">{{formGroup.value.rate}}</div>
@@ -61,7 +63,7 @@
             <span class='font-weight-bold'>Khấu trừ theo</span><span class="star">*</span>
           </div>
           <nz-radio-group nzDisabled="{{true}}">
-            <label nz-radio [nzValue]="item.value" *ngFor="let item of priceTypeConstant">{{item.name}}</label>
+            <label nz-radio [nzValue]="item.value" *ngFor="let item of references">{{item.name}}</label>
           </nz-radio-group>
         </div>
         <div class='mb-3'>
@@ -76,7 +78,9 @@
       <div class='mb-3'>
         <span class='font-weight-bold'>Đơn giá</span>
         <input *ngIf="formGroup.value?.template?.id === 0 else price" nz-input
-               type="number" formControlName='price'>
+               type="text" formControlName='price'
+               currencyMask
+               [options]="{ suffix: ' đ' }" >
         <ng-template #price>
           <div *ngIf="formGroup.value?.template" class="form-control" style="background: #dddddd">{{
             (((formGroup.value.template?.price|number:'1.0-0')) || formGroup.value.template?.types)
@@ -95,7 +99,7 @@
     <button class="ml-2" nz-button nzType="default" (click)="pre()" *ngIf="indexStep > 0 && data?.salary">
       <span>Trở lại</span>
     </button>
-    <button  class="ml-2" nz-button nzType="default" (click)="next()" *ngIf="indexStep < 1">
+    <button class="ml-2" nz-button nzType="default" (click)="next()" *ngIf="indexStep < 1">
       <span>Tiếp theo</span>
     </button>
     <button class="ml-2" nz-button nzType="primary" (click)="onSubmit()" *ngIf="indexStep === 1">

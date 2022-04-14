@@ -8,12 +8,11 @@ export interface SalarySetting {
   price?: number,
   type: SalaryTypeEnum,
   rate: number,
-  reference: salaryReference,
-  constraints: SalaryConstraint[]
-  positionId: any,
+  reference?: salaryReference,
+  constraints?: SalaryConstraint[]
+  positionId?: any,
   branches?: Branch[]
-  partialDay: PartialDayEnum,
-  unit: DatetimeUnitEnum
+  unit?: DatetimeUnitEnum
   types: SalaryTypeEnum [],
   workday?: number
 }

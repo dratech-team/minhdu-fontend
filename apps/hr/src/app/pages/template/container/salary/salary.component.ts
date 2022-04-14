@@ -15,6 +15,7 @@ import {
 } from '../../+state/teamlate-salary/template-salary.selector';
 import {SalarySetting} from "../../+state/teamlate-salary/salary-setting";
 import {blockSalariesConstant} from "../../constants";
+import {tranFormSalaryType} from "../../../payroll/utils";
 
 
 @Component({
@@ -116,8 +117,6 @@ export class SalaryComponent implements OnInit {
   }
 
   tranFormType(salaryTypes: SalaryTypeEnum[]) {
-  return salaryTypes.map(val => {
-       return  this.blockSalaries.find((item: any) => item.type === val)?.title
-    }).join(' + ')
+    return tranFormSalaryType(salaryTypes)
   }
 }

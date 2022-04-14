@@ -2,7 +2,7 @@ import {SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {referencesTypeConstant} from "./references-type.constant";
 import {salaryReference} from "../enums";
 
-interface BlockSalary {
+export interface BlockSalary {
   title: string,
   type: SalaryTypeEnum,
   rate?: {
