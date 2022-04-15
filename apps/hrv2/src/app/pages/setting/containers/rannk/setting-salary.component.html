@@ -1,0 +1,81 @@
+<div class="d-flex mt-2">
+  <div class='d-flex flex-column ml-3 border p-2' style='height: 80vh; width:280px; overflow-y: scroll'>
+    <nz-collapse>
+      <nz-collapse-panel
+        nzHeader='Tìm kiếm'
+        nzActive='true'>
+        <div [formGroup]='formGroup'>
+          <input nz-input class='form-control' type='search' formControlName='search'>
+        </div>
+      </nz-collapse-panel>
+    </nz-collapse>
+    <div class="mt-2">
+      <minhdu-fontend-collapse-select
+        [formGroup]="formGroup"
+        [active]="true"
+        header="Đơn vị"
+        controlName="branch"
+        [data]="(branches$|async)||[]"
+      >
+      </minhdu-fontend-collapse-select>
+    </div>
+    <div class="mt-2">
+      <minhdu-fontend-collapse-select
+        [formGroup]="formGroup"
+        [active]="true"
+        header="Chức vụ"
+        controlName="position"
+        [selectMultiple]="true"
+        [data]="(positions$|async)||[]"
+      >
+      </minhdu-fontend-collapse-select>
+    </div>
+  </div>
+  <div class='ml-2' style='width: 78vw'>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <div class="font-weight-bold font-xl">Xếp hạng cuối năm</div>
+      <ul nz-menu [nzMode]="'vertical'">
+        <li nz-submenu nzIcon="setting">
+          <ul class="pointer">
+            <li nz-menu-group nzTitle="Xếp loại"></li>
+            <li nz-menu-group nzTitle="Thưởng"></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div style='width: 100%'>
+      <nz-table #tableRank
+                [nzScroll]="{ x: '2000px',y: '58vh'}"
+                nzSize='middle'
+                [nzData]="(ranks$|async)|| []"
+                [nzPageSize]="pageSize"
+                (nzPageIndexChange)="onPagination($event)"
+      >
+        <thead>
+        <tr>
+          <th nzWidth="60px">STT</th>
+          <th>Mã nhân viên</th>
+          <th>Tên nhân viên </th>
+          <th>Đơn vị</th>
+          <th>Chức vụ</th>
+          <th>Ngày nghỉ </th>
+          <th>Mức lương</th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-template ngFor let-rank [ngForOf]="tableRank.data" let-i='index'>
+          <tr>
+            <td>{{(i + 1) + ((tableRank.nzPageIndex - 1) * pageSize)}}</td>
+            <td>{{rank.employee.code}}</td>
+            <td>{{rank.employee.lastName}}</td>
+            <td>{{rank.employee.branch.name}}</td>
+            <td>{{rank.employee.position.name}}</td>
+            <td>{{rank.dayoff}}</td>
+            <td>{{rank.salary}}</td>
+          </tr>
+        </ng-template>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>
