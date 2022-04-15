@@ -116,8 +116,12 @@ export class SalaryComponent implements OnInit {
     );
   }
 
-  tranFormType(salaryTypes: SalaryTypeEnum[]) {
-    return tranFormSalaryType(salaryTypes)
+  tranFormType(salaryTypes?: SalaryTypeEnum[]) {
+    if(salaryTypes && salaryTypes.length >0){
+      return tranFormSalaryType(salaryTypes)
+    }else{
+      return ''
+    }
   }
 
 }
