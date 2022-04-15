@@ -29,7 +29,7 @@ export interface Salary {
   allowance?: any,
   DAY?: PartialDayEnum,
   employee?: Employee,
-  salarySettingId?: number
+  settingId?: number
 }
 
 export interface SalaryPayroll {
