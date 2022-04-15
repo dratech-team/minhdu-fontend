@@ -126,26 +126,49 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.addSalary),
       switchMap((props) => {
-          if (props.salary.startTime.getTime() > props.salary.endTime.getTime()) {
-            this.message.warning('Giờ bắt đầu phải nhỏ hơn giờ kết thúc')
+          if (props.salary.salarySettingId) {
+            if (!props.salary.startTime && !props.salary.endTime) {
+              this.message.warning('chưa nhập từ giờ đến giờ')
+              this.store.dispatch(PayrollAction.handleSalaryError());
+              return throwError('chưa nhập từ giờ đến giờ')
+            }
+            if (props.salary.startTime.getTime() > props.salary.endTime.getTime()) {
+              this.message.warning('Giờ bắt đầu phải nhỏ hơn giờ kết thúc')
+              this.store.dispatch(PayrollAction.handleSalaryError());
+              return throwError('Giờ bắt đầu phải nhỏ hơn giờ kết thúc')
+            }
+            if (!props.salary.partial) {
+              this.message.warning('chưa chọn buổi')
+              this.store.dispatch(PayrollAction.handleSalaryError());
+              return throwError('chưa chọn buổi')
+            }
+            if (!props.salary.statedAt && !props.salary.endedAt) {
+              this.message.warning('chưa chọn từ ngày đến ngày')
+              this.store.dispatch(PayrollAction.handleSalaryError());
+              return throwError('chưa chọn từ ngày đến ngày')
+            }
+          } else {
+            if (!props.salary?.price) {
+              this.message.warning('Chưa nhập đơn giá')
+              this.store.dispatch(PayrollAction.handleSalaryError());
+              return throwError('Chưa nhập đơn giá')
+            }
+          }
+          if (!props.salary.title) {
+            this.message.warning('Chưa nhập tiêu đề vắng')
             this.store.dispatch(PayrollAction.handleSalaryError());
-            return throwError('Giờ bắt đầu phải nhỏ hơn giờ kết thúc')
+            return throwError('Chưa nhập tiêu đề vắng')
           }
           return this.salaryService.addOne(props.salary).pipe(
             map((res) => {
               if (props.branchId) {
                 return PayrollAction.getPayroll({id: props.payrollId})
               }
-              if (res?.status === 201) {
-                this.message.success(res.message);
-                if (props.isDetailPayroll) {
-                  return PayrollAction.getPayroll({id: props.payrollId})
-                } else {
-                  return PayrollAction.addSalaryMultipleSuccess();
-                }
-              } else {
-                this.message.success('Thao tác thành công');
+              this.message.success(res.message);
+              if (props.isDetailPayroll) {
                 return PayrollAction.getPayroll({id: props.payrollId})
+              } else {
+                return PayrollAction.addSalaryMultipleSuccess();
               }
             }),
             catchError((err) => {

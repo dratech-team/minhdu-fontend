@@ -6,7 +6,7 @@
 
   <ng-template [ngIf]="indexStep === 0 && data?.salary">
     <app-table-salaries-selected
-      [salaries]='salariesSelected'
+      [salaries]='salaryPayrolls'
       (EmitSalariesSelected)='changeSalariesSelected($event)'>
     </app-table-salaries-selected>
   </ng-template>
@@ -24,51 +24,55 @@
           <div>Chưa chọn loại khấu trừ</div>
         </div>
       </div>
-      <div class='mb-3'>
-        <span class='font-weight-bold'>Buổi</span><span class='star'>*</span>
-        <nz-select class="mt-1" style="width: 100%" formControlName='partialDay'>
-          <nz-option *ngFor='let item of titleSession' [nzValue]='item' [nzLabel]="item.name"></nz-option>
-        </nz-select>
-        <div *ngIf='checkValid.partialDay.errors ' class='invalid-feedback'>
-          <div>Chưa chọn buổi khấu trừ</div>
-        </div>
+      <div class='mb-3' *ngIf="formGroup.value?.template?.id === 0 else absentTemplate">
+        <span class='font-weight-bold'>Tiêu đề</span><span class='star'>*</span>
+        <input class="mt-1" nz-input formControlName="title">
       </div>
-      <div class='mb-3 row'>
-        <div class="col d-flex flex-column">
-          <div class="font-weight-bold">Từ ngày đến ngày <span class="star">*</span></div>
-          <nz-range-picker class="mt-1" formControlName="rangeDay"></nz-range-picker>
-          <div *ngIf='checkValid.rangeDay.errors ' class='invalid-feedback'>
-            <div>Chưa chọn từ ngày đến ngày</div>
+      <ng-template #absentTemplate>
+        <div class='mb-3'>
+          <span class='font-weight-bold'>Buổi</span><span class='star'>*</span>
+          <nz-select class="mt-1" style="width: 100%" formControlName='partialDay'>
+            <nz-option *ngFor='let item of titleSession' [nzValue]='item' [nzLabel]="item.name"></nz-option>
+          </nz-select>
+          <div *ngIf='checkValid.partialDay.errors ' class='invalid-feedback'>
+            <div>Chưa chọn buổi khấu trừ</div>
           </div>
         </div>
-        <div class="col d-flex">
-          <div class="col">
-            <span class="font-weight-bold">Từ giờ</span>
-            <nz-time-picker
-              class="mt-1"
-              [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.OTHER"
-              formControlName="startTime"
-              nzFormat="HH:mm"
-            ></nz-time-picker>
-            <div *ngIf='checkValid.startTime.errors ' class='invalid-feedback'>
-              <div>Chưa chọn từ giờ</div>
+        <div class='mb-3 row'>
+          <div class="col d-flex flex-column">
+            <div class="font-weight-bold">Từ ngày đến ngày <span class="star">*</span></div>
+            <nz-range-picker class="mt-1" formControlName="rangeDay"></nz-range-picker>
+            <div *ngIf='checkValid.rangeDay.errors ' class='invalid-feedback'>
+              <div>Chưa chọn từ ngày đến ngày</div>
             </div>
           </div>
-          <div class="col">
-            <span class="font-weight-bold">Đến giờ</span>
-            <nz-time-picker
-              class="mt-1"
-              [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.OTHER"
-              formControlName="endTime"
-              nzFormat="HH:mm"
-            ></nz-time-picker>
-            <div *ngIf='checkValid.endTime.errors ' class='invalid-feedback'>
-              <div>Chưa chọn đến giờ</div>
+          <div class="col d-flex">
+            <div class="col">
+              <span class="font-weight-bold">Từ giờ</span><span class="star">*</span>
+              <nz-time-picker
+                class="mt-1"
+                [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.CUSTOM"
+                formControlName="startTime"
+                nzFormat="HH:mm"
+              ></nz-time-picker>
+              <div *ngIf='checkValid.startTime.errors ' class='invalid-feedback'>
+                <div>Chưa chọn từ giờ</div>
+              </div>
+            </div>
+            <div class="col">
+              <span class="font-weight-bold">Đến giờ</span><span class="star">*</span>
+              <nz-time-picker
+                class="mt-1"
+                [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.CUSTOM"
+                formControlName="endTime"
+                nzFormat="HH:mm"
+              ></nz-time-picker>
+              <div *ngIf='checkValid.endTime.errors ' class='invalid-feedback'>
+                <div>Chưa chọn đến giờ</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div *ngIf="formGroup.value.template?.id !== 0">
         <div class='mb-3'>
           <span class='font-weight-bold'>Hệ số</span><span class="star">*</span>
           <div class="form-control mt-1" style="background: #dddddd">{{formGroup.value.rate}}</div>
@@ -89,9 +93,10 @@
           <span class='font-weight-bold'>Ràng buộc theo tăng ca:</span>
           <label nz-checkbox nzDisabled="true" class="ml-2" formControlName="constraintOvertime"></label>
         </div>
-      </div>
+      </ng-template>
       <div class='mb-3'>
         <span class='font-weight-bold'>Đơn giá</span>
+        <span *ngIf="formGroup.value?.template?.id === 0" class="star">*</span>
         <input *ngIf="formGroup.value?.template?.id === 0 else price" nz-input
                type="text" formControlName='price'
                currencyMask
