@@ -27,7 +27,7 @@
     </div>
     <div>
       <nz-table #tableRank
-                [nzScroll]="{ x: '2000px',y: '58vh'}"
+                [nzScroll]="{ x: '1700px',y: '58vh'}"
                 nzSize='middle'
                 [nzData]="(settingSalaries$|async)|| []"
                 [nzPageSize]="pageSize"
@@ -67,7 +67,7 @@
   </div>
 </div>
 <ng-template #pinned>
-  <!--  <minhdu-fontend-pinned-product></minhdu-fontend-pinned-product>-->
+  <minhdu-fontend-pinned-setting-salary></minhdu-fontend-pinned-setting-salary>
 </ng-template>
 <app-mouse-right
   #child

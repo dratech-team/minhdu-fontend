@@ -3,16 +3,15 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {debounceTime, map} from 'rxjs/operators';
 import {PaginationDto} from '@minhdu-fontend/constants';
-import {SettingSalaryActions} from '../../state/setting-salary.actions';
-import {SettingSalaryQuery} from '../../state/setting-salary.query';
+import {SettingSalaryQuery} from '../../state';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from 'ng-zorro-antd/modal';
-import {SettingSalaryStore} from '../../state/setting-salary.store';
+import {SettingSalaryStore} from '../../state';
 import {SalaryTypeEnum} from "../../enums";
 import {blockSalariesConstant} from "../../constants";
-import {SettingSalaryDialogComponent} from "../../components";
 import {SettingSalaryEntity} from "../../entities";
-import {ModalDeleteComponent} from "@minhdu-fontend/components";
+import {SettingSalaryActions} from "../../state";
+import {SettingSalaryDialogComponent} from "../../components/setting-salary";
 
 @Component({
   selector: 'minhdu-fontend-setting-salary',
@@ -88,7 +87,7 @@ export class SettingSalaryComponent implements OnInit {
 
   onAdd(template?: SettingSalaryEntity) {
     this.modal.create({
-      nzWidth:'fit-content',
+      nzWidth:'30vw',
       nzTitle: 'Tạo bản mẫu lương',
       nzContent: SettingSalaryDialogComponent,
       nzComponentParams: {
@@ -111,20 +110,5 @@ export class SettingSalaryComponent implements OnInit {
   }
 
   onDelete(template: SettingSalaryEntity) {
-    this.modal.create({
-      nzWidth:'fit-content',
-      nzTitle: 'Xoá bản mẫu lương',
-      nzContent: ModalDeleteComponent,
-      nzComponentParams:{
-        data: {description: `bản mẫu lương ${template.title}`}
-      },
-      nzFooter: null,
-    }).afterClose.subscribe(val => {
-      if(val){
-        this.actions$.dispatch(SettingSalaryActions.remove({
-          id: template.id
-        }))
-      }
-    })
   }
 }

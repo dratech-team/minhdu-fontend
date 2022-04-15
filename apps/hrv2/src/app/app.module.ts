@@ -19,6 +19,7 @@ import * as AllIcons from "@ant-design/icons-angular/icons";
 import {IconDefinition} from "@ant-design/icons-angular";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {NzMessageModule} from "ng-zorro-antd/message";
+import {AkitaNgDevtools} from "@datorama/akita-ngdevtools";
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -40,6 +41,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     AppHeaderModule,
     AppSidebarModule,
     PerfectScrollbarModule,
+    AkitaNgDevtools.forRoot(),
     AppBreadcrumbModule,
     AppFooterModule,
     NzButtonModule,

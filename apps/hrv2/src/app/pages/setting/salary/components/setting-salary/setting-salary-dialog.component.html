@@ -1,0 +1,95 @@
+<div class='main-popup'>
+  <form [formGroup]='formGroup'>
+    <div class='m-4'>
+      <div class=' main-popup mt-2'>
+        <div><span class='main-title'>Khối lương</span><span class='star'>*</span></div>
+        <nz-select formControlName='block' style="width: 100%" [compareWith]="compareFN">
+          <nz-option *ngFor='let item of blockSalary' [nzValue]='item' [nzLabel]="item.title"></nz-option>
+        </nz-select>
+      </div>
+      <div class=' main-popup mt-2'>
+        <div><span class='main-title'>Tiêu đề</span><span class='star'>*</span></div>
+        <input class='form-control mt-1' type='text' formControlName='title'>
+        <div *ngIf='checkValid.title.errors ' class='invalid-feedback'>
+          <div>Chưa nhập tiêu đề</div>
+        </div>
+      </div>
+
+      <div class="mt-2" *ngIf="formGroup.value.block?.insurance?.show">
+        <span class="font-weight-bold">Trích bảo hiểm</span>
+        <label  class="ml-2" nz-checkbox formControlName="insurance"></label>
+      </div>
+      <div class=' main-popup mt-2' *ngIf="formGroup.value?.block?.rate">
+        <div><span class='main-title'>Hệ số</span><span class='star'>*</span></div>
+        <input nz-input type='number' formControlName='rate'
+               [ngStyle]="{
+                 'pointer-events':formGroup.value.block.rate.disabled ? 'none': 'auto',
+                 'background':formGroup.value.block.rate.disabled ? '#dddddd':'white'
+                  }">
+        <div *ngIf='checkValid.rate.errors?.required ' class='invalid-feedback'>
+          <div>Chưa nhập hệ số</div>
+        </div>
+      </div>
+
+      <div class='d-flex mt-2' *ngIf="formGroup.value.block?.constraintHoliday?.show">
+        <div><span class='main-title'>Ràng buộc ngày lễ:</span></div>
+        <label class="ml-2" nz-checkbox
+               formControlName="constraintHoliday"
+               [nzDisabled]="formGroup.value.block?.constraintHoliday?.disabled"></label>
+      </div>
+      <div class='d-flex mt-2' *ngIf="formGroup.value.block?.constraintOvertime?.show">
+        <div><span class='main-title'>Ràng buộc tăng ca:</span></div>
+        <label class="ml-2" nz-checkbox
+               formControlName="constraintOvertime"
+               [nzDisabled]="formGroup.value.block?.constraintOvertime.disabled"></label>
+      </div>
+      <div *ngIf="formGroup.value.block?.references">
+        <div class="font-weight-bold my-2">Công thức tính</div>
+        <div class="mt-2">
+          <div><span class='main-title'>Tổng của</span><span class='star'>*</span></div>
+          <nz-radio-group formControlName="reference">
+            <label nz-radio *ngFor="let item of formGroup.value.block?.references"
+                   [nzValue]="item">{{item.name}}</label>
+          </nz-radio-group>
+        </div>
+        <div class=' main-popup mt-2' *ngIf="formGroup.value?.block?.price?.show">
+          <input
+            *ngIf="!formGroup.value.reference.recipes else recipe"
+            currencyMask
+            [options]="{ suffix: ' đ' }"
+            class='form-control mt-1' type='text' formControlName='price' placeholder='Đơn giá'
+            [ngStyle]="{
+                 'pointer-events':formGroup.value.block.price.disabled ? 'none': 'auto',
+                 'background':formGroup.value.block.price.disabled ? '#dddddd':'white'
+                  }">
+          <ng-template #recipe>
+            <div>
+              <nz-select nzMode="multiple" style="width: 100%" formControlName="recipes">
+                <nz-option *ngFor="let item of formGroup.value.reference.recipes"
+                           [nzValue]="item"
+                           [nzLabel]="item.name"
+                ></nz-option>
+              </nz-select>
+            </div>
+          </ng-template>
+        </div>
+        <div class="mt-2" *ngIf="formGroup.value.reference?.dives ">
+          <div><span class='main-title'>Chia cho</span><span class='star'>*</span></div>
+          <div class="d-flex">
+            <nz-radio-group formControlName="dive">
+              <label *ngFor="let item of formGroup.value.reference.dives" nz-radio
+                     [nzValue]="item.value">{{item.name}}</label>
+            </nz-radio-group>
+            <input placeholder="Nhập số ngày" style="width: 150px" *ngIf="formGroup.value.dive === 'OTHER'"
+                   type="number"
+                   formControlName="workday"
+                   nz-input/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class='row ml-2 mt-2'>
+    <button (click)='onSubmit()' class=' btn btn-ok ml-2'>Lưu</button>
+  </div>
+</div>

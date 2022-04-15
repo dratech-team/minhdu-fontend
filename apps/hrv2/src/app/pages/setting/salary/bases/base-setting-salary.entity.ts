@@ -5,4 +5,6 @@ export interface BaseSettingSalaryEntity extends BaseEntity {
   employee:Employee,
   dayOff:number,
   salary: number
+  note?: string,
+  rate: number
 }

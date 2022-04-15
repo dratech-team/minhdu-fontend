@@ -1,5 +1,5 @@
-import {referencesTypeConstant} from "./references-type.constant";
 import {salaryReference, SalaryTypeEnum} from "../enums";
+import {referencesTypeConstant} from "./reference-type.constant";
 
 interface BlockSalary {
   title: string,

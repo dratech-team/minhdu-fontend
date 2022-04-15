@@ -1,10 +1,15 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
-import {AddSalarySettingDto, SearchSettingSalaryDto, UpdateSettingSalaryDto} from '../dto';
-import { SettingSalaryEntity } from '../entities';
+import {
+  AddSettingSalaryDto,
+  LoadOneSalarySettingDto,
+  RemoveSettingSalary,
+  SearchSettingSalaryDto,
+  UpdateSettingSalaryDto
+} from "../dto";
 
 const addOne = createAction(
   '[SETTING_SALARY] Add One',
-  props<AddSalarySettingDto>()
+  props<AddSettingSalaryDto>()
 );
 
 const loadAll = createAction(
@@ -14,7 +19,7 @@ const loadAll = createAction(
 
 const getOne = createAction(
   '[SETTING_SALARY] Get One',
-  props<{ id: SettingSalaryEntity['id'] }>()
+  props<LoadOneSalarySettingDto>()
 );
 
 const update = createAction(
@@ -24,7 +29,7 @@ const update = createAction(
 
 const remove = createAction(
   '[SETTING_SALARY] Delete',
-  props<{ id: SettingSalaryEntity['id'] }>()
+  props<RemoveSettingSalary>()
 );
 
 const error = createAction(

@@ -5,7 +5,7 @@ import {Api} from '@minhdu-fontend/constants';
 import {Observable} from 'rxjs';
 import {ResponsePaginate} from '@minhdu-fontend/data-models';
 import {SettingSalaryEntity} from "../entities";
-import {AddSalarySettingDto, SearchSettingSalaryDto, UpdateSettingSalaryDto} from "../dto";
+import {AddSettingSalaryDto, SearchSettingSalaryDto, UpdateSettingSalaryDto} from "../dto";
 
 @Injectable({providedIn: 'root'})
 export class SettingSalaryService extends BaseService<SettingSalaryEntity> {
@@ -19,7 +19,7 @@ export class SettingSalaryService extends BaseService<SettingSalaryEntity> {
     return super.pagination(params?.search);
   }
 
-  addOne(addDto: AddSalarySettingDto): Observable<SettingSalaryEntity> {
+  addOne(addDto: AddSettingSalaryDto): Observable<SettingSalaryEntity> {
     return super.addOne(addDto.body);
   }
 

@@ -10,6 +10,14 @@ const routes: Routes = [
     component: PageLayoutComponent,
     children: [
       {
+        path: TabEnum.SETTING,
+        loadChildren: () =>
+          import('./pages/setting/setting.module').then(
+            (m) => m.SettingModule
+          ),
+        canActivate: [RouteGuard]
+      },
+      {
         path: TabEnum.RANK,
         loadChildren: () =>
           import('./pages/rank/rank.module').then(
@@ -17,6 +25,7 @@ const routes: Routes = [
           ),
         canActivate: [RouteGuard]
       },
+
     ],
   },
   {path: '**', redirectTo: ''}

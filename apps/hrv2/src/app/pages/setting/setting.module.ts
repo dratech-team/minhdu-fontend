@@ -11,11 +11,15 @@ import {SharedModule} from "../../../shared/shared.module";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {NzPopoverModule} from "ng-zorro-antd/popover";
 import {TransformBlockSalaryPipe} from "./salary/pipes";
-import {SettingSalaryDialogComponent, VisibleSettingSalaryComponent} from "./salary/components";
 import {NzRadioModule} from "ng-zorro-antd/radio";
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
 import {NgxCurrencyModule} from "ngx-currency";
-import {SettingSalaryComponent} from "./salary/containers";
+import {SettingSalaryComponent} from "./salary/containers/setting-salary";
+import {SettingSalaryDialogComponent} from "./salary/components/setting-salary";
+import {VisibleSettingSalaryComponent} from "./salary/components/custom-visible";
+import {NzButtonModule} from "ng-zorro-antd/button";
+import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
+import {SettingSalaryEffect} from "./salary/state";
 
 @NgModule({
   imports: [
@@ -25,6 +29,7 @@ import {SettingSalaryComponent} from "./salary/containers";
     NzTableModule,
     NzCollapseModule,
     ReactiveFormsModule,
+    AkitaNgEffectsModule.forFeature([SettingSalaryEffect]),
     ComponentsModule,
     NzDropDownModule,
     NzIconModule,
@@ -33,6 +38,7 @@ import {SettingSalaryComponent} from "./salary/containers";
     NzRadioModule,
     NzCheckboxModule,
     NgxCurrencyModule,
+    NzButtonModule,
   ],
   declarations:[
     SettingSalaryComponent,

@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {SettingSalaryComponent} from "./salary/containers/setting-salary/setting-salary.component";
+import {SettingSalaryComponent} from "./salary/containers/setting-salary";
 
 const routes: Routes = [
   {
-    path:'',
+    path:'luong',
     component: SettingSalaryComponent
   }
 ];
