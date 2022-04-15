@@ -77,6 +77,9 @@
               templateSalary.price}}
             </th>
             <th class='pointer' (click)='updateTemplateSalary(templateSalary)'>
+              {{templateSalary.constraints ? tranFormType(templateSalary.constraints) : ''}}
+            </th>
+            <th class='pointer' (click)='updateTemplateSalary(templateSalary)'>
               {{templateSalary.rate}}
             </th>
             <!--            <th class=' pointer p-1' (click)='updateTemplateSalary(templateSalary)'>-->

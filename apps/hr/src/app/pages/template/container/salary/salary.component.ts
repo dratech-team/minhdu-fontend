@@ -13,7 +13,7 @@ import {
   selectTemplateLoaded,
   selectTotalTemplateSalary
 } from '../../+state/teamlate-salary/template-salary.selector';
-import {SalarySetting} from "../../+state/teamlate-salary/salary-setting";
+import {SalaryConstraint, SalarySetting} from "../../+state/teamlate-salary/salary-setting";
 import {blockSalariesConstant} from "../../constants";
 import {tranFormSalaryType} from "../../../payroll/utils";
 
@@ -119,4 +119,5 @@ export class SalaryComponent implements OnInit {
   tranFormType(salaryTypes: SalaryTypeEnum[]) {
     return tranFormSalaryType(salaryTypes)
   }
+
 }
