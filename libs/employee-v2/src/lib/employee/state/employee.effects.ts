@@ -6,16 +6,19 @@ import {Actions, Effect, ofType} from "@datorama/akita-ng-effects";
 import {EmployeeService} from "../services/employee.service";
 import {EmployeeStore} from "./employee.store";
 import {EmployeeAction} from "./employee.actions";
-import {RemoveEmployeeDto, SearchEmployeeDto} from "../dto/employee";
+import {RemoveEmployeeDto} from "../dto/employee";
 import {RelativeService} from "../services/relative.service";
 import {DegreeService} from "../services/degree.service";
 import {PaginationDto} from "@minhdu-fontend/constants";
+import {EmployeeQuery} from "./employee.query";
+import {Salary} from "@minhdu-fontend/data-models";
 
 @Injectable()
 export class EmployeeEffect {
   constructor(
     private readonly actions$: Actions,
     private readonly employeeStore: EmployeeStore,
+    private readonly employeeQuery: EmployeeQuery,
     private readonly employeeService: EmployeeService,
     private readonly relativeService: RelativeService,
     private readonly degreeService: DegreeService,
@@ -210,7 +213,13 @@ export class EmployeeEffect {
         return this.employeeService.updateHistorySalary(props.id, props.salary).pipe(
           map((res) => {
             this.message.info('Cập nhật lịch sử lương thành công')
-            this.actions$.dispatch(EmployeeAction.loadOne({id: props.id}))
+            const empUpdate = JSON.parse(JSON.stringify(this.employeeQuery.getEntity(props.employeeId)))
+            if (empUpdate) {
+              Object.assign(empUpdate, {
+                salaryHistories: empUpdate.salaryHistories.filter((salary: Salary) => salary.id !== res.id)
+              })
+              this.employeeStore.update(empUpdate.id, empUpdate)
+            }
           }),
           catchError((err) => {
             return of(EmployeeAction.error(err))

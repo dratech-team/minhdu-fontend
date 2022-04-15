@@ -46,6 +46,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     NzButtonModule,
     NzModalModule,
     NzMessageModule,
+    EmployeeLibV2Module
   ],
   providers: [
     {
