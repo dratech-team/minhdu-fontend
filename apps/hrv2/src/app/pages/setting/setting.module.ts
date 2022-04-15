@@ -20,12 +20,14 @@ import {VisibleSettingSalaryComponent} from "./salary/components/custom-visible"
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
 import {SettingSalaryEffect} from "./salary/state";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   imports: [
     SharedModule,
     CommonModule,
     SettingRoutingModule,
+    HttpClientModule,
     NzTableModule,
     NzCollapseModule,
     ReactiveFormsModule,
