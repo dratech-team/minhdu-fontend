@@ -147,12 +147,6 @@ export class PayrollEffect {
               this.store.dispatch(PayrollAction.handleSalaryError());
               return throwError('chưa chọn từ ngày đến ngày')
             }
-          } else {
-            if (!props.salary?.price) {
-              this.message.warning('Chưa nhập đơn giá')
-              this.store.dispatch(PayrollAction.handleSalaryError());
-              return throwError('Chưa nhập đơn giá')
-            }
           }
           if (!props.salary.title) {
             this.message.warning('Chưa nhập tiêu đề vắng')
