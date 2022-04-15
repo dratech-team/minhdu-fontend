@@ -35,10 +35,10 @@
       >
         <thead>
         <tr>
-          <th nzWidth="60px">STT</th>
+          <th nzLeft nzWidth="60px">STT</th>
           <th>Mã bản mẫu</th>
-          <th>Tên bản mẫu</th>
-          <th>Đơn giá - Công thức lương</th>
+          <th nzLeft>Tên bản mẫu</th>
+          <th nzLeft>Đơn giá - Công thức lương</th>
           <th>Hệ số</th>
           <th>Loại bản mẫu </th>
           <th>Ghi chú</th>
@@ -47,10 +47,10 @@
         <tbody>
         <ng-template ngFor let-settingSalary [ngForOf]="tableRank.data" let-i='index'>
           <tr (contextmenu)='child.onContextMenu($event,settingSalary)'>
-            <td>{{(i + 1) + ((tableRank.nzPageIndex - 1) * pageSize)}}</td>
-            <td>{{settingSalary.id}}</td>
-            <td>{{settingSalary.title}}</td>
-            <td>{{settingSalary.type === salaryTypeEnum.ABSENT ?
+            <td nzLeft>{{(i + 1) + ((tableRank.nzPageIndex - 1) * pageSize)}}</td>
+            <td >{{settingSalary.id}}</td>
+            <td nzLeft>{{settingSalary.title}}</td>
+            <td nzLeft>{{settingSalary.type === salaryTypeEnum.ABSENT ?
               (((settingSalary.price|number:'1.0-0')) || tranFormType(settingSalary.types))
               + ' / ' +
               (settingSalary.workday || 'Ngày công chuẩn') :
