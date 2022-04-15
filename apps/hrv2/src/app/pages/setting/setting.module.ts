@@ -8,7 +8,6 @@ import {ComponentsModule} from "@minhdu-fontend/components";
 import {NzDropDownModule} from "ng-zorro-antd/dropdown";
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import {SharedModule} from "../../../shared/shared.module";
-import {SettingSalaryComponent} from "./salary/container";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {NzPopoverModule} from "ng-zorro-antd/popover";
 import {TransformBlockSalaryPipe} from "./salary/pipes";
@@ -16,7 +15,7 @@ import {SettingSalaryDialogComponent, VisibleSettingSalaryComponent} from "./sal
 import {NzRadioModule} from "ng-zorro-antd/radio";
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
 import {NgxCurrencyModule} from "ngx-currency";
-import {RouterModule} from "@angular/router";
+import {SettingSalaryComponent} from "./salary/containers";
 
 @NgModule({
   imports: [
