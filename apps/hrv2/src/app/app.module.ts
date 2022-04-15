@@ -19,6 +19,7 @@ import * as AllIcons from "@ant-design/icons-angular/icons";
 import {IconDefinition} from "@ant-design/icons-angular";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {NzMessageModule} from "ng-zorro-antd/message";
+import {EmployeeLibV2Module} from "@minhdu-fontend/employee-v2";
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -44,7 +45,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     AppFooterModule,
     NzButtonModule,
     NzModalModule,
-    NzMessageModule
+    NzMessageModule,
   ],
   providers: [
     {
