@@ -79,7 +79,7 @@ export class DialogAbsentComponent implements OnInit {
     const salary = this.data?.salary
     this.formGroup = this.formBuilder.group({
       template: ['', Validators.required],
-      title: [this.data.salary?.salarySettingId === 0 ? this.data.salary.title : ''],
+      title: [this.data.salary?.settingId === 0 ? this.data.salary.title : ''],
       rangeDay: [salary ?
         [salary.startedAt, salary.endedAt] : []],
       price: [this.data?.salary?.price],
@@ -95,8 +95,8 @@ export class DialogAbsentComponent implements OnInit {
       reference: []
     });
 
-    if (salary?.salarySettingId) {
-      this.formGroup.get('template')?.setValue(this.getTemplateSalary(salary.salarySettingId))
+    if (salary?.settingId) {
+      this.formGroup.get('template')?.setValue(this.getTemplateSalary(salary.settingId))
     }
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
       this.formGroup.get('price')?.setValue(template.price)
@@ -173,7 +173,7 @@ export class DialogAbsentComponent implements OnInit {
       startTime: value.startTime,
       endTime: value.endTime,
       note: value.note,
-      salarySettingId: value.template?.id || this.data?.salary?.salarySettingId,
+      settingId: value.template?.id || this.data?.salary?.settingId,
       payrollIds: this.data.multiple ?
         [this.salaryPayrolls.map(salaryPayroll => salaryPayroll.payroll.id)] :
         [this.data.payroll.id]
