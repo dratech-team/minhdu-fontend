@@ -1,10 +1,8 @@
 import {Injectable} from '@angular/core';
-import {of, throwError} from 'rxjs';
+import {of} from 'rxjs';
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {PayrollAction} from "../../../../../../apps/hr/src/app/pages/payroll/+state/payroll/payroll.action";
-import {ConvertBooleanFrontEnd} from "@minhdu-fontend/enums";
-import {Actions, createEffect, Effect, ofType} from "@datorama/akita-ng-effects";
+import {Actions, Effect, ofType} from "@datorama/akita-ng-effects";
 import {EmployeeService} from "../services/employee.service";
 import {EmployeeStore} from "./employee.store";
 import {EmployeeAction} from "./employee.actions";
@@ -103,7 +101,7 @@ export class EmployeeEffect {
 
   loadAll$ = this.actions$.pipe(
     ofType(EmployeeAction.loadAll),
-    switchMap((props: SearchEmployeeDto) => {
+    switchMap((props) => {
         this.employeeStore.update(state => ({
           ...state, loading: true
         }))
@@ -208,7 +206,7 @@ export class EmployeeEffect {
 
   updateHistorySalary$ = this.actions$.pipe(
     ofType(EmployeeAction.updateHistorySalary),
-    switchMap((props: any) => {
+    switchMap((props) => {
         return this.employeeService.updateHistorySalary(props.id, props.salary).pipe(
           map((res) => {
             this.message.info('Cập nhật lịch sử lương thành công')
@@ -240,7 +238,7 @@ export class EmployeeEffect {
 
   leaveEmployee$ = this.actions$.pipe(
     ofType(EmployeeAction.leave),
-    switchMap((props: any) => {
+    switchMap((props) => {
         return this.employeeService.leaveEmployee(props.id, props.body).pipe(
           map((res) => {
             this.message.info(props.body?.leftAt ?
@@ -260,7 +258,7 @@ export class EmployeeEffect {
 
   removeRelative$ = this.actions$.pipe(
     ofType(EmployeeAction.removeRelative),
-    switchMap((props: any) => {
+    switchMap((props) => {
         return this.relativeService.deleteRelative(props.id).pipe(
           map((res) => {
             this.message.info('Xoá người thân thành công')
@@ -276,7 +274,7 @@ export class EmployeeEffect {
 
   removeDegree$ = this.actions$.pipe(
     ofType(EmployeeAction.removeDegree),
-    switchMap((props: any) => {
+    switchMap((props) => {
         return this.degreeService.deleteDegree(props.id).pipe(
           map((res) => {
             this.message.info('Xoá bằng cấp thành công')
@@ -292,7 +290,7 @@ export class EmployeeEffect {
 
   removeContracts$ = this.actions$.pipe(
     ofType(EmployeeAction.removeContracts),
-    switchMap((props: any) => {
+    switchMap((props) => {
         return this.degreeService.deleteContracts(props.id).pipe(
           map((res) => {
             this.message.info('Xóa bằng hợp đồng thành công')
@@ -310,7 +308,7 @@ export class EmployeeEffect {
 
   removeWorkHistory$ = this.actions$.pipe(
     ofType(EmployeeAction.removeWorkHistory),
-    switchMap((props: any) => {
+    switchMap((props) => {
         return this.employeeService.deleteWorkHistory(props.id).pipe(
           map((res) => {
             this.message.info('Xoá lịch sử công tác thành công')
@@ -328,7 +326,7 @@ export class EmployeeEffect {
 
   removeHistorySalary$ = this.actions$.pipe(
     ofType(EmployeeAction.removeHistorySalary),
-    switchMap((props: any) => {
+    switchMap((props) => {
         return this.employeeService.deleteHistorySalary(props.id).pipe(
           map((res) => {
             this.message.info('Xoá lịch sử lương thành công')
