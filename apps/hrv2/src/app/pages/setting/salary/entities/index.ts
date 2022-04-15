@@ -1,3 +1,3 @@
 export * from './salary-constraint.entity';
-export * from './setting-salary.entity';
-export * from './setting-salary-visible.entitty';
+export * from './salary-setting.entity';
+export * from './salary-setting-visible.entitty';

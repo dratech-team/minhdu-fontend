@@ -4,30 +4,30 @@ import {HttpClient} from '@angular/common/http';
 import {Api} from '@minhdu-fontend/constants';
 import {Observable} from 'rxjs';
 import {ResponsePaginate} from '@minhdu-fontend/data-models';
-import {SettingSalaryEntity} from "../entities";
-import {AddSettingSalaryDto, SearchSettingSalaryDto, UpdateSettingSalaryDto} from "../dto";
+import {SalarySettingEntity} from "../entities";
+import {AddSalarySettingDto, SearchSalarySettingDto, UpdateSalarySettingDto} from "../dto";
 
 @Injectable({providedIn: 'root'})
-export class SettingSalaryService extends BaseService<SettingSalaryEntity> {
+export class SalarySettingService extends BaseService<SalarySettingEntity> {
   constructor(
     public readonly http: HttpClient
   ) {
     super(Api.HR.SETTING_SALARY, http);
   }
 
-  pagination(params?: SearchSettingSalaryDto): Observable<ResponsePaginate<SettingSalaryEntity>> {
+  pagination(params?: SearchSalarySettingDto): Observable<ResponsePaginate<SalarySettingEntity>> {
     return super.pagination(params?.search);
   }
 
-  addOne(addDto: AddSettingSalaryDto): Observable<SettingSalaryEntity> {
+  addOne(addDto: AddSalarySettingDto): Observable<SalarySettingEntity> {
     return super.addOne(addDto.body);
   }
 
-  getAll(): Observable<SettingSalaryEntity[]> {
+  getAll(): Observable<SalarySettingEntity[]> {
     return super.getAll();
   }
 
-  update(props: UpdateSettingSalaryDto): Observable<SettingSalaryEntity> {
+  update(props: UpdateSalarySettingDto): Observable<SalarySettingEntity> {
     return super.update(props.id, props.updates);
   }
 

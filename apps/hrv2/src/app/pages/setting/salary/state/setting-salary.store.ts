@@ -1,13 +1,13 @@
 import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
 import {Injectable} from '@angular/core';
-import {SettingSalaryEntity, SettingSalaryVisibleEntity} from '../entities';
-import {BaseSearchSettingSalaryDto} from "../dto";
+import {SalarySettingEntity, SettingSalaryVisibleEntity} from '../entities';
+import {BaseSearchSalarySettingDto} from "../dto";
 import {updateStateUiUtil} from "@minhdu-fontend/utils";
 
-export interface SettingSalaryState extends EntityState<SettingSalaryEntity> {
+export interface SettingSalaryState extends EntityState<SalarySettingEntity> {
   loading: boolean;
   added: boolean|null;
-  search: Partial<BaseSearchSettingSalaryDto>;
+  search: Partial<BaseSearchSalarySettingDto>;
   ui: SettingSalaryVisibleEntity;
 }
 
@@ -50,7 +50,7 @@ export function createInitialState(): SettingSalaryState {
 }
 
 @Injectable({providedIn: 'root'})
-@StoreConfig({name: 'setting-salary'})
+@StoreConfig({name: 'salary-setting'})
 export class SettingSalaryStore extends EntityStore<SettingSalaryState> {
   constructor() {
     super(createInitialState());

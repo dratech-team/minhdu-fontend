@@ -1,1 +1,1 @@
-export * from './base-setting-salary.entity'
+export * from './base-salary-setting.entity'

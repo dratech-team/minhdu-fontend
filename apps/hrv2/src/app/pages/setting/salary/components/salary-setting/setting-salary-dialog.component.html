@@ -1,5 +1,5 @@
 <div class='main-popup'>
-  <form [formGroup]='formGroup'>
+  <form [formGroup]='formGroup' style="max-height: 45vh; overflow-y: scroll">
     <div class='m-4'>
       <div class=' main-popup mt-2'>
         <div><span class='main-title'>Khối lương</span><span class='star'>*</span></div>
@@ -57,7 +57,7 @@
             *ngIf="!formGroup.value.reference.recipes else recipe"
             currencyMask
             [options]="{ suffix: ' đ' }"
-            class='form-control mt-1' type='text' formControlName='price' placeholder='Đơn giá'
+            nz-input type='text' formControlName='price' placeholder='Đơn giá'
             [ngStyle]="{
                  'pointer-events':formGroup.value.block.price.disabled ? 'none': 'auto',
                  'background':formGroup.value.block.price.disabled ? '#dddddd':'white'

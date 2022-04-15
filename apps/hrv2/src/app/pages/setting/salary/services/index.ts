@@ -1,1 +1,1 @@
-export * from './setting-salary.service'
+export * from './salary-setting.service'

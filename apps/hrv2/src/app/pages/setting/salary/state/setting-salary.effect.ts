@@ -4,14 +4,14 @@ import {catchError, switchMap, tap} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {SettingSalaryStore} from './setting-salary.store';
 import {NzMessageService} from "ng-zorro-antd/message";
-import {SettingSalaryService} from "../services";
+import {SalarySettingService} from "../services";
 import {SettingSalaryActions} from "./setting-salary.action";
 
 @Injectable()
 export class SettingSalaryEffect {
   constructor(
     private readonly action$: Actions,
-    private readonly service: SettingSalaryService,
+    private readonly service: SalarySettingService,
     private readonly settingSalaryStore: SettingSalaryStore,
     private readonly message: NzMessageService
   ) {

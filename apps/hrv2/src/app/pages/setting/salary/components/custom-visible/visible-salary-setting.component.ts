@@ -4,10 +4,10 @@ import {SettingSalaryQuery} from "../../state";
 import {SettingSalaryStore} from "../../state";
 
 @Component({
-  selector: 'minhdu-fontend-pinned-setting-salary',
-  templateUrl: 'visible-setting-salary.component.html'
+  selector: 'minhdu-fontend-pinned-salary-setting',
+  templateUrl: 'visible-salary-setting.component.html'
 })
-export class VisibleSettingSalaryComponent {
+export class VisibleSalarySettingComponent {
   ui$ = this.productQuery.select(state => state.ui);
   formGroup!: FormGroup;
   visibleEntity: any = {};

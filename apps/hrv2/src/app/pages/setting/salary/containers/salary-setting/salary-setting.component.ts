@@ -9,15 +9,15 @@ import {NzModalService} from 'ng-zorro-antd/modal';
 import {SettingSalaryStore} from '../../state';
 import {SalaryTypeEnum} from "../../enums";
 import {blockSalariesConstant} from "../../constants";
-import {SettingSalaryEntity} from "../../entities";
+import {SalarySettingEntity} from "../../entities";
 import {SettingSalaryActions} from "../../state";
-import {SettingSalaryDialogComponent} from "../../components/setting-salary";
+import {SettingSalaryDialogComponent} from "../../components/salary-setting";
 
 @Component({
-  selector: 'minhdu-fontend-setting-salary',
-  templateUrl: 'setting-salary.component.html'
+  selector: 'minhdu-fontend-salary-setting',
+  templateUrl: 'salary-setting.component.html'
 })
-export class SettingSalaryComponent implements OnInit {
+export class SalarySettingComponent implements OnInit {
   settingSalaries$ = this.settingSalaryQuery.selectAll();
   loading$ = this.settingSalaryQuery.selectLoading();
   stateSearch = this.settingSalaryQuery.getValue().search;
@@ -85,7 +85,7 @@ export class SettingSalaryComponent implements OnInit {
     }).join(' + ')
   }
 
-  onAdd(template?: SettingSalaryEntity) {
+  onAdd(template?: SalarySettingEntity) {
     this.modal.create({
       nzWidth:'30vw',
       nzTitle: 'Tạo bản mẫu lương',
@@ -97,7 +97,7 @@ export class SettingSalaryComponent implements OnInit {
     })
   }
 
-  onUpdate(template: SettingSalaryEntity) {
+  onUpdate(template: SalarySettingEntity) {
     this.modal.create({
       nzWidth:'fit-content',
       nzTitle: 'Tạo bản mẫu lương',
@@ -109,6 +109,6 @@ export class SettingSalaryComponent implements OnInit {
     })
   }
 
-  onDelete(template: SettingSalaryEntity) {
+  onDelete(template: SalarySettingEntity) {
   }
 }

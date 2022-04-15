@@ -10,13 +10,13 @@ import {NzModalRef} from "ng-zorro-antd/modal";
 import {Actions} from "@datorama/akita-ng-effects";
 import {SettingSalaryQuery} from "../../state";
 import {SettingSalaryActions} from "../../state";
-import {SalaryConstraintEntity, SettingSalaryEntity} from "../../entities";
+import {SalaryConstraintEntity, SalarySettingEntity} from "../../entities";
 
 @Component({
   templateUrl: 'setting-salary-dialog.component.html'
 })
 export class SettingSalaryDialogComponent implements OnInit {
-  @Input() data?: { template?: SettingSalaryEntity, isUpdate?: boolean }
+  @Input() data?: { template?: SalarySettingEntity, isUpdate?: boolean }
   added$ = this.settingSalaryQuery.select(state => state.added);
 
   numberChars = new RegExp('[^0-9]', 'g');

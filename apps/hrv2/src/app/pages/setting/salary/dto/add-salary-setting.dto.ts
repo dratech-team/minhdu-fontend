@@ -1,8 +1,8 @@
 import {BaseAddDto} from "@minhdu-fontend/base-dto";
-import {BaseSettingSalaryEntity} from "../bases";
+import {BaseSalarySettingEntity} from "../bases";
 import {SalaryTypeEnum} from "../enums";
 
-export interface BaseAddSalarySettingDto extends Omit<BaseSettingSalaryEntity,'id'>  {
+export interface BaseAddSalarySettingDto extends Omit<BaseSalarySettingEntity,'id'>  {
   readonly price?: number
   readonly settingType: SalaryTypeEnum,
   readonly constraint?: SalaryTypeEnum[],
@@ -11,4 +11,4 @@ export interface BaseAddSalarySettingDto extends Omit<BaseSettingSalaryEntity,'i
 
 }
 
-export type AddSettingSalaryDto = BaseAddDto<BaseAddSalarySettingDto>
+export type AddSalarySettingDto = BaseAddDto<BaseAddSalarySettingDto>

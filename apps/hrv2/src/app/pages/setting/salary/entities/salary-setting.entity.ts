@@ -1,10 +1,10 @@
 import {Branch} from "@minhdu-fontend/data-models";
 import {salaryReference, SalaryTypeEnum} from "../enums";
 import {DatetimeUnitEnum} from "@minhdu-fontend/enums";
-import {BaseSettingSalaryEntity} from "../bases";
+import {BaseSalarySettingEntity} from "../bases";
 import {SalaryConstraintEntity} from "./salary-constraint.entity";
 
-export interface SettingSalaryEntity extends BaseSettingSalaryEntity {
+export interface SalarySettingEntity extends BaseSalarySettingEntity {
   type: SalaryTypeEnum,
   title?: string,
   price?: number,

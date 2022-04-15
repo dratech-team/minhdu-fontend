@@ -6,6 +6,11 @@ import {RouteGuard} from "./route.guard";
 
 const routes: Routes = [
   {
+    path: 'auth/login',
+    loadChildren: () =>
+      import('@minhdu-fontend/auth').then((m) => m.AuthModule)
+  },
+  {
     path: TabEnum.DASHBOARD,
     component: PageLayoutComponent,
     children: [

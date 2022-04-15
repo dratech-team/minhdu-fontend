@@ -14,14 +14,15 @@ import {TransformBlockSalaryPipe} from "./salary/pipes";
 import {NzRadioModule} from "ng-zorro-antd/radio";
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
 import {NgxCurrencyModule} from "ngx-currency";
-import {SettingSalaryComponent} from "./salary/containers/setting-salary";
-import {SettingSalaryDialogComponent} from "./salary/components/setting-salary";
-import {VisibleSettingSalaryComponent} from "./salary/components/custom-visible";
+import {SalarySettingComponent} from "./salary/containers/salary-setting";
+import {SettingSalaryDialogComponent} from "./salary/components/salary-setting";
+import {VisibleSalarySettingComponent} from "./salary/components/custom-visible";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
 import {SettingSalaryEffect} from "./salary/state";
 import {HttpClientModule} from "@angular/common/http";
-import {SettingSalaryService} from "./salary/services";
+import {SalarySettingService} from "./salary/services";
+import {NzInputModule} from "ng-zorro-antd/input";
 
 @NgModule({
   imports: [
@@ -42,16 +43,16 @@ import {SettingSalaryService} from "./salary/services";
     NzCheckboxModule,
     NgxCurrencyModule,
     NzButtonModule,
+    NzInputModule
   ],
   declarations:[
-    SettingSalaryComponent,
+    SalarySettingComponent,
     TransformBlockSalaryPipe,
     SettingSalaryDialogComponent,
-    VisibleSettingSalaryComponent
+    VisibleSalarySettingComponent
   ],
   providers:[
     DatePipe,
-    SettingSalaryService
   ]
 })
 
