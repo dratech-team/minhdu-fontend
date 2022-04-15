@@ -1,5 +1,5 @@
 import {NgModule} from "@angular/core";
-import {CommonModule} from "@angular/common";
+import {CommonModule, DatePipe} from "@angular/common";
 import {SettingRoutingModule} from "./setting-routing.module";
 import {NzTableModule} from "ng-zorro-antd/table";
 import {NzCollapseModule} from "ng-zorro-antd/collapse";
@@ -21,13 +21,14 @@ import {NzButtonModule} from "ng-zorro-antd/button";
 import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
 import {SettingSalaryEffect} from "./salary/state";
 import {HttpClientModule} from "@angular/common/http";
+import {SettingSalaryService} from "./salary/services";
 
 @NgModule({
   imports: [
     SharedModule,
     CommonModule,
-    SettingRoutingModule,
     HttpClientModule,
+    SettingRoutingModule,
     NzTableModule,
     NzCollapseModule,
     ReactiveFormsModule,
@@ -48,6 +49,10 @@ import {HttpClientModule} from "@angular/common/http";
     SettingSalaryDialogComponent,
     VisibleSettingSalaryComponent
   ],
+  providers:[
+    DatePipe,
+    SettingSalaryService
+  ]
 })
 
 export class SettingModule {

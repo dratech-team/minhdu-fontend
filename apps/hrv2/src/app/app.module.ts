@@ -20,6 +20,7 @@ import {IconDefinition} from "@ant-design/icons-angular";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {AkitaNgDevtools} from "@datorama/akita-ngdevtools";
 import {NxModule} from "@nrwl/angular";
+import {SettingSalaryService} from "./pages/setting/salary/services";
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
