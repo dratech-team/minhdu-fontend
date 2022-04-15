@@ -126,7 +126,7 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.addSalary),
       switchMap((props) => {
-          if (props.salary.salarySettingId) {
+          if (props.salary.settingId) {
             if (!props.salary.startTime && !props.salary.endTime) {
               this.message.warning('chưa nhập từ giờ đến giờ')
               this.store.dispatch(PayrollAction.handleSalaryError());
@@ -146,6 +146,12 @@ export class PayrollEffect {
               this.message.warning('chưa chọn từ ngày đến ngày')
               this.store.dispatch(PayrollAction.handleSalaryError());
               return throwError('chưa chọn từ ngày đến ngày')
+            }
+          } else {
+            if (!props.salary?.price) {
+              this.message.warning('Chưa nhập đơn giá')
+              this.store.dispatch(PayrollAction.handleSalaryError());
+              return throwError('Chưa nhập đơn giá')
             }
           }
           if (!props.salary.title) {
