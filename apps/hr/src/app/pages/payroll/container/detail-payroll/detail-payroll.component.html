@@ -322,9 +322,9 @@
           <tr style='background-color: #dddddd66;'>
             <th width='3%' class=' title text-center '>STT</th>
             <th width='15%' class=' title text-center '>Khấu trừ</th>
-            <th width='21%' class=' title text-center '>Ngày</th>
             <th width='15%' class=' title text-center '>Thời gian</th>
             <th width='10%' class=' title text-center '>Thành tiền</th>
+            <th width='21%' class=' title text-center '>Chi tiết</th>
             <th width='12%' class=' title text-center '>Chú thích</th>
             <th width='10%' class='text-center' style='padding: 0; color: #1b8eb7'
                 (click)='addSalary(type.ABSENT, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
@@ -345,35 +345,23 @@
                 <span class='ml-2' *ngIf='salary.allowance'></span>
               </div>
             </th>
-            <th class='text-center ' (click)='onSalarySetting(salary?.setting?.title)'>
-                 <span *ngIf='salary.datetime'>
-                  {{salary.datetime | date:'dd-MM-yyyy'}}
-                </span>
-              <span *ngIf='salary.startedAt && salary.endedAt'>
-              Từ  {{salary.startedAt | date:'dd-MM-yyyy'}}
-                đến {{salary.endedAt | date:'dd-MM-yyyy'}}
-                </span>
-              <span *ngIf='!salary.startedAt && !salary.endedAt &&!salary.datetime  '>
-                   _
-              </span>
-            </th>
             <th class=' text-center ' (click)='onSalarySetting(salary?.setting?.title)'>
               <span *ngIf='salary.unit === datetimeUnit.MONTH'> Tháng </span>
               <span
                 *ngIf='salary.unit === datetimeUnit.DAY'>
-                {{
-                salary.partial === PartialDay.ALL_DAY || salary.partial === PartialDay.MORNING || salary.partial === PartialDay.AFTERNOON
-                  ? '1 Ngày'
-                  : (salary.partial === PartialDay.MORNING || salary.partial === PartialDay.AFTERNOON)
-                    ? '0.5 Ngày'
-                    : (salary.startedAt  | date: 'HH:mm:ss') + " đến " + (salary.endedAt  | date: 'HH:mm:ss')
-                }}
+                {{salary.partial | rangedatetimepipe: salary.startedAt : salary.endedAt}}
               </span>
             </th>
             <th class=' text-center ' (click)='onSalarySetting(salary?.setting?.title)'>
               <span style='color: red'>
                 {{salary.price | number:'1.0-0'}} đ
               </span>
+            </th>
+            <th class='text-center ' (click)='onSalarySetting(salary?.setting?.title)'>
+              <span *ngIf='salary.startedAt && salary.endedAt'>
+              Từ  {{salary.partial !== PartialDay.CUSTOM ? (salary.startedAt | date:'dd-MM-yyyy') : salary.startedAt | date:'dd-MM-yyyy HH:mm:ss'}}
+                đến {{salary.partial !== PartialDay.CUSTOM ? (salary.endedAt | date:'dd-MM-yyyy') : salary.startedAt | date:'dd-MM-yyyy HH:mm:ss'}}
+                </span>
             </th>
             <th class=' text-center ' (click)='onSalarySetting(salary?.setting?.title)'>
               <span>{{salary.note}}</span>
