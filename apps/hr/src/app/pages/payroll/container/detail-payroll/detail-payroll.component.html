@@ -323,8 +323,8 @@
             <th width='3%' class=' title text-center '>STT</th>
             <th width='15%' class=' title text-center '>Khấu trừ</th>
             <th width='21%' class=' title text-center '>Ngày</th>
-            <th width='8%' class=' title text-center '>Thời gian</th>
-            <th width='23%' class=' title text-center '>Thành tiền</th>
+            <th width='15%' class=' title text-center '>Thời gian</th>
+            <th width='10%' class=' title text-center '>Thành tiền</th>
             <th width='12%' class=' title text-center '>Chú thích</th>
             <th width='10%' class='text-center' style='padding: 0; color: #1b8eb7'
                 (click)='addSalary(type.ABSENT, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
@@ -362,7 +362,7 @@
               <span
                 *ngIf='salary.unit === datetimeUnit.DAY'>
                 {{
-                salary.partial === PartialDay.ALL_DAY
+                salary.partial === PartialDay.ALL_DAY || salary.partial === PartialDay.MORNING || salary.partial === PartialDay.AFTERNOON
                   ? '1 Ngày'
                   : (salary.partial === PartialDay.MORNING || salary.partial === PartialDay.AFTERNOON)
                     ? '0.5 Ngày'
