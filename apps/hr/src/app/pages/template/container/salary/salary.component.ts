@@ -39,7 +39,7 @@ export class SalaryComponent implements OnInit {
     {
       title: new FormControl(),
       unit: new FormControl(''),
-      type: new FormControl('')
+      salaryType: new FormControl('')
     }
   );
 

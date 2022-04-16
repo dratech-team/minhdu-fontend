@@ -50,7 +50,7 @@
             <!--            </th>-->
             <th style='width: 220px;'>
               <div class='border-top d-flex justify-content-center align-items-center'>Loại bản mẫu</div>
-              <mat-select class='form-control border-top' formControlName='type'>
+              <mat-select class='form-control border-top' formControlName='salaryType'>
                 <mat-option *ngFor='let item of blockSalaries' [value]='item.type'> {{item.title}}</mat-option>
               </mat-select>
             </th>
