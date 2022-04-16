@@ -308,4 +308,14 @@ export class DetailPayrollComponent implements OnInit {
   tranFormType(salaryTypes: SalaryTypeEnum[]): string {
     return tranFormSalaryType(salaryTypes)
   }
+
+  onSalarySetting(title: string) {
+    if(title){
+      this.router.navigate(['ban-mau'], {
+        queryParams: {
+          title: title
+        }
+      }).then();
+    }
+  }
 }

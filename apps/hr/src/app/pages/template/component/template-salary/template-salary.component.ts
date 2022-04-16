@@ -44,7 +44,6 @@ export class TemplateSalaryComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
-    console.log(this.data.template)
     const template = this.data?.template
     this.formGroup = this.formBuilder.group({
       block: [template?.type === SalaryTypeEnum.BASIC_INSURANCE ? this.blockSalary.find(block => block.type === SalaryTypeEnum.BASIC) :

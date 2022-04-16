@@ -335,17 +335,17 @@
           </thead>
           <tbody>
           <tr *ngFor="let salary of payroll.salaries | filterTypeSalary:['ABSENT','DAY_OFF','DEDUCTION'], let i= index "
-              style='background: white !important;'>
+              style='background: white !important;' class="pointer">
             <th>
               {{i + 1}}
             </th>
-            <th>
-              <div [routerLink]='["/ban-mau", {title: salary.title}]'>
+            <th (click)="onSalarySetting(salary?.setting?.title)">
+              <div>
                 <span>{{salary.title}}</span>
                 <span class='ml-2' *ngIf='salary.allowance'></span>
               </div>
             </th>
-            <th class='text-center '>
+            <th class='text-center ' (click)="onSalarySetting(salary?.setting?.title)">
                  <span *ngIf='salary.datetime'>
                   {{salary.datetime | date:'dd-MM-yyyy'}}
                 </span>
@@ -357,16 +357,16 @@
                    _
               </span>
             </th>
-            <th class=' text-center '>
+            <th class=' text-center ' (click)="onSalarySetting(salary?.setting?.title)">
               <span *ngIf='salary.unit === datetimeUnit.MONTH'> Tháng </span>
               <span *ngIf='salary.unit === datetimeUnit.DAY'>Ngày</span>
             </th>
-            <th class=' text-center '>
+            <th class=' text-center ' (click)="onSalarySetting(salary?.setting?.title)">
               <span style='color: red'>
                 {{salary.price | number:'1.0-0'}} đ
               </span>
             </th>
-            <th class=' text-center '>
+            <th class=' text-center ' (click)="onSalarySetting(salary?.setting?.title)">
               <span>{{salary.note}}</span>
             </th>
             <th>

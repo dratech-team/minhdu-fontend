@@ -13,9 +13,10 @@ import {
   selectTemplateLoaded,
   selectTotalTemplateSalary
 } from '../../+state/teamlate-salary/template-salary.selector';
-import {SalaryConstraint, SalarySetting} from "../../+state/teamlate-salary/salary-setting";
+import {SalarySetting} from "../../+state/teamlate-salary/salary-setting";
 import {blockSalariesConstant} from "../../constants";
 import {tranFormSalaryType} from "../../../payroll/utils";
+import {ActivatedRoute} from "@angular/router";
 
 
 @Component({
@@ -37,7 +38,7 @@ export class SalaryComponent implements OnInit {
   pageIndexInit = 0;
   formGroup = new FormGroup(
     {
-      title: new FormControl(),
+      title: new FormControl(''),
       unit: new FormControl(''),
       salaryType: new FormControl('')
     }
@@ -45,23 +46,27 @@ export class SalaryComponent implements OnInit {
 
   constructor(
     private readonly dialog: MatDialog,
-    private readonly store: Store
+    private readonly store: Store,
+    private readonly activeRouter: ActivatedRoute
   ) {
   }
 
   ngOnInit() {
+    this.activeRouter.queryParams.subscribe(val => {
+      if (val.title) {
+        this.formGroup.get('title')?.setValue(val.title);
+      }
+    });
     this.store.dispatch(TemplateSalaryAction.loadInit({
       templateSalaryDTO: {
-        take: this.pageSize, skip: this.pageIndexInit
+        take: this.pageSize, skip: this.pageIndexInit,
+        title: this.formGroup.value.title
       }
     }));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          if(!val.type){
-            delete val.type
-          }
           this.store.dispatch(
             TemplateSalaryAction.loadInit(
               {
@@ -90,13 +95,18 @@ export class SalaryComponent implements OnInit {
   }
 
   template(val: any) {
-    return {
+    const settingSalary = {
       take: this.pageSize,
       skip: this.pageIndexInit,
       title: val.title,
-      salaryType: val.type,
       unit: val.unit
     };
+    if(val.salaryType){
+      Object.assign(settingSalary, {
+        salaryType: val.salaryType,
+      })
+    }
+    return settingSalary
   }
 
   deleteBasicSalary($event: any) {
