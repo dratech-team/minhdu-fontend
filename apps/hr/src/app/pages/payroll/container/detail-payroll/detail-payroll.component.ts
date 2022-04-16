@@ -38,6 +38,7 @@ import {NzMessageService} from "ng-zorro-antd/message";
 import {Sort} from "@angular/material/sort";
 import {map} from "rxjs/operators";
 import {UpdateHolidayComponent} from "../../component/dialog-salary/dialog-holiday/update-holiday.component";
+import {tranFormSalaryType} from "../../utils";
 
 
 @Component({
@@ -305,4 +306,7 @@ export class DetailPayrollComponent implements OnInit {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
+  tranFormType(salaryTypes: SalaryTypeEnum[]): string {
+    return tranFormSalaryType(salaryTypes)
+  }
 }

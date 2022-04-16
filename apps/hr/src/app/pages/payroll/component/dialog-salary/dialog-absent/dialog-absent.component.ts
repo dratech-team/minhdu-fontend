@@ -17,6 +17,7 @@ import {map} from "rxjs/operators";
 import {salaryReference} from "../../../../template/enums";
 import {SalarySetting} from "../../../../template/+state/teamlate-salary/salary-setting";
 import {tranFormSalaryType} from "../../../utils";
+import {UnitSalaryConstant} from "../../../../template/constants/unit-salary.constant";
 
 @Component({
   templateUrl: 'dialog-absent.component.html'
@@ -32,6 +33,7 @@ export class DialogAbsentComponent implements OnInit {
         title: 'Khác',
         type: SalaryTypeEnum.ABSENT,
         rate: 1,
+        unit: DatetimeUnitEnum.MONTH,
         types: []
       }])
       return this.templateSalaries
@@ -51,6 +53,7 @@ export class DialogAbsentComponent implements OnInit {
   indexStep = 1;
   disableTimeStartConstant: number [] = []
   disableTimeEndConstant: number [] = []
+  unitConstant = UnitSalaryConstant
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
@@ -89,6 +92,7 @@ export class DialogAbsentComponent implements OnInit {
         salary?.endedTime ? salary.endedTime : undefined],
       note: [salary?.note],
       rate: [1],
+      unit: [salary?.unit ? salary.unit : DatetimeUnitEnum.MONTH],
       partialDay: [salary ? this.transFormPartial(salary.startedAt, salary.endedAt) : ''],
       constraintHoliday: [],
       constraintOvertime: [],
@@ -109,7 +113,7 @@ export class DialogAbsentComponent implements OnInit {
         )
       }
       this.formGroup.get('rate')?.setValue(template.rate)
-
+      this.formGroup.get('unit')?.setValue(template.unit)
       this.formGroup.get('reference')?.setValue(template.types ? salaryReference.BLOCK : salaryReference.PRICE)
     })
     this.formGroup.get('partialDay')?.valueChanges.subscribe(item => {
@@ -156,24 +160,17 @@ export class DialogAbsentComponent implements OnInit {
       return;
     }
     const value = this.formGroup.value
-    const startedAt = value.rangeDay[0]
-    const endedAt = value.rangeDay[1]
-    const startTime = value.startTime
-    const endTime = value.endTime
     const salary = {
       title: value.template.id === 0 ? value.title : value.template.title,
-      partial: value.template.id === 0 ? PartialDayEnum.MONTH : value.partialDay.value,
+      partial: value.template.id === 0 ? PartialDayEnum.CUSTOM : value.partialDay.value,
       type: value.template.type,
-      startedAt: new Date(
-        startedAt.getFullYear(), startedAt.getMonth(), startedAt.getDate(),
-        startTime.getHours(), startTime.getMinutes()
-      ),
+      startedAt: value.rangeDay[0],
+      endedAt: value.rangeDay[1],
+      startTime: value.startTime,
+      endTime: value.endTime,
+      unit: value.unit,
       price: value.price,
       note: value.note,
-      endedAt: new Date(
-        endedAt.getFullYear(), endedAt.getMonth(), endedAt.getDate(),
-        endTime.getHours(), endTime.getMinutes()
-      ),
       settingId: value.template?.id || this.data?.salary?.settingId,
       payrollIds: this.data.multiple ?
         [this.salaryPayrolls.map(salaryPayroll => salaryPayroll.payroll.id)] :

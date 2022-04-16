@@ -27,7 +27,12 @@
       <div class='mb-3' *ngIf="formGroup.value?.template?.id === 0 else absentTemplate">
         <span class='font-weight-bold'>Tiêu đề</span><span class='star'>*</span>
         <input class="mt-1" nz-input formControlName="title">
-      </div>
+      </div>  <div class='mb-3'>
+      <span class='font-weight-bold'>Đơn vị</span><span class='star'>*</span>
+      <nz-select formControlName="unit" style="width: 100%"  nzDisabled >
+        <nz-option *ngFor="let item of unitConstant" [nzValue]="item.value" [nzLabel]="item.name"></nz-option>
+      </nz-select>
+    </div>
       <ng-template #absentTemplate>
         <div class='mb-3'>
           <span class='font-weight-bold'>Buổi</span><span class='star'>*</span>
