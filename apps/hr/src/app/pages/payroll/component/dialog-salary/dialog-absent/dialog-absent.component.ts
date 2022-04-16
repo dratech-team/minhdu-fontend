@@ -149,6 +149,7 @@ export class DialogAbsentComponent implements OnInit {
     }
     const value = this.formGroup.value
     const salary = {
+      rate: value.rate,
       title: value.template.id === 0 ? value.title : value.template.title,
       partial: value.template.id === 0 ? PartialDayEnum.CUSTOM : value.partialDay.value,
       type: value.template.type,
@@ -160,27 +161,21 @@ export class DialogAbsentComponent implements OnInit {
       price: value.price,
       note: value.note,
       settingId: value.template?.id,
-      payrollIds: this.data.multiple ?
-        [this.salaryPayrolls.map(salaryPayroll => salaryPayroll.payroll.id)] :
-        [this.data.payroll.id]
     }
     if (this.data?.salary) {
-      if (this.data?.multiple) {
-        Object.assign(salary, {
-          salaryIds: this.salaryPayrolls.map(salary => salary.salary.id)
-        })
-        this.store.dispatch(PayrollAction.updateSalary({
-          salary,
-          multiple: true
-        }))
-      } else {
-        this.store.dispatch(PayrollAction.updateSalary({
-          salary,
-          id: this.data.salary.id,
-          payrollId: this.data.salary.payrollId
-        }))
-      }
+      Object.assign(salary, {
+        salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.salary.id)
+      })
+      this.store.dispatch(PayrollAction.updateSalary({
+        salary,
+        multiple: true
+      }))
     } else {
+      Object.assign(salary , {
+        payrollIds: this.data.multiple ?
+          [this.salaryPayrolls.map(salaryPayroll => salaryPayroll.payroll.id)] :
+          [this.data.payroll.id]
+      })
       if (this.data?.multiple) {
         this.store.dispatch(PayrollAction.addSalary({salary: salary}))
       } else {
