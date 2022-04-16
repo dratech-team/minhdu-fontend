@@ -7,18 +7,18 @@ import {DatetimeUnitEnum, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enum
 import {select, Store} from '@ngrx/store';
 import {selectedAddedPayroll, selectedAddingPayroll} from '../../../+state/payroll/payroll.selector';
 import {AppState} from '../../../../../reducers';
-import {NzMessageService} from 'ng-zorro-antd/message';
 import {selectorAllTemplate} from "../../../../template/+state/teamlate-salary/template-salary.selector";
-import {SessionConstant} from "../../../constants";
+import {DisableTimeConstant, SessionConstant} from "../../../constants";
 import {referencesTypeConstant} from "../../../../template/constants/references-type.constant";
 import {TemplateSalaryAction} from "../../../../template/+state/teamlate-salary/template-salary.action";
 import {Payroll} from "../../../+state/payroll/payroll.interface";
 import {PayrollAction} from "../../../+state/payroll/payroll.action";
 import {map} from "rxjs/operators";
 import {salaryReference} from "../../../../template/enums";
-import {SalaryConstraint, SalarySetting} from "../../../../template/+state/teamlate-salary/salary-setting";
 import {tranFormSalaryType} from "../../../utils";
-import {values} from "lodash";
+import {UnitSalaryConstant} from "../../../../template/constants/unit-salary.constant";
+import * as moment from 'moment'
+import {SalarySetting} from "../../../../template/+state/teamlate-salary/salary-setting";
 
 @Component({
   templateUrl: 'dialog-absent.component.html'
@@ -26,17 +26,21 @@ import {values} from "lodash";
 export class DialogAbsentComponent implements OnInit {
   adding$ = this.store.select(selectedAddingPayroll)
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
-  templateSalaries: SalarySetting [] = []
   templateSalary$ = this.store.select(selectorAllTemplate).pipe(
     map(templates => {
-      this.templateSalaries = templates.concat([{
+      templates.push({
         id: 0,
         title: 'Khác',
         type: SalaryTypeEnum.ABSENT,
         rate: 1,
+        unit: DatetimeUnitEnum.MONTH,
         types: []
-      }])
-      return this.templateSalaries
+      })
+      if (this.data?.salary) {
+        this.formGroup.get('template')?.setValue(
+          this.getTemplateSalary( templates,this.data.salary.settingId))
+      }
+      return templates
     })
   )
 
@@ -46,11 +50,14 @@ export class DialogAbsentComponent implements OnInit {
   formGroup!: FormGroup;
   firstDayInMonth!: string | null;
   lastDayInMonth!: string | null;
-  salariesSelected: SalaryPayroll[] = [];
+  salaryPayrolls: SalaryPayroll[] = [];
   titleSession = SessionConstant
   partialDayEnum = PartialDayEnum
   references = referencesTypeConstant;
   indexStep = 1;
+  disableTimeStartConstant: number [] = []
+  disableTimeEndConstant: number [] = []
+  unitConstant = UnitSalaryConstant
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
@@ -59,11 +66,11 @@ export class DialogAbsentComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
     private readonly dialogRef: MatDialogRef<DialogAbsentComponent>,
-    private readonly message: NzMessageService,
     @Inject(MAT_DIALOG_DATA) public data: {
       salary?: Salary,
-      updateMultiple?: boolean,
-      salariesSelected?: SalaryPayroll[],
+      multiple?: {
+        salaryPayrolls?: SalaryPayroll[]
+      },
       payroll: Payroll
     }
   ) {
@@ -73,34 +80,29 @@ export class DialogAbsentComponent implements OnInit {
     this.store.dispatch(TemplateSalaryAction.loadALlTemplate({
       salaryType: SalaryTypeEnum.ABSENT
     }));
-    if (this.data?.salariesSelected) {
-      this.salariesSelected = this.data.salariesSelected;
+    if (this.data?.multiple?.salaryPayrolls) {
+      this.salaryPayrolls = this.data.multiple.salaryPayrolls;
     }
     const salary = this.data?.salary
     this.formGroup = this.formBuilder.group({
       template: ['', Validators.required],
+      title: [this.data?.salary?.title],
       rangeDay: [salary ?
-        [salary.startedAt, salary.endedAt] : [], Validators.required],
+        [salary.startedAt, salary.endedAt] : []],
       price: [this.data?.salary?.price],
-      startTime: [
-        salary?.startedTime ? salary.startedTime : undefined, Validators.required],
-      endTime: [
-        salary?.endedTime ? salary.endedTime : undefined, Validators.required],
+      startTime: [salary?.startedAt ? new Date(salary.startedAt) : undefined],
+      endTime: [salary?.endedAt ? new Date(salary.endedAt) : undefined],
       note: [salary?.note],
-      rate: ['', Validators.required],
-      partialDay: [salary ? this.transFormPartial(salary.startedAt, salary.endedAt) : '', Validators.required],
+      rate: [1],
+      unit: [salary?.unit ? salary.unit : DatetimeUnitEnum.MONTH],
+      partialDay: [salary?.partial ? this.getPartialDay(salary.partial) : ''],
       constraintHoliday: [],
       constraintOvertime: [],
       reference: []
     });
 
-    if (salary?.salarySettingId) {
-      this.formGroup.get('template')?.setValue(this.getTemplateSalary(salary.salarySettingId))
-    }
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
-      this.formGroup.get('price')?.setValue(template.price)
-      if (template.constraints) {
-
+      if (template?.constraints) {
         this.formGroup.get('constraintHoliday')?.setValue(
           this.transFormConstraintType(template.constraints, SalaryTypeEnum.HOLIDAY)
         )
@@ -108,24 +110,18 @@ export class DialogAbsentComponent implements OnInit {
           this.transFormConstraintType(template.constraints, SalaryTypeEnum.OVERTIME)
         )
       }
-      this.formGroup.get('rate')?.setValue(template.rate)
-
-      this.formGroup.get('reference')?.setValue(template.types ? salaryReference.BLOCK : salaryReference.PRICE)
+      this.formGroup.get('rate')?.setValue(template?.rate)
+      this.formGroup.get('unit')?.setValue(template?.unit)
+      this.formGroup.get('reference')?.setValue(template?.types ? salaryReference.BLOCK : salaryReference.PRICE)
     })
+
     this.formGroup.get('partialDay')?.valueChanges.subscribe(item => {
-      switch (item.value) {
-        case PartialDayEnum.ALL_DAY:
-          this.formGroup.get('startTime')?.setValue(new Date(0, 0, 0, 7, 0))
-          this.formGroup.get('endTime')?.setValue(new Date(0, 0, 0, 17, 0))
-          break
-        case PartialDayEnum.MORNING:
-          this.formGroup.get('startTime')?.setValue(new Date(0, 0, 0, 7, 0))
-          this.formGroup.get('endTime')?.setValue(new Date(0, 0, 0, 11, 30))
-          break
-        case PartialDayEnum.AFTERNOON:
-          this.formGroup.get('startTime')?.setValue(new Date(0, 0, 0, 13, 30))
-          this.formGroup.get('endTime')?.setValue(new Date(0, 0, 0, 17, 0))
-          break
+      if (item.value === PartialDayEnum.CUSTOM) {
+        this.disableTimeStartConstant = [...DisableTimeConstant]
+        this.disableTimeEndConstant = [...DisableTimeConstant]
+      } else {
+        this.formGroup.get('startTime')?.setValue(item.startTime)
+        this.formGroup.get('endTime')?.setValue(item.endTime)
       }
     })
   }
@@ -134,67 +130,63 @@ export class DialogAbsentComponent implements OnInit {
     return this.formGroup.controls;
   }
 
-  getTemplateSalary(id: number) {
-    this.templateSalaries.find(template => template.id === id)
+  getTemplateSalary(template: SalarySetting[], id?: number,) {
+  return template.find(item => item.id === (id ? id : 0))
   }
 
   transFormConstraintType(constraints: SalaryTypeEnum [], salaryTypeEnum: SalaryTypeEnum): boolean {
     return constraints.some(constraint => constraint === salaryTypeEnum)
   }
 
-  transFormPartial(start: Date, end: Date): PartialDayEnum {
-    const startHour = start.getHours()
-    const startMinutes = start.getMinutes()
-    const endHour = end.getHours()
-    const endMinutes = end.getMinutes()
-    if (startHour === 7 && startMinutes === 0 && endHour === 11 && endMinutes === 30) {
-      return PartialDayEnum.MORNING
-    } else if (startHour === 13 && startMinutes === 30 && endHour === 17 && endMinutes === 0) {
-      return PartialDayEnum.AFTERNOON
-    } else if (startHour === 7 && startMinutes === 0 && endHour === 17 && endMinutes === 0) {
-      return PartialDayEnum.ALL_DAY
-    } else {
-      return PartialDayEnum.OTHER
-    }
+  getPartialDay(partial: PartialDayEnum) {
+    return SessionConstant.find(item => item.value === partial)
   }
+
 
   onSubmit(): any {
     if (this.formGroup.invalid) {
       return;
     }
-
     const value = this.formGroup.value
     const salary = {
-      type: value.template.type || value.template,
-      price: value.price || null,
+      rate: value.rate,
+      title: value.template.id === 0 ? value.title : value.template.title,
+      partial: value.template.id === 0 ? PartialDayEnum.CUSTOM : value.partialDay.value,
+      type: value.template.type,
       startedAt: value.rangeDay[0],
       endedAt: value.rangeDay[1],
-      startTime: value.startTime,
-      endTime: value.endTime,
+      startTime: value.startTime ? moment(value.startTime).format('HH:mm:ss') : null,
+      endTime: value.endTime ? moment(value.endTime).format('HH:mm:ss') : null,
+      unit: value.unit,
+      price: value.price,
       note: value.note,
-      salarySettingId: value.template?.id || this.data?.salary?.salarySettingId
+      settingId: value.template?.id,
     }
     if (this.data?.salary) {
-      if (this.data?.updateMultiple) {
-        Object.assign(salary, {
-          salaryIds: this.salariesSelected.map(salary => salary.salary.id)
-        })
-        this.store.dispatch(PayrollAction.updateSalary({
-          salary,
-          multiple: true
-        }))
-      } else {
-        this.store.dispatch(PayrollAction.updateSalary({
-          salary,
-          id: this.data.salary.id,
-          payrollId: this.data.salary.payrollId
-        }))
-      }
+      Object.assign(salary, {
+        salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.salary.id)
+      })
+      this.store.dispatch(PayrollAction.updateSalary({
+        salary,
+        multiple: true
+      }))
     } else {
-      if (this.data?.updateMultiple) {
-        Object.assign(salary, {payrollIds: this.salariesSelected.map(val => val.payroll.id)})
+      Object.assign(salary , {
+        payrollIds: this.data.multiple ?
+          [this.salaryPayrolls.map(salaryPayroll => salaryPayroll.payroll.id)] :
+          [this.data.payroll.id]
+      })
+      if (this.data?.multiple) {
+        this.store.dispatch(PayrollAction.addSalary({salary: salary}))
+      } else {
+        this.store.dispatch(PayrollAction.addSalary({
+          salary: salary,
+          payrollId: this.data.payroll.id,
+          isDetailPayroll: true
+        }))
+
       }
-      this.store.dispatch(PayrollAction.addSalary({salary: salary}))
+
     }
     this.store.pipe(select(selectedAddedPayroll)).subscribe(val => {
       if (val) {
@@ -208,8 +200,8 @@ export class DialogAbsentComponent implements OnInit {
   }
 
   changeSalariesSelected($event: SalaryPayroll[]) {
-    this.salariesSelected = $event;
-    this.EmitSalariesSelected.emit(this.salariesSelected);
+    this.salaryPayrolls = $event;
+    this.EmitSalariesSelected.emit(this.salaryPayrolls);
   }
 
   pre(): void {
@@ -222,5 +214,13 @@ export class DialogAbsentComponent implements OnInit {
 
   onClose() {
     this.dialogRef.close()
+  }
+
+  disabledHoursStart(): number[] {
+    return this.disableTimeStartConstant
+  }
+
+  disabledHoursEnd(): number[] {
+    return this.disableTimeEndConstant
   }
 }

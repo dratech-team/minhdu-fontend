@@ -9,7 +9,7 @@ export const Api = {
       CHECKLIST: 'payroll/checklist',
       GENERATE: 'payroll/generate',
       OVERTIME: 'payroll/overtime/filter',
-      SALARY: 'salary',
+      SALARY: 'salaryv2',
       SALARY_EMPLOYEES: 'salary/employees',
       holiday: 'holiday',
       PAYSLIP: 'payslip',

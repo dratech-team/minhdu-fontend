@@ -109,6 +109,7 @@ import {NzRadioModule} from "ng-zorro-antd/radio";
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzStepsModule} from "ng-zorro-antd/steps";
+import { RangeDateTimePipe } from './pipes/datetime.pipe';
 
 @NgModule({
   imports: [
@@ -214,7 +215,8 @@ import {NzStepsModule} from "ng-zorro-antd/steps";
     TablePayrollSelectedComponent,
     UpdatePayrollComponent,
     ClassifyOvertimeComponent,
-    UpdateHolidayComponent
+    UpdateHolidayComponent,
+    RangeDateTimePipe
   ],
   providers: [MatDatepickerModule]
 })
