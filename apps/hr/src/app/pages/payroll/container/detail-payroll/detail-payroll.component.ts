@@ -40,7 +40,6 @@ import {map} from "rxjs/operators";
 import {UpdateHolidayComponent} from "../../component/dialog-salary/dialog-holiday/update-holiday.component";
 import {tranFormSalaryType} from "../../utils";
 
-
 @Component({
   templateUrl: 'detail-payroll.component.html',
   styleUrls: ['detail-payroll.component.scss']
@@ -76,7 +75,7 @@ export class DetailPayrollComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
-    private readonly router: Router,
+    public readonly router: Router,
     private readonly datePipe: DatePipe,
     private readonly message: NzMessageService,
   ) {
