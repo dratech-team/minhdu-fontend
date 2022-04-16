@@ -39,7 +39,7 @@ export class SalaryComponent implements OnInit {
     {
       title: new FormControl(),
       unit: new FormControl(''),
-      type: new FormControl('')
+      salaryType: new FormControl('')
     }
   );
 
@@ -59,6 +59,9 @@ export class SalaryComponent implements OnInit {
       .pipe(
         debounceTime(1000),
         tap((val) => {
+          if(!val.type){
+            delete val.type
+          }
           this.store.dispatch(
             TemplateSalaryAction.loadInit(
               {
