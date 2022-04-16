@@ -7,6 +7,6 @@ import { UnitSalaryConstant } from '../constants/unit-salary.constant';
 })
 export class UnitDatetimePipe implements PipeTransform {
   transform(unit: DatetimeUnitEnum): string {
-    return UnitSalaryConstant.find(e => e.value === unit).name;
+    return UnitSalaryConstant.find(e => e.value === unit)?.name || 'UnitDateTime không xác định';
   }
 }
