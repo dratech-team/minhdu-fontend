@@ -15,9 +15,10 @@ import {Payroll} from "../../../+state/payroll/payroll.interface";
 import {PayrollAction} from "../../../+state/payroll/payroll.action";
 import {map} from "rxjs/operators";
 import {salaryReference} from "../../../../template/enums";
-import {SalarySetting} from "../../../../template/+state/teamlate-salary/salary-setting";
 import {tranFormSalaryType} from "../../../utils";
 import {UnitSalaryConstant} from "../../../../template/constants/unit-salary.constant";
+import * as moment from 'moment'
+import {SalarySetting} from "../../../../template/+state/teamlate-salary/salary-setting";
 
 @Component({
   templateUrl: 'dialog-absent.component.html'
@@ -25,18 +26,21 @@ import {UnitSalaryConstant} from "../../../../template/constants/unit-salary.con
 export class DialogAbsentComponent implements OnInit {
   adding$ = this.store.select(selectedAddingPayroll)
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
-  templateSalaries: SalarySetting [] = []
   templateSalary$ = this.store.select(selectorAllTemplate).pipe(
     map(templates => {
-      this.templateSalaries = templates.concat([{
+      templates.push({
         id: 0,
         title: 'Khác',
         type: SalaryTypeEnum.ABSENT,
         rate: 1,
         unit: DatetimeUnitEnum.MONTH,
         types: []
-      }])
-      return this.templateSalaries
+      })
+      if (this.data?.salary) {
+        this.formGroup.get('template')?.setValue(
+          this.getTemplateSalary( templates,this.data.salary.settingId))
+      }
+      return templates
     })
   )
 
@@ -82,29 +86,23 @@ export class DialogAbsentComponent implements OnInit {
     const salary = this.data?.salary
     this.formGroup = this.formBuilder.group({
       template: ['', Validators.required],
-      title: [this.data.salary?.settingId === 0 ? this.data.salary.title : ''],
+      title: [this.data?.salary?.title],
       rangeDay: [salary ?
         [salary.startedAt, salary.endedAt] : []],
       price: [this.data?.salary?.price],
-      startTime: [
-        salary?.startedTime ? salary.startedTime : undefined],
-      endTime: [
-        salary?.endedTime ? salary.endedTime : undefined],
+      startTime: [salary?.startedAt ? new Date(salary.startedAt) : undefined],
+      endTime: [salary?.endedAt ? new Date(salary.endedAt) : undefined],
       note: [salary?.note],
       rate: [1],
       unit: [salary?.unit ? salary.unit : DatetimeUnitEnum.MONTH],
-      partialDay: [salary ? this.transFormPartial(salary.startedAt, salary.endedAt) : ''],
+      partialDay: [salary?.partial ? this.getPartialDay(salary.partial) : ''],
       constraintHoliday: [],
       constraintOvertime: [],
       reference: []
     });
 
-    if (salary?.settingId) {
-      this.formGroup.get('template')?.setValue(this.getTemplateSalary(salary.settingId))
-    }
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
-      this.formGroup.get('price')?.setValue(template.price)
-      if (template.constraints) {
+      if (template?.constraints) {
         this.formGroup.get('constraintHoliday')?.setValue(
           this.transFormConstraintType(template.constraints, SalaryTypeEnum.HOLIDAY)
         )
@@ -112,10 +110,11 @@ export class DialogAbsentComponent implements OnInit {
           this.transFormConstraintType(template.constraints, SalaryTypeEnum.OVERTIME)
         )
       }
-      this.formGroup.get('rate')?.setValue(template.rate)
-      this.formGroup.get('unit')?.setValue(template.unit)
-      this.formGroup.get('reference')?.setValue(template.types ? salaryReference.BLOCK : salaryReference.PRICE)
+      this.formGroup.get('rate')?.setValue(template?.rate)
+      this.formGroup.get('unit')?.setValue(template?.unit)
+      this.formGroup.get('reference')?.setValue(template?.types ? salaryReference.BLOCK : salaryReference.PRICE)
     })
+
     this.formGroup.get('partialDay')?.valueChanges.subscribe(item => {
       if (item.value === PartialDayEnum.CUSTOM) {
         this.disableTimeStartConstant = [...DisableTimeConstant]
@@ -131,29 +130,18 @@ export class DialogAbsentComponent implements OnInit {
     return this.formGroup.controls;
   }
 
-  getTemplateSalary(id: number) {
-    this.templateSalaries.find(template => template.id === id)
+  getTemplateSalary(template: SalarySetting[], id?: number,) {
+  return template.find(item => item.id === (id ? id : 0))
   }
 
   transFormConstraintType(constraints: SalaryTypeEnum [], salaryTypeEnum: SalaryTypeEnum): boolean {
     return constraints.some(constraint => constraint === salaryTypeEnum)
   }
 
-  transFormPartial(start: Date, end: Date): PartialDayEnum {
-    const startHour = start.getHours()
-    const startMinutes = start.getMinutes()
-    const endHour = end.getHours()
-    const endMinutes = end.getMinutes()
-    if (startHour === 7 && startMinutes === 0 && endHour === 11 && endMinutes === 30) {
-      return PartialDayEnum.MORNING
-    } else if (startHour === 13 && startMinutes === 30 && endHour === 17 && endMinutes === 0) {
-      return PartialDayEnum.AFTERNOON
-    } else if (startHour === 7 && startMinutes === 0 && endHour === 17 && endMinutes === 0) {
-      return PartialDayEnum.ALL_DAY
-    } else {
-      return PartialDayEnum.CUSTOM
-    }
+  getPartialDay(partial: PartialDayEnum) {
+    return SessionConstant.find(item => item.value === partial)
   }
+
 
   onSubmit(): any {
     if (this.formGroup.invalid) {
@@ -166,12 +154,12 @@ export class DialogAbsentComponent implements OnInit {
       type: value.template.type,
       startedAt: value.rangeDay[0],
       endedAt: value.rangeDay[1],
-      startTime: value.startTime,
-      endTime: value.endTime,
+      startTime: value.startTime ? moment(value.startTime).format('HH:mm:ss') : null,
+      endTime: value.endTime ? moment(value.endTime).format('HH:mm:ss') : null,
       unit: value.unit,
       price: value.price,
       note: value.note,
-      settingId: value.template?.id || this.data?.salary?.settingId,
+      settingId: value.template?.id,
       payrollIds: this.data.multiple ?
         [this.salaryPayrolls.map(salaryPayroll => salaryPayroll.payroll.id)] :
         [this.data.payroll.id]

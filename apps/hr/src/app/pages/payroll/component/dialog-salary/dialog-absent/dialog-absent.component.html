@@ -1,10 +1,10 @@
 <div class='px-2'>
   <nz-steps [nzCurrent]="indexStep">
-    <nz-step *ngIf="data?.salary" nzTitle="Nhân viên đã chọn"></nz-step>
+    <nz-step *ngIf="data?.multiple" nzTitle="Nhân viên đã chọn"></nz-step>
     <nz-step nzTitle="Bảng khấu trừ"></nz-step>
   </nz-steps>
 
-  <ng-template [ngIf]="indexStep === 0 && data?.salary">
+  <ng-template [ngIf]="indexStep === 0 && data?.multiple">
     <app-table-salaries-selected
       [salaries]='salaryPayrolls'
       (EmitSalariesSelected)='changeSalariesSelected($event)'>
@@ -94,7 +94,7 @@
         </div>
         <div class='mb-3'>
           <span class='font-weight-bold'>Ràng buộc ngày lễ:</span>
-          <label nz-checkbox nzDisabled="true" class="ml-2" formControlName="constraintHoliday"></label>
+          <label nz-checkbox nzDisabled="true"  class="ml-2" formControlName="constraintHoliday"></label>
         </div>
         <div class='mb-3'>
           <span class='font-weight-bold'>Ràng buộc theo tăng ca:</span>
@@ -123,7 +123,7 @@
     </form>
   </ng-template>
   <div class="steps-action">
-    <button class="ml-2" nz-button nzType="default" (click)="pre()" *ngIf="indexStep > 0 && data?.salary">
+    <button class="ml-2" nz-button nzType="default" (click)="pre()" *ngIf="indexStep > 0 && data?.multiple">
       <span>Trở lại</span>
     </button>
     <button class="ml-2" nz-button nzType="default" (click)="next()" *ngIf="indexStep < 1">
