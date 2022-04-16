@@ -7,9 +7,8 @@ import {DatetimeUnitEnum, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enum
 import {select, Store} from '@ngrx/store';
 import {selectedAddedPayroll, selectedAddingPayroll} from '../../../+state/payroll/payroll.selector';
 import {AppState} from '../../../../../reducers';
-import {NzMessageService} from 'ng-zorro-antd/message';
 import {selectorAllTemplate} from "../../../../template/+state/teamlate-salary/template-salary.selector";
-import {SessionConstant} from "../../../constants";
+import {DisableTimeConstant, SessionConstant} from "../../../constants";
 import {referencesTypeConstant} from "../../../../template/constants/references-type.constant";
 import {TemplateSalaryAction} from "../../../../template/+state/teamlate-salary/template-salary.action";
 import {Payroll} from "../../../+state/payroll/payroll.interface";
@@ -50,6 +49,8 @@ export class DialogAbsentComponent implements OnInit {
   partialDayEnum = PartialDayEnum
   references = referencesTypeConstant;
   indexStep = 1;
+  disableTimeStartConstant: number [] = []
+  disableTimeEndConstant: number [] = []
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
@@ -58,7 +59,6 @@ export class DialogAbsentComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
     private readonly dialogRef: MatDialogRef<DialogAbsentComponent>,
-    private readonly message: NzMessageService,
     @Inject(MAT_DIALOG_DATA) public data: {
       salary?: Salary,
       multiple?: {
@@ -113,19 +113,12 @@ export class DialogAbsentComponent implements OnInit {
       this.formGroup.get('reference')?.setValue(template.types ? salaryReference.BLOCK : salaryReference.PRICE)
     })
     this.formGroup.get('partialDay')?.valueChanges.subscribe(item => {
-      switch (item.value) {
-        case PartialDayEnum.ALL_DAY:
-          this.formGroup.get('startTime')?.setValue(new Date(0, 0, 0, 7, 0))
-          this.formGroup.get('endTime')?.setValue(new Date(0, 0, 0, 17, 0))
-          break
-        case PartialDayEnum.MORNING:
-          this.formGroup.get('startTime')?.setValue(new Date(0, 0, 0, 7, 0))
-          this.formGroup.get('endTime')?.setValue(new Date(0, 0, 0, 11, 30))
-          break
-        case PartialDayEnum.AFTERNOON:
-          this.formGroup.get('startTime')?.setValue(new Date(0, 0, 0, 13, 30))
-          this.formGroup.get('endTime')?.setValue(new Date(0, 0, 0, 17, 0))
-          break
+      if (item.value === PartialDayEnum.CUSTOM) {
+        this.disableTimeStartConstant = [...DisableTimeConstant]
+        this.disableTimeEndConstant = [...DisableTimeConstant]
+      } else {
+        this.formGroup.get('startTime')?.setValue(item.startTime)
+        this.formGroup.get('endTime')?.setValue(item.endTime)
       }
     })
   }
@@ -163,16 +156,24 @@ export class DialogAbsentComponent implements OnInit {
       return;
     }
     const value = this.formGroup.value
+    const startedAt = value.rangeDay[0]
+    const endedAt = value.rangeDay[1]
+    const startTime = value.startTime
+    const endTime = value.endTime
     const salary = {
       title: value.template.id === 0 ? value.title : value.template.title,
       partial: value.template.id === 0 ? PartialDayEnum.MONTH : value.partialDay.value,
       type: value.template.type,
-      price: value.price || null,
-      startedAt: value.rangeDay[0],
-      endedAt: value.rangeDay[1],
-      startTime: value.startTime,
-      endTime: value.endTime,
+      startedAt: new Date(
+        startedAt.getFullYear(), startedAt.getMonth(), startedAt.getDate(),
+        startTime.getHours(), startTime.getMinutes()
+      ),
+      price: value.price,
       note: value.note,
+      endedAt: new Date(
+        endedAt.getFullYear(), endedAt.getMonth(), endedAt.getDate(),
+        endTime.getHours(), endTime.getMinutes()
+      ),
       settingId: value.template?.id || this.data?.salary?.settingId,
       payrollIds: this.data.multiple ?
         [this.salaryPayrolls.map(salaryPayroll => salaryPayroll.payroll.id)] :
@@ -233,5 +234,13 @@ export class DialogAbsentComponent implements OnInit {
 
   onClose() {
     this.dialogRef.close()
+  }
+
+  disabledHoursStart(): number[] {
+    return this.disableTimeStartConstant
+  }
+
+  disabledHoursEnd(): number[] {
+    return this.disableTimeEndConstant
   }
 }

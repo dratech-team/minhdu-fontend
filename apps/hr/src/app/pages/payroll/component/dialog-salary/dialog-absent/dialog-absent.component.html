@@ -54,6 +54,7 @@
                 [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.CUSTOM"
                 formControlName="startTime"
                 nzFormat="HH:mm"
+                [nzDisabledHours]="disabledHoursStart"
               ></nz-time-picker>
               <div *ngIf='checkValid.startTime.errors ' class='invalid-feedback'>
                 <div>Chưa chọn từ giờ</div>
@@ -66,6 +67,7 @@
                 [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.CUSTOM"
                 formControlName="endTime"
                 nzFormat="HH:mm"
+                [nzDisabledHours]="disabledHoursEnd"
               ></nz-time-picker>
               <div *ngIf='checkValid.endTime.errors ' class='invalid-feedback'>
                 <div>Chưa chọn đến giờ</div>
