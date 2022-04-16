@@ -12,7 +12,7 @@ import {
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {MatDialog} from '@angular/material/dialog';
 import {DatetimeUnitEnum, EmployeeType, RecipeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {Salary} from '@minhdu-fontend/data-models';
+import { PartialDayEnum, Salary } from '@minhdu-fontend/data-models';
 import {Payroll} from '../../+state/payroll/payroll.interface';
 import {DialogDeleteComponent} from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import {DialogOvertimeComponent} from '../../component/dialog-salary/dialog-overtime/dialog-overtime.component';
@@ -63,8 +63,10 @@ export class DetailPayrollComponent implements OnInit {
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
   scanned$ = this.store.pipe(select(selectedScannedPayroll));
+
   daysInMonth!: number;
   datetimeUnit = DatetimeUnitEnum;
+  PartialDay = PartialDayEnum;
   isSticky = false;
   employeeTypeEnum = EmployeeType;
   role!: string|null
