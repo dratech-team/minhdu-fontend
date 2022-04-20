@@ -144,7 +144,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       debounceTime(200)
     ).subscribe(event => {
       this.employeeStore.update(state => ({
-        ...state, this.tableEmployee.nativeElement.scrollLeft
+        ...state, scrollX: this.tableEmployee.nativeElement.scrollLeft
       }));
     });
 
