@@ -22,7 +22,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedAddingPayroll,
-  selectedBranchPayroll,
+  selectedBranchPayroll, selectedEmpStatusPayroll,
   selectedLoadedPayroll,
   selectedPositionPayroll,
   selectedRangeDayPayroll,
@@ -82,7 +82,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     titles: new FormControl([]),
     code: new FormControl(''),
     name: new FormControl(''),
-    empStatus: new FormControl(0),
+    empStatus: new FormControl(getSelectors<number>(selectedEmpStatusPayroll, this.store)),
     position: new FormControl(
       getSelectors(selectedPositionPayroll, this.store)
     ),
@@ -123,7 +123,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       filterType: FilterTypeEnum.OVERTIME,
       position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
       branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
-      empStatus: 0
+      empStatus: getSelectors<number>(selectedEmpStatusPayroll, this.store)
     };
     this.activeRouter.queryParams.subscribe((val) => {
       if (val.titleOvertime) {

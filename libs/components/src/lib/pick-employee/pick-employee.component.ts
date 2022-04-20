@@ -3,8 +3,8 @@ import {select, Store} from '@ngrx/store';
 import {ConvertBoolean, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {Category, Employee} from '@minhdu-fontend/data-models';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {debounceTime, startWith, tap} from 'rxjs/operators';
-import {of} from 'rxjs';
+import {debounceTime, mergeMap, startWith, tap} from 'rxjs/operators';
+import {combineLatest, forkJoin, of} from 'rxjs';
 import {
   EmployeeAction,
   selectEmployeeLoaded,
@@ -29,11 +29,11 @@ export class PickEmployeeComponent implements OnInit {
   // @Input() employeeInit?: Employee;
   // @Input() employeesSelected: Employee[] = [];
   @Output() EventSelectEmployee = new EventEmitter<Employee[]>();
-  employees$ = this.employeeService.pagination({take: 30, skip: 0,})
   pageSize = 30;
   pageIndex = 0;
   type = SalaryTypeEnum;
   employees: Employee[] = [];
+  total!: number
   employeeId!: number;
   isEventSearch = false;
   isSelectAll = false;
@@ -67,15 +67,18 @@ export class PickEmployeeComponent implements OnInit {
   }*/
 
   ngOnInit(): void {
-    this.employeeService.pagination({take: this.pageSize, skip: this.pageIndex, isFlatSalary: -1})
-      .subscribe(val => this.employees = val.data)
+    this.employeeService.pagination({take: this.pageSize, skip: this.pageIndex, isFlatSalary: -1, status: 0})
+      .subscribe(val => {
+        this.employees = val.data;
+        this.total = val.total
+      })
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
 
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
-        tap((val) => {
+        mergeMap(val => {
           this.isEventSearch = true;
           const param = {
             take: this.pageSize,
@@ -84,11 +87,14 @@ export class PickEmployeeComponent implements OnInit {
             branch: val?.branch ? val.branch : '',
             position: val?.position ? val.position : '',
             isFlatSalary: -1,
+            status: 0
           }
-
+          return this.employeeService.pagination(param)
         })
-      )
-      .subscribe(val => this.employees = val.data);
+      ).subscribe(res => {
+      this.employees = res.data
+      this.total = res.total
+    });
 
     this.positions$ = searchAutocomplete(
       this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
@@ -147,8 +153,10 @@ export class PickEmployeeComponent implements OnInit {
       branch: val?.branch ? val.branch : '',
       position: val?.position ? val.position : '',
       isFlatSalary: -1,
+      status: 0
     }
     this.employeeService.pagination(param).subscribe(val => {
+      this.total = val.total
       if (val.data.length > 0) {
         val.data.forEach(emp => {
           if (this.employees.every(e => e.id !== emp.id)) {
@@ -178,7 +186,7 @@ export class PickEmployeeComponent implements OnInit {
         if (val && employee.category?.id) {
           this.categoryService.removeEmployee(employee.category.id, {employeeId: employee.id}).subscribe(_ => {
               this.store.dispatch(EmployeeAction.loadInit({
-                employee: {take: this.pageSize, skip: this.pageIndex},
+                employee: {take: this.pageSize, skip: this.pageIndex, status: 0},
                 isPickEmp: true
               }))
             }

@@ -4,7 +4,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {MatMenuTrigger} from '@angular/material/menu';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Api, PayrollConstant} from '@minhdu-fontend/constants';
+import {Api, EmployeeStatusConstant, PayrollConstant} from '@minhdu-fontend/constants';
 import {
   EmployeeType,
   FilterTypeEnum,
@@ -143,6 +143,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   pickRangeDayAllowance = new Subject<boolean>();
   pickRangeDayStay = new Subject<boolean>();
   pickRangeDayBasic = new Subject<boolean>();
+  empStatusContain = EmployeeStatusConstant;
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type : o1.type === o2.type);
 
 
@@ -231,6 +232,11 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     });
 
     this.formEmpStatus.valueChanges.subscribe(empStatus => {
+      this.store.dispatch(
+        PayrollAction.updateStatePayroll({
+          empStatus: empStatus,
+        })
+      );
       switch (this.selectPayroll.value) {
         case FilterTypeEnum.ABSENT:
           this.selectEmpStatusAbsent = empStatus

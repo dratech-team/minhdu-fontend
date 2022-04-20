@@ -3,12 +3,12 @@
   <div class='row h3 ml-3'>Hồ sơ nhân viên</div>
   <div class='d-flex align-items-center justify-content-between '>
     <div class='d-flex'>
-      <div class="ml-3">
+      <div class="ml-3" [formGroup]="formGroup">
         <div class="font-weight-bold">
           Tình trạng nhân viên
         </div>
-        <mat-select class='form-control  border px-2' style='width:200px' [formControl]='employeeControl'>
-          <mat-option *ngFor='let item of employeeContain' [value]='item.value'>{{item.name}}</mat-option>
+        <mat-select class='form-control  border px-2' style='width:200px' formControlName="status">
+          <mat-option *ngFor='let item of empStatusContain' [value]='item.value'>{{item.name}}</mat-option>
         </mat-select>
       </div>
       <div class="ml-2" [formGroup]="formGroup">
@@ -49,7 +49,7 @@
       </div>
     </div>
     <div>
-      <button *ngIf='employeeControl.value !== employeeType.EMPLOYEE_LEFT_AT'
+      <button *ngIf='formGroup.value.status === 0'
               (click)='add()' class='mr-2 btn btn-primary'>Thêm
       </button>
       <button class='btn btn-primary mr-4' (click)='printEmployee()'>Xuất</button>
@@ -331,7 +331,7 @@
 
   <app-mouse-right
     #child
-    [items]='isLeft ? [ItemContextMenu.RESTORE] : []'
+    [items]='formGroup.value.status === 1 ? [ItemContextMenu.RESTORE] : []'
     (onAdd)='add($event)'
     (onDel)='delete($event)'
     (onRestore)='onRestore($event)'

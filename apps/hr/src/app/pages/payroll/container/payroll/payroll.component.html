@@ -67,10 +67,7 @@
         <nz-option [nzValue]='0' nzLabel='Tạo mới'></nz-option>
       </nz-select>
     </div>
-    <div class='ml-2'
-         *ngIf='selectedPayroll === filterTypeEnum.PAYROLL ||
-         selectedPayroll === filterTypeEnum.TIME_SHEET ||
-          selectedPayroll === filterTypeEnum.SEASONAL'>
+    <div class='ml-2'>
       <div class="font-weight-bold">
         Tình trạng nhân viên
       </div>
@@ -81,9 +78,7 @@
           style='width:200px'
           nzPlaceHolder='Chọn loại nhân viên'
         >
-          <nz-option [nzValue]='0' [nzLabel]='"Nhân viên còn làm"'></nz-option>
-          <nz-option [nzValue]='1' [nzLabel]='"Nhân viên đã nghỉ"'></nz-option>
-          <nz-option [nzValue]='-1' [nzLabel]='"Tất cả"'></nz-option>
+          <nz-option *ngFor="let item of empStatusContain" [nzValue]='item.value' [nzLabel]='item.name'></nz-option>
         </nz-select>
       </div>
     </div>

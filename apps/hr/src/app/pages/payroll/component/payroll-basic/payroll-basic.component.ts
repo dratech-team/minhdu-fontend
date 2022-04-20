@@ -34,7 +34,7 @@ import {
   selectedLoadedPayroll,
   selectedPositionPayroll,
   selectedTotalPayroll,
-  selectorAllPayroll
+  selectorAllPayroll, selectedEmpStatusPayroll
 } from '../../+state/payroll/payroll.selector';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {getAllPosition} from '@minhdu-fontend/orgchart-position';
@@ -86,7 +86,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     titles: new FormControl([]),
     code: new FormControl(''),
     name: new FormControl(''),
-    empStatus: new FormControl(0),
+    empStatus: new FormControl(getSelectors<number>(selectedEmpStatusPayroll, this.store)),
     searchType: new FormControl(SearchTypeEnum.CONTAINS),
     position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
     branch: new FormControl(getSelectors(selectedBranchPayroll, this.store)),
@@ -127,7 +127,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           endedAt: this.getRangeDay().end,
           position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
           branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
-          empStatus: 0
+          empStatus: getSelectors<number>(selectedEmpStatusPayroll, this.store)
         }
       })
     );

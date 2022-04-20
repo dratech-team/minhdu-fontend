@@ -21,7 +21,7 @@ import {SalaryService} from '../../service/salary.service';
 import {DatePipe} from '@angular/common';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
-  selectedBranchPayroll,
+  selectedBranchPayroll, selectedEmpStatusPayroll,
   selectedLoadedPayroll,
   selectedPositionPayroll,
   selectedRangeDayPayroll,
@@ -76,7 +76,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
     code: new FormControl(''),
     unit: new FormControl(''),
     name: new FormControl(''),
-    empStatus: new FormControl(0),
+    empStatus: new FormControl(getSelectors<number>(selectedEmpStatusPayroll, this.store)),
     searchType: new FormControl(SearchTypeEnum.CONTAINS),
     position: new FormControl(
       getSelectors(selectedPositionPayroll, this.store)
@@ -121,7 +121,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
           filterType: FilterTypeEnum.ALLOWANCE,
           position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
           branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
-          empStatus: 0
+          empStatus: getSelectors<number>(selectedEmpStatusPayroll, this.store)
         }
       })
     );
