@@ -6,7 +6,7 @@ import {BaseService} from 'libs/service/base.service';
 import {Observable} from 'rxjs';
 import {PayrollEntity} from "../entities";
 import {AddPayrollDto, LoadOnePayrollDto, RemovePayrollDto, UpdatePayrollDto} from "../dto";
-import {confirmPayrollDto} from "../dto/confirm-payroll.dto";
+import {ConfirmPayrollDto} from "../dto/confirm-payroll.dto";
 
 @Injectable({providedIn: 'root'})
 export class PayrollService extends BaseService<PayrollEntity> {
@@ -31,8 +31,8 @@ export class PayrollService extends BaseService<PayrollEntity> {
     return super.update(props.id, props.updates);
   }
 
-  confirmPayroll(props: confirmPayrollDto): Observable<PayrollEntity> {
-    return this.http.patch<PayrollEntity>(Api.HR.PAYROLL.CONFIRM_PAYROLL + `/${props.id}`, props.dataConfirm);
+  confirmPayroll(props: ConfirmPayrollDto): Observable<PayrollEntity> {
+    return this.http.patch<PayrollEntity>(Api.HR.PAYROLL.CONFIRM_PAYROLL + `/${props.id}`, props.data);
   }
 
   delete(props: RemovePayrollDto): Observable<void> {
