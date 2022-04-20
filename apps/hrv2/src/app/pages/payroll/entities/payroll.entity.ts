@@ -2,6 +2,12 @@ import {BasePayrollEntity} from "../bases";
 import {Employee, Salary} from "@minhdu-fontend/data-models";
 import {PayslipEntity} from "./payslip.entity";
 import {RecipeType} from "@minhdu-fontend/enums";
+import {
+  AbsentSalaryEntity,
+  AllowanceSalaryEntity,
+  OvertimeSalaryEntity,
+  PermanentSalaryEntity
+} from "../../salary/entities";
 
 interface Salary {
   total: number,
@@ -16,9 +22,8 @@ interface Timesheet {
   total: number
 }
 
-export interface PayrollEntity extends BasePayrollEntity{
+export interface PayrollEntity extends BasePayrollEntity {
   employee: Employee;
-  salaries: Salary[];
   payslip: PayslipEntity;
   timesheet: Timesheet;
   salary?: Salary
@@ -35,4 +40,8 @@ export interface PayrollEntity extends BasePayrollEntity{
   note?: string
   branch?: string,
   position?: string
+  salaries: PermanentSalaryEntity[],
+  absents: AbsentSalaryEntity [],
+  overtimes: OvertimeSalaryEntity [],
+  allowances: AllowanceSalaryEntity[]
 }
