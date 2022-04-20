@@ -65,11 +65,11 @@ export const blockSalariesConstant: BlockSalary[] = [
     references: referencesTypeConstant,
     constraintHoliday: {
       disabled: false,
-      show: true
+      show: false
     },
     constraintOvertime: {
       disabled: false,
-      show: true
+      show: false
     },
     rate: {
       disabled: false,
