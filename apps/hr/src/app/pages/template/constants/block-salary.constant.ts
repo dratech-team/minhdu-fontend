@@ -24,6 +24,10 @@ export interface BlockSalary {
   price?: {
     disabled?: boolean,
     show?: boolean
+  },
+  unit?: {
+    disabled?: boolean,
+    show?: boolean
   }
   insurance? :{
     disabled?: boolean,
@@ -58,7 +62,7 @@ export const blockSalariesConstant: BlockSalary[] = [
     price: {
       disabled: false,
       show: true
-    }
+    },
   },
   {
     title: 'Khấu trừ',
@@ -79,7 +83,11 @@ export const blockSalariesConstant: BlockSalary[] = [
     price: {
       disabled: false,
       show: true
-    }
+    },
+    unit: {
+      disabled: false,
+      show: true
+    },
   },
   {
     title: 'Tăng ca',

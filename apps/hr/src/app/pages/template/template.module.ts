@@ -40,6 +40,7 @@ import {NzInputModule} from "ng-zorro-antd/input";
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
 import {NzTypographyModule} from "ng-zorro-antd/typography";
 import {NgxCurrencyModule} from "ngx-currency";
+import { UnitDatetimePipe } from './pipes/unit-datetime.pipe';
 
 @NgModule({
   imports: [
@@ -86,6 +87,7 @@ import {NgxCurrencyModule} from "ngx-currency";
     HolidayComponent,
     DialogHolidayComponent,
     TransformBlockSalaryPipe,
+    UnitDatetimePipe,
     DetailHoliday
   ]
 })

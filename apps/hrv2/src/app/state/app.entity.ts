@@ -5,5 +5,5 @@ export enum TabEnum {
   PAYROLL = 'phieu-luong',
   ORGCHART = 'to-chuc',
   SYSTEM = 'he-thong',
-  TEMPLATE = 'bang-mau'
+  SETTING = 'cai-dat'
 }

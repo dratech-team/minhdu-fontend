@@ -14,7 +14,7 @@ export interface RefernceType {
   } []
 }
 
-export const diveConstant: { name: string; value:DiveTypeEnum}[] = [
+export const diveConstant: { name: string; value: DiveTypeEnum }[] = [
   {
     name: 'Ngày công chuẩn',
     value: DiveTypeEnum.STANDARD
@@ -23,6 +23,22 @@ export const diveConstant: { name: string; value:DiveTypeEnum}[] = [
     name: 'Tuỳ chọn',
     value: DiveTypeEnum.OTHER
   }
+]
+
+
+export const recipesConstant: { name: string, value: SalaryTypeEnum }[] = [
+  {
+    name: 'Lương cơ bản',
+    value: SalaryTypeEnum.BASIC,
+  },
+  {
+    name: 'Phụ cấp lương',
+    value: SalaryTypeEnum.STAY,
+  },
+  {
+    name: 'Lương cơ bản trích bảo hiểm',
+    value: SalaryTypeEnum.BASIC_INSURANCE,
+  },
 ]
 
 export const referencesTypeConstant: RefernceType [] = [
@@ -35,20 +51,7 @@ export const referencesTypeConstant: RefernceType [] = [
     name: 'Loại lương',
     value: salaryReference.BLOCK,
     dives: diveConstant,
-    recipes: [
-      {
-        name: 'Lương cơ bản',
-        value: SalaryTypeEnum.BASIC,
-      },
-      {
-        name: 'Phụ cấp lương',
-        value: SalaryTypeEnum.STAY,
-      },
-      {
-        name: 'Lương cơ bản trích bảo hiểm',
-        value: SalaryTypeEnum.BASIC_INSURANCE,
-      },
-    ]
+    recipes: recipesConstant
   },
 ];
 

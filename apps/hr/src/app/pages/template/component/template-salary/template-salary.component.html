@@ -38,7 +38,15 @@
             <div>Chưa nhập hệ số</div>
           </div>
         </div>
-
+        <div class=' main-popup mt-2' *ngIf="formGroup.value?.block?.unit">
+          <div><span class='main-title'>Đơn vị</span><span class='star'>*</span></div>
+          <nz-select formControlName="unit" style="width: 100%" [nzDisabled]="formGroup.value?.block?.unit.disabled">
+            <nz-option *ngFor="let item of unitConstant" [nzValue]="item.value" [nzLabel]="item.name"></nz-option>
+          </nz-select>
+          <div *ngIf='checkValid.rate.errors?.required ' class='invalid-feedback'>
+            <div>Chưa chọn đơn vị</div>
+          </div>
+        </div>
         <div class='d-flex mt-2' *ngIf="formGroup.value.block?.constraintHoliday?.show">
           <div><span class='main-title'>Ràng buộc ngày lễ:</span></div>
           <label class="ml-2" nz-checkbox
@@ -62,7 +70,7 @@
           </div>
           <div class=' main-popup mt-2' *ngIf="formGroup.value?.block?.price?.show">
             <input
-              *ngIf="!formGroup.value?.reference?.recipes else recipe"
+              *ngIf="!formGroup.value?.reference.recipes else recipe"
               currencyMask
               [options]="{ suffix: ' đ' }"
               class='form-control mt-1' type='text' formControlName='price' placeholder='Đơn giá'
@@ -72,11 +80,15 @@
                   }">
             <ng-template #recipe>
               <div>
-                <nz-select nzMode="multiple" style="width: 100%" formControlName="recipes">
-                  <nz-option *ngFor="let item of formGroup.value.reference.recipes"
-                             [nzValue]="item"
-                             [nzLabel]="item.name"
-                  ></nz-option>
+                <nz-select
+                  nzMode="multiple"
+                  style="width: 100%"
+                  formControlName="recipes"
+                >
+                  <nz-option *ngFor="let item of  formGroup.value.reference.recipes"
+                             [nzLabel]="item.name" [nzValue]="item">
+
+                  </nz-option>
                 </nz-select>
               </div>
             </ng-template>

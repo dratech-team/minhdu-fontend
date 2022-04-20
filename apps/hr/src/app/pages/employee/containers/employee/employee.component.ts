@@ -33,7 +33,7 @@ import {select, Store} from '@ngrx/store';
 import {catchError, debounceTime, map, tap} from 'rxjs/operators';
 import {getAllPosition} from '@minhdu-fontend/orgchart-position';
 import {DeleteEmployeeComponent} from '../../components/dialog-delete-employee/delete-employee.component';
-import {Api, EmployeeConstant} from '@minhdu-fontend/constants';
+import {Api, EmployeeStatusConstant} from '@minhdu-fontend/constants';
 import {Observable, Subject, throwError} from 'rxjs';
 import {Category, District, Employee, Ward} from '@minhdu-fontend/data-models';
 import {checkInputNumber} from '@minhdu-fontend/utils';
@@ -49,6 +49,8 @@ import {AddEmployeeComponent} from '../../components/employee/add-employee.compo
 import {Role} from '../../../../../../../../libs/enums/hr/role.enum';
 import {ProvinceService} from "../../../../../../../../libs/location/src/lib/service/province.service";
 import {ExportService} from "@minhdu-fontend/service";
+import {values} from "lodash";
+import { EmployeeStatusEnum } from '../../../../../../../../libs/enums/hr/employee-status.enum';
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -84,13 +86,11 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   flatSalary = FlatSalary;
   convertBoolean = ConvertBoolean;
   ItemContextMenu = ItemContextMenu;
-  employeeContain = EmployeeConstant;
+  empStatusContain = EmployeeStatusConstant;
   employeeType = EmployeeType;
-  isLeft = false;
   eventScrollX = new Subject<any>();
   categories$ = new Observable<Category[]>();
   employees: Employee[] = [];
-  employeeControl = new FormControl(EmployeeType.EMPLOYEE_FULL_TIME);
   categoryControl = new FormControl('');
   role!: string | null;
   formGroup = new FormGroup({
@@ -107,7 +107,8 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     flatSalary: new FormControl('-1'),
     position: new FormControl(''),
     branch: new FormControl(''),
-    employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME)
+    employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME),
+    status: new FormControl(EmployeeStatusEnum.IS_AVTIVE)
   });
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
@@ -151,7 +152,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
         employee: {
           take: this.pageSize,
           skip: this.pageIndexInit,
-          isLeft: this.isLeft,
+          status: this.formGroup.value.status,
           branch: this.formGroup.value.branch ? this.formGroup.value.branch.name : '',
           position: this.formGroup.value.position ? this.formGroup.value.position.name : '',
           employeeType: EmployeeType.EMPLOYEE_FULL_TIME
@@ -164,28 +165,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
         debounceTime(1500)
       ).subscribe(val => {
       this.store.dispatch(EmployeeAction.loadInit({employee: this.employee(val)}));
-    });
-
-    this.employeeControl.valueChanges.subscribe(val => {
-      switch (val) {
-        case EmployeeType.EMPLOYEE_LEFT_AT:
-          this.isLeft = true;
-          this.store.dispatch(EmployeeAction.loadInit({
-            employee: {take: this.pageSize, skip: this.pageIndexInit, isLeft: this.isLeft}
-          }));
-          break;
-        case EmployeeType.EMPLOYEE_SEASONAL:
-          this.isLeft = false;
-          this.store.dispatch(EmployeeAction.loadInit({
-            employee: {take: this.pageSize, skip: this.pageIndexInit}
-          }));
-          break;
-        default:
-          this.isLeft = false;
-          this.store.dispatch(EmployeeAction.loadInit({
-            employee: {take: this.pageSize, skip: this.pageIndexInit}
-          }));
-      }
     });
 
     this.eventScrollX.pipe(
@@ -239,14 +218,14 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   delete(employeeId: any): void {
     this.dialog.open(DeleteEmployeeComponent, {
       width: 'fit-content',
-      data: {employee: employeeId, permanentlyDeleted: this.isLeft}
+      data: {employee: employeeId, permanentlyDeleted: this.formGroup.value === 1}
     }).afterClosed().subscribe(() => {
       this.store.dispatch(
         EmployeeAction.loadInit({
           employee: {
             take: this.pageSize,
             skip: this.pageIndexInit,
-            isLeft: this.isLeft,
+            status: this.formGroup.value.status,
             branch: this.formGroup.value.branch ? this.formGroup.value.branch.name : '',
             position: this.formGroup.value.position ? this.formGroup.value.position.name : '',
             employeeType: EmployeeType.EMPLOYEE_FULL_TIME
@@ -276,7 +255,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       position: val.position ? val.position.name : '',
       branch: val.branch ? val.branch.name : '',
       // workedAt: val.workedAt,
-      isLeft: this.isLeft,
+      status: val.status,
       employeeType: val.employeeType,
       isFlatSalary: val.flatSalary,
       categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : ''
@@ -336,7 +315,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       position: val.position ? val.position.name : '',
       branch: val.branch ? val.branch.name : '',
       // workedAt: val.workedAt,
-      isLeft: this.isLeft,
+      status: val.status,
       employeeType: val.employeeType,
       isFlatSalary: val.flatSalary,
       exportType: 'EMPLOYEES'

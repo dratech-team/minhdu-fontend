@@ -49,15 +49,16 @@ export class CustomerEffect {
           } else {
             this.customerStore.set(response.data);
           }
+        }),
+        catchError((err) => {
+          this.customerStore.update(state => ({
+            ...state, loading: false
+          }));
+          return of(CustomerActions.error(err))
         })
       );
     }),
-    catchError((err) => {
-      this.customerStore.update(state => ({
-        ...state, loading: false
-      }));
-      return throwError(err);
-    })
+
   );
 
   @Effect()

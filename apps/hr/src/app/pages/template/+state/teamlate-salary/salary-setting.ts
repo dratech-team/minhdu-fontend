@@ -12,7 +12,7 @@ export interface SalarySetting {
   constraints?: SalaryTypeEnum[]
   positionId?: any,
   branches?: Branch[]
-  unit?: DatetimeUnitEnum
+  unit: DatetimeUnitEnum
   types: SalaryTypeEnum [],
   workday?: number
 }
