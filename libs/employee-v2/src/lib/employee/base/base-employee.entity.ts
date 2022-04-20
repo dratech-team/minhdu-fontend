@@ -1,17 +1,6 @@
 import {BaseEntity} from "@minhdu-fontend/base-entity";
 import {EmployeeType, Gender, RecipeType} from "@minhdu-fontend/enums";
-import {
-  Branch,
-  Category,
-  Degree,
-  Position,
-  Relative, Salary,
-  SalaryHistory,
-  Ward,
-  WorkHistory
-} from "@minhdu-fontend/data-models";
-import {Payroll} from "../../../../../../apps/hr/src/app/pages/payroll/+state/payroll/payroll.interface";
-import {Contracts} from "../../../../../data-models/hr/employee/contracts";
+import {Ward} from "@minhdu-fontend/data-models";
 
 export interface BaseEmployeeEntity extends BaseEntity{
   code: string,
@@ -37,22 +26,12 @@ export interface BaseEmployeeEntity extends BaseEntity{
   contractAt: string,
   leftAt: Date,
   isFlatSalary: boolean,
-  position: Position,
-  branch: Branch,
   note?: string;
   facebook: string,
   zalo: string,
-  degrees?: Degree[],
   bhyt?: string,
-  payrolls: Payroll[],
-  contracts: Contracts[];
-  relatives: Relative[],
-  workHistories?: WorkHistory[];
-  historySalaries: SalaryHistory[];
   contractType?: string,
   recipeType: RecipeType,
-  salaryHistories: Salary[],
   type: EmployeeType,
   isSelect?: boolean,
-  category?: Category
 }

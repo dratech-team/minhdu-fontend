@@ -8,17 +8,8 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
 import {MatMenuTrigger} from '@angular/material/menu';
 import {ActivatedRoute, Router} from '@angular/router';
-import {
-  EmployeeAction,
-  selectEmployeeAdding,
-  selectEmployeeLoaded,
-  selectorAllEmployee,
-  selectorScrollXTotal,
-  selectorTotalEmployee
-} from '@minhdu-fontend/employee';
 import {
   ConvertBoolean,
   EmployeeType,
@@ -28,13 +19,11 @@ import {
   SearchEmployeeType,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
-import {select, Store} from '@ngrx/store';
-import {catchError, debounceTime, map, tap} from 'rxjs/operators';
-import {getAllPosition} from '@minhdu-fontend/orgchart-position';
+import {OrgchartActions} from '@minhdu-fontend/orgchart';
+import {catchError, debounceTime} from 'rxjs/operators';
 import {Api, EmployeeStatusConstant} from '@minhdu-fontend/constants';
 import {Observable, Subject, throwError} from 'rxjs';
-import {Category, District, Employee, Ward} from '@minhdu-fontend/data-models';
+import {Category, Employee} from '@minhdu-fontend/data-models';
 import {checkInputNumber} from '@minhdu-fontend/utils';
 import {DialogExportComponent} from '@minhdu-fontend/components';
 import {CategoryService} from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
@@ -47,7 +36,9 @@ import {Role} from '../../../../../../../../libs/enums/hr/role.enum';
 import {ProvinceService} from "../../../../../../../../libs/location/src/lib/service/province.service";
 import {ExportService} from "@minhdu-fontend/service";
 import {Actions} from "@datorama/akita-ng-effects";
-import {EmployeeQuery} from "../../../../../../../../libs/employee-v2/src/lib/employee/state/employee.query";
+import {EmployeeQuery} from "../../../../../../../../libs/employee-v2/src/lib/employee/state";
+import {EmployeeActions} from "../../../../../../../../libs/employee-v2/src/lib/employee/state/employee.actions";
+import {EmployeeStore} from "../../../../../../../../libs/employee-v2/src/lib/employee/state";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -57,15 +48,11 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   @ViewChild(MatMenuTrigger) contextMenu!: MatMenuTrigger;
   @ViewChild(MatSort) sort!: MatSort;
   employees$ = this.employeeQuery.selectAll()
-  scrollX$ = this.store.select(selectorScrollXTotal);
-  total$ = this.store.select(selectorTotalEmployee);
-  loaded$ = this.store.pipe(select(selectEmployeeLoaded));
-  adding$ = thí this.store.pipe(select(selectEmployeeAdding));
-
-    return branches;
-  }));
+  scrollX$ = this.employeeQuery.select(state => state.scrollX);
+  total$ = this.employeeQuery.select(state => state.total)
+  loading$ = this.employeeQuery.select(state => state.loading)
+  added$ = this.employeeQuery.select(state => state.added)
   provinces$ = this.provinceService.getAll()
-
   roleEnum = Role;
   sortEnum = sortEmployeeTypeEnum;
   pageSize = 35;
@@ -104,6 +91,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   constructor(
     private readonly actions$: Actions,
     private readonly employeeQuery: EmployeeQuery,
+    private readonly employeeStore: EmployeeStore,
     private readonly router: Router,
     private readonly activeRouter: ActivatedRoute,
     private readonly categoryService: CategoryService,
@@ -132,9 +120,9 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
         this.formGroup.get('position')?.setValue(JSON.parse(val.position), {emitEvent: false});
       }
     });
-    this.store.dispatch(
-      EmployeeAction.loadInit({
-        employee: {
+    this.actions$.dispatch(
+      EmployeeActions.loadAll({
+        search: {
           take: this.pageSize,
           skip: this.pageIndexInit,
           status: this.formGroup.value.status,
@@ -144,19 +132,19 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
         }
       })
     );
-    this.store.dispatch(OrgchartActions.init());
+    this.actions$.dispatch(OrgchartActions.init());
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1500)
       ).subscribe(val => {
-      this.store.dispatch(EmployeeAction.loadInit({employee: this.employee(val)}));
+      this.actions$.dispatch(EmployeeActions.loadAll({search:this.employee(this.formGroup.value)}));
     });
 
     this.eventScrollX.pipe(
       debounceTime(200)
     ).subscribe(event => {
-      this.store.dispatch(EmployeeAction.updateStateEmployee({
-        scrollX: this.tableEmployee.nativeElement.scrollLeft
+      this.employeeStore.update(state => ({
+        ...state, this.tableEmployee.nativeElement.scrollLeft
       }));
     });
 

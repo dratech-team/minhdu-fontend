@@ -7,12 +7,14 @@ export interface EmployeeState extends EntityState<EmployeeEntity>{
   readonly total: number
   readonly loading: boolean,
   readonly added: boolean| null,
+  readonly scrollX: number
 }
 export function createInitialState():EmployeeState {
   return {
     total: 0,
     loading: true,
-    added: null
+    added: null,
+    scrollX: 0
   }
 }
 

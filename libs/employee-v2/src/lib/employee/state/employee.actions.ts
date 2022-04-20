@@ -97,7 +97,7 @@ export const error = createAction(
   props<{ error: string }>()
 )
 
-export const EmployeeAction = {
+export const EmployeeActions = {
   addOne,
   addOneRelative,
   addOneDegree,
