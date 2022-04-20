@@ -15,6 +15,14 @@ const routes: Routes = [
     component: PageLayoutComponent,
     children: [
       {
+        path: TabEnum.EMPLOYEE,
+        loadChildren: () =>
+          import('./pages/employee/employee.module').then(
+            (m) => m.EmployeeModule
+          ),
+        canActivate: [RouteGuard]
+      },
+      {
         path: TabEnum.SETTING,
         loadChildren: () =>
           import('./pages/setting/setting.module').then(
