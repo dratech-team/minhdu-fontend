@@ -57,6 +57,7 @@ import {Branch, Category, Position, RangeDay} from "@minhdu-fontend/data-models"
 import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 import {ExportService} from "@minhdu-fontend/service";
 import {ConfirmPayrollComponent} from "../../component/confirm-payroll/confirm-payroll.component";
+import { EmployeeStatusEnum } from '../../../../../../../../libs/enums/hr/employee-status.enum';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -64,7 +65,7 @@ import {ConfirmPayrollComponent} from "../../component/confirm-payroll/confirm-p
 export class PayrollComponent implements OnInit, AfterContentChecked {
   @ViewChild(MatSort) sort!: MatSort;
   categoryControl = new FormControl('');
-  formEmpStatus = new FormControl(0)
+  formEmpStatus = new FormControl(EmployeeStatusEnum.IS_AVTIVE)
   formGroup = new FormGroup({
     accConfirmed: new FormControl(-1),
     name: new FormControl(''),

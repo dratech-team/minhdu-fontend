@@ -50,6 +50,7 @@ import {Role} from '../../../../../../../../libs/enums/hr/role.enum';
 import {ProvinceService} from "../../../../../../../../libs/location/src/lib/service/province.service";
 import {ExportService} from "@minhdu-fontend/service";
 import {values} from "lodash";
+import { EmployeeStatusEnum } from '../../../../../../../../libs/enums/hr/employee-status.enum';
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -107,7 +108,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     position: new FormControl(''),
     branch: new FormControl(''),
     employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME),
-    status: new FormControl(0)
+    status: new FormControl(EmployeeStatusEnum.IS_AVTIVE)
   });
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
