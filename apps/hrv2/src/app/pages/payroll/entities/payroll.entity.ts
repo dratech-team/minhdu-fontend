@@ -3,7 +3,7 @@ import {Employee, Salary} from "@minhdu-fontend/data-models";
 import {PayslipEntity} from "./payslip.entity";
 import {RecipeType} from "@minhdu-fontend/enums";
 
-interface salary {
+interface Salary {
   total: number,
   unit: {
     days: number,
@@ -21,7 +21,7 @@ export interface PayrollEntity extends BasePayrollEntity{
   salaries: Salary[];
   payslip: PayslipEntity;
   timesheet: timesheet;
-  salary?: salary
+  salary?: Salary
   manConfirmedAt: Date;
   paidAt: Date;
   accConfirmedAt: Date;

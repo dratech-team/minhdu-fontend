@@ -1,6 +1,12 @@
 import {BaseEntity} from "@minhdu-fontend/base-entity";
 
-export interface PayslipEntity extends BaseEntity{
+interface WorkHoliday {
+  day: number,
+  datetime: Date,
+  rate: number
+}
+
+export interface PayslipEntity extends BaseEntity {
   workday: number,
   tax: number,
   total: number,
@@ -11,8 +17,8 @@ export interface PayslipEntity extends BaseEntity{
   deduction: number;
   daySalary: number;
   workdayNotInHoliday: number;
-  worksInHoliday: workHoliday[];
-  worksNotInHoliday: workHoliday[];
+  worksInHoliday: WorkHoliday[];
+  worksNotInHoliday: WorkHoliday[];
   totalWorkday: number;
   payslipNormalDay: number;
   payslipInHoliday: number;
@@ -26,10 +32,4 @@ export interface PayslipEntity extends BaseEntity{
   totalSalaryWorkday: number,
   times: number,
   totalSalaryTimes: number,
-}
-
-interface workHoliday {
-  day: number,
-  datetime: Date,
-  rate: number
 }
