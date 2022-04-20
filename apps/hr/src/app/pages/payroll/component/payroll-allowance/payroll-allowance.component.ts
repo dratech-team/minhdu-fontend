@@ -48,7 +48,7 @@ import {ClassifyOvertimeComponent} from "../classify-overtime/classify-overtime.
 export class PayrollAllowanceComponent implements OnInit, OnChanges {
   @Input() eventAddAllowance?: Subject<any>;
   @Input() eventSearchBranch?: Branch;
-  @Input() eventSelectIsLeave?: boolean;
+  @Input() eventSelectEmpStatus?: number;
   @Input() eventExportAllowance?: Subject<any>;
   @Input() allowanceTitle?: string;
   @Input() eventSelectRangeDay = new Subject<boolean>();
@@ -76,7 +76,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
     code: new FormControl(''),
     unit: new FormControl(''),
     name: new FormControl(''),
-    isLeave: new FormControl(false),
+    empStatus: new FormControl(0),
     searchType: new FormControl(SearchTypeEnum.CONTAINS),
     position: new FormControl(
       getSelectors(selectedPositionPayroll, this.store)
@@ -104,8 +104,8 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
     if (changes.eventSearchBranch?.currentValue !== changes.eventSearchBranch?.previousValue) {
       this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
     }
-    if (changes.eventSelectIsLeave?.currentValue !== changes.eventSelectIsLeave?.previousValue) {
-      this.formGroup.get('isLeave')?.setValue(changes.eventSelectIsLeave.currentValue)
+    if (changes.eventSelectEmpStatus?.currentValue !== changes.eventSelectEmpStatus?.previousValue) {
+      this.formGroup.get('empStatus')?.setValue(changes.eventSelectEmpStatus.currentValue)
     }
   }
 
@@ -121,7 +121,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
           filterType: FilterTypeEnum.ALLOWANCE,
           position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
           branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
-          isLeave: false
+          empStatus: 0
         }
       })
     );
@@ -178,7 +178,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
           branch: value.branch.name || '',
           exportType: FilterTypeEnum.ALLOWANCE,
           titles: value.titles ? [value.titles] : [],
-          isLeave: value.isLeave,
+          empStatus: value.empStatus,
           startedAt: this.getRangeDay().start,
           endedAt: this.getRangeDay().end,
         };
@@ -382,7 +382,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
       filterType: FilterTypeEnum.ALLOWANCE,
       position: value.position?.name || '',
       branch: value.branch.name || '',
-      isLeave: value.isLeave
+      empStatus: value.empStatus
     };
     if (this.sort?.active) {
       Object.assign(params, {

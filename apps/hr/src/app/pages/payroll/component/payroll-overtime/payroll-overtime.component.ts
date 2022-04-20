@@ -52,7 +52,7 @@ import {ClassifyOvertimeComponent} from '../classify-overtime/classify-overtime.
 export class PayrollOvertimeComponent implements OnInit, OnChanges {
   @Input() eventAddOvertime?: Subject<any>;
   @Input() eventSearchBranch?: Branch;
-  @Input() eventSelectIsLeave?: boolean;
+  @Input() eventSelectEmpStatus?: number;
   @Input() eventExportOvertime?: Subject<boolean>;
   @Input() overtimeTitle?: string;
   @Input() eventSelectRangeDay = new Subject<boolean>();
@@ -82,7 +82,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     titles: new FormControl([]),
     code: new FormControl(''),
     name: new FormControl(''),
-    isLeave: new FormControl(false),
+    empStatus: new FormControl(0),
     position: new FormControl(
       getSelectors(selectedPositionPayroll, this.store)
     ),
@@ -111,8 +111,8 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     if (changes.eventSearchBranch?.currentValue !== changes.eventSearchBranch?.previousValue) {
       this.formGroup.get('branch')?.setValue(changes.eventSearchBranch.currentValue);
     }
-    if (changes.eventSelectIsLeave?.currentValue !== changes.eventSelectIsLeave?.previousValue) {
-      this.formGroup.get('isLeave')?.setValue(changes.eventSelectIsLeave.currentValue);
+    if (changes.eventSelectEmpStatus?.currentValue !== changes.eventSelectEmpStatus?.previousValue) {
+      this.formGroup.get('empStatus')?.setValue(changes.eventSelectEmpStatus.currentValue);
     }
   }
 
@@ -123,7 +123,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       filterType: FilterTypeEnum.OVERTIME,
       position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
       branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
-      isLeave: false
+      empStatus: 0
     };
     this.activeRouter.queryParams.subscribe((val) => {
       if (val.titleOvertime) {
@@ -243,7 +243,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       filterType: FilterTypeEnum.OVERTIME,
       position: value.position?.name || '',
       branch: value.branch?.name || '',
-      isLeave: value.isLeave,
+      empStatus: value.empStatus,
       startedAt: this.getRangeDay().start,
       endedAt: this.getRangeDay().end,
     };

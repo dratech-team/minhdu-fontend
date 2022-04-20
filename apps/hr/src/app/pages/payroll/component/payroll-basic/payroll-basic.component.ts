@@ -63,7 +63,7 @@ import {Payroll} from "../../+state/payroll/payroll.interface";
 export class PayrollBasicComponent implements OnInit, OnChanges {
   @Input() eventExportBasic?: Subject<boolean>;
   @Input() eventSearchBranch?: Branch;
-  @Input() eventSelectIsLeave?: boolean;
+  @Input() eventSelectEmpStatus?: number;
   @Input() eventSelectRangeDay = new Subject<boolean>();
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -86,7 +86,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     titles: new FormControl([]),
     code: new FormControl(''),
     name: new FormControl(''),
-    isLeave: new FormControl(false),
+    empStatus: new FormControl(0),
     searchType: new FormControl(SearchTypeEnum.CONTAINS),
     position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
     branch: new FormControl(getSelectors(selectedBranchPayroll, this.store)),
@@ -111,8 +111,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     if (changes.eventSearchBranch?.currentValue !== changes.eventSearchBranch?.previousValue) {
       this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
     }
-    if (changes.eventSelectIsLeave?.currentValue !== changes.eventSelectIsLeave?.previousValue) {
-      this.formGroup.get('isLeave')?.setValue(changes.eventSelectIsLeave.currentValue)
+    if (changes.eventSelectEmpStatus?.currentValue !== changes.eventSelectEmpStatus?.previousValue) {
+      this.formGroup.get('empStatus')?.setValue(changes.eventSelectEmpStatus.currentValue)
     }
   }
 
@@ -127,7 +127,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           endedAt: this.getRangeDay().end,
           position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
           branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
-          isLeave: false
+          empStatus: 0
         }
       })
     );
@@ -176,7 +176,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           branch: value.branch.name || '',
           exportType: FilterTypeEnum.BASIC,
           titles: value.titles,
-          isLeave: value.isLeave,
+          empStatus: value.empStatus,
           searchType: value.searchType,
           filterType: FilterTypeEnum.BASIC,
           startedAt: this.getRangeDay().start,
@@ -349,7 +349,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
       filterType: FilterTypeEnum.BASIC,
       position: value.position?.name || '',
       branch: value.branch.name || '',
-      isLeave: value.isLeave
+      empStatus: value.empStatus
     };
     if (this.sort?.active) {
       Object.assign(params, {
