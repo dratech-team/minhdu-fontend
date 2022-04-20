@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {PayrollEntity} from "../entities";
 import {BaseSearchPayrollDto} from "../dto";
 import {RangeDay} from "@minhdu-fontend/data-models";
-import {FilterTypeEnum, StatusEnum} from "@minhdu-fontend/enums";
+import {FilterTypeEnum, EmployeeStatusEnum} from "@minhdu-fontend/enums";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 
 export interface PayrollEntityState extends EntityState<PayrollEntity> {
@@ -20,7 +20,7 @@ export function createInitialState(): PayrollEntityState {
     loading: true,
     added: null,
     search: {},
-    empStatus: StatusEnum.FALSE,
+    empStatus: EmployeeStatusEnum.FALSE,
     filter: FilterTypeEnum.TIME_SHEET,
     rangeDay: {
       start: new Date(getFirstDayInMonth(new Date()) + '-00'),
