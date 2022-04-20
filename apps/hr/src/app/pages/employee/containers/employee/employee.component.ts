@@ -108,7 +108,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     position: new FormControl(''),
     branch: new FormControl(''),
     employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME),
-    status: new FormControl(EmployeeStatusEnum.IS_AVTIVE)
+    status: new FormControl(EmployeeStatusEnum.IS_ACTIVE)
   });
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);

@@ -3,11 +3,11 @@ import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
 import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {SalaryActions} from './salary.actions';
-import {SalaryService} from '../service';
+import {SalaryPermanentService} from '../service';
 import {SalaryQuery} from './salary.query';
 import {SalaryStore} from './salary.store';
-import {AddSalaryDto} from '../dto';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {SalaryTypeEnum} from "@minhdu-fontend/enums";
 
 @Injectable()
 export class SalaryEffect {
@@ -15,7 +15,7 @@ export class SalaryEffect {
     private readonly action$: Actions,
     private readonly salaryStore: SalaryStore,
     private readonly salaryQuery: SalaryQuery,
-    private readonly salaryService: SalaryService,
+    private readonly salaryService: SalaryPermanentService,
     private readonly message: NzMessageService,
   ) {
   }
@@ -24,7 +24,7 @@ export class SalaryEffect {
   @Effect()
   addOne$ = this.action$.pipe(
     ofType(SalaryActions.addOne),
-    switchMap((props: AddSalaryDto) => {
+    switchMap((props ) => {
       this.salaryStore.update(state => ({
         ...state, added: false
       }));
@@ -34,7 +34,7 @@ export class SalaryEffect {
             this.salaryStore.update(state => ({
               ...state, added: true
             }));
-            this.salaryStore.add(res);
+
           }
         ),
         catchError(err => {
@@ -60,7 +60,6 @@ export class SalaryEffect {
             this.salaryStore.update(state => ({
               ...state, added: true
             }));
-            this.salaryStore.update(response.id, response);
           }),
           catchError(err =>{
               this.salaryStore.update(state => ({

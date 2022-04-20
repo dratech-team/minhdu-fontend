@@ -1,2 +1,2 @@
 export * from './salary.entity';
-export * from './salary-allowance.entity';
+export * from './response-salary.entity'

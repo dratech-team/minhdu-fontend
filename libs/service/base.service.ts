@@ -30,6 +30,10 @@ export class BaseService<T> {
     return this.http.patch<T>(this.url + `/${id}`, body);
   }
 
+  updateMany(body: any): Observable<T> {
+    return this.http.post<T>(this.url + `/multiple`, body);
+  }
+
   delete(id: number, params?: any): Observable<void> {
     return this.http.delete<void>(this.url + `/${id}`, {params});
   }
