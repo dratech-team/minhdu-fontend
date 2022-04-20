@@ -11,7 +11,7 @@ interface Salary {
   }
 }
 
-interface timesheet {
+interface Timesheet {
   datetime: any[];
   total: number
 }
@@ -20,7 +20,7 @@ export interface PayrollEntity extends BasePayrollEntity{
   employee: Employee;
   salaries: Salary[];
   payslip: PayslipEntity;
-  timesheet: timesheet;
+  timesheet: Timesheet;
   salary?: Salary
   manConfirmedAt: Date;
   paidAt: Date;

@@ -2,7 +2,7 @@ import {createAction, props} from "@datorama/akita-ng-effects";
 import {AddPayrollDto, LoadOnePayrollDto, RemovePayrollDto, SearchPayrollDto, UpdatePayrollDto} from "../dto";
 import {ConfirmPayrollDto} from "../dto/confirm-payroll.dto";
 
-export const addOne = createAction(
+export const addPayroll = createAction(
   '[PAYROLL] Add One',
   props<AddPayrollDto>()
 );

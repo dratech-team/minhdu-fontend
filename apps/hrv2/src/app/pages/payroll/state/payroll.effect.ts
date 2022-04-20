@@ -19,7 +19,7 @@ export class PayrollEffect {
   }
 
   @Effect()
-  addOne$ = this.action$.pipe(
+  addPayroll$ = this.action$.pipe(
     ofType(PayrollActions.addOne),
     switchMap((props: AddPayrollDto) => {
       this.payrollStore.update(state => ({
@@ -36,7 +36,7 @@ export class PayrollEffect {
             skip: 0,
           }
           if (props.inHistory) {
-            Object.assign(params, {employeeId: props.generate.employeeId})
+            Object.assign(params, {employeeId: props.body.employeeId})
           }
           this.action$.dispatch(
             PayrollActions.loadAll({
@@ -138,7 +138,7 @@ export class PayrollEffect {
   confirmPayroll$ = this.action$.pipe(
     ofType(PayrollActions.confirmPayroll),
     switchMap((props) => {
-      return this.service.confirmPayroll(props).pipe(
+      return this.service.confirm(props).pipe(
         tap(res => {
           this.payrollStore.update(res.id, res);
         }),

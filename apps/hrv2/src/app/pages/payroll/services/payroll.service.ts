@@ -14,8 +14,8 @@ export class PayrollService extends BaseService<PayrollEntity> {
     super(Api.HR.PAYROLL.PAYROLL, http);
   }
 
-  addPayroll(props: AddPayrollDto): Observable<any> {
-    return this.http.post<any>(this.url, props.generate, {params: props.generate.employeeType});
+  addOne(props: AddPayrollDto): Observable<PayrollEntity> {
+    return super.addOne(props.body);
   }
 
   getOne(props: LoadOnePayrollDto): Observable<PayrollEntity> {
@@ -31,7 +31,7 @@ export class PayrollService extends BaseService<PayrollEntity> {
     return super.update(props.id, props.updates);
   }
 
-  confirmPayroll(props: ConfirmPayrollDto): Observable<PayrollEntity> {
+  confirm(props: ConfirmPayrollDto): Observable<PayrollEntity> {
     return this.http.patch<PayrollEntity>(Api.HR.PAYROLL.CONFIRM_PAYROLL + `/${props.id}`, props.data);
   }
 

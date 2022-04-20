@@ -9,7 +9,6 @@ export interface BaseSearchPayrollDto extends BasePayrollEntity {
   readonly unit: string,
   readonly branch: string,
   readonly filterType: FilterTypeEnum,
-  readonly title: string,
   readonly titles: string[]
   readonly searchType: SearchTypeEnum,
   readonly employeeId: number,
