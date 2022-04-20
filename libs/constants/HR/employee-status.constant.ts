@@ -1,9 +1,9 @@
-import { EmployeeStatusEnum } from '../../enums/hr/employee-status.enum';
+import { EmployeeStatusEnum } from '../../enums';
 
 export const EmployeeStatusConstant = [
   {
     name: 'Nhân viên còn làm ',
-    value: EmployeeStatusEnum.IS_AVTIVE
+    value: EmployeeStatusEnum.IS_ACTIVE
   },
   {
     name: 'Nhân viên đã nghỉ',
