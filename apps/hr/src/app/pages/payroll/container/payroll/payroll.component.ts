@@ -4,7 +4,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {MatMenuTrigger} from '@angular/material/menu';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Api, PayrollConstant} from '@minhdu-fontend/constants';
+import {Api, EmployeeStatusConstant, PayrollConstant} from '@minhdu-fontend/constants';
 import {
   EmployeeType,
   FilterTypeEnum,
@@ -57,7 +57,6 @@ import {Branch, Category, Position, RangeDay} from "@minhdu-fontend/data-models"
 import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 import {ExportService} from "@minhdu-fontend/service";
 import {ConfirmPayrollComponent} from "../../component/confirm-payroll/confirm-payroll.component";
-import {DialogAbsentComponent} from "../../component/dialog-salary/dialog-absent/dialog-absent.component";
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -65,7 +64,7 @@ import {DialogAbsentComponent} from "../../component/dialog-salary/dialog-absent
 export class PayrollComponent implements OnInit, AfterContentChecked {
   @ViewChild(MatSort) sort!: MatSort;
   categoryControl = new FormControl('');
-  formIsLeave = new FormControl(false)
+  formEmpStatus = new FormControl(0)
   formGroup = new FormGroup({
     accConfirmed: new FormControl(-1),
     name: new FormControl(''),
@@ -129,11 +128,11 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   searchBranchAllowance?: Branch;
   searchBranchStay?: Branch;
   searchBranchAbsent?: Branch;
-  selectIsLeaveOvertime?: boolean
-  selectIsLeaveAbsent?: boolean
-  selectIsLeaveBasic?: boolean
-  selectIsLeaveAllowance?: boolean
-  selectIsLeaveStay?: boolean
+  selectEmpStatusOvertime?: number
+  selectEmpStatusAbsent?: number
+  selectEmpStatusBasic?: number
+  selectEmpStatusAllowance?: number
+  selectEmpStatusStay?: number
   formCreatedAt = new FormControl(this.getRangeDay().start)
   formRangeDay = new FormControl([
     this.getRangeDay().start,
@@ -144,6 +143,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   pickRangeDayAllowance = new Subject<boolean>();
   pickRangeDayStay = new Subject<boolean>();
   pickRangeDayBasic = new Subject<boolean>();
+  empStatusContain = EmployeeStatusConstant;
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type : o1.type === o2.type);
 
 
@@ -231,22 +231,27 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       }
     });
 
-    this.formIsLeave.valueChanges.subscribe(isLeave => {
+    this.formEmpStatus.valueChanges.subscribe(empStatus => {
+      this.store.dispatch(
+        PayrollAction.updateStatePayroll({
+          empStatus: empStatus,
+        })
+      );
       switch (this.selectPayroll.value) {
         case FilterTypeEnum.ABSENT:
-          this.selectIsLeaveAbsent = isLeave
+          this.selectEmpStatusAbsent = empStatus
           break;
         case FilterTypeEnum.BASIC:
-          this.selectIsLeaveBasic = isLeave
+          this.selectEmpStatusBasic = empStatus
           break;
         case FilterTypeEnum.STAY:
-          this.selectIsLeaveStay = isLeave
+          this.selectEmpStatusStay = empStatus
           break;
         case FilterTypeEnum.OVERTIME:
-          this.selectIsLeaveOvertime = isLeave
+          this.selectEmpStatusOvertime = empStatus
           break;
         case FilterTypeEnum.ALLOWANCE:
-          this.selectIsLeaveAllowance = isLeave
+          this.selectEmpStatusAllowance = empStatus
           break;
         default :
           this.store.dispatch(PayrollAction.loadInit({
@@ -365,7 +370,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
       filterType: this.selectedPayroll,
-      isLeave: this.formIsLeave.value,
+      empStatus: this.formEmpStatus.value,
       accConfirmed: val.accConfirmed,
       employeeType:
         this.selectedPayroll === FilterTypeEnum.SEASONAL
@@ -639,7 +644,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       paidAt: value.paidAt,
       accConfirmedAt: value.accConfirmedAt,
       exportType: FilterTypeEnum.PAYROLL,
-      isLeave: this.formIsLeave.value,
+      empStatus: this.formEmpStatus.value,
       categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : '',
       position: value.position?.name || '',
       branch: this.formCtrlBranch.value?.name || '',
@@ -677,7 +682,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       position: value.position?.name || '',
       branch: this.formCtrlBranch.value?.name || '',
       exportType: FilterTypeEnum.TIME_SHEET,
-      isLeave: this.formIsLeave.value,
+      empStatus: this.formEmpStatus.value,
       startedAt: getFirstDayInMonth(new Date(this.formRangeDay.value[0])),
       endedAt: getLastDayInMonth(new Date(this.formRangeDay.value[1])),
     };

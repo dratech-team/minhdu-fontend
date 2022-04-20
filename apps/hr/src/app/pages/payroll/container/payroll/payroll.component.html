@@ -36,7 +36,7 @@
         </mat-option>
       </mat-select>
     </div>
-    <div  class='ml-2'>
+    <div class='ml-2'>
       <div class="font-weight-bold">
         Chi nhánh
       </div>
@@ -71,21 +71,17 @@
       <div class="font-weight-bold">
         Tình trạng nhân viên
       </div>
-      <div
-        *ngIf='selectedPayroll === filterTypeEnum.PAYROLL || selectedPayroll === filterTypeEnum.TIME_SHEET || selectedPayroll === filterTypeEnum.SEASONAL'>
+      <div>
         <nz-select
-          [formControl]='formIsLeave'
-
+          [formControl]='formEmpStatus'
           nzShowSearch
           style='width:200px'
           nzPlaceHolder='Chọn loại nhân viên'
         >
-          <nz-option [nzValue]='false' [nzLabel]='"Nhân viên còn làm"'></nz-option>
-          <nz-option [nzValue]='true' [nzLabel]='"Nhân viên đã nghỉ"'></nz-option>
+          <nz-option *ngFor="let item of empStatusContain" [nzValue]='item.value' [nzLabel]='item.name'></nz-option>
         </nz-select>
       </div>
     </div>
-
     <button *ngIf='categoryControl.value && categoryControl.value !==0 && this.role !== roleEnum.HUMAN_RESOURCE '
             class='btn btn-primary ml-1' (click)='updateCategory()'>Sửa
     </button>
@@ -409,7 +405,7 @@
       <minhdu-fontend-payroll-overtime
         [eventSelectRangeDay]='pickRangeDayOvertime'
         [overtimeTitle]='overtimeTitle'
-        [eventSelectIsLeave]='selectIsLeaveOvertime'
+        [eventSelectEmpStatus]='selectEmpStatusOvertime'
         [eventSearchBranch]='searchBranchOvertime'
         [eventAddOvertime]='eventAddOvertime'
         [eventExportOvertime]='eventExportOvertime'></minhdu-fontend-payroll-overtime>
@@ -431,7 +427,7 @@
     <div *ngIf='selectedPayroll === filterTypeEnum.BASIC '>
       <minhdu-fontend-payroll-basic
         [eventSelectRangeDay]='pickRangeDayBasic'
-        [eventSelectIsLeave]='selectIsLeaveBasic'
+        [eventSelectEmpStatus]='selectEmpStatusBasic'
         [eventSearchBranch]='searchBranchBasic'
         [eventExportBasic]='eventExportBasic'
       ></minhdu-fontend-payroll-basic>
@@ -441,7 +437,7 @@
       <app-payroll-stay
         [eventSelectRangeDay]='pickRangeDayStay'
         [eventExportStay]='eventExportStay'
-        [eventSelectIsLeave]='selectIsLeaveStay'
+        [eventSelectEmpStatus]='selectEmpStatusStay'
         [eventSearchBranch]='searchBranchStay'>
 
       </app-payroll-stay>
@@ -450,7 +446,7 @@
       <app-payroll-allowance
         [eventSelectRangeDay]='pickRangeDayAllowance'
         [allowanceTitle]='allowanceTitle'
-        [eventSelectIsLeave]='selectIsLeaveAllowance'
+        [eventSelectEmpStatus]='selectEmpStatusAllowance'
         [eventAddAllowance]='eventAddAllowance'
         [eventSearchBranch]='searchBranchAllowance'
         [eventExportAllowance]='eventExportAllowance'></app-payroll-allowance>
@@ -461,7 +457,7 @@
         [absentTitle]='absentTitle'
         [eventAddAbsent]='eventAddAbsent'
         [eventSearchBranch]='searchBranchAbsent'
-        [eventSelectIsLeave]='selectIsLeaveAbsent'
+        [eventSelectEmpStatus]='selectEmpStatusAbsent'
         [eventExportAbsent]='eventExportAbsent'></app-payroll-absent>
     </div>
   </div>
