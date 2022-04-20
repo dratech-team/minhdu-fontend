@@ -12,7 +12,7 @@ import {
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {MatDialog} from '@angular/material/dialog';
 import {DatetimeUnitEnum, EmployeeType, RecipeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {Salary} from '@minhdu-fontend/data-models';
+import { PartialDayEnum, Salary } from '@minhdu-fontend/data-models';
 import {Payroll} from '../../+state/payroll/payroll.interface';
 import {DialogDeleteComponent} from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import {DialogOvertimeComponent} from '../../component/dialog-salary/dialog-overtime/dialog-overtime.component';
@@ -37,7 +37,8 @@ import {RestorePayrollComponent} from "../../component/restore-payroll/restore-p
 import {NzMessageService} from "ng-zorro-antd/message";
 import {Sort} from "@angular/material/sort";
 import {map} from "rxjs/operators";
-
+import {UpdateHolidayComponent} from "../../component/dialog-salary/dialog-holiday/update-holiday.component";
+import {tranFormSalaryType} from "../../utils";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -62,8 +63,10 @@ export class DetailPayrollComponent implements OnInit {
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
   scanned$ = this.store.pipe(select(selectedScannedPayroll));
+
   daysInMonth!: number;
   datetimeUnit = DatetimeUnitEnum;
+  PartialDay = PartialDayEnum;
   isSticky = false;
   employeeTypeEnum = EmployeeType;
   role!: string|null
@@ -74,7 +77,7 @@ export class DetailPayrollComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
-    private readonly router: Router,
+    public readonly router: Router,
     private readonly datePipe: DatePipe,
     private readonly message: NzMessageService,
   ) {
@@ -138,6 +141,10 @@ export class DetailPayrollComponent implements OnInit {
       }
       case SalaryTypeEnum.WFH: {
         this.dialog.open(DialogWFHComponent, Object.assign(config, {width: 'fit-content'}));
+        break;
+      }
+      case SalaryTypeEnum.HOLIDAY: {
+        this.dialog.open(UpdateHolidayComponent, Object.assign(config, {width: 'fit-content'}));
         break;
       }
       default: {
@@ -297,8 +304,20 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   compare(a: number | string| Date, b: number | string|Date, isAsc: boolean) {
-    console.log(typeof  a)
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
+  tranFormType(salaryTypes: SalaryTypeEnum[]): string {
+    return tranFormSalaryType(salaryTypes)
+  }
+
+  onSalarySetting(title: string) {
+    if(title){
+      this.router.navigate(['ban-mau'], {
+        queryParams: {
+          title: title
+        }
+      }).then();
+    }
+  }
 }

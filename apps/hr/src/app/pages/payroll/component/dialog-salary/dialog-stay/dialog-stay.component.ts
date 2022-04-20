@@ -128,7 +128,7 @@ export class DialogStayComponent implements OnInit {
     });
   }
 
-  setPrice(price: number) {
+  setPrice(price: number|undefined) {
     this.formGroup.get('price')?.setValue(price);
   }
 

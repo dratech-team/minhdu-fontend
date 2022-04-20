@@ -56,7 +56,7 @@ export const addSalary = createAction(
     salary: any;
     payrollId?: number;
     isTimesheet?: boolean;
-    isDetailPayroll?:boolean
+    isDetailPayroll?: boolean
     branchId?: number;
   }>()
 );
@@ -138,17 +138,18 @@ export const scanHolidayError = createAction(
 
 export const updateStateBranch = createAction(
   '[UPDATE_STATE_BRANCH] UPDATE STATE Branch Payroll',
-  props<{branch: Branch}>()
+  props<{ branch: Branch }>()
 )
 
-export const updateStatePosition= createAction(
+export const updateStatePosition = createAction(
   '[UPDATE_STATE_POSITION] UPDATE STATE Position Payroll',
-  props<{position: Position}>()
+  props<{ position: Position }>()
 )
 
 export const updateStatePayroll = createAction(
   '[UPDATE_STATE_PAYROLL] UPDATE STATE PAYROLL Payroll',
   props<{
+    empStatus?: number,
     filter?: FilterTypeEnum;
     rangeDay?: RangeDay;
     added?: ConvertBooleanFrontEnd;

@@ -1,0 +1,65 @@
+<div class='px-2  main-popup'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='../../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+    </div>
+  </div>
+  <div class="font-weight-bold font-xl mb-4">Ngày lễ</div>
+  <mat-dialog-content style="width: 300px">
+    <form [formGroup]='formGroup' (submit)='onSubmit()'>
+      <div>
+        <div class='row mb-3'>
+          <div [formGroup]='formGroup' class='col-12'>
+            <span class='title-item'>Ngày</span><span class='star'>*</span>
+            <input class='form-control' type="date" formControlName='datetime'
+                   style="background: #dddddd; pointer-events: none"
+                   [ngClass]="{ 'is-invalid':checkValid.datetime.errors }">
+            <div *ngIf='checkValid.datetime.errors?.required' class='invalid-feedback'>
+              <div>Chưa chọn ngày</div>
+            </div>
+          </div>
+        </div>
+        <div class='row mb-3'>
+          <div [formGroup]='formGroup' class='col-12'>
+            <span class='title-item'>Đơn giá</span><span class='star'>*</span>
+            <input type='text' class='form-control' placeholder='200,000' formControlName='price'
+                   inputCurrency
+                   [ngClass]="{ 'is-invalid':checkValid.price.errors }">
+            <div *ngIf='checkValid.price.errors?.required' class='invalid-feedback'>
+              <div>Chưa nhập đơn giá</div>
+            </div>
+          </div>
+        </div>
+        <div class='row mb-3'>
+          <div [formGroup]='formGroup' class='col-12'>
+            <span class='title-item'>Số ngày</span><span class='star'>*</span>
+            <input class='form-control' type="number" formControlName='times'
+                   style="background: #dddddd; pointer-events: none"
+                   [ngClass]="{ 'is-invalid':checkValid.times.errors }">
+            <div *ngIf='checkValid.times.errors?.required' class='invalid-feedback'>
+              <div>Chưa nhập số ngày</div>
+            </div>
+          </div>
+        </div>
+        <div class='row mb-3'>
+          <div [formGroup]='formGroup' class='col-12'>
+            <span class='title-item'>Hệ số</span><span class='star'>*</span>
+            <input class='form-control' type="number" formControlName='rate'
+                   [ngClass]="{ 'is-invalid':checkValid.rate.errors }">
+            <div *ngIf='checkValid.rate.errors?.required' class='invalid-feedback'>
+              <div>Chưa nhập hệ số</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class=' row '>
+        <button class='btn btn-ok ml-2'>Lưu</button>
+        <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
+          ?
+        </button>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>
+

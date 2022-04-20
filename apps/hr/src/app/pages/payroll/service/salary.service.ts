@@ -25,6 +25,10 @@ export class SalaryService extends BaseService<Salary> {
     return super.update(id, body);
   }
 
+  updateSalary (body: any): Observable<Salary>{
+    return this.http.post<Salary>(this.url + `/multiple`, body);
+  }
+
   delete(id: number): Observable<void> {
     return super.delete(id);
   }

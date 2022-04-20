@@ -20,6 +20,7 @@ export interface PayrollState extends EntityState<Payroll> {
   position: Position,
   total: number,
   totalOvertime?: totalSalary,
+  empStatus: number
 }
 
 export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();
@@ -27,11 +28,11 @@ export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();
 //fix-me hardcode datetime when update store
 export const initialPayroll = adapter.getInitialState({
   loaded: false, added: false, adding: false, scanned: false, confirmed: false, deleted: false,
-  rangeDay:{
-    start: new Date(getFirstDayInMonth(new Date()) + '-00') ,
+  rangeDay: {
+    start: new Date(getFirstDayInMonth(new Date()) + '-00'),
     end: new Date(getLastDayInMonth(new Date()) + '-00')
   } as RangeDay,
-  filter: FilterTypeEnum.TIME_SHEET, branch: {} as Branch, position: {} as Position, total: 0,
+  filter: FilterTypeEnum.TIME_SHEET, branch: {} as Branch, position: {} as Position, total: 0, empStatus: 0,
   totalOvertime: {total: 0, unit: {days: 0, hours: 0}}
 });
 
@@ -147,9 +148,10 @@ export const payrollReducer = createReducer(
     return {...state};
   }),
   //fix-me hardcode datetime when update store
-  on(PayrollAction.updateStatePayroll, (state, {filter, rangeDay, added}) => {
+  on(PayrollAction.updateStatePayroll, (state, {filter, rangeDay, added, empStatus}) => {
     return {
       ...state,
+      empStatus: empStatus || empStatus === 0 ? empStatus : state.empStatus,
       filter: filter ? filter : state.filter,
       rangeDay: rangeDay ? {
         start: new Date(rangeDay.start + '-00'),

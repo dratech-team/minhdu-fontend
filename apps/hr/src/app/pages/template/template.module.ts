@@ -36,40 +36,49 @@ import { ContextMenuModule } from 'ngx-contextmenu';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {NzRadioModule} from "ng-zorro-antd/radio";
+import {NzInputModule} from "ng-zorro-antd/input";
+import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
+import {NzTypographyModule} from "ng-zorro-antd/typography";
+import {NgxCurrencyModule} from "ngx-currency";
+import { UnitDatetimePipe } from './pipes/unit-datetime.pipe';
 
 @NgModule({
-    imports: [
-        ComponentsModule,
-        TemplateRoutingModule,
-        ComponentsModule,
-        MatDialogModule,
-        StoreModule,
-        MatDialogModule,
-        EffectsModule,
-        InfiniteScrollModule,
-        StoreModule.forFeature(FeatureName.TEMPLATE_OVERTIME, templateOvertimeReducer),
-        StoreModule.forFeature(FeatureName.TEMPLATE_SALARY, templateSalaryReducer),
-        EffectsModule.forFeature([TemplateOvertimeEffect, TemplateSalaryEffect]),
-        CommonModule,
-        MatInputModule,
-        ReactiveFormsModule,
-        MatSelectModule,
-        MatCheckboxModule,
-        MatTabsModule,
-        MatChipsModule,
-        MatIconModule,
-        MatAutocompleteModule,
-        EmployeeModule,
-        FormsModule,
-        NgxSkeletonLoaderModule.forRoot(),
-        MatProgressBarModule,
-        MatProgressSpinnerModule,
-        SystemModule,
-        ContextMenuModule,
-        NzMessageModule,
-        NzSelectModule,
-        NzRadioModule
-    ],
+  imports: [
+    ComponentsModule,
+    TemplateRoutingModule,
+    ComponentsModule,
+    MatDialogModule,
+    StoreModule,
+    MatDialogModule,
+    EffectsModule,
+    InfiniteScrollModule,
+    StoreModule.forFeature(FeatureName.TEMPLATE_OVERTIME, templateOvertimeReducer),
+    StoreModule.forFeature(FeatureName.TEMPLATE_SALARY, templateSalaryReducer),
+    EffectsModule.forFeature([TemplateOvertimeEffect, TemplateSalaryEffect]),
+    CommonModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatTabsModule,
+    MatChipsModule,
+    MatIconModule,
+    MatAutocompleteModule,
+    EmployeeModule,
+    FormsModule,
+    NgxSkeletonLoaderModule.forRoot(),
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    SystemModule,
+    ContextMenuModule,
+    NzMessageModule,
+    NzSelectModule,
+    NzRadioModule,
+    NzInputModule,
+    NzCheckboxModule,
+    NzTypographyModule,
+    NgxCurrencyModule
+  ],
   declarations: [
     TemplateOvertimeComponent,
     SalaryComponent,
@@ -78,6 +87,7 @@ import {NzRadioModule} from "ng-zorro-antd/radio";
     HolidayComponent,
     DialogHolidayComponent,
     TransformBlockSalaryPipe,
+    UnitDatetimePipe,
     DetailHoliday
   ]
 })

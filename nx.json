@@ -76,6 +76,9 @@
       "tags": [],
       "implicitDependencies": ["farm"]
     },
+    "employee-v2": {
+      "tags": []
+    },
     "orgchart-v2": {
       "tags": []
     }

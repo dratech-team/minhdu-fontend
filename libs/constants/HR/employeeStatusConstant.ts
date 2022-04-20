@@ -1,13 +1,17 @@
 import { EmployeeType } from '../../enums';
 
 
-export const EmployeeConstant = [
+export const EmployeeStatusConstant = [
   {
     name: 'Nhân viên còn làm ',
-    value: EmployeeType.EMPLOYEE_FULL_TIME
+    value: 0
   },
   {
     name: 'Nhân viên đã nghỉ',
-    value: EmployeeType.EMPLOYEE_LEFT_AT
+    value: 1
+  },
+  {
+    name: 'Tất cả',
+    value: -1
   },
 ];

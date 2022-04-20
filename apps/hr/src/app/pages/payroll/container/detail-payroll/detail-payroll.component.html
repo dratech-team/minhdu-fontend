@@ -252,8 +252,7 @@
             <th mat-sort-header='datetime'
                 width='15%' class=' title text-center '>Thời gian
             </th>
-            <th mat-sort-header='unit'
-                width='8%' class=' title text-center '>Hệ số
+            <th width='8%' class=' title text-center '>Hệ số
             </th>
             <th mat-sort-header='unit'
                 width='8%' class=' title text-center '>Đơn vị
@@ -322,12 +321,11 @@
           <thead>
           <tr style='background-color: #dddddd66;'>
             <th width='3%' class=' title text-center '>STT</th>
-            <th width='23%' class=' title text-center '>Khấu trừ</th>
-            <th width='10%' class=' title text-center '>Thời gian</th>
-            <th width='8%' class=' title text-center '>Đơn vị</th>
-            <th width='9%' class=' title text-center '>Thành tiền</th>
-            <th width='15%' class=' title text-center '>Vắng có phép</th>
-            <th width='22%' class=' title text-center '>Chú thích</th>
+            <th width='15%' class=' title text-center '>Khấu trừ</th>
+            <th width='15%' class=' title text-center '>Thời gian</th>
+            <th width='10%' class=' title text-center '>Thành tiền</th>
+            <th width='21%' class=' title text-center '>Chi tiết</th>
+            <th width='12%' class=' title text-center '>Chú thích</th>
             <th width='10%' class='text-center' style='padding: 0; color: #1b8eb7'
                 (click)='addSalary(type.ABSENT, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
               <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
@@ -337,42 +335,35 @@
           </thead>
           <tbody>
           <tr *ngFor="let salary of payroll.salaries | filterTypeSalary:['ABSENT','DAY_OFF','DEDUCTION'], let i= index "
-              style='background: white !important;'>
+              style='background: white !important;' class='pointer'>
             <th>
               {{i + 1}}
             </th>
-            <th>
+            <th (click)='onSalarySetting(salary?.setting?.title)'>
               <div>
                 <span>{{salary.title}}</span>
                 <span class='ml-2' *ngIf='salary.allowance'></span>
               </div>
             </th>
-            <th class='text-center '>
-                 <span *ngIf='salary.datetime'>
-                  {{salary.datetime|date:'dd-MM-yyyy'}}
-                </span>
-              <span *ngIf='salary.startedAt && salary.endedAt'>
-                   từ ngày {{salary.startedAt|date:'dd-MM-yyyy'}}
-                đến ngày {{salary.endedAt|date:'dd-MM-yyyy'}}
-                </span>
-              <span *ngIf='!salary.startedAt && !salary.endedAt &&!salary.datetime  '>
-                   _
+            <th class=' text-center ' (click)='onSalarySetting(salary?.setting?.title)'>
+              <span *ngIf='salary.unit === datetimeUnit.MONTH'> Tháng </span>
+              <span
+                *ngIf='salary.unit === datetimeUnit.DAY'>
+                {{salary.partial | rangedatetimepipe: salary.startedAt : salary.endedAt}}
               </span>
             </th>
-            <th class=' text-center '>
-                <span *ngIf='salary.unit === datetimeUnit.MINUTE'>
-                  ({{salary.times | convertTime }} )
+            <th class=' text-center ' (click)='onSalarySetting(salary?.setting?.title)'>
+              <span style='color: red'>
+                {{salary.price | number:'1.0-0'}} đ
+              </span>
+            </th>
+            <th class='text-center ' (click)='onSalarySetting(salary?.setting?.title)'>
+              <span *ngIf='salary.startedAt && salary.endedAt'>
+              Từ. {{salary.partial !== PartialDay.CUSTOM ? (salary.startedAt | date:'dd-MM-yyyy') : salary.startedAt | date:'dd-MM-yyyy HH:mm:ss'}} <br />
+                đến {{salary.partial !== PartialDay.CUSTOM ? (salary.endedAt | date:'dd-MM-yyyy') : salary.endedAt | date:'dd-MM-yyyy HH:mm:ss'}}
                 </span>
-              <span *ngIf='salary.unit === datetimeUnit.TIMES'> {{salary.times}} Lần </span>
-              <span *ngIf='salary.unit === datetimeUnit.DAY'>Ngày</span>
             </th>
-            <th class=' text-center '>
-              <span style='color: red'>{{salary.type === "DEDUCTION" ? salary.price : '-'}} </span>
-            </th>
-            <th class=' text-center '>
-              {{!salary.forgot ? 'Có' : 'Không'}}
-            </th>
-            <th class=' text-center '>
+            <th class=' text-center ' (click)='onSalarySetting(salary?.setting?.title)'>
               <span>{{salary.note}}</span>
             </th>
             <th>
@@ -428,9 +419,19 @@
               {{salary.price | number:'1.0' | notEmpty:'Theo hệ số lương cơ bản'}}
             </th>
             <th class=' text-center'>
-              {{(salary.price * salary.times) | number:'1.0' | notEmpty:'Theo hệ số lương cơ bản'}}
+              {{(salary.price * salary.times * salary.rate) | number:'1.0' | notEmpty:'Theo hệ số lương cơ bản'}}
             </th>
             <th>
+              <div class='d-flex justify-content-around '>
+                <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
+                        (click)='updateSalary(type.HOLIDAY, salary, payroll)'>
+                  <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+                </button>
+                <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
+                        (click)='removeSalary(salary.id, payroll.id)'>
+                  <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+                </button>
+              </div>
             </th>
           </tr>
           </tbody>
@@ -469,7 +470,7 @@
             </th>
             <th class='text-center '>
                  <span>
-                  {{salary.datetime|date:'dd-MM-yyyy'}}
+                  {{salary.datetime | date:'dd-MM-yyyy'}}
                 </span>
             </th>
             <th class=' text-center '>

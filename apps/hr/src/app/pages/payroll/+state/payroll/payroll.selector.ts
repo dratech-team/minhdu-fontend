@@ -118,6 +118,13 @@ export const selectedPositionPayroll = createSelector(
   }
 );
 
+export const selectedEmpStatusPayroll = createSelector(
+  selectorPayrollState,
+  (state) => {
+    return state.empStatus;
+  }
+);
+
 export const selectedBranchPayroll = createSelector(
   selectorPayrollState,
   (state) => {

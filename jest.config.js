@@ -15,5 +15,6 @@ module.exports = {
     '<rootDir>/libs/dra-effects',
     '<rootDir>/apps/farm',
     '<rootDir>/libs/orgchart-v2',
+    '<rootDir>/libs/employee-v2',
   ],
 };

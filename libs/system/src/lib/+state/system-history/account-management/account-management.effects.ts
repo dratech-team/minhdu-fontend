@@ -5,7 +5,7 @@ import { throwError } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../../components/src/lib/snackBar/snack-bar.component';
-import { AccountManagementService } from '../../services/account-management.service';
+import { AccountManagementService } from '../../services/account-management.services';
 import { AccountManagementActions } from './account-management.actions';
 import { selectorAccountTotal } from './account-management.selectors';
 

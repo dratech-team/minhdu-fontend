@@ -9,100 +9,121 @@
     <form [formGroup]='formGroup'>
       <mat-tab-group #tabGroup [(selectedIndex)]='tabIndex' dynamicHeight>
         <mat-tab label='Khấu trừ'>
-          <div style='min-width: 600px'>
-            <div class=' mb-3 title-popup'>
-              <span>Tiền khấu trừ</span>
-            </div>
-            <div class=' mb-2 d-flex flex-column '>
-              <div class='title-item col-12 '>
-                <span>Khoảng khấu trừ </span>
-                <span class='star'>*</span>
-              </div>
-              <div class=' my-2 col-12 '>
-                <mat-select class='form-control' [value]='selectedIndex'>
-                  <mat-option *ngFor='let item of titleAbsents; let i = index'
-                              [value]='i'
-                              (onSelectionChange)='onSelectAbsent(i)'
-                              (click)='onSelectAbsent(i)'
-                  >{{item.title}}</mat-option>
-                </mat-select>
+          <form [formGroup]='formGroup' class="px-2 pt-2" style="max-height: 40vh; overflow-y: scroll">
+            <div class='mb-2'>
+              <span class="font-weight-bold">Khoảng khấu trừ </span><span class='star'>*</span>
+              <nz-select class="mt-1" style="width: 100%" formControlName="template"
+                         [compareWith]="compareFN"
+              >
+                <nz-option *ngFor='let item of templateSalary$|async'
+                           [nzValue]="item" [nzLabel]="item.title"></nz-option>
+              </nz-select>
+              <div *ngIf='checkValid.template.errors ' class='invalid-feedback'>
+                <div>Chưa chọn loại khấu trừ</div>
               </div>
             </div>
-            <div class=' mb-2 '
-                 *ngIf='titleAbsents[selectedIndex]?.unit === datetimeUnit.DAY '>
-              <div class='col-6'>
-                <span class=' title-item mb-1'>Buổi </span><span class='star'>*</span>
-                <mat-select class='form-control' formControlName='partialDay'>
-                  <mat-option *ngFor='let item of titleSession ; let i = index' [value]='i'>{{item.title}}</mat-option>
-                </mat-select>
+            <div class='mb-3' *ngIf="formGroup.value?.template?.id === 0 else absentTemplate">
+              <span class='font-weight-bold'>Tiêu đề</span><span class='star'>*</span>
+              <input class="mt-1" nz-input formControlName="title">
+            </div>  <div class='mb-3'>
+            <span class='font-weight-bold'>Đơn vị</span><span class='star'>*</span>
+            <nz-select formControlName="unit" style="width: 100%"  nzDisabled >
+              <nz-option *ngFor="let item of unitConstant" [nzValue]="item.value" [nzLabel]="item.name"></nz-option>
+            </nz-select>
+          </div>
+            <ng-template #absentTemplate>
+              <div class='mb-3'>
+                <span class='font-weight-bold'>Buổi</span><span class='star'>*</span>
+                <nz-select class="mt-1" style="width: 100%" formControlName='partialDay'>
+                  <nz-option *ngFor='let item of titleSession' [nzValue]='item' [nzLabel]="item.name"></nz-option>
+                </nz-select>
+                <div *ngIf='checkValid.partialDay.errors ' class='invalid-feedback'>
+                  <div>Chưa chọn buổi khấu trừ</div>
+                </div>
               </div>
-            </div>
-            <div class=' my-2 d-flex align-items-center'>
-              <div class=' title-item col-6'>
-                <span>Ngày</span>
-                <span class='star'>*</span>
-                <div class=' mb-3 mt-1' [formGroup]='formGroup'>
-                  <input type='date' placeholder='06/05/1997' class='form-control' formControlName='datetime'
-                         [ngClass]="{ 'is-invalid': submitted && f.datetime.errors }">
-                  <div *ngIf='submitted && f.datetime.errors?.required' class='invalid-feedback'>
-                    <div>Chưa chọn ngày</div>
+              <div class='mb-3 row'>
+                <div class="col d-flex flex-column">
+                  <div class="font-weight-bold">Từ ngày đến ngày <span class="star">*</span></div>
+                  <nz-range-picker class="mt-1" formControlName="rangeDay"></nz-range-picker>
+                  <div *ngIf='checkValid.rangeDay.errors ' class='invalid-feedback'>
+                    <div>Chưa chọn từ ngày đến ngày</div>
+                  </div>
+                </div>
+                <div class="col d-flex">
+                  <div class="col">
+                    <span class="font-weight-bold">Từ giờ</span><span class="star">*</span>
+                    <nz-time-picker
+                      class="mt-1"
+                      [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.CUSTOM"
+                      formControlName="startTime"
+                      nzFormat="HH:mm"
+                      [nzDisabledHours]="disabledHoursStart"
+                    ></nz-time-picker>
+                    <div *ngIf='checkValid.startTime.errors ' class='invalid-feedback'>
+                      <div>Chưa chọn từ giờ</div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <span class="font-weight-bold">Đến giờ</span><span class="star">*</span>
+                    <nz-time-picker
+                      class="mt-1"
+                      [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.CUSTOM"
+                      formControlName="endTime"
+                      nzFormat="HH:mm"
+                      [nzDisabledHours]="disabledHoursEnd"
+                    ></nz-time-picker>
+                    <div *ngIf='checkValid.endTime.errors ' class='invalid-feedback'>
+                      <div>Chưa chọn đến giờ</div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div [formGroup]='formGroup'
-                   *ngIf='titleAbsents[selectedIndex]?.unit  === datetimeUnit.HOUR' class='col-5 ml-1'>
-                <mat-checkbox formControlName='forgot' labelPosition='before' class='example-margin'
-                              style='font-size: 12px'>
-                  Quên giấy phép và bsc
-                </mat-checkbox>
+              <div class='mb-3'>
+                <span class='font-weight-bold'>Hệ số</span><span class="star">*</span>
+                <div class="form-control mt-1" style="background: #dddddd">{{formGroup.value.rate}}</div>
               </div>
-            </div>
-            <div class=' mb-2 d-flex'
-                 *ngIf='titleAbsents[selectedIndex]?.unit  === datetimeUnit.MINUTE||unitMinute '>
-              <div [formGroup]='formGroup' class='col-6'>
-                <span class='title-item mb-1'>số giờ </span>
-                <input class='form-control' type='number' formControlName='times'>
-              </div>
-              <div [formGroup]='formGroup' class='col-5 ml-1'>
-                <span class='title-item'>số phút</span>
-                <input class='form-control' type='number' formControlName='minutes'>
-              </div>
-            </div>
-            <div class=' mb-3'
-                 *ngIf='( (selectedIndex || selectedIndex === 0)  && titleAbsents[selectedIndex]?.unit === datetimeUnit.TIMES)'>
-              <div [formGroup]='formGroup' class='col-12'>
-                <span class='title-item'>Số lần</span>
-                <input class='form-control' type='number' formControlName='times'>
-              </div>
-            </div>
-            <div
-              *ngIf='( (selectedIndex || selectedIndex === 0)  && titleAbsents[selectedIndex]?.unit === datetimeUnit.OTHER)'>
-              <div class=' mb-3'>
-                <div [formGroup]='formGroup' class='col-12'>
-                  <span class='title-item'>Tên khấu trừ</span> <span class='star'>*</span>
-                  <input class='form-control' type='text' formControlName='title'>
+              <div class='mb-3 d-flex flex-column'>
+                <div>
+                  <span class='font-weight-bold'>Khấu trừ theo</span><span class="star">*</span>
                 </div>
+                <nz-radio-group nzDisabled="{{true}}" formControlName="reference">
+                  <label nz-radio [nzValue]="item.value" *ngFor="let item of references">{{item.name}}</label>
+                </nz-radio-group>
               </div>
-              <div class=' mb-3'>
-                <div [formGroup]='formGroup' class='col-12'>
-                  <span class='title-item'>Giá tiền</span><span class='star'>*</span>
-                  <input type='text' class='form-control  px-1' placeholder='200,000' formControlName='price'
-                         inputCurrency>
-                </div>
+              <div class='mb-3'>
+                <span class='font-weight-bold'>Ràng buộc ngày lễ:</span>
+                <label nz-checkbox nzDisabled="true"  class="ml-2" formControlName="constraintHoliday"></label>
               </div>
+              <div class='mb-3'>
+                <span class='font-weight-bold'>Ràng buộc theo tăng ca:</span>
+                <label nz-checkbox nzDisabled="true" class="ml-2" formControlName="constraintOvertime"></label>
+              </div>
+            </ng-template>
+            <div class='mb-3'>
+              <span class='font-weight-bold'>Đơn giá</span>
+              <span *ngIf="formGroup.value?.template?.id === 0" class="star">*</span>
+              <input *ngIf="formGroup.value?.template?.id === 0 else price" nz-input
+                     type="text" formControlName='price'
+                     currencyMask
+                     [options]="{ suffix: ' đ' }">
+              <ng-template #price>
+                <div *ngIf="formGroup.value?.template" class="form-control" style="background: #dddddd">{{
+                  (((formGroup.value.template?.price|number:'1.0-0')) || tranFormType(formGroup.value.template?.types))
+                  + ' / ' +
+                  (formGroup.value.template?.workday || 'Ngày công chuẩn')
+                  }} </div>
+              </ng-template>
             </div>
-            <div class=' mb-2'>
-              <div [formGroup]='formGroup' class='col-12'>
-                <span class='title-item'>Chú thích</span>
-                <input class='form-control' placeholder='Nhập chú thích ' formControlName='note'>
-              </div>
+            <div class='mb-3'>
+              <span class='font-weight-bold'>Chú thích</span>
+              <input nz-input placeholder='Nhập chú thích ' formControlName='note'>
             </div>
-          </div>
+          </form>
           <button class='btn btn-primary' (click)='nextTab(tabGroup)'>Tiếp theo</button>
         </mat-tab>
-        <mat-tab [disabled]='!formGroup.get("datetime")?.value' class='col-12 ' label='Chọn nhân viên'>
+        <mat-tab [disabled]='!formGroup.get("rangeDay")?.value' class='col-12 ' label='Chọn nhân viên'>
           <app-pick-payroll [payrollsSelected]="payrollSelected"
-                            [createdAt]='formGroup.get("datetime")?.value'
+                            [createdAt]='formGroup.get("rangeDay")?.value[0]'
                             (EventSelectPayroll)="pickPayroll($event)"
           >
 

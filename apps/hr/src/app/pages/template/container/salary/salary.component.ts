@@ -9,11 +9,14 @@ import {TemplateSalaryAction} from '../../+state/teamlate-salary/template-salary
 import {TemplateSalaryComponent} from '../../component/template-salary/template-salary.component';
 import {
   selectorAllTemplate,
-  selectTemplateAdding, selectTemplateLoaded,
+  selectTemplateAdding,
+  selectTemplateLoaded,
   selectTotalTemplateSalary
 } from '../../+state/teamlate-salary/template-salary.selector';
-import {BlockSalariesConstant, UnitsConstant} from '@minhdu-fontend/constants';
-import {TemplateSalary} from "../../+state/teamlate-salary/template-salary";
+import {SalarySetting} from "../../+state/teamlate-salary/salary-setting";
+import {blockSalariesConstant} from "../../constants";
+import {tranFormSalaryType} from "../../../payroll/utils";
+import {ActivatedRoute} from "@angular/router";
 
 
 @Component({
@@ -26,28 +29,38 @@ export class SalaryComponent implements OnInit {
   templateSalaries$ = this.store.pipe(select(selectorAllTemplate));
   type = SalaryTypeEnum;
   unit = DatetimeUnitEnum;
-  unitsConstant = UnitsConstant;
-  blockSalaries = BlockSalariesConstant.concat({title: 'Tất cả', type: SalaryTypeEnum.ALL});
+  salaryTypeEnum = SalaryTypeEnum
+  blockSalaries = blockSalariesConstant.concat([
+    {title: 'Tất cả', type: SalaryTypeEnum.ALL},
+    {title: 'Lương cơ bản trích bảo hiểm', type: SalaryTypeEnum.BASIC_INSURANCE}
+  ]);
   pageSize = 30;
   pageIndexInit = 0;
   formGroup = new FormGroup(
     {
-      title: new FormControl(),
+      title: new FormControl(''),
       unit: new FormControl(''),
-      type: new FormControl('')
+      salaryType: new FormControl('')
     }
   );
 
   constructor(
     private readonly dialog: MatDialog,
-    private readonly store: Store
+    private readonly store: Store,
+    private readonly activeRouter: ActivatedRoute
   ) {
   }
 
   ngOnInit() {
+    this.activeRouter.queryParams.subscribe(val => {
+      if (val.title) {
+        this.formGroup.get('title')?.setValue(val.title);
+      }
+    });
     this.store.dispatch(TemplateSalaryAction.loadInit({
       templateSalaryDTO: {
-        take: this.pageSize, skip: this.pageIndexInit
+        take: this.pageSize, skip: this.pageIndexInit,
+        title: this.formGroup.value.title
       }
     }));
     this.formGroup.valueChanges
@@ -67,7 +80,7 @@ export class SalaryComponent implements OnInit {
   }
 
 
-  addTemplateSalary(template?: TemplateSalary) {
+  addTemplateSalary(template?: SalarySetting) {
     this.dialog.open(TemplateSalaryComponent, {
       width: 'fit-content',
       data: {template}
@@ -82,13 +95,18 @@ export class SalaryComponent implements OnInit {
   }
 
   template(val: any) {
-    return {
+    const settingSalary = {
       take: this.pageSize,
       skip: this.pageIndexInit,
       title: val.title,
-      salaryType: val.type,
       unit: val.unit
     };
+    if(val.salaryType){
+      Object.assign(settingSalary, {
+        salaryType: val.salaryType,
+      })
+    }
+    return settingSalary
   }
 
   deleteBasicSalary($event: any) {
@@ -110,4 +128,13 @@ export class SalaryComponent implements OnInit {
       )
     );
   }
+
+  tranFormType(salaryTypes?: SalaryTypeEnum[]) {
+    if(salaryTypes && salaryTypes.length >0){
+      return tranFormSalaryType(salaryTypes)
+    }else{
+      return ''
+    }
+  }
+
 }

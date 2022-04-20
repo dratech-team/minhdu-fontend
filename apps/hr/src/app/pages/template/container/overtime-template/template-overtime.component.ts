@@ -21,7 +21,6 @@ import {DialogTemplateOvertimeComponent} from '../../component/template-overtime
 import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {TemplateOverConstant} from "../../constants";
-import {PriceTypeEnum} from "../../enums";
 
 @Component({
   templateUrl: 'template-overtime.component.html'
@@ -146,5 +145,9 @@ export class TemplateOvertimeComponent implements OnInit {
         }
       })
       .then();
+  }
+
+  checkItemInArr(item: any , arr: any []): boolean {
+    return arr.some((val: any) => val.id === item.id)
   }
 }

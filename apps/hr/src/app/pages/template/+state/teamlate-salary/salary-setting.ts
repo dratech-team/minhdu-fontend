@@ -1,16 +1,27 @@
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {Branch, PartialDayEnum} from '@minhdu-fontend/data-models';
+import {salaryReference} from "../../enums";
 
-export interface TemplateSalary {
+export interface SalarySetting {
   id: number,
   title: string,
-  price: number,
+  price?: number,
   type: SalaryTypeEnum,
-  positionId: any,
+  rate: number,
+  reference?: salaryReference,
+  constraints?: SalaryTypeEnum[]
+  positionId?: any,
   branches?: Branch[]
-  partialDay: PartialDayEnum,
   unit: DatetimeUnitEnum
+  types: SalaryTypeEnum [],
+  workday?: number
 }
+
+export interface SalaryConstraint {
+  id: number,
+  type: SalaryTypeEnum
+}
+
 export interface TemplateSalaryDTO {
   take?: number,
   skip?: number,

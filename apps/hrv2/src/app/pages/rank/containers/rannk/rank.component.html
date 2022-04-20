@@ -1,5 +1,4 @@
-
-<div class="d-flex" >
+<div class="d-flex mt-2">
   <div class='d-flex flex-column ml-3 border p-2' style='height: 80vh; width:280px; overflow-y: scroll'>
     <nz-collapse>
       <nz-collapse-panel
@@ -32,9 +31,19 @@
       </minhdu-fontend-collapse-select>
     </div>
   </div>
-  <div class='ml-2' style='width: 76vw'>
-    <div class='h3'>Xếp hạng cuối năm</div>
-    <div class='fixTableHead mt-5' style='width: 100%'>
+  <div class='ml-2' style='width: 78vw'>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <div class="font-weight-bold font-xl">Xếp hạng cuối năm</div>
+      <ul nz-menu [nzMode]="'vertical'">
+        <li nz-submenu nzIcon="setting">
+          <ul class="pointer">
+            <li nz-menu-group nzTitle="Xếp loại"></li>
+            <li nz-menu-group nzTitle="Thưởng"></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div style='width: 100%'>
       <nz-table #tableRank
                 [nzScroll]="{ x: '2000px',y: '58vh'}"
                 nzSize='middle'

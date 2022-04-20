@@ -30,10 +30,10 @@ export const navItems: INavData[] = [
   },
   {
     title: true,
-    name: 'Bản Mẫu'
+    name: 'Thiết lập'
   },
   {
-    name: 'Lương',
+    name: 'Thiết lập lương',
     url: '/ban-mau',
     icon: 'cil-lock-locked'
   },

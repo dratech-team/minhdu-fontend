@@ -9,7 +9,7 @@ export const Api = {
       CHECKLIST: 'payroll/checklist',
       GENERATE: 'payroll/generate',
       OVERTIME: 'payroll/overtime/filter',
-      SALARY: 'salary',
+      SALARY: 'salaryv2',
       SALARY_EMPLOYEES: 'salary/employees',
       holiday: 'holiday',
       PAYSLIP: 'payslip',
@@ -37,6 +37,7 @@ export const Api = {
       BASIC_TEMPLATE: 'basic-template',
       OVERTIME_TEMPLATE: 'overtime-template'
     },
+    SETTING_SALARY:'settings/salary',
     EXPORT:'export',
     BRANCH_EXPORT: 'payroll/export/branch',
     POSITION_EXPORT: 'payroll/export/position',

@@ -40,7 +40,7 @@ const routes: Routes = [
         path: 'ban-mau',
         loadChildren: () => import('./pages/template/template.module').then(m => m.TemplateModule),
         data: {
-          title: 'Bản mẫu'
+          title: 'Thiết lập'
         },
       },
       {
