@@ -233,7 +233,6 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
   }
 
   onScroll() {
-    const val = this.formGroup.value;
     this.loadMore = true
     this.payrollService.paginationPayroll(Object.assign(this.mapPayroll(this.formGroup.value),{
       take: this.pageSize,
@@ -271,7 +270,7 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
       templateId: this.search.templateId,
       employeeType: this.search.employeeType,
       recipeType: this.search.recipeType,
-      isLeave: false
+      empStatus: 0
     };
     if (!this.search.recipeType){
       delete value.recipeType
