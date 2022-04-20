@@ -8,8 +8,8 @@ import { Branch } from '@minhdu-fontend/data-models';
 export const ORGCHART_FEATURE_KEY = 'orgchart';
 
 export interface State extends EntityState<Branch> {
-  selectedId?: string | number; // which Orgchart record has been selected
-  loaded: boolean; // has the Orgchart list been loaded
+  selectedId?: string | number; // which branch record has been selected
+  loaded: boolean; // has the branch list been loaded
   added: boolean;
   error?: string | null; // last known error (if any)
 }

@@ -925,6 +925,32 @@
         }
       }
     },
+    "orgchart-v2": {
+      "projectType": "library",
+      "root": "libs/orgchart-v2",
+      "sourceRoot": "libs/orgchart-v2/src",
+      "prefix": "minhdu-fontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/orgchart-v2"],
+          "options": {
+            "jestConfig": "libs/orgchart-v2/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/orgchart-v2/src/**/*.ts",
+              "libs/orgchart-v2/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+
     "employee-v2": {
       "projectType": "library",
       "root": "libs/employee-v2",
