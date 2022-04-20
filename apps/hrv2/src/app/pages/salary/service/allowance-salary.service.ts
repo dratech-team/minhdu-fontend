@@ -4,7 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {Api} from '@minhdu-fontend/constants';
 import {Observable} from 'rxjs';
 import {ResponseSalaryEntity} from '../entities';
-import {BaseAddAllowanceSalaryDto} from "../dto/allowance-salary/add-absent-salary.dto";
+import {BaseAddAllowanceSalaryDto} from "../dto/allowance-salary/add-allowance-salary.dto";
 import {BaseUpdateAllowanceDto} from "../dto/allowance-salary/update-allowance-salary.dto";
 
 @Injectable({providedIn: 'root'})

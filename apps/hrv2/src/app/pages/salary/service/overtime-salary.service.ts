@@ -4,8 +4,8 @@ import {HttpClient} from '@angular/common/http';
 import {Api} from '@minhdu-fontend/constants';
 import {Observable} from 'rxjs';
 import {ResponseSalaryEntity} from '../entities';
-import {BaseAddOvertimeSalaryDto} from "../dto/overtime-salary/add-overtime-salary.dto";
-import {BaseUpdateOvertimeDto} from "../dto/overtime-salary/update-overtime-salary.dto";
+import {BaseAddOvertimeSalaryDto} from "../dto";
+import {BaseUpdateOvertimeDto} from "../dto";
 
 @Injectable({providedIn: 'root'})
 export class OvertimeSalaryService extends BaseService<ResponseSalaryEntity> {

@@ -7,7 +7,7 @@ import {ResponseSalaryEntity} from '../entities';
 import {BaseAddAbsentSalaryDto, BaseUpdateAbsentDto} from '../dto';
 
 @Injectable({providedIn: 'root'})
-export class SalaryService extends BaseService<ResponseSalaryEntity> {
+export class AbsentSalaryService extends BaseService<ResponseSalaryEntity> {
   constructor(
     public readonly http: HttpClient
   ) {
