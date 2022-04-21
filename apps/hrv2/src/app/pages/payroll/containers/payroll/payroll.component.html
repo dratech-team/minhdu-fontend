@@ -1,12 +1,13 @@
 <div style="min-height:80vh; padding: 20px">
-  <div *ngIf="(selectedPayroll$|async) as selectedPayroll" class="d-flex align-items-center">
+  <div class="d-flex align-items-center">
     <div class="font-weight-bold font-lg">
-      {{selectedPayroll|transform:payrollConstant}}
+      {{formGroup.value.filterType|transform:payrollConstant}}
     </div>
-    <div class='d-flex justify-content-center align-items-center ml-2'>
+    <div class='d-flex justify-content-center align-items-center ml-2' [formGroup]="formGroup">
       <nz-range-picker
+        formControlName="rangeDay"
         style='width: 250px'
-        *ngIf='selectedPayroll === filterTypeEnum.OVERTIME || selectedPayroll === filterTypeEnum.ABSENT else formCreated'
+        *ngIf='formGroup.value.filterType === filterTypeEnum.OVERTIME || formGroup.value.filterType === filterTypeEnum.ABSENT else formCreated'
         [nzAllowClear]='false' nzFormat='dd-MM-yyyy' nzMode='date'
       ></nz-range-picker>
       <ng-template #formCreated>

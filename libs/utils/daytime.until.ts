@@ -22,18 +22,22 @@ export function isEqualDatetime(
   return moment(datetime1).isSame(datetime2, type);
 }
 
-export const rageDaysInMonth = (datetime: Date) => {
-  const range = [];
-  const fromDate = moment(getFirstDayInMonth(datetime));
-  const toDate = moment(getLastDayInMonth(datetime));
-  const diff = toDate.diff(fromDate, 'days') + 1;
-  for (let i = 0; i < diff; i++) {
-    range.push({
-      title: moment(getFirstDayInMonth(datetime)).add(i, 'days'),
-      key: moment(getFirstDayInMonth(datetime)).add(i, 'days').format('DD-MM')
-    });
+export const rageDaysInMonth = (datetime: Date|undefined) => {
+  if(datetime){
+    const range = [];
+    const fromDate = moment(getFirstDayInMonth(datetime));
+    const toDate = moment(getLastDayInMonth(datetime));
+    const diff = toDate.diff(fromDate, 'days') + 1;
+    for (let i = 0; i < diff; i++) {
+      range.push({
+        title: moment(getFirstDayInMonth(datetime)).add(i, 'days'),
+        key: moment(getFirstDayInMonth(datetime)).add(i, 'days').format('DD-MM')
+      });
+    }
+    return range;
+  }else{
+    return []
   }
-  return range;
 };
 
 export const sortDatetime = (array: any[]) => {

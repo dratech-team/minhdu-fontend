@@ -52,6 +52,13 @@
       <div>Ngày công chuẩn</div>
       <input nz-input type='number' disabled>
     </th>
+    <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.TIME_SHEET">
+      <th nzWidth="100px" *ngFor='let item of daysInMonth' >
+        <div>
+          {{item.key}}
+        </div>
+      </th>
+    </ng-template>
   </tr>
   </thead>
   <tbody>
