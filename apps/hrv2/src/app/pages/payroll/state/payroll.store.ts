@@ -12,6 +12,7 @@ export interface PayrollEntityState extends EntityState<PayrollEntity> {
   search: Partial<BaseSearchPayrollDto>;
   branch?: BranchEntity;
   position?: PositionEntity
+  selectedPayroll: FilterTypeEnum
 }
 
 export function createInitialState(): PayrollEntityState {
@@ -25,6 +26,7 @@ export function createInitialState(): PayrollEntityState {
       startedAt: new Date(getFirstDayInMonth(new Date()) + '-00'),
       endedAt: new Date(getLastDayInMonth(new Date()) + '-00')
     },
+    selectedPayroll: FilterTypeEnum.TIME_SHEET
   };
 }
 

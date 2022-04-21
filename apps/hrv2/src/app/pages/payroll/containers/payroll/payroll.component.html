@@ -1,5 +1,35 @@
-<minhdu-fontend-table-payroll
-[formGroup]="formGroup"
-[payrolls]="(payrolls$|async)||[]"
->
-</minhdu-fontend-table-payroll>
+<div style="min-height:80vh; padding: 20px">
+  <div *ngIf="(selectedPayroll$|async) as selectedPayroll" class="d-flex align-items-center">
+    <div class="font-weight-bold font-lg">
+      {{selectedPayroll|transform:payrollConstant}}
+    </div>
+    <div class='d-flex justify-content-center align-items-center ml-2'>
+      <nz-range-picker
+        style='width: 250px'
+        *ngIf='selectedPayroll === filterTypeEnum.OVERTIME || selectedPayroll === filterTypeEnum.ABSENT else formCreated'
+        [nzAllowClear]='false' nzFormat='dd-MM-yyyy' nzMode='date'
+      ></nz-range-picker>
+      <ng-template #formCreated>
+        <div [formGroup]="formGroup">
+          <span class="font-weight-bold font-lg">tháng</span>
+          <nz-date-picker
+            class='ml-2'
+            [nzAllowClear]='false'
+            nzMode='month'
+            nzFormat='MM-yyyy'
+            formControlName="startedAt"
+          ></nz-date-picker>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <div class="mt-2">
+    <minhdu-fontend-table-payroll
+      [formGroup]="formGroup"
+      [payrolls]="(payrolls$|async)||[]"
+    >
+    </minhdu-fontend-table-payroll>
+  </div>
+
+</div>
+

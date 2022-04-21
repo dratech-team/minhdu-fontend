@@ -3,23 +3,27 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {PayrollQuery, PayrollStore} from "../../state";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../state/payroll.action";
-import {PaginationDto} from "@minhdu-fontend/constants";
+import {PaginationDto, PayrollConstant} from "@minhdu-fontend/constants";
+import {FilterTypeEnum} from "@minhdu-fontend/enums";
 
 @Component({
   templateUrl: 'payroll.component.html'
 })
 export class PayrollComponent implements OnInit {
   payrolls$ = this.payrollQuery.selectAll()
+  selectedPayroll$ = this.payrollQuery.select(state => state.selectedPayroll)
   statePayroll = this.payrollQuery.getValue()
+  filterTypeEnum = FilterTypeEnum
+  payrollConstant = PayrollConstant
   formGroup = new FormGroup({
-    code: new FormControl(this.statePayroll.search.code||''),
-    name: new FormControl(this.statePayroll.search.name||''),
-    branch: new FormControl(this.statePayroll.branch||''),
-    position: new FormControl(this.statePayroll.position||''),
-    empStatus: new FormControl(this.statePayroll.search.empStatus||''),
-    startedAt: new FormControl(this.statePayroll.search.startedAt||''),
-    endedAt: new FormControl(this.statePayroll.search.endedAt||''),
-    employeeType: new FormControl(this.statePayroll.search.employeeType||''),
+    code: new FormControl(this.statePayroll.search.code || ''),
+    name: new FormControl(this.statePayroll.search.name || ''),
+    branch: new FormControl(this.statePayroll.branch || ''),
+    position: new FormControl(this.statePayroll.position || ''),
+    empStatus: new FormControl(this.statePayroll.search.empStatus || ''),
+    startedAt: new FormControl(this.statePayroll.search.startedAt || ''),
+    endedAt: new FormControl(this.statePayroll.search.endedAt || ''),
+    employeeType: new FormControl(this.statePayroll.search.employeeType || ''),
   })
 
   constructor(
@@ -30,7 +34,7 @@ export class PayrollComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.statePayroll.search.empStatus)
+    console.log(this.formGroup.value.startedAt)
     this.actions$.dispatch(PayrollActions.loadAll({
       search: this.mapPayroll()
     }))
