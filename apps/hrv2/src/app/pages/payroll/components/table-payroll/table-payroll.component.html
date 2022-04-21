@@ -14,11 +14,11 @@
       <div>stt</div>
       <input nz-input disabled type='text'>
     </th>
-    <th nzLeft nzWidth="150px">
+    <th nzWidth="150px">
       <div>Mã phiếu lương</div>
       <input nz-input type='search' formControlName='code'>
     </th>
-    <th>
+    <th nzLeft>
       <div>Tên nhân viên</div>
       <input nz-input type='search' formControlName='name'
              placeholder='Trần Gia Hiệu'>
@@ -60,6 +60,61 @@
         </div>
       </th>
     </ng-template>
+    <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.PAYROLL">
+      <th>
+        <div>Tổng ngày công thực nhận</div>
+        <input nz-input type='number' disabled>
+      </th>
+      <th nzWidth="150px">
+        <div>kế toán xác nhận</div>
+        <nz-select  style='min-width: 150px'
+                    formControlName='accConfirmed'>
+          <nz-option *ngFor="let item of accConfirmConstant" [nzValue]='item.value' [nzLabel]="item.name"></nz-option>
+        </nz-select>
+      </th>
+      <th>
+        <div>lương cơ bản</div>
+        <input nz-input type='number' disabled>
+      </th>
+      <th>
+        <div>Phụ cấp</div>
+        <input nz-input type='number' disabled>
+      </th>
+      <th>
+        <div>Phụ cấp ở lại</div>
+        <input nz-input type='number' disabled>
+      </th>
+      <th>
+        <div>Tăng ca</div>
+        <input nz-input type='number' disabled>
+      </th>
+      <th>
+        <div>Lương đi làm ngày lễ</div>
+        <input nz-input type='number' disabled>
+      </th>
+      <th>
+        <div>Lương không đi làm ngày lễ</div>
+        <input nz-input type='number' disabled>
+      </th>
+      <th>
+        <div>Khấu trừ</div>
+        <input nz-input type='number' disabled>
+      </th>
+      <th>
+        <div>Thuế</div>
+        <input nz-input type='number' disabled>
+      </th>
+      <th>
+        <div>Tổng thu nhập</div>
+        <input nz-input type='number' disabled>
+      </th>
+      <th nzWidth="150px">
+        <div>Thanh toán</div>
+        <nz-select style='width: 100%' formControlName='paidAt'>
+          <nz-option *ngFor="let item of paidConstant" [nzValue]="item.value" [nzLabel]="item.name"></nz-option>
+        </nz-select>
+      </th>
+    </ng-template>
   </tr>
   </thead>
   <tbody>
@@ -68,10 +123,10 @@
       <td nzLeft>
         {{i + 1}}
       </td>
-      <td nzLeft>
+      <td >
         {{payroll.id}}
       </td>
-      <td>
+      <td nzLeft>
         {{payroll.employee.lastName}}
       </td>
       <td>
@@ -86,7 +141,8 @@
       <td>
         {{payroll.workday || 'Đang cập nhật'}}
       </td>
-      <ng-template>
+<!--      time sheet-->
+      <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.TIME_SHEET">
         <td class='text-center' *ngFor='let item of daysInMonth ; let i = index'
             [ngStyle]='{"color": payroll.timesheet ? payroll.timesheet.datetime[i]["color"] : "black" }'>
           <div>
@@ -94,6 +150,7 @@
           </div>
         </td>
       </ng-template>
+<!--      payroll-->
     </tr>
   </ng-template>
   </tbody>
