@@ -85,7 +85,14 @@
       <td>
         {{payroll.workday || 'Đang cập nhật'}}
       </td>
-
+      <ng-template>
+        <td class='text-center' *ngFor='let item of daysInMonth ; let i = index'
+            [ngStyle]='{"color": payroll.timesheet ? payroll.timesheet.datetime[i]["color"] : "black" }'>
+          <div>
+            {{payroll?.timesheet ? payroll.timesheet.datetime[i][item.key] : ''}}
+          </div>
+        </td>
+      </ng-template>
     </tr>
   </ng-template>
   </tbody>
