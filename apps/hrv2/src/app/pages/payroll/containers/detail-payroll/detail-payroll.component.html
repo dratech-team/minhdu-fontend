@@ -1,4 +1,4 @@
-<div class='row animated fadeIn' *ngIf='(payroll$ | async) as payroll'>
+<div class='row animated fadeIn mt-2' *ngIf='(payroll$ | async) as payroll'>
   <div class='container'>
     <div class='row' style='display: flex; justify-content: space-between'>
       <button (click)='prePayroll(payroll)' class='mb-5 create-salary'>
@@ -15,10 +15,10 @@
       <div class='col-12 font-weight-bold font-lg text-center'>
         Phiếu lương tháng {{payroll.createdAt|date: 'MM/yyyy'}}
       </div>
-      <div class='row col-md-12'>
-        <div class=' col-4 pointer '>
-          <div class='employee row col-md-12 mt-3 d-flex flex-column align-items-center justify-content-center '
-               style='min-height: 116px; padding: 10px '>
+      <div class='row col-md-12' >
+        <div  class=' col-4 pointer '>
+          <div  class='employee row col-md-12 mt-3 d-flex flex-column align-items-center justify-content-center '
+               style='min-height: 116px; padding: 10px;background: white'>
             <!--            <div class='row col-md-3 mr-1 info-employee'>-->
             <!--              <img-->
             <!--                class='rounded-circle'-->
@@ -70,7 +70,7 @@
           </div>
 
         </div>
-        <div *ngIf='payroll.recipeType !== recipeType.CT3' class='employee row col mt-3'>
+        <div style="background: white" *ngIf='payroll.recipeType !== recipeType.CT3' class='employee row col mt-3'>
           <div class='col' style='min-width: 170px'>
             <div class='row d-flex justify-content-center '>Ngày làm việc chuẩn</div>
             <div class='row content-title'>
