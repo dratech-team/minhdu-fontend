@@ -8,6 +8,9 @@ import {PayrollQuery, PayrollStore} from "../../state";
 import {FilterTypeEnum, ItemContextMenu} from "@minhdu-fontend/enums";
 import {rageDaysInMonth} from "@minhdu-fontend/utils";
 import {ConfirmConstant, PaidConstant} from "../../constants";
+import {
+  DialogManConfirmedAtComponent
+} from "../../../../../../../hr/src/app/pages/payroll/component/dialog-manconfirmedAt/dialog-man-confirmed-at.component";
 
 @Component({
   selector: 'minhdu-fontend-table-payroll',
@@ -17,7 +20,7 @@ export class TablePayrollComponent implements OnInit {
   @Input() payrolls!: PayrollEntity[]
   @Input() formGroup!: FormGroup
   @Input() pageSize = 10;
-  @Input() scroll: { x: string, y: string } = {x: '4200px', y: '56vh'}
+  @Input() scroll: { x: string, y: string } = {x: '5000px', y: '56vh'}
 
   loading$ = this.payrollQuery.select(state => state.loading)
   positions$ = this.positionQuery.selectAll()
@@ -39,6 +42,18 @@ export class TablePayrollComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.formGroup.get('filterType')?.valueChanges.subscribe(val => {
+      switch (val){
+        case FilterTypeEnum.SEASONAL:
+          this.scroll = {x:'3000px', y:'56vh'}
+          break
+        case FilterTypeEnum.TIME_SHEET:
+          this.scroll = {x:'5000px', y:'56vh'}
+          break
+        default:
+          this.scroll = {x: '4200px', y: '56vh'}
+      }
+    })
     this.actions$.dispatch(PositionActions.loadAll({}))
     this.payrollQuery.select(state => state.search.startedAt).subscribe(val => {
       this.daysInMonth = rageDaysInMonth(val)
@@ -77,5 +92,8 @@ export class TablePayrollComponent implements OnInit {
 
   updateConfirm(id: number, paidAt: string) {
 
+  }
+
+  updateManConfirm(id: number, manConfirmedAt: any, createdAt?: Date) {
   }
 }
