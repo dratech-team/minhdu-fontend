@@ -7,7 +7,7 @@ import {BaseService} from '@minhdu-fontend/service';
 import {PositionEntity} from "../entities/position.entity";
 import {AddPositionDto, SearchPositionDto, UpdatePositionDto} from "../dto";
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class PositionService extends BaseService<PositionEntity> {
   constructor(
     public readonly http: HttpClient

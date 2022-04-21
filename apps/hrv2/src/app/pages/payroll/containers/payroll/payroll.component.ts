@@ -4,7 +4,7 @@ import {PayrollQuery, PayrollStore} from "../../state";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../state/payroll.action";
 import {EmployeeStatusConstant, PaginationDto, PayrollConstant} from "@minhdu-fontend/constants";
-import {FilterTypeEnum, ItemContextMenu} from "@minhdu-fontend/enums";
+import {FilterTypeEnum} from "@minhdu-fontend/enums";
 import {debounceTime, map} from "rxjs/operators";
 import {BranchActions, BranchQuery} from "../../../../../../../../libs/orgchart-v2/src/lib/branch/state";
 import {Observable} from "rxjs";
@@ -22,7 +22,7 @@ export class PayrollComponent implements OnInit {
       this.payrollStore.update(state => ({
         ...state, branch: branches[0]
       }))
-      this.formGroup.get('branch')?.patchValue(branches[0], {emitEvent: false})
+      this.formGroup.get('branch')?.setValue(branches[0])
     }
     return branches
   }));
@@ -45,7 +45,7 @@ export class PayrollComponent implements OnInit {
     category: new FormControl(''),
     filterType: new FormControl(this.statePayroll.search.filterType||'')
   })
-  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type : o1.type === o2.type);
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
 
   constructor(
     private readonly payrollStore: PayrollStore,
@@ -80,6 +80,10 @@ export class PayrollComponent implements OnInit {
     if (param.category === 0) {
       delete param.category
     }
+    Object.assign(param, {
+      branch: param.branch?.name||'',
+      position: param.position?.name||''
+    })
     Object.assign(param, {
       take: PaginationDto.take,
       skip: isPagination ? this.payrollQuery.getCount() : PaginationDto.skip

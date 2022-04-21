@@ -27,16 +27,14 @@ export class PositionEffects {
       this.positionStore.update(state => ({
         ...state, loading: true
       }));
-      const params = Object.assign(props.search, props.search?.orderType
-        ? {orderType: props.search.orderType === 'ascend' ? 'asc' : 'desc'}
-        : {});
-      return this.branchService.pagination(params as SearchPositionDto).pipe(
+      return this.branchService.pagination(props).pipe(
         map((response) => {
-          this.positionStore.update(state => ({...state, loading: false, total: response.total}));
+          this.positionStore.update(state => (
+            {...state, loading: false, total: response.total}));
           if (response.data.length === 0) {
-            this.message.warning('Đã lấy hết đơn vị');
+            this.message.warning('Đã lấy hết chức vụ');
           } else {
-            this.message.success('tải danh sách đơn vị thành công');
+            this.message.success('tải danh sách chức vụ thành công');
           }
           if (props.isPaginate) {
             this.positionStore.add(response.data);

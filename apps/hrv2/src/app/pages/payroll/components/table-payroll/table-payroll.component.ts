@@ -1,8 +1,7 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {PayrollEntity} from "../../entities";
 import {FormGroup} from "@angular/forms";
-import {checkInputNumber} from "@minhdu-fontend/utils";
-import {PositionQuery} from "../../../../../../../../libs/orgchart-v2/src/lib/position/state";
+import {PositionActions, PositionQuery} from "../../../../../../../../libs/orgchart-v2/src/lib/position/state";
 import {BranchQuery} from "../../../../../../../../libs/orgchart-v2/src/lib/branch/state";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollStore} from "../../state";
@@ -31,7 +30,7 @@ export class TablePayrollComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.payrolls)
+    this.actions$.dispatch(PositionActions.loadAll({}))
   }
 
   onPagination(index: number) {
