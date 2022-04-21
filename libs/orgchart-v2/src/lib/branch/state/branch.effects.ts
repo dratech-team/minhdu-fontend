@@ -27,10 +27,7 @@ export class BranchEffects {
       this.branchStore.update(state => ({
         ...state, loading: true
       }));
-      const params = Object.assign(props.search, props.search?.orderType
-        ? {orderType: props.search.orderType === 'ascend' ? 'asc' : 'desc'}
-        : {});
-      return this.branchService.pagination(params as SearchBranchDto).pipe(
+      return this.branchService.pagination(props as SearchBranchDto).pipe(
         map((response) => {
           this.branchStore.update(state => ({...state, loading: false, total: response.total}));
           if (response.data.length === 0) {
@@ -52,7 +49,6 @@ export class BranchEffects {
         })
       );
     }),
-
   );
 
   @Effect()

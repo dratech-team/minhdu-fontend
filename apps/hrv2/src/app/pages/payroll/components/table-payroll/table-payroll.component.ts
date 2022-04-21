@@ -19,15 +19,6 @@ export class TablePayrollComponent implements OnInit {
   @Input() pageSize = 10;
   @Input() scroll: { x: string, y: string } = {x: '3000px', y: '56vh'}
   positions$ = this.positionQuery.selectAll()
-  branches$ = this.branchQuery.selectAll().pipe(map(branches => {
-    if (branches.length === 1) {
-      this.payrollStore.update(state => ({
-        ...state, branch: branches[0]
-      }))
-      this.formGroup.get('branch')?.patchValue(branches[0], {emitEvent: false})
-    }
-    return branches
-  }));
   ItemContextMenu = ItemContextMenu;
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type : o1.type === o2.type);

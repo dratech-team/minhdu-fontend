@@ -20,6 +20,7 @@ import {TablePayrollComponent} from "./components/table-payroll/table-payroll.co
 import {PayrollComponent} from "./containers/payroll/payroll.component";
 import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
 import {PayrollEffect} from "./state/payroll.effect";
+import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import {PayrollEffect} from "./state/payroll.effect";
     ReactiveFormsModule,
     FormsModule,
     AkitaNgEffectsModule.forFeature([PayrollEffect]),
+    OrgchartV2Module,
     NzMessageModule,
     NzSelectModule,
     NzTableModule,

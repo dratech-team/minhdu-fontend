@@ -9,11 +9,11 @@
 >
   <thead>
   <tr>
-    <th>
+    <th nzLeft nzWidth="70px">
       <div>stt</div>
       <input nz-input disabled type='text'>
     </th>
-    <th>
+    <th nzLeft nzWidth="150px">
       <div>Mã phiếu lương</div>
       <input nz-input type='search' (keypress)='checkInputNumber($event)'
              formControlName='code'>
@@ -25,21 +25,7 @@
     </th>
     <th>
       <div>Đơn vị</div>
-      <nz-select
-        nzShowSearch
-        nzAllowClear
-        style='width:100%'
-        formControlName='branch'
-        nzPlaceHolder='chọn đơn vị'
-        [compareWith]='compareFN'
-      >
-        <nz-option
-          *ngFor='let branch of branches$|async'
-          [nzLabel]='branch.name'
-          [nzValue]='branch'
-        >
-        </nz-option>
-      </nz-select>
+      <input nz-input disabled>
     </th>
     <th>
       <div>Chức vụ</div>
@@ -72,10 +58,10 @@
   <tbody>
   <ng-template ngFor let-payroll [ngForOf]="tablePayroll.data" let-i='index'>
     <tr (contextmenu)='child.onContextMenu($event,payroll)' class="pointer">
-      <td>
+      <td nzLeft>
         {{i + 1}}
       </td>
-      <td>
+      <td nzLeft>
         {{payroll.id}}
       </td>
       <td>

@@ -60,7 +60,6 @@ export class PayrollEffect {
     ofType(PayrollActions.loadAll),
     switchMap((props) => {
       this.payrollStore.update(state => ({...state, loading: true}))
-      console.log(props)
       return this.service.paginationPayroll(props.search).pipe(
         tap((res) => {
           this.payrollStore.update(state => ({...state, loading: false}))
