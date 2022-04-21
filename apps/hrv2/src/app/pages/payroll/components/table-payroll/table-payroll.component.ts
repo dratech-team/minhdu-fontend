@@ -37,10 +37,6 @@ export class TablePayrollComponent implements OnInit {
   onPagination(index: number) {
   }
 
-  checkInputNumber(event: any) {
-    return checkInputNumber(event)
-  }
-
   onAdd($event: any) {
 
   }
@@ -65,6 +61,6 @@ export class TablePayrollComponent implements OnInit {
   }
 
   onPrint($event: any) {
-    
+
   }
 }

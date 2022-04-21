@@ -42,7 +42,8 @@ export class PayrollComponent implements OnInit {
     startedAt: new FormControl(this.statePayroll.search.startedAt || ''),
     endedAt: new FormControl(this.statePayroll.search.endedAt || ''),
     employeeType: new FormControl(this.statePayroll.search.employeeType || ''),
-    category: new FormControl('')
+    category: new FormControl(''),
+    filterType: new FormControl(this.statePayroll.search.filterType||'')
   })
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type : o1.type === o2.type);
 
