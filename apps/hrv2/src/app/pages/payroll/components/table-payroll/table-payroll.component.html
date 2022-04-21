@@ -5,6 +5,7 @@
   [formGroup]='formGroup'
   (nzPageIndexChange)="onPagination($event)"
   [nzScroll]="scroll"
+  [nzLoading]="(loading$|async)"
   nzSize="small"
 >
   <thead>

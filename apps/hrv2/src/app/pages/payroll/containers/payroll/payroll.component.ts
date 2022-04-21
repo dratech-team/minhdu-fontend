@@ -22,7 +22,7 @@ export class PayrollComponent implements OnInit {
       this.payrollStore.update(state => ({
         ...state, branch: branches[0]
       }))
-      this.formGroup.get('branch')?.setValue(branches[0])
+      this.formGroup.get('branch')?.setValue(branches[0],{emitEvent: false})
     }
     return branches
   }));

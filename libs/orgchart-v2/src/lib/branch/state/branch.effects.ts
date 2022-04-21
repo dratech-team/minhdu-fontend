@@ -8,6 +8,7 @@ import {BranchQuery} from "./branch.query";
 import {BranchService} from "../services/branch.service";
 import {BranchActions} from "./branch.actions";
 import {SearchBranchDto} from "../dto";
+import {PositionStore} from "../../position/state";
 
 @Injectable()
 export class BranchEffects {
@@ -15,6 +16,7 @@ export class BranchEffects {
     private readonly action$: Actions,
     private readonly branchStore: BranchStore,
     private readonly branchQuery: BranchQuery,
+    private readonly positionStore: PositionStore,
     private readonly branchService: BranchService,
     private readonly message: NzMessageService,
   ) {
@@ -34,6 +36,9 @@ export class BranchEffects {
             this.message.warning('Đã lấy hết đơn vị');
           } else {
             this.message.success('tải danh sách đơn vị thành công');
+          }
+          if(response.data.length === 1 && response.data[0].positions){
+            this.positionStore.set(response.data[0].positions)
           }
           if (props.isPaginate) {
             this.branchStore.add(response.data);

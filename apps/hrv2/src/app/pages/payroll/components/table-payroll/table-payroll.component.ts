@@ -17,12 +17,13 @@ export class TablePayrollComponent implements OnInit {
   @Input() formGroup!: FormGroup
   @Input() pageSize = 10;
   @Input() scroll: { x: string, y: string } = {x: '4200px', y: '56vh'}
+
+  loading$ = this.payrollQuery.select(state => state.loading)
   positions$ = this.positionQuery.selectAll()
   ItemContextMenu = ItemContextMenu;
   daysInMonth = rageDaysInMonth(this.payrollQuery.getValue().search.startedAt)
-
   filterTypeEnum = FilterTypeEnum
-  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type : o1.type === o2.type);
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
 
 
   constructor(
