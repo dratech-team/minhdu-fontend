@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {PayrollEntity} from "../../entities";
 import {FormGroup} from "@angular/forms";
 import {PositionActions, PositionQuery} from "../../../../../../../../libs/orgchart-v2/src/lib/position/state";
@@ -7,10 +7,10 @@ import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollQuery, PayrollStore} from "../../state";
 import {FilterTypeEnum, ItemContextMenu} from "@minhdu-fontend/enums";
 import {rageDaysInMonth} from "@minhdu-fontend/utils";
-import {ConfirmConstant, PaidConstant} from "../../constants";
-import {
-  DialogManConfirmedAtComponent
-} from "../../../../../../../hr/src/app/pages/payroll/component/dialog-manconfirmedAt/dialog-man-confirmed-at.component";
+import {PaidConstant} from "../../constants/paid.constant";
+import {ConfirmConstant} from "../../constants/confirm.constant";
+import {Router} from "@angular/router";
+
 
 @Component({
   selector: 'minhdu-fontend-table-payroll',
@@ -38,17 +38,18 @@ export class TablePayrollComponent implements OnInit {
     private readonly payrollStore: PayrollStore,
     private readonly payrollQuery: PayrollQuery,
     private readonly actions$: Actions,
+    private readonly router: Router,
   ) {
   }
 
   ngOnInit() {
     this.formGroup.get('filterType')?.valueChanges.subscribe(val => {
-      switch (val){
+      switch (val) {
         case FilterTypeEnum.SEASONAL:
-          this.scroll = {x:'3000px', y:'56vh'}
+          this.scroll = {x: '3000px', y: '56vh'}
           break
         case FilterTypeEnum.TIME_SHEET:
-          this.scroll = {x:'5000px', y:'56vh'}
+          this.scroll = {x: '5000px', y: '56vh'}
           break
         default:
           this.scroll = {x: '4200px', y: '56vh'}
@@ -96,4 +97,15 @@ export class TablePayrollComponent implements OnInit {
 
   updateManConfirm(id: number, manConfirmedAt: any, createdAt?: Date) {
   }
+
+  onDetail(payroll: PayrollEntity) {
+    console.log(payroll)
+    this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.employee.id],
+      {
+        queryParams: {
+          isUpdate: true
+        }
+      }).then()
+  }
+
 }

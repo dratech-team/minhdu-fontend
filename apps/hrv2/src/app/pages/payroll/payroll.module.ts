@@ -21,6 +21,10 @@ import {PayrollComponent} from "./containers/payroll/payroll.component";
 import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
 import {PayrollEffect} from "./state/payroll.effect";
 import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
+import {DetailPayrollComponent} from "./containers/detail-payroll/detail-payroll.component";
+import {NzSwitchModule} from "ng-zorro-antd/switch";
+import {FilterPipe, RangeDateTimePipe} from "./pipes";
+import {MatSortModule} from "@angular/material/sort";
 
 @NgModule({
   imports: [
@@ -43,11 +47,16 @@ import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
     NzRadioModule,
     NzCheckboxModule,
     NzButtonModule,
-    NzStepsModule
+    NzStepsModule,
+    NzSwitchModule,
+    MatSortModule
   ],
   declarations: [
     PayrollComponent,
-    TablePayrollComponent
+    TablePayrollComponent,
+    DetailPayrollComponent,
+    FilterPipe,
+    RangeDateTimePipe
   ],
   providers: [
     DatePipe,

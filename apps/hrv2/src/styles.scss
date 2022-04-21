@@ -240,4 +240,16 @@ table tbody tr td {
   display: block;
 }
 
+.create-salary {
+  cursor: pointer;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  color: white;
+  background: #1b8eb7;
+  padding: 6px 10px;
+  border: solid 1px #1b8eb7;
+  border-radius: 4px;
+}
+
 @import "~ng-zorro-antd/ng-zorro-antd.min.css";

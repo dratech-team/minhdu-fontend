@@ -9,6 +9,7 @@ import {confirmTypeEnums, PaidTypeEnums} from "../enums";
 export interface PayrollEntityState extends EntityState<PayrollEntity> {
   loading: boolean;
   added: boolean | null;
+  scanned: boolean|null
   search : {
     code?: string,
     name?: string
@@ -38,7 +39,8 @@ export function createInitialState(): PayrollEntityState {
       accConfirmed: confirmTypeEnums.ALL,
       manConfirmedAt: confirmTypeEnums.ALL,
       paidAt: PaidTypeEnums.ALL
-    }
+    },
+    scanned: null
   };
 }
 

@@ -86,7 +86,7 @@ export class PayrollEffect {
     switchMap(props => {
       return this.service.getOne(props).pipe(
         tap(res => {
-          this.payrollStore.update(res?.id, res);
+          this.payrollStore.upsert(res.id, res);
         }),
         catchError(err => {
           return of(PayrollActions.error(err))

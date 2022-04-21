@@ -201,7 +201,7 @@
       </td>
 <!--      time sheet-->
       <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.TIME_SHEET">
-        <td class='text-center' *ngFor='let item of daysInMonth ; let i = index'
+        <td (click)="onDetail(payroll)"  class='text-center' *ngFor='let item of daysInMonth ; let i = index'
             [ngStyle]='{"color": payroll.timesheet ? payroll.timesheet.datetime[i]["color"] : "black" }'>
           <div>
             {{payroll?.timesheet ? payroll.timesheet.datetime[i][item.key] : ''}}
