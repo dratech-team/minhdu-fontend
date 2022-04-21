@@ -1,5 +1,5 @@
 import {BasePayrollEntity} from "../bases";
-import {Employee, Salary} from "@minhdu-fontend/data-models";
+import {Employee} from "@minhdu-fontend/data-models";
 import {PayslipEntity} from "./payslip.entity";
 import {RecipeType} from "@minhdu-fontend/enums";
 import {

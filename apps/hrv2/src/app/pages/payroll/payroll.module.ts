@@ -1,10 +1,8 @@
-import {NgModule} from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import {ComponentsModule} from '@minhdu-fontend/components';
-import {CommonModule} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {PayrollRoutingModule} from './payroll-routing.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
-import {MatDatepickerModule} from '@angular/material/datepicker';
 import {NzMessageModule} from 'ng-zorro-antd/message';
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {NzTableModule} from "ng-zorro-antd/table";
@@ -18,6 +16,11 @@ import {NzRadioModule} from "ng-zorro-antd/radio";
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzStepsModule} from "ng-zorro-antd/steps";
+import {TablePayrollComponent} from "./components/table-payroll/table-payroll.component";
+import {PayrollComponent} from "./containers/payroll/payroll.component";
+import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
+import {PayrollEffect} from "./state/payroll.effect";
+import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
 
 @NgModule({
   imports: [
@@ -27,7 +30,8 @@ import {NzStepsModule} from "ng-zorro-antd/steps";
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    NgxSkeletonLoaderModule.forRoot(),
+    AkitaNgEffectsModule.forFeature([PayrollEffect]),
+    OrgchartV2Module,
     NzMessageModule,
     NzSelectModule,
     NzTableModule,
@@ -42,9 +46,12 @@ import {NzStepsModule} from "ng-zorro-antd/steps";
     NzStepsModule
   ],
   declarations: [
-
+    PayrollComponent,
+    TablePayrollComponent
   ],
-  providers: []
+  providers: [
+    DatePipe,
+  ]
 })
 export class PayrollModule {
 }

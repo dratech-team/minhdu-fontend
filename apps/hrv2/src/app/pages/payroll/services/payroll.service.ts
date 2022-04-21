@@ -35,8 +35,8 @@ export class PayrollService extends BaseService<PayrollEntity> {
     return this.http.patch<PayrollEntity>(Api.HR.PAYROLL.CONFIRM_PAYROLL + `/${props.id}`, props.data);
   }
 
-  delete(props: RemovePayrollDto): Observable<void> {
-    return super.delete(props.id);
+  delete(id: number, params?: any): Observable<void> {
+    return super.delete(id, params);
   }
 
   generate(params?: any): Observable<any> {

@@ -1,4 +1,4 @@
 export * from './branch.actions';
 export * from './branch.effects';
-export * from './orgchart.reducer';
-export * from './orgchart.selectors';
+export * from './branch.query';
+export * from './branch.store';

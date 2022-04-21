@@ -1,6 +1,7 @@
 import {BasePayrollEntity} from "../bases";
-import {FilterTypeEnum, SearchTypeEnum, EmployeeStatusEnum} from "@minhdu-fontend/enums";
+import {FilterTypeEnum, SearchTypeEnum, EmployeeStatusEnum, EmployeeType} from "@minhdu-fontend/enums";
 import {BaseSearchDto} from "@minhdu-fontend/base-dto";
+import {RangeDay} from "@minhdu-fontend/data-models";
 
 export interface BaseSearchPayrollDto extends BasePayrollEntity {
   readonly createdAt: Date,
@@ -14,8 +15,8 @@ export interface BaseSearchPayrollDto extends BasePayrollEntity {
   readonly employeeId: number,
   readonly startedAt: Date,
   readonly endedAt: Date,
-  readonly employeeType: string
   readonly empStatus: EmployeeStatusEnum
+  readonly employeeType: EmployeeType
 }
 
 export type SearchPayrollDto = BaseSearchDto<BaseSearchPayrollDto>
