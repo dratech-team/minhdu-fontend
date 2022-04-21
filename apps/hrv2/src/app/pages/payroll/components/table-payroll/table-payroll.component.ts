@@ -23,7 +23,7 @@ export class TablePayrollComponent implements OnInit, OnChanges {
   positions$ = this.positionQuery.selectAll()
   ItemContextMenu = ItemContextMenu;
   accConfirmConstant = AccConfirmConstant
-  paidConstant= PaidConstant
+  paidConstant = PaidConstant
   daysInMonth = rageDaysInMonth(this.payrollQuery.getValue().search.startedAt)
   filterTypeEnum = FilterTypeEnum
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
@@ -77,6 +77,10 @@ export class TablePayrollComponent implements OnInit, OnChanges {
   }
 
   onPrint($event: any) {
+
+  }
+
+  updateConfirm(id: number, paidAt: string) {
 
   }
 }

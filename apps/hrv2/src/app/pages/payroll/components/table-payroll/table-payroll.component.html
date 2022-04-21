@@ -151,6 +151,46 @@
         </td>
       </ng-template>
 <!--      payroll-->
+      <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.PAYROLL">
+        <td>
+            {{payroll.payslip?.totalWorkday ? payroll.payslip?.totalWorkday : 'Đang cập nhật' }}
+        </td>
+        <td>
+          {{payroll?.accConfirmedAt ? (payroll.accConfirmedAt|date:'dd-MM-yyyy') : 'Chưa xác nhận'}}
+        </td>
+        <td>
+            {{payroll.payslip?.basic|number:'1.0-0'}} VND
+        </td>
+        <td>
+            {{payroll.payslip?.stay |number:'1.0-0'}} VND
+        </td>
+        <td>
+            {{payroll.payslip?.allowance |number:'1.0-0'}} VND
+        </td>
+        <td>
+            {{payroll.payslip?.overtime |number:'1.0-0'}} VND
+        </td>
+        <td>
+            {{payroll.payslip?.payslipInHoliday || 0}} VND
+        </td>
+        <td>
+            {{payroll.payslip?.payslipNotInHoliday || 0}} VND
+        </td>
+        <td>
+            {{payroll.payslip?.deduction | number: '1.0-0'}} VND
+        </td>
+        <td>
+            {{payroll.payslip?.tax | number: '1.0-0'}} VND
+        </td>
+        <td>
+            {{payroll.payslip?.total| number: '1.0-0'}} VND
+        </td>
+        <td>
+          <div (click)='updateConfirm(payroll.id,"paidAt")'>
+            <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.paidAt !== null'>
+          </div>
+        </td>
+      </ng-template>
     </tr>
   </ng-template>
   </tbody>
