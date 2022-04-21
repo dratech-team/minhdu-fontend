@@ -2,13 +2,13 @@ import {NzMessageService} from "ng-zorro-antd/message";
 import {PayrollStore} from "./payroll.store";
 import {PayrollService} from "../services/payroll.service";
 import {Actions, Effect, ofType} from "@datorama/akita-ng-effects";
-import {catchError, map, switchMap, tap} from "rxjs/operators";
-import {of, throwError} from "rxjs";
+import {catchError, switchMap, tap} from "rxjs/operators";
+import {of} from "rxjs";
 import {PayrollActions} from "./payroll.action";
 import {AddPayrollDto} from "../dto";
-import {PayrollAction} from "../../../../../../hr/src/app/pages/payroll/+state/payroll/payroll.action";
-import {createEffect} from "@ngrx/effects";
+import {Injectable} from "@angular/core";
 
+@Injectable({providedIn: 'root'})
 export class PayrollEffect {
   constructor(
     private readonly action$: Actions,
@@ -25,12 +25,12 @@ export class PayrollEffect {
       this.payrollStore.update(state => ({
         ...state, added: false
       }))
-      return this.service.addPayroll<AddPayrollDto>(props).pipe(
+      return this.service.addOne(props).pipe(
         tap(res => {
           this.payrollStore.update(state => ({
             ...state, added: true
           }))
-          this.message.success(res?.message ? res.message : 'Thao tác thành công ');
+          this.message.success('Thao tác thành công ');
           const params = {
             take: 30,
             skip: 0,
@@ -60,7 +60,8 @@ export class PayrollEffect {
     ofType(PayrollActions.loadAll),
     switchMap((props) => {
       this.payrollStore.update(state => ({...state, loading: true}))
-      return this.service.pagination(props).pipe(
+      console.log(props)
+      return this.service.paginationPayroll(props.search).pipe(
         tap((res) => {
           this.payrollStore.update(state => ({...state, loading: false}))
           if (res.data.length === 0) {
@@ -84,7 +85,7 @@ export class PayrollEffect {
   getOne$ = this.action$.pipe(
     ofType(PayrollActions.loadOne),
     switchMap(props => {
-      return this.service.getOne(props.id).pipe(
+      return this.service.getOne(props).pipe(
         tap(res => {
           this.payrollStore.update(res?.id, res);
         }),
@@ -122,10 +123,10 @@ export class PayrollEffect {
   @Effect()
   remove$ = this.action$.pipe(
     ofType(PayrollActions.remove),
-    switchMap(props => {
-      return this.service.delete(props).pipe(
+    switchMap((props) => {
+      return this.service.delete(props.id).pipe(
         tap(_ => {
-          this.payrollStore.remove(props?.id);
+          this.payrollStore.remove(props.id);
         }),
         catchError(err => {
           return of(PayrollActions.error(err))

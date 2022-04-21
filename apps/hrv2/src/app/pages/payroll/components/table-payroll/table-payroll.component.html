@@ -1,0 +1,111 @@
+<nz-table
+  #tablePayroll
+  [nzData]="payrolls"
+  [nzPageSize]="pageSize"
+  [formGroup]='formGroup'
+  (nzPageIndexChange)="onPagination($event)"
+  [nzScroll]="scroll"
+  nzSize="small"
+>
+  <thead>
+  <tr>
+    <th>
+      <div>stt</div>
+      <input nz-input disabled type='text'>
+    </th>
+    <th>
+      <div>Mã phiếu lương</div>
+      <input nz-input type='search' (keypress)='checkInputNumber($event)'
+             formControlName='code'>
+    </th>
+    <th>
+      <div>Tên nhân viên</div>
+      <input nz-input type='search' formControlName='name'
+             placeholder='Trần Gia Hiệu'>
+    </th>
+    <th>
+      <div>Đơn vị</div>
+      <nz-select
+        nzShowSearch
+        nzAllowClear
+        style='width:100%'
+        formControlName='branch'
+        nzPlaceHolder='chọn đơn vị'
+        [compareWith]='compareFN'
+      >
+        <nz-option
+          *ngFor='let branch of branches$|async'
+          [nzLabel]='branch.name'
+          [nzValue]='branch'
+        >
+        </nz-option>
+      </nz-select>
+    </th>
+    <th>
+      <div>Chức vụ</div>
+      <nz-select
+        nzShowSearch
+        nzAllowClear
+        style='width:100%'
+        formControlName='position'
+        nzPlaceHolder='chọn chức vụ'
+        [compareWith]='compareFN'
+      >
+        <nz-option
+          *ngFor='let position of positions$|async'
+          [nzLabel]='position.name'
+          [nzValue]='position'
+        >
+        </nz-option>
+      </nz-select>
+    </th>
+    <th>
+      <div>Ngày tạo phiếu lương</div>
+      <input nz-input disabled>
+    </th>
+    <th>
+      <div>Ngày công chuẩn</div>
+      <input nz-input type='number' disabled>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-template ngFor let-payroll [ngForOf]="tablePayroll.data" let-i='index'>
+    <tr (contextmenu)='child.onContextMenu($event,payroll)' class="pointer">
+      <td>
+        {{i + 1}}
+      </td>
+      <td>
+        {{payroll.id}}
+      </td>
+      <td>
+        {{payroll?.employee?.lastName}}
+      </td>
+      <td>
+        {{payroll?.branch}}
+      </td>
+      <td>
+        {{payroll?.position}}
+      </td>
+      <td>
+        {{payroll.createdAt|date:'dd-MM-yyyy'}}
+      </td>
+      <td>
+        {{payroll.workday || 'Đang cập nhật'}}
+      </td>
+
+    </tr>
+  </ng-template>
+  </tbody>
+</nz-table>
+<app-mouse-right
+  #child
+  [items]='[ItemContextMenu.RESTORE, ItemContextMenu.HISTORY_PAYROLL,ItemContextMenu.PRINT]'
+  (onAdd)='addPayroll($event)'
+  (onDel)='deletePayroll($event)'
+  (onUpdate)='updatePayroll($event)'
+  (onRestore)='restorePayroll($event)'
+  (onHisPayroll)='historyPayroll($event)'
+  (onPrint)='confirmPayroll($event)'
+>
+</app-mouse-right>
