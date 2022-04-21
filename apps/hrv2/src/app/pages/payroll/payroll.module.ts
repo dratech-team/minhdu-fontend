@@ -25,6 +25,7 @@ import {DetailPayrollComponent} from "./containers/detail-payroll/detail-payroll
 import {NzSwitchModule} from "ng-zorro-antd/switch";
 import {FilterPipe, RangeDateTimePipe} from "./pipes";
 import {MatSortModule} from "@angular/material/sort";
+import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 
 @NgModule({
   imports: [
@@ -49,7 +50,8 @@ import {MatSortModule} from "@angular/material/sort";
     NzButtonModule,
     NzStepsModule,
     NzSwitchModule,
-    MatSortModule
+    MatSortModule,
+    NzCarouselModule
   ],
   declarations: [
     PayrollComponent,

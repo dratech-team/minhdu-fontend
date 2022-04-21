@@ -98,7 +98,7 @@ export class DetailPayrollComponent implements OnInit {
       }).then();
   }
 
-  nextPayroll(payroll: PayrollEntity) {
+  navigatePayroll(payroll: PayrollEntity) {
     if(payroll.payrollIds){
       const indexPayrollCurrent = payroll.payrollIds.indexOf(payroll.id);
       const payrollIds = payroll.payrollIds;
@@ -106,18 +106,6 @@ export class DetailPayrollComponent implements OnInit {
         this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[indexPayrollCurrent + 1]]).then();
       } else {
         this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[0]]).then();
-      }
-    }
-  }
-
-  prePayroll(payroll: PayrollEntity) {
-    if(payroll.payrollIds){
-      const indexPayrollCurrent = payroll.payrollIds.indexOf(payroll.id);
-      const payrollIds = payroll.payrollIds;
-      if (indexPayrollCurrent > 0) {
-        this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[indexPayrollCurrent - 1]]).then();
-      } else {
-        this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[payrollIds.length - 1]]).then();
       }
     }
   }

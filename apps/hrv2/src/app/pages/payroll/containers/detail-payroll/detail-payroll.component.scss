@@ -169,6 +169,11 @@
 .show-sticky{
   animation: showSticky .5s forwards !important;
 }
+
+[nz-carousel-content] {
+  overflow: hidden;
+}
+
 @keyframes showSticky {
   0%{ right: -215px;
   }
