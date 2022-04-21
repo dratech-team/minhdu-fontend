@@ -44,12 +44,12 @@ export class TablePayrollComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup.get('filterType')?.valueChanges.subscribe(val => {
-      switch (val){
+      switch (val) {
         case FilterTypeEnum.SEASONAL:
-          this.scroll = {x:'3000px', y:'56vh'}
+          this.scroll = {x: '3000px', y: '56vh'}
           break
         case FilterTypeEnum.TIME_SHEET:
-          this.scroll = {x:'5000px', y:'56vh'}
+          this.scroll = {x: '5000px', y: '56vh'}
           break
         default:
           this.scroll = {x: '4200px', y: '56vh'}
@@ -100,7 +100,12 @@ export class TablePayrollComponent implements OnInit {
 
   onDetail(payroll: PayrollEntity) {
     console.log(payroll)
-    this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.employee.id]).then()
+    this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.employee.id],
+      {
+        queryParams: {
+          isUpdate: true
+        }
+      }).then()
   }
 
 }

@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {MatDialog} from '@angular/material/dialog';
 import {DatetimeUnitEnum, EmployeeType, RecipeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {PartialDayEnum, Salary} from '@minhdu-fontend/data-models';
 import {getDaysInMonth} from '@minhdu-fontend/utils';
@@ -21,8 +20,6 @@ import {tranFormSalaryType} from "../../utils";
   styleUrls: ['detail-payroll.component.scss']
 })
 export class DetailPayrollComponent implements OnInit {
-  salaryTypeEnum = SalaryTypeEnum;
-
   payroll$ = this.payrollQuery.selectEntity(this.getPayrollId).pipe(
     map(payroll => {
       if (payroll) {
@@ -40,6 +37,7 @@ export class DetailPayrollComponent implements OnInit {
   loading$ = this.payrollQuery.select(state => state.loading);
   added$ = this.payrollQuery.select(state => state.added);
   scanned$ = this.payrollQuery.select(state => state.scanned)
+  salaryTypeEnum = SalaryTypeEnum;
 
   daysInMonth!: number;
   datetimeUnit = DatetimeUnitEnum;
@@ -78,7 +76,7 @@ export class DetailPayrollComponent implements OnInit {
 
   }
 
-  updateSalary(type: SalaryTypeEnum, salary: Salary, payroll?: PayrollEntity) {
+  updateSalary(type: SalaryTypeEnum, salary: any, payroll?: PayrollEntity) {
   }
 
   openSalary(type: SalaryTypeEnum, config: MatDialogConfig) {
@@ -180,7 +178,7 @@ export class DetailPayrollComponent implements OnInit {
     return tranFormSalaryType(salaryTypes)
   }
 
-  onSalarySetting(title: string) {
+  onSalarySetting(title: string|undefined) {
     if (title) {
       this.router.navigate(['ban-mau'], {
         queryParams: {
