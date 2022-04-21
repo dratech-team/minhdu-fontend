@@ -1,0 +1,180 @@
+
+.info-employee {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title-header {
+  display: flex;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.content-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 44px;
+}
+
+.position {
+  height: 22px;
+  display: flex;
+  font-weight: 590;
+  font-size: 12px;
+  line-height: 12px;
+  text-align: center;
+  border-radius: 17px;
+  color: white;
+  justify-content: center;
+  align-items: center;
+}
+
+.id-employee {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #EB5757;
+  height: 22px;
+  font-size: 10px;
+  line-height: 12px;
+}
+
+.is-edit {
+  cursor: pointer;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  color: white;
+  background: #7749F8;
+  padding: 6px 10px;
+  border: solid 1px #7749F8;
+  border-radius: 4px;
+}
+
+.save-change {
+  cursor: pointer;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  color: white;
+  background: #29CC97;
+  padding: 6px 10px;
+  border: solid 1px #29CC97;
+  border-radius: 4px;
+}
+
+
+.main-content {
+  width: 100%;
+}
+
+.table {
+  margin-right: 60px;
+  border: solid 1px #EBEBEB;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.title {
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 600
+}
+.header-table-detail-payroll{
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+  line-height: 24px;
+  font-weight: 600;
+}
+.body-table-detail-payroll{
+  min-height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+}
+
+.title-table {
+  height: 50px;
+  display: flex;
+  align-items: center
+}
+
+.content-table {
+  border-top: solid 1px #EBEBEB;
+  display: flex;
+  align-items: center
+}
+
+.salary {
+  padding:5px 0 ;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.trash {
+  cursor: pointer;
+  display: flex;
+  background: #EB5757;
+  padding: 4px;
+  border: solid 1px #EB5757;
+  border-radius: 4px;
+}
+
+.over-time {
+  color: #29CC97;
+}
+
+.deduct {
+  color: #EB5757;
+}
+
+.employee {
+  box-shadow: 0 4px 12px rgb(0 0 0 / 6%);
+  border: solid 1px white;
+  padding: 25px;
+  border-radius: 15px;
+}
+.sticky-scroll{
+  border-radius: 5px;
+  position: fixed;
+  top: 200px;
+  right: 0;
+  background-color: #c8ced3;
+  padding: 10px;
+  font-size: 15px;
+  height:fit-content
+}
+.hide-sticky{
+  animation: hide-sticky .5s forwards;
+}
+@keyframes hide-sticky {
+  0%{ right: 0;
+  }
+  100%{
+    right: -215px;
+  }
+}
+.show-sticky{
+  animation: showSticky .5s forwards !important;
+}
+@keyframes showSticky {
+  0%{ right: -215px;
+  }
+  100%{
+    right: 0;
+  }
+}
+
+

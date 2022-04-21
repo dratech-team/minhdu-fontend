@@ -43,5 +43,6 @@ export interface PayrollEntity extends BasePayrollEntity {
   salaries: PermanentSalaryEntity[],
   absents: AbsentSalaryEntity [],
   overtimes: OvertimeSalaryEntity [],
-  allowances: AllowanceSalaryEntity[]
+  allowances: AllowanceSalaryEntity[],
+  payrollIds?: number[]
 }

@@ -1,4 +1,4 @@
-import {AccConfirmTypeEnums} from "../enums";
+import {AccConfirmTypeEnums} from "../enums/acc-confirm-type.enums";
 
 export const AccConfirmConstant = [
   {
