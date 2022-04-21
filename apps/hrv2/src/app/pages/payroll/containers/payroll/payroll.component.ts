@@ -46,6 +46,7 @@ export class PayrollComponent implements OnInit {
     filterType: new FormControl(this.stateSearch.filterType || ''),
     accConfirmed: new FormControl(this.stateSearch.accConfirmed),
     paidAt: new FormControl(this.stateSearch.paidAt),
+    manConfirmedAt: new FormControl(this.stateSearch.manConfirmedAt),
     rangeDay: new FormControl([
       this.stateSearch.startedAt,
       this.stateSearch.endedAt

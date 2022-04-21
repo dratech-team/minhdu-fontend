@@ -7,13 +7,13 @@ import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollQuery, PayrollStore} from "../../state";
 import {FilterTypeEnum, ItemContextMenu} from "@minhdu-fontend/enums";
 import {rageDaysInMonth} from "@minhdu-fontend/utils";
-import {AccConfirmConstant, PaidConstant} from "../../constants";
+import {ConfirmConstant, PaidConstant} from "../../constants";
 
 @Component({
   selector: 'minhdu-fontend-table-payroll',
   templateUrl: 'table-payroll.component.html'
 })
-export class TablePayrollComponent implements OnInit, OnChanges {
+export class TablePayrollComponent implements OnInit {
   @Input() payrolls!: PayrollEntity[]
   @Input() formGroup!: FormGroup
   @Input() pageSize = 10;
@@ -22,7 +22,7 @@ export class TablePayrollComponent implements OnInit, OnChanges {
   loading$ = this.payrollQuery.select(state => state.loading)
   positions$ = this.positionQuery.selectAll()
   ItemContextMenu = ItemContextMenu;
-  accConfirmConstant = AccConfirmConstant
+  confirmConstant = ConfirmConstant
   paidConstant = PaidConstant
   daysInMonth = rageDaysInMonth(this.payrollQuery.getValue().search.startedAt)
   filterTypeEnum = FilterTypeEnum
@@ -36,11 +36,6 @@ export class TablePayrollComponent implements OnInit, OnChanges {
     private readonly payrollQuery: PayrollQuery,
     private readonly actions$: Actions,
   ) {
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    console.log(this.payrolls)
-
   }
 
   ngOnInit() {
