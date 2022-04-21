@@ -3,7 +3,6 @@ import {PayrollEntity} from "../../entities";
 import {FormGroup} from "@angular/forms";
 import {checkInputNumber} from "@minhdu-fontend/utils";
 import {PositionQuery} from "../../../../../../../../libs/orgchart-v2/src/lib/position/state";
-import {map} from "rxjs/operators";
 import {BranchQuery} from "../../../../../../../../libs/orgchart-v2/src/lib/branch/state";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollStore} from "../../state";
@@ -42,27 +41,30 @@ export class TablePayrollComponent implements OnInit {
     return checkInputNumber(event)
   }
 
-  addPayroll($event: any) {
+  onAdd($event: any) {
 
   }
 
-  deletePayroll($event: any) {
+  onDelete($event: any) {
 
   }
 
-  updatePayroll($event: any) {
+  onUpdate($event: any) {
   }
 
-  restorePayroll($event: any) {
-
-  }
-
-  historyPayroll($event: any) {
+  onRestore($event: any) {
 
   }
 
-  confirmPayroll($event: any) {
+  onHistory($event: any) {
 
   }
 
+  onConfirm($event: any) {
+
+  }
+
+  onPrint($event: any) {
+    
+  }
 }

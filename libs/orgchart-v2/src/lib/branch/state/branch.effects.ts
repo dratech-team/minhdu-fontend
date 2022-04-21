@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
-import {catchError, concatMap, map, switchMap, tap} from 'rxjs/operators';
-import {of, throwError} from 'rxjs';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {of} from 'rxjs';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {BranchStore} from "./branch.store";
 import {BranchQuery} from "./branch.query";

@@ -69,7 +69,7 @@ export class PayrollComponent implements OnInit {
 
     this.formGroup.get('category')?.valueChanges.subscribe(val => {
       if (val === 0) {
-        this.addCategory()
+        this.onAddCategory()
       }
     })
   }
@@ -86,11 +86,9 @@ export class PayrollComponent implements OnInit {
     return param
   }
 
-  addCategory() {
-    console.log('sss')
+  onAddCategory() {
   }
 
-  updateCategory(){
-    console.log('sss')
+  onUpdateCategory(){
   }
 }

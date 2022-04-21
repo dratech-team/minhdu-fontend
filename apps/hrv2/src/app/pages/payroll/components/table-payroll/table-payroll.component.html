@@ -65,13 +65,13 @@
         {{payroll.id}}
       </td>
       <td>
-        {{payroll?.employee?.lastName}}
+        {{payroll.employee.lastName}}
       </td>
       <td>
-        {{payroll?.branch}}
+        {{payroll.branch}}
       </td>
       <td>
-        {{payroll?.position}}
+        {{payroll.position}}
       </td>
       <td>
         {{payroll.createdAt|date:'dd-MM-yyyy'}}
@@ -87,11 +87,11 @@
 <app-mouse-right
   #child
   [items]='[ItemContextMenu.RESTORE, ItemContextMenu.HISTORY_PAYROLL,ItemContextMenu.PRINT]'
-  (onAdd)='addPayroll($event)'
-  (onDel)='deletePayroll($event)'
-  (onUpdate)='updatePayroll($event)'
-  (onRestore)='restorePayroll($event)'
-  (onHisPayroll)='historyPayroll($event)'
-  (onPrint)='confirmPayroll($event)'
+  (onAdd)='onAdd($event)'
+  (onDel)='onDelete($event)'
+  (onUpdate)='onUpdate($event)'
+  (onRestore)='onRestore($event)'
+  (onHisPayroll)='onHistory($event)'
+  (onPrint)='onPrint($event)'
 >
 </app-mouse-right>
