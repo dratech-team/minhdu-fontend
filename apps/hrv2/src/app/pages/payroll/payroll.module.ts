@@ -26,6 +26,7 @@ import {NzSwitchModule} from "ng-zorro-antd/switch";
 import {FilterPipe, RangeDateTimePipe} from "./pipes";
 import {MatSortModule} from "@angular/material/sort";
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
+import {AbsentSalaryComponent} from "./components/absent-salary/absent-salary.component";
 
 @NgModule({
   imports: [
@@ -58,7 +59,8 @@ import { NzCarouselModule } from 'ng-zorro-antd/carousel';
     TablePayrollComponent,
     DetailPayrollComponent,
     FilterPipe,
-    RangeDateTimePipe
+    RangeDateTimePipe,
+    AbsentSalaryComponent
   ],
   providers: [
     DatePipe,

@@ -14,7 +14,7 @@ export class AbsentSalaryService extends BaseService<ResponseSalaryEntity> {
     super(Api.HR.PAYROLL.SALARY, http);
   }
 
-  addOne(props: BaseAddAbsentSalaryDto): Observable<ResponseSalaryEntity> {
+  addOne(props:Partial<BaseAddAbsentSalaryDto>): Observable<ResponseSalaryEntity> {
     return super.addOne(props);
   }
 

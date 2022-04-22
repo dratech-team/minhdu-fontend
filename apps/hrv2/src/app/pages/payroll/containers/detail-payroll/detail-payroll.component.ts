@@ -14,6 +14,8 @@ import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../state/payroll.action";
 import {PayrollEntity} from "../../entities";
 import {tranFormSalaryType} from "../../utils";
+import {NzModalRef, NzModalService} from "ng-zorro-antd/modal";
+import {AbsentSalaryComponent} from "../../components/absent-salary/absent-salary.component";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -57,6 +59,7 @@ export class DetailPayrollComponent implements OnInit {
     public readonly router: Router,
     private readonly datePipe: DatePipe,
     private readonly message: NzMessageService,
+    private readonly modal:NzModalService,
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
@@ -73,7 +76,17 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   addSalary(type: SalaryTypeEnum, payroll: PayrollEntity) {
-
+    this.modal.create({
+      nzTitle:'Thêm Khấu trừ',
+      nzContent:AbsentSalaryComponent,
+      nzComponentParams:<any>{
+        data: {
+          add: {
+            payroll
+          }
+        }
+      }
+    })
   }
 
   updateSalary(type: SalaryTypeEnum, salary: any, payroll?: PayrollEntity) {
