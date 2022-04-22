@@ -33,7 +33,15 @@
           <div>Chưa nhập hệ số</div>
         </div>
       </div>
-
+      <div class=' main-popup mt-2' *ngIf='formGroup.value?.block?.units'>
+        <div><span class='main-title'>Đơn vị</span><span class='star'>*</span></div>
+        <nz-select style="width: 100%" formControlName="unit" >
+          <nz-option *ngFor="let item of formGroup.value.block.units" [nzValue]="item.value" [nzLabel]="item.name"></nz-option>
+        </nz-select>
+        <div *ngIf='checkValid.unit.errors?.required ' class='invalid-feedback'>
+          <div>Chưa chọn đơn vị</div>
+        </div>
+      </div>
       <div class='d-flex mt-2' *ngIf='formGroup.value.block?.constraintHoliday?.show'>
         <div><span class='main-title'>Ràng buộc ngày lễ:</span></div>
         <label
@@ -42,7 +50,6 @@
           formControlName='constraintHoliday'
           [nzDisabled]='formGroup.value.block.constraintHoliday.disabled'
         >
-
         </label>
       </div>
       <div class='d-flex mt-2' *ngIf='formGroup.value.block?.constraintOvertime?.show'>
@@ -55,6 +62,36 @@
         >
         </label>
       </div>
+      <div class='mt-2' *ngIf='formGroup.value?.block?.price?.show
+       &&formGroup.value.block.type !== salaryTypeEnum.ABSENT'>
+        <span>Đơn giá</span>
+        <input
+          currencyMask
+          [options]="{ suffix: ' đ' }"
+          nz-input type='text'  placeholder='Đơn giá'
+          [formControl]="formControlPrice"
+          (keyup.enter)="getPrice()"
+          [ngStyle]="{
+                 'pointer-events':formGroup.value.block.price.disabled ? 'none': 'auto',
+                 'background':formGroup.value.block.price.disabled ? '#dddddd':'white'
+                  }">
+        <div class="mt-2" *ngIf="prices.length > 0" class="border p-1 mt-1 "
+             style="height: 120px ; overflow-y: scroll">
+          <mat-chip-list>
+            <mat-chip
+              *ngFor="let price of prices"
+              [removable]='true'
+              (removed)='onRemovePrice(price)'
+              [selectable]='true'
+              [removable]='true'>
+              {{price|number: '1.0-0'}}
+              <button class='btn' matChipRemove *ngIf='true'>
+                <mat-icon style='position: absolute; top:4px ; right: 5px'>x</mat-icon>
+              </button>
+            </mat-chip>
+          </mat-chip-list>
+        </div>
+      </div>
       <div *ngIf='formGroup.value.block?.references'>
         <div class='font-weight-bold my-2'>Công thức tính</div>
         <div class='mt-2'>
@@ -64,12 +101,14 @@
                    [nzValue]='item'>{{item.name}}</label>
           </nz-radio-group>
         </div>
-        <div class=' main-popup mt-2' *ngIf='formGroup.value?.block?.price?.show'>
+        <div class='mt-2' *ngIf='formGroup.value?.block?.price?.show'>
           <input
             *ngIf='!formGroup.value.reference.recipes else recipe'
             currencyMask
             [options]="{ suffix: ' đ' }"
-            nz-input type='text' formControlName='price' placeholder='Đơn giá'
+            nz-input type='text'  placeholder='Đơn giá'
+            [formControl]="formControlPrice"
+            (keyup.enter)="getPrice()"
             [ngStyle]="{
                  'pointer-events':formGroup.value.block.price.disabled ? 'none': 'auto',
                  'background':formGroup.value.block.price.disabled ? '#dddddd':'white'
@@ -84,6 +123,22 @@
               </nz-select>
             </div>
           </ng-template>
+          <div class="mt-2" *ngIf="prices.length > 0" class="border p-1 mt-1 "
+               style="height: 120px ; overflow-y: scroll">
+            <mat-chip-list>
+              <mat-chip
+                *ngFor="let price of prices"
+                [removable]='true'
+                (removed)='onRemovePrice(price)'
+                [selectable]='true'
+                [removable]='true'>
+                {{price|number: '1.0-0'}}
+                <button class='btn' matChipRemove *ngIf='true'>
+                  <mat-icon style='position: absolute; top:4px ; right: 5px'>x</mat-icon>
+                </button>
+              </mat-chip>
+            </mat-chip-list>
+          </div>
         </div>
         <div class='mt-2' *ngIf='formGroup.value.reference?.dives '>
           <div><span class='main-title'>Chia cho</span><span class='star'>*</span></div>

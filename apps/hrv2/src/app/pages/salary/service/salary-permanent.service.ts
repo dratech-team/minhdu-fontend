@@ -16,11 +16,11 @@ export class SalaryPermanentService extends BaseService<ResponseSalaryEntity> {
   }
 
   addOne(props:Partial<BaseAddPermanentSalaryDto>): Observable<ResponseSalaryEntity> {
-    return super.addOne(props);
+    return this.http.post<ResponseSalaryEntity>(Api.HR.PAYROLL.SALARY + '/create', props);
   }
 
   updateMany(body: Partial<BaseUpdatePermanentDto>): Observable<ResponseSalaryEntity> {
-    return super.updateMany(body);
+    return this.http.post<ResponseSalaryEntity>(Api.HR.PAYROLL.SALARY + '/update', body);
   }
 
   delete(id: number): Observable<void> {

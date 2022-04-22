@@ -8,6 +8,5 @@ export interface SalaryEntity extends BaseSalaryEntity {
   readonly payroll?: PayrollEntity,
   readonly setting?: SalarySettingEntity
   readonly partial?: PartialDayEnum;
-  readonly unit?: DatetimeUnitEnum;
   readonly rate: number
 }

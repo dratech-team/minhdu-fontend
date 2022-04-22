@@ -1,5 +1,7 @@
 import {salaryReference, SalaryTypeEnum} from "../enums";
 import {referencesTypeConstant} from "./reference-type.constant";
+import {DatetimeUnitEnum} from "@minhdu-fontend/enums";
+import {UnitDatetimeConstant} from "./unit-datetime.constant";
 
 interface BlockSalary {
   title: string,
@@ -8,6 +10,10 @@ interface BlockSalary {
     disabled?: boolean,
     show?: boolean
   }
+  units?: {
+    name: string,
+    value: DatetimeUnitEnum
+  }[],
   constraintHoliday?: {
     disabled?: boolean,
     show?: boolean
@@ -24,7 +30,7 @@ interface BlockSalary {
     disabled?: boolean,
     show?: boolean
   }
-  insurance? :{
+  insurance?: {
     disabled?: boolean,
     show?: boolean
   }
@@ -38,7 +44,7 @@ export const blockSalariesConstant: BlockSalary[] = [
       disabled: false,
       show: false
     },
-    insurance:{
+    insurance: {
       show: true,
       disabled: false
     },
@@ -79,6 +85,7 @@ export const blockSalariesConstant: BlockSalary[] = [
       disabled: false,
       show: false
     },
+    units: UnitDatetimeConstant,
     rate: {
       disabled: false,
       show: true

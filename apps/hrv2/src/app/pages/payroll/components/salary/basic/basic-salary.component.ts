@@ -18,7 +18,7 @@ import {dataModalPermanentSalary} from "../../../entities/data-modal-permanent.s
   templateUrl: 'basic-salary.component.html'
 })
 export class BasicSalaryComponent implements OnInit {
-  @Input() data!:dataModalPermanentSalary
+  @Input() data!: dataModalPermanentSalary
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
   salariesSetting$ = this.settingSalaryQuery.selectAll({
     filterBy: [(entity) => entity.type === SalaryTypeEnum.BASIC ||
@@ -46,19 +46,28 @@ export class BasicSalaryComponent implements OnInit {
   ngOnInit(): void {
     if (this.data?.add) {
       this.stepIndex = 1
+      this.payrollSelected = this.payrollSelected.concat([this.data.add.payroll])
     }
     this.actions$.dispatch(SettingSalaryActions.loadAll({
-      search: {salaryType: SalaryTypeEnum.BASIC}
+      search: {salaryType: SalaryTypeEnum.BASIC_INSURANCE}
     }))
     if (this.data?.update?.multiple) {
       this.salariesSelected = this.data.update.multiple.salariesSelected;
     }
     const salary = this.data?.update?.salary
     this.formGroup = this.formBuilder.group({
-      template: [salary?.title],
+      template: [salary?.title, Validators.required],
       price: [salary?.price, Validators.required],
       rate: [salary?.rate, Validators.required],
+      unit: [salary?.unit, Validators.required]
     });
+    this.formGroup.get('template')?.valueChanges.subscribe(template => {
+      if (template.prices.length === 1) {
+        this.formGroup.get('price')?.setValue(template.prices[0])
+      }
+      this.formGroup.get('unit')?.setValue(template.unit)
+      this.formGroup.get('rate')?.setValue(template.rate)
+    })
   }
 
   get checkValid() {
@@ -75,7 +84,6 @@ export class BasicSalaryComponent implements OnInit {
       title: value.template.title,
       price: value.price,
       note: value.note,
-      settingId: value.template.id
     };
     if (this.data?.update) {
       Object.assign(salary, {salaryIds: this.salariesSelected.map(val => val.salary.id)})
@@ -86,7 +94,7 @@ export class BasicSalaryComponent implements OnInit {
           }))
         } else {
           if (this.data.update?.salary.payrollId)
-          this.actions$.dispatch(PayrollActions.loadOne({id: this.data.update.salary.payrollId}))
+            this.actions$.dispatch(PayrollActions.loadOne({id: this.data.update.salary.payrollId}))
         }
         this.onCloseModal(res)
       })
@@ -95,7 +103,7 @@ export class BasicSalaryComponent implements OnInit {
       Object.assign(salary, {payrollIds: [this.payrollSelected.map(val => val.id)]})
       this.service.addOne(salary).subscribe(res => {
         if (this.data.add?.payroll.id)
-        this.actions$.dispatch(PayrollActions.loadOne({id: this.data.add?.payroll.id}))
+          this.actions$.dispatch(PayrollActions.loadOne({id: this.data.add?.payroll.id}))
         this.onCloseModal(res)
       })
     }
