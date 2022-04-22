@@ -45,7 +45,6 @@ export class PaymentDialogComponent implements OnInit {
         ), Validators.required],
         note: [this.data.paymentHistory.note, Validators.required]
       });
-      console.log(this.data.paymentHistory.orderId)
       this.pickOrders(this.data.paymentHistory.orderId)
     } else {
       this.formGroup = this.formBuilder.group({

@@ -51,7 +51,7 @@
             <td >{{settingSalary.id}}</td>
             <td nzLeft>{{settingSalary.title}}</td>
             <td nzLeft>{{settingSalary.type === salaryTypeEnum.ABSENT ?
-              (((settingSalary.price|number:'1.0-0')) || tranFormType(settingSalary.types))
+              (((settingSalary.price|number:'1.0-0')) || tranFormType(settingSalary.totalOf))
               + ' / ' +
               (settingSalary.workday || 'Ngày công chuẩn') :
               settingSalary.price}}</td>

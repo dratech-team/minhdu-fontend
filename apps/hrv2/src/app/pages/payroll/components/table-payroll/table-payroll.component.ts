@@ -99,7 +99,6 @@ export class TablePayrollComponent implements OnInit {
   }
 
   onDetail(payroll: PayrollEntity) {
-    console.log(payroll)
     this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.employee.id],
       {
         queryParams: {

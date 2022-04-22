@@ -95,7 +95,6 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.logout),
         tap((_) => {
-          console.log('sssss');
           localStorage.removeItem('role');
           localStorage.removeItem('token');
           this.router.navigate(['auth/login']).then();

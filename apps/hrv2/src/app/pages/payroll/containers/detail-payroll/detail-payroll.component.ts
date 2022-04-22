@@ -14,6 +14,10 @@ import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../state/payroll.action";
 import {PayrollEntity} from "../../entities";
 import {tranFormSalaryType} from "../../utils";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {PermanentSalaryComponent} from "../../../salary/components/permanent/permanent-salary.component";
+import {dataModalPermanentSalary} from "../../entities/data-modal-permanent.salary";
+import {AbsentSalaryEntity, AllowanceSalaryEntity, OvertimeSalaryEntity, SalaryEntity} from "../../../salary/entities";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -46,7 +50,7 @@ export class DetailPayrollComponent implements OnInit {
   employeeTypeEnum = EmployeeType;
   role!: string | null
   roleEnum = Role;
-  sortedSalaryOver: Salary[] = []
+  sortedSalaryOver: OvertimeSalaryEntity[] = []
   recipeType = RecipeType
 
   constructor(
@@ -55,6 +59,7 @@ export class DetailPayrollComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly activatedRoute: ActivatedRoute,
     public readonly router: Router,
+    private readonly modal: NzModalService,
     private readonly datePipe: DatePipe,
     private readonly message: NzMessageService,
   ) {
@@ -72,11 +77,41 @@ export class DetailPayrollComponent implements OnInit {
     return this.activatedRoute.snapshot.params.id;
   }
 
-  addSalary(type: SalaryTypeEnum, payroll: PayrollEntity) {
-
+  onAdd(type: SalaryTypeEnum, payroll: PayrollEntity) {
+    switch (type) {
+      case SalaryTypeEnum.BASIC:
+        this.modal.create({
+          nzTitle: 'Thêm lương cơ bản',
+          nzContent: PermanentSalaryComponent,
+          nzComponentParams: <{ data: dataModalPermanentSalary }>{
+            data: {
+              add: {payroll}
+            }
+          },
+          nzFooter: ' '
+        })
+        break
+    }
   }
 
-  updateSalary(type: SalaryTypeEnum, salary: any, payroll?: PayrollEntity) {
+  updateSalary(
+    type: SalaryTypeEnum,
+    salary: SalaryEntity | AllowanceSalaryEntity|OvertimeSalaryEntity|AbsentSalaryEntity,
+    payroll?: PayrollEntity) {
+    switch (type) {
+      case SalaryTypeEnum.BASIC:
+        this.modal.create({
+          nzTitle: 'Sửa lương cơ bản',
+          nzContent: PermanentSalaryComponent,
+          nzComponentParams: <{ data: dataModalPermanentSalary }>{
+            data: {
+              update: {salary: salary}
+            }
+          },
+          nzFooter: ' '
+        })
+        break
+    }
   }
 
   openSalary(type: SalaryTypeEnum, config: MatDialogConfig) {
@@ -99,7 +134,7 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   navigatePayroll(payroll: PayrollEntity) {
-    if(payroll.payrollIds){
+    if (payroll.payrollIds) {
       const indexPayrollCurrent = payroll.payrollIds.indexOf(payroll.id);
       const payrollIds = payroll.payrollIds;
       if (indexPayrollCurrent < payrollIds.length - 1) {
@@ -149,7 +184,7 @@ export class DetailPayrollComponent implements OnInit {
         case 'title':
           return this.compare(b.title, a.title, isAsc);
         case 'datetime':
-          return this.compare(b.datetime, a.datetime, isAsc);
+          return this.compare(b.startedAt, a.endedAt, isAsc);
         case 'unit':
           return this.compare(b.unit, a.unit, isAsc);
         default:
@@ -166,7 +201,7 @@ export class DetailPayrollComponent implements OnInit {
     return tranFormSalaryType(salaryTypes)
   }
 
-  onSalarySetting(title: string|undefined) {
+  onSalarySetting(title: string | undefined) {
     if (title) {
       this.router.navigate(['ban-mau'], {
         queryParams: {

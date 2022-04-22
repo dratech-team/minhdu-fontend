@@ -29,7 +29,6 @@ export class UpdateContractComponent implements OnInit {
 
   ngOnInit() {
     //FIXME m?i l�m tru?ng h?p h?p d?ng m?i nh?t
-    console.log(this.data);
     if (this.data?.contracts) {
       this.lastContract = this.data?.contracts.length - 1;
     }

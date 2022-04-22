@@ -104,7 +104,6 @@ export class DialogWFHComponent implements OnInit {
     } else {
       if (moment(value.startedAt).format('YYYY-MM-DD')
         === moment(value.endedAt).format('YYYY-MM-DD')){
-        console.log(value.startedAt)
         Object.assign(salary, {
           datetime: value.startedAt,
         })

@@ -6,12 +6,13 @@ import {SalaryConstraintEntity} from "./salary-constraint.entity";
 
 export interface SalarySettingEntity extends BaseSalarySettingEntity {
   type: SalaryTypeEnum,
-  title?: string,
+  title: string,
   price?: number,
+  prices?: number[],
   reference?: salaryReference,
   constraints?: SalaryConstraintEntity[]
   branches?: Branch[]
   unit?: DatetimeUnitEnum
-  types: SalaryTypeEnum [],
+  totalOf: SalaryTypeEnum [],
   workday?: number,
 }

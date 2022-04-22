@@ -64,7 +64,6 @@ export class DialogHolidayComponent implements OnInit {
     }
 
     this.formPosition.valueChanges.subscribe(val => {
-      console.log(val)
     })
 
     this.formGroup.get('rate')?.valueChanges.subscribe(

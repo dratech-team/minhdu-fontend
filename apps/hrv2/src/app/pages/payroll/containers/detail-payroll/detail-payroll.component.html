@@ -118,10 +118,12 @@
                   <th nzWidth='28%'>
                     <div>Thành tiền</div>
                   </th>
-                  <th nzWidth='22%' (click)='addSalary(salaryTypeEnum.BASIC,payroll)'>
-                    <span class='mr-1 pointer' style='color: #1b8eb7'>Thêm mục</span>
-                    <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
-                         alt='add icon'>
+                  <th nzWidth='22%' (click)='onAdd(salaryTypeEnum.BASIC,payroll)'>
+                    <div class="d-flex">
+                      <span class='mr-1 pointer' style='color: #1b8eb7'>Thêm mục</span>
+                      <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+                           alt='add icon'>
+                    </div>
                   </th>
                 </tr>
                 </thead>
@@ -166,10 +168,12 @@
                   <th nzWidth='28%'>
                     <div>Thành tiền</div>
                   </th>
-                  <th nzWidth='22%' (click)='addSalary(salaryTypeEnum.STAY,payroll)'>
-                    <span class='mr-1 pointer' style='color: #1b8eb7'>Thêm mục</span>
-                    <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
-                         alt='add icon'>
+                  <th nzWidth='22%' (click)='onAdd(salaryTypeEnum.STAY,payroll)'>
+                    <div class="d-flex">
+                      <span class='mr-1 pointer' style='color: #1b8eb7'>Thêm mục</span>
+                      <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+                           alt='add icon'>
+                    </div>
                   </th>
                 </tr>
                 </thead>
@@ -223,9 +227,12 @@
                   <div>Chú thích</div>
                 </th>
                 <th nzWidth='10%' style='padding: 0; color: #1b8eb7'
-                    (click)='addSalary(salaryTypeEnum.ALLOWANCE, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
-                  <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
-                       alt='add icon'>
+                    (click)='onAdd(salaryTypeEnum.ALLOWANCE, payroll ) '>
+                  <div class="d-flex">
+                    <span class='mr-1 pointer'>Thêm mục</span>
+                    <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+                         alt='add icon'>
+                  </div>
                 </th>
               </tr>
               </thead>
@@ -291,9 +298,12 @@
                   </div>
                 </th>
                 <th nzWidth='10%' style='padding: 0; color: #1b8eb7'
-                    (click)='addSalary(salaryTypeEnum.OVERTIME, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
-                  <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
-                       alt='add icon'>
+                    (click)='onAdd(salaryTypeEnum.OVERTIME, payroll ) '>
+                  <div class="d-flex">
+                    <span class='mr-1 pointer'>Thêm mục</span>
+                    <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+                         alt='add icon'>
+                  </div>
                 </th>
               </tr>
               </thead>
@@ -307,24 +317,21 @@
                   </div>
                 </td>
                 <td class=' text-center '>
-                <span *ngIf='salary.unit'>
-                  {{salary.datetime ? (salary.datetime|date:'dd-MM-yyyy') : '-'}}
-                </span>
                 </td>
                 <td>
                   <span>{{salary.rate}}</span>
                 </td>
                 <td>
-                  <span *ngIf='salary.unit === datetimeUnit.HOUR'> {{salary.times}} Giờ </span>
-                  <span *ngIf='salary.unit === datetimeUnit.DAY'>{{salary.times}} Ngày</span>
-                  <span *ngIf='salary.unit === datetimeUnit.TIMES'>{{salary.times}} Lần</span>
+                  <span *ngIf='salary.unit === datetimeUnit.HOUR'>  Giờ </span>
+                  <span *ngIf='salary.unit === datetimeUnit.DAY'> Ngày</span>
+                  <span *ngIf='salary.unit === datetimeUnit.TIMES'> Lần</span>
                 </td>
                 <td style='color: #29CC97'>
                 <span>
-                  {{ salary.price ? ((salary.price * salary.times * salary.rate)|number:'1.0') + 'đ' : 'Theo lương chuẩn'}}
+                  {{ salary.price ? ((salary.price * salary.rate)|number:'1.0') + 'đ' : 'Theo lương chuẩn'}}
                 </span>
                   <span *ngIf='salary.allowance'>
-                  + {{salary.allowance.price * salary.times}}
+                  + {{salary.allowance.price}}
                 </span>
                 </td>
                 <td>
@@ -381,9 +388,12 @@
                   </div>
                 </th>
                 <th nzWidth='10%' style='padding: 0; color: #1b8eb7'
-                    (click)='addSalary(salaryTypeEnum.ABSENT, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
-                  <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
-                       alt='add icon'>
+                    (click)='onAdd(salaryTypeEnum.ABSENT, payroll ) '>
+                  <div class="d-flex">
+                    <span class='mr-1 pointer'>Thêm mục</span>
+                    <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+                         alt='add icon'>
+                  </div>
                 </th>
               </tr>
               </thead>
@@ -413,7 +423,7 @@
                   <td (click)='onSalarySetting(salary?.setting?.title)'>
               <span *ngIf='salary.startedAt && salary.endedAt'>
               Từ. {{salary.partial !== PartialDay.CUSTOM ? (salary.startedAt | date:'dd-MM-yyyy') : salary.startedAt | date:'dd-MM-yyyy HH:mm:ss'}}
-                <br />
+                <br/>
                 đến {{salary.partial !== PartialDay.CUSTOM ? (salary.endedAt | date:'dd-MM-yyyy') : salary.endedAt | date:'dd-MM-yyyy HH:mm:ss'}}
                 </span>
                   </td>
@@ -472,10 +482,12 @@
                     Tổng tiền
                   </div>
                 </th>
-                <th nzWidth='10%' style='color: #1b8eb7' (click)='scanHoliday(payroll.id)'><span
-                  class='mx-2 pointer'>Quét</span>
-                  <img class='pointer' style='margin-left: 2px;width: 13px;' src='./assets/icons/search.svg'
-                       alt='add icon'>
+                <th nzWidth='10%' style='color: #1b8eb7' (click)='scanHoliday(payroll.id)'>
+                  <div class="d-flex">
+                    <span class='mx-2 pointer'>Quét</span>
+                    <img class='pointer' style='margin-left: 2px;width: 13px;' src='./assets/icons/search.svg'
+                         alt='add icon'>
+                  </div>
                 </th>
               </tr>
               </thead>
@@ -548,9 +560,12 @@
                   </div>
                 </th>
                 <th nzWidth='10%' style='padding: 0; color: #1b8eb7'
-                    (click)='addSalary(salaryTypeEnum.WFH, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
-                  <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
-                       alt='add icon'>
+                    (click)='onAdd(salaryTypeEnum.WFH, payroll ) '>
+                  <div class="d-flex">
+                    <span class='mr-1 pointer'>Thêm mục</span>
+                    <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+                         alt='add icon'>
+                  </div>
                 </th>
               </tr>
               </thead>
@@ -601,10 +616,12 @@
                     Chú thích phiếu lương
                   </div>
                 </th>
-                <th nzWidth='10%' style='color: #1b8eb7' (click)='addNote(payroll)'><span
-                  class='mx-2 pointer'>{{payroll?.note ? 'Sửa' : 'Thêm'}}</span>
-                  <img class='pointer' style='margin-left: 2px;width: 13px;' src='./assets/img/payroll/plus-lg.svg'
-                       alt='add icon'>
+                <th nzWidth='10%' style='color: #1b8eb7' (click)='addNote(payroll)'>
+                  <div class="d-flex">
+                    <span class='mx-2 pointer'>{{payroll?.note ? 'Sửa' : 'Thêm'}}</span>
+                    <img class='pointer' style='margin-left: 2px;width: 13px;' src='./assets/img/payroll/plus-lg.svg'
+                         alt='add icon'>
+                  </div>
                 </th>
               </tr>
               </thead>
@@ -662,10 +679,12 @@
                         Thành tiền
                       </div>
                     </th>
-                    <th nzWidth='12%' (click)='addSalary(salaryTypeEnum.PART_TIME,payroll)'>
-                      <span class='mr-1 pointer' style='color: #1b8eb7'>Thêm mục</span>
-                      <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
-                           alt='add icon'>
+                    <th nzWidth='12%' (click)='onAdd(salaryTypeEnum.PART_TIME,payroll)'>
+                      <div class="d-flex">
+                        <span class='mr-1 pointer' style='color: #1b8eb7'>Thêm mục</span>
+                        <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+                             alt='add icon'>
+                      </div>
                     </th>
                   </tr>
                   </thead>
