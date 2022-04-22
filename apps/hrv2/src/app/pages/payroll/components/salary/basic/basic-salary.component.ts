@@ -1,53 +1,37 @@
-import {DatePipe} from '@angular/common';
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
 import {Role} from '../../../../../../../../../libs/enums/hr/role.enum';
 import {SalaryPayroll} from '@minhdu-fontend/data-models';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalRef} from "ng-zorro-antd/modal";
-import {PermanentSalaryEntity, ResponseSalaryEntity} from "../../../../salary/entities";
+import {ResponseSalaryEntity} from "../../../../salary/entities";
 import {PayrollEntity} from "../../../entities";
 import {SalaryPermanentService} from "../../../../salary/service";
 import {SettingSalaryActions, SettingSalaryQuery} from "../../../../setting/salary/state";
 import {SalaryTypeEnum} from "../../../../setting/salary/enums";
 import {Actions} from "@datorama/akita-ng-effects";
-import {getTemplateSalaryUtil} from "../../../utils/get-template-salary.util";
-import {SalarySettingEntity} from "../../../../setting/salary/entities";
-import {map} from "rxjs/operators";
 import {PayrollActions} from "../../../state/payroll.action";
 import {PaginationDto} from "@minhdu-fontend/constants";
+import {dataModalPermanentSalary} from "../../../entities/data-modal-permanent.salary";
 
 @Component({
   templateUrl: 'basic-salary.component.html'
 })
 export class BasicSalaryComponent implements OnInit {
-  @Input() data!: {
-    salary?: PermanentSalaryEntity
-    updateMultiple?: boolean,
-    salariesSelected?: SalaryPayroll[]
-    payroll: PayrollEntity,
-    isHistory?: boolean
-  }
+  @Input() data!:dataModalPermanentSalary
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
   salariesSetting$ = this.settingSalaryQuery.selectAll({
     filterBy: [(entity) => entity.type === SalaryTypeEnum.BASIC ||
       entity.type === SalaryTypeEnum.BASIC_INSURANCE]
-  }).pipe(map(templates => {
-    if (this.data?.salary?.setting) {
-      this.formGroup.get('template')?.setValue(
-        this.getTemplateSalary(templates, this.data.salary.setting.id))
-    }
-    return templates
-  }))
-  type = SalaryTypeEnum;
+  })
+  salaryTypeEnum = SalaryTypeEnum;
   formGroup!: FormGroup;
-  checkSalary = true;
   roleEnum = Role;
   role = localStorage.getItem('role');
   payrollSelected: PayrollEntity[] = [];
   salariesSelected: SalaryPayroll[] = [];
   stepIndex = 0;
+  compareFn = (o1: any, o2: any) => o1 && o2 ? (o1.id === o2.id || o1 === o2.title) : o1 === o2;
 
   constructor(
     private readonly actions$: Actions,
@@ -60,22 +44,21 @@ export class BasicSalaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.data?.add) {
+      this.stepIndex = 1
+    }
     this.actions$.dispatch(SettingSalaryActions.loadAll({
       search: {salaryType: SalaryTypeEnum.BASIC}
     }))
-    if (this.data?.salariesSelected) {
-      this.salariesSelected = this.data.salariesSelected;
+    if (this.data?.update?.multiple) {
+      this.salariesSelected = this.data.update.multiple.salariesSelected;
     }
-    const salary = this.data?.salary
+    const salary = this.data?.update?.salary
     this.formGroup = this.formBuilder.group({
-      template: [''],
+      template: [salary?.title],
       price: [salary?.price, Validators.required],
       rate: [salary?.rate, Validators.required],
     });
-  }
-
-  getTemplateSalary(template: SalarySettingEntity[], id?: number) {
-    return getTemplateSalaryUtil(template, id)
   }
 
   get checkValid() {
@@ -94,26 +77,30 @@ export class BasicSalaryComponent implements OnInit {
       note: value.note,
       settingId: value.template.id
     };
-    if (this.data?.salary) {
+    if (this.data?.update) {
       Object.assign(salary, {salaryIds: this.salariesSelected.map(val => val.salary.id)})
       this.service.updateMany(salary).subscribe(res => {
-        if (this.data.updateMultiple) {
+        if (this.data.update?.multiple) {
           this.actions$.dispatch(PayrollActions.loadAll({
             search: {take: PaginationDto.take, skip: PaginationDto.skip}
           }))
         } else {
-          this.actions$.dispatch(PayrollActions.loadOne({id: this.data?.payroll.id}))
+          if (this.data.update?.salary.payrollId)
+          this.actions$.dispatch(PayrollActions.loadOne({id: this.data.update.salary.payrollId}))
         }
         this.onCloseModal(res)
       })
-    } else {
+    }
+    if (this.data.add) {
       Object.assign(salary, {payrollIds: [this.payrollSelected.map(val => val.id)]})
       this.service.addOne(salary).subscribe(res => {
-        this.actions$.dispatch(PayrollActions.loadOne({id: this.data?.payroll.id}))
+        if (this.data.add?.payroll.id)
+        this.actions$.dispatch(PayrollActions.loadOne({id: this.data.add?.payroll.id}))
         this.onCloseModal(res)
       })
     }
   }
+
 
   onCloseModal(res: ResponseSalaryEntity) {
     this.message.success(res.message)

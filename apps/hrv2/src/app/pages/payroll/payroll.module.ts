@@ -54,7 +54,7 @@ import {SettingSalaryEffect} from "../setting/salary/state";
     NzStepsModule,
     NzSwitchModule,
     MatSortModule,
-    NzCarouselModule
+    NzCarouselModule,
   ],
   declarations: [
     PayrollComponent,

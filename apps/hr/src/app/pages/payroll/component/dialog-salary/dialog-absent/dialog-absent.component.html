@@ -104,7 +104,8 @@
       <div class='mb-3'>
         <span class='font-weight-bold'>Đơn giá</span>
         <span *ngIf="formGroup.value?.template?.id === 0" class="star">*</span>
-        <input *ngIf="formGroup.value?.template?.id === 0 else price" nz-input
+        <input *ngIf="formGroup.value?.template?.id === 0 else price"
+               nz-input
                type="text" formControlName='price'
                currencyMask
                [options]="{ suffix: ' đ' }">

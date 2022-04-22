@@ -16,6 +16,7 @@ import {PayrollEntity} from "../../entities";
 import {tranFormSalaryType} from "../../utils";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {BasicSalaryComponent} from "../../components/salary/basic/basic-salary.component";
+import {dataModalPermanentSalary} from "../../entities/data-modal-permanent.salary";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -76,19 +77,20 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   onAdd(type: SalaryTypeEnum, payroll: PayrollEntity) {
-     switch (type){
-       case SalaryTypeEnum.BASIC:
-         this.modal.create({
-           nzTitle: 'Thêm lương cơ bản',
-           nzContent: BasicSalaryComponent,
-           nzComponentParams:{
-             data: {
-               payroll: payroll
-             }
-           }
-         })
-         break
-     }
+    switch (type) {
+      case SalaryTypeEnum.BASIC:
+        this.modal.create({
+          nzTitle: 'Thêm lương cơ bản',
+          nzContent: BasicSalaryComponent,
+          nzComponentParams: <{ data: dataModalPermanentSalary }>{
+            data: {
+              add: {payroll}
+            }
+          },
+          nzFooter: ' '
+        })
+        break
+    }
   }
 
   updateSalary(type: SalaryTypeEnum, salary: any, payroll?: PayrollEntity) {
@@ -114,7 +116,7 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   navigatePayroll(payroll: PayrollEntity) {
-    if(payroll.payrollIds){
+    if (payroll.payrollIds) {
       const indexPayrollCurrent = payroll.payrollIds.indexOf(payroll.id);
       const payrollIds = payroll.payrollIds;
       if (indexPayrollCurrent < payrollIds.length - 1) {
@@ -181,7 +183,7 @@ export class DetailPayrollComponent implements OnInit {
     return tranFormSalaryType(salaryTypes)
   }
 
-  onSalarySetting(title: string|undefined) {
+  onSalarySetting(title: string | undefined) {
     if (title) {
       this.router.navigate(['ban-mau'], {
         queryParams: {
