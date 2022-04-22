@@ -1,0 +1,104 @@
+<div>
+  <nz-steps [nzCurrent]="stepIndex">
+    <nz-step nzTitle="Nhân viên đã chọn"></nz-step>
+    <nz-step nzTitle="Lương cơ bản"></nz-step>
+    <nz-step nzTitle="Chọn nhân viên"></nz-step>
+  </nz-steps>
+
+  <ng-template [ngIf]="stepIndex === 0">
+<!--    <app-table-salaries-selected-->
+<!--      [salaries]='salariesSelected'-->
+<!--      (EmitSalariesSelected)='changeSalariesSelected($event)'>-->
+<!--    </app-table-salaries-selected>-->
+  </ng-template>
+  <ng-template [ngIf]="stepIndex === 1">
+    <form [formGroup]="formGroup">
+      <div *ngIf='false' class=' mb-5 title-popup'>
+        <span> Lương cơ bản</span>
+      </div>
+      <div class='contract-salary mt-1' *ngIf="!data?.isHistory; else title">
+        <div class=' title-item mb-1'>
+          <span>Loại lương</span>
+          <span class='star'>*</span>
+        </div>
+        <div class=' mb-3' style="width: 100%" [formGroup]='formGroup'>
+          <nz-select style="width: 100%" formControlName='template'
+                      [ngClass]="{ 'is-invalid': checkValid.template.errors }">
+            <nz-option *ngFor='let salary of (salariesSetting$|async)' [nzValue]="salary" [nzLabel]="salary.title">
+            </nz-option>
+          </nz-select>
+          <div *ngIf='checkValid.template.errors?.required' class='invalid-feedback'>
+            <div>Chưa chọn loại lương</div>
+          </div>
+        </div>
+      </div>
+      <ng-template #title>
+        <div class="title-item mt-2">
+          <span> Loại lương</span>
+        </div>
+        <div class="form-control ">
+          {{this.data.salary?.title}}
+        </div>
+      </ng-template>
+      <div class='basic-salary'>
+        <div class=' title-item my-1'>
+          <span>Mức lương</span>
+          <span class='star'>*</span>
+        </div>
+        <div class=' mb-3' [formGroup]='formGroup' *ngIf='formGroup.value.template.type === type.BASIC else inputPrice'>
+          <nz-select style="width: 100%" formControlName='price'
+                      [ngClass]="{ 'is-invalid': checkValid.price.errors }">
+            <nz-option *ngFor='let item of formGroup.value.template.prices' [nzValue]='item'>
+              {{item|number:'1.0-0'}}đ
+            </nz-option>
+          </nz-select>
+        </div>
+        <ng-template #inputPrice>
+          <div class=' mb-3' [formGroup]='formGroup'>
+            <input nz-input type='text'
+                   placeholder='Nhập mức lương'
+                   formControlName='price'
+                   currencyMask
+                   [options]="{ suffix: ' đ' }"
+                   [ngClass]="{ 'is-invalid': checkValid.price.errors }">
+            <div *ngIf='checkValid.price.errors?.required' class='invalid-feedback'>
+              <div>Chưa nhập mức lương</div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      <div *ngIf="data?.isHistory">
+        <div class=' title-item mt-2 mbt-2'>
+          <span>Ngày tạo</span>
+          <span class='star'>*</span>
+        </div>
+        <div class=' mb-3' [formGroup]='formGroup'>
+          <input class="form-control" type='date' formControlName='datetime'
+                 [ngClass]="{ 'is-invalid': checkValid.datetime.errors }">
+          <div *ngIf=' checkValid.datetime.errors?.required' class='invalid-feedback'>
+            <div>Chưa chọn ngày</div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <ng-template [ngIf]="stepIndex === 2">
+<!--    <app-pick-payroll [payrollInit]="data?.payroll"-->
+<!--                      [createdAt]="data?.createdAt || data?.payroll?.createdAt"-->
+<!--                      (EventSelectPayroll)="pickPayroll($event)">-->
+
+<!--    </app-pick-payroll>-->
+  </ng-template>
+
+  <div>
+    <button nz-button nzType="default" (click)="pre()" *ngIf="stepIndex > 0">
+      <span>Previous</span>
+    </button>
+    <button nz-button nzType="default" (click)="next()" *ngIf="stepIndex < 2">
+      <span>Next</span>
+    </button>
+    <button nz-button nzType="primary" (click)="onSubmit()" *ngIf="stepIndex === 2">
+      <span>Done</span>
+    </button>
+  </div>
+</div>

@@ -34,6 +34,10 @@ export const blockSalariesConstant: BlockSalary[] = [
   {
     title: 'Lương cơ bản',
     type: SalaryTypeEnum.BASIC,
+    constraintHoliday: {
+      disabled: false,
+      show: false
+    },
     insurance:{
       show: true,
       disabled: false
@@ -50,6 +54,10 @@ export const blockSalariesConstant: BlockSalary[] = [
   {
     title: 'Phụ cấp lương',
     type: SalaryTypeEnum.STAY,
+    constraintHoliday: {
+      disabled: false,
+      show: false
+    },
     rate: {
       disabled: false,
       show: true

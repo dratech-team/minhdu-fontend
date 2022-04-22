@@ -15,7 +15,7 @@ export class SalaryPermanentService extends BaseService<ResponseSalaryEntity> {
     super(Api.HR.PAYROLL.SALARY, http);
   }
 
-  addOne(props: BaseAddPermanentSalaryDto): Observable<ResponseSalaryEntity> {
+  addOne(props:Partial<BaseAddPermanentSalaryDto>): Observable<ResponseSalaryEntity> {
     return super.addOne(props);
   }
 

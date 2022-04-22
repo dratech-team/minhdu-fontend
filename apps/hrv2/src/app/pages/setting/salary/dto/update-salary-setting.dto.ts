@@ -7,7 +7,7 @@ interface BaseUpdateSalarySettingDto extends BaseSalarySettingEntity{
   readonly settingType: SalaryTypeEnum,
   readonly constraint?: SalaryTypeEnum[],
   readonly workday?:number
-  readonly types?:SalaryTypeEnum[],
+  readonly totalOf?:SalaryTypeEnum[],
 }
 
 export type UpdateSalarySettingDto = BaseUpdateDto<BaseUpdateSalarySettingDto>

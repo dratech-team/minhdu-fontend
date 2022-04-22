@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <div class='d-flex mt-2' *ngIf='formGroup.value.block.constraintHoliday.show'>
+      <div class='d-flex mt-2' *ngIf='formGroup.value.block?.constraintHoliday?.show'>
         <div><span class='main-title'>Ràng buộc ngày lễ:</span></div>
         <label
           nz-checkbox
@@ -45,13 +45,13 @@
 
         </label>
       </div>
-      <div class='d-flex mt-2' *ngIf='formGroup.value.block?.constraintOvertime.show'>
+      <div class='d-flex mt-2' *ngIf='formGroup.value.block?.constraintOvertime?.show'>
         <div><span class='main-title'>Ràng buộc tăng ca:</span></div>
         <label
           nz-checkbox
           class='ml-2'
           formControlName='constraintOvertime'
-          [nzDisabled]='formGroup.value.block.constraintOvertime.disabled'
+          [nzDisabled]='formGroup.value.block.constraintOvertime?.disabled'
         >
         </label>
       </div>

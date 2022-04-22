@@ -14,6 +14,8 @@ import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../state/payroll.action";
 import {PayrollEntity} from "../../entities";
 import {tranFormSalaryType} from "../../utils";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {BasicSalaryComponent} from "../../components/salary/basic/basic-salary.component";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -55,6 +57,7 @@ export class DetailPayrollComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly activatedRoute: ActivatedRoute,
     public readonly router: Router,
+    private readonly modal: NzModalService,
     private readonly datePipe: DatePipe,
     private readonly message: NzMessageService,
   ) {
@@ -72,8 +75,20 @@ export class DetailPayrollComponent implements OnInit {
     return this.activatedRoute.snapshot.params.id;
   }
 
-  addSalary(type: SalaryTypeEnum, payroll: PayrollEntity) {
-
+  onAdd(type: SalaryTypeEnum, payroll: PayrollEntity) {
+     switch (type){
+       case SalaryTypeEnum.BASIC:
+         this.modal.create({
+           nzTitle: 'Thêm lương cơ bản',
+           nzContent: BasicSalaryComponent,
+           nzComponentParams:{
+             data: {
+               payroll: payroll
+             }
+           }
+         })
+         break
+     }
   }
 
   updateSalary(type: SalaryTypeEnum, salary: any, payroll?: PayrollEntity) {
