@@ -15,7 +15,7 @@ import {PayrollActions} from "../../state/payroll.action";
 import {PayrollEntity} from "../../entities";
 import {tranFormSalaryType} from "../../utils";
 import {NzModalService} from "ng-zorro-antd/modal";
-import {BasicSalaryComponent} from "../../components/salary/basic/basic-salary.component";
+import {PermanentSalaryComponent} from "../../components/salary/basic/permanent-salary.component";
 import {dataModalPermanentSalary} from "../../entities/data-modal-permanent.salary";
 import {AbsentSalaryEntity, AllowanceSalaryEntity, OvertimeSalaryEntity, SalaryEntity} from "../../../salary/entities";
 
@@ -82,7 +82,7 @@ export class DetailPayrollComponent implements OnInit {
       case SalaryTypeEnum.BASIC:
         this.modal.create({
           nzTitle: 'Thêm lương cơ bản',
-          nzContent: BasicSalaryComponent,
+          nzContent: PermanentSalaryComponent,
           nzComponentParams: <{ data: dataModalPermanentSalary }>{
             data: {
               add: {payroll}
@@ -102,7 +102,7 @@ export class DetailPayrollComponent implements OnInit {
       case SalaryTypeEnum.BASIC:
         this.modal.create({
           nzTitle: 'Sửa lương cơ bản',
-          nzContent: BasicSalaryComponent,
+          nzContent: PermanentSalaryComponent,
           nzComponentParams: <{ data: dataModalPermanentSalary }>{
             data: {
               update: {salary: salary}

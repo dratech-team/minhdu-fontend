@@ -56,7 +56,6 @@ export class TableAllowanceEmployeeComponent implements OnInit, OnChanges {
           this.employees !== null &&
           this.employees.every((e) => this.allowEmployeesSelected.some(item => item.id === e.id));
       }
-      console.log(changes.employees.currentValue);
       this.employeesSelected = [...changes.employees.currentValue];
     }
     if (changes.allowEmployeesSelected) {

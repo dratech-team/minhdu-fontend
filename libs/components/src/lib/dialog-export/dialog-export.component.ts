@@ -38,7 +38,6 @@ export class DialogExportComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.data.params.startedAt_start)
     this.formGroup = this.formBuilder.group(this.data?.typeDate === 'RANGE_DATETIME' ? {
         name: [ this.data.filename || '', Validators.required],
         startedAt: [ this.datePipe.transform(

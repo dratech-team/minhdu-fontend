@@ -17,14 +17,16 @@ import {catchError, map} from "rxjs/operators";
 import {throwError} from "rxjs";
 
 @Component({
-  templateUrl: 'basic-salary.component.html'
+  templateUrl: 'permanent-salary.component.html'
 })
-export class BasicSalaryComponent implements OnInit {
+export class PermanentSalaryComponent implements OnInit {
   @Input() data!: dataModalPermanentSalary
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
   salariesSetting$ = this.settingSalaryQuery.selectAll({
-    filterBy: [(entity) => entity.type === SalaryTypeEnum.BASIC ||
-      entity.type === SalaryTypeEnum.BASIC_INSURANCE]
+    filterBy: [
+      (entity) => entity.type === SalaryTypeEnum.BASIC ||
+        entity.type === SalaryTypeEnum.BASIC_INSURANCE
+    ]
   }).pipe(
     map(templates => {
       if (this.data.update) {

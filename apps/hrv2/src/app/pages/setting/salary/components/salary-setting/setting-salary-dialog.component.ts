@@ -94,7 +94,6 @@ export class SettingSalaryDialogComponent implements OnInit {
       unit: value.unit,
       prices: this.formControlPrice.value ? this.prices.concat([this.formControlPrice.value]) : this.prices
     };
-    console.log(template)
     if (value.block.type === SalaryTypeEnum.ABSENT) {
       if (!value.reference) {
         return this.message.warning('Chưa chọn tổng của ')
@@ -138,7 +137,7 @@ export class SettingSalaryDialogComponent implements OnInit {
     })
   }
 
-  getPrice(){
+  validatePrices(){
     if(this.formControlPrice.value){
       if(this.prices.includes(this.formControlPrice.value)){
         this.message.warning('Giá tiền đã tồn tại')

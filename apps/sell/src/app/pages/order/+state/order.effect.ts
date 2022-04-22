@@ -43,7 +43,6 @@ export class OrderEffect {
       }));
       return this.orderService.addOne(props).pipe(
         map((res) => {
-          console.log(res)
           this.orderStore.update(state => ({
             ...state, added: true,
             total: state.total + 1,

@@ -49,7 +49,6 @@ export class SettingSalaryEffect {
       return this.service.pagination(props).pipe(
         tap((res) => {
           this.settingSalaryStore.update(state => ({...state, loading: false}))
-          console.log(res)
           if (res.data.length === 0) {
             this.message.warning('Đã lấy hết bảng mẫu')
           }

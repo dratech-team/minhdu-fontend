@@ -26,7 +26,7 @@ import {NzSwitchModule} from "ng-zorro-antd/switch";
 import {FilterPipe, RangeDateTimePipe} from "./pipes";
 import {MatSortModule} from "@angular/material/sort";
 import {NzCarouselModule} from 'ng-zorro-antd/carousel';
-import {BasicSalaryComponent} from "./components/salary/basic/basic-salary.component";
+import {PermanentSalaryComponent} from "./components/salary/basic/permanent-salary.component";
 import {SettingSalaryEffect} from "../setting/salary/state";
 
 
@@ -62,7 +62,7 @@ import {SettingSalaryEffect} from "../setting/salary/state";
     DetailPayrollComponent,
     FilterPipe,
     RangeDateTimePipe,
-    BasicSalaryComponent
+    PermanentSalaryComponent
   ],
   providers: [
     DatePipe,
