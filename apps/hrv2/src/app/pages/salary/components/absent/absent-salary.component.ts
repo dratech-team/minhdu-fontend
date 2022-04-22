@@ -76,7 +76,7 @@ export class AbsentSalaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.actions$.dispatch(SettingSalaryActions.loadAll({
-      search: {types: [SalaryTypeEnum.ABSENT, SalaryTypeEnum.ABSENT]}
+      search: {types: [SalaryTypeEnum.ABSENT]}
     }))
     if (this.data?.update?.multiple) {
       this.salaryPayrolls = this.data.update.multiple.salaryPayrolls;
