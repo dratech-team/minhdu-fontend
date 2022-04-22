@@ -17,6 +17,7 @@ import {tranFormSalaryType} from "../../utils";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {BasicSalaryComponent} from "../../components/salary/basic/basic-salary.component";
 import {dataModalPermanentSalary} from "../../entities/data-modal-permanent.salary";
+import {AbsentSalaryEntity, AllowanceSalaryEntity, OvertimeSalaryEntity, SalaryEntity} from "../../../salary/entities";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -49,7 +50,7 @@ export class DetailPayrollComponent implements OnInit {
   employeeTypeEnum = EmployeeType;
   role!: string | null
   roleEnum = Role;
-  sortedSalaryOver: Salary[] = []
+  sortedSalaryOver: OvertimeSalaryEntity[] = []
   recipeType = RecipeType
 
   constructor(
@@ -93,7 +94,24 @@ export class DetailPayrollComponent implements OnInit {
     }
   }
 
-  updateSalary(type: SalaryTypeEnum, salary: any, payroll?: PayrollEntity) {
+  updateSalary(
+    type: SalaryTypeEnum,
+    salary: SalaryEntity | AllowanceSalaryEntity|OvertimeSalaryEntity|AbsentSalaryEntity,
+    payroll?: PayrollEntity) {
+    switch (type) {
+      case SalaryTypeEnum.BASIC:
+        this.modal.create({
+          nzTitle: 'Sửa lương cơ bản',
+          nzContent: BasicSalaryComponent,
+          nzComponentParams: <{ data: dataModalPermanentSalary }>{
+            data: {
+              update: {salary: salary}
+            }
+          },
+          nzFooter: ' '
+        })
+        break
+    }
   }
 
   openSalary(type: SalaryTypeEnum, config: MatDialogConfig) {
@@ -166,7 +184,7 @@ export class DetailPayrollComponent implements OnInit {
         case 'title':
           return this.compare(b.title, a.title, isAsc);
         case 'datetime':
-          return this.compare(b.datetime, a.datetime, isAsc);
+          return this.compare(b.startedAt, a.endedAt, isAsc);
         case 'unit':
           return this.compare(b.unit, a.unit, isAsc);
         default:

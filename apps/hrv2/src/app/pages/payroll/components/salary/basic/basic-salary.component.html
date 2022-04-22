@@ -46,7 +46,7 @@
           <span>Mức lương</span>
           <span class='star'>*</span>
         </div>
-        <div class=' mb-3' [formGroup]='formGroup' *ngIf='formGroup.value.template?.prices.length > 0 else inputPrice'>
+        <div class=' mb-3' [formGroup]='formGroup' *ngIf='formGroup.value.template?.prices?.length > 0 else inputPrice'>
           <nz-select style="width: 100%" formControlName='price'
                       [ngClass]="{ 'is-invalid': checkValid.price.errors }">
             <nz-option *ngFor='let item of formGroup.value.template.prices' [nzValue]='item'
@@ -100,7 +100,7 @@
     <button class="mr-2" nz-button nzType="default" (click)="next()" *ngIf="stepIndex < 2">
       <span>Tiếp theo</span>
     </button>
-    <button nz-button nzType="primary" (click)="onSubmit()" *ngIf="stepIndex === 2 ||data.add">
+    <button nz-button nzType="primary" [nzLoading]="submitting" (click)="onSubmit()" *ngIf="stepIndex === 2 ||data.add||data.update">
       <span>Xác nhận</span>
     </button>
   </div>

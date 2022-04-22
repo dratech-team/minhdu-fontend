@@ -13,6 +13,8 @@ import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../../state/payroll.action";
 import {PaginationDto} from "@minhdu-fontend/constants";
 import {dataModalPermanentSalary} from "../../../entities/data-modal-permanent.salary";
+import {catchError, map} from "rxjs/operators";
+import {throwError} from "rxjs";
 
 @Component({
   templateUrl: 'basic-salary.component.html'
@@ -23,7 +25,18 @@ export class BasicSalaryComponent implements OnInit {
   salariesSetting$ = this.settingSalaryQuery.selectAll({
     filterBy: [(entity) => entity.type === SalaryTypeEnum.BASIC ||
       entity.type === SalaryTypeEnum.BASIC_INSURANCE]
-  })
+  }).pipe(
+    map(templates => {
+      if (this.data.update) {
+        if (templates.find(template => template.title === this.data.update?.salary.title)) {
+          this.formGroup.get('template')?.setValue(
+            templates.find(template => template.title === this.data.update?.salary.title)
+          )
+        }
+      }
+      return templates
+    })
+  )
   salaryTypeEnum = SalaryTypeEnum;
   formGroup!: FormGroup;
   roleEnum = Role;
@@ -31,7 +44,9 @@ export class BasicSalaryComponent implements OnInit {
   payrollSelected: PayrollEntity[] = [];
   salariesSelected: SalaryPayroll[] = [];
   stepIndex = 0;
+  submitting = false;
   compareFn = (o1: any, o2: any) => o1 && o2 ? (o1.id === o2.id || o1 === o2.title) : o1 === o2;
+
 
   constructor(
     private readonly actions$: Actions,
@@ -44,22 +59,24 @@ export class BasicSalaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.data?.add) {
+    if (this.data.add || this.data.update) {
       this.stepIndex = 1
+    }
+    if (this.data?.add) {
       this.payrollSelected = this.payrollSelected.concat([this.data.add.payroll])
     }
     this.actions$.dispatch(SettingSalaryActions.loadAll({
-      search: {salaryType: SalaryTypeEnum.BASIC_INSURANCE}
+      search: {types: [SalaryTypeEnum.BASIC_INSURANCE, SalaryTypeEnum.BASIC]}
     }))
     if (this.data?.update?.multiple) {
       this.salariesSelected = this.data.update.multiple.salariesSelected;
     }
     const salary = this.data?.update?.salary
     this.formGroup = this.formBuilder.group({
-      template: [salary?.title, Validators.required],
+      template: ['', Validators.required],
       price: [salary?.price, Validators.required],
       rate: [salary?.rate, Validators.required],
-      unit: [salary?.unit, Validators.required]
+      unit: [salary?.unit]
     });
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
       if (template.prices.length === 1) {
@@ -85,9 +102,12 @@ export class BasicSalaryComponent implements OnInit {
       price: value.price,
       note: value.note,
     };
+    this.submitting = true
     if (this.data?.update) {
       Object.assign(salary, {salaryIds: this.salariesSelected.map(val => val.salary.id)})
-      this.service.updateMany(salary).subscribe(res => {
+      this.service.updateMany(salary).pipe(catchError(err => {
+        return this.onSubmitError(err)
+      })).subscribe(res => {
         if (this.data.update?.multiple) {
           this.actions$.dispatch(PayrollActions.loadAll({
             search: {take: PaginationDto.take, skip: PaginationDto.skip}
@@ -101,7 +121,7 @@ export class BasicSalaryComponent implements OnInit {
     }
     if (this.data.add) {
       Object.assign(salary, {payrollIds: [this.payrollSelected.map(val => val.id)]})
-      this.service.addOne(salary).subscribe(res => {
+      this.service.addOne(salary).pipe(catchError(err => this.onSubmitError(err))).subscribe(res => {
         if (this.data.add?.payroll.id)
           this.actions$.dispatch(PayrollActions.loadOne({id: this.data.add?.payroll.id}))
         this.onCloseModal(res)
@@ -111,8 +131,14 @@ export class BasicSalaryComponent implements OnInit {
 
 
   onCloseModal(res: ResponseSalaryEntity) {
+    this.submitting = false
     this.message.success(res.message)
     this.modalRef.close()
+  }
+
+  onSubmitError(err: string) {
+    this.submitting = false
+    return throwError(err)
   }
 
 
