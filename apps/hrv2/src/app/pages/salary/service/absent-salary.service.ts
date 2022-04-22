@@ -15,11 +15,11 @@ export class AbsentSalaryService extends BaseService<ResponseSalaryEntity> {
   }
 
   addOne(props:Partial<BaseAddAbsentSalaryDto>): Observable<ResponseSalaryEntity> {
-    return super.addOne(props);
+    return this.http.post<ResponseSalaryEntity>(Api.HR.PAYROLL.SALARY+ '/create', props);
   }
 
   updateMany(updateDto: Partial<BaseUpdateAbsentDto>): Observable<ResponseSalaryEntity> {
-    return super.updateMany(updateDto);
+    return this.http.post<ResponseSalaryEntity>(Api.HR.PAYROLL.SALARY+ '/update', updateDto);
   }
 
   delete(id: number): Observable<void> {

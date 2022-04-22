@@ -2,40 +2,30 @@ import {DatePipe} from '@angular/common';
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PartialDayEnum, SalaryPayroll} from '@minhdu-fontend/data-models';
-import {DatetimeUnitEnum, partialDay} from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {catchError, map} from "rxjs/operators";
 import {SettingSalaryActions, SettingSalaryQuery} from "../../../setting/salary/state";
-import {salaryReference, SalaryTypeEnum} from "../../../setting/salary/enums";
-import {PayrollEntity} from "../../entities";
-import {AbsentSalaryEntity, ResponseSalaryEntity} from "../../../salary/entities";
-import {AbsentSalaryService} from "../../../salary/service";
+import {salaryReference} from "../../../setting/salary/enums";
+import {PayrollEntity} from "../../../payroll/entities";
+import {ResponseSalaryEntity} from "../../entities";
+import {AbsentSalaryService} from "../../service";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {throwError} from "rxjs";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {Actions} from "@datorama/akita-ng-effects";
-import {PayrollActions} from "../../state/payroll.action";
-import {UnitSalaryConstant} from "../../../salary/constants";
-import {SessionConstant} from "../../constants/session.constant";
+import {PayrollActions} from "../../../payroll/state/payroll.action";
+import {UnitSalaryConstant} from "../../constants";
+import {SessionConstant} from "../../../payroll/constants/session.constant";
 import {referencesTypeConstant} from "../../../setting/salary/constants";
-import {tranFormSalaryType} from "../../utils";
 import {SalarySettingEntity} from "../../../setting/salary/entities";
-
+import {DataModalAbsentSalary} from "../../../payroll/entities/data-modal-absent-salary";
+import {transFormTotalOf} from "../../../setting/salary/utils/transform-total-of.util";
 
 @Component({
   templateUrl: 'absent-salary.component.html'
 })
 export class AbsentSalaryComponent implements OnInit {
-  @Input() data!: {
-    add?: {
-      payroll: PayrollEntity
-    }
-    update?: {
-      salary: AbsentSalaryEntity
-      multiple?: {
-        salaryPayrolls: SalaryPayroll[]
-      },
-    }
-  }
+  @Input() data!: DataModalAbsentSalary
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
   templateSalary$ = this.settingSalaryQuery.selectAll({
     filterBy: [(entity => entity.type === SalaryTypeEnum.ABSENT)]
@@ -47,7 +37,7 @@ export class AbsentSalaryComponent implements OnInit {
         type: SalaryTypeEnum.ABSENT,
         rate: 1,
         unit: DatetimeUnitEnum.MONTH,
-        types: []
+        totalOf: []
       })
       if (this.data?.update) {
         this.formGroup.get('template')?.setValue(
@@ -86,7 +76,7 @@ export class AbsentSalaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.actions$.dispatch(SettingSalaryActions.loadAll({
-      search:{types: [SalaryTypeEnum.ABSENT]}
+      search: {types: [SalaryTypeEnum.ABSENT, SalaryTypeEnum.ABSENT]}
     }))
     if (this.data?.update?.multiple) {
       this.salaryPayrolls = this.data.update.multiple.salaryPayrolls;
@@ -110,6 +100,7 @@ export class AbsentSalaryComponent implements OnInit {
     });
 
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
+      console.log(template)
       if (template?.constraints) {
         this.formGroup.get('constraintHoliday')?.setValue(
           this.transFormConstraintType(template.constraints, SalaryTypeEnum.HOLIDAY)
@@ -159,14 +150,18 @@ export class AbsentSalaryComponent implements OnInit {
       title: value.template.id === 0 ? value.title : value.template.title,
       partial: value.template.id === 0 ? PartialDayEnum.CUSTOM : value.partialDay.value,
       type: value.template.type,
-      startedAt: value.rangeDay[0],
-      endedAt: value.rangeDay[1],
-      startTime: value.startTime ? new Date(value.startTime) : null,
-      endTime: value.endTime ? new Date(value.endTime) : null,
       unit: value.unit,
       price: value.price,
       note: value.note,
-      settingId: value.template?.id,
+    }
+    if (value.template.id !== 0) {
+      Object.assign(salary, {
+        startedAt: value.rangeDay[0],
+        endedAt: value.rangeDay[1],
+        startTime: value.startTime ? new Date(value.startTime) : null,
+        endTime: value.endTime ? new Date(value.endTime) : null,
+        settingId: value.template?.id,
+      })
     }
     this.submitting = true
     if (this.data?.update) {
@@ -184,7 +179,9 @@ export class AbsentSalaryComponent implements OnInit {
       })
     }
     if (this.data.add) {
-      Object.assign(salary, {payrollIds: this.payrollSelected.map(val => val.id)})
+      Object.assign(salary, {
+        payrollIds: this.payrollSelected.map(payroll => payroll.id).concat(this.data.add.payroll.id)
+      })
       this.service.addOne(salary).pipe(catchError(err => this.onSubmitError(err))).subscribe(
         res => {
           this.onSubmitSuccess(res)
@@ -193,8 +190,8 @@ export class AbsentSalaryComponent implements OnInit {
     }
   }
 
-  tranFormType(salaryTypes: SalaryTypeEnum[]): string {
-    return tranFormSalaryType(salaryTypes)
+  transformTotalOf(totalOf: SalaryTypeEnum[]): string {
+    return transFormTotalOf(totalOf)
   }
 
   changeSalariesSelected($event: SalaryPayroll[]) {

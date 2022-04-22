@@ -12,7 +12,7 @@ import {SalaryTypeEnum} from "../../../setting/salary/enums";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../../payroll/state/payroll.action";
 import {PaginationDto} from "@minhdu-fontend/constants";
-import {dataModalPermanentSalary} from "../../../payroll/entities/data-modal-permanent.salary";
+import {dataModalPermanentSalary} from "../../../payroll/entities/data-modal-permanent-salary";
 import {catchError, map} from "rxjs/operators";
 import {throwError} from "rxjs";
 

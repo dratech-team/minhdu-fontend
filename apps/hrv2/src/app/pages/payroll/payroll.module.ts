@@ -27,8 +27,7 @@ import {FilterPipe, RangeDateTimePipe} from "./pipes";
 import {MatSortModule} from "@angular/material/sort";
 import {SettingSalaryEffect} from "../setting/salary/state";
 import {SalaryModule} from "../salary/salary.module";
-import { NzCarouselModule } from 'ng-zorro-antd/carousel';
-import {AbsentSalaryComponent} from "./components/absent-salary/absent-salary.component";
+import {NzCarouselModule} from 'ng-zorro-antd/carousel';
 
 @NgModule({
   imports: [
@@ -38,7 +37,7 @@ import {AbsentSalaryComponent} from "./components/absent-salary/absent-salary.co
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    AkitaNgEffectsModule.forFeature([PayrollEffect,SettingSalaryEffect]),
+    AkitaNgEffectsModule.forFeature([PayrollEffect, SettingSalaryEffect]),
     OrgchartV2Module,
     NzMessageModule,
     NzSelectModule,
@@ -63,7 +62,6 @@ import {AbsentSalaryComponent} from "./components/absent-salary/absent-salary.co
     DetailPayrollComponent,
     FilterPipe,
     RangeDateTimePipe,
-    AbsentSalaryComponent
   ],
   providers: [
     DatePipe,

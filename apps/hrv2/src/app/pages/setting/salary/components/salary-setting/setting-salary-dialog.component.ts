@@ -4,11 +4,13 @@ import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {Branch} from '@minhdu-fontend/data-models';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {salaryReference} from "../../enums";
-import {blockSalariesConstant} from "../../constants";
+import {blockSalariesConstant, referencesTypeConstant} from "../../constants";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {Actions} from "@datorama/akita-ng-effects";
 import {SettingSalaryActions, SettingSalaryQuery} from "../../state";
 import {SalaryConstraintEntity, SalarySettingEntity} from "../../entities";
+import {checkPopoverMargin} from "ngx-bootstrap/positioning/utils/checkMargin";
+import {DiveEnum} from "../../enums/dive.enum";
 
 @Component({
   templateUrl: 'setting-salary-dialog.component.html'
@@ -23,7 +25,7 @@ export class SettingSalaryDialogComponent implements OnInit {
   branches = new FormControl();
   branchesSelected: Branch[] = [];
   constraint: SalaryTypeEnum[] = []
-  prices:number[] = []
+  prices: number[] = []
   formControlPrice = new FormControl('');
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type || o1.type === o2.type : o1 === o2);
@@ -43,11 +45,11 @@ export class SettingSalaryDialogComponent implements OnInit {
       block: [template?.type === SalaryTypeEnum.BASIC_INSURANCE ? this.blockSalary.find(block => block.type === SalaryTypeEnum.BASIC) :
         this.blockSalary.find(block => block.type === template?.type)
         , Validators.required],
-      recipes: [],
-      reference: [''],
+      recipes: [template?.totalOf || []],
+      reference: [template ? this.transformReference(template.totalOf): ''],
       unit: [template?.unit || DatetimeUnitEnum.MONTH],
       title: [template?.title, Validators.required],
-      dive: [],
+      dive: [template?.workday ? DiveEnum.OTHER: DiveEnum.STANDARD],
       workday: [template?.workday],
       rate: [template?.rate, Validators.required],
       constraintHoliday: [template?.constraints ? this.checkConstraint(template?.constraints, SalaryTypeEnum.HOLIDAY) : false],
@@ -67,6 +69,14 @@ export class SettingSalaryDialogComponent implements OnInit {
       return false
     } else {
       return constraints.some(val => val.type === constraint)
+    }
+  }
+
+  transformReference(totalOf: SalaryTypeEnum[]) {
+    if (totalOf.length > 0) {
+      return referencesTypeConstant.find(reference => reference.value === salaryReference.BLOCK)
+    } else {
+      return referencesTypeConstant.find(reference => reference.value === salaryReference.PRICE)
     }
   }
 
@@ -107,7 +117,7 @@ export class SettingSalaryDialogComponent implements OnInit {
         }
         Object.assign(template, {
           workday: value.workday ? value.workday : null,
-          types: null,
+          totalOf: null,
         })
       } else {
         if (!value.recipes) {
@@ -116,7 +126,7 @@ export class SettingSalaryDialogComponent implements OnInit {
         Object.assign(template, {
           workday: value.workday ? value.workday : null,
           price: null,
-          types: value.recipes.map((recipe: any) => recipe.value),
+          totalOf: value.recipes.map((recipe: any) => recipe),
         })
       }
     }
@@ -131,19 +141,19 @@ export class SettingSalaryDialogComponent implements OnInit {
       }))
     }
     this.added$.subscribe(added => {
-      if(added){
+      if (added) {
         this.modalRef.close(template);
       }
     })
   }
 
-  validatePrices(){
-    if(this.formControlPrice.value){
-      if(this.prices.includes(this.formControlPrice.value)){
+  validatePrices() {
+    if (this.formControlPrice.value) {
+      if (this.prices.includes(this.formControlPrice.value)) {
         this.message.warning('Giá tiền đã tồn tại')
-      }else{
+      } else {
         this.prices.push(this.formControlPrice.value)
-        this.formControlPrice.setValue('',{emitEvent:false})
+        this.formControlPrice.setValue('', {emitEvent: false})
       }
     }
   }

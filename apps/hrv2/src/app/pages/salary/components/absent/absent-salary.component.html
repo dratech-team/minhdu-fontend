@@ -110,7 +110,7 @@
                [options]="{ suffix: ' đ' }">
         <ng-template #price>
           <div *ngIf="formGroup.value?.template" class="form-control" style="background: #dddddd">{{
-            (((formGroup.value.template?.price|number:'1.0-0')) || tranFormType(formGroup.value.template?.types))
+            (((formGroup.value.template?.price|number:'1.0-0')) || transformTotalOf(formGroup.value.template?.totalOf))
             + ' / ' +
             (formGroup.value.template?.workday || 'Ngày công chuẩn')
             }} </div>
