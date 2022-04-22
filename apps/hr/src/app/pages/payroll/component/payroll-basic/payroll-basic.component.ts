@@ -57,7 +57,7 @@ import {ClassifyOvertimeComponent} from "../classify-overtime/classify-overtime.
 import {Payroll} from "../../+state/payroll/payroll.interface";
 
 @Component({
-  selector: 'minhdu-fontend-payroll-basic',
+  selector: 'minhdu-fontend-payroll-permanent',
   templateUrl: 'payroll-basic.component.html'
 })
 export class PayrollBasicComponent implements OnInit, OnChanges {

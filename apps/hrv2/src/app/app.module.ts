@@ -28,8 +28,11 @@ import { EmployeeLibV2Module } from '@minhdu-fontend/employee-v2';
 import { NZ_CONFIG, NzConfig } from 'ng-zorro-antd/core/config';
 import { NZ_I18N, vi_VN } from 'ng-zorro-antd/i18n';
 import localeVi from "@angular/common/locales/vi";
+import {NgxCurrencyModule} from "ngx-currency";
+import {customCurrencyMaskConfig2} from "@minhdu-fontend/config";
 
 registerLocaleData(localeVi);
+
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
 };
@@ -59,7 +62,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     NzButtonModule,
     NzModalModule,
     NzMessageModule,
-    EmployeeLibV2Module
+    EmployeeLibV2Module,
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig2)
   ],
   providers: [
     {

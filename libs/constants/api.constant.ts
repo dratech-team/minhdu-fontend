@@ -37,7 +37,7 @@ export const Api = {
       HISTORY_SALARY: 'history/salary'
     },
     TEMPLATE: {
-      BASIC_TEMPLATE: 'basic-template',
+      BASIC_TEMPLATE: 'permanent-template',
       OVERTIME_TEMPLATE: 'overtime-template'
     },
     SETTING_SALARY:'settings/salary',

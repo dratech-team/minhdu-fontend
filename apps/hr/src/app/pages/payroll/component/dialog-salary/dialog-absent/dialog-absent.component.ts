@@ -17,7 +17,6 @@ import {map} from "rxjs/operators";
 import {salaryReference} from "../../../../template/enums";
 import {tranFormSalaryType} from "../../../utils";
 import {UnitSalaryConstant} from "../../../../template/constants/unit-salary.constant";
-import * as moment from 'moment'
 import {SalarySetting} from "../../../../template/+state/teamlate-salary/salary-setting";
 
 @Component({

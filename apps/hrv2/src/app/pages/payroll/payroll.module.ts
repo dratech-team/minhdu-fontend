@@ -1,4 +1,4 @@
-import {LOCALE_ID, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {ComponentsModule} from '@minhdu-fontend/components';
 import {CommonModule, DatePipe} from '@angular/common';
 import {PayrollRoutingModule} from './payroll-routing.module';
@@ -25,6 +25,8 @@ import {DetailPayrollComponent} from "./containers/detail-payroll/detail-payroll
 import {NzSwitchModule} from "ng-zorro-antd/switch";
 import {FilterPipe, RangeDateTimePipe} from "./pipes";
 import {MatSortModule} from "@angular/material/sort";
+import {SettingSalaryEffect} from "../setting/salary/state";
+import {SalaryModule} from "../salary/salary.module";
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import {AbsentSalaryComponent} from "./components/absent-salary/absent-salary.component";
 
@@ -36,7 +38,7 @@ import {AbsentSalaryComponent} from "./components/absent-salary/absent-salary.co
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    AkitaNgEffectsModule.forFeature([PayrollEffect]),
+    AkitaNgEffectsModule.forFeature([PayrollEffect,SettingSalaryEffect]),
     OrgchartV2Module,
     NzMessageModule,
     NzSelectModule,
@@ -52,7 +54,8 @@ import {AbsentSalaryComponent} from "./components/absent-salary/absent-salary.co
     NzStepsModule,
     NzSwitchModule,
     MatSortModule,
-    NzCarouselModule
+    NzCarouselModule,
+    SalaryModule
   ],
   declarations: [
     PayrollComponent,

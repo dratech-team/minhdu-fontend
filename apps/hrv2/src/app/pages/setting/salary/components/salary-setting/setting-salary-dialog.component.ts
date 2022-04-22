@@ -1,15 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {Branch} from '@minhdu-fontend/data-models';
-import * as lodash from 'lodash';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {salaryReference} from "../../enums";
 import {blockSalariesConstant} from "../../constants";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {Actions} from "@datorama/akita-ng-effects";
-import {SettingSalaryQuery} from "../../state";
-import {SettingSalaryActions} from "../../state";
+import {SettingSalaryActions, SettingSalaryQuery} from "../../state";
 import {SalaryConstraintEntity, SalarySettingEntity} from "../../entities";
 
 @Component({
@@ -18,7 +16,6 @@ import {SalaryConstraintEntity, SalarySettingEntity} from "../../entities";
 export class SettingSalaryDialogComponent implements OnInit {
   @Input() data?: { template?: SalarySettingEntity, isUpdate?: boolean }
   added$ = this.settingSalaryQuery.select(state => state.added);
-
   numberChars = new RegExp('[^0-9]', 'g');
   formGroup!: FormGroup;
   blockSalary = blockSalariesConstant;
@@ -26,6 +23,9 @@ export class SettingSalaryDialogComponent implements OnInit {
   branches = new FormControl();
   branchesSelected: Branch[] = [];
   constraint: SalaryTypeEnum[] = []
+  prices:number[] = []
+  formControlPrice = new FormControl('');
+
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type || o1.type === o2.type : o1 === o2);
 
   constructor(
@@ -43,9 +43,9 @@ export class SettingSalaryDialogComponent implements OnInit {
       block: [template?.type === SalaryTypeEnum.BASIC_INSURANCE ? this.blockSalary.find(block => block.type === SalaryTypeEnum.BASIC) :
         this.blockSalary.find(block => block.type === template?.type)
         , Validators.required],
-      price: [template?.price],
       recipes: [],
       reference: [''],
+      unit: [template?.unit || DatetimeUnitEnum.MONTH],
       title: [template?.title, Validators.required],
       dive: [],
       workday: [template?.workday],
@@ -91,7 +91,8 @@ export class SettingSalaryDialogComponent implements OnInit {
         SalaryTypeEnum.BASIC_INSURANCE :
         value.block.type,
       rate: value.rate,
-      price: value.price
+      unit: value.unit,
+      prices: this.formControlPrice.value ? this.prices.concat([this.formControlPrice.value]) : this.prices
     };
     if (value.block.type === SalaryTypeEnum.ABSENT) {
       if (!value.reference) {
@@ -101,7 +102,7 @@ export class SettingSalaryDialogComponent implements OnInit {
         constraint: this.constraint
       })
       if (value.reference.value === salaryReference.PRICE) {
-        if (!value.price) {
+        if (this.prices.length === 0) {
           return this.message.warning('Chưa nhập giá tiền')
         }
         Object.assign(template, {
@@ -136,8 +137,18 @@ export class SettingSalaryDialogComponent implements OnInit {
     })
   }
 
-  removeBranchSelected(branch: Branch) {
-    lodash.remove(this.branchesSelected, branch);
+  validatePrices(){
+    if(this.formControlPrice.value){
+      if(this.prices.includes(this.formControlPrice.value)){
+        this.message.warning('Giá tiền đã tồn tại')
+      }else{
+        this.prices.push(this.formControlPrice.value)
+        this.formControlPrice.setValue('',{emitEvent:false})
+      }
+    }
   }
 
+  onRemovePrice(price: number) {
+    this.prices = this.prices.filter(val => val !== price)
+  }
 }

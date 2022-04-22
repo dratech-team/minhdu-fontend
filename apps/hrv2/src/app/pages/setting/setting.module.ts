@@ -23,6 +23,8 @@ import {SettingSalaryEffect} from "./salary/state";
 import {HttpClientModule} from "@angular/common/http";
 import {SalarySettingService} from "./salary/services";
 import {NzInputModule} from "ng-zorro-antd/input";
+import {MatChipsModule} from "@angular/material/chips";
+import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
   imports: [
@@ -43,7 +45,9 @@ import {NzInputModule} from "ng-zorro-antd/input";
     NzCheckboxModule,
     NgxCurrencyModule,
     NzButtonModule,
-    NzInputModule
+    NzInputModule,
+    MatChipsModule,
+    MatIconModule
   ],
   declarations:[
     SalarySettingComponent,

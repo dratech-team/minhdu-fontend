@@ -11,12 +11,19 @@ import {NzTableModule} from 'ng-zorro-antd/table';
 import {NzInputModule} from 'ng-zorro-antd/input';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {NzPopoverModule} from 'ng-zorro-antd/popover';
+import {PermanentSalaryComponent} from "./components/permanent/permanent-salary.component";
+import {NzStepsModule} from "ng-zorro-antd/steps";
+import {NzSelectModule} from "ng-zorro-antd/select";
+import {NgxCurrencyModule} from "ngx-currency";
+import {PayrollEffect} from "../payroll/state/payroll.effect";
+import {SettingSalaryEffect} from "../setting/salary/state";
+import {customCurrencyMaskConfig} from "@minhdu-fontend/config";
 
 @NgModule({
   imports: [
     HttpClientModule,
     CommonModule,
-    AkitaNgEffectsModule.forFeature([]),
+    AkitaNgEffectsModule.forFeature([PayrollEffect,SettingSalaryEffect]),
     ReactiveFormsModule,
     FormsModule,
     NzMessageModule,
@@ -27,8 +34,14 @@ import {NzPopoverModule} from 'ng-zorro-antd/popover';
     NzInputModule,
     NzButtonModule,
     NzPopoverModule,
+    NzStepsModule,
+    NzSelectModule,
+    NgxCurrencyModule,
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
   ],
-  declarations: [],
+  declarations: [
+    PermanentSalaryComponent
+  ],
   providers: [
     DatePipe,
   ]

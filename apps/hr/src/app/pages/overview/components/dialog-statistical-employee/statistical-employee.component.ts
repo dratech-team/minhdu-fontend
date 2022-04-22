@@ -53,7 +53,6 @@ export class StatisticalEmployeeComponent implements OnInit {
   onselectBranch(event: any, branch: Branch) {
     if (event.isUserInput) {
         this.branchId = branch.id;
-      console.log(this.branchId)
     }
   }
 }
