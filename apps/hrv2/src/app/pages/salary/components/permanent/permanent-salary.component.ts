@@ -8,13 +8,13 @@ import {ResponseSalaryEntity} from "../../entities";
 import {PayrollEntity} from "../../../payroll/entities";
 import {SalaryPermanentService} from "../../service";
 import {SettingSalaryActions, SettingSalaryQuery} from "../../../setting/salary/state";
-import {SalaryTypeEnum} from "../../../setting/salary/enums";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../../payroll/state/payroll.action";
 import {PaginationDto} from "@minhdu-fontend/constants";
 import {dataModalPermanentSalary} from "../../../payroll/entities/data-modal-permanent-salary";
 import {catchError, map} from "rxjs/operators";
 import {throwError} from "rxjs";
+import {SalaryTypeEnum} from "@minhdu-fontend/enums";
 
 @Component({
   templateUrl: 'permanent-salary.component.html'
@@ -24,8 +24,11 @@ export class PermanentSalaryComponent implements OnInit {
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
   salariesSetting$ = this.settingSalaryQuery.selectAll({
     filterBy: [
-      (entity) => entity.type === SalaryTypeEnum.BASIC ||
-        entity.type === SalaryTypeEnum.BASIC_INSURANCE
+      (entity) => {
+        return this.data.type === SalaryTypeEnum.BASIC ?
+          entity.type === SalaryTypeEnum.BASIC || entity.type === SalaryTypeEnum.BASIC_INSURANCE :
+          entity.type === this.data.type
+      }
     ]
   }).pipe(
     map(templates => {
@@ -67,7 +70,11 @@ export class PermanentSalaryComponent implements OnInit {
       this.payrollSelected = this.payrollSelected.concat([this.data.add.payroll])
     }
     this.actions$.dispatch(SettingSalaryActions.loadAll({
-      search: {types: [SalaryTypeEnum.BASIC_INSURANCE, SalaryTypeEnum.BASIC]}
+      search: {
+        types: this.data.type === SalaryTypeEnum.BASIC ?
+          [SalaryTypeEnum.BASIC_INSURANCE, SalaryTypeEnum.BASIC] :
+          [SalaryTypeEnum.STAY]
+      }
     }))
     if (this.data?.update?.multiple) {
       this.salariesSelected = this.data.update.multiple.salariesSelected;
@@ -77,7 +84,7 @@ export class PermanentSalaryComponent implements OnInit {
       template: ['', Validators.required],
       price: [salary?.price, Validators.required],
       rate: [salary?.rate, Validators.required],
-      unit: [salary?.unit]
+      unit: [salary?.unit],
     });
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
       if (template.prices.length === 1) {
@@ -85,6 +92,7 @@ export class PermanentSalaryComponent implements OnInit {
       }
       this.formGroup.get('unit')?.setValue(template.unit)
       this.formGroup.get('rate')?.setValue(template.rate)
+      this.formGroup.get('type')?.setValue(template.type)
     })
   }
 

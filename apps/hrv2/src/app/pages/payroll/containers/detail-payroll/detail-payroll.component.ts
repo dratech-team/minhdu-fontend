@@ -4,7 +4,6 @@ import {DatetimeUnitEnum, EmployeeType, RecipeType, SalaryTypeEnum} from '@minhd
 import {PartialDayEnum} from '@minhdu-fontend/data-models';
 import {getDaysInMonth} from '@minhdu-fontend/utils';
 import {DatePipe} from '@angular/common';
-import {MatDialogConfig} from '@angular/material/dialog/dialog-config';
 import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {Sort} from "@angular/material/sort";
@@ -104,17 +103,13 @@ export class DetailPayrollComponent implements OnInit {
     update?: { salary: SalaryEntity }
   ) {
     switch (type) {
-      case SalaryTypeEnum.BASIC:
-        this.modal.create(Object.assign(config, {
-          nzTitle: add ?'Thêm lương cơ bản' :'Cập nhật lương cơ bản',
-          nzContent: PermanentSalaryComponent,
-          nzComponentParams: <{ data: dataModalPermanentSalary }>{
-            data: {
-              add: add,
-              update: update
-            }
-          },
-        }))
+      case SalaryTypeEnum.OVERTIME:
+        break
+      case SalaryTypeEnum.ALLOWANCE:
+        break
+      case SalaryTypeEnum.WFH:
+        break
+      case SalaryTypeEnum.HOLIDAY:
         break
       case SalaryTypeEnum.ABSENT:
         this.modal.create(Object.assign(config, {
@@ -122,6 +117,19 @@ export class DetailPayrollComponent implements OnInit {
           nzContent: AbsentSalaryComponent,
           nzComponentParams: <{ data: DataModalAbsentSalary }>{
             data: {
+              add: add,
+              update: update
+            }
+          },
+        }))
+        break
+      default:
+        this.modal.create(Object.assign(config, {
+          nzTitle: (add ?'Thêm':'Cập nhật') + (type === SalaryTypeEnum.BASIC ? ' lương cơ bản': ' phụ cấp') ,
+          nzContent: PermanentSalaryComponent,
+          nzComponentParams: <{ data: dataModalPermanentSalary }>{
+            data: {
+              type: type,
               add: add,
               update: update
             }
