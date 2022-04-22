@@ -1,18 +1,18 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Role} from '../../../../../../../../../libs/enums/hr/role.enum';
+import {Role} from '../../../../../../../../libs/enums/hr/role.enum';
 import {SalaryPayroll} from '@minhdu-fontend/data-models';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalRef} from "ng-zorro-antd/modal";
-import {ResponseSalaryEntity} from "../../../../salary/entities";
-import {PayrollEntity} from "../../../entities";
-import {SalaryPermanentService} from "../../../../salary/service";
-import {SettingSalaryActions, SettingSalaryQuery} from "../../../../setting/salary/state";
-import {SalaryTypeEnum} from "../../../../setting/salary/enums";
+import {ResponseSalaryEntity} from "../../entities";
+import {PayrollEntity} from "../../../payroll/entities";
+import {SalaryPermanentService} from "../../service";
+import {SettingSalaryActions, SettingSalaryQuery} from "../../../setting/salary/state";
+import {SalaryTypeEnum} from "../../../setting/salary/enums";
 import {Actions} from "@datorama/akita-ng-effects";
-import {PayrollActions} from "../../../state/payroll.action";
+import {PayrollActions} from "../../../payroll/state/payroll.action";
 import {PaginationDto} from "@minhdu-fontend/constants";
-import {dataModalPermanentSalary} from "../../../entities/data-modal-permanent.salary";
+import {dataModalPermanentSalary} from "../../../payroll/entities/data-modal-permanent.salary";
 import {catchError, map} from "rxjs/operators";
 import {throwError} from "rxjs";
 
@@ -30,10 +30,9 @@ export class PermanentSalaryComponent implements OnInit {
   }).pipe(
     map(templates => {
       if (this.data.update) {
-        if (templates.find(template => template.title === this.data.update?.salary.title)) {
-          this.formGroup.get('template')?.setValue(
-            templates.find(template => template.title === this.data.update?.salary.title)
-          )
+        const template = templates.find(template => template.title === this.data.update?.salary.title)
+        if (template) {
+          this.formGroup.get('template')?.setValue(template)
         }
       }
       return templates
@@ -106,7 +105,7 @@ export class PermanentSalaryComponent implements OnInit {
     };
     this.submitting = true
     if (this.data?.update) {
-      Object.assign(salary, {salaryIds: this.salariesSelected.map(val => val.salary.id)})
+      Object.assign(salary, {salaryIds: this.salariesSelected.map(val => val.salary.id).concat(this.data.update.salary.id)})
       this.service.updateMany(salary).pipe(catchError(err => {
         return this.onSubmitError(err)
       })).subscribe(res => {

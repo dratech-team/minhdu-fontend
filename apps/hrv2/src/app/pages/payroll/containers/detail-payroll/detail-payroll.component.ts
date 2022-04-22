@@ -15,7 +15,7 @@ import {PayrollActions} from "../../state/payroll.action";
 import {PayrollEntity} from "../../entities";
 import {tranFormSalaryType} from "../../utils";
 import {NzModalService} from "ng-zorro-antd/modal";
-import {PermanentSalaryComponent} from "../../components/salary/basic/permanent-salary.component";
+import {PermanentSalaryComponent} from "../../../salary/components/permanent/permanent-salary.component";
 import {dataModalPermanentSalary} from "../../entities/data-modal-permanent.salary";
 import {AbsentSalaryEntity, AllowanceSalaryEntity, OvertimeSalaryEntity, SalaryEntity} from "../../../salary/entities";
 
