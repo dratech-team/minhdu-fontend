@@ -24,10 +24,11 @@ export class OnsiteSalaryComponent implements OnInit {
       salary: any
     }
   }
-  numberChars = new RegExp('[^0-9]', 'g');
+  payrollSelected: PayrollEntity [] = []
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
   formGroup!: FormGroup;
+  stepIndex = 0;
 
   constructor(
     public datePipe: DatePipe,
@@ -40,6 +41,9 @@ export class OnsiteSalaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.data.add) {
+      this.payrollSelected.push(this.data.add.payroll)
+    }
     const payroll = this.data.add?.payroll
     const salary = this.data.update?.salary
     this.formGroup = this.formBuilder.group({
@@ -65,15 +69,7 @@ export class OnsiteSalaryComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    const value = this.formGroup.value;
-    const salary = {
-      title: value.title,
-      type: SalaryTypeEnum.WFH,
-      note: value.note,
-      unit: DatetimeUnitEnum.DAY,
-      startedAt: value.rangeDay[0],
-      endedAt: value.rangeDay[1]
-    };
+    const salary = this.mapSalary(this.formGroup.value)
     if (this.data.update) {
       Object.assign(salary, {
         salaryIds: [this.data.update.salary.id]
@@ -87,7 +83,7 @@ export class OnsiteSalaryComponent implements OnInit {
     }
     if (this.data.add) {
       Object.assign(salary, {
-        payrollIds: [this.data.add?.payroll.id]
+        payrollIds: this.payrollSelected.map(payroll => payroll.id)
       })
       this.service.addOne(salary)
         .pipe(catchError(err => this.onSubmitError(err)))
@@ -95,6 +91,17 @@ export class OnsiteSalaryComponent implements OnInit {
           if (this.data.add)
             this.onSubmitSuccess(res, this.data.add.payroll.id)
         })
+    }
+  }
+
+  mapSalary(value: any) {
+    return {
+      title: value.title,
+      type: SalaryTypeEnum.WFH,
+      note: value.note,
+      unit: DatetimeUnitEnum.DAY,
+      startedAt: value.rangeDay[0],
+      endedAt: value.rangeDay[1]
     }
   }
 
@@ -107,5 +114,13 @@ export class OnsiteSalaryComponent implements OnInit {
     this.actions$.dispatch(PayrollActions.loadOne({id: payrollId}))
     this.message.success(res.message)
     this.modalRef.close()
+  }
+
+  pre(): void {
+    this.stepIndex -= 1;
+  }
+
+  next(): void {
+    this.stepIndex += 1;
   }
 }
