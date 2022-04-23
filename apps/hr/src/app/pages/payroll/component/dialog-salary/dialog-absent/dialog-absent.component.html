@@ -58,6 +58,7 @@
                 class="mt-1"
                 [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.CUSTOM"
                 formControlName="startTime"
+                nzFormat="HH:mm"
                 [nzDisabledHours]="disabledHoursStart"
               ></nz-time-picker>
               <div *ngIf='checkValid.startTime.errors ' class='invalid-feedback'>
