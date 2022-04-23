@@ -1,0 +1,31 @@
+<div>
+  <form [formGroup]='formGroup'>
+    <div>
+      <div class='row mb-3'>
+        <div [formGroup]='formGroup' class='col-12'>
+          <span class='font-weight-bold'>Tiêu đề</span><span class='star'>*</span>
+          <input nz-input type="text" formControlName='title'>
+        </div>
+      </div>
+      <div class='row mb-3'>
+        <div [formGroup]='formGroup' class='col-12'>
+          <div class="font-weight-bold">Từ ngày đến ngày <span class="star">*</span></div>
+          <nz-range-picker class="mt-1" formControlName="rangeDay"></nz-range-picker>
+          <div *ngIf='checkValid.rangeDay.errors ' class='invalid-feedback'>
+            <div>Chưa chọn từ ngày đến ngày</div>
+          </div>
+        </div>
+      </div>
+      <div class='row mb-3'>
+        <div [formGroup]='formGroup' class='col-12'>
+          <span class='title-item'>Chú thích</span>
+          <input class='form-control' placeholder='Nhập chú thích ' formControlName='note'>
+        </div>
+      </div>
+    </div>
+    <div class=' row '>
+      <button nz-button nzType="primary" (click)="onSubmit()">Lưu</button>
+    </div>
+  </form>
+</div>
+
