@@ -28,7 +28,7 @@ export class BaseService<T> {
   }
 
   addMany(body: any): Observable<ResponseMessageEntity> {
-    return this.http.post<ResponseMessageEntity>(this.url + `/creation`, body);
+    return this.http.post<ResponseMessageEntity>(this.url + `/multiple/creation`, body);
   }
 
   update(id: any, body: Partial<any>): Observable<T> {
@@ -36,7 +36,7 @@ export class BaseService<T> {
   }
 
   updateMany(body: any): Observable<ResponseMessageEntity> {
-    return this.http.post<ResponseMessageEntity>(this.url + `/updation`, body);
+    return this.http.post<ResponseMessageEntity>(this.url + `/multiple/updation`, body);
   }
 
   delete(id: number, params?: any): Observable<void> {
@@ -44,7 +44,7 @@ export class BaseService<T> {
   }
 
   deleteMany(body: any): Observable<ResponseMessageEntity> {
-    return this.http.post<ResponseMessageEntity>(this.url + `/deletion`, body);
+    return this.http.post<ResponseMessageEntity>(this.url + `/multiple/deletion`, body);
   }
 
   sort(body: any): Observable<any> {
