@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DatetimeUnitEnum, EmployeeType, RecipeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {PartialDayEnum, Salary} from '@minhdu-fontend/data-models';
+import {PartialDayEnum} from '@minhdu-fontend/data-models';
 import {getDaysInMonth} from '@minhdu-fontend/utils';
 import {DatePipe} from '@angular/common';
 import {MatDialogConfig} from '@angular/material/dialog/dialog-config';
@@ -96,7 +96,7 @@ export class DetailPayrollComponent implements OnInit {
 
   updateSalary(
     type: SalaryTypeEnum,
-    salary: SalaryEntity | AllowanceSalaryEntity|OvertimeSalaryEntity|AbsentSalaryEntity,
+    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | AbsentSalaryEntity,
     payroll?: PayrollEntity) {
     switch (type) {
       case SalaryTypeEnum.BASIC:
