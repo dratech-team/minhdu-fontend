@@ -94,7 +94,6 @@ export class DeductionSalaryComponent implements OnInit {
     });
 
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
-      console.log(template)
       if (template?.constraints) {
         this.formGroup.get('constraintHoliday')?.setValue(
           this.transFormConstraintType(template.constraints, SalaryTypeEnum.HOLIDAY)
@@ -143,7 +142,6 @@ export class DeductionSalaryComponent implements OnInit {
       rate: value.rate,
       title: value.template.id === 0 ? value.title : value.template.title,
       partial: value.template.id === 0 ? PartialDayEnum.CUSTOM : value.partialDay.value,
-      type: value.template.type,
       unit: value.unit,
       price: value.price,
       note: value.note,
