@@ -1,5 +1,5 @@
 import {DatePipe} from '@angular/common';
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PartialDayEnum, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {DatetimeUnitEnum, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
