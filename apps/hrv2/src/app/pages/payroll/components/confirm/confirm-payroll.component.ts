@@ -1,10 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {Observable, throwError} from 'rxjs';
 import {EmployeeType, RecipeType} from '@minhdu-fontend/enums';
 import {FormControl} from '@angular/forms';
 import {DatePipe} from '@angular/common';
-import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {
   DialogSharedComponent
@@ -16,6 +15,7 @@ import {PayslipService} from "../../services/payslip.service";
 import {PayrollService} from "../../services/payroll.service";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../state/payroll.action";
+import {NzModalRef} from "ng-zorro-antd/modal";
 
 @Component({
   templateUrl: 'confirm-payroll.component.html',
@@ -25,20 +25,11 @@ export class ConfirmPayrollComponent implements OnInit {
   @Input() data!: {
     payroll: PayrollEntity
   }
-  accConfirmedAt = new FormControl(this.datePipe.transform(
-    this.data?.payroll?.accConfirmedAt ? getLastDayInMonth(
-        new Date(this.data.payroll.accConfirmedAt)) :
-      getLastDayInMonth(
-        new Date(this.data.payroll.createdAt))
-    , 'yyyy-MM-dd'));
+  accConfirmedAt = new FormControl('');
   payslip$?: Observable<PayslipEntity>;
   recipeType = RecipeType;
   isConfirmed = false;
   typeEmployee = EmployeeType;
-  firstDayInMonth = this.datePipe.transform(
-    getFirstDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
-  lastDayInMonth = this.datePipe.transform(
-    getLastDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
   role?: string | null
   adding = false;
 
@@ -49,7 +40,7 @@ export class ConfirmPayrollComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly message: NzMessageService,
     private readonly payrollService: PayrollService,
-    private readonly dialogRef: MatDialogRef<ConfirmPayrollComponent>
+    private readonly modalRef: NzModalRef
   ) {
   }
 
@@ -59,12 +50,14 @@ export class ConfirmPayrollComponent implements OnInit {
     if (this.data?.payroll?.accConfirmedAt) {
       this.isConfirmed = true;
       this.accConfirmedAt.setValue(this.datePipe.transform(this.data.payroll.accConfirmedAt, 'yyyy-MM-dd'));
+    }else{
+      this.accConfirmedAt.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     }
   }
 
   confirmPayroll(reconfirm: boolean): any {
     if (this.role === Role.HUMAN_RESOURCE) {
-      this.dialogRef.close()
+      this.modalRef.close()
       return this.message.warning('Quản lý nhân sự không được phép xác nhận phiếu lương')
     }
     if (this.accConfirmedAt.value) {
@@ -83,16 +76,13 @@ export class ConfirmPayrollComponent implements OnInit {
           }
         })
       } else {
-        this.actions$.dispatch(PayrollActions.confirmPayroll(
-          {id: this.data.payroll.id, dataConfirm: {datetime: new Date(this.accConfirmedAt.value)}}));
+        this.actions$.dispatch(PayrollActions.confirmPayroll({
+          id: this.data.payroll.id, data: {datetime: new Date(this.accConfirmedAt.value)}
+        }));
       }
     } else {
       this.message.error('Chưa chọn ngày xác nhận phiếu lương');
     }
-  }
-
-  changeDateConfirm() {
-    this.isConfirmed = false;
   }
 
   printPayroll() {
@@ -100,7 +90,6 @@ export class ConfirmPayrollComponent implements OnInit {
   }
 
   onCancelPayroll() {
-
     this.dialog.open(DialogSharedComponent, {
       data: {
         title: 'Huỷ xác nhận phiếu lương',
@@ -114,8 +103,8 @@ export class ConfirmPayrollComponent implements OnInit {
       })).subscribe(() => {
         this.adding = false
         this.message.success('Huỷ xác nhận phiếu lương thành công')
-        this.store.dispatch(PayrollAction.getPayroll({id: this.data.payroll.id}))
-        this.dialogRef.close();
+        this.actions$.dispatch(PayrollActions.loadOne({id: this.data.payroll.id}))
+        this.modalRef.close();
       })
     })
   }

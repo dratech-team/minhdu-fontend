@@ -1,15 +1,7 @@
- <div class='py-3 main-popup' style='min-width: 300px' *ngIf='!isConfirmed '>
-  <div mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
-    </div>
-  </div>
-  <h2 class='mt-2 font-weight-bold'>Xác nhận phiếu lương tháng {{data.payroll.createdAt|date:'MM/yyyy'}}</h2>
+<div style='min-width: 300px' *ngIf='!isConfirmed '>
   <div class='mt-2'>
     <span>Ngày xác nhận lương</span><span class='star'>*</span>
-    <input class='form-control mt-1' type='date' [formControl]='accConfirmedAt' min='{{firstDayInMonth}}'
-           max='{{lastDayInMonth}}'>
+    <input class='form-control mt-1' type='date' [formControl]='accConfirmedAt'>
   </div>
   <div class='mt-2 text-danger'>(Vui lòng kiểm tra kỹ ngày trước khi xác nhận phiếu lương)</div>
   <div class='footer-popup row mt-3 ml-2'>
@@ -17,13 +9,7 @@
   </div>
 </div>
 
-<div class='py-3 main-popup' style='width: 100%; min-width: 1156px' *ngIf='isConfirmed'>
-  <div id='btn-close' mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
-    </div>
-  </div>
+<div style='width: 100%; min-width: 1156px' *ngIf='isConfirmed'>
   <div id='content-payroll' style="overflow-x: hidden">
     <div class='header-payroll'>
       <div class='font-weight-bold font-xl row border-bottom py-3'>
@@ -35,11 +21,11 @@
         <div class=' col-6 d-flex flex-column'>
           <div class=' row mt-1 d-flex'>
             <div class='font-weight-bold col-4 '>Tên nhân viên:</div>
-            <div class='col-8'>{{data.payroll.employee.firstName}} {{data.payroll.employee.lastName}}</div>
+            <div class='col-8'>{{data.payroll.employee.lastName}}</div>
           </div>
           <div class=' row mt-1'>
             <span class='font-weight-bold col-4'>Chức vụ: </span>
-            <span class='col-8'>{{data.payroll.employee.position.name}}</span>
+            <span class='col-8'>{{data.payroll.position}}</span>
           </div>
           <div class=' row mt-1'>
             <span class='font-weight-bold col-4'>Lương tháng: </span>
@@ -72,7 +58,7 @@
     </div>
     <div class='border mt-2' *ngIf='data.payroll.employee.type === typeEmployee.EMPLOYEE_FULL_TIME; else seasonal'>
       <div *ngIf='( payslip$ | async) as payslip else loadingPayslip'>
-        <mat-dialog-content class='mat-typography ' style='
+        <div class='mat-typography ' style='
                             position: relative;
                             margin: 0;
                             padding: 0 ;
@@ -210,9 +196,9 @@
             </div>
             <div class=' col-3 py-1 text-center'> -</div>
           </div>
-        </mat-dialog-content>
+        </div>
       </div>
-      <ng-template  #loadingPayslip>
+      <ng-template #loadingPayslip>
         <ngx-skeleton-loader count='5' appearance='line'>
         </ngx-skeleton-loader>
       </ng-template>
@@ -220,7 +206,7 @@
     <ng-template #seasonal>
       <div *ngIf='( payslip$ | async) as payslip'>
         <div class='border mt-2'>
-          <mat-dialog-content class='mat-typography ' style='
+          <div style='
                             position: relative;
                             margin: 0;
                             padding: 0 ;
@@ -265,7 +251,7 @@
               </div>
               <div class=' col-3 py-1 text-center'> -</div>
             </div>
-          </mat-dialog-content>
+          </div>
         </div>
 
       </div>
@@ -280,8 +266,7 @@
         </div>
         <div class='col-6 d-flex mt-3 flex-column justify-content-center align-items-center'>
           <span class='font-weight-bold' style='width: fit-content'>Kí nhận</span>
-          <span style='width: fit-content; margin-top: 130px'> {{data.payroll.employee.firstName}}
-            {{data.payroll.employee.lastName}} </span>
+          <span style='width: fit-content; margin-top: 130px'>{{data.payroll.employee.lastName}} </span>
         </div>
       </div>
     </div>
@@ -292,4 +277,4 @@
     <button class='btn btn-primary mr-3 col-1 ' (click)='confirmPayroll(true)'>Xác nhận</button>
   </div>
 </div>
- <mat-spinner *ngIf='adding' class='loading'></mat-spinner>
+<nz-spin *ngIf='adding' nzSimple></nz-spin>

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DatetimeUnitEnum, EmployeeType, RecipeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {PartialDayEnum, Salary} from '@minhdu-fontend/data-models';
+import {PartialDayEnum} from '@minhdu-fontend/data-models';
 import {getDaysInMonth} from '@minhdu-fontend/utils';
 import {DatePipe} from '@angular/common';
 import {MatDialogConfig} from '@angular/material/dialog/dialog-config';
@@ -18,6 +18,7 @@ import {NzModalService} from "ng-zorro-antd/modal";
 import {PermanentSalaryComponent} from "../../../salary/components/permanent/permanent-salary.component";
 import {dataModalPermanentSalary} from "../../entities/data-modal-permanent.salary";
 import {AbsentSalaryEntity, AllowanceSalaryEntity, OvertimeSalaryEntity, SalaryEntity} from "../../../salary/entities";
+import {ConfirmPayrollComponent} from "../../components/confirm/confirm-payroll.component";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -96,7 +97,7 @@ export class DetailPayrollComponent implements OnInit {
 
   updateSalary(
     type: SalaryTypeEnum,
-    salary: SalaryEntity | AllowanceSalaryEntity|OvertimeSalaryEntity|AbsentSalaryEntity,
+    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | AbsentSalaryEntity,
     payroll?: PayrollEntity) {
     switch (type) {
       case SalaryTypeEnum.BASIC:
@@ -121,6 +122,26 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   confirmPayroll(payroll: PayrollEntity) {
+    this.modal.create({
+      nzTitle: 'Xác nhận phiếu lương tháng '+ this.datePipe.transform(payroll.createdAt, 'yyyy-MM'),
+      nzContent: ConfirmPayrollComponent,
+      nzComponentParams: <{ data: { payroll: PayrollEntity } }>{
+        data: {
+          payroll
+        }
+      },
+      nzFooter: ' '
+    })
+    // if(this.role !== Role.HUMAN_RESOURCE){
+    //
+    // }else{
+    //   if(payroll.accConfirmedAt !== null){
+    //     // restore payroll
+    //   }else{
+    //     this.message.warning('Phiếu lương chưa được xác nhận')
+    //   }
+    // }
+
   }
 
   historySalary(payroll: PayrollEntity) {
