@@ -9,19 +9,18 @@ import {salaryReference} from "../../../setting/salary/enums";
 import {PayrollEntity} from "../../../payroll/entities";
 import {DeductionSalaryService} from "../../service";
 import {NzModalRef} from "ng-zorro-antd/modal";
-import {throwError} from "rxjs";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {Actions} from "@datorama/akita-ng-effects";
-import {PayrollActions} from "../../../payroll/state/payroll.action";
 import {UnitSalaryConstant} from "../../constants";
 import {SessionConstant} from "../../../payroll/constants/session.constant";
 import {referencesTypeConstant} from "../../../setting/salary/constants";
 import {SalarySettingEntity} from "../../../setting/salary/entities";
 import {DataModalAbsentSalary} from "../../../payroll/entities/data-modal-absent-salary";
 import {transFormTotalOf} from "../../../setting/salary/utils/transform-total-of.util";
-import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
 import {templateDeductionConstant} from "../../constants/template-deduction.constant";
 import {getAfterTime, getBeforeTime} from "@minhdu-fontend/utils";
+import {error} from "../../../payroll/state/payroll.action";
+import {throwError} from "rxjs";
 
 @Component({
   templateUrl: 'deduction-salary.component.html'
@@ -54,8 +53,6 @@ export class DeductionSalaryComponent implements OnInit {
   references = referencesTypeConstant;
   indexStep = 1;
   limitStartHour: number [] = [];
-  limitMinuteStart: number [] = [];
-  limitMinuteEnd: number [] = [];
   limitEndTime: number [] = []
   unitConstant = UnitSalaryConstant
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
@@ -63,12 +60,12 @@ export class DeductionSalaryComponent implements OnInit {
     return this.limitStartHour
   }
   disabledMinute = (hour: number): number[] => {
-   if(hour === 17){
-     const result = getAfterTime(0, 'MINUTE')
-     return result
-   }else{
-     return []
-   }
+    if (hour === 17) {
+      const result = getAfterTime(0, 'MINUTE')
+      return result
+    } else {
+      return []
+    }
   }
   disabledHoursEnd = (): number[] => {
     return this.limitEndTime
@@ -185,25 +182,29 @@ export class DeductionSalaryComponent implements OnInit {
       Object.assign(salary, {
         salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.update.salary.id)
       })
-      this.service.updateMany(salary).pipe(catchError(err => this.onSubmitError(err))).subscribe(res => {
-        if (!this.data.update?.multiple) {
-          if (this.data.update?.salary.id)
-            this.actions$.dispatch(PayrollActions.loadOne({
-              id: this.data.update.salary.id
-            }))
-        }
-        this.onSubmitSuccess(res)
+      this.service.updateMany(
+        salary, this.data.update.multiple ? undefined : {payrollId: this.data.update.salary.payrollId}
+      ).pipe(catchError(err => {
+        this.submitting = false
+        return throwError(err)
+      })).subscribe(res => {
+        this.onSubmitSuccess()
       })
     }
+
     if (this.data.add) {
       Object.assign(salary, {
         payrollIds: this.payrollSelected.map(payroll => payroll.id).concat(this.data.add.payroll.id)
       })
-      this.service.addMany(salary).pipe(catchError(err => this.onSubmitError(err))).subscribe(
-        res => {
-          this.onSubmitSuccess(res)
-        }
-      )
+      this.service.addMany(
+        salary, this.data.add?.multiple ? undefined : {payrollId: this.data.add.payroll.id}).pipe(
+        catchError(err => {
+          this.submitting = false
+          return throwError(err)
+        })
+      ).subscribe(_ => {
+          this.onSubmitSuccess()
+        })
     }
   }
 
@@ -224,14 +225,8 @@ export class DeductionSalaryComponent implements OnInit {
     this.indexStep += 1;
   }
 
-  onSubmitSuccess(res: ResponseMessageEntity) {
-    this.message.success(res.message)
+  onSubmitSuccess() {
     this.submitting = false
     this.modalRef.close()
-  }
-
-  onSubmitError(err: string) {
-    this.submitting = false
-    return throwError(err)
   }
 }

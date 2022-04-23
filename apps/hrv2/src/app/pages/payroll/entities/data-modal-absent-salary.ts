@@ -4,7 +4,8 @@ import {SalaryPayroll} from "@minhdu-fontend/data-models";
 
 export interface DataModalAbsentSalary {
   add?: {
-    payroll: PayrollEntity
+    payroll: PayrollEntity,
+    multiple?: boolean
   }
   update?: {
     salary: DeductionSalaryEntity
