@@ -20,6 +20,7 @@ import {SalarySettingEntity} from "../../../setting/salary/entities";
 import {DataModalAbsentSalary} from "../../../payroll/entities/data-modal-absent-salary";
 import {transFormTotalOf} from "../../../setting/salary/utils/transform-total-of.util";
 import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
+import {templateDeductionConstant} from "../../constants/template-deduction.constant";
 
 @Component({
   templateUrl: 'deduction-salary.component.html'
@@ -31,19 +32,12 @@ export class DeductionSalaryComponent implements OnInit {
     filterBy: [(entity => entity.type === SalaryTypeEnum.ABSENT)]
   }).pipe(
     map(templates => {
-      templates.push({
-        id: 0,
-        title: 'Khác',
-        type: SalaryTypeEnum.ABSENT,
-        rate: 1,
-        unit: DatetimeUnitEnum.MONTH,
-        totalOf: []
-      })
+      const result = templates.concat(templateDeductionConstant)
       if (this.data?.update) {
         this.formGroup.get('template')?.setValue(
-          this.getTemplateSalary(templates, this.data.update.salary.setting.id))
+          this.getTemplateSalary(result, this.data.update.salary.setting.id))
       }
-      return templates
+      return result
     })
   )
   submitting = false

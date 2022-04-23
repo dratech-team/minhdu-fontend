@@ -129,7 +129,7 @@
     <button class="ml-2" nz-button nzType="default" (click)="next()" *ngIf="indexStep < 1">
       <span>Tiếp theo</span>
     </button>
-    <button class="ml-2" nz-button nzType="primary" (click)="onSubmit()" *ngIf="indexStep === 1">
+    <button class="ml-2" nz-button nzType="primary" [nzLoading]="submitting" (click)="onSubmit()" *ngIf="indexStep === 1">
       <span>Xác nhận</span>
     </button>
   </div>
