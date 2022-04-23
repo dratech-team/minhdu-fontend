@@ -12,7 +12,7 @@ import {NzModalRef} from "ng-zorro-antd/modal";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {Actions} from "@datorama/akita-ng-effects";
 import {UnitSalaryConstant} from "../../constants";
-import {SessionConstant} from "../../../payroll/constants/session.constant";
+import {SessionConstant, workingTime} from "../../../payroll/constants/session.constant";
 import {referencesTypeConstant} from "../../../setting/salary/constants";
 import {SalarySettingEntity} from "../../../setting/salary/entities";
 import {DataModalAbsentSalary} from "../../../payroll/entities/data-modal-absent-salary";
@@ -58,9 +58,8 @@ export class DeductionSalaryComponent implements OnInit {
     return this.limitStartHour
   }
   disabledMinute = (hour: number): number[] => {
-    if (hour === 17) {
-      const result = getAfterTime(0, 'MINUTE')
-      return result
+    if (hour === workingTime.endTimeAfternoon.getHours()) {
+      return getAfterTime(0, 'MINUTE')
     } else {
       return []
     }
@@ -121,7 +120,7 @@ export class DeductionSalaryComponent implements OnInit {
 
     this.formGroup.get('startTime')?.valueChanges.subscribe(val => {
       if (val) {
-        this.limitEndTime = getBeforeTime(val.getHours()).concat(getAfterTime(17, "HOUR"))
+        this.limitEndTime = getBeforeTime(val.getHours()).concat(getAfterTime(workingTime.endTimeAfternoon.getHours(), "HOUR"))
         if (this.formGroup.value.endTime && val.getTime() > this.formGroup.value.endTime.getTime()) {
           this.formGroup.get('endTime')?.setValue(undefined)
         }
@@ -201,8 +200,8 @@ export class DeductionSalaryComponent implements OnInit {
           return throwError(err)
         })
       ).subscribe(_ => {
-          this.onSubmitSuccess()
-        })
+        this.onSubmitSuccess()
+      })
     }
   }
 
