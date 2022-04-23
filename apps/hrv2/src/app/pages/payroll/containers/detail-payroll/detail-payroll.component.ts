@@ -15,9 +15,9 @@ import {PayrollEntity} from "../../entities";
 import {tranFormSalaryType} from "../../utils";
 import {PermanentSalaryComponent} from "../../../salary/components/permanent/permanent-salary.component";
 import {dataModalPermanentSalary} from "../../entities/data-modal-permanent-salary";
-import {AbsentSalaryEntity, AllowanceSalaryEntity, OvertimeSalaryEntity, SalaryEntity} from "../../../salary/entities";
+import {DeductionSalaryEntity, AllowanceSalaryEntity, OvertimeSalaryEntity, SalaryEntity} from "../../../salary/entities";
 import {NzModalService} from "ng-zorro-antd/modal";
-import {AbsentSalaryComponent} from "../../../salary/components/absent/absent-salary.component";
+import {DeductionSalaryComponent} from "../../../salary/components/deduction/deduction-salary.component";
 import {DataModalAbsentSalary} from "../../entities/data-modal-absent-salary";
 
 @Component({
@@ -88,7 +88,7 @@ export class DetailPayrollComponent implements OnInit {
 
   updateSalary(
     type: SalaryTypeEnum,
-    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | AbsentSalaryEntity) {
+    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | DeductionSalaryEntity) {
     const config = {
       nzFooter: ' ',
       nzWidth: 'fit-content'
@@ -114,7 +114,7 @@ export class DetailPayrollComponent implements OnInit {
       case SalaryTypeEnum.ABSENT:
         this.modal.create(Object.assign(config, {
           nzTitle: add ?'Thêm khấu trừ' :'Cập nhật khấu trừ',
-          nzContent: AbsentSalaryComponent,
+          nzContent: DeductionSalaryComponent,
           nzComponentParams: <{ data: DataModalAbsentSalary }>{
             data: {
               add: add,

@@ -7,8 +7,7 @@ import {catchError, map} from "rxjs/operators";
 import {SettingSalaryActions, SettingSalaryQuery} from "../../../setting/salary/state";
 import {salaryReference} from "../../../setting/salary/enums";
 import {PayrollEntity} from "../../../payroll/entities";
-import {ResponseSalaryEntity} from "../../entities";
-import {AbsentSalaryService} from "../../service";
+import {DeductionSalaryService} from "../../service";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {throwError} from "rxjs";
 import {NzMessageService} from "ng-zorro-antd/message";
@@ -20,11 +19,12 @@ import {referencesTypeConstant} from "../../../setting/salary/constants";
 import {SalarySettingEntity} from "../../../setting/salary/entities";
 import {DataModalAbsentSalary} from "../../../payroll/entities/data-modal-absent-salary";
 import {transFormTotalOf} from "../../../setting/salary/utils/transform-total-of.util";
+import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
 
 @Component({
-  templateUrl: 'absent-salary.component.html'
+  templateUrl: 'deduction-salary.component.html'
 })
-export class AbsentSalaryComponent implements OnInit {
+export class DeductionSalaryComponent implements OnInit {
   @Input() data!: DataModalAbsentSalary
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
   templateSalary$ = this.settingSalaryQuery.selectAll({
@@ -69,7 +69,7 @@ export class AbsentSalaryComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly modalRef: NzModalRef,
     private readonly message: NzMessageService,
-    private readonly service: AbsentSalaryService,
+    private readonly service: DeductionSalaryService,
     private readonly actions$: Actions
   ) {
   }
@@ -182,7 +182,7 @@ export class AbsentSalaryComponent implements OnInit {
       Object.assign(salary, {
         payrollIds: this.payrollSelected.map(payroll => payroll.id).concat(this.data.add.payroll.id)
       })
-      this.service.addOne(salary).pipe(catchError(err => this.onSubmitError(err))).subscribe(
+      this.service.addMany(salary).pipe(catchError(err => this.onSubmitError(err))).subscribe(
         res => {
           this.onSubmitSuccess(res)
         }
@@ -207,7 +207,7 @@ export class AbsentSalaryComponent implements OnInit {
     this.indexStep += 1;
   }
 
-  onSubmitSuccess(res: ResponseSalaryEntity) {
+  onSubmitSuccess(res: ResponseMessageEntity) {
     this.message.success(res.message)
     this.submitting = false
     this.modalRef.close()

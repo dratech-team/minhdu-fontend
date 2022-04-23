@@ -3,7 +3,7 @@ import {Employee} from "@minhdu-fontend/data-models";
 import {PayslipEntity} from "./payslip.entity";
 import {RecipeType} from "@minhdu-fontend/enums";
 import {
-  AbsentSalaryEntity,
+  DeductionSalaryEntity,
   AllowanceSalaryEntity,
   OvertimeSalaryEntity,
   PermanentSalaryEntity, SalaryEntity
@@ -42,7 +42,7 @@ export interface PayrollEntity extends BasePayrollEntity {
   position?: string
   salariesv2: PermanentSalaryEntity[],
   salaries: SalaryEntity[],
-  absents: AbsentSalaryEntity [],
+  absents: DeductionSalaryEntity [],
   overtimes: OvertimeSalaryEntity [],
   allowances: AllowanceSalaryEntity[],
   payrollIds?: number[]

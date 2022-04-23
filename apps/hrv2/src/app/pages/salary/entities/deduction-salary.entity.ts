@@ -4,7 +4,7 @@ import {PartialDayEnum} from "@minhdu-fontend/data-models";
 import {DatetimeUnitEnum} from "@minhdu-fontend/enums";
 import {SalarySettingEntity} from "../../setting/salary/entities";
 
-export interface AbsentSalaryEntity extends BaseSalaryEntity {
+export interface DeductionSalaryEntity extends BaseSalaryEntity {
   readonly payroll?: PayrollEntity,
   readonly setting: SalarySettingEntity
   readonly partial: PartialDayEnum;

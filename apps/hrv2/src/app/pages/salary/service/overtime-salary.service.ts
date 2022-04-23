@@ -3,27 +3,26 @@ import {BaseService} from '@minhdu-fontend/service';
 import {HttpClient} from '@angular/common/http';
 import {Api} from '@minhdu-fontend/constants';
 import {Observable} from 'rxjs';
-import {ResponseSalaryEntity} from '../entities';
-import {BaseAddOvertimeSalaryDto} from "../dto";
-import {BaseUpdateOvertimeDto} from "../dto";
+import {OvertimeSalaryEntity} from "../entities";
+import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
 
 @Injectable({providedIn: 'root'})
-export class OvertimeSalaryService extends BaseService<ResponseSalaryEntity> {
+export class OvertimeSalaryService extends BaseService<OvertimeSalaryEntity> {
   constructor(
     public readonly http: HttpClient
   ) {
     super(Api.HR.PAYROLL.OVERTIME_SALARY, http);
   }
 
-  addOne(props: BaseAddOvertimeSalaryDto): Observable<ResponseSalaryEntity> {
-    return super.addOne(props);
+  addMany(body: any): Observable<ResponseMessageEntity> {
+    return super.addMany(body);
   }
 
-  updateMany(body: Partial<BaseUpdateOvertimeDto>): Observable<ResponseSalaryEntity> {
+  updateMany(body: any): Observable<ResponseMessageEntity> {
     return super.updateMany(body);
   }
 
-  delete(id: number): Observable<void> {
-    return super.delete(id);
+  deleteMany(body: any): Observable<ResponseMessageEntity> {
+    return super.deleteMany(body);
   }
 }

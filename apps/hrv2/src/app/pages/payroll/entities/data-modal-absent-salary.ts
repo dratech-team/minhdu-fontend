@@ -1,5 +1,5 @@
 import {PayrollEntity} from "./payroll.entity";
-import {AbsentSalaryEntity} from "../../salary/entities";
+import {DeductionSalaryEntity} from "../../salary/entities";
 import {SalaryPayroll} from "@minhdu-fontend/data-models";
 
 export interface DataModalAbsentSalary {
@@ -7,7 +7,7 @@ export interface DataModalAbsentSalary {
     payroll: PayrollEntity
   }
   update?: {
-    salary: AbsentSalaryEntity
+    salary: DeductionSalaryEntity
     multiple?: {
       salaryPayrolls: SalaryPayroll[]
     },

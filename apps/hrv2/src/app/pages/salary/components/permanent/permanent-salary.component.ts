@@ -4,7 +4,6 @@ import {Role} from '../../../../../../../../libs/enums/hr/role.enum';
 import {SalaryPayroll} from '@minhdu-fontend/data-models';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalRef} from "ng-zorro-antd/modal";
-import {ResponseSalaryEntity} from "../../entities";
 import {PayrollEntity} from "../../../payroll/entities";
 import {SalaryPermanentService} from "../../service";
 import {SettingSalaryActions, SettingSalaryQuery} from "../../../setting/salary/state";
@@ -15,6 +14,7 @@ import {dataModalPermanentSalary} from "../../../payroll/entities/data-modal-per
 import {catchError, map} from "rxjs/operators";
 import {throwError} from "rxjs";
 import {SalaryTypeEnum} from "@minhdu-fontend/enums";
+import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
 
 @Component({
   templateUrl: 'permanent-salary.component.html'
@@ -130,7 +130,7 @@ export class PermanentSalaryComponent implements OnInit {
     }
     if (this.data.add) {
       Object.assign(salary, {payrollIds: [this.payrollSelected.map(val => val.id)]})
-      this.service.addOne(salary).pipe(catchError(err => this.onSubmitError(err))).subscribe(res => {
+      this.service.addMany(salary).pipe(catchError(err => this.onSubmitError(err))).subscribe(res => {
         if (this.data.add?.payroll.id)
           this.actions$.dispatch(PayrollActions.loadOne({id: this.data.add?.payroll.id}))
         this.onCloseModal(res)
@@ -139,7 +139,7 @@ export class PermanentSalaryComponent implements OnInit {
   }
 
 
-  onCloseModal(res: ResponseSalaryEntity) {
+  onCloseModal(res: ResponseMessageEntity) {
     this.submitting = false
     this.message.success(res.message)
     this.modalRef.close()

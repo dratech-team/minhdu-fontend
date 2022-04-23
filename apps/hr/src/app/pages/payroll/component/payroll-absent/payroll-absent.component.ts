@@ -42,7 +42,7 @@ import {ExportService} from "@minhdu-fontend/service";
 import {ClassifyOvertimeComponent} from "../classify-overtime/classify-overtime.component";
 
 @Component({
-  selector: 'app-payroll-absent',
+  selector: 'app-payroll-deduction',
   templateUrl: 'payroll-absent.component.html'
 })
 

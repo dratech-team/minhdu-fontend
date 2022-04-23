@@ -1,9 +1,9 @@
 //salary
 export * from './permanent-salary/update-permanent-salary.dto';
 export * from './remove-salary.dto';
-//absent Salary
-export * from  './absent-salary/add-absent-salary.dto'
-export * from  './absent-salary/update-absent-salary.dto'
+//deduction Salary
+export * from './deduction-salary/add-deduction-salary.dto'
+export * from './deduction-salary/update-deduction-salary.dto'
 //overtime Salary
 export * from  './overtime-salary/add-overtime-salary.dto'
 export * from  './overtime-salary/update-overtime-salary.dto'
