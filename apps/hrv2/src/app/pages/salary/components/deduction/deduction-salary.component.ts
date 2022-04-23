@@ -19,7 +19,6 @@ import {DataModalAbsentSalary} from "../../../payroll/entities/data-modal-absent
 import {transFormTotalOf} from "../../../setting/salary/utils/transform-total-of.util";
 import {templateDeductionConstant} from "../../constants/template-deduction.constant";
 import {getAfterTime, getBeforeTime} from "@minhdu-fontend/utils";
-import {error} from "../../../payroll/state/payroll.action";
 import {throwError} from "rxjs";
 
 @Component({
@@ -27,7 +26,6 @@ import {throwError} from "rxjs";
 })
 export class DeductionSalaryComponent implements OnInit {
   @Input() data!: DataModalAbsentSalary
-  @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
   templateSalary$ = this.settingSalaryQuery.selectAll({
     filterBy: [(entity => entity.type === SalaryTypeEnum.ABSENT)]
   }).pipe(
@@ -210,11 +208,6 @@ export class DeductionSalaryComponent implements OnInit {
 
   transformTotalOf(totalOf: SalaryTypeEnum[]): string {
     return transFormTotalOf(totalOf)
-  }
-
-  changeSalariesSelected($event: SalaryPayroll[]) {
-    this.salaryPayrolls = $event;
-    this.EmitSalariesSelected.emit(this.salaryPayrolls);
   }
 
   pre(): void {
