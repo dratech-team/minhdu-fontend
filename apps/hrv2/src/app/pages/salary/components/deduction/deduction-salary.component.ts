@@ -21,6 +21,7 @@ import {DataModalAbsentSalary} from "../../../payroll/entities/data-modal-absent
 import {transFormTotalOf} from "../../../setting/salary/utils/transform-total-of.util";
 import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
 import {templateDeductionConstant} from "../../constants/template-deduction.constant";
+import {getAfterTime, getBeforeTime} from "@minhdu-fontend/utils";
 
 @Component({
   templateUrl: 'deduction-salary.component.html'
@@ -52,10 +53,26 @@ export class DeductionSalaryComponent implements OnInit {
   partialDayEnum = PartialDayEnum
   references = referencesTypeConstant;
   indexStep = 1;
-  disableTimeStartConstant: number [] = []
-  disableTimeEndConstant: number [] = []
+  limitStartHour: number [] = [];
+  limitMinuteStart: number [] = [];
+  limitMinuteEnd: number [] = [];
+  limitEndTime: number [] = []
   unitConstant = UnitSalaryConstant
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
+  disabledHoursStart = (): number[] => {
+    return this.limitStartHour
+  }
+  disabledMinute = (hour: number): number[] => {
+   if(hour === 17){
+     const result = getAfterTime(0, 'MINUTE')
+     return result
+   }else{
+     return []
+   }
+  }
+  disabledHoursEnd = (): number[] => {
+    return this.limitEndTime
+  }
 
   constructor(
     public readonly datePipe: DatePipe,
@@ -107,14 +124,23 @@ export class DeductionSalaryComponent implements OnInit {
       this.formGroup.get('reference')?.setValue(template?.types ? salaryReference.BLOCK : salaryReference.PRICE)
     })
 
-    this.formGroup.get('partialDay')?.valueChanges.subscribe(item => {
-      if (item.value === PartialDayEnum.CUSTOM) {
-      } else {
-        this.formGroup.get('startTime')?.setValue(item.startTime)
-        this.formGroup.get('endTime')?.setValue(item.endTime)
+    this.formGroup.get('startTime')?.valueChanges.subscribe(val => {
+      if (val) {
+        this.limitEndTime = getBeforeTime(val.getHours()).concat(getAfterTime(17, "HOUR"))
+        if (this.formGroup.value.endTime && val.getTime() > this.formGroup.value.endTime.getTime()) {
+          this.formGroup.get('endTime')?.setValue(undefined)
+        }
       }
     })
+
+    this.formGroup.get('partialDay')?.valueChanges.subscribe(item => {
+      this.formGroup.get('startTime')?.setValue(item.startTime)
+      this.formGroup.get('endTime')?.setValue(item.endTime)
+      this.limitStartHour = getBeforeTime(item.startTime.getHours())
+        .concat(getAfterTime(item.endTime.getHours(), 'HOUR'));
+    })
   }
+
 
   get checkValid() {
     return this.formGroup.controls;
@@ -131,7 +157,6 @@ export class DeductionSalaryComponent implements OnInit {
   getPartialDay(partial: PartialDayEnum) {
     return SessionConstant.find(item => item.value === partial)
   }
-
 
   onSubmit(): any {
     if (this.formGroup.invalid) {
@@ -208,13 +233,5 @@ export class DeductionSalaryComponent implements OnInit {
   onSubmitError(err: string) {
     this.submitting = false
     return throwError(err)
-  }
-
-  disabledHoursStart(): number[] {
-    return this.disableTimeStartConstant
-  }
-
-  disabledHoursEnd(): number[] {
-    return this.disableTimeEndConstant
   }
 }

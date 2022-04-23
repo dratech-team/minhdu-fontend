@@ -60,6 +60,7 @@
                 formControlName="startTime"
                 nzFormat="HH:mm"
                 [nzDisabledHours]="disabledHoursStart"
+                [nzDisabledMinutes]="disabledMinute"
               ></nz-time-picker>
               <div *ngIf='checkValid.startTime.errors ' class='invalid-feedback'>
                 <div>Chưa chọn từ giờ</div>
@@ -73,6 +74,7 @@
                 formControlName="endTime"
                 nzFormat="HH:mm"
                 [nzDisabledHours]="disabledHoursEnd"
+                [nzDisabledMinutes]="disabledMinute"
               ></nz-time-picker>
               <div *ngIf='checkValid.endTime.errors ' class='invalid-feedback'>
                 <div>Chưa chọn đến giờ</div>
