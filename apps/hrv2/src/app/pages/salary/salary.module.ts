@@ -18,12 +18,14 @@ import {NgxCurrencyModule} from "ngx-currency";
 import {PayrollEffect} from "../payroll/state/payroll.effect";
 import {SettingSalaryEffect} from "../setting/salary/state";
 import {customCurrencyMaskConfig} from "@minhdu-fontend/config";
+import {OnsiteSalaryComponent} from "./components/onsite/onsite-salary.component";
+import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 
 @NgModule({
   imports: [
     HttpClientModule,
     CommonModule,
-    AkitaNgEffectsModule.forFeature([PayrollEffect,SettingSalaryEffect]),
+    AkitaNgEffectsModule.forFeature([PayrollEffect, SettingSalaryEffect]),
     ReactiveFormsModule,
     FormsModule,
     NzMessageModule,
@@ -38,9 +40,11 @@ import {customCurrencyMaskConfig} from "@minhdu-fontend/config";
     NzSelectModule,
     NgxCurrencyModule,
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
+    NzDatePickerModule,
   ],
   declarations: [
-    PermanentSalaryComponent
+    PermanentSalaryComponent,
+    OnsiteSalaryComponent
   ],
   providers: [
     DatePipe,
