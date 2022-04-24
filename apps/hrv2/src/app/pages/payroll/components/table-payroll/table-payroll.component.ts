@@ -15,6 +15,9 @@ import {
   ModalDatePickerComponent
 } from "../../../../../../../../libs/components/src/lib/modal-date-picker/modal-date-picker.component";
 import {ModalAlertComponent} from "@minhdu-fontend/components";
+import {ModalAlertEntity} from "../../../../../../../../libs/entities/modal-alert.entity";
+import {DatePipe} from "@angular/common";
+import {PayrollActions} from "../../state/payroll.action";
 
 
 @Component({
@@ -45,6 +48,7 @@ export class TablePayrollComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly router: Router,
     private readonly modal: NzModalService,
+    private readonly datePipe: DatePipe
   ) {
   }
 
@@ -74,11 +78,21 @@ export class TablePayrollComponent implements OnInit {
 
   }
 
-  onDelete($event: any) {
+  onDelete(payroll: PayrollEntity) {
     this.modal.create({
-      nzTitle:'Xoá phiếu lương',
+      nzTitle: 'Xoá phiếu lương',
       nzContent: ModalAlertComponent,
-
+      nzComponentParams: <{ data: ModalAlertEntity }>{
+        data: {
+          description: 'bạn có muốn xoá phiếu lương tháng ' +
+            this.datePipe.transform(payroll.createdAt, 'MM-yyyy') +
+            'của nhân viên ' + payroll.employee.lastName
+        }
+      }
+    }).afterClose.subscribe(val => {
+      if (val) {
+        this.actions$.dispatch(PayrollActions.remove({id: payroll.id}))
+      }
     })
   }
 
