@@ -31,11 +31,11 @@ export class PositionEffects {
         map((response) => {
           this.positionStore.update(state => (
             {...state, loading: false, total: response.total}));
-          if (response.data.length === 0) {
-            this.message.warning('Đã lấy hết chức vụ');
-          } else {
-            this.message.success('tải danh sách chức vụ thành công');
-          }
+          // if (response.data.length === 0) {
+          //   this.message.warning('Đã lấy hết chức vụ');
+          // } else {
+          //   this.message.success('tải danh sách chức vụ thành công');
+          // }
           if (props.isPaginate) {
             this.positionStore.add(response.data);
           } else {

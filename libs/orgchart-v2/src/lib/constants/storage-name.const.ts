@@ -1,5 +1,5 @@
 export const StorageName = {
   APP: 'app',
-  BRANCH: 'BRANCH',
-  POSITION: 'BRANCH',
+  BRANCH: 'branch',
+  POSITION: 'position',
 };
