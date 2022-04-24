@@ -58,7 +58,7 @@ export class DeductionSalaryComponent implements OnInit {
     return this.limitStartHour
   }
   disabledMinute = (hour: number): number[] => {
-    if (hour === workingTime.endTimeAfternoon.getHours()) {
+    if (hour === workingTime.afternoon.end.getHours()) {
       return getAfterTime(0, 'MINUTE')
     } else {
       return []
@@ -120,7 +120,7 @@ export class DeductionSalaryComponent implements OnInit {
 
     this.formGroup.get('startTime')?.valueChanges.subscribe(val => {
       if (val) {
-        this.limitEndTime = getBeforeTime(val.getHours()).concat(getAfterTime(workingTime.endTimeAfternoon.getHours(), "HOUR"))
+        this.limitEndTime = getBeforeTime(val.getHours()).concat(getAfterTime(workingTime.afternoon.end.getHours(), "HOUR"))
         if (this.formGroup.value.endTime && val.getTime() > this.formGroup.value.endTime.getTime()) {
           this.formGroup.get('endTime')?.setValue(undefined)
         }
