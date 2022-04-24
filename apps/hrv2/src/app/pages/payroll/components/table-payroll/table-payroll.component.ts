@@ -122,13 +122,12 @@ export class TablePayrollComponent implements OnInit {
   updateManConfirm(id: number, manConfirmedAt: any, createdAt?: Date) {
   }
 
-  onDetail(payroll: PayrollEntity) {
-    this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.employee.id],
+  async onDetail(payroll: PayrollEntity) {
+    return await this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.employee.id],
       {
         queryParams: {
           isUpdate: true
         }
-      }).then()
+      });
   }
-
 }

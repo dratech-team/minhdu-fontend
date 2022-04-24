@@ -7,7 +7,7 @@ import {EmployeeStatusConstant, PaginationDto, PayrollConstant} from "@minhdu-fo
 import {FilterTypeEnum} from "@minhdu-fontend/enums";
 import {debounceTime, map} from "rxjs/operators";
 import {BranchActions, BranchQuery} from "../../../../../../../../libs/orgchart-v2/src/lib/branch/state";
-import {Observable} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import {Category} from "@minhdu-fontend/data-models";
 import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
@@ -22,17 +22,20 @@ export class PayrollComponent implements OnInit {
       this.payrollStore.update(state => ({
         ...state, branch: branches[0]
       }))
-      this.formGroup.get('branch')?.setValue(branches[0],{emitEvent: false})
+      this.formGroup.get('branch')?.setValue(branches[0], {emitEvent: false})
     }
     return branches
   }));
   categories$ = new Observable<Category[]>();
+  onChange = new Subject<void>();
+
   stateSearch = this.payrollQuery.getValue().search
   empStatusContain = EmployeeStatusConstant;
-  role!: string | null
+  role = localStorage.getItem('role');
   roleEnum = Role
   filterTypeEnum = FilterTypeEnum
   payrollConstant = PayrollConstant
+
   formGroup = new FormGroup({
     code: new FormControl(this.stateSearch.code || ''),
     name: new FormControl(this.stateSearch.name || ''),
@@ -52,6 +55,7 @@ export class PayrollComponent implements OnInit {
       this.stateSearch.endedAt
     ])
   })
+
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
 
   constructor(
@@ -63,7 +67,6 @@ export class PayrollComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.role = localStorage.getItem('role')
     this.actions$.dispatch(BranchActions.loadAll({}))
     this.actions$.dispatch(PayrollActions.loadAll({
       search: this.mapPayroll(this.formGroup.value)
@@ -122,5 +125,9 @@ export class PayrollComponent implements OnInit {
   }
 
   onUpdateCategory() {
+  }
+
+  onAdd() {
+    this.onChange.next()
   }
 }
