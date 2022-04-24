@@ -30,7 +30,6 @@ export class TablePayrollComponent implements OnInit {
   @Input() payrolls!: PayrollEntity[]
   @Input() formGroup!: FormGroup
   @Input() pageSize = 10;
-  @Input() inHistory?:{employeeId: number};
   @Input() scroll: { x: string, y: string } = {x: '5000px', y: '56vh'}
   @Input() onChange?: Subject<void>
   @Output() onloadPayroll = new EventEmitter<{isPagination: boolean}>()
@@ -96,11 +95,8 @@ export class TablePayrollComponent implements OnInit {
     }).afterClose.subscribe(date => {
       if (date) {
         this.actions$.dispatch(PayrollActions.addOne({
-          body: {
-            createdAt: date,
-            employeeId: employeeId|| this.inHistory?.employeeId
-          },
-          inHistory: !!this.inHistory
+          createdAt: this.payrollQuery.getValue().search.startedAt,
+          employeeId: employeeId
         }))
       }
     })

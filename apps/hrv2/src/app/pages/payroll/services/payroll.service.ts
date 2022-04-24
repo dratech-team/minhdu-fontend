@@ -15,7 +15,7 @@ export class PayrollService extends BaseService<PayrollEntity> {
   }
 
   addOne(props: AddPayrollDto): Observable<PayrollEntity> {
-    return super.addOne(props.body);
+    return super.addOne(props);
   }
 
   getOne(props: LoadOnePayrollDto): Observable<PayrollEntity> {
