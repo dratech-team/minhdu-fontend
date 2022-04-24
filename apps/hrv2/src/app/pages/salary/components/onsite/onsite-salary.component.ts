@@ -11,6 +11,7 @@ import {catchError} from "rxjs/operators";
 import {ResponseSalaryEntity} from "../../entities";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../../payroll/state/payroll.action";
+import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 
 @Component({
   templateUrl: 'onsite-salary.component.html'
@@ -48,17 +49,21 @@ export class OnsiteSalaryComponent implements OnInit {
     const salary = this.data.update?.salary
     this.formGroup = this.formBuilder.group({
       title: [salary?.title, Validators.required],
-      rangeDay: [[
+      rangeDay: [
         payroll ?
-          this.datePipe.transform(payroll.createdAt, 'YYYY-mm-dd') :
-          this.datePipe.transform(salary.startedAt, 'YYYY-mm-dd'),
-        payroll ?
-          this.datePipe.transform(payroll.createdAt, 'YYYY-mm-dd') :
-          this.datePipe.transform(salary.endedAt, 'YYYY-mm-dd')
-
-      ], Validators.required],
+          [
+            this.datePipe.transform(getFirstDayInMonth(payroll.createdAt), 'YYYY-mm-dd'),
+            this.datePipe.transform(getLastDayInMonth(payroll.createdAt), 'YYYY-mm-dd')
+          ]
+          : [
+            this.datePipe.transform(salary.startedAt, 'YYYY-mm-dd'),
+            this.datePipe.transform(salary.endedAt, 'YYYY-mm-dd')
+          ],
+        Validators.required
+      ],
       note: [salary.note],
-    });
+    })
+    ;
   }
 
   get checkValid() {
