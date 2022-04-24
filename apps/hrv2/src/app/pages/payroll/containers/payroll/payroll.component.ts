@@ -27,12 +27,15 @@ export class PayrollComponent implements OnInit {
     return branches
   }));
   categories$ = new Observable<Category[]>();
+  onChange = new Subject<void>();
+
   stateSearch = this.payrollQuery.getValue().search
   empStatusContain = EmployeeStatusConstant;
-  role!: string | null
+  role = localStorage.getItem('role');
   roleEnum = Role
   filterTypeEnum = FilterTypeEnum
   payrollConstant = PayrollConstant
+
   formGroup = new FormGroup({
     code: new FormControl(this.stateSearch.code || ''),
     name: new FormControl(this.stateSearch.name || ''),
@@ -52,7 +55,7 @@ export class PayrollComponent implements OnInit {
       this.stateSearch.endedAt
     ])
   })
-  eventsAddPayroll = new Subject<void>();
+
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
 
   constructor(
@@ -64,7 +67,6 @@ export class PayrollComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.role = localStorage.getItem('role')
     this.actions$.dispatch(BranchActions.loadAll({}))
     this.actions$.dispatch(PayrollActions.loadAll({
       search: this.mapPayroll(this.formGroup.value)
@@ -126,6 +128,6 @@ export class PayrollComponent implements OnInit {
   }
 
   onAdd() {
-    this.eventsAddPayroll.next()
+    this.onChange.next()
   }
 }

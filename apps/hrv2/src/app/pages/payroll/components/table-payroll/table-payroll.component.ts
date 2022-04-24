@@ -26,7 +26,7 @@ import {PayrollActions} from "../../state/payroll.action";
 export class TablePayrollComponent implements OnInit {
   @Input() payrolls!: PayrollEntity[]
   @Input() formGroup!: FormGroup
-  @Input() eventAddPayroll?: Subject<void>;
+  @Input() onChange?: Subject<void>;
   @Input() pageSize = 10;
   @Input() history?: {
     employeeId: number
@@ -71,7 +71,7 @@ export class TablePayrollComponent implements OnInit {
     this.payrollQuery.select(state => state.search.startedAt).subscribe(val => {
       this.daysInMonth = rageDaysInMonth(val)
     })
-    this.eventAddPayroll?.subscribe(_ => this.onAdd())
+    this.onChange?.subscribe(_ => this.onAdd())
   }
 
   onPagination(index: number) {
