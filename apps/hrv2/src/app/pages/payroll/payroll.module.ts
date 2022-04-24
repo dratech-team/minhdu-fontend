@@ -28,6 +28,9 @@ import {MatSortModule} from "@angular/material/sort";
 import {NzCarouselModule} from 'ng-zorro-antd/carousel';
 import {SettingSalaryEffect} from "../setting/salary/state";
 import {SalaryModule} from "../salary/salary.module";
+import {PayslipComponent} from "./components/payslip/payslip.component";
+import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader";
+import {NzSpinModule} from "ng-zorro-antd/spin";
 
 
 @NgModule({
@@ -38,7 +41,7 @@ import {SalaryModule} from "../salary/salary.module";
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    AkitaNgEffectsModule.forFeature([PayrollEffect,SettingSalaryEffect]),
+    AkitaNgEffectsModule.forFeature([PayrollEffect, SettingSalaryEffect]),
     OrgchartV2Module,
     NzMessageModule,
     NzSelectModule,
@@ -55,7 +58,9 @@ import {SalaryModule} from "../salary/salary.module";
     NzSwitchModule,
     MatSortModule,
     NzCarouselModule,
-    SalaryModule
+    SalaryModule,
+    NgxSkeletonLoaderModule,
+    NzSpinModule
   ],
   declarations: [
     PayrollComponent,
@@ -63,6 +68,10 @@ import {SalaryModule} from "../salary/salary.module";
     DetailPayrollComponent,
     FilterPipe,
     RangeDateTimePipe,
+    PayslipComponent
+  ],
+  exports: [
+    TablePayrollComponent
   ],
   providers: [
     DatePipe,
