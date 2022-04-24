@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {PayrollEntity} from "../../entities";
 import {FormGroup} from "@angular/forms";
 import {PositionActions, PositionQuery} from "../../../../../../../../libs/orgchart-v2/src/lib/position/state";
@@ -17,7 +17,9 @@ import {
 import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "../../../../../../../../libs/entities/modal-alert.entity";
 import {DatePipe} from "@angular/common";
-import {PayrollActions} from "../../state/payroll.action";
+import {loadAll, PayrollActions} from "../../state/payroll.action";
+import {Subject} from "rxjs";
+import {ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
 
 
 @Component({
@@ -29,8 +31,10 @@ export class TablePayrollComponent implements OnInit {
   @Input() formGroup!: FormGroup
   @Input() pageSize = 10;
   @Input() scroll: { x: string, y: string } = {x: '5000px', y: '56vh'}
-
+  @Input() onChange?: Subject<void>
+  @Output() onloadPayroll = new EventEmitter<{isPagination: boolean}>()
   loading$ = this.payrollQuery.select(state => state.loading)
+  added$ = this.payrollQuery.select(state => state.added)
   positions$ = this.positionQuery.selectAll()
   ItemContextMenu = ItemContextMenu;
   confirmConstant = ConfirmConstant
@@ -69,13 +73,38 @@ export class TablePayrollComponent implements OnInit {
     this.payrollQuery.select(state => state.search.startedAt).subscribe(val => {
       this.daysInMonth = rageDaysInMonth(val)
     })
+    if(this.onChange){
+      this.onChange.subscribe(_ => this.onAdd())
+    }
   }
 
   onPagination(index: number) {
   }
 
-  onAdd($event: any) {
-
+  onAdd(employeeId?: number) {
+    this.modal.create({
+      nzTitle: 'Tạo phiếu lương',
+      nzContent: ModalDatePickerComponent,
+      nzComponentParams: <{ data: ModalDatePickerEntity }>{
+        data: {
+          type: "month",
+          dateInit: this.payrollQuery.getValue().search.startedAt
+        }
+      },
+      nzFooter: ' '
+    }).afterClose.subscribe(date => {
+      if (date) {
+        this.actions$.dispatch(PayrollActions.addOne({
+          createdAt: this.payrollQuery.getValue().search.startedAt,
+          employeeId: employeeId
+        }))
+      }
+    })
+    this.added$.subscribe(added =>{
+      if(added){
+        this.onloadPayroll.emit({isPagination: false})
+      }
+    } )
   }
 
   onDelete(payroll: PayrollEntity) {
@@ -91,7 +120,7 @@ export class TablePayrollComponent implements OnInit {
       }
     }).afterClose.subscribe(val => {
       if (val) {
-        this.actions$.dispatch(PayrollActions.remove({id: payroll.id}))
+        this.onloadPayroll.emit({isPagination: false})
       }
     })
   }

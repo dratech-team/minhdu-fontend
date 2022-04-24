@@ -7,6 +7,7 @@ import {of} from "rxjs";
 import {PayrollActions} from "./payroll.action";
 import {AddPayrollDto} from "../dto";
 import {Injectable} from "@angular/core";
+import {PayrollQuery} from "./payroll.query";
 
 @Injectable({providedIn: 'root'})
 export class PayrollEffect {
@@ -15,6 +16,7 @@ export class PayrollEffect {
     private readonly service: PayrollService,
     private readonly message: NzMessageService,
     private readonly payrollStore: PayrollStore,
+    private readonly payrollQuery: PayrollQuery,
   ) {
   }
 
@@ -31,19 +33,6 @@ export class PayrollEffect {
             ...state, added: true
           }))
           this.message.success('Thao tác thành công ');
-          const params = {
-            take: 30,
-            skip: 0,
-          }
-          if (props.inHistory) {
-            Object.assign(params, {employeeId: props.body.employeeId})
-          }
-          this.action$.dispatch(
-            PayrollActions.loadAll({
-                search: params
-              }
-            )
-          );
         }),
         catchError(err => {
           this.payrollStore.update(state => ({

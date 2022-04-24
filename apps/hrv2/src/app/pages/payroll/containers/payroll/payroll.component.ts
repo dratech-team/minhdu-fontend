@@ -68,16 +68,14 @@ export class PayrollComponent implements OnInit {
 
   ngOnInit() {
     this.actions$.dispatch(BranchActions.loadAll({}))
-    this.actions$.dispatch(PayrollActions.loadAll({
-      search: this.mapPayroll(this.formGroup.value)
-    }))
-
+    this.onLoadPayroll(false)
     this.payrollQuery.select(state => state.search).subscribe(
       val => {
         this.formGroup.get('rangeDay')?.setValue([val.startedAt, val.endedAt], {emitEvent: false})
         this.formGroup.get('startedAt')?.setValue(val.startedAt, {emitEvent: false})
       }
     )
+
 
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe(val => {
       if (val.filterType === FilterTypeEnum.OVERTIME || val.filterType === FilterTypeEnum.ABSENT) {
@@ -94,9 +92,7 @@ export class PayrollComponent implements OnInit {
       this.payrollStore.update(state => ({
         ...state, search: val
       }))
-      this.actions$.dispatch(PayrollActions.loadAll({
-        search: this.mapPayroll(val)
-      }))
+      this.onLoadPayroll(false)
     })
 
     this.formGroup.get('category')?.valueChanges.subscribe(val => {
@@ -104,6 +100,13 @@ export class PayrollComponent implements OnInit {
         this.onAddCategory()
       }
     })
+  }
+
+  onLoadPayroll(isPagination: boolean) {
+    this.actions$.dispatch(PayrollActions.loadAll({
+      search: this.mapPayroll(this.formGroup.value,),
+      isPaginate: isPagination
+    }))
   }
 
   mapPayroll(formData: any, isPagination?: boolean) {
