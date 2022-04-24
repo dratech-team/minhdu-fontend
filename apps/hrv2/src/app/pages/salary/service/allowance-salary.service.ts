@@ -3,27 +3,26 @@ import {BaseService} from '@minhdu-fontend/service';
 import {HttpClient} from '@angular/common/http';
 import {Api} from '@minhdu-fontend/constants';
 import {Observable} from 'rxjs';
-import {ResponseSalaryEntity} from '../entities';
-import {BaseAddAllowanceSalaryDto} from "../dto/allowance-salary/add-allowance-salary.dto";
-import {BaseUpdateAllowanceDto} from "../dto/allowance-salary/update-allowance-salary.dto";
+import {AllowanceSalaryEntity} from "../entities";
+import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
 
 @Injectable({providedIn: 'root'})
-export class AllowanceSalaryService extends BaseService<ResponseSalaryEntity> {
+export class AllowanceSalaryService extends BaseService<AllowanceSalaryEntity> {
   constructor(
     public readonly http: HttpClient
   ) {
     super(Api.HR.PAYROLL.ALLOWANCE_SALARY, http);
   }
 
-  addOne(props: BaseAddAllowanceSalaryDto): Observable<ResponseSalaryEntity> {
-    return super.addOne(props);
+  addMany(body: any): Observable<ResponseMessageEntity> {
+    return super.addMany(body);
   }
 
-  updateMany(body: Partial<BaseUpdateAllowanceDto>): Observable<ResponseSalaryEntity> {
+  updateMany(body: any): Observable<ResponseMessageEntity> {
     return super.updateMany(body);
   }
 
-  delete(id: number): Observable<void> {
-    return super.delete(id);
+  deleteMany(body: any): Observable<ResponseMessageEntity> {
+    return super.deleteMany(body);
   }
 }

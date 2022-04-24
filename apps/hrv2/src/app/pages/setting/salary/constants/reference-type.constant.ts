@@ -1,12 +1,13 @@
 import {salaryReference} from "../enums";
 import {SalaryTypeEnum} from "@minhdu-fontend/enums";
+import {DiveEnum} from "../enums/dive.enum";
 
 export interface RefernceType {
   name: string,
   value: salaryReference,
   dives?: {
     name: string,
-    value: 'STANDARD' | 'OTHER'
+    value: DiveEnum
   }[],
   recipes?: {
     name: string,
@@ -14,15 +15,30 @@ export interface RefernceType {
   } []
 }
 
-const diveConstant: { name: string; value: 'STANDARD' | 'OTHER' }[] = [
+const diveConstant: { name: string; value: DiveEnum }[] = [
   {
     name: 'Ngày công chuẩn',
-    value: 'STANDARD'
+    value: DiveEnum.STANDARD
   },
   {
     name: 'Tuỳ chọn',
-    value: 'OTHER'
+    value: DiveEnum.OTHER
   }
+]
+
+export const recipesConstant = [
+  {
+    name: 'Lương cơ bản',
+    value: SalaryTypeEnum.BASIC,
+  },
+  {
+    name: 'Phụ cấp lương',
+    value: SalaryTypeEnum.STAY,
+  },
+  {
+    name: 'Lương cơ bản trích bảo hiểm',
+    value: SalaryTypeEnum.BASIC_INSURANCE,
+  },
 ]
 
 export const referencesTypeConstant: RefernceType [] = [
@@ -35,20 +51,7 @@ export const referencesTypeConstant: RefernceType [] = [
     name: 'Loại lương',
     value: salaryReference.BLOCK,
     dives: diveConstant,
-    recipes: [
-      {
-        name: 'Lương cơ bản',
-        value: SalaryTypeEnum.BASIC,
-      },
-      {
-        name: 'Phụ cấp lương',
-        value: SalaryTypeEnum.STAY,
-      },
-      {
-        name: 'Lương cơ bản trích bảo hiểm',
-        value: SalaryTypeEnum.BASIC_INSURANCE,
-      },
-    ]
+    recipes: recipesConstant
   },
 ];
 

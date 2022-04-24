@@ -8,10 +8,11 @@ import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {SettingSalaryStore} from '../../state';
 import {SalaryTypeEnum} from "../../enums";
-import {blockSalariesConstant} from "../../constants";
+import {blockSalariesConstant, recipesConstant} from "../../constants";
 import {SalarySettingEntity} from "../../entities";
 import {SettingSalaryActions} from "../../state";
 import {SettingSalaryDialogComponent} from "../../components/salary-setting";
+import {transFormTotalOf} from "../../utils/transform-total-of.util";
 
 @Component({
   selector: 'minhdu-fontend-salary-setting',
@@ -79,10 +80,8 @@ export class SalarySettingComponent implements OnInit {
     return dataFG;
   }
 
-  tranFormType(salaryTypes: SalaryTypeEnum[]) {
-    return salaryTypes.map(val => {
-      return  this.blockSalaries.find((item: any) => item.type === val)?.title
-    }).join(' + ')
+  transFormTotalOf(totalOf: SalaryTypeEnum[]) {
+    return  transFormTotalOf(totalOf)
   }
 
   onAdd(template?: SalarySettingEntity) {

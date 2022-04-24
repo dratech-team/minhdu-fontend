@@ -2,6 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {ResponsePaginate} from '../data-models';
 import {Api} from "../constants";
+import {ResponseMessageEntity} from "../entities";
 
 export class BaseService<T> {
   constructor(
@@ -26,16 +27,24 @@ export class BaseService<T> {
     return this.http.post<T>(this.url, props);
   }
 
+  addMany(body: any): Observable<ResponseMessageEntity> {
+    return this.http.post<ResponseMessageEntity>(this.url + `/multiple/creation`, body);
+  }
+
   update(id: any, body: Partial<any>): Observable<T> {
     return this.http.patch<T>(this.url + `/${id}`, body);
   }
 
-  updateMany(body: any): Observable<T> {
-    return this.http.post<T>(this.url + `/multiple`, body);
+  updateMany(body: any): Observable<ResponseMessageEntity> {
+    return this.http.post<ResponseMessageEntity>(this.url + `/multiple/updation`, body);
   }
 
   delete(id: number, params?: any): Observable<void> {
     return this.http.delete<void>(this.url + `/${id}`, {params});
+  }
+
+  deleteMany(body: any): Observable<ResponseMessageEntity> {
+    return this.http.post<ResponseMessageEntity>(this.url + `/multiple/deletion`, body);
   }
 
   sort(body: any): Observable<any> {

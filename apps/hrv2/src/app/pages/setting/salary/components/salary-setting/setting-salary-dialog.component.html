@@ -117,7 +117,7 @@
             <div>
               <nz-select nzMode='multiple' style='width: 100%' formControlName='recipes'>
                 <nz-option *ngFor='let item of formGroup.value.reference.recipes'
-                           [nzValue]='item'
+                           [nzValue]='item.value'
                            [nzLabel]='item.name'
                 ></nz-option>
               </nz-select>

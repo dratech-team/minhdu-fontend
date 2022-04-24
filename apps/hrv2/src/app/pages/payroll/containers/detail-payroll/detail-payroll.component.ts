@@ -4,7 +4,6 @@ import {DatetimeUnitEnum, EmployeeType, RecipeType, SalaryTypeEnum} from '@minhd
 import {PartialDayEnum} from '@minhdu-fontend/data-models';
 import {getDaysInMonth} from '@minhdu-fontend/utils';
 import {DatePipe} from '@angular/common';
-import {MatDialogConfig} from '@angular/material/dialog/dialog-config';
 import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {Sort} from "@angular/material/sort";
@@ -14,11 +13,18 @@ import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../state/payroll.action";
 import {PayrollEntity} from "../../entities";
 import {tranFormSalaryType} from "../../utils";
-import {NzModalService} from "ng-zorro-antd/modal";
 import {PermanentSalaryComponent} from "../../../salary/components/permanent/permanent-salary.component";
-import {dataModalPermanentSalary} from "../../entities/data-modal-permanent.salary";
-import {AbsentSalaryEntity, AllowanceSalaryEntity, OvertimeSalaryEntity, SalaryEntity} from "../../../salary/entities";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {DeductionSalaryComponent} from "../../../salary/components/deduction/deduction-salary.component";
+import {DataModalAbsentSalary} from "../../entities/data-modal-absent-salary";
+import {
+  AllowanceSalaryEntity,
+  DeductionSalaryEntity,
+  OvertimeSalaryEntity,
+  SalaryEntity
+} from "../../../salary/entities";
 import {PayslipComponent} from "../../components/payslip/payslip.component";
+import {dataModalPermanentSalary} from "../../entities/data-modal-permanent-salary";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -79,43 +85,64 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   onAdd(type: SalaryTypeEnum, payroll: PayrollEntity) {
-    switch (type) {
-      case SalaryTypeEnum.BASIC:
-        this.modal.create({
-          nzTitle: 'Thêm lương cơ bản',
-          nzContent: PermanentSalaryComponent,
-          nzComponentParams: <{ data: dataModalPermanentSalary }>{
-            data: {
-              add: {payroll}
-            }
-          },
-          nzFooter: ' '
-        })
-        break
+    const config = {
+      nzFooter: ' ',
+      nzWidth: 'fit-content'
     }
+    this.onOpenSalary(type, config,{payroll})
   }
 
   updateSalary(
     type: SalaryTypeEnum,
-    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | AbsentSalaryEntity,
-    payroll?: PayrollEntity) {
+    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | DeductionSalaryEntity) {
+    const config = {
+      nzFooter: ' ',
+      nzWidth: 'fit-content'
+    }
+    this.onOpenSalary(type,config , undefined, {salary})
+  }
+
+  onOpenSalary(
+    type: SalaryTypeEnum,
+    config: any,
+    add?: { payroll: PayrollEntity },
+    update?: { salary: SalaryEntity }
+  ) {
     switch (type) {
-      case SalaryTypeEnum.BASIC:
-        this.modal.create({
-          nzTitle: 'Sửa lương cơ bản',
+      case SalaryTypeEnum.OVERTIME:
+        break
+      case SalaryTypeEnum.ALLOWANCE:
+        break
+      case SalaryTypeEnum.WFH:
+        break
+      case SalaryTypeEnum.HOLIDAY:
+        break
+      case SalaryTypeEnum.ABSENT:
+        this.modal.create(Object.assign(config, {
+          nzTitle: add ?'Thêm khấu trừ' :'Cập nhật khấu trừ',
+          nzContent: DeductionSalaryComponent,
+          nzComponentParams: <{ data: DataModalAbsentSalary }>{
+            data: {
+              add: add,
+              update: update
+            }
+          },
+        }))
+        break
+      default:
+        this.modal.create(Object.assign(config, {
+          nzTitle: (add ?'Thêm':'Cập nhật') + (type === SalaryTypeEnum.BASIC ? ' lương cơ bản': ' phụ cấp') ,
           nzContent: PermanentSalaryComponent,
           nzComponentParams: <{ data: dataModalPermanentSalary }>{
             data: {
-              update: {salary: salary}
+              type: type,
+              add: add,
+              update: update
             }
           },
-          nzFooter: ' '
-        })
+        }))
         break
     }
-  }
-
-  openSalary(type: SalaryTypeEnum, config: MatDialogConfig) {
   }
 
   removeSalary(id: number, payrollId: number) {

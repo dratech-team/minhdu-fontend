@@ -1,3 +1,3 @@
-import { BaseRemoveDto } from '@minhdu-fontend/base-dto';
-
-export type RemoveSalaryDto = BaseRemoveDto
+export interface RemoveSalaryDto {
+  salaryIds: number[]
+}
