@@ -29,6 +29,8 @@ import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { SettingSalaryEffect } from '../setting/salary/state';
 import { SalaryModule } from '../salary/salary.module';
 import { PayslipComponent } from './components/payslip/payslip.component';
+import {NzSpinModule} from "ng-zorro-antd/spin";
+import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader";
 
 @NgModule({
   imports: [
@@ -55,7 +57,9 @@ import { PayslipComponent } from './components/payslip/payslip.component';
     NzSwitchModule,
     MatSortModule,
     NzCarouselModule,
-    SalaryModule
+    SalaryModule,
+    NzSpinModule,
+    NgxSkeletonLoaderModule
   ],
   declarations: [
     PayrollComponent,

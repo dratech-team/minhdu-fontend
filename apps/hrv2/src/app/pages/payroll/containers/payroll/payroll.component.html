@@ -94,6 +94,7 @@
       [formGroup]="formGroup"
       [payrolls]="(payrolls$ | async) || []"
       [onChange]='onChange'
+      (onloadPayroll)="onLoadPayroll($event.isPagination)"
     >
     </minhdu-fontend-table-payroll>
   </div>
