@@ -55,6 +55,7 @@ import {CollapseRadioComponent} from './collapse-radio/collapse-radio.component'
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {CollapseSelectComponent} from "./collapse-select/collapse-select.component";
 import {ModalSharedComponent} from "./modal-shared/modal-shared.component";
+import {ModalDatePickerComponent} from "./modal-date-picker/modal-date-picker.component";
 
 @NgModule({
     imports: [
@@ -118,7 +119,8 @@ import {ModalSharedComponent} from "./modal-shared/modal-shared.component";
     RagePickerComponent,
     CollapseRadioComponent,
     CollapseSelectComponent,
-    ModalSharedComponent
+    ModalSharedComponent,
+    ModalDatePickerComponent
   ],
   exports: [
     SwimLaneChartComponent,
@@ -146,7 +148,8 @@ import {ModalSharedComponent} from "./modal-shared/modal-shared.component";
     CollapseDatepickerComponent,
     CollapseRadioComponent,
     CollapseSelectComponent,
-    ModalSharedComponent
+    ModalSharedComponent,
+    ModalDatePickerComponent
   ],
   providers: [
     DecimalPipe,
