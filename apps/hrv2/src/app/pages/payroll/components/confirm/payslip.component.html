@@ -206,13 +206,14 @@
     <ng-template #seasonal>
       <div *ngIf='( payslip$ | async) as payslip'>
         <div class='border mt-2'>
-          <div style='
-                            position: relative;
-                            margin: 0;
-                            padding: 0 ;
-                            overflow-x: hidden;
-                            overflow-y: auto;
-                            max-height: 45vh;' id='table-payroll-seasonal'>
+          <div
+            style='position: relative;
+                   margin: 0;
+                   padding: 0 ;
+                   overflow-x: hidden;
+                   overflow-y: auto;
+                   max-height: 45vh;'
+            id='table-payroll-seasonal'>
             <div class=' border-bottom d-flex' style='background: white;
                       position: sticky;
                       top: 0;

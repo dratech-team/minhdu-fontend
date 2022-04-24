@@ -28,7 +28,7 @@ import {MatSortModule} from "@angular/material/sort";
 import {NzCarouselModule} from 'ng-zorro-antd/carousel';
 import {SettingSalaryEffect} from "../setting/salary/state";
 import {SalaryModule} from "../salary/salary.module";
-import {ConfirmPayrollComponent} from "./components/confirm/confirm-payroll.component";
+import {PayslipComponent} from "./components/confirm/payslip.component";
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader";
 import {NzSpinModule} from "ng-zorro-antd/spin";
 
@@ -68,7 +68,7 @@ import {NzSpinModule} from "ng-zorro-antd/spin";
     DetailPayrollComponent,
     FilterPipe,
     RangeDateTimePipe,
-    ConfirmPayrollComponent
+    PayslipComponent
   ],
   exports: [
     TablePayrollComponent

@@ -49,7 +49,7 @@ export class PayrollService extends BaseService<PayrollEntity> {
     );
   }
 
-  cancelConfirmPayroll(id: number, body?: any): Observable<any> {
+  cancelConfirm(id: number, body?: any): Observable<any> {
     return this.http.patch<any>(Api.HR.PAYROLL.CANCEL_CONFIRM+ `/${id}`,body);
   }
 }

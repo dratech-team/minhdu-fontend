@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {Observable, throwError} from 'rxjs';
+import {throwError} from 'rxjs';
 import {EmployeeType, RecipeType} from '@minhdu-fontend/enums';
 import {FormControl} from '@angular/forms';
 import {DatePipe} from '@angular/common';
@@ -10,7 +10,7 @@ import {
 } from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
 import {catchError} from "rxjs/operators";
 import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
-import {PayrollEntity, PayslipEntity} from "../../entities";
+import {PayrollEntity} from "../../entities";
 import {PayslipService} from "../../services/payslip.service";
 import {PayrollService} from "../../services/payroll.service";
 import {Actions} from "@datorama/akita-ng-effects";
@@ -18,19 +18,19 @@ import {PayrollActions} from "../../state/payroll.action";
 import {NzModalRef} from "ng-zorro-antd/modal";
 
 @Component({
-  templateUrl: 'confirm-payroll.component.html',
-  styleUrls: ['confirm-payroll.component.scss']
+  templateUrl: 'payslip.component.html',
+  styleUrls: ['payslip.component.scss']
 })
-export class ConfirmPayrollComponent implements OnInit {
+export class PayslipComponent implements OnInit {
   @Input() data!: {
     payroll: PayrollEntity
   }
   accConfirmedAt = new FormControl('');
-  payslip$?: Observable<PayslipEntity>;
+  payslip$ = this.payslipService.getOne(this.data.payroll.id);
   recipeType = RecipeType;
   isConfirmed = false;
   typeEmployee = EmployeeType;
-  role?: string | null
+  role = localStorage.getItem('role')
   adding = false;
 
   constructor(
@@ -45,8 +45,6 @@ export class ConfirmPayrollComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.role = localStorage.getItem('role')
-    this.payslip$ = this.payslipService.getOne(this.data.payroll.id);
     if (this.data?.payroll?.accConfirmedAt) {
       this.isConfirmed = true;
       this.accConfirmedAt.setValue(this.datePipe.transform(this.data.payroll.accConfirmedAt, 'yyyy-MM-dd'));
@@ -97,7 +95,7 @@ export class ConfirmPayrollComponent implements OnInit {
       }
     }).afterClosed().subscribe(() => {
       this.adding = true
-      this.payrollService.cancelConfirmPayroll(this.data.payroll.id).pipe(catchError(err => {
+      this.payrollService.cancelConfirm(this.data.payroll.id).pipe(catchError(err => {
         this.adding = false
         return throwError(err)
       })).subscribe(() => {

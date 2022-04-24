@@ -18,7 +18,7 @@ import {NzModalService} from "ng-zorro-antd/modal";
 import {PermanentSalaryComponent} from "../../../salary/components/permanent/permanent-salary.component";
 import {dataModalPermanentSalary} from "../../entities/data-modal-permanent.salary";
 import {AbsentSalaryEntity, AllowanceSalaryEntity, OvertimeSalaryEntity, SalaryEntity} from "../../../salary/entities";
-import {ConfirmPayrollComponent} from "../../components/confirm/confirm-payroll.component";
+import {PayslipComponent} from "../../components/confirm/payslip.component";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -124,7 +124,7 @@ export class DetailPayrollComponent implements OnInit {
   confirmPayroll(payroll: PayrollEntity) {
     this.modal.create({
       nzTitle: 'Xác nhận phiếu lương tháng '+ this.datePipe.transform(payroll.createdAt, 'yyyy-MM'),
-      nzContent: ConfirmPayrollComponent,
+      nzContent: PayslipComponent,
       nzComponentParams: <{ data: { payroll: PayrollEntity } }>{
         data: {
           payroll
