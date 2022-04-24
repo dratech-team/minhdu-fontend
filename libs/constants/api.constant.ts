@@ -41,7 +41,7 @@ export const Api = {
       OVERTIME_TEMPLATE: 'overtime-template'
     },
     SETTING_SALARY:'settings/salary',
-    BLOCK_SETTING_SALARY:'settings/salary/block',
+    BLOCK_SETTING_SALARY:'settings/salary-block',
     EXPORT:'export',
     BRANCH_EXPORT: 'payroll/export/branch',
     POSITION_EXPORT: 'payroll/export/position',
