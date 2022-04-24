@@ -2,9 +2,9 @@ import {Component, Input} from '@angular/core';
 import {NzModalRef} from "ng-zorro-antd/modal";
 
 @Component({
-  templateUrl: 'modal-shared.component.html',
+  templateUrl: 'modal-alert.component.html',
 })
-export class ModalSharedComponent {
+export class ModalAlertComponent {
   @Input() data!: {
     description: string,
   }

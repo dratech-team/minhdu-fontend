@@ -54,7 +54,7 @@ import {NzRadioModule} from "ng-zorro-antd/radio";
 import {CollapseRadioComponent} from './collapse-radio/collapse-radio.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {CollapseSelectComponent} from "./collapse-select/collapse-select.component";
-import {ModalSharedComponent} from "./modal-shared/modal-shared.component";
+import {ModalAlertComponent} from "./modal-alert/modal-alert.component";
 import {ModalDatePickerComponent} from "./modal-date-picker/modal-date-picker.component";
 
 @NgModule({
@@ -119,7 +119,7 @@ import {ModalDatePickerComponent} from "./modal-date-picker/modal-date-picker.co
     RagePickerComponent,
     CollapseRadioComponent,
     CollapseSelectComponent,
-    ModalSharedComponent,
+    ModalAlertComponent,
     ModalDatePickerComponent
   ],
   exports: [
@@ -148,7 +148,7 @@ import {ModalDatePickerComponent} from "./modal-date-picker/modal-date-picker.co
     CollapseDatepickerComponent,
     CollapseRadioComponent,
     CollapseSelectComponent,
-    ModalSharedComponent,
+    ModalAlertComponent,
     ModalDatePickerComponent
   ],
   providers: [
