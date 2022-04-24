@@ -10,6 +10,10 @@ import {rageDaysInMonth} from "@minhdu-fontend/utils";
 import {PaidConstant} from "../../constants/paid.constant";
 import {ConfirmConstant} from "../../constants/confirm.constant";
 import {Router} from "@angular/router";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {
+  ModalDatePickerComponent
+} from "../../../../../../../../libs/components/src/lib/modal-date-picker/modal-date-picker.component";
 
 
 @Component({
@@ -39,6 +43,7 @@ export class TablePayrollComponent implements OnInit {
     private readonly payrollQuery: PayrollQuery,
     private readonly actions$: Actions,
     private readonly router: Router,
+    private readonly modal: NzModalService,
   ) {
   }
 
@@ -69,7 +74,10 @@ export class TablePayrollComponent implements OnInit {
   }
 
   onDelete($event: any) {
-
+    this.modal.create({
+      nzTitle:'Xoá phiếu lương',
+      nzContent: ModalDatePickerComponent
+    })
   }
 
   onUpdate($event: any) {
