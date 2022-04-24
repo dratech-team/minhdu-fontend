@@ -10,6 +10,13 @@ import {rageDaysInMonth} from "@minhdu-fontend/utils";
 import {PaidConstant} from "../../constants/paid.constant";
 import {ConfirmConstant} from "../../constants/confirm.constant";
 import {Router} from "@angular/router";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {
+  ModalDatePickerComponent
+} from "../../../../../../../../libs/components/src/lib/modal-date-picker/modal-date-picker.component";
+import {ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
+import {Subject} from "rxjs";
+import {PayrollActions} from "../../state/payroll.action";
 
 
 @Component({
@@ -19,9 +26,13 @@ import {Router} from "@angular/router";
 export class TablePayrollComponent implements OnInit {
   @Input() payrolls!: PayrollEntity[]
   @Input() formGroup!: FormGroup
+  @Input() eventAddPayroll?: Subject<void>;
   @Input() pageSize = 10;
+  @Input() history?: {
+    employeeId: number
+  };
   @Input() scroll: { x: string, y: string } = {x: '5000px', y: '56vh'}
-
+  added$ =this.payrollQuery.select(state => state.added);
   loading$ = this.payrollQuery.select(state => state.loading)
   positions$ = this.positionQuery.selectAll()
   ItemContextMenu = ItemContextMenu;
@@ -39,6 +50,7 @@ export class TablePayrollComponent implements OnInit {
     private readonly payrollQuery: PayrollQuery,
     private readonly actions$: Actions,
     private readonly router: Router,
+    private readonly modal: NzModalService,
   ) {
   }
 
@@ -59,13 +71,34 @@ export class TablePayrollComponent implements OnInit {
     this.payrollQuery.select(state => state.search.startedAt).subscribe(val => {
       this.daysInMonth = rageDaysInMonth(val)
     })
+    this.eventAddPayroll?.subscribe(_ => this.onAdd())
   }
 
   onPagination(index: number) {
   }
 
-  onAdd($event: any) {
-
+  onAdd() {
+    this.modal.create({
+      nzTitle: 'Tạo phiếu lương',
+      nzContent: ModalDatePickerComponent,
+      nzComponentParams: <{ data: ModalDatePickerEntity }>{
+        data: {
+          type: "month",
+          dateInit: this.payrollQuery.getValue().search.startedAt
+        }
+      },
+      nzFooter: ' '
+    }).afterClose.subscribe(date => {
+      if (date) {
+        this.actions$.dispatch(PayrollActions.addOne({
+          body: {
+            createdAt: date,
+            employeeId: this.history?.employeeId
+          },
+          inHistory: !!this.history
+        }))
+      }
+    })
   }
 
   onDelete($event: any) {

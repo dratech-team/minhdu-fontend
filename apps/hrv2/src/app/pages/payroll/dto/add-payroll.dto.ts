@@ -1,11 +1,9 @@
-import {BasePayrollEntity} from "../bases";
-
 interface Generate {
   createdAt: Date,
   employeeId?: number;
 }
 
-export interface AddPayrollDto extends Omit<BasePayrollEntity, 'id'> {
+export interface AddPayrollDto {
   body: Generate;
   inHistory?: boolean
 }

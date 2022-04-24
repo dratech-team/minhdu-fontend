@@ -26,7 +26,7 @@ export class PayrollEffect {
         ...state, added: false
       }))
       return this.service.addOne(props).pipe(
-        tap(res => {
+        tap(_ => {
           this.payrollStore.update(state => ({
             ...state, added: true
           }))

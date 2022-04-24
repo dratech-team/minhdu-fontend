@@ -7,7 +7,7 @@ import {EmployeeStatusConstant, PaginationDto, PayrollConstant} from "@minhdu-fo
 import {FilterTypeEnum} from "@minhdu-fontend/enums";
 import {debounceTime, map} from "rxjs/operators";
 import {BranchActions, BranchQuery} from "../../../../../../../../libs/orgchart-v2/src/lib/branch/state";
-import {Observable} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import {Category} from "@minhdu-fontend/data-models";
 import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
@@ -22,7 +22,7 @@ export class PayrollComponent implements OnInit {
       this.payrollStore.update(state => ({
         ...state, branch: branches[0]
       }))
-      this.formGroup.get('branch')?.setValue(branches[0],{emitEvent: false})
+      this.formGroup.get('branch')?.setValue(branches[0], {emitEvent: false})
     }
     return branches
   }));
@@ -52,6 +52,7 @@ export class PayrollComponent implements OnInit {
       this.stateSearch.endedAt
     ])
   })
+  eventsAddPayroll = new Subject<void>();
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
 
   constructor(
@@ -122,5 +123,9 @@ export class PayrollComponent implements OnInit {
   }
 
   onUpdateCategory() {
+  }
+
+  onAdd() {
+    this.eventsAddPayroll.next()
   }
 }

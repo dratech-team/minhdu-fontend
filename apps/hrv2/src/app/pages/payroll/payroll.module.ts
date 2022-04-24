@@ -28,35 +28,37 @@ import {MatSortModule} from "@angular/material/sort";
 import {NzCarouselModule} from 'ng-zorro-antd/carousel';
 import {SettingSalaryEffect} from "../setting/salary/state";
 import {SalaryModule} from "../salary/salary.module";
+import {NzSpinModule} from "ng-zorro-antd/spin";
 
 
 @NgModule({
-  imports: [
-    ComponentsModule,
-    PayrollRoutingModule,
-    NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
-    CommonModule,
-    ReactiveFormsModule,
-    FormsModule,
-    AkitaNgEffectsModule.forFeature([PayrollEffect,SettingSalaryEffect]),
-    OrgchartV2Module,
-    NzMessageModule,
-    NzSelectModule,
-    NzTableModule,
-    NzInputModule,
-    NgxCurrencyModule,
-    MatRadioModule,
-    NzDatePickerModule,
-    NzTimePickerModule,
-    NzRadioModule,
-    NzCheckboxModule,
-    NzButtonModule,
-    NzStepsModule,
-    NzSwitchModule,
-    MatSortModule,
-    NzCarouselModule,
-    SalaryModule
-  ],
+    imports: [
+        ComponentsModule,
+        PayrollRoutingModule,
+        NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
+        AkitaNgEffectsModule.forFeature([PayrollEffect, SettingSalaryEffect]),
+        OrgchartV2Module,
+        NzMessageModule,
+        NzSelectModule,
+        NzTableModule,
+        NzInputModule,
+        NgxCurrencyModule,
+        MatRadioModule,
+        NzDatePickerModule,
+        NzTimePickerModule,
+        NzRadioModule,
+        NzCheckboxModule,
+        NzButtonModule,
+        NzStepsModule,
+        NzSwitchModule,
+        MatSortModule,
+        NzCarouselModule,
+        SalaryModule,
+        NzSpinModule
+    ],
   declarations: [
     PayrollComponent,
     TablePayrollComponent,

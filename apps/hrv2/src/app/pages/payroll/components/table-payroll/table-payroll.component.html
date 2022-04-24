@@ -1,314 +1,317 @@
-<nz-table
-  #tablePayroll
-  [nzData]="payrolls"
-  [nzPageSize]="pageSize"
-  [formGroup]='formGroup'
-  (nzPageIndexChange)="onPagination($event)"
-  [nzScroll]="scroll"
-  [nzLoading]="(loading$|async)"
-  nzSize="small"
->
-  <thead>
-  <tr>
-    <th nzLeft nzWidth="70px">
-      <div>stt</div>
-      <input nz-input disabled type='text'>
-    </th>
-    <th nzWidth="150px">
-      <div>Mã phiếu lương</div>
-      <input nz-input type='search' formControlName='code'>
-    </th>
-    <th nzLeft>
-      <div>Tên nhân viên</div>
-      <input nz-input type='search' formControlName='name'
-             placeholder='Trần Gia Hiệu'>
-    </th>
-    <th>
-      <div>Đơn vị</div>
-      <input nz-input disabled>
-    </th>
-    <th>
-      <div>Chức vụ</div>
-      <nz-select
-        nzShowSearch
-        nzAllowClear
-        style='width:100%'
-        formControlName='position'
-        nzPlaceHolder='chọn chức vụ'
-        [compareWith]='compareFN'
-      >
-        <nz-option
-          *ngFor='let position of positions$|async'
-          [nzLabel]='position.name'
-          [nzValue]='position'
+<div style="position: relative">
+  <nz-spin *ngIf="(added$|async) === false" nzSimple style="position: absolute; top: 50%;left: 50%;"></nz-spin>
+  <nz-table
+    #tablePayroll
+    [nzData]="payrolls"
+    [nzPageSize]="pageSize"
+    [formGroup]='formGroup'
+    (nzPageIndexChange)="onPagination($event)"
+    [nzScroll]="scroll"
+    [nzLoading]="(loading$|async)"
+    nzSize="small"
+  >
+    <thead>
+    <tr>
+      <th nzLeft nzWidth="70px">
+        <div>stt</div>
+        <input nz-input disabled type='text'>
+      </th>
+      <th nzWidth="150px">
+        <div>Mã phiếu lương</div>
+        <input nz-input type='search' formControlName='code'>
+      </th>
+      <th nzLeft>
+        <div>Tên nhân viên</div>
+        <input nz-input type='search' formControlName='name'
+               placeholder='Trần Gia Hiệu'>
+      </th>
+      <th>
+        <div>Đơn vị</div>
+        <input nz-input disabled>
+      </th>
+      <th>
+        <div>Chức vụ</div>
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          style='width:100%'
+          formControlName='position'
+          nzPlaceHolder='chọn chức vụ'
+          [compareWith]='compareFN'
         >
-        </nz-option>
-      </nz-select>
-    </th>
-    <th>
-      <div>Ngày tạo phiếu lương</div>
-      <input nz-input disabled>
-    </th>
-    <th *ngIf="formGroup.value.filterType !== filterTypeEnum.SEASONAL">
-      <div>Ngày công chuẩn</div>
-      <input nz-input type='number' disabled>
-    </th>
-<!--    time sheet-->
-    <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.TIME_SHEET">
-      <th nzWidth="100px" *ngFor='let item of daysInMonth' >
-        <div>
-          {{item.key}}
-        </div>
-      </th>
-      <th nzWidth="150px">
-        <div class='text-center'>Tổng cộng</div>
-      </th>
-      <th nzWidth="170px">
-        <div  class='text-center'>Kế toán xác nhận</div>
-        <nz-select style="width: 100%" formControlName='accConfirmed'>
-          <nz-option *ngFor="let item of confirmConstant" [nzValue]='item.value' [nzLabel]="item.name"></nz-option>
-        </nz-select>
-      </th>
-      <th nzWidth="170px">
-        <div>Quản lý xác nhận</div>
-        <nz-select style="width: 100%" formControlName="manConfirmedAt">
-          <nz-option *ngFor="let item of confirmConstant" [nzValue]='item.value' [nzLabel]="item.name"></nz-option>
-        </nz-select>
-      </th>
-    </ng-template>
-<!--    payroll-->
-    <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.PAYROLL">
-      <th>
-        <div>Tổng ngày công thực nhận</div>
-        <input nz-input type='number' disabled>
-      </th>
-      <th nzWidth="150px">
-        <div>kế toán xác nhận</div>
-        <nz-select  style='min-width: 150px'
-                    formControlName='accConfirmed'>
-          <nz-option *ngFor="let item of confirmConstant" [nzValue]='item.value' [nzLabel]="item.name"></nz-option>
+          <nz-option
+            *ngFor='let position of positions$|async'
+            [nzLabel]='position.name'
+            [nzValue]='position'
+          >
+          </nz-option>
         </nz-select>
       </th>
       <th>
-        <div>lương cơ bản</div>
+        <div>Ngày tạo phiếu lương</div>
+        <input nz-input disabled>
+      </th>
+      <th *ngIf="formGroup.value.filterType !== filterTypeEnum.SEASONAL">
+        <div>Ngày công chuẩn</div>
         <input nz-input type='number' disabled>
       </th>
-      <th>
-        <div>Phụ cấp</div>
-        <input nz-input type='number' disabled>
-      </th>
-      <th>
-        <div>Phụ cấp ở lại</div>
-        <input nz-input type='number' disabled>
-      </th>
-      <th>
-        <div>Tăng ca</div>
-        <input nz-input type='number' disabled>
-      </th>
-      <th>
-        <div>Lương đi làm ngày lễ</div>
-        <input nz-input type='number' disabled>
-      </th>
-      <th>
-        <div>Lương không đi làm ngày lễ</div>
-        <input nz-input type='number' disabled>
-      </th>
-      <th>
-        <div>Khấu trừ</div>
-        <input nz-input type='number' disabled>
-      </th>
-      <th>
-        <div>Thuế</div>
-        <input nz-input type='number' disabled>
-      </th>
-      <th>
-        <div>Tổng thu nhập</div>
-        <input nz-input type='number' disabled>
-      </th>
-      <th nzWidth="150px">
-        <div>Thanh toán</div>
-        <nz-select style='width: 100%' formControlName='paidAt'>
-          <nz-option *ngFor="let item of paidConstant" [nzValue]="item.value" [nzLabel]="item.name"></nz-option>
-        </nz-select>
-      </th>
-    </ng-template>
-<!--    seasonal-->
-    <ng-template  [ngIf]="formGroup.value.filterType === filterTypeEnum.SEASONAL">
-      <th>
-        <div>Tổng ngày làm</div>
-        <input nz-input type='number' disabled>
-      </th>
-      <th>
-        <div>Tổng tiền ngày làm</div>
-        <input nz-input type='number' disabled>
-      </th>
-      <th>
-        <div>Tổng giờ tăng ca</div>
-        <input nz-input type='number' disabled>
-      </th>
-      <th>
-        <div>Tổng tiền tăng ca</div>
-        <input nz-input type='number' disabled>
-      </th>
-      <th>
-        <div>Thành tiền</div>
-        <input nz-input type='number' disabled>
-      </th>
-      <th nzWidth="170px">
-        <div>Kế toán xác nhận</div>
-        <nz-select style="width: 100%" formControlName='accConfirmed'>
-          <nz-option *ngFor="let item of confirmConstant" [nzValue]='item.value' [nzLabel]="item.name"></nz-option>
-        </nz-select>
-      </th>
-      <th nzWidth="170px">
-        <div>Quản lý xác nhận</div>
-        <nz-select style="width: 100%" formControlName="manConfirmedAt">
-          <nz-option *ngFor="let item of confirmConstant" [nzValue]='item.value' [nzLabel]="item.name"></nz-option>
-        </nz-select>
-      </th>
-      <th nzWidth="170px">
-        <div>Thanh toán</div>
-        <nz-select style='width: 100%' formControlName='paidAt'>
-          <nz-option *ngFor="let item of paidConstant" [nzValue]="item.value" [nzLabel]="item.name"></nz-option>
-        </nz-select>
-      </th>
-    </ng-template>
-  </tr>
-  </thead>
-  <tbody>
-  <ng-template ngFor let-payroll [ngForOf]="tablePayroll.data" let-i='index'>
-    <tr (contextmenu)='child.onContextMenu($event,payroll)' class="pointer">
-      <td nzLeft>
-        {{i + 1}}
-      </td>
-      <td >
-        {{payroll.id}}
-      </td>
-      <td nzLeft>
-        {{payroll.employee.lastName}}
-      </td>
-      <td>
-        {{payroll.branch}}
-      </td>
-      <td>
-        {{payroll.position}}
-      </td>
-      <td>
-        {{payroll.createdAt|date:'dd-MM-yyyy'}}
-      </td>
-      <td  *ngIf="formGroup.value.filterType !== filterTypeEnum.SEASONAL">
-        {{payroll.workday || 'Đang cập nhật'}}
-      </td>
-<!--      time sheet-->
+      <!--    time sheet-->
       <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.TIME_SHEET">
-        <td (click)="onDetail(payroll)"  class='text-center' *ngFor='let item of daysInMonth ; let i = index'
-            [ngStyle]='{"color": payroll.timesheet ? payroll.timesheet.datetime[i]["color"] : "black" }'>
+        <th nzWidth="100px" *ngFor='let item of daysInMonth'>
           <div>
-            {{payroll?.timesheet ? payroll.timesheet.datetime[i][item.key] : ''}}
+            {{item.key}}
           </div>
-        </td>
-        <td>
-            {{payroll?.timesheet?.total}}
-        </td>
-        <td>
-          {{payroll?.accConfirmedAt ? (payroll.accConfirmedAt|date:'dd-MM-yyyy') : 'Chưa xác nhận'}}
-        </td>
-        <td>
-          <div (click)='updateManConfirm(payroll.id,payroll.manConfirmedAt, payroll.createdAt)'>
-            <input style='pointer-events: none' disabled type='checkbox'
-                   [checked]='payroll.manConfirmedAt !== null'>
-          </div>
-        </td>
+        </th>
+        <th nzWidth="150px">
+          <div class='text-center'>Tổng cộng</div>
+        </th>
+        <th nzWidth="170px">
+          <div class='text-center'>Kế toán xác nhận</div>
+          <nz-select style="width: 100%" formControlName='accConfirmed'>
+            <nz-option *ngFor="let item of confirmConstant" [nzValue]='item.value' [nzLabel]="item.name"></nz-option>
+          </nz-select>
+        </th>
+        <th nzWidth="170px">
+          <div>Quản lý xác nhận</div>
+          <nz-select style="width: 100%" formControlName="manConfirmedAt">
+            <nz-option *ngFor="let item of confirmConstant" [nzValue]='item.value' [nzLabel]="item.name"></nz-option>
+          </nz-select>
+        </th>
       </ng-template>
-<!--      payroll-->
+      <!--    payroll-->
       <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.PAYROLL">
-        <td>
-            {{payroll.payslip?.totalWorkday ? payroll.payslip?.totalWorkday : 'Đang cập nhật' }}
-        </td>
-        <td>
-          {{payroll?.accConfirmedAt ? (payroll.accConfirmedAt|date:'dd-MM-yyyy') : 'Chưa xác nhận'}}
-        </td>
-        <td>
-            {{payroll.payslip?.basic|number:'1.0-0'}} VND
-        </td>
-        <td>
-            {{payroll.payslip?.stay |number:'1.0-0'}} VND
-        </td>
-        <td>
-            {{payroll.payslip?.allowance |number:'1.0-0'}} VND
-        </td>
-        <td>
-            {{payroll.payslip?.overtime |number:'1.0-0'}} VND
-        </td>
-        <td>
-            {{payroll.payslip?.payslipInHoliday || 0}} VND
-        </td>
-        <td>
-            {{payroll.payslip?.payslipNotInHoliday || 0}} VND
-        </td>
-        <td>
-            {{payroll.payslip?.deduction | number: '1.0-0'}} VND
-        </td>
-        <td>
-            {{payroll.payslip?.tax | number: '1.0-0'}} VND
-        </td>
-        <td>
-            {{payroll.payslip?.total| number: '1.0-0'}} VND
-        </td>
-        <td>
-          <div (click)='updateConfirm(payroll.id,"paidAt")'>
-            <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.paidAt !== null'>
-          </div>
-        </td>
+        <th>
+          <div>Tổng ngày công thực nhận</div>
+          <input nz-input type='number' disabled>
+        </th>
+        <th nzWidth="150px">
+          <div>kế toán xác nhận</div>
+          <nz-select style='min-width: 150px'
+                     formControlName='accConfirmed'>
+            <nz-option *ngFor="let item of confirmConstant" [nzValue]='item.value' [nzLabel]="item.name"></nz-option>
+          </nz-select>
+        </th>
+        <th>
+          <div>lương cơ bản</div>
+          <input nz-input type='number' disabled>
+        </th>
+        <th>
+          <div>Phụ cấp</div>
+          <input nz-input type='number' disabled>
+        </th>
+        <th>
+          <div>Phụ cấp ở lại</div>
+          <input nz-input type='number' disabled>
+        </th>
+        <th>
+          <div>Tăng ca</div>
+          <input nz-input type='number' disabled>
+        </th>
+        <th>
+          <div>Lương đi làm ngày lễ</div>
+          <input nz-input type='number' disabled>
+        </th>
+        <th>
+          <div>Lương không đi làm ngày lễ</div>
+          <input nz-input type='number' disabled>
+        </th>
+        <th>
+          <div>Khấu trừ</div>
+          <input nz-input type='number' disabled>
+        </th>
+        <th>
+          <div>Thuế</div>
+          <input nz-input type='number' disabled>
+        </th>
+        <th>
+          <div>Tổng thu nhập</div>
+          <input nz-input type='number' disabled>
+        </th>
+        <th nzWidth="150px">
+          <div>Thanh toán</div>
+          <nz-select style='width: 100%' formControlName='paidAt'>
+            <nz-option *ngFor="let item of paidConstant" [nzValue]="item.value" [nzLabel]="item.name"></nz-option>
+          </nz-select>
+        </th>
       </ng-template>
-<!--      seasonal-->
+      <!--    seasonal-->
       <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.SEASONAL">
-        <td>
-            {{payroll.payslip?.workdays || 'Đang cập nhật'}}
+        <th>
+          <div>Tổng ngày làm</div>
+          <input nz-input type='number' disabled>
+        </th>
+        <th>
+          <div>Tổng tiền ngày làm</div>
+          <input nz-input type='number' disabled>
+        </th>
+        <th>
+          <div>Tổng giờ tăng ca</div>
+          <input nz-input type='number' disabled>
+        </th>
+        <th>
+          <div>Tổng tiền tăng ca</div>
+          <input nz-input type='number' disabled>
+        </th>
+        <th>
+          <div>Thành tiền</div>
+          <input nz-input type='number' disabled>
+        </th>
+        <th nzWidth="170px">
+          <div>Kế toán xác nhận</div>
+          <nz-select style="width: 100%" formControlName='accConfirmed'>
+            <nz-option *ngFor="let item of confirmConstant" [nzValue]='item.value' [nzLabel]="item.name"></nz-option>
+          </nz-select>
+        </th>
+        <th nzWidth="170px">
+          <div>Quản lý xác nhận</div>
+          <nz-select style="width: 100%" formControlName="manConfirmedAt">
+            <nz-option *ngFor="let item of confirmConstant" [nzValue]='item.value' [nzLabel]="item.name"></nz-option>
+          </nz-select>
+        </th>
+        <th nzWidth="170px">
+          <div>Thanh toán</div>
+          <nz-select style='width: 100%' formControlName='paidAt'>
+            <nz-option *ngFor="let item of paidConstant" [nzValue]="item.value" [nzLabel]="item.name"></nz-option>
+          </nz-select>
+        </th>
+      </ng-template>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-template ngFor let-payroll [ngForOf]="tablePayroll.data" let-i='index'>
+      <tr (contextmenu)='child.onContextMenu($event,payroll)' class="pointer">
+        <td nzLeft>
+          {{i + 1}}
         </td>
         <td>
+          {{payroll.id}}
+        </td>
+        <td nzLeft>
+          {{payroll.employee.lastName}}
+        </td>
+        <td>
+          {{payroll.branch}}
+        </td>
+        <td>
+          {{payroll.position}}
+        </td>
+        <td>
+          {{payroll.createdAt|date:'dd-MM-yyyy'}}
+        </td>
+        <td *ngIf="formGroup.value.filterType !== filterTypeEnum.SEASONAL">
+          {{payroll.workday || 'Đang cập nhật'}}
+        </td>
+        <!--      time sheet-->
+        <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.TIME_SHEET">
+          <td (click)="onDetail(payroll)" class='text-center' *ngFor='let item of daysInMonth ; let i = index'
+              [ngStyle]='{"color": payroll.timesheet ? payroll.timesheet.datetime[i]["color"] : "black" }'>
+            <div>
+              {{payroll?.timesheet ? payroll.timesheet.datetime[i][item.key] : ''}}
+            </div>
+          </td>
+          <td>
+            {{payroll?.timesheet?.total}}
+          </td>
+          <td>
+            {{payroll?.accConfirmedAt ? (payroll.accConfirmedAt|date:'dd-MM-yyyy') : 'Chưa xác nhận'}}
+          </td>
+          <td>
+            <div (click)='updateManConfirm(payroll.id,payroll.manConfirmedAt, payroll.createdAt)'>
+              <input style='pointer-events: none' disabled type='checkbox'
+                     [checked]='payroll.manConfirmedAt !== null'>
+            </div>
+          </td>
+        </ng-template>
+        <!--      payroll-->
+        <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.PAYROLL">
+          <td>
+            {{payroll.payslip?.totalWorkday ? payroll.payslip?.totalWorkday : 'Đang cập nhật' }}
+          </td>
+          <td>
+            {{payroll?.accConfirmedAt ? (payroll.accConfirmedAt|date:'dd-MM-yyyy') : 'Chưa xác nhận'}}
+          </td>
+          <td>
+            {{payroll.payslip?.basic|number:'1.0-0'}} VND
+          </td>
+          <td>
+            {{payroll.payslip?.stay |number:'1.0-0'}} VND
+          </td>
+          <td>
+            {{payroll.payslip?.allowance |number:'1.0-0'}} VND
+          </td>
+          <td>
+            {{payroll.payslip?.overtime |number:'1.0-0'}} VND
+          </td>
+          <td>
+            {{payroll.payslip?.payslipInHoliday || 0}} VND
+          </td>
+          <td>
+            {{payroll.payslip?.payslipNotInHoliday || 0}} VND
+          </td>
+          <td>
+            {{payroll.payslip?.deduction | number: '1.0-0'}} VND
+          </td>
+          <td>
+            {{payroll.payslip?.tax | number: '1.0-0'}} VND
+          </td>
+          <td>
+            {{payroll.payslip?.total| number: '1.0-0'}} VND
+          </td>
+          <td>
+            <div (click)='updateConfirm(payroll.id,"paidAt")'>
+              <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.paidAt !== null'>
+            </div>
+          </td>
+        </ng-template>
+        <!--      seasonal-->
+        <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.SEASONAL">
+          <td>
+            {{payroll.payslip?.workdays || 'Đang cập nhật'}}
+          </td>
+          <td>
             {{payroll?.payslip ?
             (payroll?.payslip?.totalSalaryWorkday | number:'1.0-0') + 'đ'
             : 'Đang cập nhật'}}
-        </td>
-        <td>
+          </td>
+          <td>
             {{payroll.payslip?.times || 'Đang cập nhật'}}
-        </td>
-        <td>
+          </td>
+          <td>
             {{payroll?.payslip?.totalSalaryTimes ?
             (payroll?.payslip?.totalSalaryTimes | number:'1.0-0') + 'đ'
             : 'Đang cập nhật'}}
-        </td>
-        <td>
+          </td>
+          <td>
             {{payroll?.payslip?.total ? (payroll?.payslip?.total | number:'1.0-0') + 'đ' : 'Đang cập nhật'}}
-        </td>
-        <td>
-          <div (click)='updateConfirm(payroll.id,"accConfirmedAt")'>
-            <input
-              disabled
-              type='checkbox'
-              [checked]='payroll.accConfirmedAt !== null'
-              style='pointer-events: none'
-            >
-          </div>
-        </td>
-        <td>
-          {{payroll?.accConfirmedAt ? (payroll.accConfirmedAt|date:'dd-MM-yyyy') : 'Chưa xác nhận'}}
-        </td>
-        <td>
-          <div (click)='updateConfirm(payroll.id,"paidAt")'>
-            <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.paidAt !== null'>
-          </div>
-        </td>
-      </ng-template>
-    </tr>
-  </ng-template>
-  </tbody>
-</nz-table>
+          </td>
+          <td>
+            <div (click)='updateConfirm(payroll.id,"accConfirmedAt")'>
+              <input
+                disabled
+                type='checkbox'
+                [checked]='payroll.accConfirmedAt !== null'
+                style='pointer-events: none'
+              >
+            </div>
+          </td>
+          <td>
+            {{payroll?.accConfirmedAt ? (payroll.accConfirmedAt|date:'dd-MM-yyyy') : 'Chưa xác nhận'}}
+          </td>
+          <td>
+            <div (click)='updateConfirm(payroll.id,"paidAt")'>
+              <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.paidAt !== null'>
+            </div>
+          </td>
+        </ng-template>
+      </tr>
+    </ng-template>
+    </tbody>
+  </nz-table>
+</div>
 <app-mouse-right
   #child
   [items]='[ItemContextMenu.RESTORE, ItemContextMenu.HISTORY_PAYROLL,ItemContextMenu.PRINT]'
-  (onAdd)='onAdd($event)'
+  (onAdd)='onAdd()'
   (onDel)='onDelete($event)'
   (onUpdate)='onUpdate($event)'
   (onRestore)='onRestore($event)'

@@ -2,14 +2,13 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {DatePipe} from "@angular/common";
+import {ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
 
 @Component({
   templateUrl: './modal-date-picker.component.html',
 })
 export class ModalDatePickerComponent implements OnInit{
-  @Input() data?: {
-    dateInit?: Date
-  }
+  @Input() data!: ModalDatePickerEntity
   formDatePicker = new FormControl('')
   constructor(
     private readonly modalRef: NzModalRef,
