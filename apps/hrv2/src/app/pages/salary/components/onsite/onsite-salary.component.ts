@@ -50,15 +50,10 @@ export class OnsiteSalaryComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       title: [salary?.title, Validators.required],
       rangeDay: [
-        payroll ?
-          [
-            this.datePipe.transform(getFirstDayInMonth(payroll.createdAt), 'YYYY-mm-dd'),
-            this.datePipe.transform(getLastDayInMonth(payroll.createdAt), 'YYYY-mm-dd')
-          ]
-          : [
-            this.datePipe.transform(salary.startedAt, 'YYYY-mm-dd'),
-            this.datePipe.transform(salary.endedAt, 'YYYY-mm-dd')
-          ],
+        [
+            this.datePipe.transform(payroll ? getFirstDayInMonth(payroll.createdAt) : salary.startedAt, 'YYYY-mm-dd'),
+            this.datePipe.transform(payroll ? getLastDayInMonth(payroll.createdAt) : salary.endedAt, 'YYYY-mm-dd')
+        ],
         Validators.required
       ],
       note: [salary.note],
