@@ -2,7 +2,7 @@ export const Api = {
   HR: {
     PAYROLL: {
       PAYROLL: 'payroll',
-      CONFIRM_PAYROLL: 'payroll/confirm',
+      CONFIRM_PAYROLL: 'payroll/payslip',
       RESTORE_PAYROLL: 'payroll/restore',
       EXPORT: 'payroll/export/payroll',
       PAYROLL_CREATE: 'payroll/create',
@@ -20,7 +20,7 @@ export const Api = {
       GENERATE_HOLIDAY: 'generate-holiday',
       ITEMS_EXPORT: 'payroll/export/items',
       TEMPLATE_SALARY: 'payroll/salary/template',
-      CANCEL_CONFIRM: 'payroll/cancel-confirm'
+      CANCEL_CONFIRM: 'payroll/cancel-payslip'
 
     },
     EMPLOYEE: {
@@ -41,6 +41,7 @@ export const Api = {
       OVERTIME_TEMPLATE: 'overtime-template'
     },
     SETTING_SALARY:'settings/salary',
+    BLOCK_SETTING_SALARY:'settings/salary-block',
     EXPORT:'export',
     BRANCH_EXPORT: 'payroll/export/branch',
     POSITION_EXPORT: 'payroll/export/position',

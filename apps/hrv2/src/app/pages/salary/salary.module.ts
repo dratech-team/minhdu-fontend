@@ -20,8 +20,9 @@ import {SettingSalaryEffect} from "../setting/salary/state";
 import {customCurrencyMaskConfig} from "@minhdu-fontend/config";
 import {DeductionSalaryComponent} from "./components/deduction/deduction-salary.component";
 import {NzTimePickerModule} from "ng-zorro-antd/time-picker";
-import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
+import {OnsiteSalaryComponent} from "./components/onsite/onsite-salary.component";
+import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 
 @NgModule({
   imports: [
@@ -48,7 +49,8 @@ import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
   ],
   declarations: [
     PermanentSalaryComponent,
-    DeductionSalaryComponent
+    DeductionSalaryComponent,
+    OnsiteSalaryComponent
   ],
   providers: [
     DatePipe,

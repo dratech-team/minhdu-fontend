@@ -27,7 +27,6 @@ export class SettingSalaryDialogComponent implements OnInit {
   constraint: SalaryTypeEnum[] = []
   prices: number[] = []
   formControlPrice = new FormControl('');
-
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type || o1.type === o2.type : o1 === o2);
 
   constructor(

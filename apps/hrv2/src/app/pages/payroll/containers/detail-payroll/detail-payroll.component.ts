@@ -14,11 +14,11 @@ import {PayrollActions} from "../../state/payroll.action";
 import {PayrollEntity} from "../../entities";
 import {tranFormSalaryType} from "../../utils";
 import {PermanentSalaryComponent} from "../../../salary/components/permanent/permanent-salary.component";
-import {dataModalPermanentSalary} from "../../entities/data-modal-permanent-salary";
-import {DeductionSalaryEntity, AllowanceSalaryEntity, OvertimeSalaryEntity, SalaryEntity} from "../../../salary/entities";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {DeductionSalaryComponent} from "../../../salary/components/deduction/deduction-salary.component";
 import {DataModalAbsentSalary} from "../../entities/data-modal-absent-salary";
+import {AllowanceSalaryEntity, OvertimeSalaryEntity, SalaryEntity} from "../../../salary/entities";
+import {PayslipComponent} from "../../components/payslip/payslip.component";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -143,6 +143,26 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   confirmPayroll(payroll: PayrollEntity) {
+    this.modal.create({
+      nzTitle: 'Xác nhận phiếu lương tháng '+ this.datePipe.transform(payroll.createdAt, 'yyyy-MM'),
+      nzContent: PayslipComponent,
+      nzComponentParams: <{ data: { payroll: PayrollEntity } }>{
+        data: {
+          payroll
+        }
+      },
+      nzFooter: ' '
+    })
+    // if(this.role !== Role.HUMAN_RESOURCE){
+    //
+    // }else{
+    //   if(payroll.accConfirmedAt !== null){
+    //     // restore payroll
+    //   }else{
+    //     this.message.warning('Phiếu lương chưa được xác nhận')
+    //   }
+    // }
+
   }
 
   historySalary(payroll: PayrollEntity) {

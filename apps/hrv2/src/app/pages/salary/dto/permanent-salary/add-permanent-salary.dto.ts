@@ -3,7 +3,8 @@ import {BaseSalaryEntity} from "../../base";
 
 export interface BaseAddPermanentSalaryDto extends BaseSalaryEntity {
   readonly payrollIds: number[];
-  readonly settingId: number
+  readonly startedAt?: Date,
+  readonly endedAt?: Date
 }
 
 export type AddPermanentSalaryDto = BaseAddDto<BaseAddPermanentSalaryDto>

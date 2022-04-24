@@ -5,7 +5,7 @@ export interface BaseSalaryEntity extends BaseEntity {
   readonly payrollId: number
   readonly type: SalaryTypeEnum;
   readonly title: string;
-  readonly price: number;
+  readonly price?: number;
   readonly note?: string;
   readonly unit: DatetimeUnitEnum
 }
