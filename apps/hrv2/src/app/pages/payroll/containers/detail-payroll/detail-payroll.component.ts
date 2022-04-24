@@ -18,7 +18,7 @@ import {NzModalService} from "ng-zorro-antd/modal";
 import {PermanentSalaryComponent} from "../../../salary/components/permanent/permanent-salary.component";
 import {dataModalPermanentSalary} from "../../entities/data-modal-permanent.salary";
 import {AbsentSalaryEntity, AllowanceSalaryEntity, OvertimeSalaryEntity, SalaryEntity} from "../../../salary/entities";
-import {PayslipComponent} from "../../components/confirm/payslip.component";
+import {PayslipComponent} from "../../components/payslip/payslip.component";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
