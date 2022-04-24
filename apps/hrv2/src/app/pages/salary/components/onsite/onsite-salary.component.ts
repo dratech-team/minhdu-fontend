@@ -8,10 +8,10 @@ import {SalaryPermanentService} from "../../service";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
-import {ResponseSalaryEntity} from "../../entities";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../../payroll/state/payroll.action";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
+import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
 
 @Component({
   templateUrl: 'onsite-salary.component.html'
@@ -85,7 +85,7 @@ export class OnsiteSalaryComponent implements OnInit {
       Object.assign(salary, {
         payrollIds: this.payrollSelected.map(payroll => payroll.id)
       })
-      this.service.addOne(salary)
+      this.service.addMany(salary)
         .pipe(catchError(err => this.onSubmitError(err)))
         .subscribe(res => {
           if (this.data.add)
@@ -110,7 +110,7 @@ export class OnsiteSalaryComponent implements OnInit {
     return throwError(err)
   }
 
-  onSubmitSuccess(res: ResponseSalaryEntity, payrollId: number) {
+  onSubmitSuccess(res: ResponseMessageEntity, payrollId: number) {
     this.actions$.dispatch(PayrollActions.loadOne({id: payrollId}))
     this.message.success(res.message)
     this.modalRef.close()

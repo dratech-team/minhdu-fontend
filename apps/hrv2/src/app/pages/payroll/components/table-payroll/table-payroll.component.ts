@@ -98,13 +98,13 @@ export class TablePayrollComponent implements OnInit {
           createdAt: this.payrollQuery.getValue().search.startedAt,
           employeeId: employeeId
         }))
+        this.added$.subscribe(added =>{
+          if(added){
+            this.onloadPayroll.emit({isPagination: false})
+          }
+        })
       }
     })
-    this.added$.subscribe(added =>{
-      if(added){
-        this.onloadPayroll.emit({isPagination: false})
-      }
-    } )
   }
 
   onDelete(payroll: PayrollEntity) {
