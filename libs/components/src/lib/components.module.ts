@@ -54,6 +54,7 @@ import {NzRadioModule} from "ng-zorro-antd/radio";
 import {CollapseRadioComponent} from './collapse-radio/collapse-radio.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {CollapseSelectComponent} from "./collapse-select/collapse-select.component";
+import {ModalAlertComponent} from "./modal-alert/modal-alert.component";
 import {ModalDatePickerComponent} from "./modal-date-picker/modal-date-picker.component";
 import {TransformNzDateModePipe} from "./pipes/transform-nz-date-mode.pipe";
 
@@ -120,7 +121,8 @@ import {TransformNzDateModePipe} from "./pipes/transform-nz-date-mode.pipe";
     CollapseRadioComponent,
     CollapseSelectComponent,
     ModalDatePickerComponent,
-    TransformNzDateModePipe
+    TransformNzDateModePipe,
+    ModalAlertComponent,
   ],
   exports: [
     SwimLaneChartComponent,
@@ -149,7 +151,8 @@ import {TransformNzDateModePipe} from "./pipes/transform-nz-date-mode.pipe";
     CollapseRadioComponent,
     CollapseSelectComponent,
     ModalDatePickerComponent,
-    TransformNzDateModePipe
+    TransformNzDateModePipe,
+    ModalAlertComponent,
   ],
   providers: [
     DecimalPipe,
