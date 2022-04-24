@@ -32,7 +32,7 @@ export class TablePayrollComponent implements OnInit {
     employeeId: number
   };
   @Input() scroll: { x: string, y: string } = {x: '5000px', y: '56vh'}
-  added$ =this.payrollQuery.select(state => state.added);
+  added$ = this.payrollQuery.select(state => state.added);
   loading$ = this.payrollQuery.select(state => state.loading)
   positions$ = this.positionQuery.selectAll()
   ItemContextMenu = ItemContextMenu;
@@ -77,7 +77,7 @@ export class TablePayrollComponent implements OnInit {
   onPagination(index: number) {
   }
 
-  onAdd() {
+  onAdd(employeeId?: number) {
     this.modal.create({
       nzTitle: 'Tạo phiếu lương',
       nzContent: ModalDatePickerComponent,
@@ -93,7 +93,7 @@ export class TablePayrollComponent implements OnInit {
         this.actions$.dispatch(PayrollActions.addOne({
           body: {
             createdAt: date,
-            employeeId: this.history?.employeeId
+            employeeId: this.history?.employeeId || employeeId
           },
           inHistory: !!this.history
         }))
