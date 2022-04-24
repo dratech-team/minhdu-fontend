@@ -14,6 +14,7 @@ import {NzModalService} from "ng-zorro-antd/modal";
 import {
   ModalDatePickerComponent
 } from "../../../../../../../../libs/components/src/lib/modal-date-picker/modal-date-picker.component";
+import {ModalAlertComponent} from "@minhdu-fontend/components";
 
 
 @Component({
@@ -74,6 +75,11 @@ export class TablePayrollComponent implements OnInit {
   }
 
   onDelete($event: any) {
+    this.modal.create({
+      nzTitle:'Xoá phiếu lương',
+      nzContent: ModalAlertComponent,
+
+    })
   }
 
   onUpdate($event: any) {
