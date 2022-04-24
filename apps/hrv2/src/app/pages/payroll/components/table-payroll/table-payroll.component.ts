@@ -74,10 +74,6 @@ export class TablePayrollComponent implements OnInit {
   }
 
   onDelete($event: any) {
-    this.modal.create({
-      nzTitle:'Xoá phiếu lương',
-      nzContent: ModalDatePickerComponent
-    })
   }
 
   onUpdate($event: any) {
