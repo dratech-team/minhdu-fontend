@@ -57,6 +57,11 @@ export class TablePayrollComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.added$.subscribe(added =>{
+      if(added){
+        this.onloadPayroll.emit({isPagination: false})
+      }
+    })
     this.formGroup.get('filterType')?.valueChanges.subscribe(val => {
       switch (val) {
         case FilterTypeEnum.SEASONAL:
@@ -98,11 +103,6 @@ export class TablePayrollComponent implements OnInit {
           createdAt: this.payrollQuery.getValue().search.startedAt,
           employeeId: employeeId
         }))
-        this.added$.subscribe(added =>{
-          if(added){
-            this.onloadPayroll.emit({isPagination: false})
-          }
-        })
       }
     })
   }
