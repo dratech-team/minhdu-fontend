@@ -48,4 +48,8 @@ export class PayrollService extends BaseService<PayrollEntity> {
       Api.HR.PAYROLL.PAYROLL + `/${PayrollId}/` + Api.HR.PAYROLL.GENERATE_HOLIDAY
     );
   }
+
+  cancelConfirm(id: number, body?: any): Observable<any> {
+    return this.http.patch<any>(Api.HR.PAYROLL.CANCEL_CONFIRM+ `/${id}`,body);
+  }
 }
