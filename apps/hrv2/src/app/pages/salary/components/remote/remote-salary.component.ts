@@ -40,7 +40,6 @@ export class RemoteSalaryComponent implements OnInit {
     }
     const payroll = this.data.add?.payroll
     const salary = this.data.update?.salary
-    console.log(payroll?.createdAt)
     this.formGroup = this.formBuilder.group({
       title: [salary?.title, Validators.required],
       rangeDay: [
