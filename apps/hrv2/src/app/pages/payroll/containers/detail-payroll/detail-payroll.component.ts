@@ -20,11 +20,13 @@ import {DataModalAbsentSalary} from "../../entities/data-modal-absent-salary";
 import {
   AllowanceSalaryEntity,
   DeductionSalaryEntity,
-  OvertimeSalaryEntity,
+  OvertimeSalaryEntity, RemoteSalaryEntity,
   SalaryEntity
 } from "../../../salary/entities";
 import {PayslipComponent} from "../../components/payslip/payslip.component";
 import {dataModalPermanentSalary} from "../../entities/data-modal-permanent-salary";
+import {RemoteSalaryComponent} from "../../../salary/components/remote/remote-salary.component";
+import {DataModalRemoteSalary} from "../../entities/data-modal-remote-salary";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -94,7 +96,7 @@ export class DetailPayrollComponent implements OnInit {
 
   updateSalary(
     type: SalaryTypeEnum,
-    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | DeductionSalaryEntity) {
+    salary:RemoteSalaryEntity| SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | DeductionSalaryEntity) {
     const config = {
       nzFooter: ' ',
       nzWidth: 'fit-content'

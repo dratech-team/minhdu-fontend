@@ -1,16 +1,15 @@
 import {Injectable} from '@angular/core';
-import {BaseService} from '@minhdu-fontend/service';
 import {HttpClient} from '@angular/common/http';
 import {Api} from '@minhdu-fontend/constants';
 import {Observable} from 'rxjs';
 import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
-import {PermanentSalaryEntity} from "../entities";
+import {RemoteSalaryEntity} from "../entities";
 import {BaseSalaryService} from "./base-salary.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {Actions} from "@datorama/akita-ng-effects";
 
 @Injectable({providedIn: 'root'})
-export class SalaryRemoteService extends BaseSalaryService<PermanentSalaryEntity> {
+export class SalaryRemoteService extends BaseSalaryService<RemoteSalaryEntity> {
   constructor(
     public readonly http: HttpClient,
     public readonly message: NzMessageService,
