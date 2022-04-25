@@ -89,7 +89,7 @@ export class DetailPayrollComponent implements OnInit {
       nzFooter: ' ',
       nzWidth: 'fit-content'
     }
-    this.onOpenSalary(type, config,{payroll})
+    this.onOpenSalary(type, config, {payroll})
   }
 
   updateSalary(
@@ -99,7 +99,7 @@ export class DetailPayrollComponent implements OnInit {
       nzFooter: ' ',
       nzWidth: 'fit-content'
     }
-    this.onOpenSalary(type,config , undefined, {salary})
+    this.onOpenSalary(type, config, undefined, {salary})
   }
 
   onOpenSalary(
@@ -110,6 +110,16 @@ export class DetailPayrollComponent implements OnInit {
   ) {
     switch (type) {
       case SalaryTypeEnum.OVERTIME:
+        this.modal.create(Object.assign(config, {
+          nzTitle: add ? 'Thêm Tăng ca' : 'Cập nhật tăng ca',
+          nzContent: DeductionSalaryComponent,
+          nzComponentParams: <{ data: DataModalAbsentSalary }>{
+            data: {
+              add: add,
+              update: update
+            }
+          },
+        }))
         break
       case SalaryTypeEnum.ALLOWANCE:
         break
@@ -119,7 +129,7 @@ export class DetailPayrollComponent implements OnInit {
         break
       case SalaryTypeEnum.ABSENT:
         this.modal.create(Object.assign(config, {
-          nzTitle: add ?'Thêm khấu trừ' :'Cập nhật khấu trừ',
+          nzTitle: add ? 'Thêm khấu trừ' : 'Cập nhật khấu trừ',
           nzContent: DeductionSalaryComponent,
           nzComponentParams: <{ data: DataModalAbsentSalary }>{
             data: {
@@ -131,7 +141,7 @@ export class DetailPayrollComponent implements OnInit {
         break
       default:
         this.modal.create(Object.assign(config, {
-          nzTitle: (add ?'Thêm':'Cập nhật') + (type === SalaryTypeEnum.BASIC ? ' lương cơ bản': ' phụ cấp') ,
+          nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.BASIC ? ' lương cơ bản' : ' phụ cấp'),
           nzContent: PermanentSalaryComponent,
           nzComponentParams: <{ data: dataModalPermanentSalary }>{
             data: {
@@ -150,7 +160,7 @@ export class DetailPayrollComponent implements OnInit {
 
   confirmPayroll(payroll: PayrollEntity) {
     this.modal.create({
-      nzTitle: 'Xác nhận phiếu lương tháng '+ this.datePipe.transform(payroll.createdAt, 'yyyy-MM'),
+      nzTitle: 'Xác nhận phiếu lương tháng ' + this.datePipe.transform(payroll.createdAt, 'yyyy-MM'),
       nzContent: PayslipComponent,
       nzComponentParams: <{ data: { payroll: PayrollEntity } }>{
         data: {
