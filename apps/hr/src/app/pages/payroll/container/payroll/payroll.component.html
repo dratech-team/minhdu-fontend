@@ -425,12 +425,12 @@
       </minhdu-fontend-payroll-seasonal>
     </div>
     <div *ngIf='selectedPayroll === filterTypeEnum.BASIC '>
-      <minhdu-fontend-payroll-basic
+      <app-payroll-basic
         [eventSelectRangeDay]='pickRangeDayBasic'
         [eventSelectEmpStatus]='selectEmpStatusBasic'
         [eventSearchBranch]='searchBranchBasic'
         [eventExportBasic]='eventExportBasic'
-      ></minhdu-fontend-payroll-basic>
+      ></app-payroll-basic>
     </div>
 
     <div *ngIf='selectedPayroll === filterTypeEnum.STAY '>
