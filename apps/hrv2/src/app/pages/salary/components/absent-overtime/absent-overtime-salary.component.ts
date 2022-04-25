@@ -15,7 +15,7 @@ import {UnitSalaryConstant} from "../../constants";
 import {SessionConstant, workingTime} from "../../../payroll/constants/session.constant";
 import {referencesTypeConstant} from "../../../setting/salary/constants";
 import {SalarySettingEntity} from "../../../setting/salary/entities";
-import {DataModalPartialSalary} from "../../../payroll/entities/data-modal-partial-salary";
+import {DataModalAbsentOvertimeSalary} from "../../../payroll/entities/data-modal-absent-overtime-salary";
 import {transFormTotalOf} from "../../../setting/salary/utils/transform-total-of.util";
 import {templateDeductionConstant} from "../../constants/template-deduction.constant";
 import {getAfterTime, getBeforeTime} from "@minhdu-fontend/utils";
@@ -25,7 +25,7 @@ import {throwError} from "rxjs";
   templateUrl: 'absent-overtime-salary.component.html'
 })
 export class AbsentOvertimeSalaryComponent implements OnInit {
-  @Input() data!: DataModalPartialSalary
+  @Input() data!: DataModalAbsentOvertimeSalary
   templateSalary$ = this.settingSalaryQuery.selectAll({
     filterBy: [(entity => entity.type === this.data.type)]
   }).pipe(

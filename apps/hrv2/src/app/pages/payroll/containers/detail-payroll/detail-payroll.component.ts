@@ -16,7 +16,7 @@ import {tranFormSalaryType} from "../../utils";
 import {PermanentSalaryComponent} from "../../../salary/components/permanent/permanent-salary.component";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {AbsentOvertimeSalaryComponent} from "../../../salary/components/absent-overtime/absent-overtime-salary.component";
-import {DataModalPartialSalary} from "../../entities/data-modal-partial-salary";
+import {DataModalAbsentOvertimeSalary} from "../../entities/data-modal-absent-overtime-salary";
 import {
   AllowanceSalaryEntity,
   DeductionSalaryEntity,
@@ -112,7 +112,7 @@ export class DetailPayrollComponent implements OnInit {
       this.modal.create(Object.assign(config, {
         nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.ABSENT ? ' Khấu trừ' : ' tăng ca') ,
         nzContent: AbsentOvertimeSalaryComponent,
-        nzComponentParams: <{ data: DataModalPartialSalary }>{
+        nzComponentParams: <{ data: DataModalAbsentOvertimeSalary }>{
           data: {
             type: type,
             add: add,
