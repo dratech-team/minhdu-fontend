@@ -22,9 +22,9 @@ import {getAfterTime, getBeforeTime} from "@minhdu-fontend/utils";
 import {throwError} from "rxjs";
 
 @Component({
-  templateUrl: 'partial-salary.component.html'
+  templateUrl: 'absent-overtime-salary.component.html'
 })
-export class PartialSalaryComponent implements OnInit {
+export class AbsentOvertimeSalaryComponent implements OnInit {
   @Input() data!: DataModalPartialSalary
   templateSalary$ = this.settingSalaryQuery.selectAll({
     filterBy: [(entity => entity.type === this.data.type)]
