@@ -31,7 +31,7 @@ export class DeductionSalaryComponent implements OnInit {
   }).pipe(
     map(templates => {
       const result = templates.concat(templateDeductionConstant)
-      if (this.data?.update) {
+      if (this.data?.update?.salary.setting) {
         this.formGroup.get('template')?.setValue(
           this.getTemplateSalary(result, this.data.update.salary.setting.id))
       }

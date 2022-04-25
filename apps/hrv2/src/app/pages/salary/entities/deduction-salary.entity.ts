@@ -6,10 +6,10 @@ import {SalarySettingEntity} from "../../setting/salary/entities";
 
 export interface DeductionSalaryEntity extends BaseSalaryEntity {
   readonly payroll?: PayrollEntity,
-  readonly setting: SalarySettingEntity
-  readonly partial: PartialDayEnum;
+  readonly setting?: SalarySettingEntity
+  readonly partial?: PartialDayEnum;
   readonly unit: DatetimeUnitEnum;
   readonly rate: number
-  readonly startedAt: Date,
-  readonly endedAt: Date
+  readonly startedAt?: Date,
+  readonly endedAt?: Date
 }

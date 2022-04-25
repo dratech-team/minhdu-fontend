@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {PayrollEntity} from "../../../payroll/entities";
-import {SalaryPermanentService} from "../../service";
+import {SalaryRemoteService} from "../../service";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
@@ -12,6 +12,7 @@ import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../../payroll/state/payroll.action";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
+import {PermanentSalaryEntity} from "../../entities";
 
 @Component({
   templateUrl: 'onsite-salary.component.html'
@@ -19,10 +20,14 @@ import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
 export class OnsiteSalaryComponent implements OnInit {
   @Input() data!: {
     add?: {
-      payroll: PayrollEntity
+      payroll: PayrollEntity,
+      multiple: boolean
     },
     update?: {
-      salary: any
+      salary: any,
+      multiple: {
+        salaries: PermanentSalaryEntity[]
+      }
     }
   }
   payrollSelected: PayrollEntity [] = []
@@ -37,7 +42,7 @@ export class OnsiteSalaryComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly modalRef: NzModalRef,
     private readonly message: NzMessageService,
-    private readonly service: SalaryPermanentService
+    private readonly service: SalaryRemoteService
   ) {
   }
 
@@ -51,8 +56,8 @@ export class OnsiteSalaryComponent implements OnInit {
       title: [salary?.title, Validators.required],
       rangeDay: [
         [
-            this.datePipe.transform(payroll ? getFirstDayInMonth(payroll.createdAt) : salary.startedAt, 'YYYY-mm-dd'),
-            this.datePipe.transform(payroll ? getLastDayInMonth(payroll.createdAt) : salary.endedAt, 'YYYY-mm-dd')
+          this.datePipe.transform(payroll ? getFirstDayInMonth(payroll.createdAt) : salary.startedAt, 'YYYY-mm-dd'),
+          this.datePipe.transform(payroll ? getLastDayInMonth(payroll.createdAt) : salary.endedAt, 'YYYY-mm-dd')
         ],
         Validators.required
       ],
@@ -74,8 +79,10 @@ export class OnsiteSalaryComponent implements OnInit {
       Object.assign(salary, {
         salaryIds: [this.data.update.salary.id]
       })
-      this.service.updateMany(salary)
-        .pipe(catchError(err => this.onSubmitError(err)))
+      this.service.updateMany(
+        salary,
+        this.data.update.multiple ? undefined : {payrollId: this.data.update.salary.id}
+      ).pipe(catchError(err => this.onSubmitError(err)))
         .subscribe(res => {
           if (this.data.update)
             this.onSubmitSuccess(res, this.data.update?.salary.payrollId)
@@ -85,7 +92,8 @@ export class OnsiteSalaryComponent implements OnInit {
       Object.assign(salary, {
         payrollIds: this.payrollSelected.map(payroll => payroll.id)
       })
-      this.service.addMany(salary)
+      this.service.addMany(salary,
+        this.data.add.multiple ? undefined : {payrollId: this.data.add.payroll.id})
         .pipe(catchError(err => this.onSubmitError(err)))
         .subscribe(res => {
           if (this.data.add)

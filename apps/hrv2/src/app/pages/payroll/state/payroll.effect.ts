@@ -51,6 +51,9 @@ export class PayrollEffect {
       this.payrollStore.update(state => ({...state, loading: true}))
       return this.service.paginationPayroll(props.search).pipe(
         tap((res) => {
+          res.data.map(payroll => {
+            payroll.absents = payroll.absents.concat(payroll.deductions)
+          })
           this.payrollStore.update(state => ({...state, loading: false,}))
           if (res.data.length === 0) {
             this.message.warning('Đã lấy hết phiếu lương')
