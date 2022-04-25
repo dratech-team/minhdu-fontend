@@ -113,8 +113,10 @@ export class PayrollComponent implements OnInit {
     if (formData.category === 0) {
       delete formData.category
     }
-    delete formData.branch
-    delete formData.position
+    Object.assign(formData, {
+      branch: formData.branch?.name || '',
+      position: formData.position?.name || ''
+    })
     Object.assign(formData, {
       take: PaginationDto.take,
       skip: isPagination ? this.payrollQuery.getCount() : PaginationDto.skip
