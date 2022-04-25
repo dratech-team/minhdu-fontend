@@ -7,7 +7,7 @@ import {catchError, map} from "rxjs/operators";
 import {SettingSalaryActions, SettingSalaryQuery} from "../../../setting/salary/state";
 import {salaryReference} from "../../../setting/salary/enums";
 import {PayrollEntity} from "../../../payroll/entities";
-import {DeductionSalaryService} from "../../service";
+import {DeductionSalaryService, OvertimeSalaryService} from "../../service";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {Actions} from "@datorama/akita-ng-effects";
@@ -27,13 +27,16 @@ import {throwError} from "rxjs";
 export class DeductionSalaryComponent implements OnInit {
   @Input() data!: DataModalAbsentSalary
   templateSalary$ = this.settingSalaryQuery.selectAll({
-    filterBy: [(entity => entity.type === SalaryTypeEnum.ABSENT)]
+    filterBy: [(entity => entity.type === this.data.type)]
   }).pipe(
     map(templates => {
-      const result = templates.concat(templateDeductionConstant)
-      if (this.data?.update) {
-        this.formGroup.get('template')?.setValue(
-          this.getTemplateSalary(result, this.data.update.salary.setting.id))
+      let result = templates
+      if (this.data.type === SalaryTypeEnum.ABSENT) {
+        result = result.concat(templateDeductionConstant)
+        if (this.data?.update) {
+          this.formGroup.get('template')?.setValue(
+            this.getTemplateSalary(result, this.data.update.salary.setting.id))
+        }
       }
       return result
     })
@@ -74,14 +77,15 @@ export class DeductionSalaryComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly modalRef: NzModalRef,
     private readonly message: NzMessageService,
-    private readonly service: DeductionSalaryService,
+    private readonly deductionSalaryService: DeductionSalaryService,
+    private readonly overtimeSalaryService: OvertimeSalaryService,
     private readonly actions$: Actions
   ) {
   }
 
   ngOnInit(): void {
     this.actions$.dispatch(SettingSalaryActions.loadAll({
-      search: {types: [SalaryTypeEnum.ABSENT]}
+      search: {types: [this.data.type]}
     }))
     if (this.data?.update?.multiple) {
       this.salaryPayrolls = this.data.update.multiple.salaryPayrolls;
@@ -99,6 +103,8 @@ export class DeductionSalaryComponent implements OnInit {
       rate: [1],
       unit: [salary?.unit ? salary.unit : DatetimeUnitEnum.MONTH],
       partialDay: [salary?.partial ? this.getPartialDay(salary.partial) : ''],
+      priceAllowance: [salary?.allowance ? salary.allowance.price : ''],
+      titleAllowance: [salary?.allowance ? salary.allowance.title : ''],
       constraintHoliday: [],
       constraintOvertime: [],
       reference: []
@@ -164,14 +170,24 @@ export class DeductionSalaryComponent implements OnInit {
       unit: value.unit,
       price: value.price,
       note: value.note,
+      startedAt: value.rangeDay[0],
+      endedAt: value.rangeDay[1],
+      startTime: value.startTime ? new Date(value.startTime) : null,
+      endTime: value.endTime ? new Date(value.endTime) : null,
+      settingId: value.template?.id,
     }
-    if (value.template.id !== 0) {
+    if (this.data.type === SalaryTypeEnum.ABSENT) {
+      if (value.template.id === 0) {
+        delete salary.settingId
+      }
+    }
+
+    if (this.data.type === SalaryTypeEnum.OVERTIME) {
       Object.assign(salary, {
-        startedAt: value.rangeDay[0],
-        endedAt: value.rangeDay[1],
-        startTime: value.startTime ? new Date(value.startTime) : null,
-        endTime: value.endTime ? new Date(value.endTime) : null,
-        settingId: value.template?.id,
+        allowance: {
+          price: value.priceAllowance,
+          title: value.titleAllowance
+        }
       })
     }
     this.submitting = true
@@ -179,30 +195,51 @@ export class DeductionSalaryComponent implements OnInit {
       Object.assign(salary, {
         salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.update.salary.id)
       })
-      this.service.updateMany(
-        salary, this.data.update.multiple ? undefined : {payrollId: this.data.update.salary.payrollId}
-      ).pipe(catchError(err => {
-        this.submitting = false
-        return throwError(err)
-      })).subscribe(res => {
-        this.onSubmitSuccess()
-      })
+      this.onUpdate(
+        this.data.type === SalaryTypeEnum.ABSENT ? this.deductionSalaryService : this.overtimeSalaryService,
+        salary,
+        this.data.update.multiple ? undefined : {payrollId: this.data.update.salary.payrollId})
     }
 
     if (this.data.add) {
       Object.assign(salary, {
         payrollIds: this.payrollSelected.map(payroll => payroll.id).concat(this.data.add.payroll.id)
       })
-      this.service.addMany(
-        salary, this.data.add?.multiple ? undefined : {payrollId: this.data.add.payroll.id}).pipe(
-        catchError(err => {
-          this.submitting = false
-          return throwError(err)
-        })
-      ).subscribe(_ => {
+      this.onAdd(
+        this.data.type === SalaryTypeEnum.ABSENT ? this.deductionSalaryService : this.overtimeSalaryService,
+        salary,
+        this.data.add.multiple ? undefined : {payrollId: this.data.add.payroll.id})
+    }
+  }
+
+  onUpdate(
+    service: DeductionSalaryService | OvertimeSalaryService,
+    salary: any,
+    updateOne?: { payrollId: number }
+  ) {
+    service.updateMany(salary, updateOne)
+      .pipe(catchError(err => {
+        this.submitting = false
+        return throwError(err)
+      }))
+      .subscribe(_ => {
         this.onSubmitSuccess()
       })
-    }
+  }
+
+  onAdd(
+    service: DeductionSalaryService | OvertimeSalaryService,
+    salary: any,
+    addOne?: { payrollId: number }
+  ) {
+    service.addMany(salary, addOne)
+      .pipe(catchError(err => {
+        this.submitting = false
+        return throwError(err)
+      }))
+      .subscribe(_ => {
+        this.onSubmitSuccess()
+      })
   }
 
   transformTotalOf(totalOf: SalaryTypeEnum[]): string {

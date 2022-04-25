@@ -115,6 +115,7 @@ export class DetailPayrollComponent implements OnInit {
           nzContent: DeductionSalaryComponent,
           nzComponentParams: <{ data: DataModalAbsentSalary }>{
             data: {
+              type: type,
               add: add,
               update: update
             }
@@ -133,6 +134,7 @@ export class DetailPayrollComponent implements OnInit {
           nzContent: DeductionSalaryComponent,
           nzComponentParams: <{ data: DataModalAbsentSalary }>{
             data: {
+              type: type,
               add: add,
               update: update
             }
