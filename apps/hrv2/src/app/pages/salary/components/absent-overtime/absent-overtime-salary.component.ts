@@ -33,10 +33,10 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       let result = templates
       if (this.data.type === SalaryTypeEnum.ABSENT) {
         result = result.concat(templateDeductionConstant)
-        if (this.data?.update) {
-          this.formGroup.get('template')?.setValue(
-            this.getTemplateSalary(result, this.data.update.salary.setting.id))
-        }
+      }
+      if (this.data?.update) {
+        this.formGroup.get('template')?.setValue(
+          this.getTemplateSalary(result, this.data.update.salary.setting.id))
       }
       return result
     })
