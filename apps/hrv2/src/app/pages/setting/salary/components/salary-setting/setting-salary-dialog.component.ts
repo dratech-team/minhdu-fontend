@@ -1,15 +1,14 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, EmployeeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {Branch} from '@minhdu-fontend/data-models';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {salaryReference} from "../../enums";
-import {blockSalariesConstant, referencesTypeConstant} from "../../constants";
+import {PriceType} from "../../enums";
+import {blockSalariesConstant, referencesAbsentConstant} from "../../constants";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {Actions} from "@datorama/akita-ng-effects";
 import {SettingSalaryActions, SettingSalaryQuery} from "../../state";
 import {SalaryConstraintEntity, SalarySettingEntity} from "../../entities";
-import {checkPopoverMargin} from "ngx-bootstrap/positioning/utils/checkMargin";
 import {DiveEnum} from "../../enums/dive.enum";
 
 @Component({
@@ -27,6 +26,8 @@ export class SettingSalaryDialogComponent implements OnInit {
   constraint: SalaryTypeEnum[] = []
   prices: number[] = []
   formControlPrice = new FormControl('');
+  priceType = PriceType
+  dateTimeUnit = DatetimeUnitEnum
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type || o1.type === o2.type : o1 === o2);
 
   constructor(
@@ -45,20 +46,27 @@ export class SettingSalaryDialogComponent implements OnInit {
         this.blockSalary.find(block => block.type === template?.type)
         , Validators.required],
       recipes: [template?.totalOf || []],
-      reference: [template ? this.transformReference(template.totalOf): ''],
+      reference: [template ? this.transformReference(template.totalOf) : ''],
       unit: [template?.unit || DatetimeUnitEnum.MONTH],
       title: [template?.title, Validators.required],
-      dive: [template?.workday ? DiveEnum.OTHER: DiveEnum.STANDARD],
+      dive: [template?.workday ? DiveEnum.OTHER : DiveEnum.STANDARD],
       workday: [template?.workday],
       rate: [template?.rate, Validators.required],
       constraintHoliday: [template?.constraints ? this.checkConstraint(template?.constraints, SalaryTypeEnum.HOLIDAY) : false],
       constraintOvertime: [template?.constraints ? this.checkConstraint(template?.constraints, SalaryTypeEnum.OVERTIME) : false],
-      insurance: [template?.type === SalaryTypeEnum.BASIC_INSURANCE]
+      insurance: [template?.type === SalaryTypeEnum.BASIC_INSURANCE],
+      employeeType: [template?.employeeType || EmployeeType.EMPLOYEE_FULL_TIME],
+      priceType: [template?.prices?.length === 0 ? PriceType.STANDARD : PriceType.PRICE]
     });
     this.formGroup.get('block')?.valueChanges.subscribe(item => {
-      if (item.type === SalaryTypeEnum.OVERTIME || item.type === SalaryTypeEnum.HOLIDAY) {
-        this.message.info('Chức năng đang được phát triền')
-        this.formGroup.get('block')?.setValue('')
+      this.formGroup.get('reference')?.setValue('')
+      switch (item.type) {
+        case SalaryTypeEnum.HOLIDAY:
+          this.message.info('Chức năng đang được phát triền')
+          this.formGroup.get('block')?.setValue('')
+          break
+        case SalaryTypeEnum.OVERTIME:
+          this.formGroup.get('unit')?.setValue(DatetimeUnitEnum.DAY)
       }
     })
   }
@@ -73,9 +81,9 @@ export class SettingSalaryDialogComponent implements OnInit {
 
   transformReference(totalOf: SalaryTypeEnum[]) {
     if (totalOf.length > 0) {
-      return referencesTypeConstant.find(reference => reference.value === salaryReference.BLOCK)
+      return referencesAbsentConstant.find(reference => reference.value === PriceType.BLOCK)
     } else {
-      return referencesTypeConstant.find(reference => reference.value === salaryReference.PRICE)
+      return referencesAbsentConstant.find(reference => reference.value === PriceType.PRICE)
     }
   }
 
@@ -110,8 +118,8 @@ export class SettingSalaryDialogComponent implements OnInit {
       Object.assign(template, {
         constraint: this.constraint
       })
-      if (value.reference.value === salaryReference.PRICE) {
-        if (this.prices.length === 0) {
+      if (value.reference.value === PriceType.PRICE) {
+        if (this.prices.length === 0 && !this.formControlPrice.value) {
           return this.message.warning('Chưa nhập giá tiền')
         }
         Object.assign(template, {
@@ -127,6 +135,21 @@ export class SettingSalaryDialogComponent implements OnInit {
           price: null,
           totalOf: value.recipes.map((recipe: any) => recipe),
         })
+      }
+    }
+    if (value.block.type === SalaryTypeEnum.OVERTIME) {
+      Object.assign(template, {
+        employeeType: value.employeeType,
+      })
+      if (!value.reference) {
+        return this.message.warning('Chưa chọn Loại đơn giá ')
+      }
+      if (
+        value.reference.value === PriceType.PRICE &&
+        this.prices.length === 0 &&
+        !this.formControlPrice.value
+      ) {
+        return this.message.warning('Chưa nhập giá tiền')
       }
     }
     if (this.data?.isUpdate && this.data?.template) {

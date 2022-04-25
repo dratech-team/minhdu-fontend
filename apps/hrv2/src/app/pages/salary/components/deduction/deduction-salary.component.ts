@@ -5,7 +5,7 @@ import {PartialDayEnum, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {DatetimeUnitEnum, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {catchError, map} from "rxjs/operators";
 import {SettingSalaryActions, SettingSalaryQuery} from "../../../setting/salary/state";
-import {salaryReference} from "../../../setting/salary/enums";
+import {PriceType} from "../../../setting/salary/enums";
 import {PayrollEntity} from "../../../payroll/entities";
 import {DeductionSalaryService} from "../../service";
 import {NzModalRef} from "ng-zorro-antd/modal";
@@ -13,7 +13,7 @@ import {NzMessageService} from "ng-zorro-antd/message";
 import {Actions} from "@datorama/akita-ng-effects";
 import {UnitSalaryConstant} from "../../constants";
 import {SessionConstant, workingTime} from "../../../payroll/constants/session.constant";
-import {referencesTypeConstant} from "../../../setting/salary/constants";
+import {referencesAbsentConstant} from "../../../setting/salary/constants";
 import {SalarySettingEntity} from "../../../setting/salary/entities";
 import {DataModalAbsentSalary} from "../../../payroll/entities/data-modal-absent-salary";
 import {transFormTotalOf} from "../../../setting/salary/utils/transform-total-of.util";
@@ -48,7 +48,7 @@ export class DeductionSalaryComponent implements OnInit {
   payrollSelected: PayrollEntity[] = []
   titleSession = SessionConstant
   partialDayEnum = PartialDayEnum
-  references = referencesTypeConstant;
+  references = referencesAbsentConstant;
   indexStep = 1;
   limitStartHour: number [] = [];
   limitEndTime: number [] = []
@@ -115,7 +115,7 @@ export class DeductionSalaryComponent implements OnInit {
       }
       this.formGroup.get('rate')?.setValue(template?.rate)
       this.formGroup.get('unit')?.setValue(template?.unit)
-      this.formGroup.get('reference')?.setValue(template?.types ? salaryReference.BLOCK : salaryReference.PRICE)
+      this.formGroup.get('reference')?.setValue(template?.types ? PriceType.BLOCK : PriceType.PRICE)
     })
 
     this.formGroup.get('startTime')?.valueChanges.subscribe(val => {

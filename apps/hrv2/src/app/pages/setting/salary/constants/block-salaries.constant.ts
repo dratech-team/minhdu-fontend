@@ -1,7 +1,9 @@
-import {salaryReference, SalaryTypeEnum} from "../enums";
-import {referencesTypeConstant} from "./reference-type.constant";
-import {DatetimeUnitEnum} from "@minhdu-fontend/enums";
+import {PriceType, SalaryTypeEnum} from "../enums";
+import {referencesAbsentConstant} from "./reference-absent.constant";
+import {DatetimeUnitEnum, EmployeeType} from "@minhdu-fontend/enums";
 import {UnitDatetimeConstant} from "./unit-datetime.constant";
+import {EmployeeTypeConstant} from "./employee-type.constant";
+import {ReferenceOvertimeConstant} from "./reference-overtime.constant";
 
 interface BlockSalary {
   title: string,
@@ -12,7 +14,8 @@ interface BlockSalary {
   }
   units?: {
     name: string,
-    value: DatetimeUnitEnum
+    value: DatetimeUnitEnum,
+    salaryType: SalaryTypeEnum[]
   }[],
   constraintHoliday?: {
     disabled?: boolean,
@@ -22,9 +25,13 @@ interface BlockSalary {
     disabled?: boolean,
     show?: boolean
   }
-  references?: {
+  referenceConstant?: {
     name: string,
-    value: salaryReference
+    value: PriceType
+  }[],
+  employeeConstant?: {
+    name: string,
+    value: EmployeeType
   }[],
   price?: {
     disabled?: boolean,
@@ -76,7 +83,7 @@ export const blockSalariesConstant: BlockSalary[] = [
   {
     title: 'Khấu trừ',
     type: SalaryTypeEnum.ABSENT,
-    references: referencesTypeConstant,
+    referenceConstant: referencesAbsentConstant,
     constraintHoliday: {
       disabled: false,
       show: false
@@ -85,7 +92,7 @@ export const blockSalariesConstant: BlockSalary[] = [
       disabled: false,
       show: false
     },
-    units: UnitDatetimeConstant,
+    units: UnitDatetimeConstant.filter(item => item.salaryType.includes(SalaryTypeEnum.ABSENT)),
     rate: {
       disabled: false,
       show: true
@@ -98,6 +105,9 @@ export const blockSalariesConstant: BlockSalary[] = [
   {
     title: 'Tăng ca',
     type: SalaryTypeEnum.OVERTIME,
+    employeeConstant:EmployeeTypeConstant,
+    units: UnitDatetimeConstant.filter(item => item.salaryType.includes(SalaryTypeEnum.OVERTIME)),
+    referenceConstant: ReferenceOvertimeConstant,
     rate: {
       disabled: false,
       show: true
