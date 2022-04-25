@@ -452,13 +452,13 @@
         [eventExportAllowance]='eventExportAllowance'></app-payroll-allowance>
     </div>
     <div *ngIf='selectedPayroll === filterTypeEnum.ABSENT '>
-      <app-payroll-absent
+      <app-payroll-deduction
         [eventSelectRangeDay]='pickRangeDayAbsent'
         [absentTitle]='absentTitle'
         [eventAddAbsent]='eventAddAbsent'
         [eventSearchBranch]='searchBranchAbsent'
         [eventSelectEmpStatus]='selectEmpStatusAbsent'
-        [eventExportAbsent]='eventExportAbsent'></app-payroll-absent>
+        [eventExportAbsent]='eventExportAbsent'></app-payroll-deduction>
     </div>
   </div>
   <app-mouse-right
