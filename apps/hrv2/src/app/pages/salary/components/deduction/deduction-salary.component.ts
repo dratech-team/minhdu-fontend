@@ -232,6 +232,7 @@ export class DeductionSalaryComponent implements OnInit {
     salary: any,
     addOne?: { payrollId: number }
   ) {
+    console.log(service)
     service.addMany(salary, addOne)
       .pipe(catchError(err => {
         this.submitting = false

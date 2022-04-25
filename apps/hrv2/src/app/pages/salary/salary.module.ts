@@ -23,6 +23,7 @@ import {NzTimePickerModule} from "ng-zorro-antd/time-picker";
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
 import {OnsiteSalaryComponent} from "./components/onsite/onsite-salary.component";
 import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
+import {TransformSalaryTypePipe} from "./pipes";
 
 @NgModule({
   imports: [
@@ -50,7 +51,8 @@ import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
   declarations: [
     PermanentSalaryComponent,
     DeductionSalaryComponent,
-    OnsiteSalaryComponent
+    OnsiteSalaryComponent,
+    TransformSalaryTypePipe
   ],
   providers: [
     DatePipe,

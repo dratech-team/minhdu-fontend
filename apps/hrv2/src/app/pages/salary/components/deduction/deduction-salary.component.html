@@ -1,19 +1,19 @@
 <div class='px-2'>
   <nz-steps [nzCurrent]="indexStep">
     <nz-step *ngIf="data?.update?.multiple" nzTitle="Nhân viên đã chọn"></nz-step>
-    <nz-step nzTitle="Bảng khấu trừ"></nz-step>
+    <nz-step nzTitle="Bảng {{this.data.type | transformSalaryType}}"></nz-step>
   </nz-steps>
 
   <ng-template [ngIf]="indexStep === 0 && data?.update?.multiple">
-<!--    <app-table-salaries-selected-->
-<!--      [salaries]='salaryPayrolls'-->
-<!--      (EmitSalariesSelected)='changeSalariesSelected($event)'>-->
-<!--    </app-table-salaries-selected>-->
+    <!--    <app-table-salaries-selected-->
+    <!--      [salaries]='salaryPayrolls'-->
+    <!--      (EmitSalariesSelected)='changeSalariesSelected($event)'>-->
+    <!--    </app-table-salaries-selected>-->
   </ng-template>
   <ng-template [ngIf]="indexStep === 1">
     <form [formGroup]='formGroup' class="px-2 pt-2" style="max-height: 40vh; overflow-y: scroll">
       <div class='mb-2'>
-        <span class="font-weight-bold">Khoảng khấu trừ </span><span class='star'>*</span>
+        <span class="font-weight-bold">Khoản {{this.data.type |transformSalaryType}}</span><span class='star'>*</span>
         <nz-select class="mt-1" style="width: 100%" formControlName="template"
                    [compareWith]="compareFN"
         >
@@ -27,12 +27,13 @@
       <div class='mb-3' *ngIf="formGroup.value?.template?.id === 0 else absentTemplate">
         <span class='font-weight-bold'>Tiêu đề</span><span class='star'>*</span>
         <input class="mt-1" nz-input formControlName="title">
-      </div>  <div class='mb-3'>
-      <span class='font-weight-bold'>Đơn vị</span><span class='star'>*</span>
-      <nz-select formControlName="unit" style="width: 100%"  nzDisabled >
-        <nz-option *ngFor="let item of unitConstant" [nzValue]="item.value" [nzLabel]="item.name"></nz-option>
-      </nz-select>
-    </div>
+      </div>
+      <div class='mb-3'>
+        <span class='font-weight-bold'>Đơn vị</span><span class='star'>*</span>
+        <nz-select formControlName="unit" style="width: 100%" nzDisabled>
+          <nz-option *ngFor="let item of unitConstant" [nzValue]="item.value" [nzLabel]="item.name"></nz-option>
+        </nz-select>
+      </div>
       <ng-template #absentTemplate>
         <div class='mb-3'>
           <span class='font-weight-bold'>Buổi</span><span class='star'>*</span>
@@ -96,7 +97,7 @@
         </div>
         <div class='mb-3'>
           <span class='font-weight-bold'>Ràng buộc ngày lễ:</span>
-          <label nz-checkbox nzDisabled="true"  class="ml-2" formControlName="constraintHoliday"></label>
+          <label nz-checkbox nzDisabled="true" class="ml-2" formControlName="constraintHoliday"></label>
         </div>
         <div class='mb-3'>
           <span class='font-weight-bold'>Ràng buộc theo tăng ca:</span>
@@ -131,7 +132,8 @@
     <button class="ml-2" nz-button nzType="default" (click)="next()" *ngIf="indexStep < 1">
       <span>Tiếp theo</span>
     </button>
-    <button class="ml-2" nz-button nzType="primary" [nzLoading]="submitting" (click)="onSubmit()" *ngIf="indexStep === 1">
+    <button class="ml-2" nz-button nzType="primary" [nzLoading]="submitting" (click)="onSubmit()"
+            *ngIf="indexStep === 1">
       <span>Xác nhận</span>
     </button>
   </div>

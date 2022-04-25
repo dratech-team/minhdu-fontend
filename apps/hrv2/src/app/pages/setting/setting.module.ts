@@ -21,7 +21,6 @@ import {NzButtonModule} from "ng-zorro-antd/button";
 import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
 import {SettingSalaryEffect} from "./salary/state";
 import {HttpClientModule} from "@angular/common/http";
-import {SalarySettingService} from "./salary/services";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatIconModule} from "@angular/material/icon";

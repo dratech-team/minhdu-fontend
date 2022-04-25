@@ -16,7 +16,7 @@ export class OvertimeSalaryService extends BaseSalaryService<OvertimeSalaryEntit
     public readonly message: NzMessageService,
     public readonly actions$: Actions
   ) {
-    super(message, actions$, Api.HR.PAYROLL.DEDUCTION_SALARY, http);
+    super(message, actions$, Api.HR.PAYROLL.OVERTIME_SALARY, http);
   }
 
   addMany(body: any, addOne?: { payrollId: number }): Observable<ResponseMessageEntity> {
