@@ -1,2 +1,2 @@
-export * from './reference-absent.constant';
+export * from './reference.constant';
 export * from './block-salaries.constant';

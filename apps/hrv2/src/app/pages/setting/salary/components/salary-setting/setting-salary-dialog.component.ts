@@ -4,7 +4,7 @@ import {DatetimeUnitEnum, EmployeeType, SalaryTypeEnum} from '@minhdu-fontend/en
 import {Branch} from '@minhdu-fontend/data-models';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {PriceType} from "../../enums";
-import {blockSalariesConstant, referencesAbsentConstant} from "../../constants";
+import {blockSalariesConstant, referencesConstant} from "../../constants";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {Actions} from "@datorama/akita-ng-effects";
 import {SettingSalaryActions, SettingSalaryQuery} from "../../state";
@@ -56,7 +56,6 @@ export class SettingSalaryDialogComponent implements OnInit {
       constraintOvertime: [template?.constraints ? this.checkConstraint(template?.constraints, SalaryTypeEnum.OVERTIME) : false],
       insurance: [template?.type === SalaryTypeEnum.BASIC_INSURANCE],
       employeeType: [template?.employeeType || EmployeeType.EMPLOYEE_FULL_TIME],
-      priceType: [template?.prices?.length === 0 ? PriceType.STANDARD : PriceType.PRICE]
     });
     this.formGroup.get('block')?.valueChanges.subscribe(item => {
       this.formGroup.get('reference')?.setValue('')
@@ -67,6 +66,10 @@ export class SettingSalaryDialogComponent implements OnInit {
           break
         case SalaryTypeEnum.OVERTIME:
           this.formGroup.get('unit')?.setValue(DatetimeUnitEnum.DAY)
+          break
+        default:
+          this.formGroup.get('unit')?.setValue(DatetimeUnitEnum.MONTH)
+          break
       }
     })
   }
@@ -81,9 +84,9 @@ export class SettingSalaryDialogComponent implements OnInit {
 
   transformReference(totalOf: SalaryTypeEnum[]) {
     if (totalOf.length > 0) {
-      return referencesAbsentConstant.find(reference => reference.value === PriceType.BLOCK)
+      return referencesConstant.find(reference => reference.value === PriceType.BLOCK)
     } else {
-      return referencesAbsentConstant.find(reference => reference.value === PriceType.PRICE)
+      return referencesConstant.find(reference => reference.value === PriceType.PRICE)
     }
   }
 
@@ -111,13 +114,22 @@ export class SettingSalaryDialogComponent implements OnInit {
       unit: value.unit,
       prices: this.formControlPrice.value ? this.prices.concat([this.formControlPrice.value]) : this.prices
     };
-    if (value.block.type === SalaryTypeEnum.ABSENT) {
+    if (value.block.type === SalaryTypeEnum.ABSENT ||
+      value.block.type === SalaryTypeEnum.OVERTIME
+    ) {
+      if (value.block.type === SalaryTypeEnum.OVERTIME) {
+        Object.assign(template, {
+          employeeType: value.employeeType,
+        })
+      }
+      if (value.block.type === SalaryTypeEnum.ABSENT) {
+        Object.assign(template, {
+          constraint: this.constraint
+        })
+      }
       if (!value.reference) {
         return this.message.warning('Chưa chọn tổng của ')
       }
-      Object.assign(template, {
-        constraint: this.constraint
-      })
       if (value.reference.value === PriceType.PRICE) {
         if (this.prices.length === 0 && !this.formControlPrice.value) {
           return this.message.warning('Chưa nhập giá tiền')
@@ -135,21 +147,6 @@ export class SettingSalaryDialogComponent implements OnInit {
           price: null,
           totalOf: value.recipes.map((recipe: any) => recipe),
         })
-      }
-    }
-    if (value.block.type === SalaryTypeEnum.OVERTIME) {
-      Object.assign(template, {
-        employeeType: value.employeeType,
-      })
-      if (!value.reference) {
-        return this.message.warning('Chưa chọn Loại đơn giá ')
-      }
-      if (
-        value.reference.value === PriceType.PRICE &&
-        this.prices.length === 0 &&
-        !this.formControlPrice.value
-      ) {
-        return this.message.warning('Chưa nhập giá tiền')
       }
     }
     if (this.data?.isUpdate && this.data?.template) {

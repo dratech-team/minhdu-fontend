@@ -41,7 +41,7 @@ export const recipesConstant = [
   },
 ]
 
-export const referencesAbsentConstant: RefernceType [] = [
+export const referencesConstant: RefernceType [] = [
   {
     name: 'Đơn giá',
     value: PriceType.PRICE,

@@ -95,17 +95,13 @@
         </div>
       </div>
       <div *ngIf='formGroup.value.block?.referenceConstant'>
-        <div class='font-weight-bold my-2'
-             *ngIf="this.formGroup.value.block.type === salaryTypeEnum.ABSENT">
+        <div class='font-weight-bold my-2'>
           Công thức tính
         </div>
         <div class='mt-2'>
-          <div><span class='main-title'>
-            {{
-            this.formGroup.value.block.type === salaryTypeEnum.ABSENT ? ' Tổng của' :
-              this.formGroup.value.block.type === salaryTypeEnum.OVERTIME ? 'Loai lương' : ''
-            }}
-           </span><span class='star'>*</span></div>
+          <div>
+            <span class='main-title'>Tổng của</span><span class='star'>*</span>
+          </div>
           <nz-radio-group formControlName='reference'>
             <label nz-radio *ngFor='let item of formGroup.value.block?.referenceConstant'
                    [nzValue]='item'>{{item.name}}</label>
