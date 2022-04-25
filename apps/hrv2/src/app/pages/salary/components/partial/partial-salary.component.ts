@@ -15,17 +15,17 @@ import {UnitSalaryConstant} from "../../constants";
 import {SessionConstant, workingTime} from "../../../payroll/constants/session.constant";
 import {referencesTypeConstant} from "../../../setting/salary/constants";
 import {SalarySettingEntity} from "../../../setting/salary/entities";
-import {DataModalAbsentSalary} from "../../../payroll/entities/data-modal-absent-salary";
+import {DataModalPartialSalary} from "../../../payroll/entities/data-modal-partial-salary";
 import {transFormTotalOf} from "../../../setting/salary/utils/transform-total-of.util";
 import {templateDeductionConstant} from "../../constants/template-deduction.constant";
 import {getAfterTime, getBeforeTime} from "@minhdu-fontend/utils";
 import {throwError} from "rxjs";
 
 @Component({
-  templateUrl: 'deduction-salary.component.html'
+  templateUrl: 'partial-salary.component.html'
 })
-export class DeductionSalaryComponent implements OnInit {
-  @Input() data!: DataModalAbsentSalary
+export class PartialSalaryComponent implements OnInit {
+  @Input() data!: DataModalPartialSalary
   templateSalary$ = this.settingSalaryQuery.selectAll({
     filterBy: [(entity => entity.type === this.data.type)]
   }).pipe(
@@ -103,6 +103,7 @@ export class DeductionSalaryComponent implements OnInit {
       rate: [1],
       unit: [salary?.unit ? salary.unit : DatetimeUnitEnum.MONTH],
       partialDay: [salary?.partial ? this.getPartialDay(salary.partial) : ''],
+      isAllowance: [!!salary?.allowance],
       priceAllowance: [salary?.allowance ? salary.allowance.price : ''],
       titleAllowance: [salary?.allowance ? salary.allowance.title : ''],
       constraintHoliday: [],
@@ -232,7 +233,6 @@ export class DeductionSalaryComponent implements OnInit {
     salary: any,
     addOne?: { payrollId: number }
   ) {
-    console.log(service)
     service.addMany(salary, addOne)
       .pipe(catchError(err => {
         this.submitting = false

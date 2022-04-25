@@ -2,7 +2,7 @@ import {PayrollEntity} from "./payroll.entity";
 import {DeductionSalaryEntity, OvertimeSalaryEntity} from "../../salary/entities";
 import {SalaryPayroll} from "@minhdu-fontend/data-models";
 import {SalaryTypeEnum} from "@minhdu-fontend/enums";
-export interface DataModalAbsentSalary {
+export interface DataModalPartialSalary {
   type: SalaryTypeEnum.ABSENT | SalaryTypeEnum.OVERTIME
   add?: {
     payroll: PayrollEntity,

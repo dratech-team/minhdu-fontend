@@ -1,7 +1,7 @@
 //salary
 export * from './permanent-salary/update-permanent-salary.dto';
 export * from './remove-salary.dto';
-//deduction Salary
+//partial Salary
 export * from './deduction-salary/add-deduction-salary.dto'
 export * from './deduction-salary/update-deduction-salary.dto'
 //overtime Salary

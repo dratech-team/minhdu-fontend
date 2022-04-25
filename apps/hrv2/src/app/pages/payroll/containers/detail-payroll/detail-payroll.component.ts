@@ -15,8 +15,8 @@ import {PayrollEntity} from "../../entities";
 import {tranFormSalaryType} from "../../utils";
 import {PermanentSalaryComponent} from "../../../salary/components/permanent/permanent-salary.component";
 import {NzModalService} from "ng-zorro-antd/modal";
-import {DeductionSalaryComponent} from "../../../salary/components/deduction/deduction-salary.component";
-import {DataModalAbsentSalary} from "../../entities/data-modal-absent-salary";
+import {PartialSalaryComponent} from "../../../salary/components/partial/partial-salary.component";
+import {DataModalPartialSalary} from "../../entities/data-modal-partial-salary";
 import {
   AllowanceSalaryEntity,
   DeductionSalaryEntity,
@@ -108,52 +108,31 @@ export class DetailPayrollComponent implements OnInit {
     add?: { payroll: PayrollEntity },
     update?: { salary: SalaryEntity }
   ) {
-    switch (type) {
-      case SalaryTypeEnum.OVERTIME:
-        this.modal.create(Object.assign(config, {
-          nzTitle: add ? 'Thêm Tăng ca' : 'Cập nhật tăng ca',
-          nzContent: DeductionSalaryComponent,
-          nzComponentParams: <{ data: DataModalAbsentSalary }>{
-            data: {
-              type: type,
-              add: add,
-              update: update
-            }
-          },
-        }))
-        break
-      case SalaryTypeEnum.ALLOWANCE:
-        break
-      case SalaryTypeEnum.WFH:
-        break
-      case SalaryTypeEnum.HOLIDAY:
-        break
-      case SalaryTypeEnum.ABSENT:
-        this.modal.create(Object.assign(config, {
-          nzTitle: add ? 'Thêm khấu trừ' : 'Cập nhật khấu trừ',
-          nzContent: DeductionSalaryComponent,
-          nzComponentParams: <{ data: DataModalAbsentSalary }>{
-            data: {
-              type: type,
-              add: add,
-              update: update
-            }
-          },
-        }))
-        break
-      default:
-        this.modal.create(Object.assign(config, {
-          nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.BASIC ? ' lương cơ bản' : ' phụ cấp'),
-          nzContent: PermanentSalaryComponent,
-          nzComponentParams: <{ data: dataModalPermanentSalary }>{
-            data: {
-              type: type,
-              add: add,
-              update: update
-            }
-          },
-        }))
-        break
+    if(type === SalaryTypeEnum.OVERTIME || type === SalaryTypeEnum.ABSENT){
+      this.modal.create(Object.assign(config, {
+        nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.ABSENT ? ' Khấu trừ' : ' tăng ca') ,
+        nzContent: PartialSalaryComponent,
+        nzComponentParams: <{ data: DataModalPartialSalary }>{
+          data: {
+            type: type,
+            add: add,
+            update: update
+          }
+        },
+      }))
+    }
+    if(type === SalaryTypeEnum.BASIC || type === SalaryTypeEnum.ALLOWANCE){
+      this.modal.create(Object.assign(config, {
+        nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.BASIC ? ' lương cơ bản' : ' phụ cấp'),
+        nzContent: PermanentSalaryComponent,
+        nzComponentParams: <{ data: dataModalPermanentSalary }>{
+          data: {
+            type: type,
+            add: add,
+            update: update
+          }
+        },
+      }))
     }
   }
 

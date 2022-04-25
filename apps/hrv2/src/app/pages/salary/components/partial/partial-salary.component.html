@@ -24,7 +24,7 @@
           <div>Chưa chọn loại khấu trừ</div>
         </div>
       </div>
-      <div class='mb-3' *ngIf="formGroup.value?.template?.id === 0 else absentTemplate">
+      <div class='mb-3' *ngIf="formGroup.value?.template?.id === 0 else template">
         <span class='font-weight-bold'>Tiêu đề</span><span class='star'>*</span>
         <input class="mt-1" nz-input formControlName="title">
       </div>
@@ -34,7 +34,7 @@
           <nz-option *ngFor="let item of unitConstant" [nzValue]="item.value" [nzLabel]="item.name"></nz-option>
         </nz-select>
       </div>
-      <ng-template #absentTemplate>
+      <ng-template #template >
         <div class='mb-3'>
           <span class='font-weight-bold'>Buổi</span><span class='star'>*</span>
           <nz-select class="mt-1" style="width: 100%" formControlName='partialDay'>
@@ -118,6 +118,31 @@
             (formGroup.value.template?.workday || 'Ngày công chuẩn')
             }} </div>
         </ng-template>
+      </div>
+      <div class=' d-flex align-items-center title-item mb-2' *ngIf="this.data.type === salaryTypeEnum.OVERTIME">
+        <span>Phụ cấp tăng ca:</span>
+        <input type='checkbox'  class='ml-2' formControlName="isAllowance">
+      </div>
+      <div class='allowance-overtime p-2 border' *ngIf='this.formGroup.value.isAllowance'>
+        <div class=' mb-2'>
+          <span class='title-item mb-2'>Tiêu đề phụ cấp tăng ca</span>
+        </div>
+        <div class=' mb-3' [formGroup]='formGroup'>
+          <input type='text' class='form-control  px-1' formControlName='titleAllowance'>
+        </div>
+        <div class=''>
+          <div class=' title-item mb-1'>
+            <span>Mức Phụ cấp tăng ca</span>
+          </div>
+          <div class=' mb-3' [formGroup]='formGroup'>
+            <input type='text'
+                   class='form-control  px-1'
+                   formControlName='priceAllowance'
+                   currencyMask
+                   [options]="{ suffix: ' đ' }"
+            >
+          </div>
+        </div>
       </div>
       <div class='mb-3'>
         <span class='font-weight-bold'>Chú thích</span>

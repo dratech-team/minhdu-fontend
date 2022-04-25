@@ -18,7 +18,7 @@ import {NgxCurrencyModule} from "ngx-currency";
 import {PayrollEffect} from "../payroll/state/payroll.effect";
 import {SettingSalaryEffect} from "../setting/salary/state";
 import {customCurrencyMaskConfig} from "@minhdu-fontend/config";
-import {DeductionSalaryComponent} from "./components/deduction/deduction-salary.component";
+import {PartialSalaryComponent} from "./components/partial/partial-salary.component";
 import {NzTimePickerModule} from "ng-zorro-antd/time-picker";
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
 import {OnsiteSalaryComponent} from "./components/onsite/onsite-salary.component";
@@ -50,7 +50,7 @@ import {TransformSalaryTypePipe} from "./pipes";
   ],
   declarations: [
     PermanentSalaryComponent,
-    DeductionSalaryComponent,
+    PartialSalaryComponent,
     OnsiteSalaryComponent,
     TransformSalaryTypePipe
   ],
