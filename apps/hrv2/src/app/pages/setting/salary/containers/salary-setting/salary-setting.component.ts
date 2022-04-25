@@ -3,14 +3,12 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {debounceTime, map} from 'rxjs/operators';
 import {PaginationDto} from '@minhdu-fontend/constants';
-import {SettingSalaryQuery} from '../../state';
+import {SettingSalaryActions, SettingSalaryQuery, SettingSalaryStore} from '../../state';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from 'ng-zorro-antd/modal';
-import {SettingSalaryStore} from '../../state';
 import {SalaryTypeEnum} from "../../enums";
-import {blockSalariesConstant, recipesConstant} from "../../constants";
+import {blockSalariesConstant} from "../../constants";
 import {SalarySettingEntity} from "../../entities";
-import {SettingSalaryActions} from "../../state";
 import {SettingSalaryDialogComponent} from "../../components/salary-setting";
 import {transFormTotalOf} from "../../utils/transform-total-of.util";
 

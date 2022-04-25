@@ -1,2 +1,2 @@
-export * from './reference.constant';
+export * from './recipes.constant';
 export * from './block-salaries.constant';

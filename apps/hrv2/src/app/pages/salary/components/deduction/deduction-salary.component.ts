@@ -13,7 +13,7 @@ import {NzMessageService} from "ng-zorro-antd/message";
 import {Actions} from "@datorama/akita-ng-effects";
 import {UnitSalaryConstant} from "../../constants";
 import {SessionConstant, workingTime} from "../../../payroll/constants/session.constant";
-import {referencesConstant} from "../../../setting/salary/constants";
+import {recipesConstant} from "../../../setting/salary/constants";
 import {SalarySettingEntity} from "../../../setting/salary/entities";
 import {DataModalAbsentSalary} from "../../../payroll/entities/data-modal-absent-salary";
 import {transFormTotalOf} from "../../../setting/salary/utils/transform-total-of.util";
@@ -48,7 +48,7 @@ export class DeductionSalaryComponent implements OnInit {
   payrollSelected: PayrollEntity[] = []
   titleSession = SessionConstant
   partialDayEnum = PartialDayEnum
-  references = referencesConstant;
+  recipesConstant = recipesConstant;
   indexStep = 1;
   limitStartHour: number [] = [];
   limitEndTime: number [] = []
