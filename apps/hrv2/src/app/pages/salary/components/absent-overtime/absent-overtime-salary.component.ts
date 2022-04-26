@@ -15,17 +15,17 @@ import {UnitSalaryConstant} from "../../constants";
 import {SessionConstant, workingTime} from "../../../payroll/constants/session.constant";
 import {recipesConstant} from "../../../setting/salary/constants";
 import {SalarySettingEntity} from "../../../setting/salary/entities";
-import {ModalAddOrUpdateOverAbsent} from "../../../payroll/entities/data-modal-absent-overtime-salary";
 import {templateDeductionConstant} from "../../constants/template-deduction.constant";
 import {getAfterTime, getBeforeTime} from "@minhdu-fontend/utils";
 import {throwError} from "rxjs";
 import {PayrollActions} from "../../../payroll/state/payroll.action";
+import { ModalAddOrUpdateAbsentOrOvertime } from '../../../payroll/data/modal-absent-or-overtime-salary.data';
 
 @Component({
   templateUrl: 'absent-overtime-salary.component.html'
 })
 export class AbsentOvertimeSalaryComponent implements OnInit {
-  @Input() data!: ModalAddOrUpdateOverAbsent
+  @Input() data!: ModalAddOrUpdateAbsentOrOvertime
   templateSalary$ = this.settingSalaryQuery.selectAll({
     filterBy: [(entity => entity.type === this.data.type)]
   }).pipe(

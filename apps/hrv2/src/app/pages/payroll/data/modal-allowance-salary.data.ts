@@ -1,9 +1,9 @@
-import {PayrollEntity} from "./payroll.entity";
+import {PayrollEntity} from "../entities/payroll.entity";
 import {AllowanceSalaryEntity} from "../../salary/entities";
 import {SalaryPayroll} from "@minhdu-fontend/data-models";
 import {RequireOnlyOne} from "../../../../shared/types";
 
-export interface DataModalAllowanceSalary {
+export interface ModalAllowanceSalaryData {
   add?: {
     payroll: PayrollEntity,
     multiple?: boolean
@@ -15,4 +15,4 @@ export interface DataModalAllowanceSalary {
     },
   }
 }
-export type ModalAddOrUpdateAllowance = RequireOnlyOne<DataModalAllowanceSalary, 'add'|'update'>
+export type ModalAddOrUpdateAllowance = RequireOnlyOne<ModalAllowanceSalaryData, 'add'|'update'>
