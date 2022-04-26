@@ -107,7 +107,7 @@ export class SettingSalaryDialogComponent implements OnInit {
         }
       }
 
-      if(value.diveFor === DiveEnum.OTHER && !value.workday ){
+      if (value.diveFor === DiveEnum.OTHER && !value.workday) {
         return this.message.warning('Chưa nhập số ngày tuỳ chọn')
       }
     }
@@ -129,8 +129,8 @@ export class SettingSalaryDialogComponent implements OnInit {
     })
   }
 
-  mapTemplate(value: any){
-   const template = {
+  mapTemplate(value: any) {
+    const template = {
       title: value.title,
       settingType: value.block.type === SalaryTypeEnum.BASIC && value.insurance ?
         SalaryTypeEnum.BASIC_INSURANCE :
@@ -164,7 +164,7 @@ export class SettingSalaryDialogComponent implements OnInit {
         })
       }
     }
-   return template
+    return template
   }
 
   validatePrices() {
