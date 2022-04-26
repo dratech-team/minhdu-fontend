@@ -165,35 +165,10 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       return;
     }
     const value = this.formGroup.value
-    const salary = {
-      rate: value.rate,
-      title: value.template.id === 0 ? value.title : value.template.title,
-      partial: value.template.id === 0 ? PartialDayEnum.CUSTOM : value.partialDay.value,
-      unit: value.unit,
-      price: value.price,
-      note: value.note,
-      startedAt: value.rangeDay[0],
-      endedAt: value.rangeDay[1],
-      startTime: value.startTime ? new Date(value.startTime) : null,
-      endTime: value.endTime ? new Date(value.endTime) : null,
-      settingId: value.template?.id,
-    }
-    if (this.data.type === SalaryTypeEnum.ABSENT) {
-      if (value.template.id === 0) {
-        delete salary.settingId
-      }
-    }
     if (value.isAllowance && (!value.priceAllowance || !value.titleAllowance)) {
       this.message.warning('chưa nhập đủ thông tin phụ cấp cho tăng ca')
     }
-
-    Object.assign(salary, value.priceAllowance && value.titleAllowance ? {
-      allowance: {
-        price: value.priceAllowance,
-        title: value.titleAllowance
-      }
-    } : {})
-
+    const salary = this.mapSalary(value)
     this.submitting = true
     const service = this.data.type === SalaryTypeEnum.ABSENT ? this.deductionSalaryService : this.overtimeSalaryService
     if (this.data?.update) {
@@ -220,6 +195,37 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
           this.onSubmitSuccess(this.data.add?.multiple ? undefined : this.data.add?.payroll.id)
         })
     }
+  }
+
+
+  mapSalary(value: any){
+    const salary = {
+      rate: value.rate,
+      title: value.template.id === 0 ? value.title : value.template.title,
+      partial: value.template.id === 0 ? PartialDayEnum.CUSTOM : value.partialDay.value,
+      unit: value.unit,
+      price: value.price,
+      note: value.note,
+      startedAt: value.rangeDay[0],
+      endedAt: value.rangeDay[1],
+      startTime: value.startTime ? new Date(value.startTime) : null,
+      endTime: value.endTime ? new Date(value.endTime) : null,
+      settingId: value.template?.id,
+    }
+
+    if (this.data.type === SalaryTypeEnum.ABSENT) {
+      if (value.template.id === 0) {
+        delete salary.settingId
+      }
+    }
+
+    Object.assign(salary, value.priceAllowance && value.titleAllowance ? {
+      allowance: {
+        price: value.priceAllowance,
+        title: value.titleAllowance
+      }
+    } : {})
+
   }
 
   transformTotalOf(totalOf: SalaryTypeEnum[]): string {
