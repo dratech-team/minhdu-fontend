@@ -3,7 +3,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {getLastDayInMonth, isEqualDatetime} from 'libs/utils/daytime.until';
+import {isEqualDatetime} from 'libs/utils/daytime.until';
 import {SalaryPayroll} from '@minhdu-fontend/data-models';
 import {AllowanceSalaryService} from "../../service/allowance-salary.service";
 import {PayrollEntity} from "../../../payroll/entities";
