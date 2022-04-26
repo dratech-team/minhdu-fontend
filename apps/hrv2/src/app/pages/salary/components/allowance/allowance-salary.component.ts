@@ -33,6 +33,11 @@ export class AllowanceSalaryComponent implements OnInit {
       return !((differenceInCalendarDays(cur,moment(workedAt).add(-1,'days').toDate()) > 0 &&
         (differenceInCalendarDays(cur, moment(workedAt).endOf('month').add(1,'days').toDate()) < 0)
       ))
+    }else if(this.data.update){
+      const workedAt = this.data.update.salary.workedAt
+      return !((differenceInCalendarDays(cur,moment(workedAt).add(-1,'days').toDate()) > 0 &&
+        (differenceInCalendarDays(cur, moment(workedAt).endOf('month').add(1,'days').toDate()) < 0)
+      ))
     }else{
       return false
     }

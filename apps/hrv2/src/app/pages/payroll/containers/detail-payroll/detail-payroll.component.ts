@@ -25,6 +25,7 @@ import {
 } from "../../../salary/entities";
 import {PayslipComponent} from "../../components/payslip/payslip.component";
 import {dataModalPermanentSalary} from "../../entities/data-modal-permanent-salary";
+import {AllowanceSalaryComponent} from "../../../salary/components/allowance/allowance-salary.component";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -112,6 +113,16 @@ export class DetailPayrollComponent implements OnInit {
       case SalaryTypeEnum.OVERTIME:
         break
       case SalaryTypeEnum.ALLOWANCE:
+        this.modal.create(Object.assign(config, {
+          nzTitle: add ?'Thêm Phụ cấp' :'Cập nhật Phụ cấp',
+          nzContent: AllowanceSalaryComponent,
+          nzComponentParams: <any>{
+            data: {
+              add: add,
+              update: update
+            }
+          },
+        }))
         break
       case SalaryTypeEnum.WFH:
         break

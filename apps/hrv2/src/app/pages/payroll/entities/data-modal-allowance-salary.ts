@@ -8,7 +8,7 @@ export interface DataModalAllowanceSalary {
     multiple?: boolean
   }
   update?: {
-    salary: AllowanceSalaryEntity
+    salary: AllowanceSalaryEntity & { workedAt: Date }
     multiple?: {
       salariesSelected: SalaryPayroll[]
     },
