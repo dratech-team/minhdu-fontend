@@ -7,6 +7,7 @@ import {Observable} from 'rxjs';
 import {PayrollEntity} from "../entities";
 import {AddPayrollDto, LoadOnePayrollDto, RemovePayrollDto, UpdatePayrollDto} from "../dto";
 import {ConfirmPayrollDto} from "../dto/confirm-payroll.dto";
+import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
 
 @Injectable({providedIn: 'root'})
 export class PayrollService extends BaseService<PayrollEntity> {
