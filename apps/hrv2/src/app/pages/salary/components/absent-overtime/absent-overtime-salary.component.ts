@@ -192,55 +192,36 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       })
     }
     this.submitting = true
+    const service = this.data.type === SalaryTypeEnum.ABSENT ? this.deductionSalaryService : this.overtimeSalaryService
     if (this.data?.update) {
       Object.assign(salary, {
         salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.update.salary.id)
       })
-      this.onUpdate(
-        this.data.type === SalaryTypeEnum.ABSENT ? this.deductionSalaryService : this.overtimeSalaryService,
+      service.updateMany(
         salary,
-        this.data.update.multiple ? undefined : {payrollId: this.data.update.salary.payrollId})
+        this.data.update.multiple ? undefined : {payrollId: this.data.update.salary.id})
+        .pipe(catchError(err => {
+          this.submitting = false
+          return throwError(err)
+        }))
+        .subscribe(_ => {
+          this.onSubmitSuccess()
+        })
     }
 
     if (this.data.add) {
       Object.assign(salary, {
         payrollIds: this.payrollSelected.map(payroll => payroll.id).concat(this.data.add.payroll.id)
       })
-      this.onAdd(
-        this.data.type === SalaryTypeEnum.ABSENT ? this.deductionSalaryService : this.overtimeSalaryService,
-        salary,
-        this.data.add.multiple ? undefined : {payrollId: this.data.add.payroll.id})
+      service.addMany(salary, this.data.add.multiple ? undefined : {payrollId: this.data.add.payroll.id})
+        .pipe(catchError(err => {
+          this.submitting = false
+          return throwError(err)
+        }))
+        .subscribe(_ => {
+          this.onSubmitSuccess()
+        })
     }
-  }
-
-  onUpdate(
-    service: DeductionSalaryService | OvertimeSalaryService,
-    salary: any,
-    updateOne?: { payrollId: number }
-  ) {
-    service.updateMany(salary, updateOne)
-      .pipe(catchError(err => {
-        this.submitting = false
-        return throwError(err)
-      }))
-      .subscribe(_ => {
-        this.onSubmitSuccess()
-      })
-  }
-
-  onAdd(
-    service: DeductionSalaryService | OvertimeSalaryService,
-    salary: any,
-    addOne?: { payrollId: number }
-  ) {
-    service.addMany(salary, addOne)
-      .pipe(catchError(err => {
-        this.submitting = false
-        return throwError(err)
-      }))
-      .subscribe(_ => {
-        this.onSubmitSuccess()
-      })
   }
 
   transformTotalOf(totalOf: SalaryTypeEnum[]): string {
