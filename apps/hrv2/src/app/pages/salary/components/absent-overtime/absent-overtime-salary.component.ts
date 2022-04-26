@@ -198,7 +198,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   }
 
 
-  mapSalary(value: any){
+  mapSalary(value: any) {
     const salary = {
       rate: value.rate,
       title: value.template.id === 0 ? value.title : value.template.title,
@@ -225,7 +225,6 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
         title: value.titleAllowance
       }
     } : {})
-
   }
 
   transformTotalOf(totalOf: SalaryTypeEnum[]): string {
