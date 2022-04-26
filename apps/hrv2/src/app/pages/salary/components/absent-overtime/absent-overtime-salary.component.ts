@@ -172,9 +172,6 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     this.submitting = true
     const service = this.data.type === SalaryTypeEnum.ABSENT ? this.deductionSalaryService : this.overtimeSalaryService
     if (this.data?.update) {
-      Object.assign(salary, {
-        salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.update.salary.id)
-      })
       service.updateMany(salary)
         .pipe(catchError(err => {
           this.submitting = false
@@ -186,9 +183,6 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     }
 
     if (this.data.add) {
-      Object.assign(salary, {
-        payrollIds: this.payrollSelected.map(payroll => payroll.id).concat(this.data.add.payroll.id)
-      })
       service.addMany(salary)
         .pipe(catchError(err => this.onSubmitError(err)))
         .subscribe(_ => {
@@ -225,6 +219,18 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
         title: value.titleAllowance
       }
     } : {})
+
+    if (this.data.add) {
+      Object.assign(salary, {
+        payrollIds: this.payrollSelected.map(payroll => payroll.id).concat(this.data.add.payroll.id)
+      })
+    }
+
+    if (this.data.update) {
+      Object.assign(salary, {
+        salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.update.salary.id)
+      })
+    }
   }
 
   transformTotalOf(totalOf: SalaryTypeEnum[]): string {
