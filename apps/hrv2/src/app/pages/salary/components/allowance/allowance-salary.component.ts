@@ -12,13 +12,16 @@ import {NzModalRef} from "ng-zorro-antd/modal";
 import {catchError} from "rxjs/operators";
 import {throwError} from "rxjs";
 import {DataModalAllowanceSalary} from "../../../payroll/entities/data-modal-allowance-salary";
-import { differenceInCalendarDays } from 'date-fns';
+import {differenceInCalendarDays} from 'date-fns';
 import * as moment from 'moment';
+import {Actions} from "@datorama/akita-ng-effects";
+import {PayrollActions} from "../../../payroll/state/payroll.action";
+
 @Component({
   templateUrl: 'allowance-salary.component.html'
 })
 export class AllowanceSalaryComponent implements OnInit {
-  @Input() data!:DataModalAllowanceSalary
+  @Input() data!: DataModalAllowanceSalary
   salaryTypeEnum = SalaryTypeEnum;
   datetimeEnum = DatetimeUnitEnum;
   formGroup!: FormGroup;
@@ -27,21 +30,21 @@ export class AllowanceSalaryComponent implements OnInit {
   payrollSelected: PayrollEntity [] = []
   indexStep = 0;
   submitting = false;
-  disableApprenticeDate = (cur: Date):boolean =>{
-    if(this.data.add){
+  disableApprenticeDate = (cur: Date): boolean => {
+    if (this.data.add) {
       const workedAt = this.data.add.payroll.employee.workedAt
-      return !((differenceInCalendarDays(cur,moment(workedAt).add(-1,'days').toDate()) > 0 &&
-        (differenceInCalendarDays(cur, moment(workedAt).endOf('month').add(1,'days').toDate()) < 0)
+      return !((differenceInCalendarDays(cur, moment(workedAt).add(-1, 'days').toDate()) > 0 &&
+        (differenceInCalendarDays(cur, moment(workedAt).endOf('month').add(1, 'days').toDate()) < 0)
       ))
-    }else if(this.data.update){
+    } else if (this.data.update) {
       const workedAt = this.data.update.salary.workedAt
-      return !((differenceInCalendarDays(cur,moment(workedAt).add(-1,'days').toDate()) > 0 &&
-        (differenceInCalendarDays(cur, moment(workedAt).endOf('month').add(1,'days').toDate()) < 0)
+      return !((differenceInCalendarDays(cur, moment(workedAt).add(-1, 'days').toDate()) > 0 &&
+        (differenceInCalendarDays(cur, moment(workedAt).endOf('month').add(1, 'days').toDate()) < 0)
       ))
-    }else{
+    } else {
       return false
     }
-};
+  };
 
   constructor(
     public datePipe: DatePipe,
@@ -49,13 +52,14 @@ export class AllowanceSalaryComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly service: AllowanceSalaryService,
     private readonly message: NzMessageService,
-    private readonly modalRef: NzModalRef
+    private readonly modalRef: NzModalRef,
+    private readonly actions$: Actions
   ) {
   }
 
   ngOnInit(): void {
 
-    if(this.data.add){
+    if (this.data.add) {
       this.indexStep = 1
     }
     if (this.data.update?.multiple) {
@@ -68,7 +72,7 @@ export class AllowanceSalaryComponent implements OnInit {
       unit: [salary?.unit, Validators.required],
       price: [salary?.price, Validators.required],
       note: [salary?.note],
-      datetime: [salary?.datetime||payroll?.createdAt],
+      datetime: [salary?.datetime || payroll?.createdAt],
       rate: [salary?.rate || 1],
       isAllDay: [true],
     });
@@ -85,7 +89,7 @@ export class AllowanceSalaryComponent implements OnInit {
   }
 
   isShowDatePicker(): boolean {
-    if (this.data.update?.salary?.datetime){
+    if (this.data.update?.salary?.datetime) {
       return true
     }
     if (this.data.add?.payroll) {
@@ -105,24 +109,18 @@ export class AllowanceSalaryComponent implements OnInit {
     const value = this.formGroup.value;
     const salary = this.mapSalary(value)
     if (this.data.add) {
-      this.service.addMany(
-        salary,
-        this.data.add?.multiple ? undefined : {payrollId: this.data.add.payroll.id})
+      this.service.addMany(salary)
         .pipe(catchError(err => {
-          this.submitting = false;
-          return throwError(err)
+          return this.onSubmitError(err)
         }))
-        .subscribe(_ => this.onSubmitSuccess())
+        .subscribe(_ => this.onSubmitSuccess(this.data.add?.multiple ? undefined : this.data.add?.payroll.id))
     }
     if (this.data.update) {
-      this.service.updateMany(
-        salary,
-        this.data.update?.multiple ? undefined : {payrollId: this.data.update.salary.payrollId})
+      this.service.updateMany(salary)
         .pipe(catchError(err => {
-          this.submitting = false;
-          return throwError(err)
+          return this.onSubmitError(err)
         }))
-        .subscribe(_ => this.onSubmitSuccess())
+        .subscribe(_ => this.onSubmitSuccess(this.data.update?.multiple ? undefined : this.data.update?.salary.payrollId))
     }
   }
 
@@ -141,15 +139,15 @@ export class AllowanceSalaryComponent implements OnInit {
       note: value.note,
       unit: value.unit ? value.unit : undefined,
     }
-    if(this.data.add){
+    if (this.data.add) {
       Object.assign(salary, {
         payrollIds: this.payrollSelected.map(payroll => payroll.id).concat([this.data.add.payroll.id])
       })
     }
 
-    if(this.data.update){
+    if (this.data.update) {
       Object.assign(salary, {
-        salaryIds: this.salariesSelected.map(item => item.salary.id).concat([this.data.update.salary?.id])
+        salaryIds: this.salariesSelected.map(item => item.salary.id).concat([this.data.update.salary.id])
       })
     }
     return salary
@@ -171,7 +169,17 @@ export class AllowanceSalaryComponent implements OnInit {
     this.indexStep += 1;
   }
 
-  onSubmitSuccess() {
+  onSubmitError(err: string) {
+    this.submitting = false
+    return throwError(err)
+  }
+
+  onSubmitSuccess(payrollId?: number) {
+    if (payrollId) {
+      this.actions$.dispatch(PayrollActions.loadOne({
+        id: payrollId
+      }))
+    }
     this.submitting = false
     this.modalRef.close()
   }
