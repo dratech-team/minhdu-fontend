@@ -10,6 +10,7 @@ import {Actions} from "@datorama/akita-ng-effects";
 import {SettingSalaryActions, SettingSalaryQuery} from "../../state";
 import {SalaryConstraintEntity, SalarySettingEntity} from "../../entities";
 import {DiveEnum} from "../../enums/dive.enum";
+import {FilterTotalOfPipe} from "../../pipes/filter-total-of.pipe";
 
 @Component({
   templateUrl: 'setting-salary-dialog.component.html'
@@ -31,6 +32,7 @@ export class SettingSalaryDialogComponent implements OnInit {
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type || o1.type === o2.type : o1 === o2);
 
   constructor(
+    private readonly transFormTotalOf: FilterTotalOfPipe,
     private readonly formBuilder: FormBuilder,
     private readonly actions$: Actions,
     private readonly settingSalaryQuery: SettingSalaryQuery,
@@ -46,7 +48,7 @@ export class SettingSalaryDialogComponent implements OnInit {
         this.blockSalary.find(block => block.type === template?.type)
         , Validators.required],
       salaries: [template?.totalOf || []],
-      totalOf: [template ? this.transformTotalOf(template.totalOf) : ''],
+      totalOf: [template ? this.transFormTotalOf.transform(template.totalOf) : ''],
       unit: [template?.unit || DatetimeUnitEnum.MONTH],
       title: [template?.title, Validators.required],
       diveFor: [template?.workday ? DiveEnum.OTHER : DiveEnum.STANDARD],
@@ -84,13 +86,6 @@ export class SettingSalaryDialogComponent implements OnInit {
     }
   }
 
-  transformTotalOf(totalOf: SalaryTypeEnum[]) {
-    if (totalOf.length > 0) {
-      return recipesConstant.find(reference => reference.value === PriceType.BLOCK)
-    } else {
-      return recipesConstant.find(reference => reference.value === PriceType.PRICE)
-    }
-  }
 
   get checkValid() {
     return this.formGroup.controls;

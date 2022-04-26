@@ -50,12 +50,13 @@
             <td nzLeft>{{(i + 1) + ((tableRank.nzPageIndex - 1) * pageSize)}}</td>
             <td>{{settingSalary.id}}</td>
             <td nzLeft>{{settingSalary.title}}</td>
-            <td nzLeft>{{settingSalary.type === salaryTypeEnum.ABSENT || settingSalary.type === salaryTypeEnum.OVERTIME
-                ?
-                (((settingSalary.price|number:'1.0-0')) || transFormTotalOf(settingSalary.totalOf))
-                + ' / ' +
-                (settingSalary.workday || 'Ngày công chuẩn') :
-                settingSalary.price}}</td>
+            <td nzLeft>{{
+              settingSalary.type === salaryTypeEnum.ABSENT || settingSalary.type === salaryTypeEnum.OVERTIME
+                ? ((settingSalary.prices && settingSalary.prices.length > 0 ?(settingSalary.prices|transformPrices): (settingSalary.totalOf|transformSalaries))
+                + ' / '
+                + (settingSalary.workday ? settingSalary.workday: 'Ngày công chuẩn')
+                )
+                : settingSalary.prices|transformPrices}}</td>
             <td>{{settingSalary.rate}}</td>
             <td>{{settingSalary.type|transformBlockSalary: blockSalaries }}</td>
             <td>{{settingSalary.note }}</td>

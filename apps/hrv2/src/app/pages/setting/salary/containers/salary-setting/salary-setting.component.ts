@@ -10,7 +10,6 @@ import {SalaryTypeEnum} from "../../enums";
 import {blockSalariesConstant} from "../../constants";
 import {SalarySettingEntity} from "../../entities";
 import {SettingSalaryDialogComponent} from "../../components/salary-setting";
-import {transFormTotalOf} from "../../utils/transform-total-of.util";
 
 @Component({
   selector: 'minhdu-fontend-salary-setting',
@@ -76,10 +75,6 @@ export class SalarySettingComponent implements OnInit {
       skip: isPagination ? this.settingSalaryQuery.getCount() : PaginationDto.skip
     });
     return dataFG;
-  }
-
-  transFormTotalOf(totalOf: SalaryTypeEnum[]) {
-    return  transFormTotalOf(totalOf)
   }
 
   onAdd(template?: SalarySettingEntity) {

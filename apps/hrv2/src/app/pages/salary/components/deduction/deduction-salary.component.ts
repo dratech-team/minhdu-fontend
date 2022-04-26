@@ -16,7 +16,6 @@ import {SessionConstant, workingTime} from "../../../payroll/constants/session.c
 import {recipesConstant} from "../../../setting/salary/constants";
 import {SalarySettingEntity} from "../../../setting/salary/entities";
 import {DataModalAbsentSalary} from "../../../payroll/entities/data-modal-absent-salary";
-import {transFormTotalOf} from "../../../setting/salary/utils/transform-total-of.util";
 import {templateDeductionConstant} from "../../constants/template-deduction.constant";
 import {getAfterTime, getBeforeTime} from "@minhdu-fontend/utils";
 import {throwError} from "rxjs";
@@ -203,10 +202,6 @@ export class DeductionSalaryComponent implements OnInit {
         this.onSubmitSuccess()
       })
     }
-  }
-
-  transformTotalOf(totalOf: SalaryTypeEnum[]): string {
-    return transFormTotalOf(totalOf)
   }
 
   pre(): void {
