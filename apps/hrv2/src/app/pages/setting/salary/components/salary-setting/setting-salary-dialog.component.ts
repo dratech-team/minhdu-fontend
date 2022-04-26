@@ -50,7 +50,7 @@ export class SettingSalaryDialogComponent implements OnInit {
         this.blockSalary.find(block => block.type === template?.type)
         , Validators.required],
       salaries: [template?.totalOf || []],
-      totalOf: [template ? this.salaryType.transform(template.totalOf, 'transForm') : ''],
+      totalOf: [template ? this.salaryType.transform(template.totalOf, 'filter') : ''],
       unit: [template?.unit || DatetimeUnitEnum.MONTH],
       title: [template?.title, Validators.required],
       diveFor: [template?.workday ? DiveEnum.OTHER : DiveEnum.STANDARD],

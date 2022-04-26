@@ -7,8 +7,8 @@ import {PriceType} from "../enums";
   name: 'salarytype',
 })
 export class SalaryTypePipe implements PipeTransform {
-  transform(salariesEnum:SalaryTypeEnum[] , type: 'filter'|'transForm'): any {
-    if(type === 'transForm'){
+  transform(salariesEnum:SalaryTypeEnum[] , type: 'filter'|'transform'): any {
+    if(type === 'transform'){
       return '('+ salariesEnum.map(val => {
         return  salariesConstant.find((item: any) => item.value === val)?.name
       }).join(' + ') +')'
