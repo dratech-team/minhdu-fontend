@@ -183,7 +183,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
         delete salary.settingId
       }
     }
-    if (value.isAllowance && (value.priceAllowance || value.titleAllowance)) {
+    if (value.isAllowance && (!value.priceAllowance || !value.titleAllowance)) {
       this.message.warning('chưa nhập đủ thông tin phụ cấp cho tăng ca')
     } else {
       Object.assign(salary, {
