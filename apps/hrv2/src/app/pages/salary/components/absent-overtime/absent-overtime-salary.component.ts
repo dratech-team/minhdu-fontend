@@ -105,8 +105,8 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       unit: [salary?.unit ? salary.unit : DatetimeUnitEnum.MONTH],
       partialDay: [salary?.partial ? this.getPartialDay(salary.partial) : ''],
       isAllowance: [!!salary?.allowance],
-      priceAllowance: [salary?.allowance ? salary.allowance.price : ''],
-      titleAllowance: [salary?.allowance ? salary.allowance.title : ''],
+      priceAllowance: [salary?.allowance?.price || ''],
+      titleAllowance: [salary?.allowance?.title || ''],
       constraintHoliday: [],
       constraintOvertime: [],
       reference: []
@@ -183,8 +183,9 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
         delete salary.settingId
       }
     }
-
-    if (this.data.type === SalaryTypeEnum.OVERTIME) {
+    if (value.isAllowance && (value.priceAllowance && value.titleAllowance)) {
+      this.message.warning('chưa nhập đủ thông tin phụ cấp cho tăng ca')
+    } else {
       Object.assign(salary, {
         allowance: {
           price: value.priceAllowance,
@@ -192,6 +193,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
         }
       })
     }
+
     this.submitting = true
     const service = this.data.type === SalaryTypeEnum.ABSENT ? this.deductionSalaryService : this.overtimeSalaryService
     if (this.data?.update) {
