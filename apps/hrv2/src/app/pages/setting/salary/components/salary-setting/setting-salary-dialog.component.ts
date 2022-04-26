@@ -167,9 +167,7 @@ export class SettingSalaryDialogComponent implements OnInit {
   }
 
   validatePrices() {
-    if(this.formGroup.value.block.type === SalaryTypeEnum.ABSENT ||
-      this.formGroup.value.block.type === SalaryTypeEnum.OVERTIME
-    ){
+    if(this.formGroup.value.insurance){
       if (this.formControlPrice.value) {
         if (this.prices.includes(this.formControlPrice.value)) {
           this.message.warning('Giá tiền đã tồn tại')

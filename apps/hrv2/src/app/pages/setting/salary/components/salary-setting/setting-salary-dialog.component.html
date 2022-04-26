@@ -114,7 +114,6 @@
             [options]="{ suffix: ' đ' }"
             nz-input type='text' placeholder='Đơn giá'
             [formControl]="formControlPrice"
-            (keyup.enter)="validatePrices()"
             [ngStyle]="{
                  'pointer-events':formGroup.value.block.price.disabled ? 'none': 'auto',
                  'background':formGroup.value.block.price.disabled ? '#dddddd':'white'
