@@ -1,4 +1,4 @@
-import {salaryReference, SalaryTypeEnum} from "../enums";
+import {PriceType, SalaryTypeEnum} from "../enums";
 import {DatetimeUnitEnum} from "@minhdu-fontend/enums";
 
 interface visible {
@@ -18,7 +18,7 @@ export interface BlockSettingSalaryEntity {
   constraintOvertime?: visible
   references?: {
     name: string,
-    value: salaryReference
+    value: PriceType
   }[],
   price?: visible
   insurance?: visible

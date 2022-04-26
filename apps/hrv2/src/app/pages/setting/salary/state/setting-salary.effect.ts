@@ -33,7 +33,7 @@ export class SettingSalaryEffect {
         }),
         catchError(err => {
           this.settingSalaryStore.update(state => ({
-            ...state, added: null
+            ...state, added: true
           }))
           return of(SettingSalaryActions.error(err))
         })
