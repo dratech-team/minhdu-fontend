@@ -15,7 +15,7 @@ import {UnitSalaryConstant} from "../../constants";
 import {SessionConstant, workingTime} from "../../../payroll/constants/session.constant";
 import {recipesConstant} from "../../../setting/salary/constants";
 import {SalarySettingEntity} from "../../../setting/salary/entities";
-import {DataModalAbsentOvertimeSalary} from "../../../payroll/entities/data-modal-absent-overtime-salary";
+import {ModalAddOrUpdateOverAbsent} from "../../../payroll/entities/data-modal-absent-overtime-salary";
 import {templateDeductionConstant} from "../../constants/template-deduction.constant";
 import {getAfterTime, getBeforeTime} from "@minhdu-fontend/utils";
 import {throwError} from "rxjs";
@@ -25,7 +25,7 @@ import {PayrollActions} from "../../../payroll/state/payroll.action";
   templateUrl: 'absent-overtime-salary.component.html'
 })
 export class AbsentOvertimeSalaryComponent implements OnInit {
-  @Input() data!: DataModalAbsentOvertimeSalary
+  @Input() data!: ModalAddOrUpdateOverAbsent
   templateSalary$ = this.settingSalaryQuery.selectAll({
     filterBy: [(entity => entity.type === this.data.type)]
   }).pipe(
@@ -170,14 +170,14 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
         .subscribe(_ => {
           this.onSubmitSuccess(this.data.add?.multiple ? undefined : this.data.add?.payroll.id)
         })
-    }else{
+    } else {
       service.updateMany(salary)
         .pipe(catchError(err => {
           this.submitting = false
           return throwError(err)
         }))
         .subscribe(_ => {
-          this.onSubmitSuccess(this.data.update?.multiple ? undefined : this.data.update?.salary.id)
+          this.onSubmitSuccess(this.data.update?.salary.payrollId)
         })
     }
   }
