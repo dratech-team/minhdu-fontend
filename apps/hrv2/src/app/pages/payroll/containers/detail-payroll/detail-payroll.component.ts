@@ -118,16 +118,6 @@ export class DetailPayrollComponent implements OnInit {
       case SalaryTypeEnum.OVERTIME:
         break
       case SalaryTypeEnum.ALLOWANCE:
-        this.modal.create(Object.assign(config, {
-          nzTitle: add ? 'Thêm Phụ cấp' : 'Cập nhật Phụ cấp',
-          nzContent: AllowanceSalaryComponent,
-          nzComponentParams: <any>{
-            data: {
-              add: add,
-              update: update
-            }
-          },
-        }))
         break
       case SalaryTypeEnum.WFH:
         break
