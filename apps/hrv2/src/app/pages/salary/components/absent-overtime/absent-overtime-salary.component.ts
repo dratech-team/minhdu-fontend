@@ -20,6 +20,7 @@ import {transFormTotalOf} from "../../../setting/salary/utils/transform-total-of
 import {templateDeductionConstant} from "../../constants/template-deduction.constant";
 import {getAfterTime, getBeforeTime} from "@minhdu-fontend/utils";
 import {throwError} from "rxjs";
+import {PayrollActions} from "../../../payroll/state/payroll.action";
 
 @Component({
   templateUrl: 'absent-overtime-salary.component.html'
@@ -197,15 +198,13 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       Object.assign(salary, {
         salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.update.salary.id)
       })
-      service.updateMany(
-        salary,
-        this.data.update.multiple ? undefined : {payrollId: this.data.update.salary.id})
+      service.updateMany(salary)
         .pipe(catchError(err => {
           this.submitting = false
           return throwError(err)
         }))
         .subscribe(_ => {
-          this.onSubmitSuccess()
+          this.onSubmitSuccess(this.data.update?.multiple ? undefined : this.data.update?.salary.id)
         })
     }
 
@@ -213,13 +212,10 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       Object.assign(salary, {
         payrollIds: this.payrollSelected.map(payroll => payroll.id).concat(this.data.add.payroll.id)
       })
-      service.addMany(salary, this.data.add.multiple ? undefined : {payrollId: this.data.add.payroll.id})
-        .pipe(catchError(err => {
-          this.submitting = false
-          return throwError(err)
-        }))
+      service.addMany(salary)
+        .pipe(catchError(err => this.onSubmitError(err)))
         .subscribe(_ => {
-          this.onSubmitSuccess()
+          this.onSubmitSuccess(this.data.add?.multiple ? undefined : this.data.add?.payroll.id)
         })
     }
   }
@@ -236,7 +232,17 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     this.indexStep += 1;
   }
 
-  onSubmitSuccess() {
+  onSubmitError(err: string) {
+    this.submitting = false
+    return throwError(err)
+  }
+
+  onSubmitSuccess(payrollId?: number) {
+    if (payrollId) {
+      this.actions$.dispatch(PayrollActions.loadOne({
+        id: payrollId
+      }))
+    }
     this.submitting = false
     this.modalRef.close()
   }
