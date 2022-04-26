@@ -8,7 +8,7 @@ import {blockSalariesConstant} from "../../constants";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {Actions} from "@datorama/akita-ng-effects";
 import {SettingSalaryActions, SettingSalaryQuery} from "../../state";
-import {SalaryConstraintEntity, SalarySettingEntity} from "../../entities";
+import {SalarySettingEntity} from "../../entities";
 import {DiveEnum} from "../../enums/dive.enum";
 import {SalaryTypePipe} from "../../pipes/salary-type.pipe";
 
@@ -30,7 +30,6 @@ export class SettingSalaryDialogComponent implements OnInit {
   branchesSelected: Branch[] = [];
   constraint: SalaryTypeEnum[] = []
   prices: number[] = []
-  formControlPrice = new FormControl('');
   priceType = PriceType
   dateTimeUnit = DatetimeUnitEnum
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type || o1.type === o2.type : o1 === o2);
@@ -47,6 +46,9 @@ export class SettingSalaryDialogComponent implements OnInit {
 
   ngOnInit() {
     const template = this.data?.update?.template
+    if (template?.prices && template?.prices?.length > 1) {
+      this.prices = [...template.prices]
+    }
     this.formGroup = this.formBuilder.group({
       block: [template?.type === SalaryTypeEnum.BASIC_INSURANCE ? this.blockSalary.find(block => block.type === SalaryTypeEnum.BASIC) :
         this.blockSalary.find(block => block.type === template?.type)
@@ -62,7 +64,9 @@ export class SettingSalaryDialogComponent implements OnInit {
       constraintOvertime: [template?.constraints?.some(constraint => constraint.type === SalaryTypeEnum.OVERTIME)],
       insurance: [template?.type === SalaryTypeEnum.BASIC_INSURANCE],
       employeeType: [template?.employeeType || EmployeeType.EMPLOYEE_FULL_TIME],
+      prices: [template?.prices && template.prices.length === 1 ? template.prices[0] : '']
     });
+
     this.formGroup.get('block')?.valueChanges.subscribe(item => {
       this.formGroup.get('reference')?.setValue('')
       this.formGroup.get('insurance')?.setValue(false)
@@ -98,7 +102,7 @@ export class SettingSalaryDialogComponent implements OnInit {
       }
 
       if (value.totalOf.value === PriceType.PRICE) {
-        if (this.prices.length === 0 && !this.formControlPrice.value) {
+        if (this.prices.length === 0 && !value.prices) {
           return this.message.warning('Chưa nhập giá tiền')
         }
       } else {
@@ -137,7 +141,7 @@ export class SettingSalaryDialogComponent implements OnInit {
         value.block.type,
       rate: value.rate,
       unit: value.unit,
-      prices: this.formControlPrice.value ? this.prices.concat([this.formControlPrice.value]) : this.prices
+      prices: value.prices ? this.prices.concat([value.prices]) : this.prices
     };
     if (value.block.type === SalaryTypeEnum.ABSENT || value.block.type === SalaryTypeEnum.OVERTIME) {
       if (value.block.type === SalaryTypeEnum.ABSENT) {
@@ -169,12 +173,12 @@ export class SettingSalaryDialogComponent implements OnInit {
 
   validatePrices() {
     if (this.formGroup.value.insurance) {
-      if (this.formControlPrice.value) {
-        if (this.prices.includes(this.formControlPrice.value)) {
+      if (this.formGroup.value.prices) {
+        if (this.prices.includes(this.formGroup.value.prices)) {
           this.message.warning('Giá tiền đã tồn tại')
         } else {
-          this.prices.push(this.formControlPrice.value)
-          this.formControlPrice.setValue('', {emitEvent: false})
+          this.prices.push(this.formGroup.value.prices)
+          this.formGroup.get('prices')?.setValue('', {emitEvent: false})
         }
       }
     }

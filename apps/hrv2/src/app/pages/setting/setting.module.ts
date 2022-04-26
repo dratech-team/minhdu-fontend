@@ -59,7 +59,8 @@ import {SalaryTypePipe} from "./salary/pipes/salary-type.pipe";
     SalaryTypePipe
   ],
   exports: [
-    SalaryTypePipe
+    SalaryTypePipe,
+    PricesPipe
   ],
   providers: [
     DatePipe,

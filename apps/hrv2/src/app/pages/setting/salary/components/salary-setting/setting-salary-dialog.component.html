@@ -71,7 +71,7 @@
           currencyMask
           [options]="{ suffix: ' đ' }"
           nz-input type='text' placeholder='Đơn giá'
-          [formControl]="formControlPrice"
+          formControlName="prices"
           (keyup.enter)="validatePrices()"
           [ngStyle]="{
                  'pointer-events':formGroup.value.block.price.disabled ? 'none': 'auto',
@@ -113,7 +113,7 @@
             currencyMask
             [options]="{ suffix: ' đ' }"
             nz-input type='text' placeholder='Đơn giá'
-            [formControl]="formControlPrice"
+            formControlName="prices"
             [ngStyle]="{
                  'pointer-events':formGroup.value.block.price.disabled ? 'none': 'auto',
                  'background':formGroup.value.block.price.disabled ? '#dddddd':'white'
