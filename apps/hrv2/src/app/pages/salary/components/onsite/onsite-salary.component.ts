@@ -1,31 +1,26 @@
-import {DatePipe} from '@angular/common';
-import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {NzModalRef} from "ng-zorro-antd/modal";
-import {PayrollEntity} from "../../../payroll/entities";
-import {SalaryPermanentService} from "../../service";
-import {NzMessageService} from "ng-zorro-antd/message";
-import {throwError} from "rxjs";
-import {catchError} from "rxjs/operators";
-import {Actions} from "@datorama/akita-ng-effects";
-import {PayrollActions} from "../../../payroll/state/payroll.action";
-import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
-import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
+import { DatePipe } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { NzModalRef } from 'ng-zorro-antd/modal';
+import { PayrollEntity } from '../../../payroll/entities';
+import { SalaryPermanentService } from '../../service';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { Actions } from '@datorama/akita-ng-effects';
+import { PayrollActions } from '../../../payroll/state/payroll.action';
+import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
+import { ResponseMessageEntity } from '@minhdu-fontend/base-entity';
+import { RequireOnlyOne } from '../../../../../shared/types';
+import { ModalOnsiteSalaryData } from '../../data/modal-onsite-salary.data';
 
 @Component({
   templateUrl: 'onsite-salary.component.html'
 })
 export class OnsiteSalaryComponent implements OnInit {
-  @Input() data!: {
-    add?: {
-      payroll: PayrollEntity
-    },
-    update?: {
-      salary: any
-    }
-  }
-  payrollSelected: PayrollEntity [] = []
+  @Input() data!: RequireOnlyOne<ModalOnsiteSalaryData>;
+  payrollSelected: PayrollEntity [] = [];
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
   formGroup!: FormGroup;
@@ -43,20 +38,20 @@ export class OnsiteSalaryComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data.add) {
-      this.payrollSelected.push(this.data.add.payroll)
+      this.payrollSelected.push(this.data.add.payroll);
     }
-    const payroll = this.data.add?.payroll
-    const salary = this.data.update?.salary
+    const payroll = this.data.add?.payroll;
+    const salary = this.data.update?.salary;
     this.formGroup = this.formBuilder.group({
       title: [salary?.title, Validators.required],
       rangeDay: [
         [
-            this.datePipe.transform(payroll ? getFirstDayInMonth(payroll.createdAt) : salary.startedAt, 'YYYY-mm-dd'),
-            this.datePipe.transform(payroll ? getLastDayInMonth(payroll.createdAt) : salary.endedAt, 'YYYY-mm-dd')
+          this.datePipe.transform(payroll ? getFirstDayInMonth(payroll.createdAt) : salary.startedAt, 'YYYY-mm-dd'),
+          this.datePipe.transform(payroll ? getLastDayInMonth(payroll.createdAt) : salary.endedAt, 'YYYY-mm-dd')
         ],
         Validators.required
       ],
-      note: [salary.note],
+      note: [salary.note]
     })
     ;
   }
@@ -69,58 +64,44 @@ export class OnsiteSalaryComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    const salary = this.mapSalary(this.formGroup.value)
-    if (this.data.update) {
-      Object.assign(salary, {
-        salaryIds: [this.data.update.salary.id]
-      })
-      this.service.updateMany(salary)
-        .pipe(catchError(err => this.onSubmitError(err)))
-        .subscribe(res => {
-          if (this.data.update)
-            this.onSubmitSuccess(res, this.data.update?.salary.payrollId)
-        })
-    }
-    if (this.data.add) {
-      Object.assign(salary, {
-        payrollIds: this.payrollSelected.map(payroll => payroll.id)
-      })
-      this.service.addMany(salary)
-        .pipe(catchError(err => this.onSubmitError(err)))
-        .subscribe(res => {
-          if (this.data.add)
-            this.onSubmitSuccess(res, this.data.add.payroll.id)
-        })
-    }
+    const salary = this.mapSalary(this.formGroup.value);
+    this.data.add ? this.service.addMany(salary) : this.service.updateMany(salary)
+      .pipe(catchError(err => this.onSubmitError(err)))
+      .subscribe(res => {
+        return this.onSubmitSuccess(res, this.data.add ? this.data.add.payroll.id : this.data.update.salary.payrollId);
+      });
   }
 
   mapSalary(value: any) {
-    return {
+    const salary = {
       title: value.title,
       type: SalaryTypeEnum.WFH,
       note: value.note,
       unit: DatetimeUnitEnum.DAY,
       startedAt: value.rangeDay[0],
       endedAt: value.rangeDay[1]
-    }
+    };
+    return Object.assign(
+      salary,
+      this.data.add
+        ? { payrollIds: this.payrollSelected.map(payroll => payroll.id) }
+        : { salaryIds: [this.data.update.salary.id] }
+    );
   }
 
   onSubmitError(err: string) {
     this.message.warning(err);
-    return throwError(err)
+    return throwError(err);
   }
 
   onSubmitSuccess(res: ResponseMessageEntity, payrollId: number) {
-    this.actions$.dispatch(PayrollActions.loadOne({id: payrollId}))
-    this.message.success(res.message)
-    this.modalRef.close()
+    this.actions$.dispatch(PayrollActions.loadOne({ id: payrollId }));
+    this.message.success(res.message);
+    this.modalRef.close();
   }
 
-  pre(): void {
-    this.stepIndex -= 1;
-  }
-
-  next(): void {
-    this.stepIndex += 1;
+  move(type: 'next' | 'previous'): void {
+    if (type === 'next') this.stepIndex -= 1;
+    else this.stepIndex += 1;
   }
 }
