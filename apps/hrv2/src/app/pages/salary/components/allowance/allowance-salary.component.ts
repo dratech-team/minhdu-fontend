@@ -11,17 +11,18 @@ import {NzMessageService} from "ng-zorro-antd/message";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {catchError} from "rxjs/operators";
 import {throwError} from "rxjs";
-import {DataModalAllowanceSalary} from "../../../payroll/entities/data-modal-allowance-salary";
+import {DataAddOrUpdateAllowance} from "../../../payroll/entities/data-modal-allowance-salary";
 import {differenceInCalendarDays} from 'date-fns';
 import * as moment from 'moment';
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../../payroll/state/payroll.action";
+import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
 
 @Component({
   templateUrl: 'allowance-salary.component.html'
 })
 export class AllowanceSalaryComponent implements OnInit {
-  @Input() data!: DataModalAllowanceSalary
+  @Input() data!: DataAddOrUpdateAllowance
   salaryTypeEnum = SalaryTypeEnum;
   datetimeEnum = DatetimeUnitEnum;
   formGroup!: FormGroup;
@@ -113,14 +114,13 @@ export class AllowanceSalaryComponent implements OnInit {
         .pipe(catchError(err => {
           return this.onSubmitError(err)
         }))
-        .subscribe(_ => this.onSubmitSuccess(this.data.add?.multiple ? undefined : this.data.add?.payroll.id))
-    }
-    if (this.data.update) {
+        .subscribe(res => this.onSubmitSuccess(res, this.data.add?.multiple ? undefined : this.data.add?.payroll.id))
+    } else {
       this.service.updateMany(salary)
         .pipe(catchError(err => {
           return this.onSubmitError(err)
         }))
-        .subscribe(_ => this.onSubmitSuccess(this.data.update?.multiple ? undefined : this.data.update?.salary.payrollId))
+        .subscribe(res => this.onSubmitSuccess(res, this.data.update?.multiple ? undefined : this.data.update?.salary.payrollId))
     }
   }
 
@@ -174,7 +174,8 @@ export class AllowanceSalaryComponent implements OnInit {
     return throwError(err)
   }
 
-  onSubmitSuccess(payrollId?: number) {
+  onSubmitSuccess(res: ResponseMessageEntity, payrollId?: number) {
+    this.message.success(res.message)
     if (payrollId) {
       this.actions$.dispatch(PayrollActions.loadOne({
         id: payrollId
