@@ -1,0 +1,113 @@
+<div>
+  <nz-steps [nzCurrent]="indexStep">
+    <nz-step *ngIf="data?.update?.multiple" nzTitle="Nhân viên đã chọn"></nz-step>
+    <nz-step nzTitle="Bảng Phụ cấp khác"></nz-step>
+  </nz-steps>
+
+  <ng-template [ngIf]="indexStep === 0">
+<!--    Nhân viên đã chọn-->
+  </ng-template>
+  <ng-template [ngIf]="indexStep === 1">
+    <form [formGroup]='formGroup' class='mx-3'>
+      <div class='form-group'>
+        <div>
+          <div>
+            <div class='row title-item mb-1'>
+              <span>Tên phụ cấp</span>
+              <span class='star'>*</span>
+            </div>
+            <div class='row mb-3' [formGroup]='formGroup'>
+              <input type='text' nz-input placeholder='Nhập tên phụ cấp' formControlName='title'>
+              <div *ngIf=' checkValid.title.errors?.required' class='invalid-feedback'>
+                <div>Chưa nhập tên phụ cấp</div>
+              </div>
+            </div>
+          </div>
+          <div class='row date-or-time'>
+            <div class='col'>
+              <div class='row title-item mb-1'>
+                <span> Đơn vị</span>
+                <div class='star'>*</div>
+              </div>
+              <div class='row mb-2' *ngIf='!data?.update'>
+                <nz-select style="width: 100%"  formControlName='unit'>
+                  <nz-option [nzValue]="datetimeEnum.MONTH" nzLabel="Tháng">Tháng</nz-option>
+                  <nz-option [nzValue]="datetimeEnum.DAY" nzLabel="Ngày"></nz-option>
+                </nz-select>
+              </div>
+              <div class='row mb-2 form-control ' style='background: #80808059'
+                   *ngIf='data.update?.salary?.unit === datetimeEnum.MONTH' [formGroup]='formGroup'>Tháng
+              </div>
+              <div class='row mb-2 form-control' style='background: #80808059'
+                   *ngIf=' data?.update?.salary?.unit === datetimeEnum.DAY'> Ngày
+              </div>
+              <div *ngIf='checkValid.unit.errors?.required' class='row invalid-feedback'>
+                <div>Chưa chọn đơn vị</div>
+              </div>
+            </div>
+            <div *ngIf="formGroup.value.unit === 'MONTH'" class='date-or-time col ml-2'>
+              <div class='row title-item mb-1'>
+                <span>Tháng</span><span class='star'>*</span>
+              </div>
+              <div class='row mb-3' [formGroup]='formGroup'>
+                <nz-date-picker nzMode="month" [nzDisabled]="true" formControlName='datetime' ></nz-date-picker>
+                <div *ngIf=' checkValid.datetime.errors?.required' class='invalid-feedback'>
+                  <div>Chưa nhập tháng</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="formGroup.value.unit === 'DAY'" class='row d-flex align-items-center'>
+            <section class=' mb-1 col'>
+              <label nz-checkbox [nzDisabled]="true" formControlName="isAllDay">
+                Dựa theo ngày đi
+                làm thực tế
+              </label>
+            </section>
+            <div class='col' *ngIf='isShowDatePicker()'>
+              <div class='title-item mb-1'>
+                <span>Tính từ ngày</span>
+              </div>
+              <div (click)='onWaringApprentice()'>
+                <nz-date-picker [nzDisabledDate]="disableApprenticeDate" nzMode="date" formControlName='datetime'></nz-date-picker>
+              </div>
+            </div>
+          </div>
+          <div class='unit-price'>
+            <div class='row title-item mb-1'>
+              <span>Mức phụ cấp</span>
+              <div class='star'>*</div>
+            </div>
+            <div class='row mb-3' [formGroup]='formGroup'>
+              <input type='text' class='px-1' nz-input placeholder='200,000' formControlName='price'
+                     currencyMask
+                     [options]="{ suffix: ' đ' }">
+              <div *ngIf=' checkValid.price.errors?.required' class='invalid-feedback'>
+                <div>Chưa nhập mức phụ cấp</div>
+              </div>
+            </div>
+          </div>
+          <div class='note'>
+            <div class='row title-item mb-1'>
+              <span>Chú thích</span>
+            </div>
+            <div class='row mb-3' [formGroup]='formGroup'>
+              <input type='text' class='form-control  px-1' placeholder='Nhập chú thích' formControlName='note'>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <div class="steps-action">
+    <button class="ml-2" nz-button nzType="default" (click)="pre()" *ngIf="indexStep > 0">
+      <span>Trở lại</span>
+    </button>
+    <button class="ml-2" nz-button nzType="default" (click)="next()" *ngIf="indexStep < 1">
+      <span>Tiếp theo</span>
+    </button>
+    <button class="ml-2" nz-button nzType="primary" [nzLoading]="submitting" (click)="onSubmit()" *ngIf="indexStep === 1">
+      <span>Xác nhận</span>
+    </button>
+  </div>
+</div>
