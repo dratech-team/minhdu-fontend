@@ -91,7 +91,7 @@
             <span class='font-weight-bold'>Khấu trừ theo</span><span class="star">*</span>
           </div>
           <nz-radio-group nzDisabled="{{true}}" formControlName="reference">
-            <label nz-radio [nzValue]="item.value" *ngFor="let item of references">{{item.name}}</label>
+            <label nz-radio [nzValue]="item.value" *ngFor="let item of recipesConstant">{{item.name}}</label>
           </nz-radio-group>
         </div>
         <div class='mb-3'>
@@ -112,7 +112,7 @@
                [options]="{ suffix: ' đ' }">
         <ng-template #price>
           <div *ngIf="formGroup.value?.template" class="form-control" style="background: #dddddd">{{
-            (((formGroup.value.template?.price|number:'1.0-0')) || transformTotalOf(formGroup.value.template?.totalOf))
+            (((formGroup.value.template?.price|number:'1.0-0')) || (formGroup.value.template?.totalOf|salarytype:'transform'))
             + ' / ' +
             (formGroup.value.template?.workday || 'Ngày công chuẩn')
             }} </div>
