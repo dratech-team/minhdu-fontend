@@ -3,16 +3,13 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {debounceTime, map} from 'rxjs/operators';
 import {PaginationDto} from '@minhdu-fontend/constants';
-import {SettingSalaryQuery} from '../../state';
+import {SettingSalaryActions, SettingSalaryQuery, SettingSalaryStore} from '../../state';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from 'ng-zorro-antd/modal';
-import {SettingSalaryStore} from '../../state';
 import {SalaryTypeEnum} from "../../enums";
-import {blockSalariesConstant, recipesConstant} from "../../constants";
+import {blockSalariesConstant} from "../../constants";
 import {SalarySettingEntity} from "../../entities";
-import {SettingSalaryActions} from "../../state";
 import {SettingSalaryDialogComponent} from "../../components/salary-setting";
-import {transFormTotalOf} from "../../utils/transform-total-of.util";
 
 @Component({
   selector: 'minhdu-fontend-salary-setting',
@@ -80,29 +77,22 @@ export class SalarySettingComponent implements OnInit {
     return dataFG;
   }
 
-  transFormTotalOf(totalOf: SalaryTypeEnum[]) {
-    return  transFormTotalOf(totalOf)
-  }
-
   onAdd(template?: SalarySettingEntity) {
     this.modal.create({
-      nzWidth:'30vw',
+      nzWidth: '30vw',
       nzTitle: 'Tạo bản mẫu lương',
       nzContent: SettingSalaryDialogComponent,
-      nzComponentParams: {
-        data: {template: template}
-      },
       nzFooter: null,
     })
   }
 
   onUpdate(template: SalarySettingEntity) {
     this.modal.create({
-      nzWidth:'fit-content',
+      nzWidth: 'fit-content',
       nzTitle: 'Tạo bản mẫu lương',
       nzContent: SettingSalaryDialogComponent,
-      nzComponentParams:{
-        data: {isUpdate: true , template : template}
+      nzComponentParams: {
+        data: {update: {template: template}}
       },
       nzFooter: null,
     })

@@ -6,11 +6,11 @@ import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {ReactiveFormsModule} from "@angular/forms";
 import {ComponentsModule} from "@minhdu-fontend/components";
 import {NzDropDownModule} from "ng-zorro-antd/dropdown";
-import { NzIconModule } from 'ng-zorro-antd/icon';
+import {NzIconModule} from 'ng-zorro-antd/icon';
 import {SharedModule} from "../../../shared/shared.module";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {NzPopoverModule} from "ng-zorro-antd/popover";
-import {TransformBlockSalaryPipe} from "./salary/pipes";
+import {BlockSalaryPipe} from "./salary/pipes";
 import {NzRadioModule} from "ng-zorro-antd/radio";
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
 import {NgxCurrencyModule} from "ngx-currency";
@@ -24,6 +24,8 @@ import {HttpClientModule} from "@angular/common/http";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatIconModule} from "@angular/material/icon";
+import {PricesPipe} from "./salary/pipes/prices.pipe";
+import {SalaryTypePipe} from "./salary/pipes/salary-type.pipe";
 
 @NgModule({
   imports: [
@@ -48,14 +50,20 @@ import {MatIconModule} from "@angular/material/icon";
     MatChipsModule,
     MatIconModule
   ],
-  declarations:[
+  declarations: [
     SalarySettingComponent,
-    TransformBlockSalaryPipe,
+    BlockSalaryPipe,
     SettingSalaryDialogComponent,
-    VisibleSalarySettingComponent
+    VisibleSalarySettingComponent,
+    PricesPipe,
+    SalaryTypePipe
   ],
-  providers:[
+  exports: [
+    SalaryTypePipe
+  ],
+  providers: [
     DatePipe,
+    SalaryTypePipe
   ]
 })
 
