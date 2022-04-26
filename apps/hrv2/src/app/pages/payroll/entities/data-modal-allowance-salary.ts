@@ -1,7 +1,7 @@
 import {PayrollEntity} from "./payroll.entity";
 import {AllowanceSalaryEntity} from "../../salary/entities";
 import {SalaryPayroll} from "@minhdu-fontend/data-models";
-import {RequireAtLeastOne} from "../../../../shared/types";
+import {RequireOnlyOne} from "../../../../shared/types";
 
 export interface DataModalAllowanceSalary {
   add?: {
@@ -15,4 +15,4 @@ export interface DataModalAllowanceSalary {
     },
   }
 }
-export type DataAddOrUpdateAllowance = RequireAtLeastOne<DataModalAllowanceSalary, 'add'|'update'>
+export type DataAddOrUpdateAllowance = RequireOnlyOne<DataModalAllowanceSalary, 'add'|'update'>

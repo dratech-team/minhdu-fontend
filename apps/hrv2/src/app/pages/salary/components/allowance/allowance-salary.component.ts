@@ -90,13 +90,11 @@ export class AllowanceSalaryComponent implements OnInit {
   }
 
   isShowDatePicker(): boolean {
-    if (this.data.update?.salary?.datetime) {
-      return true
-    }
-    if (this.data.add?.payroll) {
+    if (this.data.add) {
       return isEqualDatetime(this.data.add.payroll.employee?.workedAt, this.data.add.payroll.createdAt, 'month')
+    }else{
+      return isEqualDatetime(this.data.update.salary.workedAt, this.data.update.salary.datetime, 'month')
     }
-    return false
   }
 
   get checkValid() {
