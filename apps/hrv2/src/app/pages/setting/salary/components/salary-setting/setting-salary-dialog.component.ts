@@ -4,20 +4,23 @@ import {DatetimeUnitEnum, EmployeeType, SalaryTypeEnum} from '@minhdu-fontend/en
 import {Branch} from '@minhdu-fontend/data-models';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {PriceType} from "../../enums";
-import {blockSalariesConstant, recipesConstant} from "../../constants";
+import {blockSalariesConstant} from "../../constants";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {Actions} from "@datorama/akita-ng-effects";
 import {SettingSalaryActions, SettingSalaryQuery} from "../../state";
 import {SalaryConstraintEntity, SalarySettingEntity} from "../../entities";
 import {DiveEnum} from "../../enums/dive.enum";
-import {DatePipe} from "@angular/common";
 import {SalaryTypePipe} from "../../pipes/salary-type.pipe";
 
 @Component({
   templateUrl: 'setting-salary-dialog.component.html'
 })
 export class SettingSalaryDialogComponent implements OnInit {
-  @Input() data?: { template?: SalarySettingEntity, isUpdate?: boolean }
+  @Input() data?: {
+    update?: {
+      template: SalarySettingEntity
+    }
+  }
   added$ = this.settingSalaryQuery.select(state => state.added);
   numberChars = new RegExp('[^0-9]', 'g');
   formGroup!: FormGroup;
@@ -43,8 +46,7 @@ export class SettingSalaryDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    const template = this.data?.template
+    const template = this.data?.update?.template
     this.formGroup = this.formBuilder.group({
       block: [template?.type === SalaryTypeEnum.BASIC_INSURANCE ? this.blockSalary.find(block => block.type === SalaryTypeEnum.BASIC) :
         this.blockSalary.find(block => block.type === template?.type)
@@ -56,10 +58,10 @@ export class SettingSalaryDialogComponent implements OnInit {
       diveFor: [template?.workday ? DiveEnum.OTHER : DiveEnum.STANDARD],
       workday: [template?.workday],
       rate: [template?.rate, Validators.required],
-      constraintHoliday: [template?.constraints ? this.checkConstraint(template?.constraints, SalaryTypeEnum.HOLIDAY) : false],
-      constraintOvertime: [template?.constraints ? this.checkConstraint(template?.constraints, SalaryTypeEnum.OVERTIME) : false],
+      constraintHoliday: [template?.constraints?.some(constraint => constraint.type === SalaryTypeEnum.HOLIDAY)],
+      constraintOvertime: [template?.constraints?.some(constraint => constraint.type === SalaryTypeEnum.OVERTIME)],
       insurance: [template?.type === SalaryTypeEnum.BASIC_INSURANCE],
-      employeeType: [template?.employeeType || EmployeeType.EMPLOYEE_FULL_TIME],
+      // employeeType: [template?.employeeType || EmployeeType.EMPLOYEE_FULL_TIME],
     });
     this.formGroup.get('block')?.valueChanges.subscribe(item => {
       this.formGroup.get('reference')?.setValue('')
@@ -80,15 +82,6 @@ export class SettingSalaryDialogComponent implements OnInit {
     })
   }
 
-  checkConstraint(constraints: SalaryConstraintEntity[] | undefined, constraint: SalaryTypeEnum) {
-    if (!constraints) {
-      return false
-    } else {
-      return constraints.some(val => val.type === constraint)
-    }
-  }
-
-
   get checkValid() {
     return this.formGroup.controls;
   }
@@ -98,34 +91,8 @@ export class SettingSalaryDialogComponent implements OnInit {
       return;
     }
     const value = this.formGroup.value;
-    if (value.constraintHoliday) {
-      this.constraint.push(SalaryTypeEnum.HOLIDAY)
-    }
-    if (value.constraintOvertime) {
-      this.constraint.push(SalaryTypeEnum.OVERTIME)
-    }
-    const template = {
-      title: value.title,
-      settingType: value.block.type === SalaryTypeEnum.BASIC && value.insurance ?
-        SalaryTypeEnum.BASIC_INSURANCE :
-        value.block.type,
-      rate: value.rate,
-      unit: value.unit,
-      prices: this.formControlPrice.value ? this.prices.concat([this.formControlPrice.value]) : this.prices
-    };
-    if (value.block.type === SalaryTypeEnum.ABSENT ||
-      value.block.type === SalaryTypeEnum.OVERTIME
-    ) {
-      if (value.block.type === SalaryTypeEnum.OVERTIME) {
-        Object.assign(template, {
-          employeeType: value.employeeType,
-        })
-      }
-      if (value.block.type === SalaryTypeEnum.ABSENT) {
-        Object.assign(template, {
-          constraint: this.constraint
-        })
-      }
+
+    if (value.block.type === SalaryTypeEnum.ABSENT || value.block.type === SalaryTypeEnum.OVERTIME) {
       if (!value.totalOf) {
         return this.message.warning('Chưa chọn tổng của ')
       }
@@ -133,24 +100,17 @@ export class SettingSalaryDialogComponent implements OnInit {
         if (this.prices.length === 0 && !this.formControlPrice.value) {
           return this.message.warning('Chưa nhập giá tiền')
         }
-        Object.assign(template, {
-          workday: value.workday ? value.workday : null,
-          totalOf: null,
-        })
       } else {
         if (!value.salaries) {
           return this.message.warning('Chưa chọn loại lương')
         }
-        Object.assign(template, {
-          workday: value.workday ? value.workday : null,
-          price: null,
-          totalOf: value.salaries.map((recipe: any) => recipe),
-        })
       }
     }
-    if (this.data?.isUpdate && this.data?.template) {
+    const template = this.mapTemplate(value)
+
+    if (this.data?.update) {
       this.actions$.dispatch(SettingSalaryActions.update({
-        id: this.data.template.id,
+        id: this.data.update.template.id,
         updates: template
       }))
     } else {
@@ -165,8 +125,46 @@ export class SettingSalaryDialogComponent implements OnInit {
     })
   }
 
+  mapTemplate(value: any) {
+    const template = {
+      title: value.title,
+      settingType: value.block.type === SalaryTypeEnum.BASIC && value.insurance ?
+        SalaryTypeEnum.BASIC_INSURANCE :
+        value.block.type,
+      rate: value.rate,
+      unit: value.unit,
+      prices: this.formControlPrice.value ? this.prices.concat([this.formControlPrice.value]) : this.prices
+    };
+    if (value.block.type === SalaryTypeEnum.ABSENT || value.block.type === SalaryTypeEnum.OVERTIME) {
+      if (value.block.type === SalaryTypeEnum.ABSENT) {
+        if (value.constraintHoliday) {
+          this.constraint.push(SalaryTypeEnum.HOLIDAY)
+        }
+        if (value.constraintOvertime) {
+          this.constraint.push(SalaryTypeEnum.OVERTIME)
+        }
+        Object.assign(template, {
+          constraint: this.constraint
+        })
+      }
+      if (value.totalOf.value === PriceType.PRICE) {
+        Object.assign(template, {
+          workday: value.workday ? value.workday : null,
+          totalOf: null,
+        })
+      } else {
+        Object.assign(template, {
+          workday: value.workday ? value.workday : null,
+          price: null,
+          totalOf: value.salaries.map((recipe: any) => recipe),
+        })
+      }
+    }
+    return template
+  }
+
   validatePrices() {
-    if(this.formGroup.value.insurance){
+    if (this.formGroup.value.insurance) {
       if (this.formControlPrice.value) {
         if (this.prices.includes(this.formControlPrice.value)) {
           this.message.warning('Giá tiền đã tồn tại')
