@@ -4,26 +4,22 @@ import {Api} from '@minhdu-fontend/constants';
 import {Observable} from 'rxjs';
 import {DeductionSalaryEntity} from "../entities";
 import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
-import {Actions} from "@datorama/akita-ng-effects";
-import {NzMessageService} from "ng-zorro-antd/message";
-import {BaseSalaryService} from "./base-salary.service";
+import {BaseService} from "@minhdu-fontend/service";
 
 @Injectable({providedIn: 'root'})
-export class DeductionSalaryService extends BaseSalaryService<DeductionSalaryEntity> {
+export class DeductionSalaryService extends BaseService<DeductionSalaryEntity> {
   constructor(
     public readonly http: HttpClient,
-    public readonly message: NzMessageService,
-    public readonly actions$: Actions
   ) {
-    super(message, actions$, Api.HR.PAYROLL.DEDUCTION_SALARY, http);
+    super(Api.HR.PAYROLL.DEDUCTION_SALARY, http);
   }
 
-  addMany(body: any, addOne?: { payrollId: number }): Observable<ResponseMessageEntity> {
-    return super.addMany(body, addOne)
+  addMany(body: any): Observable<ResponseMessageEntity> {
+    return super.addMany(body);
   }
 
-  updateMany(body: any, updateOne?: { payrollId: number }): Observable<ResponseMessageEntity> {
-    return super.updateMany(body, updateOne);
+  updateMany(body: any): Observable<ResponseMessageEntity> {
+    return super.updateMany(body);
   }
 
   deleteMany(body: any): Observable<ResponseMessageEntity> {
