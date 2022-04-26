@@ -185,14 +185,14 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     }
     if (value.isAllowance && (!value.priceAllowance || !value.titleAllowance)) {
       this.message.warning('chưa nhập đủ thông tin phụ cấp cho tăng ca')
-    } else {
-      Object.assign(salary, {
-        allowance: {
-          price: value.priceAllowance,
-          title: value.titleAllowance
-        }
-      })
     }
+
+    Object.assign(salary, value.priceAllowance && value.titleAllowance ? {
+      allowance: {
+        price: value.priceAllowance,
+        title: value.titleAllowance
+      }
+    } : {})
 
     this.submitting = true
     const service = this.data.type === SalaryTypeEnum.ABSENT ? this.deductionSalaryService : this.overtimeSalaryService
