@@ -26,7 +26,7 @@ import {MatChipsModule} from "@angular/material/chips";
 import {MatIconModule} from "@angular/material/icon";
 import {FilterTotalOfPipe} from "./salary/pipes/filter-total-of.pipe";
 import {TransformPricesPipe} from "./salary/pipes/transform-prices.pipe";
-import {TransformSalariesPipe} from "./salary/pipes/transform-salaries.pipe";
+import {TransformSalaryTypePipe} from "./salary/pipes/transform-salary-type.pipe";
 
 @NgModule({
   imports: [
@@ -58,10 +58,10 @@ import {TransformSalariesPipe} from "./salary/pipes/transform-salaries.pipe";
     VisibleSalarySettingComponent,
     FilterTotalOfPipe,
     TransformPricesPipe,
-    TransformSalariesPipe
+    TransformSalaryTypePipe
   ],
   exports: [
-    TransformSalariesPipe
+    TransformSalaryTypePipe
   ],
   providers: [
     DatePipe,
