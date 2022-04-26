@@ -167,12 +167,16 @@ export class SettingSalaryDialogComponent implements OnInit {
   }
 
   validatePrices() {
-    if (this.formControlPrice.value) {
-      if (this.prices.includes(this.formControlPrice.value)) {
-        this.message.warning('Giá tiền đã tồn tại')
-      } else {
-        this.prices.push(this.formControlPrice.value)
-        this.formControlPrice.setValue('', {emitEvent: false})
+    if(this.formGroup.value.block.type === SalaryTypeEnum.ABSENT ||
+      this.formGroup.value.block.type === SalaryTypeEnum.OVERTIME
+    ){
+      if (this.formControlPrice.value) {
+        if (this.prices.includes(this.formControlPrice.value)) {
+          this.message.warning('Giá tiền đã tồn tại')
+        } else {
+          this.prices.push(this.formControlPrice.value)
+          this.formControlPrice.setValue('', {emitEvent: false})
+        }
       }
     }
   }
