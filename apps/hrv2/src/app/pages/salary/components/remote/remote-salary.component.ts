@@ -11,6 +11,8 @@ import {catchError} from "rxjs/operators";
 import {Actions} from "@datorama/akita-ng-effects";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 import {DataModalRemoteSalary} from "../../../payroll/entities/data-modal-remote-salary";
+import {PayrollActions} from "../../../payroll/state/payroll.action";
+import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
 
 @Component({
   templateUrl: 'remote-salary.component.html'
@@ -63,40 +65,29 @@ export class RemoteSalaryComponent implements OnInit {
     }
     const salary = this.mapSalary(this.formGroup.value)
     if (this.data.update) {
-      Object.assign(salary, {
-        salaryIds: [this.data.update.salary.id]
-      })
       this.service.updateMany(
         salary,
-        this.data.update.multiple ? undefined : {payrollId: this.data.update.salary.id}
       ).pipe(catchError(err => {
-        this.submitting = false
-        return throwError(err)
+       return this.onSubmitError(err)
       }))
         .subscribe(res => {
           if (this.data.update)
-            this.onSubmitSuccess()
+            this.onSubmitSuccess(res,this.data.update.multiple ? undefined :  this.data.update.salary.id)
         })
-    }
-    if (this.data.add) {
-      Object.assign(salary, {
-        payrollIds: this.payrollSelected.map(payroll => payroll.id)
-      })
-      this.service.addMany(salary,
-        this.data.add.multiple ? undefined : {payrollId: this.data.add.payroll.id})
+    } else {
+      this.service.addMany(salary,)
         .pipe(catchError(err => {
-          this.submitting = false
-          return throwError(err)
+          return this.onSubmitError(err)
         }))
         .subscribe(res => {
           if (this.data.add)
-            this.onSubmitSuccess()
+            this.onSubmitSuccess(res, this.data.add?.multiple ? undefined :  this.data.add?.payroll.id)
         })
     }
   }
 
   mapSalary(value: any) {
-    return {
+    const salary = {
       title: value.title,
       type: SalaryTypeEnum.WFH,
       note: value.note,
@@ -104,10 +95,26 @@ export class RemoteSalaryComponent implements OnInit {
       startedAt: value.rangeDay[0],
       endedAt: value.rangeDay[1]
     }
+    return Object.assign(salary, this.data.update
+      ? {
+        salaryIds: [this.data.update.salary.id]
+      }
+      : {
+        payrollIds: this.payrollSelected.map(payroll => payroll.id)
+      },
+    )
   }
 
+  onSubmitError(err: string) {
+    this.submitting = false
+    return throwError(err)
+  }
 
-  onSubmitSuccess() {
+  onSubmitSuccess(res: ResponseMessageEntity, payrollId?: number) {
+    this.message.success(res.message)
+    if (payrollId){
+      this.actions$.dispatch(PayrollActions.loadOne({id: payrollId}))
+    }
     this.submitting = false
     this.modalRef.close()
   }

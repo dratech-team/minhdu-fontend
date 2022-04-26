@@ -27,7 +27,7 @@ import {
 import {PayslipComponent} from "../../components/payslip/payslip.component";
 import {dataModalPermanentSalary} from "../../entities/data-modal-permanent-salary";
 import {RemoteSalaryComponent} from "../../../salary/components/remote/remote-salary.component";
-import {DataModalRemoteSalary} from "../../entities/data-modal-remote-salary";
+import {DataModalAddOrUpdateRemote} from "../../entities/data-modal-remote-salary";
 import {ModalAddOrUpdateOverAbsent} from "../../entities/data-modal-absent-overtime-salary";
 
 @Component({
@@ -98,7 +98,7 @@ export class DetailPayrollComponent implements OnInit {
 
   updateSalary(
     type: SalaryTypeEnum,
-    salary:RemoteSalaryEntity| SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | DeductionSalaryEntity) {
+    salary: RemoteSalaryEntity | SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | DeductionSalaryEntity) {
     const config = {
       nzFooter: ' ',
       nzWidth: 'fit-content'
@@ -132,6 +132,18 @@ export class DetailPayrollComponent implements OnInit {
         nzComponentParams: <{ data: dataModalPermanentSalary }>{
           data: {
             type: type,
+            add: add,
+            update: update
+          }
+        },
+      }))
+    }
+    if (type === SalaryTypeEnum.WFH) {
+      this.modal.create(Object.assign(config, {
+        nzTitle: add ? 'Thêm chú thích ngày' : 'Cập nhật chú thích ngày',
+        nzContent: RemoteSalaryComponent,
+        nzComponentParams: <{ data: DataModalAddOrUpdateRemote }>{
+          data: {
             add: add,
             update: update
           }
