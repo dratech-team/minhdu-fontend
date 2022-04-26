@@ -15,8 +15,9 @@ import {PayrollEntity} from "../../entities";
 import {tranFormSalaryType} from "../../utils";
 import {PermanentSalaryComponent} from "../../../salary/components/permanent/permanent-salary.component";
 import {NzModalService} from "ng-zorro-antd/modal";
-import {DeductionSalaryComponent} from "../../../salary/components/deduction/deduction-salary.component";
-import {DataModalAbsentSalary} from "../../entities/data-modal-absent-salary";
+import {
+  AbsentOvertimeSalaryComponent
+} from "../../../salary/components/absent-overtime/absent-overtime-salary.component";
 import {
   AllowanceSalaryEntity,
   DeductionSalaryEntity,
@@ -25,6 +26,7 @@ import {
 } from "../../../salary/entities";
 import {PayslipComponent} from "../../components/payslip/payslip.component";
 import {dataModalPermanentSalary} from "../../entities/data-modal-permanent-salary";
+import {ModalAddOrUpdateOverAbsent} from "../../entities/data-modal-absent-overtime-salary";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -89,7 +91,7 @@ export class DetailPayrollComponent implements OnInit {
       nzFooter: ' ',
       nzWidth: 'fit-content'
     }
-    this.onOpenSalary(type, config,{payroll})
+    this.onOpenSalary(type, config, {payroll})
   }
 
   updateSalary(
@@ -99,7 +101,7 @@ export class DetailPayrollComponent implements OnInit {
       nzFooter: ' ',
       nzWidth: 'fit-content'
     }
-    this.onOpenSalary(type,config , undefined, {salary})
+    this.onOpenSalary(type, config, undefined, {salary})
   }
 
   onOpenSalary(
@@ -108,40 +110,31 @@ export class DetailPayrollComponent implements OnInit {
     add?: { payroll: PayrollEntity },
     update?: { salary: SalaryEntity }
   ) {
-    switch (type) {
-      case SalaryTypeEnum.OVERTIME:
-        break
-      case SalaryTypeEnum.ALLOWANCE:
-        break
-      case SalaryTypeEnum.WFH:
-        break
-      case SalaryTypeEnum.HOLIDAY:
-        break
-      case SalaryTypeEnum.ABSENT:
-        this.modal.create(Object.assign(config, {
-          nzTitle: add ?'Thêm khấu trừ' :'Cập nhật khấu trừ',
-          nzContent: DeductionSalaryComponent,
-          nzComponentParams: <{ data: DataModalAbsentSalary }>{
-            data: {
-              add: add,
-              update: update
-            }
-          },
-        }))
-        break
-      default:
-        this.modal.create(Object.assign(config, {
-          nzTitle: (add ?'Thêm':'Cập nhật') + (type === SalaryTypeEnum.BASIC ? ' lương cơ bản': ' phụ cấp') ,
-          nzContent: PermanentSalaryComponent,
-          nzComponentParams: <{ data: dataModalPermanentSalary }>{
-            data: {
-              type: type,
-              add: add,
-              update: update
-            }
-          },
-        }))
-        break
+    if (type === SalaryTypeEnum.OVERTIME || type === SalaryTypeEnum.ABSENT) {
+      this.modal.create(Object.assign(config, {
+        nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.ABSENT ? ' Khấu trừ' : ' tăng ca'),
+        nzContent: AbsentOvertimeSalaryComponent,
+        nzComponentParams: <{ data: ModalAddOrUpdateOverAbsent }>{
+          data: {
+            type: type,
+            add: add,
+            update: update
+          }
+        },
+      }))
+    }
+    if (type === SalaryTypeEnum.BASIC || type === SalaryTypeEnum.STAY) {
+      this.modal.create(Object.assign(config, {
+        nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.BASIC ? ' lương cơ bản' : ' phụ cấp'),
+        nzContent: PermanentSalaryComponent,
+        nzComponentParams: <{ data: dataModalPermanentSalary }>{
+          data: {
+            type: type,
+            add: add,
+            update: update
+          }
+        },
+      }))
     }
   }
 
@@ -150,7 +143,7 @@ export class DetailPayrollComponent implements OnInit {
 
   confirmPayroll(payroll: PayrollEntity) {
     this.modal.create({
-      nzTitle: 'Xác nhận phiếu lương tháng '+ this.datePipe.transform(payroll.createdAt, 'yyyy-MM'),
+      nzTitle: 'Xác nhận phiếu lương tháng ' + this.datePipe.transform(payroll.createdAt, 'yyyy-MM'),
       nzContent: PayslipComponent,
       nzComponentParams: <{ data: { payroll: PayrollEntity } }>{
         data: {
