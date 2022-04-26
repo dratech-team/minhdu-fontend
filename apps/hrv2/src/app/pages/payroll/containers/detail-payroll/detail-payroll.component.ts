@@ -121,7 +121,7 @@ export class DetailPayrollComponent implements OnInit {
         },
       }))
     }
-    if(type === SalaryTypeEnum.BASIC || type === SalaryTypeEnum.ALLOWANCE){
+    if(type === SalaryTypeEnum.BASIC || type === SalaryTypeEnum.STAY){
       this.modal.create(Object.assign(config, {
         nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.BASIC ? ' lương cơ bản' : ' phụ cấp'),
         nzContent: PermanentSalaryComponent,
