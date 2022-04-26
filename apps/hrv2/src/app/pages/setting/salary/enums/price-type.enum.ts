@@ -1,6 +1,5 @@
-export enum salaryReference {
+export enum PriceType {
   PRICE = 'PRICE',
   BLOCK = 'BLOCK',
-  PRICE_TYPE = 'PRICE_TYPE',
   STANDARD = 'STANDARD'
 }
