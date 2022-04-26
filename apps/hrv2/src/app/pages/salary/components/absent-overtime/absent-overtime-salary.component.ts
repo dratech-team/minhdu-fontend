@@ -20,6 +20,7 @@ import { getAfterTime, getBeforeTime } from '@minhdu-fontend/utils';
 import { throwError } from 'rxjs';
 import { PayrollActions } from '../../../payroll/state/payroll.action';
 import { ModalAddOrUpdateAbsentOrOvertime } from '../../../payroll/data';
+import * as _ from 'lodash';
 
 @Component({
   templateUrl: 'absent-overtime-salary.component.html'
@@ -30,15 +31,14 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     filterBy: [(entity => entity.type === this.data.type)]
   }).pipe(
     map(templates => {
-      let result = templates;
       if (this.data.type === SalaryTypeEnum.ABSENT) {
-        result = result.concat(templateDeductionConstant);
+        templates.concat(templateDeductionConstant);
       }
       if (this.data?.update) {
         this.formGroup.get('template')?.setValue(
-          this.getTemplateSalary(result, this.data.update.salary.setting.id));
+          this.getTemplateSalary(templates, this.data.update.salary.setting.id));
       }
-      return result;
+      return templates;
     })
   );
   submitting = false;
@@ -56,6 +56,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   limitStartHour: number [] = [];
   limitEndTime: number [] = [];
   unitConstant = UnitSalaryConstant;
+
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
   disabledHoursStart = (): number[] => {
     return this.limitStartHour;
@@ -94,8 +95,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       template: ['', Validators.required],
       title: [salary?.title],
-      rangeDay: [salary ?
-        [salary.startedAt, salary.endedAt] : []],
+      rangeDay: [salary ? [salary.startedAt, salary.endedAt] : []],
       price: [salary?.price],
       startTime: [salary?.startedAt ? new Date(salary.startedAt) : undefined],
       endTime: [salary?.endedAt ? new Date(salary.endedAt) : undefined],
@@ -112,11 +112,8 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     });
 
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
-      if (template?.constraints) {
-        this.formGroup.get('constraintHoliday')?.setValue(template.constraints.some((item: any) => item.value === SalaryTypeEnum.HOLIDAY)
-        );
-        this.formGroup.get('constraintOvertime')?.setValue(template.constraints.some((item: any) => item.value === SalaryTypeEnum.HOLIDAY));
-      }
+      this.formGroup.get('constraintHoliday')?.setValue(template?.constraints?.some((item: any) => item.value === SalaryTypeEnum.HOLIDAY));
+      this.formGroup.get('constraintOvertime')?.setValue(template?.constraints?.some((item: any) => item.value === SalaryTypeEnum.HOLIDAY));
       this.formGroup.get('rate')?.setValue(template?.rate);
       this.formGroup.get('unit')?.setValue(template?.unit);
       this.formGroup.get('reference')?.setValue(template?.types ? PriceType.BLOCK : PriceType.PRICE);
@@ -158,28 +155,26 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     }
     const value = this.formGroup.value;
     if (value.isAllowance && (!value.priceAllowance || !value.titleAllowance)) {
-      this.message.warning('chưa nhập đủ thông tin phụ cấp cho tăng ca');
+      this.message.warning('Chưa nhập đủ thông tin phụ cấp cho tăng ca');
     }
     const salary = this.mapSalary(value);
     this.submitting = true;
     const service = this.data.type === SalaryTypeEnum.ABSENT ? this.deductionSalaryService : this.overtimeSalaryService;
 
-    if (this.data.add) {
-      service.addMany(salary)
-        .pipe(catchError(err => this.onSubmitError(err)))
-        .subscribe(_ => {
-          this.onSubmitSuccess(this.data.add?.multiple ? undefined : this.data.add?.payroll.id);
-        });
-    } else {
-      service.updateMany(salary)
-        .pipe(catchError(err => {
-          this.submitting = false;
-          return throwError(err);
-        }))
-        .subscribe(_ => {
-          this.onSubmitSuccess(this.data.update?.salary.payrollId);
-        });
-    }
+    this.data.add ? service.addMany(salary) : service.updateMany(salary)
+      .pipe(catchError(err => {
+        this.submitting = false;
+        return this.onSubmitError(err);
+      }))
+      .subscribe(_ => {
+        this.onSubmitSuccess(this.data.add
+          ? (
+            !this.data.add?.multiple
+              ? this.data.add?.payroll.id
+              : undefined
+          )
+          : this.data.update.salary.payrollId);
+      });
   }
 
 
@@ -198,45 +193,39 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       settingId: value.template?.id
     };
 
-    if (this.data.type === SalaryTypeEnum.ABSENT) {
-      if (value.template.id === 0) {
-        delete salary.settingId;
-      }
-    }
-
-    return Object.assign(salary, this.data.add
-      ? { payrollIds: this.payrollSelected.map(payroll => payroll.id).concat(this.data.add.payroll.id) }
-      : {}, this.data.update
-      ? { salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.update.salary.id) }
-      : {}, value.priceAllowance && value.titleAllowance
-      ? {
-        allowance: {
-          price: value.priceAllowance,
-          title: value.titleAllowance
+    return Object.assign(this.data.type === SalaryTypeEnum.ABSENT && value.template.id === 0
+      ? _.omit(salary, 'settingId')
+      : salary,
+      this.data.add
+        ? { payrollIds: this.payrollSelected.map(payroll => payroll.id).concat(this.data.add.payroll.id) }
+        : {},
+      this.data.update
+        ? { salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.update.salary.id) }
+        : {},
+      value.priceAllowance && value.titleAllowance
+        ? {
+          allowance: {
+            price: value.priceAllowance,
+            title: value.titleAllowance
+          }
         }
-      }
-      : {}
+        : {}
     );
   }
 
-  pre(): void {
-    this.indexStep -= 1;
+  move(type: 'next' | 'previous'): void {
+    if (type === 'next') this.indexStep += 1;
+    else this.indexStep -= 1;
   }
 
-  next(): void {
-    this.indexStep += 1;
-  }
-
-  onSubmitError(err: string) {
+  private onSubmitError(err: string) {
     this.submitting = false;
     return throwError(err);
   }
 
-  onSubmitSuccess(payrollId?: number) {
+  private onSubmitSuccess(payrollId?: number) {
     if (payrollId) {
-      this.actions$.dispatch(PayrollActions.loadOne({
-        id: payrollId
-      }));
+      this.actions$.dispatch(PayrollActions.loadOne({ id: payrollId }));
     }
     this.submitting = false;
     this.modalRef.close();
