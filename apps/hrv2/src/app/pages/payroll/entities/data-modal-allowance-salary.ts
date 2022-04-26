@@ -15,4 +15,4 @@ export interface DataModalAllowanceSalary {
     },
   }
 }
-export type DataAddOrUpdateAllowance = RequireOnlyOne<DataModalAllowanceSalary, 'add'|'update'>
+export type ModalAddOrUpdateAllowance = RequireOnlyOne<DataModalAllowanceSalary, 'add'|'update'>

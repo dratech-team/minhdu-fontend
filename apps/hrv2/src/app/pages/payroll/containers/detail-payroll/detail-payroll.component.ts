@@ -28,6 +28,7 @@ import {dataModalPermanentSalary} from "../../entities/data-modal-permanent-sala
 import {AllowanceSalaryComponent} from "../../../salary/components/allowance/allowance-salary.component";
 import {Actions} from "@datorama/akita-ng-effects";
 import {ModalAddOrUpdateOverAbsent} from "../../entities/data-modal-absent-overtime-salary";
+import {ModalAddOrUpdateAllowance} from "../../entities/data-modal-allowance-salary";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -104,8 +105,8 @@ export class DetailPayrollComponent implements OnInit {
       nzFooter: ' ',
       nzWidth: 'fit-content'
     }
-    if(type === SalaryTypeEnum.ALLOWANCE){
-      Object.assign(salary, {workedAt:payroll?.employee.workedAt})
+    if (type === SalaryTypeEnum.ALLOWANCE) {
+      Object.assign(salary, {workedAt: payroll?.employee.workedAt})
     }
     this.onOpenSalary(type, config, undefined, {salary})
   }
@@ -116,10 +117,23 @@ export class DetailPayrollComponent implements OnInit {
     add?: { payroll: PayrollEntity },
     update?: { salary: SalaryEntity }
   ) {
+    if (type === SalaryTypeEnum.ALLOWANCE) {
+      this.modal.create(Object.assign(config, {
+        nzTitle: add ? 'Thêm phụ cấp' : 'Cập nhật phụ cấp',
+        nzContent: AbsentOvertimeSalaryComponent,
+        nzComponentParams: <{ data: ModalAddOrUpdateAllowance }>{
+          data: {
+            type: type,
+            add: add,
+            update: update
+          }
+        },
+      }))
+    }
     if (type === SalaryTypeEnum.OVERTIME || type === SalaryTypeEnum.ABSENT) {
       this.modal.create(Object.assign(config, {
         nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.ABSENT ? ' Khấu trừ' : ' tăng ca'),
-        nzContent: AbsentOvertimeSalaryComponent,
+        nzContent: AllowanceSalaryComponent,
         nzComponentParams: <{ data: ModalAddOrUpdateOverAbsent }>{
           data: {
             type: type,
@@ -131,7 +145,7 @@ export class DetailPayrollComponent implements OnInit {
     }
     if (type === SalaryTypeEnum.BASIC || type === SalaryTypeEnum.STAY) {
       this.modal.create(Object.assign(config, {
-        nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.BASIC ? ' lương cơ bản' : ' phụ cấp'),
+        nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.BASIC ? ' lương cơ bản' : ' phụ cấp lương'),
         nzContent: PermanentSalaryComponent,
         nzComponentParams: <{ data: dataModalPermanentSalary }>{
           data: {

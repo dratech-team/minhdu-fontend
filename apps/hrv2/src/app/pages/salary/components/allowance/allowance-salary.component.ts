@@ -11,7 +11,9 @@ import {NzMessageService} from "ng-zorro-antd/message";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {catchError} from "rxjs/operators";
 import {throwError} from "rxjs";
-import {DataAddOrUpdateAllowance} from "../../../payroll/entities/data-modal-allowance-salary";
+import {
+  ModalAddOrUpdateAllowance
+} from "../../../payroll/entities/data-modal-allowance-salary";
 import {differenceInCalendarDays} from 'date-fns';
 import * as moment from 'moment';
 import {Actions} from "@datorama/akita-ng-effects";
@@ -22,7 +24,7 @@ import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
   templateUrl: 'allowance-salary.component.html'
 })
 export class AllowanceSalaryComponent implements OnInit {
-  @Input() data!: DataAddOrUpdateAllowance
+  @Input() data!: ModalAddOrUpdateAllowance
   salaryTypeEnum = SalaryTypeEnum;
   datetimeEnum = DatetimeUnitEnum;
   formGroup!: FormGroup;
