@@ -10,7 +10,7 @@ import {NzIconModule} from 'ng-zorro-antd/icon';
 import {SharedModule} from "../../../shared/shared.module";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {NzPopoverModule} from "ng-zorro-antd/popover";
-import {TransformBlockSalaryPipe} from "./salary/pipes";
+import {BlockSalaryPipe} from "./salary/pipes";
 import {NzRadioModule} from "ng-zorro-antd/radio";
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
 import {NgxCurrencyModule} from "ngx-currency";
@@ -25,8 +25,8 @@ import {NzInputModule} from "ng-zorro-antd/input";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatIconModule} from "@angular/material/icon";
 import {FilterTotalOfPipe} from "./salary/pipes/filter-total-of.pipe";
-import {TransformPricesPipe} from "./salary/pipes/transform-prices.pipe";
-import {TransformSalaryTypePipe} from "./salary/pipes/transform-salary-type.pipe";
+import {PricesPipe} from "./salary/pipes/prices.pipe";
+import {SalaryTypePipe} from "./salary/pipes/salary-type.pipe";
 
 @NgModule({
   imports: [
@@ -53,15 +53,15 @@ import {TransformSalaryTypePipe} from "./salary/pipes/transform-salary-type.pipe
   ],
   declarations: [
     SalarySettingComponent,
-    TransformBlockSalaryPipe,
+    BlockSalaryPipe,
     SettingSalaryDialogComponent,
     VisibleSalarySettingComponent,
     FilterTotalOfPipe,
-    TransformPricesPipe,
-    TransformSalaryTypePipe
+    PricesPipe,
+    SalaryTypePipe
   ],
   exports: [
-    TransformSalaryTypePipe
+    SalaryTypePipe
   ],
   providers: [
     DatePipe,

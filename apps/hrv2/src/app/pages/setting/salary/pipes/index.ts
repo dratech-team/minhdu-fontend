@@ -1,1 +1,1 @@
-export * from './transform-block-salary.pipe'
+export * from './block-salary.pipe'

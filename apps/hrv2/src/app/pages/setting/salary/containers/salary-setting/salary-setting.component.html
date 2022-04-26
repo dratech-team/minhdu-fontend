@@ -52,13 +52,13 @@
             <td nzLeft>{{settingSalary.title}}</td>
             <td nzLeft>{{
               settingSalary.type === salaryTypeEnum.ABSENT || settingSalary.type === salaryTypeEnum.OVERTIME
-                ? ((settingSalary.prices && settingSalary.prices.length > 0 ?(settingSalary.prices|transformPrices): (settingSalary.totalOf|transformsalarytype))
+                ? ((settingSalary.prices && settingSalary.prices.length > 0 ?(settingSalary.prices|prices): (settingSalary.totalOf|salarytype))
                 + ' / '
                 + (settingSalary.workday ? settingSalary.workday: 'Ngày công chuẩn')
                 )
-                : settingSalary.prices|transformPrices}}</td>
+                : settingSalary.prices|prices}}</td>
             <td>{{settingSalary.rate}}</td>
-            <td>{{settingSalary.type|transformBlockSalary: blockSalaries }}</td>
+            <td>{{settingSalary.type|blocksalary: blockSalaries }}</td>
             <td>{{settingSalary.note }}</td>
           </tr>
         </ng-template>

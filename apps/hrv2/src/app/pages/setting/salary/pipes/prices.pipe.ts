@@ -4,9 +4,9 @@ import {recipesConstant} from "../constants";
 import {PriceType} from "../enums";
 
 @Pipe({
-  name: 'transformPrices',
+  name: 'prices',
 })
-export class TransformPricesPipe implements PipeTransform {
+export class PricesPipe implements PipeTransform {
   transform(prices:number[]|undefined): any {
     if(prices){
      return  prices.join(' đ, ') + ' đ'
