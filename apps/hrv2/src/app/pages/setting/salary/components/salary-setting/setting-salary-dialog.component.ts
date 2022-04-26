@@ -59,6 +59,8 @@ export class SettingSalaryDialogComponent implements OnInit {
     });
     this.formGroup.get('block')?.valueChanges.subscribe(item => {
       this.formGroup.get('reference')?.setValue('')
+      this.formGroup.get('insurance')?.setValue(false)
+      this.prices = []
       switch (item.type) {
         case SalaryTypeEnum.HOLIDAY:
           this.message.info('Chức năng đang được phát triền')
