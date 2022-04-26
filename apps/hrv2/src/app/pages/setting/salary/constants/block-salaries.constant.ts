@@ -86,11 +86,11 @@ export const blockSalariesConstant: BlockSalary[] = [
     recipesConstant: recipesConstant,
     constraintHoliday: {
       disabled: false,
-      show: false
+      show: true
     },
     constraintOvertime: {
       disabled: false,
-      show: false
+      show: true
     },
     units: UnitDatetimeConstant.filter(item => item.salaryType.includes(SalaryTypeEnum.ABSENT)),
     rate: {

@@ -20,7 +20,6 @@ import {templateDeductionConstant} from "../../constants/template-deduction.cons
 import {getAfterTime, getBeforeTime} from "@minhdu-fontend/utils";
 import {throwError} from "rxjs";
 import {PayrollActions} from "../../../payroll/state/payroll.action";
-import {DeductionSalaryEntity, OvertimeSalaryEntity} from "../../entities";
 
 @Component({
   templateUrl: 'absent-overtime-salary.component.html'
@@ -114,12 +113,9 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
 
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
       if (template?.constraints) {
-        this.formGroup.get('constraintHoliday')?.setValue(
-          this.transFormConstraintType(template.constraints, SalaryTypeEnum.HOLIDAY)
+        this.formGroup.get('constraintHoliday')?.setValue(template.constraints.some((item: any) => item.value === SalaryTypeEnum.HOLIDAY)
         )
-        this.formGroup.get('constraintOvertime')?.setValue(
-          this.transFormConstraintType(template.constraints, SalaryTypeEnum.OVERTIME)
-        )
+        this.formGroup.get('constraintOvertime')?.setValue(template.constraints.some((item: any) => item.value === SalaryTypeEnum.HOLIDAY))
       }
       this.formGroup.get('rate')?.setValue(template?.rate)
       this.formGroup.get('unit')?.setValue(template?.unit)
@@ -152,10 +148,6 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     return template.find(item => item.id === (id ? id : 0))
   }
 
-  transFormConstraintType(constraints: SalaryTypeEnum [], salaryTypeEnum: SalaryTypeEnum): boolean {
-    return constraints.some(constraint => constraint === salaryTypeEnum)
-  }
-
   getPartialDay(partial: PartialDayEnum) {
     return SessionConstant.find(item => item.value === partial)
   }
@@ -171,7 +163,14 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     const salary = this.mapSalary(value)
     this.submitting = true
     const service = this.data.type === SalaryTypeEnum.ABSENT ? this.deductionSalaryService : this.overtimeSalaryService
-    if (this.data?.update) {
+
+    if (this.data.add) {
+      service.addMany(salary)
+        .pipe(catchError(err => this.onSubmitError(err)))
+        .subscribe(_ => {
+          this.onSubmitSuccess(this.data.add?.multiple ? undefined : this.data.add?.payroll.id)
+        })
+    }else{
       service.updateMany(salary)
         .pipe(catchError(err => {
           this.submitting = false
@@ -179,14 +178,6 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
         }))
         .subscribe(_ => {
           this.onSubmitSuccess(this.data.update?.multiple ? undefined : this.data.update?.salary.id)
-        })
-    }
-
-    if (this.data.add) {
-      service.addMany(salary)
-        .pipe(catchError(err => this.onSubmitError(err)))
-        .subscribe(_ => {
-          this.onSubmitSuccess(this.data.add?.multiple ? undefined : this.data.add?.payroll.id)
         })
     }
   }
@@ -213,24 +204,19 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       }
     }
 
-    Object.assign(salary, value.priceAllowance && value.titleAllowance ? {
-      allowance: {
-        price: value.priceAllowance,
-        title: value.titleAllowance
+    return Object.assign(salary, this.data.add
+      ? {payrollIds: this.payrollSelected.map(payroll => payroll.id).concat(this.data.add.payroll.id)}
+      : {}, this.data.update
+      ? {salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.update.salary.id)}
+      : {}, value.priceAllowance && value.titleAllowance
+      ? {
+        allowance: {
+          price: value.priceAllowance,
+          title: value.titleAllowance
+        }
       }
-    } : {})
-
-    if (this.data.add) {
-      Object.assign(salary, {
-        payrollIds: this.payrollSelected.map(payroll => payroll.id).concat(this.data.add.payroll.id)
-      })
-    }
-
-    if (this.data.update) {
-      Object.assign(salary, {
-        salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.update.salary.id)
-      })
-    }
+      : {}
+    )
   }
 
   pre(): void {
