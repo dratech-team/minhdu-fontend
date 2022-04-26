@@ -105,9 +105,6 @@ export class AllowanceSalaryComponent implements OnInit {
     const value = this.formGroup.value;
     const salary = this.mapSalary(value)
     if (this.data.add) {
-      Object.assign(salary, {
-        payrollIds: this.payrollSelected.map(payroll => payroll.id).concat([this.data.add.payroll.id])
-      })
       this.service.addMany(
         salary,
         this.data.add?.multiple ? undefined : {payrollId: this.data.add.payroll.id})
@@ -118,9 +115,6 @@ export class AllowanceSalaryComponent implements OnInit {
         .subscribe(_ => this.onSubmitSuccess())
     }
     if (this.data.update) {
-      Object.assign(salary, {
-        salaryIds: this.salariesSelected.map(item => item.salary.id).concat([this.data.update.salary?.id])
-      })
       this.service.updateMany(
         salary,
         this.data.update?.multiple ? undefined : {payrollId: this.data.update.salary.payrollId})
@@ -134,7 +128,7 @@ export class AllowanceSalaryComponent implements OnInit {
 
 
   mapSalary(value: any) {
-    return {
+    const salary = {
       title: value.title,
       price: value.price,
       type: SalaryTypeEnum.ALLOWANCE,
@@ -147,6 +141,18 @@ export class AllowanceSalaryComponent implements OnInit {
       note: value.note,
       unit: value.unit ? value.unit : undefined,
     }
+    if(this.data.add){
+      Object.assign(salary, {
+        payrollIds: this.payrollSelected.map(payroll => payroll.id).concat([this.data.add.payroll.id])
+      })
+    }
+
+    if(this.data.update){
+      Object.assign(salary, {
+        salaryIds: this.salariesSelected.map(item => item.salary.id).concat([this.data.update.salary?.id])
+      })
+    }
+    return salary
   }
 
   onWaringApprentice() {
