@@ -62,7 +62,8 @@ import {SalaryTypePipe} from "./salary/pipes/salary-type.pipe";
     SalaryTypePipe
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    SalaryTypePipe
   ]
 })
 

@@ -92,26 +92,7 @@ export class SettingSalaryDialogComponent implements OnInit {
     }
     const value = this.formGroup.value;
     const template = this.mapTemplate(value)
-    if (value.block.type === SalaryTypeEnum.ABSENT ||
-      value.block.type === SalaryTypeEnum.OVERTIME
-    ) {
-      if (value.block.type === SalaryTypeEnum.OVERTIME) {
-        Object.assign(template, {
-          employeeType: value.employeeType,
-        })
-      }
-      if (value.block.type === SalaryTypeEnum.ABSENT) {
-        if (value.constraintHoliday) {
-          this.constraint.push(SalaryTypeEnum.HOLIDAY)
-        }
-        if (value.constraintOvertime) {
-          this.constraint.push(SalaryTypeEnum.OVERTIME)
-        }
-        Object.assign(template, {
-          constraint: this.constraint
-        })
-      }
-
+    if (value.block.type === SalaryTypeEnum.ABSENT || value.block.type === SalaryTypeEnum.OVERTIME) {
       if (!value.totalOf) {
         return this.message.warning('Chưa chọn tổng của ')
       }
@@ -120,19 +101,14 @@ export class SettingSalaryDialogComponent implements OnInit {
         if (this.prices.length === 0 && !this.formControlPrice.value) {
           return this.message.warning('Chưa nhập giá tiền')
         }
-        Object.assign(template, {
-          workday: value.workday ? value.workday : null,
-          totalOf: null,
-        })
       } else {
         if (!value.salaries) {
           return this.message.warning('Chưa chọn loại lương')
         }
-        Object.assign(template, {
-          workday: value.workday ? value.workday : null,
-          price: null,
-          totalOf: value.salaries.map((recipe: any) => recipe),
-        })
+      }
+
+      if(value.diveFor === DiveEnum.OTHER && !value.workday ){
+        return this.message.warning('Chưa nhập số ngày tuỳ chọn')
       }
     }
 
@@ -163,6 +139,31 @@ export class SettingSalaryDialogComponent implements OnInit {
       unit: value.unit,
       prices: this.formControlPrice.value ? this.prices.concat([this.formControlPrice.value]) : this.prices
     };
+    if (value.block.type === SalaryTypeEnum.ABSENT || value.block.type === SalaryTypeEnum.OVERTIME) {
+      if (value.block.type === SalaryTypeEnum.ABSENT) {
+        if (value.constraintHoliday) {
+          this.constraint.push(SalaryTypeEnum.HOLIDAY)
+        }
+        if (value.constraintOvertime) {
+          this.constraint.push(SalaryTypeEnum.OVERTIME)
+        }
+        Object.assign(template, {
+          constraint: this.constraint
+        })
+      }
+      if (value.totalOf.value === PriceType.PRICE) {
+        Object.assign(template, {
+          workday: value.workday ? value.workday : null,
+          totalOf: null,
+        })
+      } else {
+        Object.assign(template, {
+          workday: value.workday ? value.workday : null,
+          price: null,
+          totalOf: value.salaries.map((recipe: any) => recipe),
+        })
+      }
+    }
    return template
   }
 
