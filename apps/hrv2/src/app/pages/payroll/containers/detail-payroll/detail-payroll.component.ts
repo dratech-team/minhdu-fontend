@@ -24,7 +24,7 @@ import {
   SalaryEntity
 } from "../../../salary/entities";
 import {PayslipComponent} from "../../components/payslip/payslip.component";
-import {dataModalPermanentSalary} from "../../entities/data-modal-permanent-salary";
+import {DataModalPermanentSalary} from "../../entities/data-modal-permanent-salary";
 import {AllowanceSalaryComponent} from "../../../salary/components/allowance/allowance-salary.component";
 import {Actions} from "@datorama/akita-ng-effects";
 import {ModalAddOrUpdateOverAbsent} from "../../entities/data-modal-absent-overtime-salary";
@@ -147,7 +147,7 @@ export class DetailPayrollComponent implements OnInit {
       this.modal.create(Object.assign(config, {
         nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.BASIC ? ' lương cơ bản' : ' phụ cấp lương'),
         nzContent: PermanentSalaryComponent,
-        nzComponentParams: <{ data: dataModalPermanentSalary }>{
+        nzComponentParams: <{ data: DataModalPermanentSalary }>{
           data: {
             type: type,
             add: add,
