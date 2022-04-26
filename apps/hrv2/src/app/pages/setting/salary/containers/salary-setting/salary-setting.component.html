@@ -52,11 +52,11 @@
             <td nzLeft>{{settingSalary.title}}</td>
             <td nzLeft>{{
               settingSalary.type === salaryTypeEnum.ABSENT || settingSalary.type === salaryTypeEnum.OVERTIME
-                ? ((settingSalary.prices && settingSalary.prices.length > 0 ?(settingSalary.prices|prices): (settingSalary.totalOf|salarytype))
+                ? ((settingSalary.prices && settingSalary.prices.length > 0 ?(settingSalary.prices|prices): (settingSalary.totalOf|salarytype:'transForm'))
                 + ' / '
                 + (settingSalary.workday ? settingSalary.workday: 'Ngày công chuẩn')
                 )
-                : settingSalary.prices|prices}}</td>
+                : (settingSalary.prices|prices)}}</td>
             <td>{{settingSalary.rate}}</td>
             <td>{{settingSalary.type|blocksalary: blockSalaries }}</td>
             <td>{{settingSalary.note }}</td>

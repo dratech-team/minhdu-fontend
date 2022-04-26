@@ -24,7 +24,6 @@ import {HttpClientModule} from "@angular/common/http";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatIconModule} from "@angular/material/icon";
-import {FilterTotalOfPipe} from "./salary/pipes/filter-total-of.pipe";
 import {PricesPipe} from "./salary/pipes/prices.pipe";
 import {SalaryTypePipe} from "./salary/pipes/salary-type.pipe";
 
@@ -56,7 +55,6 @@ import {SalaryTypePipe} from "./salary/pipes/salary-type.pipe";
     BlockSalaryPipe,
     SettingSalaryDialogComponent,
     VisibleSalarySettingComponent,
-    FilterTotalOfPipe,
     PricesPipe,
     SalaryTypePipe
   ],
@@ -64,8 +62,7 @@ import {SalaryTypePipe} from "./salary/pipes/salary-type.pipe";
     SalaryTypePipe
   ],
   providers: [
-    DatePipe,
-    FilterTotalOfPipe
+    DatePipe
   ]
 })
 

@@ -10,7 +10,8 @@ import {Actions} from "@datorama/akita-ng-effects";
 import {SettingSalaryActions, SettingSalaryQuery} from "../../state";
 import {SalaryConstraintEntity, SalarySettingEntity} from "../../entities";
 import {DiveEnum} from "../../enums/dive.enum";
-import {FilterTotalOfPipe} from "../../pipes/filter-total-of.pipe";
+import {DatePipe} from "@angular/common";
+import {SalaryTypePipe} from "../../pipes/salary-type.pipe";
 
 @Component({
   templateUrl: 'setting-salary-dialog.component.html'
@@ -32,23 +33,24 @@ export class SettingSalaryDialogComponent implements OnInit {
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type || o1.type === o2.type : o1 === o2);
 
   constructor(
-    private readonly transFormTotalOf: FilterTotalOfPipe,
     private readonly formBuilder: FormBuilder,
     private readonly actions$: Actions,
     private readonly settingSalaryQuery: SettingSalaryQuery,
     private readonly message: NzMessageService,
-    private readonly modalRef: NzModalRef
+    private readonly modalRef: NzModalRef,
+    private readonly salaryType: SalaryTypePipe
   ) {
   }
 
   ngOnInit() {
+
     const template = this.data?.template
     this.formGroup = this.formBuilder.group({
       block: [template?.type === SalaryTypeEnum.BASIC_INSURANCE ? this.blockSalary.find(block => block.type === SalaryTypeEnum.BASIC) :
         this.blockSalary.find(block => block.type === template?.type)
         , Validators.required],
       salaries: [template?.totalOf || []],
-      totalOf: [template ? this.transFormTotalOf.transform(template.totalOf) : ''],
+      totalOf: [template ? this.salaryType.transform(template.totalOf, 'transForm') : ''],
       unit: [template?.unit || DatetimeUnitEnum.MONTH],
       title: [template?.title, Validators.required],
       diveFor: [template?.workday ? DiveEnum.OTHER : DiveEnum.STANDARD],
