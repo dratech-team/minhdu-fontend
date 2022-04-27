@@ -1,34 +1,30 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {DatetimeUnitEnum, EmployeeType, RecipeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {PartialDayEnum} from '@minhdu-fontend/data-models';
-import {getDaysInMonth} from '@minhdu-fontend/utils';
-import {DatePipe} from '@angular/common';
-import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
-import {NzMessageService} from "ng-zorro-antd/message";
-import {Sort} from "@angular/material/sort";
-import {map} from "rxjs/operators";
-import {PayrollQuery, PayrollStore} from "../../state";
-import {Actions} from "@datorama/akita-ng-effects";
-import {PayrollActions} from "../../state/payroll.action";
-import {PayrollEntity} from "../../entities";
-import {tranFormSalaryType} from "../../utils";
-import {PermanentSalaryComponent} from "../../../salary/components/permanent/permanent-salary.component";
-import {NzModalService} from "ng-zorro-antd/modal";
-import {
-  AbsentOvertimeSalaryComponent
-} from "../../../salary/components/absent-overtime/absent-overtime-salary.component";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DatetimeUnitEnum, EmployeeType, RecipeType, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { PartialDayEnum } from '@minhdu-fontend/data-models';
+import { getDaysInMonth } from '@minhdu-fontend/utils';
+import { DatePipe } from '@angular/common';
+import { Role } from '../../../../../../../../libs/enums/hr/role.enum';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { Sort } from '@angular/material/sort';
+import { map } from 'rxjs/operators';
+import { PayrollQuery, PayrollStore } from '../../state';
+import { PayrollActions } from '../../state/payroll.action';
+import { PayrollEntity } from '../../entities';
+import { tranFormSalaryType } from '../../utils';
+import { PermanentSalaryComponent } from '../../../salary/components/permanent/permanent-salary.component';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { AbsentOvertimeSalaryComponent } from '../../../salary/components/absent-overtime/absent-overtime-salary.component';
 import {
   AllowanceSalaryEntity,
   DeductionSalaryEntity,
   OvertimeSalaryEntity, RemoteSalaryEntity,
   SalaryEntity
-} from "../../../salary/entities";
-import {PayslipComponent} from "../../components/payslip/payslip.component";
-import {dataModalPermanentSalary} from "../../entities/data-modal-permanent-salary";
-import {RemoteSalaryComponent} from "../../../salary/components/remote/remote-salary.component";
-import {DataModalAddOrUpdateRemote} from "../../entities/data-modal-remote-salary";
-import {ModalAddOrUpdateOverAbsent} from "../../entities/data-modal-absent-overtime-salary";
+} from '../../../salary/entities';
+import { PayslipComponent } from '../../components/payslip/payslip.component';
+import { AllowanceSalaryComponent } from '../../../salary/components/allowance/allowance-salary.component';
+import { Actions } from '@datorama/akita-ng-effects';
+import { ModalAddOrUpdateAbsentOrOvertime, ModalAddOrUpdateAllowance, ModalPermanentSalaryData } from '../../data';
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -44,14 +40,14 @@ export class DetailPayrollComponent implements OnInit {
           this.daysInMonth = new Date().getDate();
         }
         this.sortedSalaryOver = JSON.parse(JSON.stringify(
-          payroll?.salaries.filter(salary => salary.type === SalaryTypeEnum.OVERTIME)))
+          payroll?.salaries.filter(salary => salary.type === SalaryTypeEnum.OVERTIME)));
       }
-      return payroll
+      return payroll;
     })
   );
   loading$ = this.payrollQuery.select(state => state.loading);
   added$ = this.payrollQuery.select(state => state.added);
-  scanned$ = this.payrollQuery.select(state => state.scanned)
+  scanned$ = this.payrollQuery.select(state => state.scanned);
   salaryTypeEnum = SalaryTypeEnum;
 
   daysInMonth!: number;
@@ -59,10 +55,10 @@ export class DetailPayrollComponent implements OnInit {
   PartialDay = PartialDayEnum;
   isSticky = false;
   employeeTypeEnum = EmployeeType;
-  role!: string | null
+  role!: string | null;
   roleEnum = Role;
-  sortedSalaryOver: OvertimeSalaryEntity[] = []
-  recipeType = RecipeType
+  sortedSalaryOver: OvertimeSalaryEntity[] = [];
+  recipeType = RecipeType;
 
   constructor(
     private readonly payrollQuery: PayrollQuery,
@@ -72,16 +68,16 @@ export class DetailPayrollComponent implements OnInit {
     public readonly router: Router,
     private readonly modal: NzModalService,
     private readonly datePipe: DatePipe,
-    private readonly message: NzMessageService,
+    private readonly message: NzMessageService
   ) {
-    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+    this.router.routeReuseStrategy.shouldReuseRoute = function() {
       return false;
     };
   }
 
   ngOnInit() {
-    this.role = localStorage.getItem('role')
-    this.actions$.dispatch(PayrollActions.loadOne({id: this.getPayrollId}))
+    this.role = localStorage.getItem('role');
+    this.actions$.dispatch(PayrollActions.loadOne({ id: this.getPayrollId }));
   }
 
   get getPayrollId(): number {
@@ -92,18 +88,23 @@ export class DetailPayrollComponent implements OnInit {
     const config = {
       nzFooter: ' ',
       nzWidth: 'fit-content'
-    }
-    this.onOpenSalary(type, config, {payroll})
+    };
+    this.onOpenSalary(type, config, { payroll });
   }
 
   updateSalary(
     type: SalaryTypeEnum,
-    salary: RemoteSalaryEntity | SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | DeductionSalaryEntity) {
+    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | DeductionSalaryEntity,
+    payroll?: PayrollEntity
+  ) {
     const config = {
       nzFooter: ' ',
       nzWidth: 'fit-content'
+    };
+    if (type === SalaryTypeEnum.ALLOWANCE) {
+      Object.assign(salary, { workedAt: payroll?.employee.workedAt });
     }
-    this.onOpenSalary(type, config, undefined, {salary})
+    this.onOpenSalary(type, config, undefined, { salary });
   }
 
   onOpenSalary(
@@ -112,31 +113,44 @@ export class DetailPayrollComponent implements OnInit {
     add?: { payroll: PayrollEntity },
     update?: { salary: SalaryEntity }
   ) {
+    if (type === SalaryTypeEnum.ALLOWANCE) {
+      this.modal.create(Object.assign(config, {
+        nzTitle: add ? 'Thêm phụ cấp' : 'Cập nhật phụ cấp',
+        nzContent: AbsentOvertimeSalaryComponent,
+        nzComponentParams: <{ data: ModalAddOrUpdateAllowance }>{
+          data: {
+            type: type,
+            add: add,
+            update: update
+          }
+        }
+      }));
+    }
     if (type === SalaryTypeEnum.OVERTIME || type === SalaryTypeEnum.ABSENT) {
       this.modal.create(Object.assign(config, {
         nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.ABSENT ? ' Khấu trừ' : ' tăng ca'),
-        nzContent: AbsentOvertimeSalaryComponent,
-        nzComponentParams: <{ data: ModalAddOrUpdateOverAbsent }>{
+        nzContent: AllowanceSalaryComponent,
+        nzComponentParams: <{ data: ModalAddOrUpdateAbsentOrOvertime }>{
           data: {
             type: type,
             add: add,
             update: update
           }
-        },
-      }))
+        }
+      }));
     }
     if (type === SalaryTypeEnum.BASIC || type === SalaryTypeEnum.STAY) {
       this.modal.create(Object.assign(config, {
-        nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.BASIC ? ' lương cơ bản' : ' phụ cấp'),
+        nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.BASIC ? ' lương cơ bản' : ' phụ cấp lương'),
         nzContent: PermanentSalaryComponent,
-        nzComponentParams: <{ data: dataModalPermanentSalary }>{
+        nzComponentParams: <{ data: ModalPermanentSalaryData }>{
           data: {
             type: type,
             add: add,
             update: update
           }
-        },
-      }))
+        }
+      }));
     }
     if (type === SalaryTypeEnum.WFH) {
       this.modal.create(Object.assign(config, {
@@ -165,7 +179,7 @@ export class DetailPayrollComponent implements OnInit {
         }
       },
       nzFooter: ' '
-    })
+    });
     // if(this.role !== Role.HUMAN_RESOURCE){
     //
     // }else{
@@ -204,7 +218,7 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   scroll(target: HTMLElement, sticky: HTMLElement) {
-    target.scrollIntoView({behavior: 'smooth', block: 'center'});
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
     this.onSticky(sticky);
   }
 
@@ -253,7 +267,7 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   tranFormType(salaryTypes: SalaryTypeEnum[]): string {
-    return tranFormSalaryType(salaryTypes)
+    return tranFormSalaryType(salaryTypes);
   }
 
   onSalarySetting(title: string | undefined) {

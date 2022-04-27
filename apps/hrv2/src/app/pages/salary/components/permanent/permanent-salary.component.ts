@@ -10,17 +10,17 @@ import {SettingSalaryActions, SettingSalaryQuery} from "../../../setting/salary/
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../../payroll/state/payroll.action";
 import {PaginationDto} from "@minhdu-fontend/constants";
-import {dataModalPermanentSalary} from "../../../payroll/entities/data-modal-permanent-salary";
 import {catchError, map} from "rxjs/operators";
 import {throwError} from "rxjs";
 import {SalaryTypeEnum} from "@minhdu-fontend/enums";
 import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
+import { ModalPermanentSalaryData } from '../../../payroll/data/modal-permanent-salary.data';
 
 @Component({
   templateUrl: 'permanent-salary.component.html'
 })
 export class PermanentSalaryComponent implements OnInit {
-  @Input() data!: dataModalPermanentSalary
+  @Input() data!: ModalPermanentSalaryData
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
   salariesSetting$ = this.settingSalaryQuery.selectAll({
     filterBy: [

@@ -1,75 +1,76 @@
-import {DatePipe} from '@angular/common';
-import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {PartialDayEnum, SalaryPayroll} from '@minhdu-fontend/data-models';
-import {DatetimeUnitEnum, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {catchError, map} from "rxjs/operators";
-import {SettingSalaryActions, SettingSalaryQuery} from "../../../setting/salary/state";
-import {PriceType} from "../../../setting/salary/enums";
-import {PayrollEntity} from "../../../payroll/entities";
-import {DeductionSalaryService, OvertimeSalaryService} from "../../service";
-import {NzModalRef} from "ng-zorro-antd/modal";
-import {NzMessageService} from "ng-zorro-antd/message";
-import {Actions} from "@datorama/akita-ng-effects";
-import {UnitSalaryConstant} from "../../constants";
-import {SessionConstant, workingTime} from "../../../payroll/constants/session.constant";
-import {recipesConstant} from "../../../setting/salary/constants";
-import {SalarySettingEntity} from "../../../setting/salary/entities";
-import {ModalAddOrUpdateOverAbsent} from "../../../payroll/entities/data-modal-absent-overtime-salary";
-import {templateDeductionConstant} from "../../constants/template-deduction.constant";
-import {getAfterTime, getBeforeTime} from "@minhdu-fontend/utils";
-import {throwError} from "rxjs";
-import {PayrollActions} from "../../../payroll/state/payroll.action";
+import { DatePipe } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PartialDayEnum, SalaryPayroll } from '@minhdu-fontend/data-models';
+import { DatetimeUnitEnum, partialDay, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { catchError, map } from 'rxjs/operators';
+import { SettingSalaryActions, SettingSalaryQuery } from '../../../setting/salary/state';
+import { PriceType } from '../../../setting/salary/enums';
+import { PayrollEntity } from '../../../payroll/entities';
+import { DeductionSalaryService, OvertimeSalaryService } from '../../service';
+import { NzModalRef } from 'ng-zorro-antd/modal';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { Actions } from '@datorama/akita-ng-effects';
+import { UnitSalaryConstant } from '../../constants';
+import { SessionConstant, workingTime } from '../../../payroll/constants/session.constant';
+import { recipesConstant } from '../../../setting/salary/constants';
+import { SalarySettingEntity } from '../../../setting/salary/entities';
+import { templateDeductionConstant } from '../../constants/template-deduction.constant';
+import { getAfterTime, getBeforeTime } from '@minhdu-fontend/utils';
+import { throwError } from 'rxjs';
+import { PayrollActions } from '../../../payroll/state/payroll.action';
+import { ModalAddOrUpdateAbsentOrOvertime } from '../../../payroll/data';
+import * as _ from 'lodash';
 
 @Component({
   templateUrl: 'absent-overtime-salary.component.html'
 })
 export class AbsentOvertimeSalaryComponent implements OnInit {
-  @Input() data!: ModalAddOrUpdateOverAbsent
+  @Input() data!: ModalAddOrUpdateAbsentOrOvertime;
   templateSalary$ = this.settingSalaryQuery.selectAll({
     filterBy: [(entity => entity.type === this.data.type)]
   }).pipe(
     map(templates => {
-      let result = templates
       if (this.data.type === SalaryTypeEnum.ABSENT) {
-        result = result.concat(templateDeductionConstant)
+        templates.concat(templateDeductionConstant);
       }
       if (this.data?.update) {
         this.formGroup.get('template')?.setValue(
-          this.getTemplateSalary(result, this.data.update.salary.setting.id))
+          this.getTemplateSalary(templates, this.data.update.salary.setting.id));
       }
-      return result
+      return templates;
     })
-  )
-  submitting = false
+  );
+  submitting = false;
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
   formGroup!: FormGroup;
   firstDayInMonth!: string | null;
   lastDayInMonth!: string | null;
   salaryPayrolls: SalaryPayroll[] = [];
-  payrollSelected: PayrollEntity[] = []
-  titleSession = SessionConstant
-  partialDayEnum = PartialDayEnum
+  payrollSelected: PayrollEntity[] = [];
+  titleSession = SessionConstant;
+  partialDayEnum = PartialDayEnum;
   recipesConstant = recipesConstant;
   indexStep = 1;
   limitStartHour: number [] = [];
-  limitEndTime: number [] = []
-  unitConstant = UnitSalaryConstant
+  limitEndTime: number [] = [];
+  unitConstant = UnitSalaryConstant;
+
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
   disabledHoursStart = (): number[] => {
-    return this.limitStartHour
-  }
+    return this.limitStartHour;
+  };
   disabledMinute = (hour: number): number[] => {
     if (hour === workingTime.afternoon.end.getHours()) {
-      return getAfterTime(0, 'MINUTE')
+      return getAfterTime(0, 'MINUTE');
     } else {
-      return []
+      return [];
     }
-  }
+  };
   disabledHoursEnd = (): number[] => {
-    return this.limitEndTime
-  }
+    return this.limitEndTime;
+  };
 
   constructor(
     public readonly datePipe: DatePipe,
@@ -85,17 +86,16 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.actions$.dispatch(SettingSalaryActions.loadAll({
-      search: {types: [this.data.type]}
-    }))
+      search: { types: [this.data.type] }
+    }));
     if (this.data?.update?.multiple) {
       this.salaryPayrolls = this.data.update.multiple.salaryPayrolls;
     }
-    const salary = this.data?.update?.salary
+    const salary = this.data?.update?.salary;
     this.formGroup = this.formBuilder.group({
       template: ['', Validators.required],
       title: [salary?.title],
-      rangeDay: [salary ?
-        [salary.startedAt, salary.endedAt] : []],
+      rangeDay: [salary ? [salary.startedAt, salary.endedAt] : []],
       price: [salary?.price],
       startTime: [salary?.startedAt ? new Date(salary.startedAt) : undefined],
       endTime: [salary?.endedAt ? new Date(salary.endedAt) : undefined],
@@ -112,31 +112,28 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     });
 
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
-      if (template?.constraints) {
-        this.formGroup.get('constraintHoliday')?.setValue(template.constraints.some((item: any) => item.value === SalaryTypeEnum.HOLIDAY)
-        )
-        this.formGroup.get('constraintOvertime')?.setValue(template.constraints.some((item: any) => item.value === SalaryTypeEnum.HOLIDAY))
-      }
-      this.formGroup.get('rate')?.setValue(template?.rate)
-      this.formGroup.get('unit')?.setValue(template?.unit)
-      this.formGroup.get('reference')?.setValue(template?.types ? PriceType.BLOCK : PriceType.PRICE)
-    })
+      this.formGroup.get('constraintHoliday')?.setValue(template?.constraints?.some((item: any) => item.value === SalaryTypeEnum.HOLIDAY));
+      this.formGroup.get('constraintOvertime')?.setValue(template?.constraints?.some((item: any) => item.value === SalaryTypeEnum.HOLIDAY));
+      this.formGroup.get('rate')?.setValue(template?.rate);
+      this.formGroup.get('unit')?.setValue(template?.unit);
+      this.formGroup.get('reference')?.setValue(template?.types ? PriceType.BLOCK : PriceType.PRICE);
+    });
 
     this.formGroup.get('startTime')?.valueChanges.subscribe(val => {
       if (val) {
-        this.limitEndTime = getBeforeTime(val.getHours()).concat(getAfterTime(workingTime.afternoon.end.getHours(), "HOUR"))
+        this.limitEndTime = getBeforeTime(val.getHours()).concat(getAfterTime(workingTime.afternoon.end.getHours(), 'HOUR'));
         if (this.formGroup.value.endTime && val.getTime() > this.formGroup.value.endTime.getTime()) {
-          this.formGroup.get('endTime')?.setValue(undefined)
+          this.formGroup.get('endTime')?.setValue(undefined);
         }
       }
-    })
+    });
 
     this.formGroup.get('partialDay')?.valueChanges.subscribe(item => {
-      this.formGroup.get('startTime')?.setValue(item.startTime)
-      this.formGroup.get('endTime')?.setValue(item.endTime)
+      this.formGroup.get('startTime')?.setValue(item.startTime);
+      this.formGroup.get('endTime')?.setValue(item.endTime);
       this.limitStartHour = getBeforeTime(item.startTime.getHours())
         .concat(getAfterTime(item.endTime.getHours(), 'HOUR'));
-    })
+    });
   }
 
 
@@ -144,42 +141,40 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     return this.formGroup.controls;
   }
 
-  getTemplateSalary(template: SalarySettingEntity[], id?: number,) {
-    return template.find(item => item.id === (id ? id : 0))
+  getTemplateSalary(template: SalarySettingEntity[], id?: number) {
+    return template.find(item => item.id === (id ? id : 0));
   }
 
   getPartialDay(partial: PartialDayEnum) {
-    return SessionConstant.find(item => item.value === partial)
+    return SessionConstant.find(item => item.value === partial);
   }
 
   onSubmit(): any {
     if (this.formGroup.invalid) {
       return;
     }
-    const value = this.formGroup.value
+    const value = this.formGroup.value;
     if (value.isAllowance && (!value.priceAllowance || !value.titleAllowance)) {
-      this.message.warning('chưa nhập đủ thông tin phụ cấp cho tăng ca')
+      this.message.warning('Chưa nhập đủ thông tin phụ cấp cho tăng ca');
     }
-    const salary = this.mapSalary(value)
-    this.submitting = true
-    const service = this.data.type === SalaryTypeEnum.ABSENT ? this.deductionSalaryService : this.overtimeSalaryService
+    const salary = this.mapSalary(value);
+    this.submitting = true;
+    const service = this.data.type === SalaryTypeEnum.ABSENT ? this.deductionSalaryService : this.overtimeSalaryService;
 
-    if (this.data.add) {
-      service.addMany(salary)
-        .pipe(catchError(err => this.onSubmitError(err)))
-        .subscribe(_ => {
-          this.onSubmitSuccess(this.data.add?.multiple ? undefined : this.data.add?.payroll.id)
-        })
-    } else {
-      service.updateMany(salary)
-        .pipe(catchError(err => {
-          this.submitting = false
-          return throwError(err)
-        }))
-        .subscribe(_ => {
-          this.onSubmitSuccess(this.data.update?.salary.payrollId)
-        })
-    }
+    this.data.add ? service.addMany(salary) : service.updateMany(salary)
+      .pipe(catchError(err => {
+        this.submitting = false;
+        return this.onSubmitError(err);
+      }))
+      .subscribe(_ => {
+        this.onSubmitSuccess(this.data.add
+          ? (
+            !this.data.add?.multiple
+              ? this.data.add?.payroll.id
+              : undefined
+          )
+          : this.data.update.salary.payrollId);
+      });
   }
 
 
@@ -195,50 +190,44 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       endedAt: value.rangeDay[1],
       startTime: value.startTime ? new Date(value.startTime) : null,
       endTime: value.endTime ? new Date(value.endTime) : null,
-      settingId: value.template?.id,
-    }
+      settingId: value.template?.id
+    };
 
-    if (this.data.type === SalaryTypeEnum.ABSENT) {
-      if (value.template.id === 0) {
-        delete salary.settingId
-      }
-    }
-
-    return Object.assign(salary, this.data.add
-      ? {payrollIds: this.payrollSelected.map(payroll => payroll.id).concat(this.data.add.payroll.id)}
-      : {}, this.data.update
-      ? {salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.update.salary.id)}
-      : {}, value.priceAllowance && value.titleAllowance
-      ? {
-        allowance: {
-          price: value.priceAllowance,
-          title: value.titleAllowance
+    return Object.assign(this.data.type === SalaryTypeEnum.ABSENT && value.template.id === 0
+      ? _.omit(salary, 'settingId')
+      : salary,
+      this.data.add
+        ? { payrollIds: this.payrollSelected.map(payroll => payroll.id).concat(this.data.add.payroll.id) }
+        : {},
+      this.data.update
+        ? { salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.update.salary.id) }
+        : {},
+      value.priceAllowance && value.titleAllowance
+        ? {
+          allowance: {
+            price: value.priceAllowance,
+            title: value.titleAllowance
+          }
         }
-      }
-      : {}
-    )
+        : {}
+    );
   }
 
-  pre(): void {
-    this.indexStep -= 1;
+  move(type: 'next' | 'previous'): void {
+    if (type === 'next') this.indexStep += 1;
+    else this.indexStep -= 1;
   }
 
-  next(): void {
-    this.indexStep += 1;
+  private onSubmitError(err: string) {
+    this.submitting = false;
+    return throwError(err);
   }
 
-  onSubmitError(err: string) {
-    this.submitting = false
-    return throwError(err)
-  }
-
-  onSubmitSuccess(payrollId?: number) {
+  private onSubmitSuccess(payrollId?: number) {
     if (payrollId) {
-      this.actions$.dispatch(PayrollActions.loadOne({
-        id: payrollId
-      }))
+      this.actions$.dispatch(PayrollActions.loadOne({ id: payrollId }));
     }
-    this.submitting = false
-    this.modalRef.close()
+    this.submitting = false;
+    this.modalRef.close();
   }
 }

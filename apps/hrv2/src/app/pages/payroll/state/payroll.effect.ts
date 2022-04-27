@@ -27,12 +27,12 @@ export class PayrollEffect {
       this.payrollStore.update(state => ({
         ...state, added: false
       }))
-      return this.service.addOne(props).pipe(
-        tap(_ => {
+      return this.service.generate(props).pipe(
+        tap(res => {
           this.payrollStore.update(state => ({
             ...state, added: true
           }))
-          this.message.success('Thao tác thành công ');
+          this.message.success(res.message);
         }),
         catchError(err => {
           this.payrollStore.update(state => ({
