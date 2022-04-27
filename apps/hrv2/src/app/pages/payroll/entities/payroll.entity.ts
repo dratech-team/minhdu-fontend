@@ -6,7 +6,7 @@ import {
   DeductionSalaryEntity,
   AllowanceSalaryEntity,
   OvertimeSalaryEntity,
-  PermanentSalaryEntity, SalaryEntity
+  PermanentSalaryEntity, SalaryEntity, RemoteSalaryEntity
 } from "../../salary/entities";
 
 interface Salary {
@@ -43,7 +43,9 @@ export interface PayrollEntity extends BasePayrollEntity {
   salariesv2: PermanentSalaryEntity[],
   salaries: SalaryEntity[],
   absents: DeductionSalaryEntity [],
+  deductions: DeductionSalaryEntity [],
   overtimes: OvertimeSalaryEntity [],
   allowances: AllowanceSalaryEntity[],
+  remotes: RemoteSalaryEntity[],
   payrollIds?: number[]
 }
