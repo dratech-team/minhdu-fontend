@@ -608,7 +608,7 @@
 
           <!--chú thích-->
           <div #note class='col-12 mt-5'>
-            <nz-table>
+            <nz-table #tableNote [nzData]="payroll?.note?  [payroll.note] : []">
               <thead>
               <tr style='background-color: #dddddd66;'>
                 <th>
@@ -616,7 +616,7 @@
                     Chú thích phiếu lương
                   </div>
                 </th>
-                <th nzWidth='10%' style='color: #1b8eb7' (click)='addNote(payroll)'>
+                <th nzWidth='10%' style='color: #1b8eb7' (click)='addOrUpdateNote(payroll)'>
                   <div class="d-flex">
                     <span class='mx-2 pointer'>{{payroll?.note ? 'Sửa' : 'Thêm'}}</span>
                     <img class='pointer' style='margin-left: 2px;width: 13px;' src='./assets/img/payroll/plus-lg.svg'
@@ -626,13 +626,14 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngIf='payroll?.note' style='background: white !important;'>
+              <tr *ngFor="let item of tableNote.data">
                 <td>
-                  <span>{{payroll?.note}}</span>
+                  <span>{{item}}</span>
                 </td>
                 <td width='10%'>
                 </td>
               </tr>
+
               </tbody>
             </nz-table>
           </div>
