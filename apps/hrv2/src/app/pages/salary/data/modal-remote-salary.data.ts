@@ -1,6 +1,6 @@
 import { PayrollEntity } from '../../payroll/entities';
 
-export interface ModalOnsiteSalaryData {
+export interface ModalRemoteSalaryData {
   add: {
     payroll: PayrollEntity
   },

@@ -1,1 +1,1 @@
-export * from './modal-onsite-salary.data';
+export * from './modal-remote-salary.data';

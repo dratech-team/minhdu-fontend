@@ -18,13 +18,15 @@ import { AbsentOvertimeSalaryComponent } from '../../../salary/components/absent
 import {
   AllowanceSalaryEntity,
   DeductionSalaryEntity,
-  OvertimeSalaryEntity, RemoteSalaryEntity,
+  OvertimeSalaryEntity,
   SalaryEntity
 } from '../../../salary/entities';
 import { PayslipComponent } from '../../components/payslip/payslip.component';
 import { AllowanceSalaryComponent } from '../../../salary/components/allowance/allowance-salary.component';
 import { Actions } from '@datorama/akita-ng-effects';
 import { ModalAddOrUpdateAbsentOrOvertime, ModalAddOrUpdateAllowance, ModalPermanentSalaryData } from '../../data';
+import {RemoteSalaryComponent} from "../../../salary/components/remote/remote-salary.component";
+import {ModalRemoteSalaryData} from "../../../salary/data";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -156,7 +158,7 @@ export class DetailPayrollComponent implements OnInit {
       this.modal.create(Object.assign(config, {
         nzTitle: add ? 'Thêm chú thích ngày' : 'Cập nhật chú thích ngày',
         nzContent: RemoteSalaryComponent,
-        nzComponentParams: <{ data: DataModalAddOrUpdateRemote }>{
+        nzComponentParams: <{ data: ModalRemoteSalaryData }>{
           data: {
             add: add,
             update: update

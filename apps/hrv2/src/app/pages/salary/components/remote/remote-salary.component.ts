@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { PayrollEntity } from '../../../payroll/entities';
-import { SalaryPermanentService } from '../../service';
+import {SalaryPermanentService, SalaryRemoteService} from '../../service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -13,13 +13,13 @@ import { PayrollActions } from '../../../payroll/state/payroll.action';
 import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 import { ResponseMessageEntity } from '@minhdu-fontend/base-entity';
 import { RequireOnlyOne } from '../../../../../shared/types';
-import { ModalOnsiteSalaryData } from '../../data/modal-onsite-salary.data';
+import { ModalRemoteSalaryData } from '../../data/modal-remote-salary.data';
 
 @Component({
   templateUrl: 'remote-salary.component.html'
 })
-export class OnsiteSalaryComponent implements OnInit {
-  @Input() data!: RequireOnlyOne<ModalOnsiteSalaryData>;
+export class RemoteSalaryComponent implements OnInit {
+  @Input() data!: RequireOnlyOne<ModalRemoteSalaryData>;
   payrollSelected: PayrollEntity [] = [];
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;

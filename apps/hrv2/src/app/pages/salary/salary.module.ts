@@ -21,10 +21,10 @@ import {customCurrencyMaskConfig} from "@minhdu-fontend/config";
 import {AbsentOvertimeSalaryComponent} from "./components/absent-overtime/absent-overtime-salary.component";
 import {NzTimePickerModule} from "ng-zorro-antd/time-picker";
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
-import {RemoteSalaryComponent} from "./components/remote/remote-salary.component";
 import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 import {TransformSalaryTypePipe} from "./pipes";
 import {SettingModule} from "../setting/setting.module";
+import {RemoteSalaryComponent} from "./components/remote/remote-salary.component";
 
 @NgModule({
     imports: [
@@ -52,9 +52,9 @@ import {SettingModule} from "../setting/setting.module";
     ],
   declarations: [
     PermanentSalaryComponent,
-    RemoteSalaryComponent,
     AbsentOvertimeSalaryComponent,
-    TransformSalaryTypePipe
+    TransformSalaryTypePipe,
+    RemoteSalaryComponent
   ],
   providers: [
     DatePipe,
