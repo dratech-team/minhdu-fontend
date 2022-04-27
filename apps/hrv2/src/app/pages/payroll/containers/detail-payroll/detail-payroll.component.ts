@@ -81,7 +81,7 @@ export class DetailPayrollComponent implements OnInit {
 
   ngOnInit() {
     this.role = localStorage.getItem('role');
-    this.actions$.dispatch(PayrollActions.loadOne({ id: this.getPayrollId }));
+    this.actions$.dispatch(PayrollActions.loadOne({id: this.getPayrollId}));
   }
 
   get getPayrollId(): number {
@@ -106,7 +106,6 @@ export class DetailPayrollComponent implements OnInit {
       nzWidth: 'fit-content'
     };
     if (type === SalaryTypeEnum.ALLOWANCE) {
-      Object.assign(salary, { workedAt: payroll?.employee.workedAt });
       Object.assign(salary, {workedAt: payroll?.employee.workedAt});
     }
     this.onOpenSalary(type, config, undefined, {salary});
