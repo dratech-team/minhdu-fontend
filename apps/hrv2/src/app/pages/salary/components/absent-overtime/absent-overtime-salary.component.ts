@@ -42,6 +42,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       return templates;
     })
   );
+  loadingSettingSalary$ = this.settingSalaryQuery.select(state => state.loading)
   submitting = false;
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;

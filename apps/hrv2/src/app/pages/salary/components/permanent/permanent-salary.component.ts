@@ -41,6 +41,7 @@ export class PermanentSalaryComponent implements OnInit {
       return templates
     })
   )
+  loadingSettingSalary$ = this.settingSalaryQuery.select(state => state.loading)
   salaryTypeEnum = SalaryTypeEnum;
   formGroup!: FormGroup;
   roleEnum = Role;

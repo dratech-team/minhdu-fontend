@@ -24,6 +24,7 @@
         <div class=' mb-3' style="width: 100%" [formGroup]='formGroup'>
           <nz-select style="width: 100%" formControlName='template'
                      [compareWith]="compareFn"
+                     [nzLoading]="(loadingSettingSalary$|async)"
                       [ngClass]="{ 'is-invalid': checkValid.template.errors }">
             <nz-option *ngFor='let salary of (salariesSetting$|async)' [nzValue]="salary" [nzLabel]="salary.title">
             </nz-option>
