@@ -144,7 +144,7 @@
                                alt='edit icon'>
                         </button>
                         <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                                (click)='removeSalary(salary.id, payroll.id)'>
+                                (click)='removeSalary(salaryTypeEnum.BASIC, salary)'>
                           <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
                         </button>
                       </div>
@@ -193,7 +193,7 @@
                                alt='edit icon'>
                         </button>
                         <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                                (click)='removeSalary(salary.id, payroll.id)'>
+                                (click)='removeSalary(salaryTypeEnum.STAY, salary)'>
                           <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
                         </button>
                       </div>
@@ -261,7 +261,7 @@
                       <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
                     </button>
                     <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                            (click)='removeSalary(salary.id , payroll.id)'>
+                            (click)='removeSalary(salaryTypeEnum.ALLOWANCE, salary)'>
                       <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
                     </button>
                   </div>
@@ -344,7 +344,7 @@
                       <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
                     </button>
                     <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                            (click)='removeSalary(salary.id, payroll.id)'>
+                            (click)='removeSalary( salaryTypeEnum.OVERTIME, salary)'>
                       <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
                     </button>
                   </div>
@@ -437,7 +437,7 @@
                         <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
                       </button>
                       <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                              (click)='removeSalary(salary.id, payroll.id)'>
+                              (click)='removeSalary(salaryTypeEnum.ABSENT, salary)'>
                         <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
                       </button>
                     </div>
@@ -519,7 +519,7 @@
                       <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
                     </button>
                     <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                            (click)='removeSalary(salary.id, payroll.id)'>
+                            (click)='removeSalary(salaryTypeEnum.HOLIDAY, salary)'>
                       <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
                     </button>
                   </div>
@@ -596,7 +596,7 @@
                       <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
                     </button>
                     <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                            (click)='removeSalary(salary.id, payroll.id)'>
+                            (click)='removeSalary(salaryTypeEnum.WFH, salary)'>
                       <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
                     </button>
                   </div>
@@ -719,7 +719,7 @@
                                alt='edit icon'>
                         </button>
                         <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                                (click)='removeSalary(salary.id, payroll.id)'>
+                                (click)='removeSalary(salaryTypeEnum.PART_TIME, salary)'>
                           <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
                         </button>
                       </div>
