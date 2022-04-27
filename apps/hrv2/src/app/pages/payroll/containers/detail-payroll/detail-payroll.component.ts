@@ -204,6 +204,7 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   scanHoliday(payrollId: number) {
+    this.actions$.dispatch(PayrollActions.scanHoliday({payrollId}))
   }
 
   scroll(target: HTMLElement, sticky: HTMLElement) {

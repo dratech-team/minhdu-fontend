@@ -33,6 +33,7 @@ import {NzSpinModule} from "ng-zorro-antd/spin";
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader";
 import {AllowanceSalaryComponent} from "../salary/components/allowance/allowance-salary.component";
 import {UpdatePayrollComponent} from "./components/update/update-payroll.component";
+import {NzAlertModule} from "ng-zorro-antd/alert";
 
 @NgModule({
   imports: [
@@ -61,7 +62,8 @@ import {UpdatePayrollComponent} from "./components/update/update-payroll.compone
     NzCarouselModule,
     SalaryModule,
     NzSpinModule,
-    NgxSkeletonLoaderModule
+    NgxSkeletonLoaderModule,
+    NzAlertModule
   ],
   declarations: [
     PayrollComponent,
