@@ -28,7 +28,7 @@ import {AllowanceSalaryComponent} from '../../../salary/components/allowance/all
 import {Actions} from '@datorama/akita-ng-effects';
 import {ModalAddOrUpdateAbsentOrOvertime, ModalAddOrUpdateAllowance, ModalPermanentSalaryData} from '../../data';
 import {ModalAlertComponent} from "@minhdu-fontend/components";
-import {ModalAlertEntity} from "../../../../../../../../libs/entities/modal-alert.entity";
+import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
