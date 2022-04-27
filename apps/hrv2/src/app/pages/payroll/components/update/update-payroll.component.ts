@@ -1,56 +1,61 @@
-import {Component, Inject, OnInit} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {DatePipe} from "@angular/common";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {select, Store} from "@ngrx/store";
-import {getAllOrgchart, OrgchartActions} from "@minhdu-fontend/orgchart";
 import {Position} from "@minhdu-fontend/data-models";
 import {map} from "rxjs/operators";
-import {selectedAddedPayroll} from "../../+state/payroll/payroll.selector";
 import {RecipeTypesConstant} from "@minhdu-fontend/constants";
-import {PayrollAction} from "../../+state/payroll/payroll.action";
-import {FlatSalary} from "@minhdu-fontend/enums";
+import {NzModalRef} from "ng-zorro-antd/modal";
+import {Actions} from "@datorama/akita-ng-effects";
+import {BranchActions, BranchQuery} from "../../../../../../../../libs/orgchart-v2/src/lib/branch/state";
+import {PayrollEntity} from "../../entities";
+import {PayrollActions} from "../../state/payroll.action";
+import {PayrollQuery} from "../../state";
 
 @Component({
   templateUrl: 'update-payroll.component.html'
 })
 export class UpdatePayrollComponent implements OnInit {
+  @Input() data!: {
+    payroll: PayrollEntity
+  }
   formGroup!: FormGroup
   positions?: Position[];
   recipeTypeConstant = RecipeTypesConstant
-  branches$ = this.store.pipe(select(getAllOrgchart)).pipe(map(branches => {
+  branches$ = this.branchQuery.selectAll().pipe(map(branches => {
     if (branches.length === 1) {
       this.positions = branches[0].positions
     } else {
       this.positions = branches.find(branch => branch.name === this.data.payroll.branch)?.positions
     }
-
+    console.log(branches)
     return branches
   }));
-  flatSalaryEnum = FlatSalary
+  added$ = this.payrollQuery.select(state => state.added)
   compareFN = (o1: any, o2: any) => (typeof o1 === 'string' && o2 ? o1 === o2.name : o1.id === o2.id);
-  compareRecipe = (o1: any, o2: any) => (typeof o1 === 'string' && o2 ? o1 === o2.value : o1.value === o2.value);
+  compareRecipe = (o1: any, o2: any) => (o1 && o2 ? ( o1 === o2.value || o1.value === o2.value) : o1 === o2);
 
   constructor(
+    private readonly branchQuery: BranchQuery,
+    private readonly payrollQuery: PayrollQuery,
+    private readonly actions$: Actions,
     private readonly datePipe: DatePipe,
-    private readonly store: Store,
     private readonly formBuilder: FormBuilder,
-    private readonly dialogRef: MatDialogRef<UpdatePayrollComponent>,
-    @Inject(MAT_DIALOG_DATA) public data?: any
+    private readonly modalRef: NzModalRef,
   ) {
   }
 
   ngOnInit() {
-    this.store.dispatch(OrgchartActions.init())
+    this.actions$.dispatch(BranchActions.loadAll({}))
     this.formGroup = this.formBuilder.group({
-      createdAt: [this.datePipe.transform(this.data.payroll.createdAt, 'yyyy-MM-dd'), Validators.required],
+      createdAt: [this.data.payroll.createdAt, Validators.required],
       branch: [this.data.payroll.branch, Validators.required],
       position: [this.data.payroll.position, Validators.required],
       workday: [this.data.payroll.workday, Validators.required],
       recipeType: [this.data.payroll.recipeType, Validators.required],
-      isFlatSalary: [!!this.data.payroll.isFlatSalary, Validators.required],
+      isFlatSalary: [this.data.payroll.isFlatSalary, Validators.required],
       tax: [this.data.payroll.tax ? this.data.payroll.tax * 100 : ''],
     })
+
     this.formGroup.get('branch')?.valueChanges.subscribe(val => {
       this.formGroup.get('position')?.setValue('')
       this.positions = val.positions
@@ -61,32 +66,37 @@ export class UpdatePayrollComponent implements OnInit {
     if (this.formGroup.invalid) {
       return
     }
+    const payroll = this.mapPayroll()
+    this.actions$.dispatch(PayrollActions.update({
+      id: this.data.payroll.id, updates: payroll
+    }))
+    this.added$.subscribe(added => {
+      if (added) {
+        this.modalRef.close()
+      }
+    })
+  }
+
+  mapPayroll() {
     const value = this.formGroup.value
     const payroll = {
       workday: value.workday,
       createdAt: value.createdAt,
       isFlatSalary: value.isFlatSalary
     }
-    if (value.tax) {
-      Object.assign(payroll, {tax: value.tax / 100,})
-    }
-    if (value.position?.id) {
-      Object.assign(payroll, {positionId: value.position.id,})
-    }
-    if (value.branch?.id) {
-      Object.assign(payroll, {branchId: value.branch.id,})
-    }
-    if (value.recipeType?.value) {
-      Object.assign(payroll, {recipeType: value.recipeType.value})
-    }
-    this.store.dispatch(PayrollAction.updatePayroll({
-      id: this.data.payroll.id,
-      payroll: payroll
-    }))
-    this.store.select(selectedAddedPayroll).subscribe(added => {
-      if (added) {
-        this.dialogRef.close()
-      }
-    })
+    return Object.assign(payroll,
+      value.tax
+        ? {tax: value.tax / 100,}
+        : {},
+      value.position?.id
+        ? {positionId: value.position.id}
+        : {},
+      value.branch?.id
+        ? {branchId: value.branch.id}
+        : {},
+      value.recipeType?.value
+        ? {recipeType: value.recipeType.value}
+        : {}
+    )
   }
 }

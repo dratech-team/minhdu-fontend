@@ -25,6 +25,7 @@ import { PayslipComponent } from '../../components/payslip/payslip.component';
 import { AllowanceSalaryComponent } from '../../../salary/components/allowance/allowance-salary.component';
 import { Actions } from '@datorama/akita-ng-effects';
 import { ModalAddOrUpdateAbsentOrOvertime, ModalAddOrUpdateAllowance, ModalPermanentSalaryData } from '../../data';
+import {UpdatePayrollComponent} from "../../components/update/update-payroll.component";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -232,6 +233,16 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   updatePayroll(payroll: PayrollEntity) {
+    this.modal.create({
+      nzTitle:'Cập nhật phiếu lương',
+      nzContent: UpdatePayrollComponent,
+      nzComponentParams:<{data: {payroll:PayrollEntity}}>{
+        data: {
+          payroll
+        }
+      },
+      nzFooter: ' '
+    })
   }
 
   sortData(sort: Sort) {

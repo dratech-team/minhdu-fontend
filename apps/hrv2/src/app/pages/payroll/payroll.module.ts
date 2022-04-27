@@ -32,6 +32,7 @@ import { PayslipComponent } from './components/payslip/payslip.component';
 import {NzSpinModule} from "ng-zorro-antd/spin";
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader";
 import {AllowanceSalaryComponent} from "../salary/components/allowance/allowance-salary.component";
+import {UpdatePayrollComponent} from "./components/update/update-payroll.component";
 
 @NgModule({
   imports: [
@@ -69,7 +70,8 @@ import {AllowanceSalaryComponent} from "../salary/components/allowance/allowance
     FilterPipe,
     RangeDateTimePipe,
     PayslipComponent,
-    AllowanceSalaryComponent
+    AllowanceSalaryComponent,
+    UpdatePayrollComponent
   ],
   exports: [
     TablePayrollComponent
