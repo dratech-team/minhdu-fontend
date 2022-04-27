@@ -17,10 +17,10 @@
         <nz-select class="mt-1" style="width: 100%"
                    formControlName="template"
                    [compareWith]="compareFN"
-                   [nzLoading]="(loadingSettingSalary$|async)"
+                   [nzLoading]="(settingsLoading$ | async)"
         >
-          <nz-option *ngFor='let item of templateSalary$|async'
-                     [nzValue]="item" [nzLabel]="item.title||''"></nz-option>
+          <nz-option *ngFor='let item of templateSalaries$ | async'
+                     [nzValue]="item" [nzLabel]="item.title || '' "></nz-option>
         </nz-select>
         <div *ngIf='checkValid.template.errors ' class='invalid-feedback'>
           <div>Chưa chọn loại khấu trừ</div>

@@ -28,7 +28,7 @@ import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
 })
 export class AbsentOvertimeSalaryComponent implements OnInit {
   @Input() data!: ModalAddOrUpdateAbsentOrOvertime;
-  templateSalary$ = this.settingSalaryQuery.selectAll({
+  templateSalaries$ = this.settingSalaryQuery.selectAll({
     filterBy: [(entity => entity.type === this.data.type)]
   }).pipe(
     map(templates => {
@@ -42,7 +42,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       return templates;
     })
   );
-  loadingSettingSalary$ = this.settingSalaryQuery.select(state => state.loading)
+  settingsLoading$ = this.settingSalaryQuery.select(state => state.loading)
   submitting = false;
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;

@@ -1,22 +1,20 @@
-import {NzMessageService} from "ng-zorro-antd/message";
-import {PayrollStore} from "./payroll.store";
-import {PayrollService} from "../services/payroll.service";
-import {Actions, Effect, ofType} from "@datorama/akita-ng-effects";
-import {catchError, switchMap, tap} from "rxjs/operators";
-import {of} from "rxjs";
-import {PayrollActions} from "./payroll.action";
-import {AddPayrollDto} from "../dto";
-import {Injectable} from "@angular/core";
-import {PayrollQuery} from "./payroll.query";
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { PayrollStore } from './payroll.store';
+import { PayrollService } from '../services/payroll.service';
+import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { PayrollActions } from './payroll.action';
+import { AddPayrollDto } from '../dto';
+import { Injectable } from '@angular/core';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class PayrollEffect {
   constructor(
     private readonly action$: Actions,
     private readonly service: PayrollService,
     private readonly message: NzMessageService,
-    private readonly payrollStore: PayrollStore,
-    private readonly payrollQuery: PayrollQuery,
+    private readonly payrollStore: PayrollStore
   ) {
   }
 
@@ -26,37 +24,35 @@ export class PayrollEffect {
     switchMap((props: AddPayrollDto) => {
       this.payrollStore.update(state => ({
         ...state, added: false
-      }))
+      }));
       return this.service.generate(props).pipe(
         tap(res => {
           this.payrollStore.update(state => ({
             ...state, added: true
-          }))
+          }));
           this.message.success(res.message);
         }),
         catchError(err => {
           this.payrollStore.update(state => ({
             ...state, added: null
-          }))
-          return of(PayrollActions.error(err))
+          }));
+          return of(PayrollActions.error(err));
         })
       );
-    }),
+    })
   );
 
   @Effect()
   loadAll$ = this.action$.pipe(
     ofType(PayrollActions.loadAll),
     switchMap((props) => {
-      this.payrollStore.update(state => ({...state, loading: true}))
+      this.payrollStore.update(state => ({ ...state, loading: true }));
       return this.service.paginationPayroll(props.search).pipe(
+        map(res => Object.assign(res, { data: res.data.map(payroll => payroll.absents.concat(payroll.deductions)) })),
         tap((res) => {
-          res.data.map(payroll => {
-            payroll.absents = payroll.absents.concat(payroll.deductions)
-          })
-          this.payrollStore.update(state => ({...state, loading: false,}))
+          this.payrollStore.update(state => ({ ...state, loading: false }));
           if (res.data.length === 0) {
-            this.message.warning('Đã lấy hết phiếu lương')
+            this.message.warning('Đã lấy hết phiếu lương');
           }
           if (props.isPaginate) {
             this.payrollStore.add(res.data);
@@ -65,11 +61,11 @@ export class PayrollEffect {
           }
         }),
         catchError((err) => {
-          this.payrollStore.update(state => ({...state, loading: false}))
-          return of(PayrollActions.error(err))
+          this.payrollStore.update(state => ({ ...state, loading: false }));
+          return of(PayrollActions.error(err));
         })
       );
-    }),
+    })
   );
 
   @Effect()
@@ -81,10 +77,10 @@ export class PayrollEffect {
           this.payrollStore.upsert(res.id, res);
         }),
         catchError(err => {
-          return of(PayrollActions.error(err))
+          return of(PayrollActions.error(err));
         })
       );
-    }),
+    })
   );
 
   @Effect()
@@ -93,22 +89,22 @@ export class PayrollEffect {
     switchMap(props => {
       this.payrollStore.update(state => ({
         ...state, added: false
-      }))
+      }));
       return this.service.update(props).pipe(
         tap(res => {
           this.payrollStore.update(state => ({
             ...state, added: true
-          }))
+          }));
           this.payrollStore.update(res?.id, res);
         }),
         catchError(err => {
           this.payrollStore.update(state => ({
             ...state, added: null
-          }))
-          return of(PayrollActions.error(err))
+          }));
+          return of(PayrollActions.error(err));
         })
       );
-    }),
+    })
   );
 
   @Effect()
@@ -120,10 +116,10 @@ export class PayrollEffect {
           this.payrollStore.remove(props.id);
         }),
         catchError(err => {
-          return of(PayrollActions.error(err))
+          return of(PayrollActions.error(err));
         })
       );
-    }),
+    })
   );
 
   @Effect()
@@ -132,22 +128,22 @@ export class PayrollEffect {
     switchMap((props) => {
       this.payrollStore.update(state => ({
         ...state, added: false
-      }))
+      }));
       return this.service.confirm(props).pipe(
         tap(res => {
           this.payrollStore.update(state => ({
             ...state, added: true
-          }))
+          }));
           this.payrollStore.update(res.id, res);
         }),
         catchError(err => {
           this.payrollStore.update(state => ({
             ...state, added: true
-          }))
-          return of(PayrollActions.error(err))
+          }));
+          return of(PayrollActions.error(err));
         })
       );
-    }),
+    })
   );
 
   @Effect()
@@ -159,10 +155,10 @@ export class PayrollEffect {
           this.payrollStore.update(res.id, res);
         }),
         catchError(err => {
-          return of(PayrollActions.error(err))
+          return of(PayrollActions.error(err));
         })
       );
-    }),
+    })
   );
 
 }
