@@ -290,7 +290,7 @@ export class DetailPayrollComponent implements OnInit {
     this.modal.create({
       nzTitle: 'Cập nhật tính thếu',
       nzContent: ModalAlertComponent,
-      nzWidth:'500px',
+      nzWidth: '500px',
       nzComponentParams: <{ data: ModalAlertEntity }>{
         data: {
           description: `Bạn muốn ${payroll.taxed ? 'tắt' : 'bật'} trừ thuế cho phiếu lương tháng
@@ -320,15 +320,15 @@ export class DetailPayrollComponent implements OnInit {
       },
       nzFooter: ' '
     }).afterClose.subscribe(val => {
-        this.actions$.dispatch(PayrollActions.update({id: payroll.id, updates: {note: val}}))
+      this.actions$.dispatch(PayrollActions.update({id: payroll.id, updates: {note: val}}))
     })
   }
 
   updatePayroll(payroll: PayrollEntity) {
     this.modal.create({
-      nzTitle:'Cập nhật phiếu lương',
+      nzTitle: 'Cập nhật phiếu lương',
       nzContent: UpdatePayrollComponent,
-      nzComponentParams:<{data: {payroll:PayrollEntity}}>{
+      nzComponentParams: <{ data: { payroll: PayrollEntity } }>{
         data: {
           payroll
         }

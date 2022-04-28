@@ -7,10 +7,13 @@ import {ModalAlertEntity} from "../../../../entities/modal-alert.entity";
 })
 export class ModalAlertComponent {
   @Input() data!: ModalAlertEntity
+
   constructor(
     private readonly modalRef: NzModalRef
-  ) {}
-  onSubmit(){
+  ) {
+  }
+
+  onSubmit() {
     this.modalRef.close(true)
   }
 }
