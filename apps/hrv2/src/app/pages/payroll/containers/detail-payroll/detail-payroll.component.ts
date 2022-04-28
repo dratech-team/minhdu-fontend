@@ -5,9 +5,9 @@ import {PartialDayEnum} from '@minhdu-fontend/data-models';
 import {getDaysInMonth} from '@minhdu-fontend/utils';
 import {DatePipe} from '@angular/common';
 import {Role} from '../../../../../../../../libs/enums/hr/role.enum';
+import {NzMessageService} from 'ng-zorro-antd/message';
 import {Sort} from '@angular/material/sort';
 import {catchError, map} from 'rxjs/operators';
-import {NzMessageService} from 'ng-zorro-antd/message';
 import {PayrollQuery, PayrollStore} from '../../state';
 import {PayrollActions} from '../../state/payroll.action';
 import {PayrollEntity} from '../../entities';
@@ -27,11 +27,12 @@ import {PayslipComponent} from '../../components/payslip/payslip.component';
 import {AllowanceSalaryComponent} from '../../../salary/components/allowance/allowance-salary.component';
 import {Actions} from '@datorama/akita-ng-effects';
 import {ModalAddOrUpdateAbsentOrOvertime, ModalAddOrUpdateAllowance, ModalPermanentSalaryData} from '../../data';
-import {ModalAlertComponent, ModalNoteComponent} from "@minhdu-fontend/components";
-import {ModalAlertEntity} from "../../../../../../../../libs/entities/modal-alert.entity";
+import {ModalAlertComponent} from "@minhdu-fontend/components";
+import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 import {DeductionSalaryService, OvertimeSalaryService, SalaryPermanentService} from "../../../salary/service";
 import {AllowanceSalaryService} from "../../../salary/service/allowance-salary.service";
 import {throwError} from "rxjs";
+import {ModalNoteComponent} from "@minhdu-fontend/components";
 import {UpdatePayrollComponent} from "../../components/update/update-payroll.component";
 import {RemoteSalaryComponent} from "../../../salary/components/remote/remote-salary.component";
 import {ModalAddOrUpdateRemote} from "../../../salary/data";
@@ -288,6 +289,26 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   updateTaxed(payroll: PayrollEntity) {
+    this.modal.create({
+      nzTitle: 'Cập nhật tính thếu',
+      nzContent: ModalAlertComponent,
+      nzWidth: '500px',
+      nzComponentParams: <{ data: ModalAlertEntity }>{
+        data: {
+          description: `Bạn muốn ${payroll.taxed ? 'tắt' : 'bật'} trừ thuế cho phiếu lương tháng
+          ${this.datePipe.transform(new Date(payroll.createdAt), 'MM-yyyy')} của nhân viên
+          ${payroll.employee.lastName}`
+        }
+      },
+      nzFooter: ' '
+    }).afterClose.subscribe(value => {
+      if (value) {
+        this.actions$.dispatch(PayrollActions.update({
+          id: payroll.id,
+          updates: {taxed: !payroll.taxed}
+        }))
+      }
+    })
   }
 
   addOrUpdateNote(payroll: PayrollEntity) {
