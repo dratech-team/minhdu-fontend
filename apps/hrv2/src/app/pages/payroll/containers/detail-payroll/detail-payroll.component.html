@@ -411,14 +411,19 @@
                   <td (click)='onSalarySetting(salary?.setting?.title)'>
                     <span *ngIf='salary.unit === datetimeUnit.MONTH'> Tháng </span>
                     <span
-                      *ngIf='salary.unit === datetimeUnit.DAY'>
-                {{salary.partial | rangeDatetimePipe: salary.startedAt : salary.endedAt}}
+                      *ngIf='
+                      salary.unit === datetimeUnit.DAY &&
+                      salary.partial &&
+                      salary.startedAt &&
+                      salary.endedAt'
+                    >
+                {{ salary.partial | rangeDatetimePipe: salary.startedAt : salary.endedAt}}
               </span>
                   </td>
                   <td (click)='onSalarySetting(salary?.setting?.title)'>
-              <span style='color: red'>
-                {{salary.price | number:'1.0-0'}} đ
-              </span>
+                    <span style='color: red'>
+                      {{salary.price | number:'1.0-0'}} đ
+                    </span>
                   </td>
                   <td (click)='onSalarySetting(salary?.setting?.title)'>
               <span *ngIf='salary.startedAt && salary.endedAt'>
@@ -570,7 +575,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let salary of payroll.salaries | filterSalary:['WFH'];let i=index "
+              <tr *ngFor="let salary of payroll.remotes;let i=index "
                   style='background: white !important;'>
                 <td>
                   <span>{{i + 1}}</span>
@@ -580,7 +585,8 @@
                 </td>
                 <td>
                  <span>
-                  {{salary.datetime | date:'dd-MM-yyyy'}}
+                 từ {{salary.startedAt | date:'dd-MM-yyyy'}}
+                  đến  {{salary.endedAt | date:'dd-MM-yyyy'}}
                 </span>
                 </td>
                 <td>
