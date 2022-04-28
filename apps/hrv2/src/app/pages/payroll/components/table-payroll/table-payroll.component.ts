@@ -43,7 +43,7 @@ export class TablePayrollComponent implements OnInit {
   daysInMonth = rageDaysInMonth(this.payrollQuery.getValue().search.startedAt)
   filterTypeEnum = FilterTypeEnum
   template$ = this.settingSalaryQuery.selectAll();
-  test = [{name: 'một', value: 1},{name: 'hai', value: 2},{name: 'ba', value: 3}]
+  salaryType = SalaryTypeEnum
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
 
 
@@ -67,17 +67,20 @@ export class TablePayrollComponent implements OnInit {
       }
     })
     this.formGroup.get('filterType')?.valueChanges.subscribe(val => {
+      if (val in SalaryTypeEnum) {
+        this.onLoadSettingSalary(val)
+      }
       switch (val) {
         case FilterTypeEnum.SEASONAL:
           this.scroll = {x: '3000px', y: '56vh'}
           break
         case FilterTypeEnum.TIME_SHEET:
-          this.scroll = {x: '5800px', y: '56vh'}
+          this.scroll = {x: '5000px', y: '56vh'}
+          break
+        case FilterTypeEnum.BASIC:
+          this.scroll = {x: '2000px', y: '56vh'}
           break
         default:
-          if (val in SalaryTypeEnum) {
-            this.onLoadSettingSalary(val)
-          }
           this.scroll = {x: '4200px', y: '56vh'}
       }
     })
@@ -177,7 +180,7 @@ export class TablePayrollComponent implements OnInit {
     }))
   }
 
-  selectSalary(salaryId:number): boolean {
+  selectSalary(salaryId: number): boolean {
     return false;
   }
 

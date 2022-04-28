@@ -182,8 +182,7 @@
       || formGroup.value.filterType === filterTypeEnum.ABSENT
       || formGroup.value.filterType === filterTypeEnum.OVERTIME
       || formGroup.value.filterType === filterTypeEnum.STAY
-      || formGroup.value.filterType === filterTypeEnum.ALLOWANCE
-">
+      || formGroup.value.filterType === filterTypeEnum.ALLOWANCE">
         <th>
         </th>
       </ng-template>
@@ -318,11 +317,11 @@
         <!--    basic-->
         <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.BASIC">
           <nz-table
-            #tableSalaryBasic
-            [nzData]="payroll.salariesv2"
+            *ngIf="payroll.salariesv2.length > 0"
+            [nzData]="['']"
             [nzShowPagination]="false">
             <thead>
-            <tr>
+              <tr>
               <th>
                 <div>Chọn</div>
               </th>
@@ -346,7 +345,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let salary of tableSalaryBasic.data">
+              <tr *ngFor="let salary of payroll.salariesv2|filterSalary: [salaryType.BASIC_INSURANCE, salaryType.BASIC]">
               <div>
                 <label nz-checkbox [nzChecked]="selectSalary(salary.id)"
                        (nzCheckedChange)="updateSelectSalary(salary, $event)"
@@ -359,7 +358,7 @@
           </nz-table>
         </ng-template>
       </tr>
-  </ng-template>
+    </ng-template>
     </tbody>
   </nz-table>
 </div>
