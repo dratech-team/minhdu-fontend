@@ -35,7 +35,7 @@ import {throwError} from "rxjs";
 import {ModalNoteComponent} from "@minhdu-fontend/components";
 import {UpdatePayrollComponent} from "../../components/update/update-payroll.component";
 import {RemoteSalaryComponent} from "../../../salary/components/remote/remote-salary.component";
-import {ModalAddOrUpdateRemote, ModalRemoteSalaryData} from "../../../salary/data";
+import {ModalAddOrUpdateRemote} from "../../../salary/data";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -196,14 +196,16 @@ export class DetailPayrollComponent implements OnInit {
       nzFooter: ' '
     }).afterClose.subscribe(value => {
       if (value) {
-        ((type === SalaryTypeEnum.BASIC || type === SalaryTypeEnum.STAY)
-            ? this.permanentService.deleteMany({salaryIds: [salary.id]})
+        const service = ((type === SalaryTypeEnum.BASIC || type === SalaryTypeEnum.STAY)
+            ? this.permanentService
             : type === SalaryTypeEnum.ALLOWANCE
-              ? this.allowanceSalaryService.deleteMany({salaryIds: [salary.id]})
+              ? this.allowanceSalaryService
               : type === SalaryTypeEnum.OVERTIME
-                ? this.overtimeSalaryService.deleteMany({salaryIds: [salary.id]})
-                : this.deductionSalaryService.deleteMany({salaryIds: [salary.id]})
-        ).pipe(
+                ? this.overtimeSalaryService
+                : this.deductionSalaryService
+        )
+
+        service.deleteMany({salaryIds: [salary.id]}).pipe(
           catchError(err => {
             this.message.warning(err)
             return throwError(err)
