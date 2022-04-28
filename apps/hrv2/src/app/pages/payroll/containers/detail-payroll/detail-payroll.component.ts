@@ -27,15 +27,14 @@ import {PayslipComponent} from '../../components/payslip/payslip.component';
 import {AllowanceSalaryComponent} from '../../../salary/components/allowance/allowance-salary.component';
 import {Actions} from '@datorama/akita-ng-effects';
 import {ModalAddOrUpdateAbsentOrOvertime, ModalAddOrUpdateAllowance, ModalPermanentSalaryData} from '../../data';
-import {ModalAlertComponent} from "@minhdu-fontend/components";
+import {ModalAlertComponent, ModalNoteComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "../../../../../../../../libs/entities/modal-alert.entity";
 import {DeductionSalaryService, OvertimeSalaryService, SalaryPermanentService} from "../../../salary/service";
 import {AllowanceSalaryService} from "../../../salary/service/allowance-salary.service";
 import {throwError} from "rxjs";
-import {ModalNoteComponent} from "@minhdu-fontend/components";
 import {UpdatePayrollComponent} from "../../components/update/update-payroll.component";
 import {RemoteSalaryComponent} from "../../../salary/components/remote/remote-salary.component";
-import {ModalAddOrUpdateRemote, ModalRemoteSalaryData} from "../../../salary/data";
+import {ModalAddOrUpdateRemote} from "../../../salary/data";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -196,14 +195,16 @@ export class DetailPayrollComponent implements OnInit {
       nzFooter: ' '
     }).afterClose.subscribe(value => {
       if (value) {
-        ((type === SalaryTypeEnum.BASIC || type === SalaryTypeEnum.STAY)
-            ? this.permanentService.deleteMany({salaryIds: [salary.id]})
+        const service = ((type === SalaryTypeEnum.BASIC || type === SalaryTypeEnum.STAY)
+            ? this.permanentService
             : type === SalaryTypeEnum.ALLOWANCE
-              ? this.allowanceSalaryService.deleteMany({salaryIds: [salary.id]})
+              ? this.allowanceSalaryService
               : type === SalaryTypeEnum.OVERTIME
-                ? this.overtimeSalaryService.deleteMany({salaryIds: [salary.id]})
-                : this.deductionSalaryService.deleteMany({salaryIds: [salary.id]})
-        ).pipe(
+                ? this.overtimeSalaryService
+                : this.deductionSalaryService
+        )
+
+        service.deleteMany({salaryIds: [salary.id]}).pipe(
           catchError(err => {
             this.message.warning(err)
             return throwError(err)
@@ -300,15 +301,15 @@ export class DetailPayrollComponent implements OnInit {
       },
       nzFooter: ' '
     }).afterClose.subscribe(val => {
-        this.actions$.dispatch(PayrollActions.update({id: payroll.id, updates: {note: val}}))
+      this.actions$.dispatch(PayrollActions.update({id: payroll.id, updates: {note: val}}))
     })
   }
 
   updatePayroll(payroll: PayrollEntity) {
     this.modal.create({
-      nzTitle:'Cập nhật phiếu lương',
+      nzTitle: 'Cập nhật phiếu lương',
       nzContent: UpdatePayrollComponent,
-      nzComponentParams:<{data: {payroll:PayrollEntity}}>{
+      nzComponentParams: <{ data: { payroll: PayrollEntity } }>{
         data: {
           payroll
         }
