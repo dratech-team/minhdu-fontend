@@ -212,14 +212,8 @@ export class EmployeeEffect {
     switchMap((props) => {
         return this.employeeService.updateHistorySalary(props.id, props.salary).pipe(
           map((res) => {
-            this.message.info('Cập nhật lịch sử lương thành công')
-            const empUpdate = JSON.parse(JSON.stringify(this.employeeQuery.getEntity(props.employeeId)))
-            if (empUpdate) {
-              Object.assign(empUpdate, {
-                salaryHistories: empUpdate.salaryHistories.filter((salary: Salary) => salary.id !== res.id)
-              })
-              this.employeeStore.update(empUpdate.id, empUpdate)
-            }
+            this.message.info(res.message)
+            this.actions$.dispatch(EmployeeAction.loadOne({id: props.employeeId}))
           }),
           catchError((err) => {
             return of(EmployeeAction.error(err))

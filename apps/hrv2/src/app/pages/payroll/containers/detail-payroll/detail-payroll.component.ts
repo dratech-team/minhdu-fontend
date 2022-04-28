@@ -28,6 +28,8 @@ import {AllowanceSalaryComponent} from '../../../salary/components/allowance/all
 import {Actions} from '@datorama/akita-ng-effects';
 import {ModalAddOrUpdateAbsentOrOvertime, ModalAddOrUpdateAllowance, ModalPermanentSalaryData} from '../../data';
 import {ModalNoteComponent} from "../../../../../../../../libs/components/src/lib/modal-note/modal-note.component";
+import {RemoteSalaryComponent} from "../../../salary/components/remote/remote-salary.component";
+import {ModalAddOrUpdateRemote, ModalRemoteSalaryData} from "../../../salary/data";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -119,7 +121,7 @@ export class DetailPayrollComponent implements OnInit {
     if (type === SalaryTypeEnum.ALLOWANCE) {
       this.modal.create(Object.assign(config, {
         nzTitle: add ? 'Thêm phụ cấp' : 'Cập nhật phụ cấp',
-        nzContent: AbsentOvertimeSalaryComponent,
+        nzContent: AllowanceSalaryComponent,
         nzComponentParams: <{ data: ModalAddOrUpdateAllowance }>{
           data: {
             type: type,
@@ -132,7 +134,7 @@ export class DetailPayrollComponent implements OnInit {
     if (type === SalaryTypeEnum.OVERTIME || type === SalaryTypeEnum.ABSENT) {
       this.modal.create(Object.assign(config, {
         nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.ABSENT ? ' Khấu trừ' : ' tăng ca'),
-        nzContent: AllowanceSalaryComponent,
+        nzContent: AbsentOvertimeSalaryComponent,
         nzComponentParams: <{ data: ModalAddOrUpdateAbsentOrOvertime }>{
           data: {
             type: type,
@@ -154,6 +156,18 @@ export class DetailPayrollComponent implements OnInit {
           }
         }
       }));
+    }
+    if (type === SalaryTypeEnum.WFH) {
+      this.modal.create(Object.assign(config, {
+        nzTitle: add ? 'Thêm chú thích ngày' : 'Cập nhật chú thích ngày',
+        nzContent: RemoteSalaryComponent,
+        nzComponentParams: <{ data: ModalAddOrUpdateRemote }>{
+          data: {
+            add: add,
+            update: update
+          }
+        },
+      }))
     }
   }
 
