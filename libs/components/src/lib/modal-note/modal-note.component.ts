@@ -5,21 +5,23 @@ import {NzModalRef} from "ng-zorro-antd/modal";
 @Component({
   templateUrl: 'modal-note.component.html',
 })
-export class ModalNoteComponent implements OnInit{
-  @Input() data?: {noteInit?: string}
+export class ModalNoteComponent implements OnInit {
+  @Input() data?: { noteInit?: string }
   formGroup!: FormGroup
 
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly modalRef: NzModalRef
-  ) {}
+  ) {
+  }
 
-    ngOnInit() {
+  ngOnInit() {
     this.formGroup = this.formBuilder.group({
       note: [this.data?.noteInit]
     })
-    }
-    onSubmit(){
+  }
+
+  onSubmit() {
     this.modalRef.close(this.formGroup.value.note)
-    }
+  }
 }
