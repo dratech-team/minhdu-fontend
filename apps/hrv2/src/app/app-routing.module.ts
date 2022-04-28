@@ -19,7 +19,8 @@ const routes: Routes = [
         loadChildren: () =>
           import('./pages/employee/employee.module').then(
             (m) => m.EmployeeModule
-          )
+          ),
+        canActivate: [RouteGuard]
       },
       {
         path: TabEnum.PAYROLL,
