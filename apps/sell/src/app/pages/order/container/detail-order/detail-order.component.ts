@@ -54,7 +54,6 @@ export class DetailOrderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loading$.subscribe(val => console.log(val));
     this.actions$.dispatch(OrderActions.loadOne({id: this.getOrderId}));
     this.loadInitOrderHistory();
 

@@ -4,12 +4,11 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {select, Store} from "@ngrx/store";
 import {getAllOrgchart, OrgchartActions} from "@minhdu-fontend/orgchart";
-import {Branch, Position} from "@minhdu-fontend/data-models";
+import {Position} from "@minhdu-fontend/data-models";
 import {map} from "rxjs/operators";
 import {selectedAddedPayroll} from "../../+state/payroll/payroll.selector";
 import {RecipeTypesConstant} from "@minhdu-fontend/constants";
 import {PayrollAction} from "../../+state/payroll/payroll.action";
-import {PositionActions} from "@minhdu-fontend/orgchart-position";
 import {FlatSalary} from "@minhdu-fontend/enums";
 
 @Component({

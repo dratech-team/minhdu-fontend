@@ -1,17 +1,19 @@
 import {Branch} from "@minhdu-fontend/data-models";
-import {salaryReference, SalaryTypeEnum} from "../enums";
-import {DatetimeUnitEnum} from "@minhdu-fontend/enums";
+import {DatetimeUnitEnum, EmployeeType, SalaryTypeEnum} from "@minhdu-fontend/enums";
 import {BaseSalarySettingEntity} from "../bases";
 import {SalaryConstraintEntity} from "./salary-constraint.entity";
+import {PriceType} from "../enums";
 
 export interface SalarySettingEntity extends BaseSalarySettingEntity {
   type: SalaryTypeEnum,
-  title?: string,
+  title: string,
   price?: number,
-  reference?: salaryReference,
+  prices?: number[],
+  reference?: PriceType,
   constraints?: SalaryConstraintEntity[]
   branches?: Branch[]
   unit?: DatetimeUnitEnum
-  types: SalaryTypeEnum [],
+  totalOf: SalaryTypeEnum [],
   workday?: number,
+  employeeType?:EmployeeType
 }

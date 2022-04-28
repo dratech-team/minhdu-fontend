@@ -1,0 +1,51 @@
+import {BasePayrollEntity} from "../bases";
+import {Employee} from "@minhdu-fontend/data-models";
+import {PayslipEntity} from "./payslip.entity";
+import {RecipeType} from "@minhdu-fontend/enums";
+import {
+  DeductionSalaryEntity,
+  AllowanceSalaryEntity,
+  OvertimeSalaryEntity,
+  PermanentSalaryEntity, SalaryEntity, RemoteSalaryEntity
+} from "../../salary/entities";
+
+interface Salary {
+  total: number,
+  unit: {
+    days: number,
+    hours: number
+  }
+}
+
+interface Timesheet {
+  datetime: any[];
+  total: number
+}
+
+export interface PayrollEntity extends BasePayrollEntity {
+  employee: Employee;
+  payslip: PayslipEntity;
+  timesheet: Timesheet;
+  salary?: Salary
+  manConfirmedAt: Date;
+  paidAt: Date;
+  accConfirmedAt: Date;
+  workday?: number;
+  isFlatSalary: boolean,
+  totalWorkday: number;
+  actualday?: number;
+  taxed: boolean;
+  tax: number
+  recipeType: RecipeType;
+  note?: string
+  branch?: string,
+  position?: string
+  salariesv2: PermanentSalaryEntity[],
+  salaries: SalaryEntity[],
+  absents: DeductionSalaryEntity [],
+  deductions: DeductionSalaryEntity [],
+  overtimes: OvertimeSalaryEntity [],
+  allowances: AllowanceSalaryEntity[],
+  remotes: RemoteSalaryEntity[],
+  payrollIds?: number[]
+}

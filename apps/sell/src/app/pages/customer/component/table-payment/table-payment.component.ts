@@ -76,7 +76,6 @@ export class TablePaymentComponent implements OnInit {
   }
 
   updatePayment(paymentHistory: PaymentHistory) {
-    console.log(paymentHistory);
     this.dialog.open(PaymentDialogComponent, {
       width: 'fit-content',
       data: {

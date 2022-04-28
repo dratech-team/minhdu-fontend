@@ -48,3 +48,4 @@ export * from './partial-day.enum';
 export * from './searchType.enum';
 export * from './input-search.enum';
 export * from './paidType.enum';
+export * from './hr/employee-status.enum';

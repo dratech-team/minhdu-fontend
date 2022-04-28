@@ -36,7 +36,6 @@ export class TemplateSalaryEffect {
           {type: props.templateSalaryDTO.salaryType ? props.templateSalaryDTO.salaryType : ''})
       )),
       map((responsePagination) => {
-          console.log(responsePagination);
           return TemplateSalaryAction.loadInitTempLateSuccess({
             templateSalary: responsePagination.data,
             total: responsePagination.total

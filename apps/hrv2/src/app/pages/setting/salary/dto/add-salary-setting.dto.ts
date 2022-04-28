@@ -7,7 +7,7 @@ export interface BaseAddSalarySettingDto extends Omit<BaseSalarySettingEntity,'i
   readonly settingType: SalaryTypeEnum,
   readonly constraint?: SalaryTypeEnum[],
   readonly workday?:number
-  readonly types?:SalaryTypeEnum[],
+  readonly totalOf?:SalaryTypeEnum[],
 
 }
 

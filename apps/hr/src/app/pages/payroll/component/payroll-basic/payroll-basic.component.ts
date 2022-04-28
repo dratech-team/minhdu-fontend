@@ -1,15 +1,5 @@
 import {DatePipe} from '@angular/common';
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
@@ -30,22 +20,16 @@ import {catchError, debounceTime} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
-  selectedRangeDayPayroll,
+  selectedEmpStatusPayroll,
   selectedLoadedPayroll,
   selectedPositionPayroll,
+  selectedRangeDayPayroll,
   selectedTotalPayroll,
-  selectorAllPayroll, selectedEmpStatusPayroll
+  selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {getAllPosition} from '@minhdu-fontend/orgchart-position';
-import {
-  checkInputNumber,
-  filterSalaryPayroll,
-  getFirstDayInMonth,
-  getLastDayInMonth,
-  getSelectors,
-  updateSelectOneSalaryPayroll
-} from '@minhdu-fontend/utils';
+import {checkInputNumber, filterSalaryPayroll, getSelectors, updateSelectOneSalaryPayroll} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
 import {SalaryService} from '../../service/salary.service';
 import {DialogBasicComponent} from '../dialog-salary/dialog-basic/dialog-basic.component';
@@ -54,10 +38,9 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 import {PayrollService} from "../../service/payroll.service";
 import {ExportService} from "@minhdu-fontend/service";
 import {ClassifyOvertimeComponent} from "../classify-overtime/classify-overtime.component";
-import {Payroll} from "../../+state/payroll/payroll.interface";
 
 @Component({
-  selector: 'minhdu-fontend-payroll-basic',
+  selector: 'app-payroll-basic',
   templateUrl: 'payroll-basic.component.html'
 })
 export class PayrollBasicComponent implements OnInit, OnChanges {

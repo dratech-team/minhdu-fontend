@@ -19,6 +19,13 @@ const routes: Routes = [
         loadChildren: () =>
           import('./pages/employee/employee.module').then(
             (m) => m.EmployeeModule
+          )
+      },
+      {
+        path: TabEnum.PAYROLL,
+        loadChildren: () =>
+          import('./pages/payroll/payroll.module').then(
+            (m) => m.PayrollModule
           ),
         canActivate: [RouteGuard]
       },

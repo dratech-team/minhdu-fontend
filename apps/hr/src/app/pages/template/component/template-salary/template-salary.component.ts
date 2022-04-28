@@ -51,7 +51,7 @@ export class TemplateSalaryComponent implements OnInit {
         , Validators.required],
       price: [template?.price],
       unit: [template?.unit || DatetimeUnitEnum.MONTH],
-      recipes: [template?.types ? this.getRecipes(template.types) : ''],
+      recipes: [template?.types ? this.getRecipes(template.types) : []],
       reference: [template?.types?.length > 0 ? this.getReference(salaryReference.BLOCK) : this.getReference(salaryReference.PRICE)],
       title: [template?.title, Validators.required],
       dive: [template?.workday ? DiveTypeEnum.OTHER : DiveTypeEnum.STANDARD],
@@ -69,6 +69,7 @@ export class TemplateSalaryComponent implements OnInit {
       }
     })
   }
+
 
   checkConstraint(constraints: SalaryTypeEnum[] | undefined, constraint: SalaryTypeEnum) {
     if (!constraints) {

@@ -40,7 +40,7 @@
           <th nzLeft>Tên bản mẫu</th>
           <th nzLeft>Đơn giá - Công thức lương</th>
           <th>Hệ số</th>
-          <th>Loại bản mẫu </th>
+          <th>Loại bản mẫu</th>
           <th>Ghi chú</th>
         </tr>
         </thead>
@@ -48,15 +48,17 @@
         <ng-template ngFor let-settingSalary [ngForOf]="tableRank.data" let-i='index'>
           <tr (contextmenu)='child.onContextMenu($event,settingSalary)'>
             <td nzLeft>{{(i + 1) + ((tableRank.nzPageIndex - 1) * pageSize)}}</td>
-            <td >{{settingSalary.id}}</td>
+            <td>{{settingSalary.id}}</td>
             <td nzLeft>{{settingSalary.title}}</td>
-            <td nzLeft>{{settingSalary.type === salaryTypeEnum.ABSENT ?
-              (((settingSalary.price|number:'1.0-0')) || tranFormType(settingSalary.types))
-              + ' / ' +
-              (settingSalary.workday || 'Ngày công chuẩn') :
-              settingSalary.price}}</td>
+            <td nzLeft>{{
+              settingSalary.type === salaryTypeEnum.ABSENT || settingSalary.type === salaryTypeEnum.OVERTIME
+                ? ((settingSalary.prices && settingSalary.prices.length > 0 ?(settingSalary.prices|prices): (settingSalary.totalOf|salarytype:'transform'))
+                + ' / '
+                + (settingSalary.workday ? settingSalary.workday: 'Ngày công chuẩn')
+                )
+                : (settingSalary.prices|prices)}}</td>
             <td>{{settingSalary.rate}}</td>
-            <td>{{settingSalary.type|transformBlockSalary: blockSalaries }}</td>
+            <td>{{settingSalary.type|blocksalary: blockSalaries }}</td>
             <td>{{settingSalary.note }}</td>
           </tr>
         </ng-template>

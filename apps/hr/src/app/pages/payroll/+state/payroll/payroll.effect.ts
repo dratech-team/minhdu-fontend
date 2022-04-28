@@ -207,7 +207,6 @@ export class PayrollEffect {
       switchMap((props) =>
         this.payrollService.confirmPayroll(props.id, props.dataConfirm).pipe(
           map((Payroll) => {
-            console.log(Payroll);
             this.message.success('Xác nhận thành công');
             return PayrollAction.confirmPayrollSuccess({payroll: Payroll});
           }),

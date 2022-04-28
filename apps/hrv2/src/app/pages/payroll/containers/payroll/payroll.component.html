@@ -1,0 +1,103 @@
+<div style="min-height:80vh; padding: 20px">
+  <div class="d-flex align-items-center">
+    <div class="font-weight-bold font-lg">
+      {{formGroup.value.filterType|transform:payrollConstant}}
+    </div>
+    <div class='d-flex justify-content-center align-items-center ml-2' [formGroup]="formGroup">
+      <nz-range-picker
+        formControlName="rangeDay"
+        style='width: 250px'
+        *ngIf='formGroup.value.filterType === filterTypeEnum.OVERTIME || formGroup.value.filterType === filterTypeEnum.ABSENT else formCreated'
+        [nzAllowClear]='false' nzFormat='dd-MM-yyyy' nzMode='date'
+      ></nz-range-picker>
+      <ng-template #formCreated>
+        <div [formGroup]="formGroup">
+          <span class="font-weight-bold font-lg">tháng</span>
+          <nz-date-picker
+            class='ml-2'
+            [nzAllowClear]='false'
+            nzMode='month'
+            nzFormat='MM-yyyy'
+            formControlName="startedAt"
+          ></nz-date-picker>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <div class="d-flex mt-2 justify-content-between">
+    <div class="d-flex">
+      <div class="mr-2" [formGroup]="formGroup">
+        <div class="font-weight-bold">
+          Loại phiếu lương
+        </div>
+        <nz-select style='width: 200px' formControlName="filterType">
+          <nz-option *ngFor='let item of payrollConstant' [nzValue]='item.value' [nzLabel]="item.name">
+          </nz-option>
+        </nz-select>
+      </div>
+      <div [formGroup]="formGroup">
+        <div class="font-weight-bold">
+          Chi nhánh
+        </div>
+        <div>
+          <nz-select
+            nzShowSearch
+            nzAllowClear
+            style='width:250px'
+            nzPlaceHolder='Chọn đơn vị'
+            [compareWith]='compareFN'
+            formControlName="branch"
+          >
+            <nz-option
+              *ngFor='let branch of branches$ | async'
+              [nzLabel]='branch.name'
+              [nzValue]='branch'
+            >
+            </nz-option>
+          </nz-select>
+        </div>
+
+      </div>
+      <div [formGroup]="formGroup" style='width: fit-content' class='ml-2'>
+        <div class="font-weight-bold">Phòng ban</div>
+        <nz-select style='width:200px' formControlName="category">
+          <nz-option [nzValue]="''" nzLabel='Tất cả'>Tất cả</nz-option>
+          <nz-option *ngFor='let item of categories$|async' [nzValue]='item.id' [nzLabel]='item.name'></nz-option>
+          <nz-option [nzValue]='0' nzLabel='Tạo mới'></nz-option>
+        </nz-select>
+      </div>
+      <div [formGroup]="formGroup" class='ml-2'>
+        <div class="font-weight-bold">
+          Tình trạng nhân viên
+        </div>
+        <div>
+          <nz-select
+            formControlName="empStatus"
+            nzShowSearch
+            style='width:200px'
+            nzPlaceHolder='Chọn loại nhân viên'
+          >
+            <nz-option *ngFor="let item of empStatusContain" [nzValue]='item.value' [nzLabel]='item.name'></nz-option>
+          </nz-select>
+        </div>
+      </div>
+    </div>
+    <div>
+      <button nz-button nzType="primary" (click)="onAdd()">Tạo tự động</button>
+    </div>
+    <button *ngIf='formGroup.value.category && formGroup.value.category !==0 && this.role !== roleEnum.HUMAN_RESOURCE '
+            class='btn btn-primary ml-1' (click)='onUpdateCategory()'>Sửa
+    </button>
+  </div>
+  <div class="mt-2">
+    <minhdu-fontend-table-payroll
+      [formGroup]="formGroup"
+      [payrolls]="(payrolls$ | async) || []"
+      [onChange]='onChange'
+      (onloadPayroll)="onLoadPayroll($event.isPagination)"
+    >
+    </minhdu-fontend-table-payroll>
+  </div>
+
+</div>
+

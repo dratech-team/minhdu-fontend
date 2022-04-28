@@ -66,7 +66,6 @@ export class HistoryPayrollComponent implements OnInit {
 
   ngOnInit() {
     this.employeeType$ = this.activatedRoute.queryParams.pipe(map(param => {
-        console.log(param.employeeType);
         return param.employeeType;
       }
     ));

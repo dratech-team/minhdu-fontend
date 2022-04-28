@@ -2,10 +2,11 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Api} from '@minhdu-fontend/constants';
-import {ResponsePaginate, Salary} from '@minhdu-fontend/data-models';
+import {ResponsePaginate} from '@minhdu-fontend/data-models';
 import {BaseService} from 'libs/service/base.service';
 import {EmployeeEntity} from "../entities";
 import {AddEmployeeDto, LoadOneEmployeeDto, SearchEmployeeDto, UpdateEmployeeDto} from "../dto/employee";
+import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
 
 
 @Injectable({providedIn: 'root'})
@@ -46,8 +47,8 @@ export class EmployeeService extends BaseService<EmployeeEntity> {
     return this.http.delete<void>(Api.HR.EMPLOYEE.EMPLOYEE + `/${id}/work-history`);
   }
 
-  updateHistorySalary(id: number, body: any): Observable<Salary> {
-    return this.http.patch<Salary>(Api.HR.EMPLOYEE.HISTORY_SALARY + `/${id}`, body);
+  updateHistorySalary(id: number, body: any): Observable<ResponseMessageEntity> {
+    return this.http.patch<ResponseMessageEntity>(Api.HR.EMPLOYEE.HISTORY_SALARY + `/${id}`, body);
   }
 
   deleteHistorySalary(id: number): Observable<void> {

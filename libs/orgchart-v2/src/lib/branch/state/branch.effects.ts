@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
-import {catchError, concatMap, map, switchMap, tap} from 'rxjs/operators';
-import {of, throwError} from 'rxjs';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {of} from 'rxjs';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {BranchStore} from "./branch.store";
 import {BranchQuery} from "./branch.query";
 import {BranchService} from "../services/branch.service";
 import {BranchActions} from "./branch.actions";
 import {SearchBranchDto} from "../dto";
+import {PositionStore} from "../../position/state";
 
 @Injectable()
 export class BranchEffects {
@@ -15,6 +16,7 @@ export class BranchEffects {
     private readonly action$: Actions,
     private readonly branchStore: BranchStore,
     private readonly branchQuery: BranchQuery,
+    private readonly positionStore: PositionStore,
     private readonly branchService: BranchService,
     private readonly message: NzMessageService,
   ) {
@@ -27,16 +29,16 @@ export class BranchEffects {
       this.branchStore.update(state => ({
         ...state, loading: true
       }));
-      const params = Object.assign(props.search, props.search?.orderType
-        ? {orderType: props.search.orderType === 'ascend' ? 'asc' : 'desc'}
-        : {});
-      return this.branchService.pagination(params as SearchBranchDto).pipe(
+      return this.branchService.pagination(props as SearchBranchDto).pipe(
         map((response) => {
           this.branchStore.update(state => ({...state, loading: false, total: response.total}));
           if (response.data.length === 0) {
             this.message.warning('Đã lấy hết đơn vị');
           } else {
             this.message.success('tải danh sách đơn vị thành công');
+          }
+          if(response.data.length === 1 && response.data[0].positions){
+            this.positionStore.set(response.data[0].positions)
           }
           if (props.isPaginate) {
             this.branchStore.add(response.data);
@@ -52,7 +54,6 @@ export class BranchEffects {
         })
       );
     }),
-
   );
 
   @Effect()

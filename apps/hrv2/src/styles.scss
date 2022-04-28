@@ -195,12 +195,11 @@ input[type='checkbox'] {
   background: white;
 }
 
-input[type='checkbox']:checked:after {
-  content: '✔';
-  color: red;
-}
-
 table thead tr th {
+  padding:4px !important;
+}
+table thead tr th,
+table thead tr th div {
   text-align: center !important;
   font-weight: 600 !important;
   font-size: 13px;
@@ -213,18 +212,6 @@ table tbody tr td {
 
 .pointer {
   cursor: pointer;
-}
-
-.main-profile {
-  width: max-content;
-  padding: 1rem;
-}
-
-.tab {
-  position: relative;
-  margin-top: 10px;
-  left: 5%;
-  width: 80%;
 }
 
 .edit {
@@ -252,4 +239,17 @@ table tbody tr td {
 .invalid-feedback{
   display: block;
 }
+
+.create-salary {
+  cursor: pointer;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  color: white;
+  background: #1b8eb7;
+  padding: 6px 10px;
+  border: solid 1px #1b8eb7;
+  border-radius: 4px;
+}
+
 @import "~ng-zorro-antd/ng-zorro-antd.min.css";

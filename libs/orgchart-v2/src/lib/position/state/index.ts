@@ -1,4 +1,4 @@
 export * from './position.actions';
 export * from './position.effects';
-export * from './orgchart.reducer';
-export * from './orgchart.selectors';
+export * from './position.query';
+export * from './position.store';

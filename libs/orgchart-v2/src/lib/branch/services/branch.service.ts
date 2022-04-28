@@ -7,7 +7,7 @@ import { BaseService } from '@minhdu-fontend/service';
 import {BranchEntity} from "../entities/branch.entity";
 import {AddBranchDto, LoadOneBranchDto, SearchBranchDto, UpdateBranchDto} from "../dto";
 
-@Injectable()
+@Injectable({providedIn:'root'})
 export class BranchService extends BaseService<BranchEntity> {
   constructor(
     public readonly http: HttpClient

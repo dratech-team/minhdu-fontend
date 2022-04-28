@@ -70,7 +70,6 @@ export class ProductDialogComponent implements OnInit {
         type: [TypeProductEnum.NORMAL, Validators.required]
       });
     }
-    console.log(this.checkValid)
   }
 
   get checkValid() {

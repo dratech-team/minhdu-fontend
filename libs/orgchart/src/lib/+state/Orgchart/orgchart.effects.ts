@@ -8,22 +8,23 @@ import {OrgchartService} from '@minhdu-fontend/orgchart';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {Store} from "@ngrx/store";
 import {PositionActions} from "@minhdu-fontend/orgchart-position";
+import {Branch, ResponsePaginate} from "@minhdu-fontend/data-models";
 
 @Injectable()
 export class OrgchartEffects {
   init$ = createEffect(() =>
     this.actions$.pipe(
       ofType(OrgchartActions.init),
-      switchMap(() => this.orgchartService.getAll()),
-      map(branches => {
-        if (branches.length === 1) {
-          if (branches[0].positions) {
+      switchMap(() => this.orgchartService.pagination()),
+      map((res: ResponsePaginate<Branch>) => {
+        if (res.data.length === 1) {
+          if (res.data[0].positions) {
             this.store.dispatch(PositionActions.loadPositionSuccess({
-              position: branches[0].positions
+              position: res.data[0].positions
             }))
           }
         }
-        return OrgchartActions.loadOrgchartSuccess({branches});
+        return OrgchartActions.loadOrgchartSuccess({branches: res.data});
       }),
       catchError(err => throwError(err))
     )

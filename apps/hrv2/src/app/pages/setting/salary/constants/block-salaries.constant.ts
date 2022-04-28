@@ -1,5 +1,9 @@
-import {salaryReference, SalaryTypeEnum} from "../enums";
-import {referencesTypeConstant} from "./reference-type.constant";
+import {PriceType, SalaryTypeEnum} from "../enums";
+import {recipesConstant} from "./recipes.constant";
+import {DatetimeUnitEnum, EmployeeType} from "@minhdu-fontend/enums";
+import {UnitDatetimeConstant} from "./unit-datetime.constant";
+import {EmployeeTypeConstant} from "./employee-type.constant";
+import {ReferenceOvertimeConstant} from "./reference-overtime.constant";
 
 interface BlockSalary {
   title: string,
@@ -8,6 +12,11 @@ interface BlockSalary {
     disabled?: boolean,
     show?: boolean
   }
+  units?: {
+    name: string,
+    value: DatetimeUnitEnum,
+    salaryType: SalaryTypeEnum[]
+  }[],
   constraintHoliday?: {
     disabled?: boolean,
     show?: boolean
@@ -16,15 +25,19 @@ interface BlockSalary {
     disabled?: boolean,
     show?: boolean
   }
-  references?: {
+  recipesConstant?: {
     name: string,
-    value: salaryReference
+    value: PriceType
+  }[],
+  employeeConstant?: {
+    name: string,
+    value: EmployeeType
   }[],
   price?: {
     disabled?: boolean,
     show?: boolean
   }
-  insurance? :{
+  insurance?: {
     disabled?: boolean,
     show?: boolean
   }
@@ -34,7 +47,11 @@ export const blockSalariesConstant: BlockSalary[] = [
   {
     title: 'Lương cơ bản',
     type: SalaryTypeEnum.BASIC,
-    insurance:{
+    constraintHoliday: {
+      disabled: false,
+      show: false
+    },
+    insurance: {
       show: true,
       disabled: false
     },
@@ -50,6 +67,10 @@ export const blockSalariesConstant: BlockSalary[] = [
   {
     title: 'Phụ cấp lương',
     type: SalaryTypeEnum.STAY,
+    constraintHoliday: {
+      disabled: false,
+      show: false
+    },
     rate: {
       disabled: false,
       show: true
@@ -62,7 +83,7 @@ export const blockSalariesConstant: BlockSalary[] = [
   {
     title: 'Khấu trừ',
     type: SalaryTypeEnum.ABSENT,
-    references: referencesTypeConstant,
+    recipesConstant: recipesConstant,
     constraintHoliday: {
       disabled: false,
       show: true
@@ -71,6 +92,7 @@ export const blockSalariesConstant: BlockSalary[] = [
       disabled: false,
       show: true
     },
+    units: UnitDatetimeConstant.filter(item => item.salaryType.includes(SalaryTypeEnum.ABSENT)),
     rate: {
       disabled: false,
       show: true
@@ -83,6 +105,9 @@ export const blockSalariesConstant: BlockSalary[] = [
   {
     title: 'Tăng ca',
     type: SalaryTypeEnum.OVERTIME,
+    employeeConstant:EmployeeTypeConstant,
+    units: UnitDatetimeConstant.filter(item => item.salaryType.includes(SalaryTypeEnum.OVERTIME)),
+    recipesConstant: recipesConstant,
     rate: {
       disabled: false,
       show: true

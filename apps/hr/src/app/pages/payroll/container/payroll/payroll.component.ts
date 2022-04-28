@@ -65,7 +65,7 @@ import { EmployeeStatusEnum } from '../../../../../../../../libs/enums/hr/employ
 export class PayrollComponent implements OnInit, AfterContentChecked {
   @ViewChild(MatSort) sort!: MatSort;
   categoryControl = new FormControl('');
-  formEmpStatus = new FormControl(EmployeeStatusEnum.IS_AVTIVE)
+  formEmpStatus = new FormControl(EmployeeStatusEnum.IS_ACTIVE)
   formGroup = new FormGroup({
     accConfirmed: new FormControl(-1),
     name: new FormControl(''),
@@ -342,7 +342,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   onChange(event: any){
-    console.log("eventradas", event);
   }
 
   ngAfterContentChecked() {

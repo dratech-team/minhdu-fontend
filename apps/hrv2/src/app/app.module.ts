@@ -12,7 +12,7 @@ import {NzButtonModule} from "ng-zorro-antd/button";
 import {RouteGuard} from "../../../warehouse/src/app/route.guard";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {ErrorInterceptor, JwtInterceptor} from "@minhdu-fontend/auth";
-import {HashLocationStrategy} from "@angular/common";
+import {HashLocationStrategy, registerLocaleData} from "@angular/common";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {NZ_ICONS} from "ng-zorro-antd/icon";
 import * as AllIcons from "@ant-design/icons-angular/icons";
@@ -27,6 +27,11 @@ import { StoreModule } from '@ngrx/store';
 import { EmployeeLibV2Module } from '@minhdu-fontend/employee-v2';
 import { NZ_CONFIG, NzConfig } from 'ng-zorro-antd/core/config';
 import { NZ_I18N, vi_VN } from 'ng-zorro-antd/i18n';
+import localeVi from "@angular/common/locales/vi";
+import {NgxCurrencyModule} from "ngx-currency";
+import {customCurrencyMaskConfig2} from "@minhdu-fontend/config";
+
+registerLocaleData(localeVi);
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -57,7 +62,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     NzButtonModule,
     NzModalModule,
     NzMessageModule,
-    EmployeeLibV2Module
+    EmployeeLibV2Module,
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig2)
   ],
   providers: [
     {

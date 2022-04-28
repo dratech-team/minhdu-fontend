@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Api } from '@minhdu-fontend/constants';
 import { Injectable } from '@angular/core';
-import { Branch } from '@minhdu-fontend/data-models';
+import {Branch, ResponsePaginate} from '@minhdu-fontend/data-models';
 import { BaseService } from '@minhdu-fontend/service';
 
 @Injectable()
@@ -15,5 +15,8 @@ export class OrgchartService extends BaseService<Branch> {
 
   getAll(params?: any): Observable<Branch[]> {
     return super.getAll(params);
+  }
+  pagination(params?: any): Observable<ResponsePaginate<Branch>> {
+    return super.pagination(params);
   }
 }
