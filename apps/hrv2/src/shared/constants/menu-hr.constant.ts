@@ -40,7 +40,7 @@ export const MenuHrConstant: MenuHrConstant[] = [
     children: [
       {
         name: 'Lương',
-        href: 'cai-dat'
+        href: 'cai-dat/luong'
       },
       {
         name: 'Ngày lễ',
