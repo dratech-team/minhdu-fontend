@@ -22,6 +22,7 @@ import {NzSpinModule} from "ng-zorro-antd/spin";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {EmployeeTypePipe} from "./pipes/employee-type.pipe";
 import {GenderTypePipe} from "./pipes/gender-type.pipe";
+import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import {GenderTypePipe} from "./pipes/gender-type.pipe";
     ReactiveFormsModule,
     ComponentsModule,
     EmployeeLibV2Module,
+    OrgchartV2Module,
     NzDropDownModule,
     NzIconModule,
     NzSelectModule,

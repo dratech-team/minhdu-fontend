@@ -45,7 +45,6 @@ const routes: Routes = [
           ),
         canActivate: [RouteGuard]
       },
-
     ],
   },
   {path: '**', redirectTo: ''}

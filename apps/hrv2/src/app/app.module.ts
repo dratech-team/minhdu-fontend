@@ -1,4 +1,4 @@
-import { LOCALE_ID, NgModule } from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppComponent} from './app.component';
 import {RouterModule} from '@angular/router';
@@ -19,14 +19,13 @@ import * as AllIcons from "@ant-design/icons-angular/icons";
 import {IconDefinition} from "@ant-design/icons-angular";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {NzMessageModule} from "ng-zorro-antd/message";
-import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { EffectsModule } from '@ngrx/effects';
-import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
-import { StoreModule } from '@ngrx/store';
-import { EmployeeLibV2Module } from '@minhdu-fontend/employee-v2';
-import { NZ_CONFIG, NzConfig } from 'ng-zorro-antd/core/config';
-import { NZ_I18N, vi_VN } from 'ng-zorro-antd/i18n';
+import {AkitaNgDevtools} from '@datorama/akita-ngdevtools';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {EffectsModule} from '@ngrx/effects';
+import {AuthEffects} from '../../../../libs/auth/src/lib/+state/auth.effects';
+import {StoreModule} from '@ngrx/store';
+import {NZ_CONFIG, NzConfig} from 'ng-zorro-antd/core/config';
+import {NZ_I18N, vi_VN} from 'ng-zorro-antd/i18n';
 import localeVi from "@angular/common/locales/vi";
 import {NgxCurrencyModule} from "ngx-currency";
 import {customCurrencyMaskConfig2} from "@minhdu-fontend/config";
@@ -49,7 +48,6 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     AppRoutingModule,
     RouterModule,
     MatMenuModule,
-    AppFooterModule,
     AppHeaderModule,
     AppSidebarModule,
     PerfectScrollbarModule,
@@ -62,7 +60,6 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     NzButtonModule,
     NzModalModule,
     NzMessageModule,
-    EmployeeLibV2Module,
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig2)
   ],
   providers: [
@@ -79,8 +76,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     RouteGuard,
     HashLocationStrategy,
     {provide: NZ_ICONS, useValue: icons},
-    { provide: LOCALE_ID, useValue: 'vi-VN' },
-    { provide: NZ_CONFIG, useValue: { message: { nzMaxStack: 1 } } as NzConfig },
+    {provide: LOCALE_ID, useValue: 'vi-VN'},
+    {provide: NZ_CONFIG, useValue: {message: {nzMaxStack: 1}} as NzConfig},
     {provide: NZ_I18N, useValue: vi_VN},
   ],
   bootstrap: [AppComponent],
