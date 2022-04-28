@@ -8,15 +8,17 @@ import {
   Position,
   Relative,
   Salary,
-  SalaryHistory,
+  SalaryHistory, Ward,
   WorkHistory
 } from "@minhdu-fontend/data-models";
+import {EmployeeType, RecipeType} from "@minhdu-fontend/enums";
 
 
 
 export interface EmployeeEntity extends BaseEmployeeEntity{
   stt?: number,
   avt?: string,
+  lastName: string,
   workPhone?: string,
   payrolls: Payroll[],
   contracts: Contracts[];
@@ -36,5 +38,19 @@ export interface EmployeeEntity extends BaseEmployeeEntity{
   facebook: string,
   isSelect?: boolean,
   birthplace: string,
+  contractType?: string,
+  recipeType: RecipeType,
+  type: EmployeeType,
+  ward: Ward,
+  createdAt: Date,
+  workedAt: Date;
+  workday: number,
+  idCardAt: Date,
+  issuedBy: string,
+  birthday: Date,
+  email?: string,
+  contractAt: string,
+  leftAt: Date,
+  isFlatSalary: boolean,
 }
 

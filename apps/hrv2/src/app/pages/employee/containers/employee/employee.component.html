@@ -1,7 +1,7 @@
 <nz-spin *ngIf='added$|async' class="loading"></nz-spin>
-<div class='main-content'>
-  <div class='row h3 ml-3'>Hồ sơ nhân viên</div>
-  <div class='d-flex align-items-center justify-content-between '>
+<div style="height: 81vh">
+  <div class='font-weight-bold font-2xl ml-3'>Hồ sơ nhân viên</div>
+  <div class='d-flex align-items-center justify-content-between'>
     <div class='d-flex'>
       <div class="ml-3" [formGroup]="formGroup">
         <div class="font-weight-bold">
@@ -56,17 +56,18 @@
     </div>
   </div>
   <div class='mx-auto' style='width: 98%'>
-    <div class='my-5'>
+    <div class='my-3'>
       <nz-table
         #tableEmployee
         [nzPageSize]="pageSize"
         [formGroup]='formGroup'
+        [nzLoading]="loading$|async"
         [nzScroll]="{x:'3200px',y:'60vh'}"
         [nzData]="(employees$|async) || []"
       >
         <thead>
         <tr>
-          <th>
+          <th nzLeft nzWidth="100px">
             <div>STT</div>
             <input nz-input type='text' disabled>
           </th>
@@ -76,9 +77,9 @@
           <!--            </th>-->
           <th>
             <div>Mã nhân viên</div>
-            <input nz-input type='search'>
+            <input nz-input type='search' disabled>
           </th>
-          <th>
+          <th nzLeft>
             <div>Tên nhân viên</div>
             <input nz-input type='search' formControlName='name' placeholder='Trần Gia Hiệu'>
           </th>
@@ -98,7 +99,7 @@
           </th>
           <th>
             <div>Giới tính</div>
-            <nz-select style='min-width:100px' formControlName='gender'>
+            <nz-select style='min-width:100%' formControlName='gender'>
               <nz-option *ngFor="let item of genderTypeConstant" [nzValue]="item.value"
                          [nzLabel]="item.name"></nz-option>
               <nz-option [nzValue]="genderType.ALL" nzLabel="Tất cả"></nz-option>
@@ -110,7 +111,7 @@
           </th>
           <th nzWidth='5%'>
             <div>Loại lương</div>
-            <nz-select style='min-width: 170px' formControlName='flatSalary'>
+            <nz-select style='width:100%' formControlName='flatSalary'>
               <nz-option *ngFor="let item of flatSalaryTypeConstant" [nzValue]="item.value" [nzLabel]="item.name">Lương
                 cố định
               </nz-option>
@@ -120,11 +121,11 @@
             <div>Số điện thoại</div>
             <input nz-input type='search' formControlName='phone'>
           </th>
-          <th>
+          <th nzLeft>
             <div>Đơn vị</div>
             <input nz-input type='search' disabled>
           </th>
-          <th>
+          <th nzLeft>
             <div>Chức vụ</div>
             <nz-select
               nzShowSearch
@@ -144,7 +145,7 @@
           </th>
           <th nzWidth='5%'>
             <div>CMND / CCCD</div>
-            <input type='search' nz-input formControlName='identity'>
+            <input type='search' nz-input formControlName='identify'>
           </th>
           <th>
             <div>Tỉnh / Thành phố</div>
@@ -214,13 +215,13 @@
             (contextmenu)='child.onContextMenu($event,employee)'
             (click)='readAndUpdate(employee)'
             cdkDrag>
-            <td>
+            <td nzLeft nzWidth="100px">
               <div>{{(i + 1) + ((tableEmployee.nzPageIndex - 1) * pageSize)}}</div>
             </td>
             <td>
               <div>{{employee?.id}}</div>
             </td>
-            <td>
+            <td nzLeft>
               <div>{{employee?.lastName}}</div>
             </td>
             <td>
@@ -249,42 +250,42 @@
                 {{employee?.phone ? employee.phone : 'Chưa cập nhật'}}
               </div>
             </td>
-            <td>
+            <td nzLeft>
               <div>
                 {{employee?.branch?.name}}
               </div>
             </td>
-            <td class='pointer'>
+            <td nzLeft>
               <div>
                 {{employee?.position?.name}}
               </div>
             </td>
-            <td class='pointer'>
+            <td>
               <div>
                 {{employee?.identify ? employee.identify : 'Chưa cập nhật'}}
               </div>
             </td>
-            <td class='pointer'>
+            <td>
               <div>
                 {{employee?.ward?.district?.province?.name}}
               </div>
             </td>
-            <td class='pointer'>
+            <td>
               <div>
                 {{employee?.ward?.district?.name}}
               </div>
             </td>
-            <td class='pointer'>
+            <td>
               <div>
                 {{employee?.ward?.name}}
               </div>
             </td>
-            <td class='pointer'>
+            <td>
               <div>
                 {{employee?.address}}
               </div>
             </td>
-            <td class='pointer'>
+            <td>
               <div>
                 {{employee?.note}}
               </div>

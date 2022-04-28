@@ -1,42 +1,42 @@
-import {
-  AfterViewChecked,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-  ViewContainerRef
-} from '@angular/core';
+import {AfterViewChecked, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatMenuTrigger} from '@angular/material/menu';
 import {ActivatedRoute, Router} from '@angular/router';
 import {
-  ConvertBoolean,
   EmployeeType,
   Gender,
   ItemContextMenu,
+  Role,
   SearchEmployeeType,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
 import {catchError, debounceTime, tap} from 'rxjs/operators';
 import {EmployeeStatusConstant, GenderTypeConstant, PaginationDto} from '@minhdu-fontend/constants';
-import {Observable, Subject, throwError} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {Category, District, Employee, Ward} from '@minhdu-fontend/data-models';
 import {checkInputNumber} from '@minhdu-fontend/utils';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {MatSort, Sort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalService} from 'ng-zorro-antd/modal';
-import {Role} from '@minhdu-fontend/enums';
 import {ExportService} from "@minhdu-fontend/service";
 import {Actions} from "@datorama/akita-ng-effects";
-import {EmployeeActions, EmployeeQuery, EmployeeService, EmployeeStore} from "@minhdu-fontend/employee-v2";
+import {
+  EmployeeActions,
+  EmployeeEntity,
+  EmployeeQuery,
+  EmployeeService,
+  EmployeeStore
+} from "@minhdu-fontend/employee-v2";
 import {EmployeeTypeConstant} from "../constants/employee-type.constant";
 import {FlatSalaryTypeConstant} from "../constants/flat-salary-type.constant";
 import {ProvinceService} from "@minhdu-fontend/location";
 import {FlatSalaryTypeEnum} from "../../enums/flat-salary-type.enum";
-import {EmployeeEntity} from "@minhdu-fontend/employee-v2";
-import {BranchActions, BranchQuery, PositionActions, PositionQuery} from "@minhdu-fontend/orgchart-v2";
+import {BranchActions, BranchQuery, PositionQuery} from "@minhdu-fontend/orgchart-v2";
+import {
+  BaseSearchEmployeeDto,
+  SearchEmployeeDto
+} from "../../../../../../../../libs/employee-v2/src/lib/employee/dto/employee";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -69,24 +69,22 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   searchType = SearchEmployeeType;
   genderType = Gender;
   flatSalary = FlatSalaryTypeEnum;
-  convertBoolean = ConvertBoolean;
   ItemContextMenu = ItemContextMenu;
   empStatusContain = EmployeeStatusConstant;
   employeeType = EmployeeType;
-  eventScrollX = new Subject<any>();
   categories$ = new Observable<Category[]>();
   categoryControl = new FormControl('');
   role = window.localStorage.getItem('role')
   formGroup = new FormGroup({
     name: new FormControl(''),
     phone: new FormControl(''),
-    identity: new FormControl(''),
+    identify: new FormControl(''),
     address: new FormControl(''),
     province: new FormControl(''),
     district: new FormControl(''),
     ward: new FormControl(''),
     gender: new FormControl(''),
-    flatSalary: new FormControl('-1'),
+    flatSalary: new FormControl(FlatSalaryTypeEnum.ALL),
     position: new FormControl(''),
     branch: new FormControl(''),
     employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME),
@@ -128,9 +126,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
 
 
     this.actions$.dispatch(
-      EmployeeActions.loadAll({
-        search: this.mapEmployee(this.formGroup.value)
-      })
+      EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false))
     );
 
     this.actions$.dispatch(BranchActions.loadAll({}));
@@ -139,22 +135,12 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     this.formGroup.valueChanges
       .pipe(debounceTime(1500))
       .subscribe(val => {
-        this.actions$.dispatch(EmployeeActions.loadAll({search: this.mapEmployee(this.formGroup.value)}));
+        this.actions$.dispatch(EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false)));
       });
-
-    this.eventScrollX.pipe(
-      debounceTime(200)
-    ).subscribe(event => {
-      this.employeeStore.update(state => ({
-        ...state, scrollX: this.tableEmployee.nativeElement.scrollLeft
-      }));
-    });
 
     this.categoryControl.valueChanges.subscribe(val => {
       if (val !== 0) {
-        this.actions$.dispatch(EmployeeActions.loadAll({
-          search: this.mapEmployee(this.formGroup.value)
-        }));
+        this.actions$.dispatch(EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false)));
       }
     });
 
@@ -181,28 +167,27 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   delete(employeeId: any): void {
   }
 
-  onScrollX(event: any) {
-    this.eventScrollX.next(event);
-  }
-
-  mapEmployee(val: any, isPagination?: boolean) {
+  mapEmployeeDto(val: any, isPagination: boolean): SearchEmployeeDto {
     return {
-      take: PaginationDto.take,
-      skip: isPagination ? this.employeeQuery.getCount() : PaginationDto.skip,
-      name: val.name,
-      phone: val.phone,
-      identity: val.identity,
-      address: val.address,
-      province: val.province?.name || '',
-      district: val.district?.name || '',
-      ward: val.ward?.name || '',
-      gender: val.gender,
-      position: val.position ? val.position.name : '',
-      branch: val.branch ? val.branch.name : '',
-      status: val.status,
-      employeeType: val.employeeType,
-      isFlatSalary: val.flatSalary,
-      categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : ''
+      search: {
+        take: PaginationDto.take,
+        skip: isPagination ? this.employeeQuery.getCount() : PaginationDto.skip,
+        name: val.name,
+        phone: val.phone,
+        identify: val.identify,
+        address: val.address,
+        province: val.province?.name || '',
+        district: val.district?.name || '',
+        ward: val.ward?.name || '',
+        gender: val.gender,
+        position: val.position ? val.position.name : '',
+        branch: val.branch ? val.branch.name : '',
+        status: val.status,
+        employeeType: val.employeeType,
+        isFlatSalary: val.flatSalary,
+        categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : ''
+      },
+      isPaginate: isPagination
     };
   }
 
@@ -263,8 +248,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   }
 
   sortEmployee(sort: Sort) {
-    this.actions$.dispatch(EmployeeActions.loadAll({
-      search: this.mapEmployee(this.formGroup.value)
-    }));
+    this.actions$.dispatch(EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false)));
   }
 }

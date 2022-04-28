@@ -117,7 +117,7 @@ export class EmployeeEffect {
             }))
             if (res.data.length === 0) {
               this.message.info('Đã lấy hết nhân viên')
-              if (props.isPaginate) {
+              if (!props.isPaginate) {
                 this.employeeStore.set(res.data)
               }
             } else {
