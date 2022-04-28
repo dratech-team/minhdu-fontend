@@ -258,15 +258,15 @@ export class DetailPayrollComponent implements OnInit {
       },
       nzFooter: ' '
     }).afterClose.subscribe(val => {
-        this.actions$.dispatch(PayrollActions.update({id: payroll.id, updates: {note: val}}))
+      this.actions$.dispatch(PayrollActions.update({id: payroll.id, updates: {note: val}}))
     })
   }
 
   updatePayroll(payroll: PayrollEntity) {
     this.modal.create({
-      nzTitle:'Cập nhật phiếu lương',
+      nzTitle: 'Cập nhật phiếu lương',
       nzContent: UpdatePayrollComponent,
-      nzComponentParams:<{data: {payroll:PayrollEntity}}>{
+      nzComponentParams: <{ data: { payroll: PayrollEntity } }>{
         data: {
           payroll
         }
