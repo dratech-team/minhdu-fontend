@@ -1,4 +1,4 @@
-import {FlatSalaryTypeEnum} from "../../enums/flat-salary-type.enum";
+import {FlatSalaryTypeEnum} from "../enums/flat-salary-type.enum";
 
 export const FlatSalaryTypeConstant = [
   {

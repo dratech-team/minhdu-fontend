@@ -28,8 +28,8 @@ import {
   EmployeeService,
   EmployeeStore
 } from "@minhdu-fontend/employee-v2";
-import {EmployeeTypeConstant} from "../constants/employee-type.constant";
-import {FlatSalaryTypeConstant} from "../constants/flat-salary-type.constant";
+import {EmployeeTypeConstant} from "../../constants/employee-type.constant";
+import {FlatSalaryTypeConstant} from "../../constants/flat-salary-type.constant";
 import {ProvinceService} from "@minhdu-fontend/location";
 import {FlatSalaryTypeEnum} from "../../enums/flat-salary-type.enum";
 import {BranchActions, BranchQuery, PositionQuery} from "@minhdu-fontend/orgchart-v2";

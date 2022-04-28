@@ -1,6 +1,6 @@
 import {Pipe, PipeTransform} from "@angular/core";
 import {EmployeeType} from "@minhdu-fontend/enums";
-import {EmployeeTypeConstant} from "../containers/constants/employee-type.constant";
+import {EmployeeTypeConstant} from "../constants/employee-type.constant";
 
 @Pipe({
   name:'employeetype'
