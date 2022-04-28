@@ -6,7 +6,7 @@ import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {ReactiveFormsModule} from "@angular/forms";
 import {ComponentsModule} from "@minhdu-fontend/components";
 import {NzDropDownModule} from "ng-zorro-antd/dropdown";
-import { NzIconModule } from 'ng-zorro-antd/icon';
+import {NzIconModule} from 'ng-zorro-antd/icon';
 import {SharedModule} from "../../../shared/shared.module";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {NzPopoverModule} from "ng-zorro-antd/popover";
@@ -14,11 +14,14 @@ import {NzRadioModule} from "ng-zorro-antd/radio";
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
 import {NgxCurrencyModule} from "ngx-currency";
 import {NzButtonModule} from "ng-zorro-antd/button";
-import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
 import {HttpClientModule} from "@angular/common/http";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {EmployeeLibV2Module} from "@minhdu-fontend/employee-v2";
 import {EmployeeComponent} from "./containers/employee/employee.component";
+import {NzSpinModule} from "ng-zorro-antd/spin";
+import {DragDropModule} from "@angular/cdk/drag-drop";
+import {EmployeeTypePipe} from "./pipes/employee-type.pipe";
+import {GenderTypePipe} from "./pipes/gender-type.pipe";
 
 @NgModule({
   imports: [
@@ -39,11 +42,15 @@ import {EmployeeComponent} from "./containers/employee/employee.component";
     NzCheckboxModule,
     NgxCurrencyModule,
     NzButtonModule,
-    NzInputModule
+    NzInputModule,
+    NzSpinModule,
+    DragDropModule
   ],
 
   declarations:[
-    EmployeeComponent
+    EmployeeComponent,
+    EmployeeTypePipe,
+    GenderTypePipe
   ],
   providers:[
     DatePipe,

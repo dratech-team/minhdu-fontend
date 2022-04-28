@@ -16,7 +16,8 @@ import {
 
 export interface EmployeeEntity extends BaseEmployeeEntity{
   stt?: number,
-  code: string,
+  avt?: string,
+  workPhone?: string,
   payrolls: Payroll[],
   contracts: Contracts[];
   relatives: Relative[],
@@ -27,5 +28,13 @@ export interface EmployeeEntity extends BaseEmployeeEntity{
   position: Position,
   branch: Branch,
   category?: Category
+  religion: string,
+  ethnicity: string,
+  mst?: string,
+  zalo: string,
+  bhyt?: string,
+  facebook: string,
+  isSelect?: boolean,
+  birthplace: string,
 }
 

@@ -213,7 +213,7 @@ export class EmployeeEffect {
         return this.employeeService.updateHistorySalary(props.id, props.salary).pipe(
           map((res) => {
             this.message.info(res.message)
-            this.actions$.dispatch(EmployeeAction.loadOne({id: props.employeeId}))
+            this.actions$.dispatch(EmployeeActions.loadOne({id: props.employeeId}))
           }),
           catchError((err) => {
             return of(EmployeeActions.error(err))
