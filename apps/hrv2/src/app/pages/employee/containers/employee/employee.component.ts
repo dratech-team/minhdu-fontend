@@ -33,23 +33,16 @@ import {FlatSalaryTypeConstant} from "../constants/flat-salary-type.constant";
 import {ProvinceService} from "@minhdu-fontend/location";
 import {FlatSalaryTypeEnum} from "../../enums/flat-salary-type.enum";
 import {BranchActions, BranchQuery, PositionQuery} from "@minhdu-fontend/orgchart-v2";
-import {
-  BaseSearchEmployeeDto,
-  SearchEmployeeDto
-} from "../../../../../../../../libs/employee-v2/src/lib/employee/dto/employee";
+import {SearchEmployeeDto} from "../../../../../../../../libs/employee-v2/src/lib/employee/dto/employee";
 
 @Component({
   templateUrl: 'employee.component.html'
 })
-export class EmployeeComponent implements OnInit, AfterViewChecked {
-  @ViewChild('tableEmployee') tableEmployee!: ElementRef;
-  @ViewChild(MatMenuTrigger) contextMenu!: MatMenuTrigger;
-  @ViewChild(MatSort) sort!: MatSort;
+export class EmployeeComponent implements OnInit {
   employees$ = this.employeeQuery.selectAll().pipe(tap(item => {
       this.employees = item
     }
   ))
-  scrollX$ = this.employeeQuery.select(state => state.scrollX);
   total$ = this.employeeQuery.select(state => state.total)
   loading$ = this.employeeQuery.select(state => state.loading)
   added$ = this.employeeQuery.select(state => state.added)
@@ -64,7 +57,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   genderTypeConstant = GenderTypeConstant
   flatSalaryTypeConstant = FlatSalaryTypeConstant
   sortEnum = sortEmployeeTypeEnum;
-  pageSize = 10;
+  pageSize = 15;
   pageIndexInit = 0;
   searchType = SearchEmployeeType;
   genderType = Gender;
@@ -99,7 +92,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     private readonly employeeStore: EmployeeStore,
     private readonly router: Router,
     private readonly activeRouter: ActivatedRoute,
-    private readonly ref: ChangeDetectorRef,
     private readonly employeeService: EmployeeService,
     private readonly message: NzMessageService,
     private readonly modal: NzModalService,
@@ -110,27 +102,12 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   ) {
   }
 
-  ngAfterViewChecked() {
-    this.ref.detectChanges();
-  }
-
   ngOnInit(): void {
-    this.activeRouter.queryParams.subscribe(val => {
-      if (val.branch) {
-        this.formGroup.get('branch')?.setValue(JSON.parse(val.branch), {emitEvent: false});
-      }
-      if (val.position) {
-        this.formGroup.get('position')?.setValue(JSON.parse(val.position), {emitEvent: false});
-      }
-    });
-
-
     this.actions$.dispatch(
       EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false))
     );
 
     this.actions$.dispatch(BranchActions.loadAll({}));
-
 
     this.formGroup.valueChanges
       .pipe(debounceTime(1500))
@@ -155,6 +132,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       this.formGroup.get('ward')?.setValue('')
       this.districts = province?.districts || []
     });
+
     this.formGroup.get('district')?.valueChanges.subscribe(district => {
       this.formGroup.get('ward')?.setValue('')
       this.wards = district?.wards || []
@@ -191,7 +169,10 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     };
   }
 
-  onScroll() {
+  onPagination(index: number) {
+    if (index * this.pageSize >= this.employeeQuery.getCount()) {
+      this.actions$.dispatch(EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, true)))
+    }
   }
 
   readAndUpdate($event: any, isUpdate?: boolean): void {
@@ -202,15 +183,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     }).then();
   }
 
-  // permanentlyDeleted($event: any) {
-  //   this.dialog.open(DeleteEmployeeComponent, {
-  //     width: 'fit-content',
-  //     data: { employee: $event, permanentlyDeleted: true }
-  //   });
-  // }
-
-  checkInputNumber(event: any) {
-    return checkInputNumber(event);
+  permanentlyDeleted($event: any) {
   }
 
   printEmployee() {
@@ -234,20 +207,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   }
 
   updateCategory(): any {
-    if (this.categoryControl.value === 0 || !this.categoryControl.value) {
-      return this.message.error('Chưa chọn danh mục để sửa');
-    }
-    // this.dialog.open(DialogCategoryComponent, {
-    //   width: 'fit-content',
-    //   data: {categoryId: this.categoryControl.value, isUpdate: true}
-    // })
-    //   .afterClosed().subscribe(() => {
-    //   this.categories$ = this.categoryService.getAll();
-    //   this.actions$.dispatch(EmployeeActions.loadAll({search: this.employee(this.formGroup.value)}));
-    // });
-  }
 
-  sortEmployee(sort: Sort) {
-    this.actions$.dispatch(EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false)));
   }
 }

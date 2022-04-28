@@ -196,8 +196,9 @@ input[type='checkbox'] {
 }
 
 table thead tr th {
-  padding:4px !important;
+  padding: 4px !important;
 }
+
 table thead tr th,
 table thead tr th div {
   text-align: center !important;
@@ -236,7 +237,8 @@ table tbody tr td {
   margin-left: 5px;
   color: red;
 }
-.invalid-feedback{
+
+.invalid-feedback {
   display: block;
 }
 

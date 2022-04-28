@@ -49,12 +49,12 @@ import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
     DragDropModule,
   ],
 
-  declarations:[
+  declarations: [
     EmployeeComponent,
     EmployeeTypePipe,
     GenderTypePipe
   ],
-  providers:[
+  providers: [
     DatePipe,
   ]
 })

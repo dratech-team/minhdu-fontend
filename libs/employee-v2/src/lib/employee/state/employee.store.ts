@@ -3,24 +3,23 @@ import {EmployeeEntity} from "../entities";
 import {Injectable} from "@angular/core";
 
 
-export interface EmployeeState extends EntityState<EmployeeEntity>{
+export interface EmployeeState extends EntityState<EmployeeEntity> {
   readonly total: number
   readonly loading: boolean,
-  readonly added: boolean| null,
-  readonly scrollX: number
+  readonly added: boolean | null,
 }
-export function createInitialState():EmployeeState {
+
+export function createInitialState(): EmployeeState {
   return {
     total: 0,
     loading: true,
     added: null,
-    scrollX: 0
   }
 }
 
 @Injectable({providedIn: 'root'})
 @StoreConfig({name: 'employee'})
-export class EmployeeStore extends EntityStore<EmployeeState>{
+export class EmployeeStore extends EntityStore<EmployeeState> {
   constructor() {
     super(createInitialState());
   }

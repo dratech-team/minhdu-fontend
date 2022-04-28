@@ -64,6 +64,7 @@
         [nzLoading]="loading$|async"
         [nzScroll]="{x:'3200px',y:'60vh'}"
         [nzData]="(employees$|async) || []"
+        (nzPageIndexChange)="onPagination($event)"
       >
         <thead>
         <tr>
