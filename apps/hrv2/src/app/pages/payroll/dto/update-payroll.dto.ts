@@ -10,6 +10,7 @@ export interface BaseUpdatePayrollDto extends BasePayrollEntity {
   readonly branchId: number,
   readonly recipeType: RecipeType
   readonly taxed: boolean
+  readonly note?: string
 }
 
 export type UpdatePayrollDto = BaseUpdateDto<BaseUpdatePayrollDto>

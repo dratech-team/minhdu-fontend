@@ -57,6 +57,7 @@ import {CollapseSelectComponent} from "./collapse-select/collapse-select.compone
 import {ModalAlertComponent} from "./modal-alert/modal-alert.component";
 import {ModalDatePickerComponent} from "./modal-date-picker/modal-date-picker.component";
 import {TransformNzDateModePipe} from "./pipes/transform-nz-date-mode.pipe";
+import {ModalNoteComponent} from "./modal-note/modal-note.component";
 
 @NgModule({
     imports: [
@@ -123,6 +124,7 @@ import {TransformNzDateModePipe} from "./pipes/transform-nz-date-mode.pipe";
     ModalDatePickerComponent,
     TransformNzDateModePipe,
     ModalAlertComponent,
+    ModalNoteComponent
   ],
   exports: [
     SwimLaneChartComponent,
@@ -153,6 +155,7 @@ import {TransformNzDateModePipe} from "./pipes/transform-nz-date-mode.pipe";
     ModalDatePickerComponent,
     TransformNzDateModePipe,
     ModalAlertComponent,
+    ModalNoteComponent
   ],
   providers: [
     DecimalPipe,
