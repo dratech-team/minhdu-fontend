@@ -1,14 +1,14 @@
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { PayrollStore } from './payroll.store';
-import { PayrollService } from '../services/payroll.service';
-import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { PayrollActions } from './payroll.action';
-import { AddPayrollDto } from '../dto';
-import { Injectable } from '@angular/core';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {PayrollStore} from './payroll.store';
+import {PayrollService} from '../services/payroll.service';
+import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {of} from 'rxjs';
+import {PayrollActions} from './payroll.action';
+import {AddPayrollDto} from '../dto';
+import {Injectable} from '@angular/core';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class PayrollEffect {
   constructor(
     private readonly action$: Actions,
@@ -46,11 +46,10 @@ export class PayrollEffect {
   loadAll$ = this.action$.pipe(
     ofType(PayrollActions.loadAll),
     switchMap((props) => {
-      this.payrollStore.update(state => ({ ...state, loading: true }));
+      this.payrollStore.update(state => ({...state, loading: true}));
       return this.service.paginationPayroll(props.search).pipe(
-        map(res => Object.assign(res, { data: res.data.map(payroll => payroll.absents.concat(payroll.deductions)) })),
         tap((res) => {
-          this.payrollStore.update(state => ({ ...state, loading: false }));
+          this.payrollStore.update(state => ({...state, loading: false}));
           if (res.data.length === 0) {
             this.message.warning('Đã lấy hết phiếu lương');
           }
@@ -61,7 +60,7 @@ export class PayrollEffect {
           }
         }),
         catchError((err) => {
-          this.payrollStore.update(state => ({ ...state, loading: false }));
+          this.payrollStore.update(state => ({...state, loading: false}));
           return of(PayrollActions.error(err));
         })
       );
@@ -150,12 +149,14 @@ export class PayrollEffect {
   scanHoliday$ = this.action$.pipe(
     ofType(PayrollActions.scanHoliday),
     switchMap((props) => {
-      this.payrollStore.update( state =>({
-        ...state, scanned : false}))
+      this.payrollStore.update(state => ({
+        ...state, scanned: false
+      }))
       return this.service.scanHoliday(props.payrollId).pipe(
         tap(res => {
-          this.payrollStore.update( state =>({
-            ...state, scanned : true}))
+          this.payrollStore.update(state => ({
+            ...state, scanned: true
+          }))
           this.payrollStore.update(res.id, res);
         }),
         catchError(err => {
@@ -164,5 +165,4 @@ export class PayrollEffect {
       );
     })
   );
-
 }
