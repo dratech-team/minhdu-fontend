@@ -3,7 +3,7 @@ import {of} from 'rxjs';
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {Actions, Effect, ofType} from "@datorama/akita-ng-effects";
-import {EmployeeService} from "../services/employee.service";
+import {EmployeeService} from "@minhdu-fontend/employee-v2";
 import {EmployeeStore} from "./employee.store";
 import {EmployeeActions} from "./employee.actions";
 import {RemoveEmployeeDto} from "../dto/employee";
@@ -11,7 +11,6 @@ import {RelativeService} from "../services/relative.service";
 import {DegreeService} from "../services/degree.service";
 import {PaginationDto} from "@minhdu-fontend/constants";
 import {EmployeeQuery} from "./employee.query";
-import {Salary} from "@minhdu-fontend/data-models";
 
 @Injectable()
 export class EmployeeEffect {
@@ -52,6 +51,7 @@ export class EmployeeEffect {
     )
   );
 
+  @Effect()
   addOneRelative$ = this.actions$.pipe(
     ofType(EmployeeActions.addOneRelative),
     switchMap((props) => {
@@ -77,6 +77,7 @@ export class EmployeeEffect {
     )
   );
 
+  @Effect()
   addOneDegree$ = this.actions$.pipe(
     ofType(EmployeeActions.addOneDegree),
     switchMap((props) => {
@@ -102,6 +103,7 @@ export class EmployeeEffect {
     )
   );
 
+  @Effect()
   loadAll$ = this.actions$.pipe(
     ofType(EmployeeActions.loadAll),
     switchMap((props) => {
@@ -132,7 +134,7 @@ export class EmployeeEffect {
     )
   );
 
-
+  @Effect()
   loadOne$ = this.actions$.pipe(
     ofType(EmployeeActions.loadOne),
     switchMap((props) => {
@@ -149,7 +151,7 @@ export class EmployeeEffect {
     )
   );
 
-
+  @Effect()
   update$ = this.actions$.pipe(
     ofType(EmployeeActions.update),
     switchMap((props) => {
@@ -175,6 +177,7 @@ export class EmployeeEffect {
     )
   );
 
+  @Effect()
   updateRelative$ = this.actions$.pipe(
     ofType(EmployeeActions.updateRelative),
     switchMap((props) => {
@@ -191,6 +194,7 @@ export class EmployeeEffect {
     )
   );
 
+  @Effect()
   updateDegree$ = this.actions$.pipe(
     ofType(EmployeeActions.updateDegree),
     switchMap((props) => {
@@ -207,6 +211,7 @@ export class EmployeeEffect {
     )
   );
 
+  @Effect()
   updateHistorySalary$ = this.actions$.pipe(
     ofType(EmployeeActions.updateHistorySalary),
     switchMap((props) => {
@@ -223,6 +228,7 @@ export class EmployeeEffect {
     )
   );
 
+  @Effect()
   removeEmployee$ = this.actions$.pipe(
     ofType(EmployeeActions.remove),
     switchMap((props: RemoveEmployeeDto) => {
@@ -239,6 +245,7 @@ export class EmployeeEffect {
     )
   );
 
+  @Effect()
   leaveEmployee$ = this.actions$.pipe(
     ofType(EmployeeActions.leave),
     switchMap((props) => {
@@ -259,6 +266,7 @@ export class EmployeeEffect {
     )
   );
 
+  @Effect()
   removeRelative$ = this.actions$.pipe(
     ofType(EmployeeActions.removeRelative),
     switchMap((props) => {
@@ -275,6 +283,7 @@ export class EmployeeEffect {
     )
   );
 
+  @Effect()
   removeDegree$ = this.actions$.pipe(
     ofType(EmployeeActions.removeDegree),
     switchMap((props) => {
@@ -291,6 +300,7 @@ export class EmployeeEffect {
     )
   );
 
+  @Effect()
   removeContracts$ = this.actions$.pipe(
     ofType(EmployeeActions.removeContracts),
     switchMap((props) => {
@@ -309,6 +319,7 @@ export class EmployeeEffect {
     )
   );
 
+  @Effect()
   removeWorkHistory$ = this.actions$.pipe(
     ofType(EmployeeActions.removeWorkHistory),
     switchMap((props) => {
@@ -327,6 +338,7 @@ export class EmployeeEffect {
     )
   );
 
+  @Effect()
   removeHistorySalary$ = this.actions$.pipe(
     ofType(EmployeeActions.removeHistorySalary),
     switchMap((props) => {

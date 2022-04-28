@@ -34,8 +34,8 @@ import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
     NzCollapseModule,
     ReactiveFormsModule,
     ComponentsModule,
-    EmployeeLibV2Module,
     OrgchartV2Module,
+    EmployeeLibV2Module,
     NzDropDownModule,
     NzIconModule,
     NzSelectModule,
@@ -46,7 +46,7 @@ import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
     NzButtonModule,
     NzInputModule,
     NzSpinModule,
-    DragDropModule
+    DragDropModule,
   ],
 
   declarations:[

@@ -13,37 +13,30 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {
   ConvertBoolean,
   EmployeeType,
-  FlatSalary,
   Gender,
   ItemContextMenu,
   SearchEmployeeType,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import {OrgchartActions} from '@minhdu-fontend/orgchart';
 import {catchError, debounceTime, tap} from 'rxjs/operators';
-import {Api, EmployeeStatusConstant, GenderTypeConstant, PaginationDto} from '@minhdu-fontend/constants';
+import {EmployeeStatusConstant, GenderTypeConstant, PaginationDto} from '@minhdu-fontend/constants';
 import {Observable, Subject, throwError} from 'rxjs';
 import {Category, District, Employee, Ward} from '@minhdu-fontend/data-models';
 import {checkInputNumber} from '@minhdu-fontend/utils';
-import {DialogExportComponent} from '@minhdu-fontend/components';
-import {CategoryService} from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {EmployeeService} from '../../../../../../../../libs/employee/src/lib/+state/service/employee.service';
 import {MatSort, Sort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalService} from 'ng-zorro-antd/modal';
-import {Role} from '../../../../../../../../libs/enums/hr/role.enum';
+import {Role} from '@minhdu-fontend/enums';
 import {ExportService} from "@minhdu-fontend/service";
 import {Actions} from "@datorama/akita-ng-effects";
-import {EmployeeQuery, EmployeeStore} from "../../../../../../../../libs/employee-v2/src/lib/employee/state";
-import {EmployeeActions} from "../../../../../../../../libs/employee-v2/src/lib/employee/state/employee.actions";
-import {PositionQuery} from "../../../../../../../../libs/orgchart-v2/src/lib/position/state";
-import {BranchActions, BranchQuery} from "../../../../../../../../libs/orgchart-v2/src/lib/branch/state";
+import {EmployeeActions, EmployeeQuery, EmployeeService, EmployeeStore} from "@minhdu-fontend/employee-v2";
 import {EmployeeTypeConstant} from "../constants/employee-type.constant";
 import {FlatSalaryTypeConstant} from "../constants/flat-salary-type.constant";
-import {ProvinceService} from "../../../../../../../../libs/location/src/lib/service/province.service";
+import {ProvinceService} from "@minhdu-fontend/location";
 import {FlatSalaryTypeEnum} from "../../enums/flat-salary-type.enum";
-import {EmployeeEntity} from "../../../../../../../../libs/employee-v2/src/lib/employee/entities";
+import {EmployeeEntity} from "@minhdu-fontend/employee-v2";
+import {BranchActions, BranchQuery, PositionActions, PositionQuery} from "@minhdu-fontend/orgchart-v2";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -86,7 +79,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   role = window.localStorage.getItem('role')
   formGroup = new FormGroup({
     name: new FormControl(''),
-    // birthday: new FormControl(''),
     phone: new FormControl(''),
     identity: new FormControl(''),
     address: new FormControl(''),
@@ -94,12 +86,11 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     district: new FormControl(''),
     ward: new FormControl(''),
     gender: new FormControl(''),
-    // workedAt: new FormControl(''),
     flatSalary: new FormControl('-1'),
     position: new FormControl(''),
     branch: new FormControl(''),
     employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME),
-    status: new FormControl(0)
+    status: new FormControl(1)
   });
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
@@ -110,12 +101,10 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     private readonly employeeStore: EmployeeStore,
     private readonly router: Router,
     private readonly activeRouter: ActivatedRoute,
-    private readonly categoryService: CategoryService,
     private readonly ref: ChangeDetectorRef,
     private readonly employeeService: EmployeeService,
     private readonly message: NzMessageService,
     private readonly modal: NzModalService,
-    private readonly viewContentRef: ViewContainerRef,
     private readonly exportService: ExportService,
     private readonly positionQuery: PositionQuery,
     private readonly branchQuery: BranchQuery,
@@ -131,24 +120,27 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     this.activeRouter.queryParams.subscribe(val => {
       if (val.branch) {
         this.formGroup.get('branch')?.setValue(JSON.parse(val.branch), {emitEvent: false});
-        this.categories$ = this.categoryService.getAll({branchId: JSON.parse(val.branch).id})
       }
       if (val.position) {
         this.formGroup.get('position')?.setValue(JSON.parse(val.position), {emitEvent: false});
       }
     });
+
+
     this.actions$.dispatch(
       EmployeeActions.loadAll({
         search: this.mapEmployee(this.formGroup.value)
       })
     );
-    this.actions$.dispatch(OrgchartActions.init());
+
+    this.actions$.dispatch(BranchActions.loadAll({}));
+
+
     this.formGroup.valueChanges
-      .pipe(
-        debounceTime(1500)
-      ).subscribe(val => {
-      this.actions$.dispatch(EmployeeActions.loadAll({search: this.mapEmployee(this.formGroup.value)}));
-    });
+      .pipe(debounceTime(1500))
+      .subscribe(val => {
+        this.actions$.dispatch(EmployeeActions.loadAll({search: this.mapEmployee(this.formGroup.value)}));
+      });
 
     this.eventScrollX.pipe(
       debounceTime(200)
@@ -170,7 +162,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       if (branch) {
         this.actions$.dispatch(BranchActions.loadOne({id: branch.id}))
       }
-      this.categories$ = this.categoryService.getAll({branch: branch.name});
     });
 
     this.formGroup.get('province')?.valueChanges.subscribe(province => {
@@ -195,8 +186,9 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   }
 
   mapEmployee(val: any, isPagination?: boolean) {
-    const employee = {
+    return {
       take: PaginationDto.take,
+      skip: isPagination ? this.employeeQuery.getCount() : PaginationDto.skip,
       name: val.name,
       phone: val.phone,
       identity: val.identity,
@@ -211,13 +203,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       employeeType: val.employeeType,
       isFlatSalary: val.flatSalary,
       categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : ''
-
     };
-    return Object.assign(employee, val.workedAt
-      ? {skip: isPagination ? this.employeeQuery.getCount() : PaginationDto.skip}
-      : {}
-    )
-
   }
 
   onScroll() {

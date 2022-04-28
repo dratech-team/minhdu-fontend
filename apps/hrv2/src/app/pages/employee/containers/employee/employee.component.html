@@ -35,7 +35,7 @@
         <div class="font-weight-bold">Phòng ban</div>
         <div class="d-flex">
           <div style='width: fit-content'>
-            <nz-select class='form-control  border px-2' style='width:200px' [formControl]='categoryControl'>
+            <nz-select class='px-2' style='width:200px' [formControl]='categoryControl'>
               <nz-option [nzValue]='""' nzLabel="Tất cả"></nz-option>
               <nz-option *ngFor='let item of categories$ | async' [nzValue]='item.id' [nzLabel]="item.name"></nz-option>
               <nz-option [nzValue]='0' (click)='addCategory()' nzLabel="Tạo mới"></nz-option>
@@ -66,26 +66,25 @@
       >
         <thead>
         <tr>
-          <th style='background:white'>
-            <div class='border-top text-center'>STT</div>
-            <input class=' text-center' type='text' disabled>
+          <th>
+            <div>STT</div>
+            <input nz-input type='text' disabled>
           </th>
           <!--            <th style='background:white'>-->
           <!--              <div mat-sort-header='{{sortEnum.STT}}' class='border-top text-center'>Sort</div>-->
           <!--              <input class=' text-center' type='text' disabled>-->
           <!--            </th>-->
-          <th style='background:white'>
-            <div class='border-top text-center'>Mã nhân viên</div>
-            <input class='form-control text-center' type='search'>
-
-          </th>
-          <th style='background:white'>
-            <div class='border-top text-center'>Tên nhân viên</div>
-            <input class='form-control text-center' type='search' formControlName='name' placeholder='Trần Gia Hiệu'>
+          <th>
+            <div>Mã nhân viên</div>
+            <input nz-input type='search'>
           </th>
           <th>
-            <div class='border-top text-center'>Loại nhân viên</div>
-            <nz-select class='select border-top' style='width: 100%;' formControlName='employeeType'>
+            <div>Tên nhân viên</div>
+            <input nz-input type='search' formControlName='name' placeholder='Trần Gia Hiệu'>
+          </th>
+          <th>
+            <div>Loại nhân viên</div>
+            <nz-select style='width: 100%;' formControlName='employeeType'>
               <nz-option
                 *ngFor="let item of employeeTypeConstant"
                 [nzValue]='item.value'
@@ -93,39 +92,40 @@
               </nz-option>
             </nz-select>
           </th>
-          <th width='5%'>
-            <div class='border-top text-center'>Ngày sinh</div>
-            <input class='text-center' type='date' disabled>
+          <th nzWidth='5%'>
+            <div>Ngày sinh</div>
+            <input class='text-center' disabled>
           </th>
           <th>
-            <div class='border-top text-center'>Giới tính</div>
+            <div>Giới tính</div>
             <nz-select style='min-width:100px' formControlName='gender'>
               <nz-option *ngFor="let item of genderTypeConstant" [nzValue]="item.value"
                          [nzLabel]="item.name"></nz-option>
               <nz-option [nzValue]="genderType.ALL" nzLabel="Tất cả"></nz-option>
             </nz-select>
           </th>
-          <th width='5%'>
-            <div class='border-top text-center'>Ngày vào làm</div>
-            <input type='date' class='border' disabled>
+          <th nzWidth='5%'>
+            <div>Ngày vào làm</div>
+            <input nz-input disabled>
           </th>
-          <th width='5%'>
-            <div class='border-top text-center'>Loại lương</div>
-            <nz-select  style='min-width: 170px' formControlName='flatSalary'>
-              <nz-option *ngFor="let item of flatSalaryTypeConstant" [nzValue]="item.value" [nzLabel]="item.name">Lương cố định</nz-option>
+          <th nzWidth='5%'>
+            <div>Loại lương</div>
+            <nz-select style='min-width: 170px' formControlName='flatSalary'>
+              <nz-option *ngFor="let item of flatSalaryTypeConstant" [nzValue]="item.value" [nzLabel]="item.name">Lương
+                cố định
+              </nz-option>
             </nz-select>
           </th>
-          <th width='5%'>
-            <div class='border-top text-center'>Số điện thoại</div>
-            <input class='form-control text-center' (keypress)='checkInputNumber($event)' type='search'
-                   formControlName='phone'>
+          <th nzWidth='5%'>
+            <div>Số điện thoại</div>
+            <input nz-input type='search' formControlName='phone'>
           </th>
           <th>
-            <div class='border-top text-center'>Đơn vị</div>
-            <input class='form-control' type='search' disabled>
+            <div>Đơn vị</div>
+            <input nz-input type='search' disabled>
           </th>
           <th>
-            <div class='border-top text-center'>Chức vụ</div>
+            <div>Chức vụ</div>
             <nz-select
               nzShowSearch
               nzAllowClear
@@ -142,13 +142,12 @@
               </nz-option>
             </nz-select>
           </th>
-          <th width='5%'>
-            <div class='border-top text-center'>CMND / CCCD</div>
-            <input type='search' (keypress)='checkInputNumber($event)' class='form-control text-center'
-                   formControlName='identity'>
+          <th nzWidth='5%'>
+            <div>CMND / CCCD</div>
+            <input type='search' nz-input formControlName='identity'>
           </th>
           <th>
-            <div class='border-top text-center'>Tỉnh / Thành phố</div>
+            <div>Tỉnh / Thành phố</div>
             <nz-select
               nzShowSearch
               nzAllowClear
@@ -164,8 +163,8 @@
               </nz-option>
             </nz-select>
           </th>
-          <th width='5%'>
-            <div class='border-top text-center'>Quận / Huyện</div>
+          <th nzWidth='5%'>
+            <div>Quận / Huyện</div>
             <nz-select
               nzShowSearch
               nzAllowClear
@@ -181,8 +180,8 @@
               </nz-option>
             </nz-select>
           </th>
-          <th width='7%'>
-            <div class='border-top text-center'>Phường / Xã</div>
+          <th nzWidth='7%'>
+            <div>Phường / Xã</div>
             <nz-select
               nzShowSearch
               nzAllowClear
@@ -198,97 +197,98 @@
               </nz-option>
             </nz-select>
           </th>
-          <th width='12%'>
-            <div class='border-top text-center'>Địa chỉ</div>
-            <input type='search' class='form-control text-center' formControlName='address'>
+          <th nzWidth='12%'>
+            <div>Địa chỉ</div>
+            <input nz-input type='search' formControlName='address'>
           </th>
           <th>
-            <div class='border-top text-center'>Chú thích</div>
-            <input disabled type='search'>
+            <div>Chú thích</div>
+            <input nz-input disabled type='search'>
           </th>
         </tr>
         </thead>
         <tbody cdkDropList (cdkDropListDropped)='onDrop($event)'>
         <ng-template ngFor let-employee [ngForOf]="tableEmployee.data" let-i='index'>
-          <tr class="pointer" (contextmenu)='child.onContextMenu($event,employee)'
+          <tr
+            class="pointer"
+            (contextmenu)='child.onContextMenu($event,employee)'
             (click)='readAndUpdate(employee)'
             cdkDrag>
-            <th>
+            <td>
               <div>{{(i + 1) + ((tableEmployee.nzPageIndex - 1) * pageSize)}}</div>
-            </th>
-            <th>
+            </td>
+            <td>
               <div>{{employee?.id}}</div>
-            </th>
-            <th>
+            </td>
+            <td>
               <div>{{employee?.lastName}}</div>
-            </th>
-            <th>
-              <div>{{employee.type|employeetype}}
-              </div>
-            </th>
-            <th>
+            </td>
+            <td>
+              <div>{{employee.type|employeetype}}</div>
+            </td>
+            <td>
               <div>{{employee?.birthday | date:'dd/MM/yyyy'}}</div>
-            </th>
-            <th>
+            </td>
+            <td>
               <div>
                 {{employee.gender|gendertype}}
               </div>
-            </th>
-            <th>
+            </td>
+            <td>
               <div>
                 {{employee?.createdAt ? (employee?.createdAt|date: 'dd/MM/yyyy') : 'Chưa cập nhật'}}
               </div>
-            </th>
-            <th>
+            </td>
+            <td>
               <div>
                 {{employee?.isFlatSalary ? 'Lương cố định' : 'Lương không cố định'}}
               </div>
-            </th>
-            <th>
+            </td>
+            <td>
               <div>
                 {{employee?.phone ? employee.phone : 'Chưa cập nhật'}}
               </div>
-            </th>
-            <th>
+            </td>
+            <td>
               <div>
                 {{employee?.branch?.name}}
               </div>
-            </th>
-            <th class='pointer'>
+            </td>
+            <td class='pointer'>
               <div>
                 {{employee?.position?.name}}
               </div>
-            </th>
-            <th class='pointer'>
+            </td>
+            <td class='pointer'>
               <div>
                 {{employee?.identify ? employee.identify : 'Chưa cập nhật'}}
               </div>
-            </th>
-            <th class='pointer'>
+            </td>
+            <td class='pointer'>
               <div>
                 {{employee?.ward?.district?.province?.name}}
               </div>
-            </th>
-            <th class='pointer'>
+            </td>
+            <td class='pointer'>
               <div>
                 {{employee?.ward?.district?.name}}
               </div>
-            </th>
-            <th class='pointer'>
+            </td>
+            <td class='pointer'>
               <div>
                 {{employee?.ward?.name}}
               </div>
-            </th>
-            <th class='pointer'>
+            </td>
+            <td class='pointer'>
               <div>
                 {{employee?.address}}
               </div>
-            </th>
-            <th class='pointer'>
+            </td>
+            <td class='pointer'>
               <div>
                 {{employee?.note}}
               </div>
-            </th>
+            </td>
           </tr>
           <tr *ngIf='employees.length === 0' style='height: 50vh'>
             <td colspan='100' class='text-center check-content font-weight-bold font-xl relative '>
