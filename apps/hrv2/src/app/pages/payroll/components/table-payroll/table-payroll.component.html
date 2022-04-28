@@ -175,6 +175,18 @@
           </nz-select>
         </th>
       </ng-template>
+
+<!--      salary-->
+      <ng-template [ngIf]="
+      formGroup.value.filterType === filterTypeEnum.BASIC
+      || formGroup.value.filterType === filterTypeEnum.ABSENT
+      || formGroup.value.filterType === filterTypeEnum.OVERTIME
+      || formGroup.value.filterType === filterTypeEnum.STAY
+      || formGroup.value.filterType === filterTypeEnum.ALLOWANCE
+">
+        <th>
+        </th>
+      </ng-template>
     </tr>
     </thead>
     <tbody>
@@ -304,6 +316,11 @@
           </td>
         </ng-template>
       </tr>
+    </ng-template>
+
+<!--    basic-->
+    <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.BASIC">
+
     </ng-template>
     </tbody>
   </nz-table>
