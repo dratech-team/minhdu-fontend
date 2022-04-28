@@ -1,5 +1,4 @@
 import {NgModule} from '@angular/core';
-import {PermanentSalaryComponent} from "./components/permamnent-salary/permanent-salary.component";
 import {CommonModule} from "@angular/common";
 import {RankRoutingModule} from "../app/pages/rank/rank-routing.module";
 import {NzTableModule} from "ng-zorro-antd/table";
@@ -15,7 +14,6 @@ import {NzMessageModule} from "ng-zorro-antd/message";
 
 @NgModule({
   declarations: [
-    PermanentSalaryComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +30,6 @@ import {NzMessageModule} from "ng-zorro-antd/message";
     NzButtonModule
   ],
   exports: [
-    PermanentSalaryComponent
   ]
 })
 export class SharedModule {

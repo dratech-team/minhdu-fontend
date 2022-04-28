@@ -1,8 +1,9 @@
 import {BaseSalaryEntity} from '../base';
 import {PayrollEntity} from "../../payroll/entities";
 
-export interface PermanentSalaryEntity extends BaseSalaryEntity {
+export interface RemoteSalaryEntity extends BaseSalaryEntity {
   readonly payroll?: PayrollEntity,
   readonly rate: number
-  readonly datetime?: Date
+  readonly startedAt: Date,
+  readonly endedAt: Date
 }
