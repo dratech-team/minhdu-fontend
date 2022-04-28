@@ -9,18 +9,18 @@ import {SalaryPermanentService} from "../../service";
 import {SettingSalaryActions, SettingSalaryQuery} from "../../../setting/salary/state";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../../payroll/state/payroll.action";
-import {PaginationDto} from "@minhdu-fontend/constants";
 import {catchError, map} from "rxjs/operators";
 import {throwError} from "rxjs";
 import {SalaryTypeEnum} from "@minhdu-fontend/enums";
 import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
-import { ModalPermanentSalaryData } from '../../../payroll/data/modal-permanent-salary.data';
+import {ModalAddOrUpdatePermanent} from '../../../payroll/data';
+import {EmployeeService} from "@minhdu-fontend/employee-v2";
 
 @Component({
   templateUrl: 'permanent-salary.component.html'
 })
 export class PermanentSalaryComponent implements OnInit {
-  @Input() data!: ModalPermanentSalaryData
+  @Input() data!: ModalAddOrUpdatePermanent
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
   salariesSetting$ = this.settingSalaryQuery.selectAll({
     filterBy: [
@@ -41,6 +41,7 @@ export class PermanentSalaryComponent implements OnInit {
       return templates
     })
   )
+  loadingSettingSalary$ = this.settingSalaryQuery.select(state => state.loading)
   salaryTypeEnum = SalaryTypeEnum;
   formGroup!: FormGroup;
   roleEnum = Role;
@@ -48,7 +49,7 @@ export class PermanentSalaryComponent implements OnInit {
   payrollSelected: PayrollEntity[] = [];
   salariesSelected: SalaryPayroll[] = [];
   stepIndex = 0;
-  submitting = false;
+  submitting = false
   compareFn = (o1: any, o2: any) => o1 && o2 ? (o1.id === o2.id || o1 === o2.title) : o1 === o2;
 
 
@@ -59,15 +60,16 @@ export class PermanentSalaryComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly modalRef: NzModalRef,
     private readonly service: SalaryPermanentService,
+    private readonly employeeService: EmployeeService,
   ) {
   }
 
   ngOnInit(): void {
     if (this.data.add || this.data.update) {
       this.stepIndex = 1
-    }
-    if (this.data?.add) {
-      this.payrollSelected = this.payrollSelected.concat([this.data.add.payroll])
+      if (this.data.update?.multiple) {
+        this.salariesSelected = [...this.data.update.multiple?.salariesSelected]
+      }
     }
     this.actions$.dispatch(SettingSalaryActions.loadAll({
       search: {
@@ -76,9 +78,6 @@ export class PermanentSalaryComponent implements OnInit {
           [SalaryTypeEnum.STAY]
       }
     }))
-    if (this.data?.update?.multiple) {
-      this.salariesSelected = this.data.update.multiple.salariesSelected;
-    }
     const salary = this.data?.update?.salary
     this.formGroup = this.formBuilder.group({
       template: ['', Validators.required],
@@ -86,6 +85,7 @@ export class PermanentSalaryComponent implements OnInit {
       rate: [salary?.rate, Validators.required],
       unit: [salary?.unit],
     });
+
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
       if (template.prices.length === 1) {
         this.formGroup.get('price')?.setValue(template.prices[0])
@@ -105,43 +105,45 @@ export class PermanentSalaryComponent implements OnInit {
       return;
     }
     const value = this.formGroup.value;
+    const salary = this.mapSalary(value);
+    this.submitting = true;
+    (this.data.add ?
+      this.service.addMany(salary) :
+      (this.data.update.history
+        ? this.employeeService.updateHistorySalary(this.data.update.salary.id, salary)
+        : this.service.updateMany(salary)))
+      .pipe(catchError(err => this.onSubmitError(err)))
+      .subscribe(res => this.onSubmitSuccess(res,
+        this.data.add
+          ? (!this.data.add.multiple
+              ? this.data.add.payroll.id
+              : undefined
+          ) : (!this.data.update?.multiple
+              ? this.data.update.salary.id
+              : undefined
+          )
+      ))
+  }
+
+  mapSalary(value: any) {
     const salary = {
       type: value.template.type,
       title: value.template.title,
       price: value.price,
       note: value.note,
     };
-    this.submitting = true
-    if (this.data?.update) {
-      Object.assign(salary, {salaryIds: this.salariesSelected.map(val => val.salary.id).concat(this.data.update.salary.id)})
-      this.service.updateMany(salary).pipe(catchError(err => {
-        return this.onSubmitError(err)
-      })).subscribe(res => {
-        if (this.data.update?.multiple) {
-          this.actions$.dispatch(PayrollActions.loadAll({
-            search: {take: PaginationDto.take, skip: PaginationDto.skip}
-          }))
-        } else {
-          if (this.data.update?.salary.payrollId)
-            this.actions$.dispatch(PayrollActions.loadOne({id: this.data.update.salary.payrollId}))
-        }
-        this.onCloseModal(res)
-      })
-    }
-    if (this.data.add) {
-      Object.assign(salary, {payrollIds: [this.payrollSelected.map(val => val.id)]})
-      this.service.addMany(salary).pipe(catchError(err => this.onSubmitError(err))).subscribe(res => {
-        if (this.data.add?.payroll.id)
-          this.actions$.dispatch(PayrollActions.loadOne({id: this.data.add?.payroll.id}))
-        this.onCloseModal(res)
-      })
-    }
+    return Object.assign(salary, this.data.add
+      ? {payrollIds: this.payrollSelected.map(payroll => payroll.id).concat([this.data.add.payroll.id])}
+      : {salaryIds: this.salariesSelected.map(item => item.salary.id).concat([this.data.update.salary.id])}
+    )
   }
 
-
-  onCloseModal(res: ResponseMessageEntity) {
+  onSubmitSuccess(res: ResponseMessageEntity, payrollId?: number) {
     this.submitting = false
     this.message.success(res.message)
+    if (payrollId) {
+      this.actions$.dispatch(PayrollActions.loadOne({id: payrollId}))
+    }
     this.modalRef.close()
   }
 
@@ -153,11 +155,6 @@ export class PermanentSalaryComponent implements OnInit {
 
   pickPayroll(payrolls: PayrollEntity[]) {
     this.payrollSelected = [...payrolls];
-  }
-
-  changeSalariesSelected($event: SalaryPayroll[]) {
-    this.salariesSelected = $event;
-    this.EmitSalariesSelected.emit(this.salariesSelected);
   }
 
   pre(): void {

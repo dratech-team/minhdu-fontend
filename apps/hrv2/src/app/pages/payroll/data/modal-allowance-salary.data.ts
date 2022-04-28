@@ -1,4 +1,4 @@
-import {PayrollEntity} from "../entities/payroll.entity";
+import {PayrollEntity} from "../entities";
 import {AllowanceSalaryEntity} from "../../salary/entities";
 import {SalaryPayroll} from "@minhdu-fontend/data-models";
 import {RequireOnlyOne} from "../../../../shared/types";
