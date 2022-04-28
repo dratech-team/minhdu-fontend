@@ -16,7 +16,7 @@
       <div *ngIf='false' class=' mb-5 title-popup'>
         <span> Lương cơ bản</span>
       </div>
-      <div class='contract-salary mt-1' *ngIf="!data?.updateHistory; else title">
+      <div class='contract-salary mt-1' *ngIf="!data?.update?.history; else title">
         <div class=' title-item mb-1'>
           <span>Loại lương</span>
           <span class='star'>*</span>
@@ -24,6 +24,7 @@
         <div class=' mb-3' style="width: 100%" [formGroup]='formGroup'>
           <nz-select style="width: 100%" formControlName='template'
                      [compareWith]="compareFn"
+                     [nzLoading]="(loadingSettingSalary$|async)"
                       [ngClass]="{ 'is-invalid': checkValid.template.errors }">
             <nz-option *ngFor='let salary of (salariesSetting$|async)' [nzValue]="salary" [nzLabel]="salary.title">
             </nz-option>
@@ -70,7 +71,7 @@
           </div>
         </ng-template>
       </div>
-      <div *ngIf="data?.updateHistory">
+      <div *ngIf="data?.update?.history">
         <div class=' title-item mt-2 mbt-2'>
           <span>Ngày tạo</span>
           <span class='star'>*</span>

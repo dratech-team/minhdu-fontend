@@ -1,30 +1,30 @@
-import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { NzModalRef } from 'ng-zorro-antd/modal';
-import { PayrollEntity } from '../../../payroll/entities';
-import { SalaryPermanentService } from '../../service';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { Actions } from '@datorama/akita-ng-effects';
-import { PayrollActions } from '../../../payroll/state/payroll.action';
-import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
-import { ResponseMessageEntity } from '@minhdu-fontend/base-entity';
-import { RequireOnlyOne } from '../../../../../shared/types';
-import { ModalOnsiteSalaryData } from '../../data/modal-onsite-salary.data';
+import {DatePipe} from '@angular/common';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {NzModalRef} from 'ng-zorro-antd/modal';
+import {PayrollEntity} from '../../../payroll/entities';
+import {SalaryRemoteService} from '../../service';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {throwError} from 'rxjs';
+import {catchError} from 'rxjs/operators';
+import {Actions} from '@datorama/akita-ng-effects';
+import {PayrollActions} from '../../../payroll/state/payroll.action';
+import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
+import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
+import {ModalAddOrUpdateRemote} from '../../data';
 
 @Component({
-  templateUrl: 'onsite-salary.component.html'
+  templateUrl: 'remote-salary.component.html'
 })
-export class OnsiteSalaryComponent implements OnInit {
-  @Input() data!: RequireOnlyOne<ModalOnsiteSalaryData>;
+export class RemoteSalaryComponent implements OnInit {
+  @Input() data!: ModalAddOrUpdateRemote;
   payrollSelected: PayrollEntity [] = [];
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
   formGroup!: FormGroup;
   stepIndex = 0;
+  submitting = false
 
   constructor(
     public datePipe: DatePipe,
@@ -32,7 +32,7 @@ export class OnsiteSalaryComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly modalRef: NzModalRef,
     private readonly message: NzMessageService,
-    private readonly service: SalaryPermanentService
+    private readonly remoteService: SalaryRemoteService
   ) {
   }
 
@@ -45,13 +45,12 @@ export class OnsiteSalaryComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       title: [salary?.title, Validators.required],
       rangeDay: [
-        [
-          this.datePipe.transform(payroll ? getFirstDayInMonth(payroll.createdAt) : salary.startedAt, 'YYYY-mm-dd'),
-          this.datePipe.transform(payroll ? getLastDayInMonth(payroll.createdAt) : salary.endedAt, 'YYYY-mm-dd')
+        [payroll ? getFirstDayInMonth(new Date(payroll.createdAt)) : salary?.startedAt,
+          payroll ? getLastDayInMonth(new Date(payroll.createdAt)) : salary?.endedAt
         ],
         Validators.required
       ],
-      note: [salary.note]
+      note: [salary?.note],
     })
     ;
   }
@@ -65,10 +64,22 @@ export class OnsiteSalaryComponent implements OnInit {
       return;
     }
     const salary = this.mapSalary(this.formGroup.value);
-    this.data.add ? this.service.addMany(salary) : this.service.updateMany(salary)
-      .pipe(catchError(err => this.onSubmitError(err)))
+    this.data.add ? this.remoteService.addMany(salary) : this.remoteService.updateMany(salary)
+      .pipe(catchError(err => {
+        this.submitting = false;
+        return this.onSubmitError(err);
+      }))
       .subscribe(res => {
-        return this.onSubmitSuccess(res, this.data.add ? this.data.add.payroll.id : this.data.update.salary.payrollId);
+        this.onSubmitSuccess(res, this.data.add
+          ? (
+            !this.data.add?.multiple
+              ? this.data.add?.payroll.id
+              : undefined
+          )
+          : (!this.data.update.multiple
+            ? this.data.update.salary.payrollId
+            : undefined)
+        );
       });
   }
 
