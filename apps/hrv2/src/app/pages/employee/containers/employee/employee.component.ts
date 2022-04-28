@@ -176,7 +176,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   readAndUpdate($event: any, isUpdate?: boolean): void {
-    this.router.navigate(['ho-so/chi-tiet-nhan-vien', $event.id], {
+    this.router.navigate(['nhan-vien/chi-tiet-nhan-vien', $event.id], {
       queryParams: {
         isUpdate
       }

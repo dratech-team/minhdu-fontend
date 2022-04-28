@@ -226,14 +226,14 @@
               <div>{{employee?.lastName}}</div>
             </td>
             <td>
-              <div>{{employee.type|employeetype}}</div>
+              <div>{{employee.type|transform:employeeTypeConstant}}</div>
             </td>
             <td>
               <div>{{employee?.birthday | date:'dd/MM/yyyy'}}</div>
             </td>
             <td>
               <div>
-                {{employee.gender|gendertype}}
+                {{employee.gender|transform:genderTypeConstant}}
               </div>
             </td>
             <td>
