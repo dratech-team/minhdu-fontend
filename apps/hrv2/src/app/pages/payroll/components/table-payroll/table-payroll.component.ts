@@ -5,7 +5,7 @@ import {PositionActions, PositionQuery} from "../../../../../../../../libs/orgch
 import {BranchQuery} from "../../../../../../../../libs/orgchart-v2/src/lib/branch/state";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollQuery, PayrollStore} from "../../state";
-import {FilterTypeEnum, ItemContextMenu} from "@minhdu-fontend/enums";
+import {FilterTypeEnum, ItemContextMenu, SalaryTypeEnum} from "@minhdu-fontend/enums";
 import {rageDaysInMonth} from "@minhdu-fontend/utils";
 import {PaidConstant} from "../../constants/paid.constant";
 import {ConfirmConstant} from "../../constants/confirm.constant";
@@ -17,9 +17,10 @@ import {
 import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "../../../../../../../../libs/entities/modal-alert.entity";
 import {DatePipe} from "@angular/common";
-import {loadAll, PayrollActions} from "../../state/payroll.action";
+import {PayrollActions} from "../../state/payroll.action";
 import {Subject} from "rxjs";
 import {ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
+import {SettingSalaryActions, SettingSalaryQuery} from "../../../setting/salary/state";
 
 
 @Component({
@@ -32,7 +33,7 @@ export class TablePayrollComponent implements OnInit {
   @Input() pageSize = 10;
   @Input() scroll: { x: string, y: string } = {x: '5000px', y: '56vh'}
   @Input() onChange?: Subject<void>
-  @Output() onloadPayroll = new EventEmitter<{isPagination: boolean}>()
+  @Output() onloadPayroll = new EventEmitter<{ isPagination: boolean }>()
   loading$ = this.payrollQuery.select(state => state.loading)
   added$ = this.payrollQuery.select(state => state.added)
   positions$ = this.positionQuery.selectAll()
@@ -41,10 +42,13 @@ export class TablePayrollComponent implements OnInit {
   paidConstant = PaidConstant
   daysInMonth = rageDaysInMonth(this.payrollQuery.getValue().search.startedAt)
   filterTypeEnum = FilterTypeEnum
+  template$ = this.settingSalaryQuery.selectAll();
+  test = [{name: 'một', value: 1},{name: 'hai', value: 2},{name: 'ba', value: 3}]
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
 
 
   constructor(
+    private readonly settingSalaryQuery: SettingSalaryQuery,
     private readonly positionQuery: PositionQuery,
     private readonly branchQuery: BranchQuery,
     private readonly payrollStore: PayrollStore,
@@ -57,8 +61,8 @@ export class TablePayrollComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.added$.subscribe(added =>{
-      if(added){
+    this.added$.subscribe(added => {
+      if (added) {
         this.onloadPayroll.emit({isPagination: false})
       }
     })
@@ -68,9 +72,12 @@ export class TablePayrollComponent implements OnInit {
           this.scroll = {x: '3000px', y: '56vh'}
           break
         case FilterTypeEnum.TIME_SHEET:
-          this.scroll = {x: '5000px', y: '56vh'}
+          this.scroll = {x: '5800px', y: '56vh'}
           break
         default:
+          if (val in SalaryTypeEnum) {
+            this.onLoadSettingSalary(val)
+          }
           this.scroll = {x: '4200px', y: '56vh'}
       }
     })
@@ -78,7 +85,7 @@ export class TablePayrollComponent implements OnInit {
     this.payrollQuery.select(state => state.search.startedAt).subscribe(val => {
       this.daysInMonth = rageDaysInMonth(val)
     })
-    if(this.onChange){
+    if (this.onChange) {
       this.onChange.subscribe(_ => this.onAdd())
     }
   }
@@ -158,5 +165,23 @@ export class TablePayrollComponent implements OnInit {
           isUpdate: true
         }
       });
+  }
+
+  onLoadSettingSalary(type: SalaryTypeEnum) {
+    this.actions$.dispatch(SettingSalaryActions.loadAll({
+      search: {
+        types: type === SalaryTypeEnum.BASIC
+          ? [SalaryTypeEnum.BASIC, SalaryTypeEnum.BASIC_INSURANCE]
+          : [type]
+      }
+    }))
+  }
+
+  selectSalary(salaryId:number): boolean {
+    return false;
+  }
+
+  updateSelectSalary(salary: any, checked: boolean) {
+
   }
 }
