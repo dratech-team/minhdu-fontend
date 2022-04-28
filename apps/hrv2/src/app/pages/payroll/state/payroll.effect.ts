@@ -150,8 +150,12 @@ export class PayrollEffect {
   scanHoliday$ = this.action$.pipe(
     ofType(PayrollActions.scanHoliday),
     switchMap((props) => {
+      this.payrollStore.update( state =>({
+        ...state, scanned : false}))
       return this.service.scanHoliday(props.payrollId).pipe(
         tap(res => {
+          this.payrollStore.update( state =>({
+            ...state, scanned : true}))
           this.payrollStore.update(res.id, res);
         }),
         catchError(err => {

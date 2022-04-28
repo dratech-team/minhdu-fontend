@@ -7,7 +7,7 @@ import {DatePipe} from '@angular/common';
 import {Role} from '../../../../../../../../libs/enums/hr/role.enum';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {Sort} from '@angular/material/sort';
-import {map} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {PayrollQuery, PayrollStore} from '../../state';
 import {PayrollActions} from '../../state/payroll.action';
 import {PayrollEntity} from '../../entities';
@@ -29,6 +29,11 @@ import {Actions} from '@datorama/akita-ng-effects';
 import {ModalAddOrUpdateAbsentOrOvertime, ModalAddOrUpdateAllowance, ModalPermanentSalaryData} from '../../data';
 import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
+import {DeductionSalaryService, OvertimeSalaryService, SalaryPermanentService} from "../../../salary/service";
+import {AllowanceSalaryService} from "../../../salary/service/allowance-salary.service";
+import {throwError} from "rxjs";
+import {ModalNoteComponent} from "@minhdu-fontend/components";
+import {UpdatePayrollComponent} from "../../components/update/update-payroll.component";
 import {RemoteSalaryComponent} from "../../../salary/components/remote/remote-salary.component";
 import {ModalAddOrUpdateRemote, ModalRemoteSalaryData} from "../../../salary/data";
 
@@ -74,6 +79,10 @@ export class DetailPayrollComponent implements OnInit {
     public readonly router: Router,
     private readonly modal: NzModalService,
     private readonly datePipe: DatePipe,
+    private readonly deductionSalaryService: DeductionSalaryService,
+    private readonly permanentService: SalaryPermanentService,
+    private readonly overtimeSalaryService: OvertimeSalaryService,
+    private readonly allowanceSalaryService: AllowanceSalaryService,
     private readonly message: NzMessageService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
@@ -172,7 +181,40 @@ export class DetailPayrollComponent implements OnInit {
     }
   }
 
-  removeSalary(id: number, payrollId: number) {
+  removeSalary(
+    type: SalaryTypeEnum,
+    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | DeductionSalaryEntity,
+  ) {
+    this.modal.create({
+      nzTitle: `Xoá ${salary.title}`,
+      nzContent: ModalAlertComponent,
+      nzComponentParams: <{ data: ModalAlertEntity }>{
+        data: {
+          description: `Bạn có chắc chắn muốn xoá ${salary.title}`
+        }
+      },
+      nzFooter: ' '
+    }).afterClose.subscribe(value => {
+      if (value) {
+        ((type === SalaryTypeEnum.BASIC || type === SalaryTypeEnum.STAY)
+            ? this.permanentService.deleteMany({salaryIds: [salary.id]})
+            : type === SalaryTypeEnum.ALLOWANCE
+              ? this.allowanceSalaryService.deleteMany({salaryIds: [salary.id]})
+              : type === SalaryTypeEnum.OVERTIME
+                ? this.overtimeSalaryService.deleteMany({salaryIds: [salary.id]})
+                : this.deductionSalaryService.deleteMany({salaryIds: [salary.id]})
+        ).pipe(
+          catchError(err => {
+            this.message.warning(err)
+            return throwError(err)
+          })
+        ).subscribe(res => {
+          this.message.success(res.message)
+          this.actions$.dispatch(PayrollActions.loadOne({id: salary.payrollId}))
+        })
+      }
+    })
+
   }
 
   confirmPayroll(payroll: PayrollEntity) {
@@ -221,6 +263,7 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   scanHoliday(payrollId: number) {
+    this.actions$.dispatch(PayrollActions.scanHoliday({payrollId}))
   }
 
   scroll(target: HTMLElement, sticky: HTMLElement) {
@@ -266,10 +309,32 @@ export class DetailPayrollComponent implements OnInit {
     })
   }
 
-  addNote(payroll: PayrollEntity) {
+  addOrUpdateNote(payroll: PayrollEntity) {
+    this.modal.create({
+      nzTitle: payroll.note ? ' Thêm chú thích' : 'Sửa chú thích',
+      nzContent: ModalNoteComponent,
+      nzComponentParams: <{ data?: { noteInit?: string } }>{
+        data: {
+          noteInit: payroll?.note
+        }
+      },
+      nzFooter: ' '
+    }).afterClose.subscribe(val => {
+        this.actions$.dispatch(PayrollActions.update({id: payroll.id, updates: {note: val}}))
+    })
   }
 
   updatePayroll(payroll: PayrollEntity) {
+    this.modal.create({
+      nzTitle:'Cập nhật phiếu lương',
+      nzContent: UpdatePayrollComponent,
+      nzComponentParams:<{data: {payroll:PayrollEntity}}>{
+        data: {
+          payroll
+        }
+      },
+      nzFooter: ' '
+    })
   }
 
   sortData(sort: Sort) {
