@@ -32,7 +32,7 @@ import {ModalAlertEntity} from "../../../../../../../../libs/entities/modal-aler
 import {DeductionSalaryService, OvertimeSalaryService, SalaryPermanentService} from "../../../salary/service";
 import {AllowanceSalaryService} from "../../../salary/service/allowance-salary.service";
 import {throwError} from "rxjs";
-import {ModalNoteComponent} from "../../../../../../../../libs/components/src/lib/modal-note/modal-note.component";
+import {ModalNoteComponent} from "@minhdu-fontend/components";
 import {UpdatePayrollComponent} from "../../components/update/update-payroll.component";
 import {RemoteSalaryComponent} from "../../../salary/components/remote/remote-salary.component";
 import {ModalAddOrUpdateRemote, ModalRemoteSalaryData} from "../../../salary/data";
