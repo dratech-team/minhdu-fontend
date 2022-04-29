@@ -26,6 +26,7 @@ import {TransformSalaryTypePipe} from "./pipes";
 import {SettingModule} from "../setting/setting.module";
 import {RemoteSalaryComponent} from "./components/remote/remote-salary.component";
 import {DeductionSalaryComponent} from "./components/deduction/deduction-salary.component";
+import { FilterPartialdayPipe } from './pipes/filter-partialday.pipe';
 
 @NgModule({
     imports: [
@@ -54,9 +55,10 @@ import {DeductionSalaryComponent} from "./components/deduction/deduction-salary.
   declarations: [
     PermanentSalaryComponent,
     AbsentOvertimeSalaryComponent,
-    TransformSalaryTypePipe,
     RemoteSalaryComponent,
-    DeductionSalaryComponent
+    DeductionSalaryComponent,
+    TransformSalaryTypePipe,
+    FilterPartialdayPipe,
   ],
   providers: [
     DatePipe,

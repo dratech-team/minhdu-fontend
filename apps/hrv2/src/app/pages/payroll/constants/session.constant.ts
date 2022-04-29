@@ -1,4 +1,5 @@
 import {PartialDayEnum} from '@minhdu-fontend/data-models';
+import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
 
 export const workingTime = {
   morning: {
@@ -17,6 +18,7 @@ export const SessionConstant = [
     name: 'Buổi sáng',
     detail: 'Ngày buổi sáng',
     value: PartialDayEnum.MORNING,
+    unit: DatetimeUnitEnum.DAY,
     startTime: workingTime.morning.start,
     endTime: workingTime.morning.end
   },
@@ -24,6 +26,7 @@ export const SessionConstant = [
     name: 'Buổi chiều',
     detail: 'Ngày buổi chiều',
     value: PartialDayEnum.AFTERNOON,
+    unit: DatetimeUnitEnum.DAY,
     startTime: workingTime.afternoon.start,
     endTime: workingTime.afternoon.end
   },
@@ -31,6 +34,7 @@ export const SessionConstant = [
     name: 'Nguyên ngày',
     detail: 'Ngày',
     value: PartialDayEnum.ALL_DAY,
+    unit: DatetimeUnitEnum.DAY,
     startTime: workingTime.morning.start,
     endTime: workingTime.afternoon.end
   },
@@ -38,6 +42,7 @@ export const SessionConstant = [
     name: 'Tuỳ chọn',
     detail: 'Phút',
     value: PartialDayEnum.CUSTOM,
+    unit: DatetimeUnitEnum.MINUTE,
     startTime: workingTime.morning.start,
     endTime: workingTime.afternoon.end
   }

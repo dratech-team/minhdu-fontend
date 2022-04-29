@@ -1,6 +1,6 @@
 import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
 
-export const UnitSalaryConstant: Array<any> = [
+export const UnitSalaryConstant: Array<{ name: string; value: DatetimeUnitEnum }> = [
   {
     name: 'Tháng',
     value: DatetimeUnitEnum.MONTH
