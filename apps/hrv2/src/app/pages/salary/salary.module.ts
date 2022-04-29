@@ -25,6 +25,7 @@ import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 import {TransformSalaryTypePipe} from "./pipes";
 import {SettingModule} from "../setting/setting.module";
 import {RemoteSalaryComponent} from "./components/remote/remote-salary.component";
+import {DeductionSalaryComponent} from "./components/deduction/deduction-salary.component";
 
 @NgModule({
     imports: [
@@ -54,7 +55,8 @@ import {RemoteSalaryComponent} from "./components/remote/remote-salary.component
     PermanentSalaryComponent,
     AbsentOvertimeSalaryComponent,
     TransformSalaryTypePipe,
-    RemoteSalaryComponent
+    RemoteSalaryComponent,
+    DeductionSalaryComponent
   ],
   providers: [
     DatePipe,
