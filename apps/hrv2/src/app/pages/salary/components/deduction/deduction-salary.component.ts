@@ -102,10 +102,7 @@ export class DeductionSalaryComponent implements OnInit {
     return Object.assign(salary,
       this.data.add
         ? {payrollIds: this.payrollSelected.map(payroll => payroll.id).concat(this.data.add.payroll.id)}
-        : {},
-      this.data.update
-        ? {salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.update.salary.id)}
-        : {}
+        : {salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.update.salary.id)},
     );
   }
 
