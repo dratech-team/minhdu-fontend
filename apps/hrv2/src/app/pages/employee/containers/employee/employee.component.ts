@@ -151,7 +151,7 @@ export class EmployeeComponent implements OnInit {
         branch: val.branch ? val.branch.name : '',
         status: val.status,
         employeeType: val.employeeType,
-        isFlatSalary: val.flatSalary,
+        isFlatSalary: val.flatSalary as FlatSalaryTypeEnum,
         categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : ''
       },
       isPaginate: isPagination
