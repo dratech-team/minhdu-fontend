@@ -6,7 +6,7 @@ export const SalariesConstant = [
     value: SalaryTypeEnum.OVERTIME
   },
   {
-    name: 'Khấu trừ',
+    name: 'Vắng',
     value: SalaryTypeEnum.ABSENT
   },
   {
@@ -21,5 +21,8 @@ export const SalariesConstant = [
     name: 'Phụ cấp khác',
     value: SalaryTypeEnum.ALLOWANCE
   },
-
+  {
+    name: 'Khấu trừ',
+    value: SalaryTypeEnum.DEDUCTION
+  },
 ]

@@ -29,7 +29,7 @@ import {Actions} from '@datorama/akita-ng-effects';
 import {ModalAddOrUpdateAbsentOrOvertime, ModalAddOrUpdateAllowance, ModalPermanentSalaryData} from '../../data';
 import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
-import {DeductionSalaryService, OvertimeSalaryService, SalaryPermanentService} from "../../../salary/service";
+import {AbsentSalaryService, OvertimeSalaryService, SalaryPermanentService} from "../../../salary/service";
 import {AllowanceSalaryService} from "../../../salary/service/allowance-salary.service";
 import {throwError} from "rxjs";
 import {ModalNoteComponent} from "@minhdu-fontend/components";
@@ -82,7 +82,7 @@ export class DetailPayrollComponent implements OnInit {
     public readonly router: Router,
     private readonly modal: NzModalService,
     private readonly datePipe: DatePipe,
-    private readonly deductionSalaryService: DeductionSalaryService,
+    private readonly deductionSalaryService: AbsentSalaryService,
     private readonly permanentService: SalaryPermanentService,
     private readonly overtimeSalaryService: OvertimeSalaryService,
     private readonly allowanceSalaryService: AllowanceSalaryService,
