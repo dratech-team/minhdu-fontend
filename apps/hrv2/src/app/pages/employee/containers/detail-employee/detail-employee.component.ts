@@ -33,8 +33,8 @@ export class DetailEmployeeComponent implements OnInit {
   degreeConstant = DegreeTypeConstant
   relationshipConstant = RelationshipConstant;
   genderTypeConstant = GenderTypeConstant
-  degreeLevelTypeConstant =DegreeLevelTypeConstant
-  degreeStatusTypeConstant= DegreeStatusTypeConstant
+  degreeLevelTypeConstant = DegreeLevelTypeConstant
+  degreeStatusTypeConstant = DegreeStatusTypeConstant
   recipeConstant = RecipeSalaryConstant
 
 
