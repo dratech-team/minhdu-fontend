@@ -1,7 +1,7 @@
 <div class='main-content'>
   <div class='row h3 ml-3 d-flex' [formGroup]='formGroup'>
     <div>
-      {{selectedPayroll|transform:payrollConstant}}
+      {{selectedPayroll|CustomTransformPipe:payrollConstant}}
     </div>
     <div class='d-flex justify-content-center align-items-center ml-2'>
       <nz-range-picker
