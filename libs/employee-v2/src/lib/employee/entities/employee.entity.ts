@@ -50,7 +50,7 @@ export interface EmployeeEntity extends BaseEmployeeEntity{
   birthday: Date,
   email?: string,
   contractAt: string,
-  leftAt: Date,
+  leftAt?: Date,
   isFlatSalary: boolean,
 }
 

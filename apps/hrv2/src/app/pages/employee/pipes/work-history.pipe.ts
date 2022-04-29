@@ -6,14 +6,10 @@ import {WorkHistory} from '@minhdu-fontend/data-models';
   pure: false,
 })
 export class WorkHistoryPipe implements PipeTransform {
-  transform(workHistories: WorkHistory[]|undefined) {
-    if (workHistories) {
+  transform(workHistories: readonly WorkHistory[]) {
       const arrClone = [...workHistories]
       return arrClone.sort(function (a, b) {
         return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
       });
-    } else {
-      return []
-    }
   }
 }

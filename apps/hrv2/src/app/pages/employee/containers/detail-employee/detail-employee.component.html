@@ -8,7 +8,7 @@
         <img
           class='rounded-circle row'
           alt='50x50'
-          src='{{employee.avt}}'
+          src='{{employee?.avt}}'
           data-holder-rendered='true'
           height='160px'
         />
@@ -19,7 +19,7 @@
                   Đổi avatar
             </span>
         </button>
-        <button (click)='deleteEmployee(employee, employee.leftAt)'
+        <button (click)='deleteEmployee(employee, employee?.leftAt)'
                 class='row btn shadow-none p-2 mb-3 bg-light rounded'>
               <span style='text-align: center; font-weight: 600;font-size: 16px;line-height: 19px; width:240px;'>
                  {{employee.leftAt ? 'Khôi phục' : 'Xóa nhân viên' }}
@@ -51,16 +51,6 @@
       </div>
       <div class='row mt-3'>
         <div class='col-6  form-group'>
-          <!--          <div class=' ml-1 row align-items-center'>-->
-          <!--            <div class='col-md-4 py-2 title-employee title-detail'>-->
-          <!--              <span>Mã số :</span>-->
-          <!--            </div>-->
-          <!--            <div class='col-md-8 py-2'>-->
-          <!--            <span class='contain-detail' style='font-weight: 600 ;color: #3C3B54'>-->
-          <!--              {{employee.code}}-->
-          <!--            </span>-->
-          <!--            </div>-->
-          <!--          </div>-->
           <div class='row ml-1 align-items-center'>
             <div class='col-md-4 py-2 title-employee title-detail'>
               <span>Họ và tên :</span>
@@ -76,21 +66,7 @@
               <span>Giới tính :</span>
             </div>
             <div class='col-md-8 d-flex flex-row'>
-              <label class='col-md-2 py-2'
-                     style='display: flex;justify-content: flex-start;align-items: center;color: #3C3B54'>
-                <input disabled type='radio' name='group1[]' class='mr-1 ml-1'
-                       [checked]="employee.gender === 'FEMALE'">
-                Nữ
-              </label>
-              <label class='col-md-2 py-2'
-                     style='display: flex;justify-content: flex-start;align-items: center;color: #3C3B54'>
-                <input disabled type='radio' name='group1[]' class='mr-1' [checked]="employee.gender ==='MALE'">Nam
-              </label>
-              <label class='col-md-2 py-2'
-                     style='display: flex;justify-content: flex-start;align-items: center;color: #3C3B54'>
-                <input disabled type='radio' name='group1[]' class='mr-1'
-                       [checked]="employee.gender === 'OTHER'">Khác
-              </label>
+              {{employee.gender|transform:genderTypeConstant}}
             </div>
           </div>
           <div class='row ml-1 align-items-center'>
@@ -98,10 +74,7 @@
               <span>Ngày sinh :</span>
             </div>
             <div class='col-md-8 py-2'>
-                 <span class='contain-detail' *ngIf='employee.birthday === null'>
-                    Chưa cập nhật
-                 </span>
-              <span *ngIf='employee.birthday'>
+              <span>
                   {{employee.birthday|date:'dd/MM/yyyy'}}
                 </span>
             </div>
@@ -122,7 +95,7 @@
             </div>
             <div class='col-md-8 py-2'>
             <span class='contain-detail'>
-               {{employee.identify ? employee.identify : 'Chưa cập nhật'}}
+               {{employee.identify}}
             </span>
             </div>
           </div>
@@ -131,11 +104,8 @@
               <span>Ngày cấp:</span>
             </div>
             <div class='col-md-8 py-2'>
-                <span class='contain-detail' *ngIf='employee.idCardAt === null '>
-                Đang cập nhật
-                </span>
-              <span class='contain-detail' *ngIf='employee.idCardAt !== null '>
-                {{ employee.idCardAt|date:'dd/MM/yyy'}}
+              <span class='contain-detail'>
+                {{employee.idCardAt|date:'dd/MM/yyy'}}
                 </span>
             </div>
           </div>
@@ -145,7 +115,7 @@
             </div>
             <div class='col-md-8 py-2'>
             <span class='contain-detail'>
-              {{employee?.issuedBy ? employee.issuedBy : 'Chưa cập nhật' }}
+              {{employee.issuedBy}}
             </span>
             </div>
           </div>
@@ -155,7 +125,7 @@
             </div>
             <div class='col-md-8 py-2 '>
             <span class='contain-detail'>
-              {{employee.ethnicity === null ? 'Chưa cập nhật' : employee.ethnicity }}
+              {{employee?.ethnicity ? employee.ethnicity : 'Chưa cập nhật'}}
             </span>
             </div>
           </div>
@@ -185,7 +155,7 @@
             </div>
             <div class='col-md-8 py-2 '>
             <span class='contain-detail'>
-            {{employee?.isFlatSalary ? 'Lương cố định' : 'Lương không cố định'}}
+            {{employee.isFlatSalary}}
             </span>
             </div>
           </div>
@@ -667,6 +637,7 @@
       <div class=' mt-5 mb-3 row align-items-center title-table'>Lịch sử công tác</div>
       <div>
         <nz-table
+          #tableWorkHistory
           [nzScroll]="{x: '300px', y:'100%'}"
           [nzData]="employee.workHistories|| []">
           <thead>
@@ -678,7 +649,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor='let workHistory of employee.workHistories|workhistorypipe'>
+          <tr *ngFor='let workHistory of tableWorkHistory.data|workhistorypipe'>
             <td>{{workHistory?.createdAt|date:'dd/MM/yyyy'}}</td>
             <td>{{workHistory?.position?.name}}</td>
             <td>{{workHistory?.branch?.name}}</td>
