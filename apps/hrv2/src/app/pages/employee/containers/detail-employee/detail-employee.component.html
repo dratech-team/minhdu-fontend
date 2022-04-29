@@ -66,7 +66,7 @@
               <span>Giới tính :</span>
             </div>
             <div class='col-md-8 d-flex flex-row'>
-              {{employee.gender|transform:genderTypeConstant}}
+              {{employee.gender|transformconstant:genderTypeConstant}}
             </div>
           </div>
           <div class='row ml-1 align-items-center'>
@@ -145,7 +145,7 @@
             </div>
             <div class='col-md-8 py-2 '>
             <span class='contain-detail'>
-              {{employee.recipeType|transform:recipeConstant}}
+              {{employee.recipeType|transformconstant:recipeConstant}}
             </span>
             </div>
           </div>
@@ -155,7 +155,7 @@
             </div>
             <div class='col-md-8 py-2 '>
             <span class='contain-detail'>
-            {{employee.isFlatSalary}}
+            {{employee.isFlatSalary|flatsalarytypepipe}}
             </span>
             </div>
           </div>
@@ -165,7 +165,7 @@
             </div>
             <div class='col-md-8 py-2 '>
             <span class='contain-detail'>
-               {{employee?.createdAt ? (employee.createdAt|date:'dd/MM/yyyy') : 'Chưa cập nhật'}}
+               {{employee.createdAt|date:'dd/MM/yyyy'}}
             </span>
             </div>
           </div>
@@ -502,7 +502,7 @@
             <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)'>
               {{relative.lastName}}
             </td>
-            <td>{{relative.relationship|transform: relationshipConstant}}</td>
+            <td>{{relative.relationship|transformconstant: relationshipConstant}}</td>
             <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)'
                 class='text-center pointer'>{{relative.birthday |date:'dd/MM/yyyy'}}</td>
             <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)'
@@ -560,7 +560,7 @@
           <tbody>
           <tr *ngFor='let degree of employee.degrees'>
             <td (click)='addAndUpdateDegree(employee.id,degree.id , degree)'>
-              {{degree.type|transform:degreeConstant }}
+              {{degree.type|transformconstant:degreeConstant }}
             </td>
             <td class='text-center pointer'
                 (click)='addAndUpdateDegree(employee.id,degree.id , degree)'
@@ -573,18 +573,18 @@
             >{{degree.major}}</td>
             <td class='text-center pointer'
                 (click)='addAndUpdateDegree(employee.id,degree.id , degree)'>
-              {{degree.formality|transform: formalityTypeConstant}}
+              {{degree.formality|transformconstant: formalityTypeConstant}}
             </td>
             <td class='text-center pointer'
                 (click)='addAndUpdateDegree(employee.id,degree.id , degree)'
             >{{degree.school}}</td>
             <td class='text-center pointer'
                 (click)='addAndUpdateDegree(employee.id,degree.id , degree)'>
-              {{degree.level|transform:degreeLevelTypeConstant}}
+              {{degree.level|transformconstant:degreeLevelTypeConstant}}
             </td>
             <td class='text-center pointer'
                 (click)='addAndUpdateDegree(employee.id,degree.id , degree)'>
-              {{degree.status|transform: degreeStatusTypeConstant}}
+              {{degree.status|transformconstant: degreeStatusTypeConstant}}
             </td>
             <td class="not-print">
               <button
