@@ -24,6 +24,7 @@ import {FlatSalaryTypePipe} from "./pipes/flat-salary-type.pipe";
 import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
 import {DetailEmployeeComponent} from "./containers/detail-employee/detail-employee.component";
 import {WorkHistoryPipe} from "./pipes/work-history.pipe";
+import {ExistPipe} from "./pipes/exist.pipe";
 
 @NgModule({
   imports: [
@@ -55,6 +56,7 @@ import {WorkHistoryPipe} from "./pipes/work-history.pipe";
     DetailEmployeeComponent,
     WorkHistoryPipe,
     FlatSalaryTypePipe,
+    ExistPipe
   ],
   providers: [
     DatePipe,
