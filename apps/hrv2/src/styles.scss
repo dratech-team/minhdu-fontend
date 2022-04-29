@@ -211,6 +211,18 @@ table tbody tr td {
   font-size: 13px;
 }
 
+table tbody tr:nth-child(even),
+table tbody tr:nth-child(even) td
+{
+  background: #dddddd!important;
+}
+
+table tbody tr:nth-child(odd),
+table tbody tr:nth-child(odd) td
+{
+  background: white !important;
+}
+
 .pointer {
   cursor: pointer;
 }
