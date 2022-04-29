@@ -19,7 +19,7 @@ import {
 } from '../../../salary/components/absent-overtime/absent-overtime-salary.component';
 import {
   AllowanceSalaryEntity,
-  DeductionSalaryEntity,
+  AbsentSalaryEntity,
   OvertimeSalaryEntity,
   SalaryEntity
 } from '../../../salary/entities';
@@ -36,6 +36,9 @@ import {ModalNoteComponent} from "@minhdu-fontend/components";
 import {UpdatePayrollComponent} from "../../components/update/update-payroll.component";
 import {RemoteSalaryComponent} from "../../../salary/components/remote/remote-salary.component";
 import {ModalAddOrUpdateRemote} from "../../../salary/data";
+import {DeductionSalaryEntity} from "../../../salary/entities/deduction-salary.entity";
+import {DeductionSalaryComponent} from "../../../salary/components/deduction/deduction-salary.component";
+import {ModalAddOrUpdateDeduction} from "../../data/modal-deduction-salary.data";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -109,7 +112,7 @@ export class DetailPayrollComponent implements OnInit {
 
   updateSalary(
     type: SalaryTypeEnum,
-    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | DeductionSalaryEntity,
+    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | AbsentSalaryEntity | DeductionSalaryEntity,
     payroll?: PayrollEntity
   ) {
     const config = {
@@ -143,7 +146,7 @@ export class DetailPayrollComponent implements OnInit {
     }
     if (type === SalaryTypeEnum.OVERTIME || type === SalaryTypeEnum.ABSENT) {
       this.modal.create(Object.assign(config, {
-        nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.ABSENT ? ' Khấu trừ' : ' tăng ca'),
+        nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.ABSENT ? ' Vắng' : ' tăng ca'),
         nzContent: AbsentOvertimeSalaryComponent,
         nzComponentParams: <{ data: ModalAddOrUpdateAbsentOrOvertime }>{
           data: {
@@ -179,11 +182,23 @@ export class DetailPayrollComponent implements OnInit {
         },
       }))
     }
+    if (type === SalaryTypeEnum.DEDUCTION) {
+      this.modal.create(Object.assign(config, {
+        nzTitle: add ? 'Thêm khấu trừ' : 'Cập nhật khấu trừ',
+        nzContent: DeductionSalaryComponent,
+        nzComponentParams: <{ data: ModalAddOrUpdateDeduction }>{
+          data: {
+            add: add,
+            update: update
+          }
+        },
+      }))
+    }
   }
 
   removeSalary(
     type: SalaryTypeEnum,
-    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | DeductionSalaryEntity,
+    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | AbsentSalaryEntity | DeductionSalaryEntity,
   ) {
     this.modal.create({
       nzTitle: `Xoá ${salary.title}`,
