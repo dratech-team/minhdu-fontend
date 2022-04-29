@@ -144,7 +144,7 @@
             <!--          'Chưa cập nhật'}}-->
             <!--        </th>-->
             <td *ngIf='ui.resource?.visible' [nzLeft]='ui.resource?.pinned||false'>
-              {{ customer?.resource | transform: resourcesConstant}}
+              {{ customer?.resource | CustomTransformPipe: resourcesConstant}}
             </td>
             <td *ngIf='ui.customerType?.visible' [nzLeft]='ui.customerType?.pinned||false'>
               {{customer?.type === customerType.AGENCY ? 'Đại lý' : customer?.type === customerType.RETAIL ? 'Khách lẻ' : 'Chưa cập nhật'}}

@@ -225,14 +225,14 @@
               <div>{{employee.lastName}}</div>
             </td>
             <td>
-              <div>{{employee.type|transform: employeeTypeConstant}}</div>
+              <div>{{employee.type|transformconstant: employeeTypeConstant}}</div>
             </td>
             <td>
               <div>{{employee?.birthday | date:'dd/MM/yyyy'}}</div>
             </td>
             <td>
               <div>
-                {{employee.gender|transform: genderTypeConstant}}
+                {{employee.gender|transformconstant: genderTypeConstant}}
               </div>
             </td>
             <td>
