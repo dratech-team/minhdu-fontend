@@ -1,8 +1,8 @@
-import {AfterViewChecked, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {MatMenuTrigger} from '@angular/material/menu';
 import {ActivatedRoute, Router} from '@angular/router';
 import {
+  EmployeeStatusEnum,
   EmployeeType,
   Gender,
   ItemContextMenu,
@@ -14,9 +14,7 @@ import {catchError, debounceTime, tap} from 'rxjs/operators';
 import {EmployeeStatusConstant, GenderTypeConstant, PaginationDto} from '@minhdu-fontend/constants';
 import {Observable, throwError} from 'rxjs';
 import {Category, District, Employee, Ward} from '@minhdu-fontend/data-models';
-import {checkInputNumber} from '@minhdu-fontend/utils';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {MatSort, Sort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {ExportService} from "@minhdu-fontend/service";
@@ -33,7 +31,7 @@ import {FlatSalaryTypeConstant} from "../../constants/flat-salary-type.constant"
 import {ProvinceService} from "@minhdu-fontend/location";
 import {FlatSalaryTypeEnum} from "../../enums/flat-salary-type.enum";
 import {BranchActions, BranchQuery, PositionQuery} from "@minhdu-fontend/orgchart-v2";
-import {SearchEmployeeDto} from "../../../../../../../../libs/employee-v2/src/lib/employee/dto/employee";
+import {SearchEmployeeDto} from "@minhdu-fontend/employee-v2";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -81,7 +79,7 @@ export class EmployeeComponent implements OnInit {
     position: new FormControl(''),
     branch: new FormControl(''),
     employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME),
-    status: new FormControl(1)
+    status: new FormControl(EmployeeStatusEnum.IS_ACTIVE)
   });
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
@@ -139,10 +137,10 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
-  add(employeeInit?: Employee): void {
+  onAdd(employeeInit?: Employee): void {
   }
 
-  delete(employeeId: any): void {
+  onDelete(employeeId: any): void {
   }
 
   mapEmployeeDto(val: any, isPagination: boolean): SearchEmployeeDto {
@@ -175,7 +173,7 @@ export class EmployeeComponent implements OnInit {
     }
   }
 
-  readAndUpdate($event: any, isUpdate?: boolean): void {
+  onUpdate($event: any, isUpdate?: boolean): void {
     this.router.navigate(['nhan-vien/chi-tiet-nhan-vien', $event.id], {
       queryParams: {
         isUpdate
@@ -183,16 +181,16 @@ export class EmployeeComponent implements OnInit {
     }).then();
   }
 
-  permanentlyDeleted($event: any) {
+  onPermanentlyDeleted($event: any) {
   }
 
-  printEmployee() {
+  onPrint() {
   }
 
   onRestore($event: any) {
   }
 
-  addCategory() {
+  onAddCategory() {
   }
 
   onDrop(event: CdkDragDrop<Employee[]>) {
@@ -206,7 +204,7 @@ export class EmployeeComponent implements OnInit {
     ).subscribe();
   }
 
-  updateCategory(): any {
+  onUpdateCategory(): any {
 
   }
 }

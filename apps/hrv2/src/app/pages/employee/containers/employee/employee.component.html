@@ -38,21 +38,21 @@
             <nz-select class='px-2' style='width:200px' [formControl]='categoryControl'>
               <nz-option [nzValue]='""' nzLabel="Tất cả"></nz-option>
               <nz-option *ngFor='let item of categories$ | async' [nzValue]='item.id' [nzLabel]="item.name"></nz-option>
-              <nz-option [nzValue]='0' (click)='addCategory()' nzLabel="Tạo mới"></nz-option>
+              <nz-option [nzValue]='0' (click)='onAddCategory()' nzLabel="Tạo mới"></nz-option>
             </nz-select>
           </div>
           <button *ngIf='categoryControl.value && categoryControl.value !==0 && this.role !== roleEnum.HUMAN_RESOURCE '
                   class='btn btn-primary ml-2'
-                  (click)='updateCategory()'>Sửa
+                  (click)='onUpdateCategory()'>Sửa
           </button>
         </div>
       </div>
     </div>
     <div>
       <button *ngIf='formGroup.value.status === 0'
-              (click)='add()' class='mr-2 btn btn-primary'>Thêm
+              (click)='onAdd()' class='mr-2 btn btn-primary'>Thêm
       </button>
-      <button class='btn btn-primary mr-4' (click)='printEmployee()'>Xuất</button>
+      <button class='btn btn-primary mr-4' (click)='onPrint()'>Xuất</button>
     </div>
   </div>
   <div class='mx-auto' style='width: 98%'>
@@ -214,16 +214,15 @@
           <tr
             class="pointer"
             (contextmenu)='child.onContextMenu($event,employee)'
-            (click)='readAndUpdate(employee)'
-            cdkDrag>
+            (click)='onUpdate(employee)' cdkDrag>
             <td nzLeft nzWidth="100px">
               <div>{{(i + 1) + ((tableEmployee.nzPageIndex - 1) * pageSize)}}</div>
             </td>
             <td>
-              <div>{{employee?.id}}</div>
+              <div>{{employee.id}}</div>
             </td>
             <td nzLeft>
-              <div>{{employee?.lastName}}</div>
+              <div>{{employee.lastName}}</div>
             </td>
             <td>
               <div>{{employee.type|transform:employeeTypeConstant}}</div>
@@ -238,7 +237,7 @@
             </td>
             <td>
               <div>
-                {{employee?.createdAt ? (employee?.createdAt|date: 'dd/MM/yyyy') : 'Chưa cập nhật'}}
+                {{(employee.createdAt|date: 'dd/MM/yyyy')}}
               </div>
             </td>
             <td>
@@ -253,37 +252,37 @@
             </td>
             <td nzLeft>
               <div>
-                {{employee?.branch?.name}}
+                {{employee.branch.name}}
               </div>
             </td>
             <td nzLeft>
               <div>
-                {{employee?.position?.name}}
+                {{employee.position.name}}
               </div>
             </td>
             <td>
               <div>
-                {{employee?.identify ? employee.identify : 'Chưa cập nhật'}}
+                {{employee.identify}}
               </div>
             </td>
             <td>
               <div>
-                {{employee?.ward?.district?.province?.name}}
+                {{employee.ward.district.province.name}}
               </div>
             </td>
             <td>
               <div>
-                {{employee?.ward?.district?.name}}
+                {{employee.ward.district.name}}
               </div>
             </td>
             <td>
               <div>
-                {{employee?.ward?.name}}
+                {{employee.ward.name}}
               </div>
             </td>
             <td>
               <div>
-                {{employee?.address}}
+                {{employee.address}}
               </div>
             </td>
             <td>
@@ -307,9 +306,9 @@
 <app-mouse-right
   #child
   [items]='formGroup.value.status === 1 ? [ItemContextMenu.RESTORE] : []'
-  (onAdd)='add($event)'
-  (onDel)='delete($event)'
+  (onAdd)='onAdd($event)'
+  (onDel)='onDelete($event)'
   (onRestore)='onRestore($event)'
-  (onUpdate)='readAndUpdate($event,true)'>
+  (onUpdate)='onUpdate($event,true)'>
 </app-mouse-right>
 
