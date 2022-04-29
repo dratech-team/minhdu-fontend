@@ -7,7 +7,7 @@ import {catchError, map} from 'rxjs/operators';
 import {SettingSalaryActions, SettingSalaryQuery} from '../../../setting/salary/state';
 import {PriceType} from '../../../setting/salary/enums';
 import {PayrollEntity} from '../../../payroll/entities';
-import {DeductionSalaryService, OvertimeSalaryService} from '../../service';
+import {AbsentSalaryService, OvertimeSalaryService} from '../../service';
 import {NzModalRef} from 'ng-zorro-antd/modal';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {Actions} from '@datorama/akita-ng-effects';
@@ -15,12 +15,10 @@ import {UnitSalaryConstant} from '../../constants';
 import {SessionConstant, workingTime} from '../../../payroll/constants/session.constant';
 import {recipesConstant} from '../../../setting/salary/constants';
 import {SalarySettingEntity} from '../../../setting/salary/entities';
-import {templateDeductionConstant} from '../../constants/template-deduction.constant';
 import {getAfterTime, getBeforeTime} from '@minhdu-fontend/utils';
 import {throwError} from 'rxjs';
 import {PayrollActions} from '../../../payroll/state/payroll.action';
 import {ModalAddOrUpdateAbsentOrOvertime} from '../../../payroll/data';
-import * as _ from 'lodash';
 import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
 
 @Component({
@@ -32,9 +30,6 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     filterBy: [(entity => entity.type === this.data.type)]
   }).pipe(
     map(templates => {
-      if (this.data.type === SalaryTypeEnum.ABSENT) {
-        templates.concat(templateDeductionConstant);
-      }
       if (this.data?.update) {
         this.formGroup.get('template')?.setValue(
           this.getTemplateSalary(templates, this.data.update.salary.setting.id));
@@ -80,7 +75,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly modalRef: NzModalRef,
     private readonly message: NzMessageService,
-    private readonly deductionSalaryService: DeductionSalaryService,
+    private readonly absentSalaryService: AbsentSalaryService,
     private readonly overtimeSalaryService: OvertimeSalaryService,
     private readonly actions$: Actions
   ) {
@@ -97,14 +92,14 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       template: ['', Validators.required],
       title: [salary?.title],
-      rangeDay: [salary ? [salary.startedAt, salary.endedAt] : []],
+      rangeDay: [salary ? [salary.startedAt, salary.endedAt] : [], Validators.required],
       price: [salary?.price],
       startTime: [salary?.startedAt ? new Date(salary.startedAt) : undefined],
       endTime: [salary?.endedAt ? new Date(salary.endedAt) : undefined],
       note: [salary?.note],
       rate: [1],
       unit: [salary?.unit ? salary.unit : DatetimeUnitEnum.MONTH],
-      partialDay: [salary?.partial ? this.getPartialDay(salary.partial) : ''],
+      partialDay: [salary?.partial ? this.getPartialDay(salary.partial) : '', Validators.required],
       isAllowance: [!!salary?.allowance],
       priceAllowance: [salary?.allowance?.price || ''],
       titleAllowance: [salary?.allowance?.title || ''],
@@ -143,8 +138,8 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     return this.formGroup.controls;
   }
 
-  getTemplateSalary(template: SalarySettingEntity[], id?: number) {
-    return template.find(item => item.id === (id ? id : 0));
+  getTemplateSalary(template: SalarySettingEntity[], id: number) {
+    return template.find(item => item.id === id);
   }
 
   getPartialDay(partial: PartialDayEnum) {
@@ -157,11 +152,11 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     }
     const value = this.formGroup.value;
     if (value.isAllowance && (!value.priceAllowance || !value.titleAllowance)) {
-      this.message.warning('Chưa nhập đủ thông tin phụ cấp cho tăng ca');
+      return this.message.warning('Chưa nhập đủ thông tin phụ cấp cho tăng ca');
     }
     const salary = this.mapSalary(value);
     this.submitting = true;
-    const service = this.data.type === SalaryTypeEnum.ABSENT ? this.deductionSalaryService : this.overtimeSalaryService;
+    const service = this.data.type === SalaryTypeEnum.ABSENT ? this.absentSalaryService : this.overtimeSalaryService;
     (this.data.add ? service.addMany(salary) : service.updateMany(salary))
       .pipe(catchError(err => {
         this.submitting = false;
@@ -197,9 +192,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       settingId: value.template?.id
     };
 
-    return Object.assign(this.data.type === SalaryTypeEnum.ABSENT && value.template.id === 0
-        ? _.omit(salary, 'settingId')
-        : salary,
+    return Object.assign(salary,
       this.data.add
         ? {payrollIds: this.payrollSelected.map(payroll => payroll.id).concat(this.data.add.payroll.id)}
         : {},
