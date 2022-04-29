@@ -1,37 +1,41 @@
-import {DatePipe} from '@angular/common';
-import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {isEqualDatetime} from 'libs/utils/daytime.until';
-import {SalaryPayroll} from '@minhdu-fontend/data-models';
-import {AllowanceSalaryService} from '../../service/allowance-salary.service';
-import {PayrollEntity} from '../../../payroll/entities';
-import {NzMessageService} from 'ng-zorro-antd/message';
-import {NzModalRef} from 'ng-zorro-antd/modal';
-import {catchError} from 'rxjs/operators';
-import {throwError} from 'rxjs';
-import {differenceInCalendarDays} from 'date-fns';
+import { DatePipe } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { isEqualDatetime } from 'libs/utils/daytime.until';
+import { SalaryPayroll } from '@minhdu-fontend/data-models';
+import { AllowanceSalaryService } from '../../service/allowance-salary.service';
+import { PayrollEntity } from '../../../payroll/entities';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalRef } from 'ng-zorro-antd/modal';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { differenceInCalendarDays } from 'date-fns';
 import * as moment from 'moment';
-import {Actions} from '@datorama/akita-ng-effects';
-import {PayrollActions} from '../../../payroll/state/payroll.action';
-import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
-import {ModalAddOrUpdateAllowance} from '../../../payroll/data';
-import {RequireOnlyOne} from "../../../../../shared/types";
+import { Actions } from '@datorama/akita-ng-effects';
+import { PayrollActions } from '../../../payroll/state/payroll.action';
+import { ResponseMessageEntity } from '@minhdu-fontend/base-entity';
+import { ModalAddOrUpdateAllowance } from '../../../payroll/data';
 
 @Component({
   templateUrl: 'allowance-salary.component.html'
 })
 export class AllowanceSalaryComponent implements OnInit {
   @Input() data!: ModalAddOrUpdateAllowance;
-  salaryTypeEnum = SalaryTypeEnum;
-  datetimeEnum = DatetimeUnitEnum;
+
   formGroup!: FormGroup;
-  isApprentice = false;
+
   salariesSelected: SalaryPayroll [] = [];
   payrollSelected: PayrollEntity [] = [];
+
+  isApprentice = false;
   indexStep = 0;
   submitting = false;
+
+  salaryTypeEnum = SalaryTypeEnum;
+  datetimeEnum = DatetimeUnitEnum;
+
   disableApprenticeDate = (cur: Date): boolean => {
     if (this.data.add) {
       const workedAt = this.data.add.payroll.employee.workedAt;
@@ -143,9 +147,9 @@ export class AllowanceSalaryComponent implements OnInit {
 
     return Object.assign(salary,
       this.data.add
-        ? {payrollIds: this.payrollSelected.map(payroll => payroll.id).concat([this.data.add.payroll.id])}
-        : {salaryIds: this.salariesSelected.map(item => item.salary.id).concat([this.data.update.salary.id])}
-    )
+        ? { payrollIds: this.payrollSelected.map(payroll => payroll.id).concat([this.data.add.payroll.id]) }
+        : { salaryIds: this.salariesSelected.map(item => item.salary.id).concat([this.data.update.salary.id]) }
+    );
   }
 
   onWaringApprentice() {

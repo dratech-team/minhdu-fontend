@@ -12,7 +12,7 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Actions } from '@datorama/akita-ng-effects';
 import { UnitSalaryConstant } from '../../constants';
-import { SessionConstant, workingTime } from '../../../../../shared/constants/session.constant';
+import { SessionConstant, workingTime } from '../../../../../shared/constants';
 import { recipesConstant } from '../../../setting/salary/constants';
 import { SalarySettingEntity } from '../../../setting/salary/entities';
 import { getAfterTime, getBeforeTime } from '@minhdu-fontend/utils';
@@ -26,6 +26,11 @@ import { ResponseMessageEntity } from '@minhdu-fontend/base-entity';
 })
 export class AbsentOvertimeSalaryComponent implements OnInit {
   @Input() data!: ModalAddOrUpdateAbsentOrOvertime;
+
+  formGroup!: FormGroup;
+  firstDayInMonth!: string | null;
+  lastDayInMonth!: string | null;
+
   templateSalaries$ = this.settingSalaryQuery.selectAll({
     filterBy: [(entity => entity.type === this.data.type)]
   }).pipe(
@@ -38,21 +43,21 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     })
   );
   settingsLoading$ = this.settingSalaryQuery.select(state => state.loading);
-  submitting = false;
-  salaryTypeEnum = SalaryTypeEnum;
-  datetimeUnit = DatetimeUnitEnum;
-  formGroup!: FormGroup;
-  firstDayInMonth!: string | null;
-  lastDayInMonth!: string | null;
+
   salaryPayrolls: SalaryPayroll[] = [];
   payrollSelected: PayrollEntity[] = [];
+  limitStartHour: number [] = [];
+  limitEndTime: number [] = [];
+
+  indexStep = 1;
+  submitting = false;
+
   titleSession = SessionConstant;
   partialDayEnum = PartialDayEnum;
   recipesConstant = recipesConstant;
-  indexStep = 1;
-  limitStartHour: number [] = [];
-  limitEndTime: number [] = [];
   unitConstant = UnitSalaryConstant;
+  salaryTypeEnum = SalaryTypeEnum;
+  datetimeUnit = DatetimeUnitEnum;
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
   disabledHoursStart = (): number[] => {

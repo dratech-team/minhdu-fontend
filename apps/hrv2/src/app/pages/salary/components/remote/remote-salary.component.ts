@@ -1,30 +1,34 @@
-import {DatePipe} from '@angular/common';
-import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {NzModalRef} from 'ng-zorro-antd/modal';
-import {PayrollEntity} from '../../../payroll/entities';
-import {SalaryRemoteService} from '../../service';
-import {NzMessageService} from 'ng-zorro-antd/message';
-import {throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
-import {Actions} from '@datorama/akita-ng-effects';
-import {PayrollActions} from '../../../payroll/state/payroll.action';
-import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
-import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
-import {ModalAddOrUpdateRemote} from '../../data';
+import { DatePipe } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { NzModalRef } from 'ng-zorro-antd/modal';
+import { PayrollEntity } from '../../../payroll/entities';
+import { SalaryRemoteService } from '../../service';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { Actions } from '@datorama/akita-ng-effects';
+import { PayrollActions } from '../../../payroll/state/payroll.action';
+import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
+import { ResponseMessageEntity } from '@minhdu-fontend/base-entity';
+import { ModalAddOrUpdateRemote } from '../../data';
 
 @Component({
   templateUrl: 'remote-salary.component.html'
 })
 export class RemoteSalaryComponent implements OnInit {
   @Input() data!: ModalAddOrUpdateRemote;
+
+  formGroup!: FormGroup;
+
   payrollSelected: PayrollEntity [] = [];
+
+  stepIndex = 0;
+  submitting = false;
+  
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
-  formGroup!: FormGroup;
-  stepIndex = 0;
-  submitting = false
 
   constructor(
     public datePipe: DatePipe,
@@ -50,7 +54,7 @@ export class RemoteSalaryComponent implements OnInit {
         ],
         Validators.required
       ],
-      note: [salary?.note],
+      note: [salary?.note]
     })
     ;
   }
