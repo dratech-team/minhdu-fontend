@@ -144,7 +144,7 @@
                                alt='edit icon'>
                         </button>
                         <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                                (click)='removeSalary(salary.id, payroll.id)'>
+                                (click)='removeSalary(salaryTypeEnum.BASIC, salary)'>
                           <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
                         </button>
                       </div>
@@ -193,7 +193,7 @@
                                alt='edit icon'>
                         </button>
                         <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                                (click)='removeSalary(salary.id, payroll.id)'>
+                                (click)='removeSalary(salaryTypeEnum.STAY, salary)'>
                           <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
                         </button>
                       </div>
@@ -261,7 +261,7 @@
                       <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
                     </button>
                     <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                            (click)='removeSalary(salary.id , payroll.id)'>
+                            (click)='removeSalary(salaryTypeEnum.ALLOWANCE, salary)'>
                       <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
                     </button>
                   </div>
@@ -344,7 +344,7 @@
                       <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
                     </button>
                     <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                            (click)='removeSalary(salary.id, payroll.id)'>
+                            (click)='removeSalary( salaryTypeEnum.OVERTIME, salary)'>
                       <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
                     </button>
                   </div>
@@ -442,7 +442,7 @@
                         <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
                       </button>
                       <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                              (click)='removeSalary(salary.id, payroll.id)'>
+                              (click)='removeSalary(salaryTypeEnum.ABSENT, salary)'>
                         <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
                       </button>
                     </div>
@@ -524,7 +524,7 @@
                       <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
                     </button>
                     <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                            (click)='removeSalary(salary.id, payroll.id)'>
+                            (click)='removeSalary(salaryTypeEnum.HOLIDAY, salary)'>
                       <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
                     </button>
                   </div>
@@ -602,7 +602,7 @@
                       <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
                     </button>
                     <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                            (click)='removeSalary(salary.id, payroll.id)'>
+                            (click)='removeSalary(salaryTypeEnum.WFH, salary)'>
                       <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
                     </button>
                   </div>
@@ -614,7 +614,7 @@
 
           <!--chú thích-->
           <div #note class='col-12 mt-5'>
-            <nz-table>
+            <nz-table #tableNote [nzData]="payroll?.note?  [payroll.note] : []">
               <thead>
               <tr style='background-color: #dddddd66;'>
                 <th>
@@ -622,7 +622,7 @@
                     Chú thích phiếu lương
                   </div>
                 </th>
-                <th nzWidth='10%' style='color: #1b8eb7' (click)='addNote(payroll)'>
+                <th nzWidth='10%' style='color: #1b8eb7' (click)='addOrUpdateNote(payroll)'>
                   <div class="d-flex">
                     <span class='mx-2 pointer'>{{payroll?.note ? 'Sửa' : 'Thêm'}}</span>
                     <img class='pointer' style='margin-left: 2px;width: 13px;' src='./assets/img/payroll/plus-lg.svg'
@@ -632,13 +632,14 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngIf='payroll?.note' style='background: white !important;'>
+              <tr *ngFor="let item of tableNote.data">
                 <td>
-                  <span>{{payroll?.note}}</span>
+                  <span>{{item}}</span>
                 </td>
                 <td width='10%'>
                 </td>
               </tr>
+
               </tbody>
             </nz-table>
           </div>
@@ -725,7 +726,7 @@
                                alt='edit icon'>
                         </button>
                         <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                                (click)='removeSalary(salary.id, payroll.id)'>
+                                (click)='removeSalary(salaryTypeEnum.PART_TIME, salary)'>
                           <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
                         </button>
                       </div>
@@ -766,3 +767,5 @@
     </div>
   </nz-carousel>
 </div>
+<nz-spin *ngIf="(scanned$|async) === false" nzSize="large" style="position: fixed; top:50%; left: 50% ">
+</nz-spin>
