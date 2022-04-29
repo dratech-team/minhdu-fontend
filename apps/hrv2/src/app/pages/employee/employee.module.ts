@@ -22,6 +22,7 @@ import {NzSpinModule} from "ng-zorro-antd/spin";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {FlatSalaryTypePipe} from "./pipes/flat-salary-type.pipe";
 import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
+import {ExistPipe} from "./pipes/exist.pipe";
 
 @NgModule({
   imports: [
@@ -51,6 +52,7 @@ import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
   declarations: [
     EmployeeComponent,
     FlatSalaryTypePipe,
+    ExistPipe
   ],
   providers: [
     DatePipe,

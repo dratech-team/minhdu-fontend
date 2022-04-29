@@ -228,7 +228,7 @@
               <div>{{employee.type|transformconstant: employeeTypeConstant}}</div>
             </td>
             <td>
-              <div>{{employee?.birthday | date:'dd/MM/yyyy'}}</div>
+              <div>{{employee.birthday | date:'dd/MM/yyyy'}}</div>
             </td>
             <td>
               <div>
@@ -247,7 +247,7 @@
             </td>
             <td>
               <div>
-                {{employee?.phone ? employee.phone : 'Chưa cập nhật'}}
+                {{employee?.phone|existpipe}}
               </div>
             </td>
             <td nzLeft>
@@ -262,7 +262,7 @@
             </td>
             <td>
               <div>
-                {{employee.identify}}
+                {{employee?.identify|existpipe}}
               </div>
             </td>
             <td>

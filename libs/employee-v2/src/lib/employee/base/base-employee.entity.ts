@@ -7,7 +7,7 @@ export interface BaseEmployeeEntity extends BaseEntity{
   code: string,
   gender: Gender,
   phone?: string,
-  identify: string,
+  identify?: string,
   address: string,
   note?: string;
 }
