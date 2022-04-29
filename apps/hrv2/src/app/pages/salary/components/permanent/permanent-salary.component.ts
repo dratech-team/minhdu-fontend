@@ -131,6 +131,7 @@ export class PermanentSalaryComponent implements OnInit {
       title: value.template.title,
       price: value.price,
       note: value.note,
+      settingId: value.template.id
     };
     return Object.assign(salary, this.data.add
       ? {payrollIds: this.payrollSelected.map(payroll => payroll.id).concat([this.data.add.payroll.id])}
