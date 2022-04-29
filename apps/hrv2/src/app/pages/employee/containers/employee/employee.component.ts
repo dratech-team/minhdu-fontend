@@ -1,15 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {
-  EmployeeStatusEnum,
-  EmployeeType,
-  Gender,
-  ItemContextMenu,
-  Role,
-  SearchEmployeeType,
-  sortEmployeeTypeEnum
-} from '@minhdu-fontend/enums';
+import {EmployeeStatusEnum, EmployeeType, Gender, ItemContextMenu, Role} from '@minhdu-fontend/enums';
 import {catchError, debounceTime, tap} from 'rxjs/operators';
 import {EmployeeStatusConstant, GenderTypeConstant, PaginationDto} from '@minhdu-fontend/constants';
 import {Observable, throwError} from 'rxjs';
@@ -24,14 +16,14 @@ import {
   EmployeeEntity,
   EmployeeQuery,
   EmployeeService,
-  EmployeeStore
+  EmployeeStore,
+  SearchEmployeeDto
 } from "@minhdu-fontend/employee-v2";
 import {EmployeeTypeConstant} from "../../constants/employee-type.constant";
 import {FlatSalaryTypeConstant} from "../../constants/flat-salary-type.constant";
 import {ProvinceService} from "@minhdu-fontend/location";
 import {FlatSalaryTypeEnum} from "../../enums/flat-salary-type.enum";
 import {BranchActions, BranchQuery, PositionQuery} from "@minhdu-fontend/orgchart-v2";
-import {SearchEmployeeDto} from "@minhdu-fontend/employee-v2";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -47,25 +39,24 @@ export class EmployeeComponent implements OnInit {
   positions$ = this.positionQuery.selectAll()
   branches$ = this.branchQuery.selectAll()
   provinces$ = this.provinceService.getAll()
+  categories$ = new Observable<Category[]>();
+
   districts: District[] = []
   wards: Ward[] = []
   employees: EmployeeEntity[] = []
-  roleEnum = Role;
+
   employeeTypeConstant = EmployeeTypeConstant
   genderTypeConstant = GenderTypeConstant
   flatSalaryTypeConstant = FlatSalaryTypeConstant
-  sortEnum = sortEmployeeTypeEnum;
-  pageSize = 15;
-  pageIndexInit = 0;
-  searchType = SearchEmployeeType;
-  genderType = Gender;
-  flatSalary = FlatSalaryTypeEnum;
-  ItemContextMenu = ItemContextMenu;
   empStatusContain = EmployeeStatusConstant;
-  employeeType = EmployeeType;
-  categories$ = new Observable<Category[]>();
-  categoryControl = new FormControl('');
+
+  roleEnum = Role;
   role = window.localStorage.getItem('role')
+  genderType = Gender;
+  ItemContextMenu = ItemContextMenu;
+  pageSize = 15
+
+  categoryControl = new FormControl('');
   formGroup = new FormGroup({
     name: new FormControl(''),
     phone: new FormControl(''),

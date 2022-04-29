@@ -20,6 +20,7 @@ import {EmployeeLibV2Module} from "@minhdu-fontend/employee-v2";
 import {EmployeeComponent} from "./containers/employee/employee.component";
 import {NzSpinModule} from "ng-zorro-antd/spin";
 import {DragDropModule} from "@angular/cdk/drag-drop";
+import {FlatSalaryTypePipe} from "./pipes/flat-salary-type.pipe";
 import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
 import {DetailEmployeeComponent} from "./containers/detail-employee/detail-employee.component";
 import {WorkHistoryPipe} from "./pipes/work-history.pipe";
@@ -53,6 +54,7 @@ import {WorkHistoryPipe} from "./pipes/work-history.pipe";
     EmployeeComponent,
     DetailEmployeeComponent,
     WorkHistoryPipe,
+    FlatSalaryTypePipe,
   ],
   providers: [
     DatePipe,
