@@ -1,19 +1,19 @@
-import {PartialDayEnum} from '@minhdu-fontend/data-models';
+import { PartialDayEnum } from '@minhdu-fontend/data-models';
 import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
+import { SessionEntity } from '../entities';
 
 export const workingTime = {
   morning: {
     start: new Date(new Date().setHours(7, 0, 0)),
-    end: new Date(new Date().setHours(11, 30, 0)),
+    end: new Date(new Date().setHours(11, 30, 0))
   },
   afternoon: {
     start: new Date(new Date().setHours(13, 30, 0)),
     end: new Date(new Date().setHours(17, 0, 0))
   }
-}
+};
 
-
-export const SessionConstant = [
+export const SessionConstant: SessionEntity[] = [
   {
     name: 'Buổi sáng',
     detail: 'Ngày buổi sáng',

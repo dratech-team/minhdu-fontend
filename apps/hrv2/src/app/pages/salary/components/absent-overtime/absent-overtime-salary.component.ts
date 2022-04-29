@@ -12,7 +12,7 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Actions } from '@datorama/akita-ng-effects';
 import { UnitSalaryConstant } from '../../constants';
-import { SessionConstant, workingTime } from '../../../payroll/constants/session.constant';
+import { SessionConstant, workingTime } from '../../../../../shared/constants/session.constant';
 import { recipesConstant } from '../../../setting/salary/constants';
 import { SalarySettingEntity } from '../../../setting/salary/entities';
 import { getAfterTime, getBeforeTime } from '@minhdu-fontend/utils';
