@@ -29,7 +29,7 @@ import {PickLocationComponent} from './pick-location/pick-location.component';
 import {NotEmptyPipe} from './pipes/notEmty.pipe';
 import {SearchEmployeePipe} from './pipes/searchEmployee.pipe';
 import {TransformUnitPipe} from './pipes/transform-unit.pipe';
-import {TransformPipe} from './pipes/transform.pipe';
+import {TransformConstantPipe} from './pipes/transform-constant.pipe';
 import {ShowAlertComponent} from './show-alert/show-alert.component';
 import {SnackBarComponent} from './snackBar/snack-bar.component';
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
@@ -108,7 +108,7 @@ import {ModalNoteComponent} from "./modal-note/modal-note.component";
     PickLocationComponent,
     ShowAlertComponent,
     TransformUnitPipe,
-    TransformPipe,
+    TransformConstantPipe,
     DialogSharedComponent,
     MouseRightChipPositionComponent,
     DialogExportComponent,
@@ -140,7 +140,7 @@ import {ModalNoteComponent} from "./modal-note/modal-note.component";
     PickLocationComponent,
     ShowAlertComponent,
     TransformUnitPipe,
-    TransformPipe,
+    TransformConstantPipe,
     DialogSharedComponent,
     MouseRightChipPositionComponent,
     DialogExportComponent,

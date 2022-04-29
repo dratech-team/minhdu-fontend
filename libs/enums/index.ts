@@ -14,6 +14,7 @@ export * from './hr/filterType.enum';
 export * from './hr/type-employee';
 export * from './hr/overviewFilter.enum';
 export * from './hr/type-sort-employee';
+export * from './hr/role.enum';
 
 // sell
 export * from './sell/customer-type';

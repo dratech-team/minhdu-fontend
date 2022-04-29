@@ -15,6 +15,14 @@ const routes: Routes = [
     component: PageLayoutComponent,
     children: [
       {
+        path: TabEnum.EMPLOYEE,
+        loadChildren: () =>
+          import('./pages/employee/employee.module').then(
+            (m) => m.EmployeeModule
+          ),
+        canActivate: [RouteGuard]
+      },
+      {
         path: TabEnum.PAYROLL,
         loadChildren: () =>
           import('./pages/payroll/payroll.module').then(
@@ -38,7 +46,6 @@ const routes: Routes = [
           ),
         canActivate: [RouteGuard]
       },
-
     ],
   },
   {path: '**', redirectTo: ''}

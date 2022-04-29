@@ -3,15 +3,14 @@ import {of} from 'rxjs';
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {Actions, Effect, ofType} from "@datorama/akita-ng-effects";
-import {EmployeeService} from "../services/employee.service";
+import {EmployeeService} from "@minhdu-fontend/employee-v2";
 import {EmployeeStore} from "./employee.store";
-import {EmployeeAction} from "./employee.actions";
+import {EmployeeActions} from "./employee.actions";
 import {RemoveEmployeeDto} from "../dto/employee";
 import {RelativeService} from "../services/relative.service";
 import {DegreeService} from "../services/degree.service";
 import {PaginationDto} from "@minhdu-fontend/constants";
 import {EmployeeQuery} from "./employee.query";
-import {Salary} from "@minhdu-fontend/data-models";
 
 @Injectable()
 export class EmployeeEffect {
@@ -28,7 +27,7 @@ export class EmployeeEffect {
 
   @Effect()
   addOne$ = this.actions$.pipe(
-    ofType(EmployeeAction.addOne),
+    ofType(EmployeeActions.addOne),
     switchMap((props) => {
         this.employeeStore.update(state => ({
           ...state, added: false
@@ -45,15 +44,16 @@ export class EmployeeEffect {
             this.employeeStore.update(state => ({
               ...state, added: true
             }))
-            return of(EmployeeAction.error(err))
+            return of(EmployeeActions.error(err))
           })
         )
       }
     )
   );
 
+  @Effect()
   addOneRelative$ = this.actions$.pipe(
-    ofType(EmployeeAction.addOneRelative),
+    ofType(EmployeeActions.addOneRelative),
     switchMap((props) => {
         this.employeeStore.update(state => ({
           ...state, added: false
@@ -70,15 +70,16 @@ export class EmployeeEffect {
             this.employeeStore.update(state => ({
               ...state, added: true
             }))
-            return of(EmployeeAction.error(err))
+            return of(EmployeeActions.error(err))
           })
         )
       }
     )
   );
 
+  @Effect()
   addOneDegree$ = this.actions$.pipe(
-    ofType(EmployeeAction.addOneDegree),
+    ofType(EmployeeActions.addOneDegree),
     switchMap((props) => {
         this.employeeStore.update(state => ({
           ...state, added: false
@@ -95,15 +96,16 @@ export class EmployeeEffect {
             this.employeeStore.update(state => ({
               ...state, added: true
             }))
-            return of(EmployeeAction.error(err))
+            return of(EmployeeActions.error(err))
           })
         )
       }
     )
   );
 
+  @Effect()
   loadAll$ = this.actions$.pipe(
-    ofType(EmployeeAction.loadAll),
+    ofType(EmployeeActions.loadAll),
     switchMap((props) => {
         this.employeeStore.update(state => ({
           ...state, loading: true
@@ -115,7 +117,7 @@ export class EmployeeEffect {
             }))
             if (res.data.length === 0) {
               this.message.info('Đã lấy hết nhân viên')
-              if (props.isPaginate) {
+              if (!props.isPaginate) {
                 this.employeeStore.set(res.data)
               }
             } else {
@@ -126,15 +128,15 @@ export class EmployeeEffect {
               }
             }
           }),
-          catchError((err) => of(EmployeeAction.error(err)))
+          catchError((err) => of(EmployeeActions.error(err)))
         )
       }
     )
   );
 
-
+  @Effect()
   loadOne$ = this.actions$.pipe(
-    ofType(EmployeeAction.loadOne),
+    ofType(EmployeeActions.loadOne),
     switchMap((props) => {
         return this.employeeService.getOne(props).pipe(
           map((res) => {
@@ -142,16 +144,16 @@ export class EmployeeEffect {
             this.employeeStore.upsert(res.id, res)
           }),
           catchError((err) => {
-            return of(EmployeeAction.error(err))
+            return of(EmployeeActions.error(err))
           })
         )
       }
     )
   );
 
-
+  @Effect()
   update$ = this.actions$.pipe(
-    ofType(EmployeeAction.update),
+    ofType(EmployeeActions.update),
     switchMap((props) => {
         this.employeeStore.update(state => ({
           ...state, added: false
@@ -168,15 +170,16 @@ export class EmployeeEffect {
             this.employeeStore.update(state => ({
               ...state, added: true
             }))
-            return of(EmployeeAction.error(err))
+            return of(EmployeeActions.error(err))
           })
         )
       }
     )
   );
 
+  @Effect()
   updateRelative$ = this.actions$.pipe(
-    ofType(EmployeeAction.updateRelative),
+    ofType(EmployeeActions.updateRelative),
     switchMap((props) => {
         return this.relativeService.update(props).pipe(
           map((res) => {
@@ -184,15 +187,16 @@ export class EmployeeEffect {
             this.employeeStore.update(res.id, res)
           }),
           catchError((err) => {
-            return of(EmployeeAction.error(err))
+            return of(EmployeeActions.error(err))
           })
         )
       }
     )
   );
 
+  @Effect()
   updateDegree$ = this.actions$.pipe(
-    ofType(EmployeeAction.updateDegree),
+    ofType(EmployeeActions.updateDegree),
     switchMap((props) => {
         return this.degreeService.update(props).pipe(
           map((res) => {
@@ -200,31 +204,33 @@ export class EmployeeEffect {
             this.employeeStore.update(res.id, res)
           }),
           catchError((err) => {
-            return of(EmployeeAction.error(err))
+            return of(EmployeeActions.error(err))
           })
         )
       }
     )
   );
 
+  @Effect()
   updateHistorySalary$ = this.actions$.pipe(
-    ofType(EmployeeAction.updateHistorySalary),
+    ofType(EmployeeActions.updateHistorySalary),
     switchMap((props) => {
         return this.employeeService.updateHistorySalary(props.id, props.salary).pipe(
           map((res) => {
             this.message.info(res.message)
-            this.actions$.dispatch(EmployeeAction.loadOne({id: props.employeeId}))
+            this.actions$.dispatch(EmployeeActions.loadOne({id: props.employeeId}))
           }),
           catchError((err) => {
-            return of(EmployeeAction.error(err))
+            return of(EmployeeActions.error(err))
           })
         )
       }
     )
   );
 
+  @Effect()
   removeEmployee$ = this.actions$.pipe(
-    ofType(EmployeeAction.remove),
+    ofType(EmployeeActions.remove),
     switchMap((props: RemoveEmployeeDto) => {
         return this.employeeService.delete(props.id).pipe(
           map((res) => {
@@ -232,35 +238,37 @@ export class EmployeeEffect {
             this.employeeStore.remove(props.id)
           }),
           catchError((err) => {
-            return of(EmployeeAction.error(err))
+            return of(EmployeeActions.error(err))
           })
         )
       }
     )
   );
 
+  @Effect()
   leaveEmployee$ = this.actions$.pipe(
-    ofType(EmployeeAction.leave),
+    ofType(EmployeeActions.leave),
     switchMap((props) => {
         return this.employeeService.leaveEmployee(props.id, props.body).pipe(
           map((res) => {
             this.message.info(props.body?.leftAt ?
               'Nhân viên đã nghỉ tạm thời' :
               'Đã khôi phục nhân viên thành công')
-            this.actions$.dispatch(EmployeeAction.loadAll({
+            this.actions$.dispatch(EmployeeActions.loadAll({
               search: {take: PaginationDto.take, skip: PaginationDto.skip}
             }))
           }),
           catchError((err) => {
-            return of(EmployeeAction.error(err))
+            return of(EmployeeActions.error(err))
           })
         )
       }
     )
   );
 
+  @Effect()
   removeRelative$ = this.actions$.pipe(
-    ofType(EmployeeAction.removeRelative),
+    ofType(EmployeeActions.removeRelative),
     switchMap((props) => {
         return this.relativeService.deleteRelative(props.id).pipe(
           map((res) => {
@@ -268,15 +276,16 @@ export class EmployeeEffect {
             this.employeeStore.update(res.id, res)
           }),
           catchError((err) => {
-            return of(EmployeeAction.error(err))
+            return of(EmployeeActions.error(err))
           })
         )
       }
     )
   );
 
+  @Effect()
   removeDegree$ = this.actions$.pipe(
-    ofType(EmployeeAction.removeDegree),
+    ofType(EmployeeActions.removeDegree),
     switchMap((props) => {
         return this.degreeService.deleteDegree(props.id).pipe(
           map((res) => {
@@ -284,61 +293,64 @@ export class EmployeeEffect {
             this.employeeStore.update(res.id, res)
           }),
           catchError((err) => {
-            return of(EmployeeAction.error(err))
+            return of(EmployeeActions.error(err))
           })
         )
       }
     )
   );
 
+  @Effect()
   removeContracts$ = this.actions$.pipe(
-    ofType(EmployeeAction.removeContracts),
+    ofType(EmployeeActions.removeContracts),
     switchMap((props) => {
         return this.degreeService.deleteContracts(props.id).pipe(
           map((res) => {
             this.message.info('Xóa bằng hợp đồng thành công')
-            this.actions$.dispatch(EmployeeAction.loadOne({
+            this.actions$.dispatch(EmployeeActions.loadOne({
               id: props.id
             }))
           }),
           catchError((err) => {
-            return of(EmployeeAction.error(err))
+            return of(EmployeeActions.error(err))
           })
         )
       }
     )
   );
 
+  @Effect()
   removeWorkHistory$ = this.actions$.pipe(
-    ofType(EmployeeAction.removeWorkHistory),
+    ofType(EmployeeActions.removeWorkHistory),
     switchMap((props) => {
         return this.employeeService.deleteWorkHistory(props.id).pipe(
           map((res) => {
             this.message.info('Xoá lịch sử công tác thành công')
-            this.actions$.dispatch(EmployeeAction.loadOne({
+            this.actions$.dispatch(EmployeeActions.loadOne({
               id: props.id
             }))
           }),
           catchError((err) => {
-            return of(EmployeeAction.error(err))
+            return of(EmployeeActions.error(err))
           })
         )
       }
     )
   );
 
+  @Effect()
   removeHistorySalary$ = this.actions$.pipe(
-    ofType(EmployeeAction.removeHistorySalary),
+    ofType(EmployeeActions.removeHistorySalary),
     switchMap((props) => {
         return this.employeeService.deleteHistorySalary(props.id).pipe(
           map((res) => {
             this.message.info('Xoá lịch sử lương thành công')
-            this.actions$.dispatch(EmployeeAction.loadOne({
+            this.actions$.dispatch(EmployeeActions.loadOne({
               id: props.id
             }))
           }),
           catchError((err) => {
-            return of(EmployeeAction.error(err))
+            return of(EmployeeActions.error(err))
           })
         )
       }

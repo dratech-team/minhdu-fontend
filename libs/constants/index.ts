@@ -16,3 +16,6 @@ export * from './HR/unitAllowance.constant';
 export * from './HR/employee-status.constant';
 export * from './HR/payroll.constant';
 //sell
+
+//Common
+export * from './gender-type.constant'

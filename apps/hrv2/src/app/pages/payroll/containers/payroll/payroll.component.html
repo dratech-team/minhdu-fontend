@@ -1,7 +1,7 @@
 <div style="min-height:80vh; padding: 20px">
   <div class="d-flex align-items-center">
     <div class="font-weight-bold font-lg">
-      {{formGroup.value.filterType|transform:payrollConstant}}
+      {{formGroup.value.filterType|transformconstant:payrollConstant}}
     </div>
     <div class='d-flex justify-content-center align-items-center ml-2' [formGroup]="formGroup">
       <nz-range-picker
