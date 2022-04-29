@@ -353,7 +353,7 @@
               </tbody>
             </nz-table>
           </div>
-          <!--Khấu trừ-->
+          <!--Vắng-->
           <div #absent class='col-12 mt-5'>
             <nz-table
               #tableAbsent
@@ -365,7 +365,7 @@
                   <div>STT</div>
                 </th>
                 <th nzWidth='15%'>
-                  <div>Khấu trừ</div>
+                  <div>Loại vắng</div>
                 </th>
                 <th nzWidth='15%'>
                   <div>
@@ -399,16 +399,16 @@
               </thead>
               <tbody>
               <ng-template ngFor let-salary [ngForOf]='tableAbsent.data' let-i='index'>
-                <tr class='pointer'>
+                <tr class='pointer' (click)='onSalarySetting(salary?.setting?.title)'>
                   <td>
                     {{i + 1}}
                   </td>
-                  <td (click)='onSalarySetting(salary?.setting?.title)'>
+                  <td>
                     <div>
                       <span>{{salary.title}}</span>
                     </div>
                   </td>
-                  <td (click)='onSalarySetting(salary?.setting?.title)'>
+                  <td>
                     <span *ngIf='salary.unit === datetimeUnit.MONTH'> Tháng </span>
                     <span
                       *ngIf='
@@ -420,29 +420,99 @@
                 {{ salary.partial | rangeDatetimePipe: salary.startedAt : salary.endedAt}}
               </span>
                   </td>
-                  <td (click)='onSalarySetting(salary?.setting?.title)'>
+                  <td>
                     <span style='color: red'>
                       {{salary.price | number:'1.0-0'}} đ
                     </span>
                   </td>
-                  <td (click)='onSalarySetting(salary?.setting?.title)'>
+                  <td>
               <span *ngIf='salary.startedAt && salary.endedAt'>
               Từ. {{salary.partial !== PartialDay.CUSTOM ? (salary.startedAt | date:'dd-MM-yyyy') : salary.startedAt | date:'dd-MM-yyyy HH:mm:ss'}}
                 <br/>
                 đến {{salary.partial !== PartialDay.CUSTOM ? (salary.endedAt | date:'dd-MM-yyyy') : salary.endedAt | date:'dd-MM-yyyy HH:mm:ss'}}
                 </span>
                   </td>
-                  <td (click)='onSalarySetting(salary.setting?.title)'>
+                  <td>
                     <span>{{salary.note}}</span>
                   </td>
                   <td>
                     <div class='d-flex justify-content-around '>
                       <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
-                              (click)='updateSalary(salaryTypeEnum.ABSENT, salary)'>
+                              (click)='updateSalary(salaryTypeEnum.ABSENT, salary); $event.stopPropagation()'>
                         <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
                       </button>
                       <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                              (click)='removeSalary(salaryTypeEnum.ABSENT, salary)'>
+                              (click)='removeSalary(salaryTypeEnum.ABSENT, salary); $event.stopPropagation()'>
+                        <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+              </tbody>
+            </nz-table>
+          </div>
+<!--            Khấu trừ-->
+          <div #absent class='col-12 mt-5'>
+            <nz-table
+              #tableDeduction
+              [nzShowPagination]='false'
+              [nzData]='payroll.deductions'>
+              <thead>
+              <tr>
+                <th nzWidth='3%'>
+                  <div>STT</div>
+                </th>
+                <th>
+                  <div>Khấu trừ</div>
+                </th>
+                <th>
+                  <div>
+                    Thành tiền
+                  </div>
+                </th>
+                <th>
+                  <div>
+                    Chú thích
+                  </div>
+                </th>
+                <th nzWidth='12%' style='padding: 0; color: #1b8eb7'
+                    (click)='onAdd(salaryTypeEnum.DEDUCTION, payroll) '>
+                  <div class="d-flex">
+                    <span class='mr-1 pointer'>Thêm mục</span>
+                    <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+                         alt='add icon'>
+                  </div>
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <ng-template ngFor let-salary [ngForOf]='tableDeduction.data' let-i='index'>
+                <tr class='pointer'>
+                  <td>
+                    {{i + 1}}
+                  </td>
+                  <td>
+                    <div>
+                      <span>{{salary.title}}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span style='color: red'>
+                      {{salary.price | number:'1.0-0'}} đ
+                    </span>
+                  </td>
+                  <td>
+                    <span>{{salary.note}}</span>
+                  </td>
+                  <td>
+                    <div class='d-flex justify-content-around '>
+                      <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
+                              (click)='updateSalary(salaryTypeEnum.DEDUCTION, salary); $event.stopPropagation()'>
+                        <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+                      </button>
+                      <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
+                              (click)='removeSalary(salaryTypeEnum.DEDUCTION, salary); $event.stopPropagation()'>
                         <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
                       </button>
                     </div>
@@ -586,7 +656,7 @@
                 <td>
                  <span>
                  từ {{salary.startedAt | date:'dd-MM-yyyy'}}
-                  đến  {{salary.endedAt | date:'dd-MM-yyyy'}}
+                   đến  {{salary.endedAt | date:'dd-MM-yyyy'}}
                 </span>
                 </td>
                 <td>

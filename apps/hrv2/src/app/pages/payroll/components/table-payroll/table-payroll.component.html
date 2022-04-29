@@ -179,7 +179,7 @@
     </thead>
     <tbody>
     <ng-template ngFor let-payroll [ngForOf]="tablePayroll.data" let-i='index'>
-      <tr (contextmenu)='child.onContextMenu($event,payroll)' class="pointer">
+      <tr (contextmenu)='child.onContextMenu($event,payroll)' class="pointer" (click)="onDetail(payroll)">
         <td nzLeft>
           {{i + 1}}
         </td>
@@ -203,7 +203,7 @@
         </td>
         <!--      time sheet-->
         <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.TIME_SHEET">
-          <td (click)="onDetail(payroll)" class='text-center' *ngFor='let item of daysInMonth ; let i = index'
+          <td class='text-center' *ngFor='let item of daysInMonth ; let i = index'
               [ngStyle]='{"color": payroll.timesheet ? payroll.timesheet.datetime[i]["color"] : "black" }'>
             <div>
               {{payroll?.timesheet ? payroll.timesheet.datetime[i][item.key] : ''}}
@@ -216,7 +216,8 @@
             {{payroll?.accConfirmedAt ? (payroll.accConfirmedAt|date:'dd-MM-yyyy') : 'Chưa xác nhận'}}
           </td>
           <td>
-            <div (click)='updateManConfirm(payroll.id,payroll.manConfirmedAt, payroll.createdAt)'>
+            <div
+              (click)='updateManConfirm(payroll.id,payroll.manConfirmedAt, payroll.createdAt) ;$event.stopPropagation()'>
               <input style='pointer-events: none' disabled type='checkbox'
                      [checked]='payroll.manConfirmedAt !== null'>
             </div>
@@ -258,7 +259,7 @@
             {{payroll.payslip?.total| number: '1.0-0'}} VND
           </td>
           <td>
-            <div (click)='updateConfirm(payroll.id,"paidAt")'>
+            <div (click)='updateConfirm(payroll.id,"paidAt" ); $event.stopPropagation()'>
               <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.paidAt !== null'>
             </div>
           </td>
@@ -285,7 +286,7 @@
             {{payroll?.payslip?.total ? (payroll?.payslip?.total | number:'1.0-0') + 'đ' : 'Đang cập nhật'}}
           </td>
           <td>
-            <div (click)='updateConfirm(payroll.id,"accConfirmedAt")'>
+            <div (click)=' $event.stopPropagation(); updateConfirm(payroll.id,"accConfirmedAt")'>
               <input
                 disabled
                 type='checkbox'
@@ -298,7 +299,7 @@
             {{payroll?.accConfirmedAt ? (payroll.accConfirmedAt|date:'dd-MM-yyyy') : 'Chưa xác nhận'}}
           </td>
           <td>
-            <div (click)='updateConfirm(payroll.id,"paidAt")'>
+            <div (click)='updateConfirm(payroll.id,"paidAt");$event.stopPropagation()'>
               <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.paidAt !== null'>
             </div>
           </td>
