@@ -13,7 +13,7 @@ import { throwError } from 'rxjs';
 import { PayrollActions } from '../../../payroll/state/payroll.action';
 import { ResponseMessageEntity } from '@minhdu-fontend/base-entity';
 import { ModalAddOrUpdateDeduction } from '../../../payroll/data/modal-deduction-salary.data';
-import { DeductionSalaryService } from '../../service/deduction-salary.service';
+import { DeductionSalaryService } from '../../service';
 
 @Component({
   templateUrl: 'deduction-salary.component.html'

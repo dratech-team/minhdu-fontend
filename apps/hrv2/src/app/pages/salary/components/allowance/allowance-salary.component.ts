@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { isEqualDatetime } from 'libs/utils/daytime.until';
 import { SalaryPayroll } from '@minhdu-fontend/data-models';
-import { AllowanceSalaryService } from '../../service/allowance-salary.service';
+import { AllowanceSalaryService } from '../../service';
 import { PayrollEntity } from '../../../payroll/entities';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
