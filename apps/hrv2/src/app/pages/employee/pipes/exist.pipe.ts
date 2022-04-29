@@ -1,12 +1,16 @@
 import {Pipe, PipeTransform} from "@angular/core";
-import {EmployeeType} from "@minhdu-fontend/enums";
-import {EmployeeTypeConstant} from "../constants/employee-type.constant";
+import {DatePipe} from "@angular/common";
 
 @Pipe({
-  name:'existpipe'
+  name: 'existpipe'
 })
-export class ExistPipe implements PipeTransform{
+export class ExistPipe implements PipeTransform {
+  constructor(
+    private readonly datePipe: DatePipe
+  ) {
+  }
+
   transform(item?: any): any {
-    return item ? item: 'Chưa cập nhật'
+    return Date.parse(item) ? this.datePipe.transform(item, 'dd-MM-yyyy') : (item || 'Chưa cập nhật')
   }
 }

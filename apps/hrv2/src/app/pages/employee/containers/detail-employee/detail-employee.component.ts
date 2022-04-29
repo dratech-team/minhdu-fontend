@@ -26,18 +26,21 @@ import {DegreeStatusTypeConstant} from "../../constants/degree-status-type.const
   styleUrls: ['detail-employee.component.scss']
 })
 export class DetailEmployeeComponent implements OnInit {
+  employee$ = this.employeeQuery.selectEntity(this.employeeId)
+  added$ = this.employeeQuery.select(state => state.added);
+
   formalityTypeConstant = FormalityTypeConstant;
   degreeConstant = DegreeTypeConstant
   relationshipConstant = RelationshipConstant;
   genderTypeConstant = GenderTypeConstant
   degreeLevelTypeConstant =DegreeLevelTypeConstant
   degreeStatusTypeConstant= DegreeStatusTypeConstant
+  recipeConstant = RecipeSalaryConstant
+
+
   status = DegreeStatusEnum;
   level = DegreeLevelEnum;
   recipeType = RecipeType;
-  recipeConstant = RecipeSalaryConstant
-  employee$ = this.employeeQuery.selectEntity(this.employeeId)
-  added$ = this.employeeQuery.select(state => state.added);
   isOpen = false;
 
   constructor(
@@ -46,7 +49,6 @@ export class DetailEmployeeComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly modal: NzModalService,
-    private readonly datePipe: DatePipe,
   ) {
   }
 
