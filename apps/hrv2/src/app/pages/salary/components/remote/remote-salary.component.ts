@@ -1,32 +1,33 @@
-import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { NzModalRef } from 'ng-zorro-antd/modal';
-import { PayrollEntity } from '../../../payroll/entities';
-import { SalaryRemoteService } from '../../service';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { Actions } from '@datorama/akita-ng-effects';
-import { PayrollActions } from '../../../payroll/state/payroll.action';
-import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
-import { ResponseMessageEntity } from '@minhdu-fontend/base-entity';
-import { ModalAddOrUpdateRemote } from '../../data';
+import {DatePipe} from '@angular/common';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {NzModalRef} from 'ng-zorro-antd/modal';
+import {PayrollEntity} from '../../../payroll/entities';
+import {SalaryRemoteService} from '../../service';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {throwError} from 'rxjs';
+import {catchError} from 'rxjs/operators';
+import {Actions} from '@datorama/akita-ng-effects';
+import {PayrollActions} from '../../../payroll/state/payroll.action';
+import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
+import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
+import {ModalAddOrUpdateRemote} from '../../data';
+import {RemoteConstant} from "../../constants/remote.constant";
 
 @Component({
   templateUrl: 'remote-salary.component.html'
 })
 export class RemoteSalaryComponent implements OnInit {
   @Input() data!: ModalAddOrUpdateRemote;
-
+  remoteConstant = RemoteConstant
   formGroup!: FormGroup;
 
   payrollSelected: PayrollEntity [] = [];
 
   stepIndex = 0;
   submitting = false;
-  
+
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
 
@@ -47,7 +48,7 @@ export class RemoteSalaryComponent implements OnInit {
     const payroll = this.data.add?.payroll;
     const salary = this.data.update?.salary;
     this.formGroup = this.formBuilder.group({
-      title: [salary?.title, Validators.required],
+      type: [salary?.type, Validators.required],
       rangeDay: [
         [payroll ? getFirstDayInMonth(new Date(payroll.createdAt)) : salary?.startedAt,
           payroll ? getLastDayInMonth(new Date(payroll.createdAt)) : salary?.endedAt
@@ -68,7 +69,8 @@ export class RemoteSalaryComponent implements OnInit {
       return;
     }
     const salary = this.mapSalary(this.formGroup.value);
-    this.data.add ? this.remoteService.addMany(salary) : this.remoteService.updateMany(salary)
+    this.submitting = true;
+    (this.data.add ? this.remoteService.addMany(salary) : this.remoteService.updateMany(salary))
       .pipe(catchError(err => {
         this.submitting = false;
         return this.onSubmitError(err);
@@ -89,8 +91,7 @@ export class RemoteSalaryComponent implements OnInit {
 
   mapSalary(value: any) {
     const salary = {
-      title: value.title,
-      type: SalaryTypeEnum.WFH,
+      type: value.type,
       note: value.note,
       unit: DatetimeUnitEnum.DAY,
       startedAt: value.rangeDay[0],
@@ -99,8 +100,8 @@ export class RemoteSalaryComponent implements OnInit {
     return Object.assign(
       salary,
       this.data.add
-        ? { payrollIds: this.payrollSelected.map(payroll => payroll.id) }
-        : { salaryIds: [this.data.update.salary.id] }
+        ? {payrollIds: this.payrollSelected.map(payroll => payroll.id)}
+        : {salaryIds: [this.data.update.salary.id]}
     );
   }
 
@@ -110,13 +111,12 @@ export class RemoteSalaryComponent implements OnInit {
   }
 
   onSubmitSuccess(res: ResponseMessageEntity, payrollId: number) {
-    this.actions$.dispatch(PayrollActions.loadOne({ id: payrollId }));
+    this.actions$.dispatch(PayrollActions.loadOne({id: payrollId}));
     this.message.success(res.message);
     this.modalRef.close();
   }
 
   move(type: 'next' | 'previous'): void {
-    if (type === 'next') this.stepIndex -= 1;
-    else this.stepIndex += 1;
+    type === 'next' ? this.stepIndex += 1 : this.stepIndex -= 1
   }
 }

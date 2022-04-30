@@ -452,7 +452,7 @@
               </tbody>
             </nz-table>
           </div>
-<!--            Khấu trừ-->
+          <!--            Khấu trừ-->
           <div #absent class='col-12 mt-5'>
             <nz-table
               #tableDeduction
@@ -606,7 +606,11 @@
 
           <!--WFH-->
           <div #absent class='col-12 mt-5'>
-            <nz-table>
+            <nz-table
+              #tableRemote
+              [nzData]="payroll.remotes|| []"
+              nzShowPagination="false"
+            >
               <thead>
               <tr style='background-color: #dddddd66;'>
                 <th nzWidth='3%'>
@@ -614,22 +618,22 @@
                     STT
                   </div>
                 </th>
-                <th nzWidth='22%'>
+                <th>
                   <div>
                     Remote/Onsite/WFH
                   </div>
                 </th>
-                <th nzWidth='10%'>
+                <th>
                   <div>
                     Thời gian
                   </div>
                 </th>
-                <th nzWidth='8%'>
+                <th>
                   <div>
                     Đơn vị
                   </div>
                 </th>
-                <th nzWidth='21%'>
+                <th>
                   <div>
                     Diễn giải
                   </div>
@@ -645,22 +649,23 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let salary of payroll.remotes;let i=index "
+              <tr *ngFor="let salary of tableRemote.data;let i=index "
                   style='background: white !important;'>
                 <td>
                   <span>{{i + 1}}</span>
                 </td>
                 <td>
-                  <span>{{salary.title}}</span>
+                  <span>{{salary.type|transformconstant:remoteConstant}}</span>
                 </td>
                 <td>
                  <span>
                  từ {{salary.startedAt | date:'dd-MM-yyyy'}}
+                   <br>
                    đến  {{salary.endedAt | date:'dd-MM-yyyy'}}
                 </span>
                 </td>
                 <td>
-                  <span *ngIf='salary.unit === datetimeUnit.DAY'>Ngày</span>
+                  <span>{{salary.unit|transformconstant:dateTimeConstant}}</span>
                 </td>
                 <td>
                   <span>{{salary.note}}</span>
