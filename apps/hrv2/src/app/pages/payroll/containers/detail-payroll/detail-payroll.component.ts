@@ -21,7 +21,7 @@ import {
   AllowanceSalaryEntity,
   AbsentSalaryEntity,
   OvertimeSalaryEntity,
-  SalaryEntity
+  SalaryEntity, RemoteSalaryEntity
 } from '../../../salary/entities';
 import {PayslipComponent} from '../../components/payslip/payslip.component';
 import {AllowanceSalaryComponent} from '../../../salary/components/allowance/allowance-salary.component';
@@ -29,7 +29,12 @@ import {Actions} from '@datorama/akita-ng-effects';
 import {ModalAddOrUpdateAbsentOrOvertime, ModalAddOrUpdateAllowance, ModalPermanentSalaryData} from '../../data';
 import {ModalAlertComponent} from '@minhdu-fontend/components';
 import {ModalAlertEntity} from '@minhdu-fontend/base-entity';
-import {AbsentSalaryService, OvertimeSalaryService, SalaryPermanentService} from '../../../salary/service';
+import {
+  AbsentSalaryService, DeductionSalaryService,
+  OvertimeSalaryService,
+  SalaryPermanentService,
+  SalaryRemoteService
+} from '../../../salary/service';
 import {AllowanceSalaryService} from '../../../salary/service/allowance-salary.service';
 import {throwError} from 'rxjs';
 import {ModalNoteComponent} from '@minhdu-fontend/components';
@@ -41,6 +46,7 @@ import {DeductionSalaryComponent} from '../../../salary/components/deduction/ded
 import {ModalAddOrUpdateDeduction} from '../../data/modal-deduction-salary.data';
 import {RemoteConstant} from "../../../salary/constants/remote.constant";
 import {UnitDatetimeConstant} from "../../../setting/salary/constants/unit-datetime.constant";
+import {RemoveSalaryDto} from "../../../salary/dto";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -90,10 +96,12 @@ export class DetailPayrollComponent implements OnInit {
     public readonly router: Router,
     private readonly modal: NzModalService,
     private readonly datePipe: DatePipe,
-    private readonly deductionSalaryService: AbsentSalaryService,
+    private readonly absentSalaryService: AbsentSalaryService,
+    private readonly deductionSalaryService: DeductionSalaryService,
     private readonly permanentService: SalaryPermanentService,
     private readonly overtimeSalaryService: OvertimeSalaryService,
     private readonly allowanceSalaryService: AllowanceSalaryService,
+    private readonly salaryRemoteService: SalaryRemoteService,
     private readonly message: NzMessageService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
@@ -205,26 +213,31 @@ export class DetailPayrollComponent implements OnInit {
 
   removeSalary(
     type: SalaryTypeEnum,
-    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | AbsentSalaryEntity | DeductionSalaryEntity
+    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | AbsentSalaryEntity | DeductionSalaryEntity | RemoteSalaryEntity
   ) {
     this.modal.create({
-      nzTitle: `Xoá ${salary.title}`,
+      nzTitle: `Xoá ${salary.title || salary.type}`,
       nzContent: ModalAlertComponent,
       nzComponentParams: <{ data: ModalAlertEntity }>{
         data: {
-          description: `Bạn có chắc chắn muốn xoá ${salary.title}`
+          description: `Bạn có chắc chắn muốn xoá ${salary.title || salary.type}`
         }
       },
       nzFooter: ' '
     }).afterClose.subscribe(value => {
       if (value) {
+        console.log(type)
         const service = ((type === SalaryTypeEnum.BASIC || type === SalaryTypeEnum.STAY)
             ? this.permanentService
             : type === SalaryTypeEnum.ALLOWANCE
               ? this.allowanceSalaryService
               : type === SalaryTypeEnum.OVERTIME
                 ? this.overtimeSalaryService
-                : this.deductionSalaryService
+                : type === SalaryTypeEnum.WFH
+                  ? this.salaryRemoteService
+                  : type === SalaryTypeEnum.ABSENT
+                    ? this.absentSalaryService
+                    : this.deductionSalaryService
         );
 
         service.deleteMany({salaryIds: [salary.id]}).pipe(
