@@ -1,0 +1,165 @@
+<div class='main-popup'>
+  <div class='mat-typography' style='height:55vh; overflow-y: scroll ; overflow-x: hidden'>
+    <form [formGroup]='formGroup'>
+      <div class='form-group'>
+
+        <minhdu-fontend-profile
+          [formGroup]='formGroup'
+          [submitting]='submitting'
+          [form]='checkValid'>
+        </minhdu-fontend-profile>
+
+        <app-pick-location
+          [isUpdateEmployee]="true"
+          [ward]='this.data?.add?.employee?.ward
+          ||this.data?.update?.employee?.ward'
+          [isUpdate]='!!this.data?.update'
+          [formGroup]='formGroup'
+          [submitting]='submitting'
+          [form]='checkValid'
+        >
+        </app-pick-location>
+
+        <div class='row mt-3 d-flex'>
+          <div class='col-sm'>
+            <label>Đơn vị</label><span class='star'>*</span>
+            <div>
+              <nz-select
+                nzShowSearch
+                nzAllowClear
+                style='width:100%'
+                formControlName='branch'
+                nzPlaceHolder='Chọn đơn vị'
+                [compareWith]='compareFN'
+                [ngClass]="{ 'is-invalid': submitting && checkValid.branch.errors?.required }"
+              >
+                <nz-option
+                  *ngFor='let branch of branches$ | async'
+                  [nzLabel]='branch.name'
+                  [nzValue]='branch'
+                >
+                </nz-option>
+              </nz-select>
+              <div *ngIf='submitting && checkValid.branch.errors?.required' class='invalid-feedback'>
+                <div *ngIf=' checkValid.branch.errors?.required'>Chưa chọn đơn vị</div>
+              </div>
+            </div>
+          </div>
+
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label>Chức vụ </label><span class='star'>*</span>
+            <div>
+              <nz-select [compareWith]='compareFN'
+                         style='width:100%;'
+                         formControlName='position'
+                         nzShowSearch
+                         nzAllowClear
+                         nzPlaceHolder='Chọn chức vụ'>
+                <nz-option *ngFor='let position of lstPosition' [nzLabel]='position.name'
+                           [nzValue]='position'></nz-option>
+              </nz-select>
+              <div *ngIf='submitting && checkValid.position.errors?.required' class='invalid-feedback'>
+                <div *ngIf=' checkValid.position.errors?.required'>Chưa chọn chức vụ</div>
+              </div>
+            </div>
+          </div>
+
+          <div class='col-sm' [formGroup]='formGroup'
+               [hidden]='this.formGroup.value.employeeType === typeEmployee.EMPLOYEE_SEASONAL'>
+            <label>Ngày công chuẩn </label><span class='star'>*</span>
+            <input class='form-control' type='number' formControlName='workday' min='0'
+                   (keypress)='checkNumberInput($event)'
+                   [ngClass]="{ 'is-invalid': submitting && checkValid.workday.errors }"
+            >
+            <div *ngIf='submitting && checkValid.workday.errors' class='invalid-feedback'>
+              <div *ngIf='checkValid.workday.errors?.required'>Chưa nhập ngày công chuẩn</div>
+            </div>
+          </div>
+        </div>
+
+        <div class='row mt-3'
+             *ngIf='this.formGroup.value.employeeType === typeEmployee.EMPLOYEE_FULL_TIME'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='isFlatSalary'>Loại lương </label><span class='star'>*</span>
+            <nz-select id='isFlatSalary' style="width: 100%" formControlName='isFlatSalary'
+                       [ngClass]="{ 'is-invalid': submitting && checkValid.isFlatSalary.errors }">
+              <nz-option *ngFor="let item of flatSalaryTypeConstant" [nzValue]="item.value"
+                         [nzLabel]="item.name"></nz-option>
+            </nz-select>
+            <div *ngIf='submitting && checkValid.isFlatSalary.errors' class='invalid-feedback'>
+              <div *ngIf='checkValid.isFlatSalary.errors?.required'>Chưa chọn loại lương</div>
+            </div>
+          </div>
+
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label>Email </label>
+            <input class='form-control' type='text' formControlName='email'>
+          </div>
+        </div>
+
+        <div class='row mt-3' [formGroup]='formGroup'>
+          <div class='col-sm'>
+            <label for='createdAt'>Ngày vào làm </label><span class="star">*</span>
+            <input id='createdAt' type='date' class='form-control' formControlName='createdAt'
+                   [ngClass]="{ 'is-invalid': submitting && checkValid.createdAt.errors }"
+            >
+            <div *ngIf='submitting && checkValid.createdAt.errors' class='invalid-feedback'>
+              <div *ngIf='checkValid.createdAt.errors?.required'>Chưa nhập ngày vào làm</div>
+            </div>
+          </div>
+          <div class='col-sm'>
+            <label for='workedAt'>Ngày vào làm chính thức</label>
+            <input id='workedAt' type='date' class='form-control' formControlName='workedAt'>
+          </div>
+        </div>
+
+        <div class='row mt-3' *ngIf='false' [formGroup]='formGroup'>
+          <div class='col-sm'>
+            <label for='facebook'>Facebook</label>
+            <input id='facebook' type='text' class='form-control' formControlName='facebook'>
+          </div>
+          <div class='col-sm'>
+            <label for='zalo'>Zalo</label>
+            <input id='zalo' type='number' class='form-control' formControlName='zalo'>
+          </div>
+        </div>
+
+        <div class='row mt-3' *ngIf='false' [formGroup]='formGroup'>
+          <div class='col-sm'>
+            <label for='facebook'>Ngày kí hợp đồng</label>
+            <input id='createAtContract' type='date' class='form-control' formControlName='createAtContract'>
+          </div>
+          <div class='col-sm'>
+            <label for='zalo'>ngày hết hạn hợp đồng</label>
+            <input id='expiredAtContract' type='date' class='form-control' formControlName='expiredAtContract'>
+          </div>
+        </div>
+
+        <div class='row mt-3' [formGroup]='formGroup'>
+          <div class='col'>
+            <label for='recipeType'>Chọn loại công thức <span class='star'>*</span></label>
+            <nz-select
+              [nzDisabled]=" this.formGroup.value.employeeType === typeEmployee.EMPLOYEE_SEASONAL "
+              id='recipeType'
+              style="width: 100%"
+              formControlName='recipeType'>
+              <nz-option *ngFor='let item of recipeTypesConstant' [nzValue]="item.value"
+                         [nzLabel]="item.name"></nz-option>
+            </nz-select>
+          </div>
+          <div class='col'>
+            <label for='category'>Chọn danh mục </label>
+            <nz-select
+              id='category' formControlName='category' style="width: 100%">
+              <nz-option *ngFor='let item of categories$ | async' [nzValue]="item.id" [nzLabel]="item.name">
+              </nz-option>
+            </nz-select>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="d-flex justify-content-center align-items-center mt-2">
+  <button nz-button nzType="primary" (click)="onSubmit()">Xác nhận</button>
+</div>

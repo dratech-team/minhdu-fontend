@@ -1,17 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Degree, Employee, Relative, Salary, WorkHistory} from '@minhdu-fontend/data-models';
-import {
-  DegreeLevelEnum,
-  DegreeStatusEnum,
-  DegreeTypeEnum,
-  FormalityEnum,
-  RecipeType,
-  RelationshipEnum
-} from '@minhdu-fontend/enums';
+import {Degree, Relative, Salary, WorkHistory} from '@minhdu-fontend/data-models';
+import {DegreeLevelEnum, DegreeStatusEnum, RecipeType} from '@minhdu-fontend/enums';
 import {RecipeSalaryConstant} from "../../../../../../../../libs/constants/HR/recipe-salary.constant";
 import {NzModalService} from "ng-zorro-antd/modal";
-import {DatePipe} from "@angular/common";
 import {EmployeeActions, EmployeeEntity, EmployeeQuery} from "@minhdu-fontend/employee-v2";
 import {Actions} from "@datorama/akita-ng-effects";
 import {FormalityTypeConstant} from "../../constants/formality-type.constant";
@@ -57,7 +49,7 @@ export class DetailEmployeeComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(param => {
       const employee = this.employeeQuery.getEntity(this.employeeId)
       if (param.isUpdate && employee) {
-        this.updateEmployee(employee);
+        this.onUpdate(employee);
       }
     });
   }
@@ -66,48 +58,42 @@ export class DetailEmployeeComponent implements OnInit {
     return this.activatedRoute.snapshot.params.id;
   }
 
-  updateEmployee(employee: EmployeeEntity): void {
+  onUpdate(employee: EmployeeEntity): void {
   }
 
-  deleteEmployee(employee: EmployeeEntity, leftAt?: Date): void {
+  onDelete(employee: EmployeeEntity, leftAt?: Date): void {
   }
 
-  addAndUpdateRelative(employeeId: number, id?: number, relative?: Relative): void {
+  onRelative(employeeId: number, id?: number, relative?: Relative): void {
 
   }
 
-  deleteRelative(id: number, employeeId: number) {
+  onDeleteRelative(id: number, employeeId: number) {
   }
 
-  addAndUpdateDegree(employeeId: number, id?: number, degree?: Degree) {
+  onDegree(employeeId: number, id?: number, degree?: Degree) {
   }
 
-  deleteDegree(id: number, employeeId: number) {
+  onDeleteDegree(id: number, employeeId: number) {
   }
 
-  addOrUpdateBHYT(bhyt?: any) {
+  onBHYT(bhyt?: any) {
   }
 
-  updateContract(employee: EmployeeEntity) {
+  onUpdateContract(employee: EmployeeEntity) {
   }
 
-  historySalary(employee: EmployeeEntity) {
+  onHistorySalary(employee: EmployeeEntity) {
     this.router.navigate(['phieu-luong/lich-su-luong', employee.id],
       {queryParams: {name: employee.lastName}}).then();
   }
 
-  deleteWorkHistory(workHistory: WorkHistory, employeeId: number) {
-  }
-
-  eventEmit(event: boolean) {
-    if (event) {
-      this.isOpen = false;
-    }
+  onDeleteWorkHistory(workHistory: WorkHistory, employeeId: number) {
   }
 
   onUpdateHistorySalary(salary: Salary) {
   }
 
-  deleteHistorySalary(salary: Salary) {
+  onDeleteHistorySalary(salary: Salary) {
   }
 }

@@ -24,6 +24,8 @@ import {FlatSalaryTypeConstant} from "../../constants/flat-salary-type.constant"
 import {ProvinceService} from "@minhdu-fontend/location";
 import {FlatSalaryTypeEnum} from "../../enums/flat-salary-type.enum";
 import {BranchActions, BranchQuery, PositionQuery} from "@minhdu-fontend/orgchart-v2";
+import {ModalEmployeeComponent} from "../../components/employee/modal-employee.component";
+import {ModalEmployeeData} from "../../data/modal-employee.data";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -55,6 +57,7 @@ export class EmployeeComponent implements OnInit {
   genderType = Gender;
   ItemContextMenu = ItemContextMenu;
   pageSize = 15
+  empStatusEnum = EmployeeStatusEnum
 
   categoryControl = new FormControl('');
   formGroup = new FormGroup({
@@ -87,7 +90,7 @@ export class EmployeeComponent implements OnInit {
     private readonly exportService: ExportService,
     private readonly positionQuery: PositionQuery,
     private readonly branchQuery: BranchQuery,
-    private readonly provinceService: ProvinceService
+    private readonly provinceService: ProvinceService,
   ) {
   }
 
@@ -129,6 +132,17 @@ export class EmployeeComponent implements OnInit {
   }
 
   onAdd(employeeInit?: Employee): void {
+    this.modal.create({
+      nzTitle: 'Thêm nhân viên',
+      nzWidth:'700px',
+      nzContent: ModalEmployeeComponent,
+      nzComponentParams: <{ data?: ModalEmployeeData }>{
+        data: {
+          add: employeeInit
+        }
+      },
+      nzFooter: []
+    })
   }
 
   onDelete(employeeId: any): void {

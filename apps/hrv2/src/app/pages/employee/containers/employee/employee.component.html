@@ -49,7 +49,7 @@
       </div>
     </div>
     <div>
-      <button *ngIf='formGroup.value.status === 0'
+      <button *ngIf='formGroup.value.status === empStatusEnum.IS_ACTIVE'
               (click)='onAdd()' class='mr-2 btn btn-primary'>Thêm
       </button>
       <button class='btn btn-primary mr-4' (click)='onPrint()'>Xuất</button>
