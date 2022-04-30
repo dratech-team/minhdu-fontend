@@ -25,6 +25,8 @@ import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
 import {DetailEmployeeComponent} from "./containers/detail-employee/detail-employee.component";
 import {WorkHistoryPipe} from "./pipes/work-history.pipe";
 import {ExistPipe} from "./pipes/exist.pipe";
+import {ModalCategoryComponent} from "./components/category/modal-category.component";
+import {NzStepsModule} from "ng-zorro-antd/steps";
 
 @NgModule({
   imports: [
@@ -49,6 +51,7 @@ import {ExistPipe} from "./pipes/exist.pipe";
     NzInputModule,
     NzSpinModule,
     DragDropModule,
+    NzStepsModule,
   ],
 
   declarations: [
@@ -56,7 +59,8 @@ import {ExistPipe} from "./pipes/exist.pipe";
     DetailEmployeeComponent,
     WorkHistoryPipe,
     FlatSalaryTypePipe,
-    ExistPipe
+    ExistPipe,
+    ModalCategoryComponent
   ],
   providers: [
     DatePipe,
