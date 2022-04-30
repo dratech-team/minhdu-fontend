@@ -157,7 +157,7 @@
             <!--Phụ cấp ở lại-->
             <div class='col-6'>
               <nz-table
-                [nzData]='payroll.salaries'
+                [nzData]='payroll.salariesv2'
                 [nzShowPagination]='false'
               >
                 <thead>
@@ -178,7 +178,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <ng-template ngFor let-salary [ngForOf]="payroll.salaries | filterSalary:['STAY' ] ">
+                <ng-template ngFor let-salary [ngForOf]="payroll.salariesv2 | filterSalary:['STAY' ] ">
                   <tr>
                     <td> {{salary.title}}</td>
                     <td style='color: #4B3880'>

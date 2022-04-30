@@ -30,7 +30,7 @@ import {ModalAddOrUpdateAbsentOrOvertime, ModalAddOrUpdateAllowance, ModalPerman
 import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 import {AbsentSalaryService, OvertimeSalaryService, SalaryPermanentService} from "../../../salary/service";
-import {AllowanceSalaryService} from "../../../salary/service/allowance-salary.service";
+import {AllowanceSalaryService} from "../../../salary/service";
 import {throwError} from "rxjs";
 import {ModalNoteComponent} from "@minhdu-fontend/components";
 import {UpdatePayrollComponent} from "../../components/update/update-payroll.component";
