@@ -18,26 +18,27 @@ import {
   AbsentOvertimeSalaryComponent
 } from '../../../salary/components/absent-overtime/absent-overtime-salary.component';
 import {
-  AllowanceSalaryEntity,
   AbsentSalaryEntity,
+  AllowanceSalaryEntity,
   OvertimeSalaryEntity,
-  SalaryEntity, RemoteSalaryEntity
+  RemoteSalaryEntity,
+  SalaryEntity
 } from '../../../salary/entities';
 import {PayslipComponent} from '../../components/payslip/payslip.component';
 import {AllowanceSalaryComponent} from '../../../salary/components/allowance/allowance-salary.component';
 import {Actions} from '@datorama/akita-ng-effects';
 import {ModalAddOrUpdateAbsentOrOvertime, ModalAddOrUpdateAllowance, ModalPermanentSalaryData} from '../../data';
-import {ModalAlertComponent} from '@minhdu-fontend/components';
+import {ModalAlertComponent, ModalNoteComponent} from '@minhdu-fontend/components';
 import {ModalAlertEntity} from '@minhdu-fontend/base-entity';
 import {
-  AbsentSalaryService, DeductionSalaryService,
+  AbsentSalaryService,
+  AllowanceSalaryService,
+  DeductionSalaryService,
   OvertimeSalaryService,
   SalaryPermanentService,
   SalaryRemoteService
 } from '../../../salary/service';
-import {AllowanceSalaryService} from '../../../salary/service/allowance-salary.service';
 import {throwError} from 'rxjs';
-import {ModalNoteComponent} from '@minhdu-fontend/components';
 import {UpdatePayrollComponent} from '../../components/update/update-payroll.component';
 import {RemoteSalaryComponent} from '../../../salary/components/remote/remote-salary.component';
 import {ModalAddOrUpdateRemote} from '../../../salary/data';
@@ -45,8 +46,7 @@ import {DeductionSalaryEntity} from '../../../salary/entities/deduction-salary.e
 import {DeductionSalaryComponent} from '../../../salary/components/deduction/deduction-salary.component';
 import {ModalAddOrUpdateDeduction} from '../../data/modal-deduction-salary.data';
 import {RemoteConstant} from "../../../salary/constants/remote.constant";
-import {UnitDatetimeConstant} from "../../../setting/salary/constants/unit-datetime.constant";
-import {RemoveSalaryDto} from "../../../salary/dto";
+import {UnitSalaryConstant} from "../../../salary/constants";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -72,7 +72,7 @@ export class DetailPayrollComponent implements OnInit {
   scanned$ = this.payrollQuery.select(state => state.scanned);
 
   remoteConstant = RemoteConstant
-  dateTimeConstant = UnitDatetimeConstant
+  unitSalaryConstant = UnitSalaryConstant
 
   sortedSalaryOver: OvertimeSalaryEntity[] = [];
 
@@ -134,10 +134,17 @@ export class DetailPayrollComponent implements OnInit {
       nzFooter: ' ',
       nzWidth: 'fit-content'
     };
-    if (type === SalaryTypeEnum.ALLOWANCE) {
-      Object.assign(salary, {workedAt: payroll?.employee.workedAt});
-    }
-    this.onOpenSalary(type, config, undefined, {salary});
+    this.onOpenSalary(
+      type,
+      config,
+      undefined,
+      {
+        salary: Object.assign({}, salary,
+          type === SalaryTypeEnum.ALLOWANCE
+            ? {workedAt: payroll?.employee.workedAt}
+            : {}
+        )
+      });
   }
 
   onOpenSalary(

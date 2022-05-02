@@ -10,6 +10,10 @@ export const UnitSalaryConstant: Array<{ name: string; value: DatetimeUnitEnum }
     value: DatetimeUnitEnum.DAY
   },
   {
+    name: 'Giờ',
+    value: DatetimeUnitEnum.HOUR
+  },
+  {
     name: 'Phút',
     value: DatetimeUnitEnum.MINUTE
   }
