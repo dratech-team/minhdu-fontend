@@ -81,7 +81,7 @@ export class AllowanceSalaryComponent implements OnInit {
       inOffice: [this.data.update ? salary?.inOffice : true],
       endedAt: [salary?.endedAt],
       rate: [salary?.rate || 1],
-      isWorkday: [this.data.update ? salary?.isWorkday : true]
+      inWorkday: [this.data.update ? salary?.inWorkday : true]
     });
     this.formGroup.get('unit')?.valueChanges.subscribe(unit => {
       switch (unit) {
@@ -134,7 +134,7 @@ export class AllowanceSalaryComponent implements OnInit {
       startedAt: value.rangeDay[0],
       endedAt: value.rangeDay[1],
       inOffice: value.inOffice,
-      isWorkday: value.isWorkday,
+      inWorkday: value.inWorkday,
     };
 
     return Object.assign(salary,

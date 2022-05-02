@@ -10,6 +10,6 @@ export interface AllowanceSalaryEntity extends BaseSalaryEntity {
   readonly startedAt: Date,
   readonly endedAt: Date,
   readonly branch?: BranchEntity
-  readonly isWorkday: boolean,
+  readonly inWorkday: boolean,
   readonly inOffice: boolean
 }
