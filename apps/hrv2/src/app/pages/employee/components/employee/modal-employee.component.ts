@@ -20,10 +20,10 @@ import {Observable} from "rxjs";
   templateUrl: 'modal-employee.component.html'
 })
 export class ModalEmployeeComponent implements OnInit {
-  @Input() data?: ModalEmployeeData;
+  @Input() data!: ModalEmployeeData;
 
   branches$ = this.branchQuery.selectAll().pipe(map(branches => {
-    if (branches.length === 1 && this.data?.add) {
+    if (branches.length === 1) {
       this.formGroup.get('branch')?.setValue(branches[0], {emitEvent: false})
       if (branches[0].positions)
         this.lstPosition = branches[0].positions
@@ -65,7 +65,7 @@ export class ModalEmployeeComponent implements OnInit {
       birthplace: [employeeInit?.birthplace],
       idCardAt: [
         employeeInit?.idCardAt ?
-          this.datePipe.transform(employeeInit?.idCardAt, 'yyyy-MM-dd') : ''
+          this.datePipe.transform(employeeInit.idCardAt, 'yyyy-MM-dd') : ''
       ],
       email: [employeeInit?.email],
       workday: [employeeInit?.workday],
@@ -74,11 +74,11 @@ export class ModalEmployeeComponent implements OnInit {
       note: [employeeInit?.note],
       workedAt: [
         employeeInit?.workedAt ?
-          this.datePipe.transform(employeeInit?.workedAt, 'yyyy-MM-dd') : ''
+          this.datePipe.transform(employeeInit.workedAt, 'yyyy-MM-dd') : ''
       ],
       createdAt: [
         employeeInit?.createdAt ?
-          this.datePipe.transform(employeeInit?.createdAt, 'yyyy-MM-dd') : '', Validators.required
+          this.datePipe.transform(employeeInit.createdAt, 'yyyy-MM-dd') : '', Validators.required
       ],
       isFlatSalary: [
         employeeInit?.isFlatSalary
@@ -90,7 +90,7 @@ export class ModalEmployeeComponent implements OnInit {
       gender: [employeeInit?.gender, Validators.required],
       birthday: [
         employeeInit?.birthday ?
-          this.datePipe.transform(employeeInit?.birthday, 'yyyy-MM-dd') : '',
+          this.datePipe.transform(employeeInit.birthday, 'yyyy-MM-dd') : '',
         Validators.required
       ],
       ethnicity: [employeeInit?.ethnicity],
@@ -176,7 +176,7 @@ export class ModalEmployeeComponent implements OnInit {
   };
 
   mapEmployee(value: any) {
-    return {
+    const emp = {
       isFlatSalary: value.employeeType === EmployeeType.EMPLOYEE_FULL_TIME ?
         value.isFlatSalary === FlatSalaryTypeEnum.FLAT_SALARY : false,
       positionId: value.position.id,
@@ -185,8 +185,6 @@ export class ModalEmployeeComponent implements OnInit {
       createdAt: value.createdAt ? new Date(value.createdAt) : undefined,
       lastName: value.lastName,
       gender: value.gender,
-      phone: value.phone?.toString(),
-      workPhone: value.workPhone?.toString(),
       birthday: value.birthday ? new Date(value.birthday) : undefined,
       birthplace: value.birthplace,
       identify: value?.identify?.toString(),
@@ -213,5 +211,10 @@ export class ModalEmployeeComponent implements OnInit {
       recipeType: value.recipeType,
       categoryId: value.category
     };
+
+    return Object.assign(emp,
+      value.phone ? {phone: value.phone} : {},
+      value.workPhone ? {workPhone: value.workPhone} : {}
+    )
   }
 }

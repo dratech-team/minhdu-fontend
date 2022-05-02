@@ -37,7 +37,6 @@ export class EmployeeComponent implements OnInit {
   ))
   total$ = this.employeeQuery.select(state => state.total)
   loading$ = this.employeeQuery.select(state => state.loading)
-  added$ = this.employeeQuery.select(state => state.added)
   positions$ = this.positionQuery.selectAll()
   branches$ = this.branchQuery.selectAll()
   provinces$ = this.provinceService.getAll()
@@ -131,12 +130,12 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
-  onAdd(employeeInit?: Employee): void {
+  onAdd(employeeInit?: EmployeeEntity): void {
     this.modal.create({
       nzTitle: 'Thêm nhân viên',
       nzWidth:'700px',
       nzContent: ModalEmployeeComponent,
-      nzComponentParams: <{ data?: ModalEmployeeData }>{
+      nzComponentParams: <{ data: ModalEmployeeData }>{
         data: {
           add: employeeInit
         }

@@ -12,6 +12,8 @@ import {RelationshipConstant} from "../../constants/relationship.constant";
 import {GenderTypeConstant} from "@minhdu-fontend/constants";
 import {DegreeLevelTypeConstant} from "../../constants/degree-level-type.constant";
 import {DegreeStatusTypeConstant} from "../../constants/degree-status-type.constant";
+import {ModalEmployeeComponent} from "../../components/employee/modal-employee.component";
+import {ModalEmployeeData} from "../../data/modal-employee.data";
 
 @Component({
   templateUrl: 'detail-employee.component.html',
@@ -59,6 +61,18 @@ export class DetailEmployeeComponent implements OnInit {
   }
 
   onUpdate(employee: EmployeeEntity): void {
+    this.modal.create({
+      nzTitle: 'Cập nhật nhân viên',
+      nzContent: ModalEmployeeComponent,
+      nzComponentParams: <{ data: ModalEmployeeData }>{
+        data: {
+          update: {
+            employee
+          }
+        }
+      },
+      nzFooter: []
+    })
   }
 
   onDelete(employee: EmployeeEntity, leftAt?: Date): void {
