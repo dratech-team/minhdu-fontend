@@ -154,10 +154,10 @@
                 </tbody>
               </nz-table>
             </div>
-            <!--Phụ cấp ở lại-->
+            <!--Phụ cấp lương-->
             <div class='col-6'>
               <nz-table
-                [nzData]='payroll.salaries'
+                [nzData]='payroll.salariesv2'
                 [nzShowPagination]='false'
               >
                 <thead>
@@ -178,7 +178,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <ng-template ngFor let-salary [ngForOf]="payroll.salaries | filterSalary:['STAY' ] ">
+                <ng-template ngFor let-salary [ngForOf]="payroll.salariesv2 | filterSalary:['STAY' ] ">
                   <tr>
                     <td> {{salary.title}}</td>
                     <td style='color: #4B3880'>
@@ -208,22 +208,29 @@
           </div>
           <!--Phụ cấp -->
           <div #allowance class='mt-5 col-12'>
-            <nz-table>
+            <nz-table
+              [nzShowPagination]="false"
+              #tableAllowance
+              [nzData]="payroll.allowances"
+            >
               <thead>
               <tr>
-                <th nzWidth='25%'>
-                  <div> Phụ cấp</div>
+                <th nzWidth='20%'>
+                  <div>Phụ cấp</div>
                 </th>
                 <th nzWidth='15%'>
                   <div>Thời gian</div>
                 </th>
-                <th nzWidth='10%'>
-                  <div>Đơn vị</div>
+                <th>
+                  <div>Làm tại cty</div>
+                </th>
+                <th>
+                  <div>Theo ngày làm thực tế</div>
                 </th>
                 <th nzWidth='15%'>
                   <div>Thành tiền</div>
                 </th>
-                <th nzWidth='25%'>
+                <th>
                   <div>Chú thích</div>
                 </th>
                 <th nzWidth='10%' style='padding: 0; color: #1b8eb7'
@@ -237,17 +244,21 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let salary of payroll.allowances | filterSalary:['ALLOWANCE'] "
+              <tr *ngFor="let salary of tableAllowance.data "
                   style='background: white !important;'>
                 <td>
                   <span>{{salary.title}}</span>
                 </td>
                 <td>
-                  -
+                  Từ. {{ salary.startedAt | date:'dd-MM-yyyy' }}
+                  <br/>
+                  đến {{ salary.endedAt | date:'dd-MM-yyyy' }}
                 </td>
                 <td>
-                  <span *ngIf='salary.unit === datetimeUnit.MONTH'>Tháng</span>
-                  <span *ngIf='salary.unit === datetimeUnit.DAY'>Ngày</span>
+                  <label nz-checkbox nzDisabled [nzChecked]="salary.inOffice"></label>
+                </td>
+                <td>
+                  <label nz-checkbox nzDisabled [nzChecked]="salary.inWorkday"></label>
                 </td>
                 <td style='color: #29CC97'>{{salary.price|number:'1.0'| notEmpty:'0'}}đ
                 </td>
@@ -452,7 +463,7 @@
               </tbody>
             </nz-table>
           </div>
-<!--            Khấu trừ-->
+          <!--            Khấu trừ-->
           <div #absent class='col-12 mt-5'>
             <nz-table
               #tableDeduction
@@ -606,7 +617,11 @@
 
           <!--WFH-->
           <div #absent class='col-12 mt-5'>
-            <nz-table>
+            <nz-table
+              #tableRemote
+              [nzData]="payroll.remotes|| []"
+              nzShowPagination="false"
+            >
               <thead>
               <tr style='background-color: #dddddd66;'>
                 <th nzWidth='3%'>
@@ -614,22 +629,22 @@
                     STT
                   </div>
                 </th>
-                <th nzWidth='22%'>
+                <th>
                   <div>
-                    Chú thích ngày
+                    Remote/Onsite/WFH
                   </div>
                 </th>
-                <th nzWidth='10%'>
+                <th>
                   <div>
                     Thời gian
                   </div>
                 </th>
-                <th nzWidth='8%'>
+                <th>
                   <div>
                     Đơn vị
                   </div>
                 </th>
-                <th nzWidth='21%'>
+                <th>
                   <div>
                     Diễn giải
                   </div>
@@ -645,22 +660,23 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let salary of payroll.remotes;let i=index "
+              <tr *ngFor="let salary of tableRemote.data;let i=index "
                   style='background: white !important;'>
                 <td>
                   <span>{{i + 1}}</span>
                 </td>
                 <td>
-                  <span>{{salary.title}}</span>
+                  <span>{{salary.type|transformconstant:remoteConstant}}</span>
                 </td>
                 <td>
                  <span>
                  từ {{salary.startedAt | date:'dd-MM-yyyy'}}
+                   <br>
                    đến  {{salary.endedAt | date:'dd-MM-yyyy'}}
                 </span>
                 </td>
                 <td>
-                  <span *ngIf='salary.unit === datetimeUnit.DAY'>Ngày</span>
+                  <span>{{salary.unit|transformconstant:unitSalaryConstant}}</span>
                 </td>
                 <td>
                   <span>{{salary.note}}</span>
@@ -684,7 +700,11 @@
 
           <!--chú thích-->
           <div #note class='col-12 mt-5'>
-            <nz-table #tableNote [nzData]="payroll?.note?  [payroll.note] : []">
+            <nz-table
+              #tableNote
+              [nzData]="payroll?.note?  [payroll.note] : []"
+              nzShowPagination="false"
+            >
               <thead>
               <tr style='background-color: #dddddd66;'>
                 <th>

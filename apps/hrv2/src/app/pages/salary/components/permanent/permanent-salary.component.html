@@ -1,7 +1,7 @@
 <div>
   <nz-steps [nzCurrent]="stepIndex">
     <nz-step *ngIf="data?.update?.multiple" nzTitle="Nhân viên đã chọn"></nz-step>
-    <nz-step nzTitle="Lương cơ bản"></nz-step>
+    <nz-step [nzTitle]="this.data.type === salaryTypeEnum.STAY?'Phụ cấp lương':'Lương cơ bản'"></nz-step>
     <nz-step nzTitle="Chọn nhân viên"></nz-step>
   </nz-steps>
 
@@ -47,7 +47,7 @@
           <span>Mức lương</span>
           <span class='star'>*</span>
         </div>
-        <div class=' mb-3' [formGroup]='formGroup' *ngIf='formGroup.value.template?.prices?.length > 0 else inputPrice'>
+        <div class=' mb-3' [formGroup]='formGroup' *ngIf='formGroup.value.template?.prices?.length > 1 else inputPrice'>
           <nz-select style="width: 100%" formControlName='price'
                       [ngClass]="{ 'is-invalid': checkValid.price.errors }">
             <nz-option *ngFor='let item of formGroup.value.template.prices' [nzValue]='item'
