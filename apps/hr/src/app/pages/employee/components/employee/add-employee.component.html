@@ -3,7 +3,7 @@
     <form [formGroup]='formGroup'>
       <div class='form-group'>
         <app-add-profile [formGroup]='formGroup' [submitted]='submitting' [form]='f'></app-add-profile>
-        <app-pick-location
+        <place-selector
           [isUpdateEmployee]="true"
           [ward]='employeeInit?.ward'
           [isUpdate]='!!employeeInit'
@@ -11,7 +11,7 @@
           [submitting]='submitting'
           [form]='f'
         >
-        </app-pick-location>
+        </place-selector>
         <div class='row mt-3 d-flex'>
           <div class='col-sm'>
             <label>Đơn vị </label><span class='star'>*</span>

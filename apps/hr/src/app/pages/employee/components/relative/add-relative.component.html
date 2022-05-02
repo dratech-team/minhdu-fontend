@@ -10,11 +10,11 @@
     <form [formGroup]='formGroup' (submit)='onSubmit()'>
       <div>
         <app-add-profile [formGroup]='formGroup' [form]='f' [submitted]='submitted'></app-add-profile>
-        <app-pick-location [ward]='data?.relative?.ward' [formGroup]='formGroup' [form]='f'
-                           [submitting]='submitted'
+        <place-selector [ward]='data?.relative?.ward' [formGroup]='formGroup' [form]='f'
+                        [submitting]='submitted'
         >
 
-        </app-pick-location>
+        </place-selector>
         <div class='row mt-3' [formGroup]='formGroup'>
           <div class='col-sm'>
             <label for='career'>Nghề nghiệp</label>

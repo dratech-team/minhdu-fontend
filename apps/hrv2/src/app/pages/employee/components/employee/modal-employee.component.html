@@ -9,7 +9,7 @@
           [form]='checkValid'>
         </minhdu-fontend-profile>
 
-        <app-pick-location
+        <place-selector
           [isUpdateEmployee]="true"
           [ward]='this.data?.add?.employee?.ward
           ||this.data?.update?.employee?.ward'
@@ -18,7 +18,7 @@
           [submitting]='submitting'
           [form]='checkValid'
         >
-        </app-pick-location>
+        </place-selector>
 
         <div class='row mt-3 d-flex'>
           <div class='col-sm'>
