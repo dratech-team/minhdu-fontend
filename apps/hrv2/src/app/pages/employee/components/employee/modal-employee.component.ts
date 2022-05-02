@@ -147,18 +147,13 @@ export class ModalEmployeeComponent implements OnInit {
 
     const employee = this.mapEmployee(value);
 
-    if (this.data?.update) {
-      this.actions$.dispatch(
-        EmployeeActions.update({
-          id: this.data.update.employee.id,
-          updates: employee
-        })
-      );
-    } else {
-      this.actions$.dispatch(EmployeeActions.addOne({
-        body: employee
-      }));
-    }
+    this.actions$.dispatch(this.data.add
+      ? EmployeeActions.addOne({body: employee})
+      : EmployeeActions.update({
+        id: this.data.update.employee.id,
+        updates: employee
+      })
+    )
 
     this.added$.subscribe(added => {
       if (added) {
