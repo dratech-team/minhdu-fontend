@@ -62,7 +62,7 @@ import {ProfileComponent} from "./components/profile/profile.component";
     WorkHistoryPipe,
     FlatSalaryTypePipe,
     ExistPipe,
-    ModalCategoryComponent
+    ModalCategoryComponent,
     ModalEmployeeComponent,
     ProfileComponent
   ],

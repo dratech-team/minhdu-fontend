@@ -41,6 +41,7 @@ export class ModalCategoryComponent implements OnInit {
     this.actions$.dispatch(BranchActions.loadAll({}))
     const category = this.data?.add?.category || this.data?.update?.category
     this.formGroup = this.formBuilder.group({
+      branch: [category?.branch, Validators.required],
       name: [category?.name, Validators.required],
       note: [category?.note]
     });

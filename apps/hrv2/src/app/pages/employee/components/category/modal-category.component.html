@@ -16,7 +16,7 @@
         <span class='ml-1 font-weight-bold'>Đơn vị</span><span class='star'>*</span>
       </div>
       <div>
-        <nz-select nzMode="multiple" style="width: 100%" formControlName="branches">
+        <nz-select style="width: 100%" formControlName="branch">
           <nz-option *ngFor="let item of branches$|async" [nzValue]="item" [nzLabel]="item.name"></nz-option>
         </nz-select>
       </div>
@@ -30,14 +30,14 @@
 <ng-template [ngIf]="stepIndex === 1">
 <!--  chọn nhân viên-->
 </ng-template>
-<div>
+<div class="mt-2 ml-2" >
   <button nz-button nzType="default" (click)="move('pre')" *ngIf="stepIndex > 0">
     <span>Trở lại</span>
   </button>
-  <button nz-button nzType="default" (click)="move('next')" *ngIf="stepIndex < 1">
+  <button class="ml-2" nz-button nzType="default" (click)="move('next')" *ngIf="stepIndex < 1">
     <span>Tiếp theo</span>
   </button>
-  <button nz-button nzType="primary" (click)="onSubmit()" *ngIf="stepIndex === 1">
+  <button class="ml-2" nz-button nzType="primary" (click)="onSubmit()" *ngIf="stepIndex === 1">
     <span>Xác nhận</span>
   </button>
 </div>

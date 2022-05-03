@@ -20,15 +20,19 @@ import {DialogSharedComponent} from "../dialog-shared/dialog-shared.component";
 import {CategoryService} from "../../../../employee/src/lib/+state/service/category.service";
 import {EmployeeService} from "../../../../employee/src/lib/+state/service/employee.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {BranchQuery, PositionQuery} from "@minhdu-fontend/orgchart-v2";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Component({
   selector: 'app-pick-employee',
   templateUrl: './pick-employee.component.html'
 })
 export class PickEmployeeComponent implements OnInit {
-  // @Input() employeeInit?: Employee;
-  // @Input() employeesSelected: Employee[] = [];
   @Output() EventSelectEmployee = new EventEmitter<Employee[]>();
+  positions$ = this.positionQuery.selectAll()
+  branches$ = this.branchQuery.selectAll()
+  loaded$ = this.store.pipe(select(selectEmployeeLoaded));
+
   pageSize = 30;
   pageIndex = 0;
   type = SalaryTypeEnum;
@@ -38,9 +42,7 @@ export class PickEmployeeComponent implements OnInit {
   isEventSearch = false;
   isSelectAll = false;
   employeesSelected: Employee[] = []
-  positions$ = this.store.pipe(select(getAllPosition));
-  branches$ = this.store.pipe(select(getAllOrgchart));
-  loaded$ = this.store.pipe(select(selectEmployeeLoaded));
+
 
   formGroup = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -53,18 +55,11 @@ export class PickEmployeeComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly categoryService: CategoryService,
     private readonly employeeService: EmployeeService,
-    private readonly snackbar: MatSnackBar,
+    private readonly branchQuery: BranchQuery,
+    private readonly positionQuery: PositionQuery,
+    private readonly message: NzMessageService,
   ) {
   }
-
-
-  /*ngOnChanges(changes: SimpleChanges): void {
-    if (changes.employeesSelected) {
-      this.isSelectAll =
-        this.employees.length > 1 &&
-        this.employees.every((e) => this.employeesSelected.some(item => item.id === e.id));
-    }
-  }*/
 
   ngOnInit(): void {
     this.employeeService.pagination({take: this.pageSize, skip: this.pageIndex, isFlatSalary: -1, status: 0})
@@ -95,16 +90,6 @@ export class PickEmployeeComponent implements OnInit {
       this.employees = res.data
       this.total = res.total
     });
-
-    this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
-      this.store.pipe(select(getAllPosition))
-    );
-
-    this.branches$ = searchAutocomplete(
-      this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
-      this.branches$
-    );
   }
 
   updateSelect(employee: Employee) {
@@ -164,7 +149,7 @@ export class PickEmployeeComponent implements OnInit {
           }
         })
       } else {
-        this.snackbar.open('Đã lấy hết nhân viên', '', {duration: 1500})
+        this.message.info('Đã lấy hết nhân viên')
       }
     })
   }

@@ -109,9 +109,10 @@ export class EmployeeComponent implements OnInit {
       });
 
     this.categoryControl.valueChanges.subscribe(val => {
-      if (val !== 0) {
-        this.actions$.dispatch(EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false)));
-      }
+      val === 0
+        ? this.onAddCategory()
+        : this.actions$.dispatch(EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false)));
+
     });
 
     this.formGroup.get('branch')?.valueChanges.subscribe(branch => {
@@ -135,7 +136,7 @@ export class EmployeeComponent implements OnInit {
   onAdd(employeeInit?: EmployeeEntity): void {
     this.modal.create({
       nzTitle: 'Thêm nhân viên',
-      nzWidth:'700px',
+      nzWidth: '700px',
       nzContent: ModalEmployeeComponent,
       nzComponentParams: <{ data: ModalEmployeeData }>{
         data: {
@@ -197,6 +198,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   onAddCategory() {
+    console.log('ssss')
     this.modal.create({
       nzTitle: 'Thêm Phòng ban',
       nzContent: ModalCategoryComponent,
