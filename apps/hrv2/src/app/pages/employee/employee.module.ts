@@ -27,6 +27,8 @@ import {WorkHistoryPipe} from "./pipes/work-history.pipe";
 import {ExistPipe} from "./pipes/exist.pipe";
 import {ModalCategoryComponent} from "./components/category/modal-category.component";
 import {NzStepsModule} from "ng-zorro-antd/steps";
+import {ModalEmployeeComponent} from "./components/employee/modal-employee.component";
+import {ProfileComponent} from "./components/profile/profile.component";
 
 @NgModule({
   imports: [
@@ -61,6 +63,8 @@ import {NzStepsModule} from "ng-zorro-antd/steps";
     FlatSalaryTypePipe,
     ExistPipe,
     ModalCategoryComponent
+    ModalEmployeeComponent,
+    ProfileComponent
   ],
   providers: [
     DatePipe,

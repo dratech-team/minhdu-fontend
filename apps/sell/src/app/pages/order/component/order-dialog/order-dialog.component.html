@@ -34,7 +34,7 @@
             <input type='date' class='form-control' id='deliveredAt' formControlName='deliveredAt'>
           </div>
         </div>
-        <app-pick-location
+        <place-selector
           [isUpdate]="!!data?.order"
           [province]='data?.order?.province'
           [district]='data?.order?.district'
@@ -45,7 +45,7 @@
           [form]='checkValid'
           [submitting]='submitted'
         >
-        </app-pick-location>
+        </place-selector>
       </div>
     </div>
   </form>

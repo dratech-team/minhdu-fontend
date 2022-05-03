@@ -42,13 +42,13 @@
               <input type='date' class='form-control' id='deliveriedAt' formControlName='endedAt'>
             </div>
             <div class="col-9">
-              <app-pick-location
+              <place-selector
                 [formGroup]='formGroup'
                 [form]='checkValid'
                 [submitting]='submitted'
                 [isRequiredDistrict]='false'
                 [isRequiredWard]='false'
-              ></app-pick-location>
+              ></place-selector>
             </div>
 
           </div>
