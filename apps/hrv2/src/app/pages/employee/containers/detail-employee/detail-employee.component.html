@@ -19,7 +19,7 @@
                   Đổi avatar
             </span>
         </button>
-        <button (click)='deleteEmployee(employee, employee?.leftAt)'
+        <button (click)='onDelete(employee, employee?.leftAt)'
                 class='row btn shadow-none p-2 mb-3 bg-light rounded'>
               <span style='text-align: center; font-weight: 600;font-size: 16px;line-height: 19px; width:240px;'>
                  {{employee.leftAt ? 'Khôi phục' : 'Xóa nhân viên' }}
@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="not-print">
-      <button (click)='historySalary(employee )'
+      <button (click)='onHistorySalary(employee )'
               class='mt-5 btn d-flex d-flex justify-content-center  align-items-center mr-3'
               style='border: solid 1px #4B3880'>
         <img class='mr-1' src='../../../../../assets/img/share/arrow-counterclockwise.svg' alt='history'><span>xem lịch sử lương</span>
@@ -45,7 +45,7 @@
           data-placement='top'
           title=' chỉnh sửa '
           class='edit animated not-print'
-          (click)='updateEmployee(employee)'>
+          (click)='onUpdate(employee)'>
           <img style='height: 15px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
         </button>
       </div>
@@ -269,7 +269,7 @@
             </div>
             <div class='col-md-8 py-2 '>
               <div style='width: fit-content; height: fit-content'
-                   (click)='updateContract(employee)'
+                   (click)='onUpdateContract(employee)'
               >
                 <input
                   style='pointer-events: none'
@@ -360,7 +360,7 @@
             data-placement='top'
             title=' chỉnh sửa '
             class='edit animated ml-5 not-print'
-            (click)='addOrUpdateBHYT(employee.bhyt)'>
+            (click)='onBHYT(employee.bhyt)'>
             <img style='height: 15px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
           </button>
         </div>
@@ -466,7 +466,7 @@
     <div class='col-12 mt-5'>
       <div class='row d-flex align-items-center '>
         <div class=' align-items-center title-table mr-4'>Thành phần gia đình</div>
-        <div class='col-md-4 add not-print' *ngIf='!employee.leftAt' (click)='addAndUpdateRelative(employee.id )'>
+        <div class='col-md-4 add not-print' *ngIf='!employee.leftAt' (click)='onRelative(employee.id )'>
           <span class='mr-1 font-weight-bold '>Thêm mục</span>
           <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
                alt='add icon'>
@@ -492,7 +492,7 @@
           <tbody>
           <tr
             *ngFor='let relative of tableRelative.data'
-            (click)='addAndUpdateRelative(employee.id, relative.id, relative)'>
+            (click)='onRelative(employee.id, relative.id, relative)'>
             <td>{{relative.lastName}}</td>
             <td>{{relative.relationship|transformconstant: relationshipConstant}}</td>
             <td>{{relative.birthday |date:'dd/MM/yyyy'}}</td>
@@ -504,7 +504,7 @@
             <td class="not-print">
               <button
                 nz-button nzDanger
-                (click)='deleteRelative(relative.id , employee.id); $event.stopPropagation() '>
+                (click)='onDeleteRelative(relative.id , employee.id); $event.stopPropagation() '>
                 Xoá
               </button>
             </td>
@@ -516,7 +516,7 @@
     <div class='col-12 mt-5'>
       <div class='row'>
         <div class=' align-items-center title-table mr-4'>Trình độ bằng cấp</div>
-        <div class='col-md-4 add not-print' *ngIf='!employee.leftAt' (click)='addAndUpdateDegree(employee.id)'>
+        <div class='col-md-4 add not-print' *ngIf='!employee.leftAt' (click)='onDegree(employee.id)'>
           <span class='mr-1 font-weight-bold'>Thêm mục</span>
           <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
                alt='add icon'>
@@ -544,7 +544,7 @@
           <tbody>
           <tr
             *ngFor='let degree of tableDegree.data'
-            (click)='addAndUpdateDegree(employee.id,degree.id , degree)'>
+            (click)='onDegree(employee.id,degree.id , degree)'>
             <td>
               {{degree.type|transformconstant:degreeConstant }}
             </td>
@@ -559,7 +559,7 @@
             <td class="not-print">
               <button
                 nz-button nzDanger
-                (click)='deleteDegree(degree.id , employee.id) ; $event.stopPropagation()'>
+                (click)='onDeleteDegree(degree.id , employee.id) ; $event.stopPropagation()'>
                 Xoá
               </button>
             </td>
@@ -595,7 +595,7 @@
               <div class="text-center">
                 <button
                   nz-button nzDanger
-                  (click)="deleteHistorySalary(history)">
+                  (click)="onDeleteHistorySalary(history)">
                   Xoá
                 </button>
               </div>
@@ -627,7 +627,7 @@
             <td>{{workHistory.createdAt|date:'dd/MM/yyyy'}}</td>
             <td>{{workHistory.position.name}}</td>
             <td>{{workHistory.branch.name}}</td>
-            <td (click)="deleteWorkHistory(workHistory, employee.id)">
+            <td (click)="onDeleteWorkHistory(workHistory, employee.id)">
               <button nz-button nzDanger>
                 Xoá
               </button>

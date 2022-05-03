@@ -1,4 +1,3 @@
-<nz-spin *ngIf='added$|async' class="loading"></nz-spin>
 <div style="height: 81vh">
   <div class='font-weight-bold font-2xl ml-3'>Hồ sơ nhân viên</div>
   <div class='d-flex align-items-center justify-content-between'>
@@ -49,7 +48,7 @@
       </div>
     </div>
     <div>
-      <button *ngIf='formGroup.value.status === 0'
+      <button *ngIf='formGroup.value.status === empStatusEnum.IS_ACTIVE'
               (click)='onAdd()' class='mr-2 btn btn-primary'>Thêm
       </button>
       <button class='btn btn-primary mr-4' (click)='onPrint()'>Xuất</button>
