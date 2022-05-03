@@ -79,6 +79,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     {provide: LOCALE_ID, useValue: 'vi-VN'},
     {provide: NZ_CONFIG, useValue: {message: {nzMaxStack: 1}} as NzConfig},
     {provide: NZ_I18N, useValue: vi_VN},
+    {provide: NZ_CONFIG, useValue: {modal:{nzMaskClosable: false}}},
   ],
   bootstrap: [AppComponent],
 })
