@@ -48,7 +48,12 @@
       <div class='mb-3 row'>
         <div class='col d-flex flex-column'>
           <div class='font-weight-bold'>Từ ngày đến ngày <span class='star'>*</span></div>
-          <nz-range-picker class='mt-1' formControlName='rangeDay'></nz-range-picker>
+          <nz-range-picker
+            [nzDisabledDate]="disableApprenticeDate"
+            class='mt-1'
+            formControlName='rangeDay'>
+
+          </nz-range-picker>
           <div *ngIf='checkValid.rangeDay.errors ' class='invalid-feedback'>
             <div>Chưa chọn từ ngày đến ngày</div>
           </div>
