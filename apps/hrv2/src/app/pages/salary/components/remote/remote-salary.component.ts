@@ -14,6 +14,8 @@ import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {ModalAddOrUpdateRemote} from '../../data';
 import {RemoteConstant} from "../../constants/remote.constant";
+import {differenceInCalendarDays} from "date-fns";
+import * as moment from "moment";
 
 @Component({
   templateUrl: 'remote-salary.component.html'
@@ -27,9 +29,16 @@ export class RemoteSalaryComponent implements OnInit {
 
   stepIndex = 0;
   submitting = false;
+  fistDateInMonth!: Date
 
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
+
+  disableApprenticeDate = (cur: Date): boolean => {
+    return !((differenceInCalendarDays(cur, moment(this.fistDateInMonth).add(-1, 'days').toDate()) > 0 &&
+      (differenceInCalendarDays(cur, moment(getLastDayInMonth(this.fistDateInMonth)).endOf('month').add(1, 'days').toDate()) < 0)
+    ));
+  };
 
   constructor(
     public datePipe: DatePipe,
@@ -42,6 +51,11 @@ export class RemoteSalaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.fistDateInMonth = getFirstDayInMonth(new Date(
+      this.data.add
+        ? this.data.add.payroll.createdAt
+        : this.data.update.salary.startedAt
+    ))
     if (this.data.add) {
       this.payrollSelected.push(this.data.add.payroll);
     }
