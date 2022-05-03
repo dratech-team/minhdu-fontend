@@ -20,7 +20,6 @@ import {throwError} from 'rxjs';
 import {PayrollActions} from '../../../payroll/state/payroll.action';
 import {ModalAddOrUpdateAbsentOrOvertime} from '../../../payroll/data';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
-import {differenceInCalendarDays} from 'date-fns';
 
 import * as moment from "moment";
 import {validateDayInMonth} from "../../utils/validate-day-in-month.util";
@@ -203,8 +202,20 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       unit: value.unit,
       price: value.price,
       note: value.note,
-      startedAt: new Date(value.rangeDay[0]),
-      endedAt: new Date(value.rangeDay[1]),
+      startedAt: moment(value.rangeDay[0]).set(
+        {
+          hours: new Date().getHours(),
+          minutes: new Date().getMinutes(),
+          seconds: new Date().getSeconds()
+        }
+      ),
+      endedAt:moment(value.rangeDay[1]).set(
+        {
+          hours: new Date().getHours(),
+          minutes: new Date().getMinutes(),
+          seconds: new Date().getSeconds()
+        }
+      ),
       startTime: value.startTime ? new Date(value.startTime) : null,
       endTime: value.endTime ? new Date(value.endTime) : null,
       settingId: value.template?.id

@@ -16,6 +16,7 @@ import {PayrollActions} from '../../../payroll/state/payroll.action';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {ModalAddOrUpdateAllowance} from '../../../payroll/data';
 import {validateDayInMonth} from "../../utils/validate-day-in-month.util";
+import * as moment from "moment";
 
 @Component({
   templateUrl: 'allowance-salary.component.html'
@@ -128,8 +129,20 @@ export class AllowanceSalaryComponent implements OnInit {
       type: SalaryTypeEnum.ALLOWANCE,
       rate: value.rate,
       note: value.note,
-      startedAt: new Date(value.rangeDay[0]),
-      endedAt: new Date(value.rangeDay[1]),
+      startedAt: moment(value.rangeDay[0]).set(
+        {
+          hours: new Date().getHours(),
+          minutes: new Date().getMinutes(),
+          seconds: new Date().getSeconds()
+        }
+      ),
+      endedAt:moment(value.rangeDay[1]).set(
+        {
+          hours: new Date().getHours(),
+          minutes: new Date().getMinutes(),
+          seconds: new Date().getSeconds()
+        }
+      ),
       inOffice: value.inOffice,
       inWorkday: value.inWorkday,
     };

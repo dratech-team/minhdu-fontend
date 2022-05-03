@@ -14,9 +14,8 @@ import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {ModalAddOrUpdateRemote} from '../../data';
 import {RemoteConstant} from "../../constants/remote.constant";
-import {differenceInCalendarDays} from "date-fns";
-import * as moment from "moment";
 import {validateDayInMonth} from "../../utils/validate-day-in-month.util";
+import * as moment from "moment";
 
 @Component({
   templateUrl: 'remote-salary.component.html'
@@ -107,8 +106,20 @@ export class RemoteSalaryComponent implements OnInit {
       type: value.type,
       note: value.note,
       unit: DatetimeUnitEnum.DAY,
-      startedAt: new Date(value.rangeDay[0]),
-      endedAt: new Date(value.rangeDay[1])
+      startedAt: moment(value.rangeDay[0]).set(
+        {
+          hours: new Date().getHours(),
+          minutes: new Date().getMinutes(),
+          seconds: new Date().getSeconds()
+        }
+      ),
+      endedAt:moment(value.rangeDay[1]).set(
+        {
+          hours: new Date().getHours(),
+          minutes: new Date().getMinutes(),
+          seconds: new Date().getSeconds()
+        }
+      ),
     };
     return Object.assign(
       salary,
