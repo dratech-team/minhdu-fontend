@@ -49,6 +49,7 @@
         <div class='col d-flex flex-column'>
           <div class='font-weight-bold'>Từ ngày đến ngày <span class='star'>*</span></div>
           <nz-range-picker
+            nzFormat="dd/MM/yyyy"
             [nzDisabledDate]="disableApprenticeDate"
             class='mt-1'
             formControlName='rangeDay'>
@@ -63,7 +64,7 @@
             <span class='font-weight-bold'>Từ giờ</span><span class='star'>*</span>
             <nz-time-picker
               class='mt-1'
-              [nzDisabled]='formGroup.value.partialDay?.value !== partialDayEnum.CUSTOM'
+              [nzDisabled]=' formGroup.value.partialDay?.value !== partialDayEnum.CUSTOM'
               formControlName='startTime'
               nzFormat='HH:mm'
               [nzDisabledHours]='disabledHoursStart'
