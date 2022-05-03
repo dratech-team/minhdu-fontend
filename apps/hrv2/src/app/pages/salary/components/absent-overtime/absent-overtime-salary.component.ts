@@ -108,14 +108,17 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       template: ['', Validators.required],
       title: [salary?.title],
-      rangeDay: [salary ? [salary.startedAt, salary.endedAt] : [], Validators.required],
+      rangeDay: [salary
+        ? [salary.startedAt, salary.endedAt]
+        : [this.fistDateInMonth, getLastDayInMonth(this.fistDateInMonth)]
+        , Validators.required],
       price: [salary?.price],
       startTime: [salary?.startedAt ? new Date(salary.startedAt) : undefined],
       endTime: [salary?.endedAt ? new Date(salary.endedAt) : undefined],
       note: [salary?.note],
       rate: [1],
       unit: [salary?.unit ? salary.unit : DatetimeUnitEnum.MONTH],
-      partialDay: [salary?.partial ? this.getPartialDay(salary.partial) : '', Validators.required],
+      partialDay: [salary?.partial ? this.getPartialDay(salary.partial) : ''],
       isAllowance: [!!salary?.allowance],
       priceAllowance: [salary?.allowance?.price || ''],
       titleAllowance: [salary?.allowance?.title || ''],
