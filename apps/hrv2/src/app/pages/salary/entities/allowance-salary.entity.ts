@@ -13,4 +13,5 @@ export interface AllowanceSalaryEntity extends BaseSalaryEntity {
   readonly inWorkday: boolean,
   readonly inOffice: boolean
   readonly total: number
+  readonly duration: number
 }

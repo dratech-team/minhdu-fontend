@@ -215,11 +215,14 @@
             >
               <thead>
               <tr>
-                <th nzWidth='20%'>
+                <th>
                   <div>Phụ cấp</div>
                 </th>
                 <th nzWidth='15%'>
                   <div>Thời gian</div>
+                </th>
+                <th>
+                  <div>Tổng ngày</div>
                 </th>
                 <th>
                   <div>Làm tại cty</div>
@@ -256,6 +259,9 @@
                   Từ. {{ salary.startedAt | date:'dd-MM-yyyy' }}
                   <br/>
                   đến {{ salary.endedAt | date:'dd-MM-yyyy' }}
+                </td>
+                <td>
+                  {{ salary.duration }}
                 </td>
                 <td>
                   <label nz-checkbox nzDisabled [nzChecked]="salary.inOffice"></label>
