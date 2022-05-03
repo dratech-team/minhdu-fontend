@@ -1,12 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {select} from '@ngrx/store';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {DatePipe} from '@angular/common';
-import {getAllOrgchart} from "@minhdu-fontend/orgchart";
-import {Branch, Category, Employee} from "@minhdu-fontend/data-models";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {searchAutocomplete} from "@minhdu-fontend/utils";
-import {catchError, startWith} from "rxjs/operators";
+import {Branch, Employee} from "@minhdu-fontend/data-models";
+import {catchError} from "rxjs/operators";
 import {CategoryService} from "@minhdu-fontend/employee-v2";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {Actions} from "@datorama/akita-ng-effects";
@@ -20,7 +16,7 @@ import {throwError} from "rxjs";
 })
 
 export class ModalCategoryComponent implements OnInit {
-  @Input() data!: DataAddOrUpdateCategory
+  @Input() data?: DataAddOrUpdateCategory
   branches$ = this.branchQuery.selectAll()
 
   employeeSelected: Employee[] = [];
@@ -43,7 +39,7 @@ export class ModalCategoryComponent implements OnInit {
 
   ngOnInit() {
     this.actions$.dispatch(BranchActions.loadAll({}))
-    const category = this.data.add?.category || this.data.update?.category
+    const category = this.data?.add?.category || this.data?.update?.category
     this.formGroup = this.formBuilder.group({
       name: [category?.name, Validators.required],
       note: [category?.note]
@@ -63,7 +59,7 @@ export class ModalCategoryComponent implements OnInit {
     }
 
     const category = this.mapCategory();
-    (this.data.add ? this.categoryService.addOne(category) : this.categoryService.update(this.data.update.category.id, category))
+    (this.data?.add ? this.categoryService.addOne(category) : this.categoryService.update(this.data?.update.category.id, category))
       .pipe(catchError(err => {
         this.submitting = false;
         return throwError(err)

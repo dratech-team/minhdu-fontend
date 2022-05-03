@@ -24,6 +24,8 @@ import {FlatSalaryTypeConstant} from "../../constants/flat-salary-type.constant"
 import {ProvinceService} from "@minhdu-fontend/location";
 import {FlatSalaryTypeEnum} from "../../enums/flat-salary-type.enum";
 import {BranchActions, BranchQuery, PositionQuery} from "@minhdu-fontend/orgchart-v2";
+import {ModalCategoryComponent} from "../../components/category/modal-category.component";
+import {DataAddOrUpdateCategory} from "../../data/modal-category.data";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -182,6 +184,11 @@ export class EmployeeComponent implements OnInit {
   }
 
   onAddCategory() {
+    this.modal.create({
+      nzTitle: 'Thêm Phòng ban',
+      nzContent: ModalCategoryComponent,
+      nzFooter: []
+    })
   }
 
   onDrop(event: CdkDragDrop<Employee[]>) {
