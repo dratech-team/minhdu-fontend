@@ -11,12 +11,11 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
 import {catchError} from 'rxjs/operators';
 import {throwError} from 'rxjs';
-import {differenceInCalendarDays} from 'date-fns';
-import * as moment from 'moment';
 import {Actions} from '@datorama/akita-ng-effects';
 import {PayrollActions} from '../../../payroll/state/payroll.action';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {ModalAddOrUpdateAllowance} from '../../../payroll/data';
+import {validateDayInMonth} from "../../utils/validate-day-in-month.util";
 
 @Component({
   templateUrl: 'allowance-salary.component.html'
@@ -31,13 +30,11 @@ export class AllowanceSalaryComponent implements OnInit {
   indexStep = 0;
   submitting = false;
   workedAt!: Date
-  startedAt!: Date
+  fistDateInMonth!: Date
   salaryTypeEnum = SalaryTypeEnum;
 
   disableApprenticeDate = (cur: Date): boolean => {
-    return !((differenceInCalendarDays(cur, moment(this.startedAt).add(-1, 'days').toDate()) > 0 &&
-      (differenceInCalendarDays(cur, moment(getLastDayInMonth(this.startedAt)).endOf('month').add(1, 'days').toDate()) < 0)
-    ));
+    return validateDayInMonth(cur, this.fistDateInMonth)
   };
 
   constructor(
@@ -54,7 +51,7 @@ export class AllowanceSalaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.workedAt = this.data.add ? this.data.add.payroll.employee.workedAt : this.data.update.salary.workedAt
-    this.startedAt = getFirstDayInMonth(new Date(
+    this.fistDateInMonth = getFirstDayInMonth(new Date(
       this.data.add
         ? this.data.add.payroll.createdAt
         : this.data.update.salary.startedAt
@@ -73,8 +70,8 @@ export class AllowanceSalaryComponent implements OnInit {
       note: [salary?.note],
       month: [salary?.startedAt || payroll?.createdAt],
       rangeDay: [
-        [salary?.startedAt || this.startedAt,
-          salary?.endedAt || getLastDayInMonth(this.startedAt)
+        [salary?.startedAt || this.fistDateInMonth,
+          salary?.endedAt || getLastDayInMonth(this.fistDateInMonth)
         ],
         Validators.required
       ],
@@ -131,8 +128,8 @@ export class AllowanceSalaryComponent implements OnInit {
       type: SalaryTypeEnum.ALLOWANCE,
       rate: value.rate,
       note: value.note,
-      startedAt: value.rangeDay[0],
-      endedAt: value.rangeDay[1],
+      startedAt: new Date(value.rangeDay[0]),
+      endedAt: new Date(value.rangeDay[1]),
       inOffice: value.inOffice,
       inWorkday: value.inWorkday,
     };
@@ -177,12 +174,12 @@ export class AllowanceSalaryComponent implements OnInit {
       nzOnOk: () => this.formGroup.get('rangeDay')?.setValue(
         [
           this.workedAt,
-          getLastDayInMonth(this.startedAt)
+          getLastDayInMonth(this.fistDateInMonth)
         ])
     })
   }
 
   checkWorkedAt(): boolean {
-    return isEqualDatetime(this.workedAt, this.startedAt, 'month')
+    return isEqualDatetime(this.workedAt, this.fistDateInMonth, 'month')
   }
 }

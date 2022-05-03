@@ -23,6 +23,7 @@ import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {differenceInCalendarDays} from 'date-fns';
 
 import * as moment from "moment";
+import {validateDayInMonth} from "../../utils/validate-day-in-month.util";
 
 @Component({
   templateUrl: 'absent-overtime-salary.component.html'
@@ -77,9 +78,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   };
 
   disableApprenticeDate = (cur: Date): boolean => {
-    return !((differenceInCalendarDays(cur, moment(this.fistDateInMonth).add(-1, 'days').toDate()) > 0 &&
-      (differenceInCalendarDays(cur, moment(getLastDayInMonth(this.fistDateInMonth)).endOf('month').add(1, 'days').toDate()) < 0)
-    ));
+    return  validateDayInMonth(cur, this.fistDateInMonth)
   };
 
   constructor(
@@ -204,8 +203,8 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       unit: value.unit,
       price: value.price,
       note: value.note,
-      startedAt: value.rangeDay[0],
-      endedAt: value.rangeDay[1],
+      startedAt: new Date(value.rangeDay[0]),
+      endedAt: new Date(value.rangeDay[1]),
       startTime: value.startTime ? new Date(value.startTime) : null,
       endTime: value.endTime ? new Date(value.endTime) : null,
       settingId: value.template?.id

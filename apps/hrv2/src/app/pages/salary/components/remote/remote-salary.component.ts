@@ -16,6 +16,7 @@ import {ModalAddOrUpdateRemote} from '../../data';
 import {RemoteConstant} from "../../constants/remote.constant";
 import {differenceInCalendarDays} from "date-fns";
 import * as moment from "moment";
+import {validateDayInMonth} from "../../utils/validate-day-in-month.util";
 
 @Component({
   templateUrl: 'remote-salary.component.html'
@@ -35,9 +36,7 @@ export class RemoteSalaryComponent implements OnInit {
   datetimeUnit = DatetimeUnitEnum;
 
   disableApprenticeDate = (cur: Date): boolean => {
-    return !((differenceInCalendarDays(cur, moment(this.fistDateInMonth).add(-1, 'days').toDate()) > 0 &&
-      (differenceInCalendarDays(cur, moment(getLastDayInMonth(this.fistDateInMonth)).endOf('month').add(1, 'days').toDate()) < 0)
-    ));
+    return validateDayInMonth(cur, this.fistDateInMonth)
   };
 
   constructor(
@@ -108,8 +107,8 @@ export class RemoteSalaryComponent implements OnInit {
       type: value.type,
       note: value.note,
       unit: DatetimeUnitEnum.DAY,
-      startedAt: value.rangeDay[0],
-      endedAt: value.rangeDay[1]
+      startedAt: new Date(value.rangeDay[0]),
+      endedAt: new Date(value.rangeDay[1])
     };
     return Object.assign(
       salary,
