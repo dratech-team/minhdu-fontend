@@ -228,6 +228,9 @@
                   <div>Theo ngày làm thực tế</div>
                 </th>
                 <th nzWidth='15%'>
+                  <div>Đơn giá</div>
+                </th>
+                <th nzWidth='15%'>
                   <div>Thành tiền</div>
                 </th>
                 <th>
@@ -262,6 +265,8 @@
                 </td>
                 <td style='color: #29CC97'>{{salary.price|number:'1.0'| notEmpty:'0'}}đ
                 </td>
+                <td style='color: #29CC97'>{{salary.total|number:'1.0'| notEmpty:'0'}}đ
+                </td>
                 <td>
                   <span>{{salary?.note}}</span>
                 </td>
@@ -286,6 +291,9 @@
             <nz-table matSort (matSortChange)='sortData($event)'>
               <thead>
               <tr style='background-color: #dddddd66;'>
+                <th>
+                  <div>STT</div>
+                </th>
                 <th mat-sort-header='title'>
                   <div>Tăng ca</div>
                 </th>
@@ -319,8 +327,13 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor='let salary of sortedSalaryOver'
+              <tr *ngFor='let salary of sortedSalaryOver; let i = index'
                   style='background: white !important;'>
+                <td>
+                  <div>
+                    <span>{{i + 1}}</span>
+                  </div>
+                </td>
                 <td>
                   <div>
                     <span>{{salary.title}}</span>
