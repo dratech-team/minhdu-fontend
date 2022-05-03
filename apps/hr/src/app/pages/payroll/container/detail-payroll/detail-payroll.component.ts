@@ -32,7 +32,7 @@ import {MatDialogConfig} from '@angular/material/dialog/dialog-config';
 import {DialogNoteComponent} from "../../component/dialog-note/dialog-note.component";
 import {DialogWFHComponent} from "../../component/dialog-salary/dialog-WFH/dialog-WFH.component";
 import {UpdatePayrollComponent} from "../../component/update-payroll/update-payroll.component";
-import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
+import {Role} from "@minhdu-fontend/enums";
 import {RestorePayrollComponent} from "../../component/restore-payroll/restore-payroll.component";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {Sort} from "@angular/material/sort";

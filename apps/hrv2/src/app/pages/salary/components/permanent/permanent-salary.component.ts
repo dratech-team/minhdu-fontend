@@ -91,7 +91,7 @@ export class PermanentSalaryComponent implements OnInit {
     });
 
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
-      if (template.prices.length === 1) {
+      if (template.prices.length === 1 && this.data.add) {
         this.formGroup.get('price')?.setValue(template.prices[0]);
       }
       this.formGroup.get('unit')?.setValue(template.unit);
@@ -123,7 +123,7 @@ export class PermanentSalaryComponent implements OnInit {
             ? this.data.add.payroll.id
             : undefined
           ) : (!this.data.update?.multiple
-            ? this.data.update.salary.id
+            ? this.data.update.salary.payrollId
             : undefined
           )
       ));
