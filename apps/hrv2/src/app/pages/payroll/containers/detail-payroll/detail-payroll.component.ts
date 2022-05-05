@@ -47,6 +47,7 @@ import {DeductionSalaryComponent} from '../../../salary/components/deduction/ded
 import {ModalAddOrUpdateDeduction} from '../../data/modal-deduction-salary.data';
 import {RemoteConstant} from "../../../salary/constants/remote.constant";
 import {UnitSalaryConstant} from "../../../salary/constants";
+import {SessionConstant} from "../../../../../shared/constants";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -72,6 +73,7 @@ export class DetailPayrollComponent implements OnInit {
 
   remoteConstant = RemoteConstant
   unitSalaryConstant = UnitSalaryConstant
+  titleSession = SessionConstant;
 
   sortedSalaryOver: OvertimeSalaryEntity[] = [];
 

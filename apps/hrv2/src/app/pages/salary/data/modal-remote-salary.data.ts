@@ -1,6 +1,7 @@
 import { PayrollEntity } from '../../payroll/entities';
 import {SalaryPayroll} from "@minhdu-fontend/data-models";
 import {RequireOnlyOne} from "../../../../shared/types";
+import {RemoteSalaryEntity} from "../entities";
 
 export interface ModalRemoteSalaryData {
   add?: {
@@ -9,7 +10,7 @@ export interface ModalRemoteSalaryData {
 
   },
   update?: {
-    salary: any,
+    salary: RemoteSalaryEntity,
     multiple?: {
       salaryPayrolls: SalaryPayroll[]
     },
