@@ -73,7 +73,7 @@ export class DetailPayrollComponent implements OnInit {
 
   remoteConstant = RemoteConstant
   unitSalaryConstant = UnitSalaryConstant
-  titleSession = SessionConstant;
+  sessionConstant = SessionConstant
 
   sortedSalaryOver: OvertimeSalaryEntity[] = [];
 
