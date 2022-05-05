@@ -4,7 +4,7 @@ import {DatetimeUnitEnum, EmployeeType, RecipeType, SalaryTypeEnum} from '@minhd
 import {PartialDayEnum} from '@minhdu-fontend/data-models';
 import {getDaysInMonth} from '@minhdu-fontend/utils';
 import {DatePipe} from '@angular/common';
-import {Role} from '../../../../../../../../libs/enums/hr/role.enum';
+import {Role} from '@minhdu-fontend/enums';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {Sort} from '@angular/material/sort';
 import {catchError, map} from 'rxjs/operators';
@@ -47,6 +47,7 @@ import {DeductionSalaryComponent} from '../../../salary/components/deduction/ded
 import {ModalAddOrUpdateDeduction} from '../../data/modal-deduction-salary.data';
 import {RemoteConstant} from "../../../salary/constants/remote.constant";
 import {UnitSalaryConstant} from "../../../salary/constants";
+import {SessionConstant} from "../../../../../shared/constants";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -61,8 +62,7 @@ export class DetailPayrollComponent implements OnInit {
         } else {
           this.daysInMonth = new Date().getDate();
         }
-        this.sortedSalaryOver = JSON.parse(JSON.stringify(
-          payroll?.salaries.filter(salary => salary.type === SalaryTypeEnum.OVERTIME)));
+        this.sortedSalaryOver = JSON.parse(JSON.stringify(payroll.overtimes));
       }
       return payroll;
     })
@@ -73,6 +73,7 @@ export class DetailPayrollComponent implements OnInit {
 
   remoteConstant = RemoteConstant
   unitSalaryConstant = UnitSalaryConstant
+  titleSession = SessionConstant;
 
   sortedSalaryOver: OvertimeSalaryEntity[] = [];
 

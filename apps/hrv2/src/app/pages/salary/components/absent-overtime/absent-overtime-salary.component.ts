@@ -20,9 +20,9 @@ import {throwError} from 'rxjs';
 import {PayrollActions} from '../../../payroll/state/payroll.action';
 import {ModalAddOrUpdateAbsentOrOvertime} from '../../../payroll/data';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
-import {differenceInCalendarDays} from 'date-fns';
 
 import * as moment from "moment";
+import {validateDayInMonth} from "../../utils/validate-day-in-month.util";
 
 @Component({
   templateUrl: 'absent-overtime-salary.component.html'
@@ -77,9 +77,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   };
 
   disableApprenticeDate = (cur: Date): boolean => {
-    return !((differenceInCalendarDays(cur, moment(this.fistDateInMonth).add(-1, 'days').toDate()) > 0 &&
-      (differenceInCalendarDays(cur, moment(getLastDayInMonth(this.fistDateInMonth)).endOf('month').add(1, 'days').toDate()) < 0)
-    ));
+    return validateDayInMonth(cur, this.fistDateInMonth)
   };
 
   constructor(
@@ -96,7 +94,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.fistDateInMonth = getFirstDayInMonth(
-      new Date( this.data.add ? this.data.add.payroll.createdAt : this.data.update.salary.startedAt)
+      new Date(this.data.add ? this.data.add.payroll.createdAt : this.data.update.salary.startedAt)
     )
     this.actions$.dispatch(SettingSalaryActions.loadAll({
       search: {types: [this.data.type]}
@@ -108,14 +106,17 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       template: ['', Validators.required],
       title: [salary?.title],
-      rangeDay: [salary ? [salary.startedAt, salary.endedAt] : [], Validators.required],
+      rangeDay: [salary
+        ? [salary.startedAt, salary.endedAt]
+        : [this.fistDateInMonth, getLastDayInMonth(this.fistDateInMonth)]
+        , Validators.required],
       price: [salary?.price],
       startTime: [salary?.startedAt ? new Date(salary.startedAt) : undefined],
       endTime: [salary?.endedAt ? new Date(salary.endedAt) : undefined],
       note: [salary?.note],
       rate: [1],
       unit: [salary?.unit ? salary.unit : DatetimeUnitEnum.MONTH],
-      partialDay: [salary?.partial ? this.getPartialDay(salary.partial) : '', Validators.required],
+      partialDay: [salary?.partial ? this.getPartialDay(salary.partial) : ''],
       isAllowance: [!!salary?.allowance],
       priceAllowance: [salary?.allowance?.price || ''],
       titleAllowance: [salary?.allowance?.title || ''],
@@ -134,7 +135,9 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
 
     this.formGroup.get('startTime')?.valueChanges.subscribe(val => {
       if (val) {
-        this.limitEndTime = getBeforeTime(val.getHours()).concat(getAfterTime(workingTime.afternoon.end.getHours(), 'HOUR'));
+        this.limitEndTime = getBeforeTime(val.getHours()).concat(
+          getAfterTime(this.formGroup.get('partialDay')?.value.endTime.getHours(), 'HOUR')
+        );
         if (this.formGroup.value.endTime && val.getTime() > this.formGroup.value.endTime.getTime()) {
           this.formGroup.get('endTime')?.setValue(undefined);
         }
@@ -196,13 +199,25 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   mapSalary(value: any) {
     const salary = {
       rate: value.rate,
-      title: value.template.id === 0 ? value.title : value.template.title,
-      partial: value.template.id === 0 ? PartialDayEnum.CUSTOM : value.partialDay.value,
+      title: value.template.title,
+      partial: value.partialDay.value,
       unit: value.unit,
       price: value.price,
       note: value.note,
-      startedAt: value.rangeDay[0],
-      endedAt: value.rangeDay[1],
+      startedAt: moment(value.rangeDay[0]).set(
+        {
+          hours: new Date().getHours(),
+          minutes: new Date().getMinutes(),
+          seconds: new Date().getSeconds()
+        }
+      ),
+      endedAt: moment(value.rangeDay[1]).set(
+        {
+          hours: new Date().getHours(),
+          minutes: new Date().getMinutes(),
+          seconds: new Date().getSeconds()
+        }
+      ),
       startTime: value.startTime ? new Date(value.startTime) : null,
       endTime: value.endTime ? new Date(value.endTime) : null,
       settingId: value.template?.id

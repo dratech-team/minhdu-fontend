@@ -14,6 +14,9 @@ import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {ModalAddOrUpdateRemote} from '../../data';
 import {RemoteConstant} from "../../constants/remote.constant";
+import {validateDayInMonth} from "../../utils/validate-day-in-month.util";
+import * as moment from "moment";
+import {SessionConstant} from "../../../../../shared/constants";
 
 @Component({
   templateUrl: 'remote-salary.component.html'
@@ -27,9 +30,15 @@ export class RemoteSalaryComponent implements OnInit {
 
   stepIndex = 0;
   submitting = false;
+  fistDateInMonth!: Date
 
+  titleSession = SessionConstant;
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
+
+  disableApprenticeDate = (cur: Date): boolean => {
+    return validateDayInMonth(cur, this.fistDateInMonth)
+  };
 
   constructor(
     public datePipe: DatePipe,
@@ -42,6 +51,11 @@ export class RemoteSalaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.fistDateInMonth = getFirstDayInMonth(new Date(
+      this.data.add
+        ? this.data.add.payroll.createdAt
+        : this.data.update.salary.startedAt
+    ))
     if (this.data.add) {
       this.payrollSelected.push(this.data.add.payroll);
     }
@@ -49,6 +63,7 @@ export class RemoteSalaryComponent implements OnInit {
     const salary = this.data.update?.salary;
     this.formGroup = this.formBuilder.group({
       type: [salary?.type, Validators.required],
+      partial: [salary?.partial, Validators.required],
       rangeDay: [
         [payroll ? getFirstDayInMonth(new Date(payroll.createdAt)) : salary?.startedAt,
           payroll ? getLastDayInMonth(new Date(payroll.createdAt)) : salary?.endedAt
@@ -79,7 +94,7 @@ export class RemoteSalaryComponent implements OnInit {
         this.onSubmitSuccess(res, this.data.add
           ? (
             !this.data.add?.multiple
-              ? this.data.add?.payroll.id
+              ? this.data.add.payroll.id
               : undefined
           )
           : (!this.data.update.multiple
@@ -94,8 +109,21 @@ export class RemoteSalaryComponent implements OnInit {
       type: value.type,
       note: value.note,
       unit: DatetimeUnitEnum.DAY,
-      startedAt: value.rangeDay[0],
-      endedAt: value.rangeDay[1]
+      partial: value.partial,
+      startedAt: moment(value.rangeDay[0]).set(
+        {
+          hours: new Date().getHours(),
+          minutes: new Date().getMinutes(),
+          seconds: new Date().getSeconds()
+        }
+      ),
+      endedAt: moment(value.rangeDay[1]).set(
+        {
+          hours: new Date().getHours(),
+          minutes: new Date().getMinutes(),
+          seconds: new Date().getSeconds()
+        }
+      ),
     };
     return Object.assign(
       salary,
@@ -110,8 +138,10 @@ export class RemoteSalaryComponent implements OnInit {
     return throwError(err);
   }
 
-  onSubmitSuccess(res: ResponseMessageEntity, payrollId: number) {
-    this.actions$.dispatch(PayrollActions.loadOne({id: payrollId}));
+  onSubmitSuccess(res: ResponseMessageEntity, payrollId?: number) {
+    if (payrollId) {
+      this.actions$.dispatch(PayrollActions.loadOne({id: payrollId}));
+    }
     this.message.success(res.message);
     this.modalRef.close();
   }

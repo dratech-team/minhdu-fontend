@@ -1,22 +1,22 @@
-import {DatePipe} from '@angular/common';
-import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {getFirstDayInMonth, getLastDayInMonth, isEqualDatetime} from 'libs/utils/daytime.until';
-import {SalaryPayroll} from '@minhdu-fontend/data-models';
-import {AllowanceSalaryService} from '../../service';
-import {PayrollEntity} from '../../../payroll/entities';
-import {NzMessageService} from 'ng-zorro-antd/message';
-import {NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
-import {catchError} from 'rxjs/operators';
-import {throwError} from 'rxjs';
-import {differenceInCalendarDays} from 'date-fns';
+import { DatePipe } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { getFirstDayInMonth, getLastDayInMonth, isEqualDatetime } from 'libs/utils/daytime.until';
+import { SalaryPayroll } from '@minhdu-fontend/data-models';
+import { AllowanceSalaryService } from '../../service';
+import { PayrollEntity } from '../../../payroll/entities';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { Actions } from '@datorama/akita-ng-effects';
+import { PayrollActions } from '../../../payroll/state/payroll.action';
+import { ResponseMessageEntity } from '@minhdu-fontend/base-entity';
+import { ModalAddOrUpdateAllowance } from '../../../payroll/data';
+import { validateDayInMonth } from '../../utils/validate-day-in-month.util';
 import * as moment from 'moment';
-import {Actions} from '@datorama/akita-ng-effects';
-import {PayrollActions} from '../../../payroll/state/payroll.action';
-import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
-import {ModalAddOrUpdateAllowance} from '../../../payroll/data';
 
 @Component({
   templateUrl: 'allowance-salary.component.html'
@@ -30,14 +30,12 @@ export class AllowanceSalaryComponent implements OnInit {
 
   indexStep = 0;
   submitting = false;
-  workedAt!: Date
-  startedAt!: Date
+  workedAt!: Date;
+  fistDateInMonth!: Date;
   salaryTypeEnum = SalaryTypeEnum;
 
   disableApprenticeDate = (cur: Date): boolean => {
-    return !((differenceInCalendarDays(cur, moment(this.startedAt).add(-1, 'days').toDate()) > 0 &&
-      (differenceInCalendarDays(cur, moment(getLastDayInMonth(this.startedAt)).endOf('month').add(1, 'days').toDate()) < 0)
-    ));
+    return validateDayInMonth(cur, this.fistDateInMonth);
   };
 
   constructor(
@@ -53,12 +51,12 @@ export class AllowanceSalaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.workedAt = this.data.add ? this.data.add.payroll.employee.workedAt : this.data.update.salary.workedAt
-    this.startedAt = getFirstDayInMonth(new Date(
+    this.workedAt = this.data.add ? this.data.add.payroll.employee.workedAt : this.data.update.salary.workedAt;
+    this.fistDateInMonth = getFirstDayInMonth(new Date(
       this.data.add
         ? this.data.add.payroll.createdAt
         : this.data.update.salary.startedAt
-    ))
+    ));
     if (!this.data.update?.multiple) {
       this.indexStep = 1;
     }
@@ -73,8 +71,8 @@ export class AllowanceSalaryComponent implements OnInit {
       note: [salary?.note],
       month: [salary?.startedAt || payroll?.createdAt],
       rangeDay: [
-        [salary?.startedAt || this.startedAt,
-          salary?.endedAt || getLastDayInMonth(this.startedAt)
+        [salary?.startedAt || this.fistDateInMonth,
+          salary?.endedAt || getLastDayInMonth(this.fistDateInMonth)
         ],
         Validators.required
       ],
@@ -131,16 +129,24 @@ export class AllowanceSalaryComponent implements OnInit {
       type: SalaryTypeEnum.ALLOWANCE,
       rate: value.rate,
       note: value.note,
-      startedAt: value.rangeDay[0],
-      endedAt: value.rangeDay[1],
+      startedAt: moment(value.rangeDay[0]).set({
+        hours: new Date().getHours(),
+        minutes: new Date().getMinutes(),
+        seconds: new Date().getSeconds()
+      }).toDate(),
+      endedAt: moment(value.rangeDay[1]).set({
+        hours: new Date().getHours(),
+        minutes: new Date().getMinutes(),
+        seconds: new Date().getSeconds()
+      }).toDate(),
       inOffice: value.inOffice,
-      inWorkday: value.inWorkday,
+      inWorkday: value.inWorkday
     };
 
     return Object.assign(salary,
       this.data.add
-        ? {payrollIds: this.payrollSelected.map(payroll => payroll.id).concat([this.data.add.payroll.id])}
-        : {salaryIds: this.salariesSelected.map(item => item.salary.id).concat([this.data.update.salary.id])}
+        ? { payrollIds: this.payrollSelected.map(payroll => payroll.id).concat([this.data.add.payroll.id]) }
+        : { salaryIds: this.salariesSelected.map(item => item.salary.id).concat([this.data.update.salary.id]) }
     );
   }
 
@@ -161,7 +167,7 @@ export class AllowanceSalaryComponent implements OnInit {
   }
 
   move(type: 'next' | 'pre') {
-    type === 'next' ? this.indexStep += 1 : this.indexStep -= 1
+    type === 'next' ? this.indexStep += 1 : this.indexStep -= 1;
   }
 
   onSelectWorkedAt() {
@@ -177,12 +183,12 @@ export class AllowanceSalaryComponent implements OnInit {
       nzOnOk: () => this.formGroup.get('rangeDay')?.setValue(
         [
           this.workedAt,
-          getLastDayInMonth(this.startedAt)
+          getLastDayInMonth(this.fistDateInMonth)
         ])
-    })
+    });
   }
 
   checkWorkedAt(): boolean {
-    return isEqualDatetime(this.workedAt, this.startedAt, 'month')
+    return isEqualDatetime(this.workedAt, this.fistDateInMonth, 'month');
   }
 }

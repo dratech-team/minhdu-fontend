@@ -14,10 +14,28 @@
             </nz-select>
           </div>
         </div>
+        <div class='mb-3'>
+          <span class='font-weight-bold'>Buổi</span><span class='star'>*</span>
+          <nz-select class='mt-1' style='width: 100%' formControlName='partial'>
+            <nz-option
+              *ngFor='let item of titleSession|partialday: datetimeUnit.DAY'
+              [nzValue]='item.value'
+              [nzLabel]='item.name'
+            ></nz-option>
+          </nz-select>
+          <div *ngIf='checkValid.partial.errors ' class='invalid-feedback'>
+            <div>Chưa chọn buổi khấu trừ</div>
+          </div>
+        </div>
         <div class='row mb-3'>
           <div [formGroup]='formGroup' class='col-12'>
             <div class="font-weight-bold">Từ ngày đến ngày <span class="star">*</span></div>
-            <nz-range-picker nzFormat="dd-MM-yyyy" class="mt-1" formControlName="rangeDay"></nz-range-picker>
+            <nz-range-picker
+              nzFormat="dd-MM-yyyy"
+              class="mt-1"
+              formControlName="rangeDay"
+              [nzDisabledDate]="disableApprenticeDate"
+            ></nz-range-picker>
             <div *ngIf='checkValid.rangeDay.errors ' class='invalid-feedback'>
               <div>Chưa chọn từ ngày đến ngày</div>
             </div>
