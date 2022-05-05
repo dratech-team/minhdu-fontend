@@ -111,13 +111,16 @@
               >
                 <thead>
                 <tr style='background-color: white;'>
-                  <th nzWidth='50%'>
+                  <th>
                     <div> Lương cơ bản</div>
                   </th>
-                  <th nzWidth='28%'>
+                  <th>
+                    <div>Hệ số</div>
+                  </th>
+                  <th>
                     <div>Thành tiền</div>
                   </th>
-                  <th nzWidth='22%' (click)='onAdd(salaryTypeEnum.BASIC,payroll)'>
+                  <th (click)='onAdd(salaryTypeEnum.BASIC,payroll)'>
                     <div class="d-flex">
                       <span class='mr-1 pointer' style='color: #1b8eb7'>Thêm mục</span>
                       <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
@@ -131,6 +134,7 @@
                              [ngForOf]="payroll.salariesv2 | filterSalary:['BASIC_INSURANCE','BASIC' ] ">
                   <tr>
                     <td> {{salary.title}}</td>
+                    <td> {{salary.rate}}</td>
                     <td class=' text-center ' style='color: #4B3880'>
                       {{salary.price|number:'1.0'|notEmpty:'0'}} đ
                     </td>
