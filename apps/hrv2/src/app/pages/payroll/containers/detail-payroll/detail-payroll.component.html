@@ -1,7 +1,7 @@
 <div class='row animated fadeIn mt-2' *ngIf='(payroll$ | async) as payroll'>
   <nz-carousel [nzEffect]="'effect'" [nzAutoPlay]='false' (nzBeforeChange)='navigatePayroll(payroll)'>
     <div nz-carousel-content *ngFor='let id of payroll.payrollIds'>
-      <div class='container'>
+      <div style="max-width: 90vw ; margin: auto">
         <div class='row'>
           <div class='col-12 font-weight-bold font-lg text-center'>
             Phiếu lương tháng {{payroll.createdAt|date: 'MM/yyyy'}}
@@ -304,10 +304,11 @@
               <tr>
                 <th>STT</th>
                 <th mat-sort-header='title' class="text-center">Tăng ca</th>
-                <th>Thời gian</th>
-                <th mat-sort-header='unit'>Đơn vị</th>
+                <th mat-sort-header='datetime'>Thời gian</th>
+                <th>Tổng ngày</th>
+                <th mat-sort-header='unit'> Đơn vị</th>
+                <th nzWidth="25%">Đơn giá</th>
                 <th>Thành tiền</th>
-                <th mat-sort-header='datetime'>Chi tiết</th>
                 <th>Chú thích</th>
                 <th nzWidth='10%' style='padding: 0; color: #1b8eb7'
                     (click)='onAdd(salaryTypeEnum.OVERTIME, payroll ) '>
@@ -333,29 +334,35 @@
                     <span class='ml-2' *ngIf='salary.allowance'> + {{salary.allowance.title}}</span>
                   </div>
                 </td>
+                <td class=' text-center '>
+                  Từ. {{salary.startedAt | date:'dd-MM-yyyy HH:mm:ss'}}
+                  <br/>
+                  đến {{salary.endedAt | date:'dd-MM-yyyy HH:mm:ss'}}
+                </td>
                 <td>
-                  <span *ngIf='salary.setting.unit === datetimeUnit.HOUR'> Giờ </span>
-                  <span
-                    *ngIf='
-                      salary.setting.unit === datetimeUnit.DAY && salary.partial'>
-                {{ salary.partial | rangeDatetimePipe: salary.startedAt : salary.endedAt}}
-              </span>
+                  {{salary.duration}}
                 </td>
                 <td>
                   <span>{{salary.setting.unit|transformconstant: unitSalaryConstant}}</span>
                 </td>
                 <td style='color: #29CC97'>
                 <span>
-                  {{ salary.price ? ((salary.price * salary.rate)|number:'1.0') + 'đ' : 'Theo lương chuẩn'}}
+                  {{ ((salary.setting.prices && salary.setting.prices.length > 0
+                    ? (salary.setting.prices | prices)
+                    : (salary.setting.totalOf | salarytype:'transform'))
+                  + ' / '
+                  + (salary.setting.workday ? salary.setting.workday : 'Ngày công chuẩn')
+                )
+                  }}
                 </span>
                   <span *ngIf='salary.allowance'>
                   + {{salary.allowance.price}}
                 </span>
                 </td>
-                <td class=' text-center '>
-                  Từ. {{salary.startedAt | date:'dd-MM-yyyy HH:mm:ss'}}
-                  <br/>
-                  đến {{salary.endedAt | date:'dd-MM-yyyy HH:mm:ss'}}
+                <td style='color: #29CC97'>
+                <span>
+                  {{ salary.total | number:'1.0'}}
+                </span>
                 </td>
                 <td>
                   <span>{{salary.note}}</span>
@@ -426,62 +433,62 @@
               </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let salary of tableAbsent.data; let i = index"
-                    class='pointer'
-                    (click)='onSalarySetting(salary?.setting?.title)'>
-                  <td>
-                    {{i + 1}}
-                  </td>
-                  <td>
-                    <div>
-                      <span>{{salary.title}}</span>
-                    </div>
-                  </td>
-                  <td>
-                    <span *ngIf='salary.unit === datetimeUnit.MONTH'> Tháng </span>
-                    <span
-                      *ngIf='
+              <tr *ngFor="let salary of tableAbsent.data; let i = index"
+                  class='pointer'
+                  (click)='onSalarySetting(salary?.setting?.title)'>
+                <td>
+                  {{i + 1}}
+                </td>
+                <td>
+                  <div>
+                    <span>{{salary.title}}</span>
+                  </div>
+                </td>
+                <td>
+                  <span *ngIf='salary.unit === datetimeUnit.MONTH'> Tháng </span>
+                  <span
+                    *ngIf='
                       salary.unit === datetimeUnit.DAY &&
                       salary.partial &&
                       salary.startedAt &&
                       salary.endedAt'
-                    >
+                  >
                 {{ salary.partial | rangeDatetimePipe: salary.startedAt : salary.endedAt}}
               </span>
-                  </td>
-                  <td>
+                </td>
+                <td>
                     <span style='color: red'>
                       {{salary.price | number:'1.0-0'}} đ
                     </span>
-                  </td>
-                  <td>
+                </td>
+                <td>
                     <span style='color: red'>
                       {{salary.total | number:'1.0-0'}} đ
                     </span>
-                  </td>
-                  <td>
+                </td>
+                <td>
               <span *ngIf='salary.startedAt && salary.endedAt'>
               Từ. {{salary.partial !== PartialDay.CUSTOM ? (salary.startedAt | date:'dd-MM-yyyy') : salary.startedAt | date:'dd-MM-yyyy HH:mm:ss'}}
                 <br/>
                 đến {{salary.partial !== PartialDay.CUSTOM ? (salary.endedAt | date:'dd-MM-yyyy') : salary.endedAt | date:'dd-MM-yyyy HH:mm:ss'}}
                 </span>
-                  </td>
-                  <td>
-                    <span>{{salary.note}}</span>
-                  </td>
-                  <td>
-                    <div class='d-flex justify-content-around '>
-                      <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
-                              (click)='updateSalary(salaryTypeEnum.ABSENT, salary); $event.stopPropagation()'>
-                        <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
-                      </button>
-                      <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                              (click)='removeSalary(salaryTypeEnum.ABSENT, salary); $event.stopPropagation()'>
-                        <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+                </td>
+                <td>
+                  <span>{{salary.note}}</span>
+                </td>
+                <td>
+                  <div class='d-flex justify-content-around '>
+                    <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
+                            (click)='updateSalary(salaryTypeEnum.ABSENT, salary); $event.stopPropagation()'>
+                      <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+                    </button>
+                    <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
+                            (click)='removeSalary(salaryTypeEnum.ABSENT, salary); $event.stopPropagation()'>
+                      <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+                    </button>
+                  </div>
+                </td>
+              </tr>
               </tbody>
             </nz-table>
           </div>

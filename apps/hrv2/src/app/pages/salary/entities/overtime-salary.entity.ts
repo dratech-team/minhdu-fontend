@@ -15,5 +15,7 @@ export interface OvertimeSalaryEntity extends BaseSalaryEntity {
     price: number
   }
   readonly startedAt: Date,
-  readonly endedAt: Date
+  readonly endedAt: Date,
+  readonly duration: number,
+  readonly total: number
 }
