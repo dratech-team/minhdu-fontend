@@ -16,6 +16,7 @@ import {ModalAddOrUpdateRemote} from '../../data';
 import {RemoteConstant} from "../../constants/remote.constant";
 import {validateDayInMonth} from "../../utils/validate-day-in-month.util";
 import * as moment from "moment";
+import {SessionConstant} from "../../../../../shared/constants";
 
 @Component({
   templateUrl: 'remote-salary.component.html'
@@ -31,6 +32,7 @@ export class RemoteSalaryComponent implements OnInit {
   submitting = false;
   fistDateInMonth!: Date
 
+  titleSession = SessionConstant;
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
 
@@ -61,6 +63,7 @@ export class RemoteSalaryComponent implements OnInit {
     const salary = this.data.update?.salary;
     this.formGroup = this.formBuilder.group({
       type: [salary?.type, Validators.required],
+      partial: [salary?.partial, Validators.required],
       rangeDay: [
         [payroll ? getFirstDayInMonth(new Date(payroll.createdAt)) : salary?.startedAt,
           payroll ? getLastDayInMonth(new Date(payroll.createdAt)) : salary?.endedAt
@@ -91,7 +94,7 @@ export class RemoteSalaryComponent implements OnInit {
         this.onSubmitSuccess(res, this.data.add
           ? (
             !this.data.add?.multiple
-              ? this.data.add?.payroll.id
+              ? this.data.add.payroll.id
               : undefined
           )
           : (!this.data.update.multiple
@@ -106,6 +109,7 @@ export class RemoteSalaryComponent implements OnInit {
       type: value.type,
       note: value.note,
       unit: DatetimeUnitEnum.DAY,
+      partial: value.partial,
       startedAt: moment(value.rangeDay[0]).set(
         {
           hours: new Date().getHours(),
@@ -113,7 +117,7 @@ export class RemoteSalaryComponent implements OnInit {
           seconds: new Date().getSeconds()
         }
       ),
-      endedAt:moment(value.rangeDay[1]).set(
+      endedAt: moment(value.rangeDay[1]).set(
         {
           hours: new Date().getHours(),
           minutes: new Date().getMinutes(),
@@ -134,8 +138,10 @@ export class RemoteSalaryComponent implements OnInit {
     return throwError(err);
   }
 
-  onSubmitSuccess(res: ResponseMessageEntity, payrollId: number) {
-    this.actions$.dispatch(PayrollActions.loadOne({id: payrollId}));
+  onSubmitSuccess(res: ResponseMessageEntity, payrollId?: number) {
+    if (payrollId) {
+      this.actions$.dispatch(PayrollActions.loadOne({id: payrollId}));
+    }
     this.message.success(res.message);
     this.modalRef.close();
   }

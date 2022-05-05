@@ -632,29 +632,22 @@
               <thead>
               <tr style='background-color: #dddddd66;'>
                 <th nzWidth='3%'>
-                  <div>
-                    STT
-                  </div>
+                  STT
                 </th>
                 <th>
-                  <div>
-                    Remote/Onsite/WFH
-                  </div>
+                  Remote/Onsite/WFH
                 </th>
                 <th>
-                  <div>
-                    Thời gian
-                  </div>
+                  Thời gian
                 </th>
                 <th>
-                  <div>
-                    Đơn vị
-                  </div>
+                  Đơn vị
                 </th>
                 <th>
-                  <div>
-                    Diễn giải
-                  </div>
+                  Chi tiết
+                </th>
+                <th>
+                  Diễn giải
                 </th>
                 <th nzWidth='10%' style='padding: 0; color: #1b8eb7'
                     (click)='onAdd(salaryTypeEnum.WFH, payroll ) '>
@@ -673,7 +666,13 @@
                   <span>{{i + 1}}</span>
                 </td>
                 <td>
-                  <span>{{salary.type|transformconstant:remoteConstant}}</span>
+                  <span>{{salary.type | transformconstant: remoteConstant}}</span>
+                </td>
+                <td>
+                  {{salary.partial | transformconstant: titleSession}}
+                </td>
+                <td>
+                  <span>{{salary.unit | transformconstant: unitSalaryConstant}}</span>
                 </td>
                 <td>
                  <span>
@@ -681,9 +680,6 @@
                    <br>
                    đến  {{salary.endedAt | date:'dd-MM-yyyy'}}
                 </span>
-                </td>
-                <td>
-                  <span>{{salary.unit|transformconstant:unitSalaryConstant}}</span>
                 </td>
                 <td>
                   <span>{{salary.note}}</span>
