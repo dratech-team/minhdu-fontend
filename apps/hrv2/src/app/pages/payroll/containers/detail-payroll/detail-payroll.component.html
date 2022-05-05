@@ -165,13 +165,13 @@
               >
                 <thead>
                 <tr>
-                  <th nzWidth='50%'>
+                  <th>
                     <div> Phụ cấp lương</div>
                   </th>
-                  <th nzWidth='28%'>
+                  <th>
                     <div>Thành tiền</div>
                   </th>
-                  <th nzWidth='22%' (click)='onAdd(salaryTypeEnum.STAY,payroll)'>
+                  <th nzWidth='100px' (click)='onAdd(salaryTypeEnum.STAY,payroll)'>
                     <div class="d-flex">
                       <span class='mr-1 pointer' style='color: #1b8eb7'>Thêm mục</span>
                       <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
@@ -233,16 +233,16 @@
                 <th>
                   <div>Theo ngày làm thực tế</div>
                 </th>
-                <th nzWidth='15%'>
+                <th>
                   <div>Đơn giá</div>
                 </th>
-                <th nzWidth='15%'>
+                <th>
                   <div>Thành tiền</div>
                 </th>
                 <th>
                   <div>Chú thích</div>
                 </th>
-                <th nzWidth='10%' style='padding: 0; color: #1b8eb7'
+                <th nzWidth='100px' style='padding: 0; color: #1b8eb7'
                     (click)='onAdd(salaryTypeEnum.ALLOWANCE, payroll ) '>
                   <div class="d-flex">
                     <span class='mr-1 pointer'>Thêm mục</span>
@@ -305,14 +305,14 @@
             >
               <thead>
               <tr>
-                <th>STT</th>
-                <th mat-sort-header='title' class="text-center">Tăng ca</th>
+                <th nzWidth="60px">STT</th>
+                <th mat-sort-header='title' >Tăng ca</th>
                 <th mat-sort-header='datetime'>Thời gian</th>
                 <th>Tổng ngày</th>
-                <th nzWidth="25%">Đơn giá</th>
+                <th>Đơn giá</th>
                 <th>Thành tiền</th>
                 <th>Chú thích</th>
-                <th nzWidth='10%' style='padding: 0; color: #1b8eb7'
+                <th nzWidth='100px' style='padding: 0; color: #1b8eb7'
                     (click)='onAdd(salaryTypeEnum.OVERTIME, payroll ) '>
                   <div class="d-flex">
                     <span class='mr-1 pointer'>Thêm mục</span>
@@ -337,9 +337,9 @@
                   </div>
                 </td>
                 <td class=' text-center '>
-                  Từ. {{salary.startedAt | date:'dd-MM-yyyy HH:mm:ss'}}
+                  Từ. {{salary.startedAt | date:'dd-MM-yyyy'}}
                   <br/>
-                  đến {{salary.endedAt | date:'dd-MM-yyyy HH:mm:ss'}}
+                  đến {{salary.endedAt | date:'dd-MM-yyyy'}}
                 </td>
                 <td>
                   {{salary.duration}} {{ salary.partial | transformconstant: sessionConstant}}
@@ -387,29 +387,29 @@
                 <th nzWidth='60px'>
                   <div>STT</div>
                 </th>
-                <th>
+                <th nzWidth="20%">
                   <div>Loại vắng</div>
                 </th>
-                <th nzWidth='15%'>
+                <th nzWidth="13%">
                   Thời gian
                 </th>
                 <th>
                   Tổng ngày
                 </th>
-                <th nzWidth='10%'>
+                <th>
                   Đơn giá
                 </th>
-                <th nzWidth='10%'>
+                <th>
                   <div>
                     Thành tiền
                   </div>
                 </th>
-                <th nzWidth='12%'>
+                <th>
                   <div>
                     Chú thích
                   </div>
                 </th>
-                <th nzWidth='10%' style='padding: 0; color: #1b8eb7'
+                <th nzWidth='100px' style='padding: 0; color: #1b8eb7'
                     (click)='onAdd(salaryTypeEnum.ABSENT, payroll ) '>
                   <div class="d-flex">
                     <span class='mr-1 pointer'>Thêm mục</span>
