@@ -107,7 +107,8 @@
             <!--Lương cơ bản-->
             <div class='col-6'>
               <nz-table
-                [nzData]='payroll.salariesv2'
+                #tableBasic
+                [nzData]="payroll.salariesv2|filterSalary:['BASIC_INSURANCE','BASIC' ]"
                 [nzShowPagination]='false'
               >
                 <thead>
@@ -128,36 +129,43 @@
                 </tr>
                 </thead>
                 <tbody>
-                <ng-template ngFor let-salary
-                             [ngForOf]="payroll.salariesv2 | filterSalary:['BASIC_INSURANCE','BASIC' ] ">
-                  <tr>
-                    <td> {{salary.title}}</td>
-                    <td class=' text-center ' style='color: #4B3880'>
-                      {{salary.price|number:'1.0'|notEmpty:'0'}} đ
-                    </td>
-                    <td width='22%' class='col-md-2'>
-                      <div class='d-flex justify-content-around'>
-                        <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa '
-                                class='edit animated mr-2'
-                                (click)='updateSalary(salaryTypeEnum.BASIC,salary)'>
-                          <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg'
-                               alt='edit icon'>
-                        </button>
-                        <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                                (click)='removeSalary(salaryTypeEnum.BASIC, salary)'>
-                          <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                </ng-template>
+                <tr *ngFor="let salary of tableBasic.data ">
+                  <td> {{salary.title}}</td>
+                  <td class='text-center' style='color: #4B3880'>
+                    {{salary.price|number:'1.0'|notEmpty:'0'}} đ
+                  </td>
+                  <td width='22%' class='col-md-2'>
+                    <div class='d-flex justify-content-around'>
+                      <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa '
+                              class='edit animated mr-2'
+                              (click)='updateSalary(salaryTypeEnum.BASIC,salary)'>
+                        <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg'
+                             alt='edit icon'>
+                      </button>
+                      <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
+                              (click)='removeSalary(salaryTypeEnum.BASIC, salary)'>
+                        <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="tableBasic.data.length > 0">
+                  <td class="font-weight-bold">Tổng cộng :</td>
+                  <td style='color: #29CC97'>
+                    {{tableBasic.data
+                    | totalprice
+                    | number: '1.0'
+                    | notEmpty: '0' }}đ</td>
+                  <td></td>
+                </tr>
                 </tbody>
               </nz-table>
             </div>
             <!--Phụ cấp lương-->
             <div class='col-6'>
               <nz-table
-                [nzData]='payroll.salariesv2'
+                #tableStay
+                [nzData]="payroll.salariesv2| filterSalary:['STAY' ]"
                 [nzShowPagination]='false'
               >
                 <thead>
@@ -178,31 +186,36 @@
                 </tr>
                 </thead>
                 <tbody>
-                <ng-template ngFor let-salary [ngForOf]="payroll.salariesv2 | filterSalary:['STAY' ] ">
-                  <tr>
-                    <td> {{salary.title}}</td>
-                    <td style='color: #4B3880'>
-                      {{salary.price|number:'1.0'|notEmpty:'0'}} đ
-                    </td>
-                    <td>
-                      <div class='d-flex justify-content-around'>
-                        <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa '
-                                class='edit animated mr-2'
-                                (click)='updateSalary(salaryTypeEnum.STAY,salary)'>
-                          <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg'
-                               alt='edit icon'>
-                        </button>
-                        <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                                (click)='removeSalary(salaryTypeEnum.STAY, salary)'>
-                          <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                </ng-template>
-
+                <tr *ngFor="let salary of tableStay.data">
+                  <td> {{salary.title}}</td>
+                  <td style='color: #4B3880'>
+                    {{salary.price|number:'1.0'|notEmpty:'0'}} đ
+                  </td>
+                  <td>
+                    <div class='d-flex justify-content-around'>
+                      <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa '
+                              class='edit animated mr-2'
+                              (click)='updateSalary(salaryTypeEnum.STAY,salary)'>
+                        <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg'
+                             alt='edit icon'>
+                      </button>
+                      <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
+                              (click)='removeSalary(salaryTypeEnum.STAY, salary)'>
+                        <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="tableStay.data.length > 0">
+                  <td class="font-weight-bold">Tổng cộng :</td>
+                  <td style='color: #29CC97'>
+                    {{tableStay.data
+                    | totalprice
+                    | number: '1.0'
+                    | notEmpty: '0' }}đ</td>
+                  <td></td>
+                </tr>
                 </tbody>
-
               </nz-table>
             </div>
           </div>
@@ -288,6 +301,21 @@
                     </button>
                   </div>
                 </td>
+              </tr>
+              <tr *ngIf="tableAllowance.data.length > 0">
+                <td class="font-weight-bold">Tổng cộng :</td>
+                <td></td>
+                <td>{{tableAllowance.data}}</td>
+                <td></td>
+                <td></td>
+                <td style='color: #29CC97'>
+                  {{tableAllowance.data
+                  |totalprice
+                  | number: '1.0'
+                  | notEmpty: '0' }}đ</td>
+                <td></td>
+                <td></td>
+                <td></td>
               </tr>
               </tbody>
             </nz-table>
@@ -426,62 +454,62 @@
               </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let salary of tableAbsent.data; let i = index"
-                    class='pointer'
-                    (click)='onSalarySetting(salary?.setting?.title)'>
-                  <td>
-                    {{i + 1}}
-                  </td>
-                  <td>
-                    <div>
-                      <span>{{salary.title}}</span>
-                    </div>
-                  </td>
-                  <td>
-                    <span *ngIf='salary.unit === datetimeUnit.MONTH'> Tháng </span>
-                    <span
-                      *ngIf='
+              <tr *ngFor="let salary of tableAbsent.data; let i = index"
+                  class='pointer'
+                  (click)='onSalarySetting(salary?.setting?.title)'>
+                <td>
+                  {{i + 1}}
+                </td>
+                <td>
+                  <div>
+                    <span>{{salary.title}}</span>
+                  </div>
+                </td>
+                <td>
+                  <span *ngIf='salary.unit === datetimeUnit.MONTH'> Tháng </span>
+                  <span
+                    *ngIf='
                       salary.unit === datetimeUnit.DAY &&
                       salary.partial &&
                       salary.startedAt &&
                       salary.endedAt'
-                    >
+                  >
                 {{ salary.partial | rangeDatetimePipe: salary.startedAt : salary.endedAt}}
               </span>
-                  </td>
-                  <td>
+                </td>
+                <td>
                     <span style='color: red'>
                       {{salary.price | number:'1.0-0'}} đ
                     </span>
-                  </td>
-                  <td>
+                </td>
+                <td>
                     <span style='color: red'>
                       {{salary.total | number:'1.0-0'}} đ
                     </span>
-                  </td>
-                  <td>
+                </td>
+                <td>
               <span *ngIf='salary.startedAt && salary.endedAt'>
               Từ. {{salary.partial !== PartialDay.CUSTOM ? (salary.startedAt | date:'dd-MM-yyyy') : salary.startedAt | date:'dd-MM-yyyy HH:mm:ss'}}
                 <br/>
                 đến {{salary.partial !== PartialDay.CUSTOM ? (salary.endedAt | date:'dd-MM-yyyy') : salary.endedAt | date:'dd-MM-yyyy HH:mm:ss'}}
                 </span>
-                  </td>
-                  <td>
-                    <span>{{salary.note}}</span>
-                  </td>
-                  <td>
-                    <div class='d-flex justify-content-around '>
-                      <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
-                              (click)='updateSalary(salaryTypeEnum.ABSENT, salary); $event.stopPropagation()'>
-                        <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
-                      </button>
-                      <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                              (click)='removeSalary(salaryTypeEnum.ABSENT, salary); $event.stopPropagation()'>
-                        <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+                </td>
+                <td>
+                  <span>{{salary.note}}</span>
+                </td>
+                <td>
+                  <div class='d-flex justify-content-around '>
+                    <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
+                            (click)='updateSalary(salaryTypeEnum.ABSENT, salary); $event.stopPropagation()'>
+                      <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+                    </button>
+                    <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
+                            (click)='removeSalary(salaryTypeEnum.ABSENT, salary); $event.stopPropagation()'>
+                      <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+                    </button>
+                  </div>
+                </td>
+              </tr>
               </tbody>
             </nz-table>
           </div>
