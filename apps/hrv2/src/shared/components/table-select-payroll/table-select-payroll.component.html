@@ -1,0 +1,31 @@
+<nz-table
+  style="width: 70vw"
+  #tablePayroll
+  [formGroup]="formGroupTable"
+  [nzData]="payrolls"
+  [nzLoading]="loading"
+  [nzPageSize]="pageSize"
+  (nzPageIndexChange)="onPagination($event)"
+>
+  <thead>
+  <tr>
+    <th [nzChecked]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="onAllChecked($event)"></th>
+    <th>STT</th>
+    <th>Tên nhân viên</th>
+    <th>Đơn vị</th>
+    <th>Chức vụ</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let payroll of tablePayroll.data; let i = index">
+    <td
+      [nzChecked]="payrollIds.has(payroll.id)"
+      (nzCheckedChange)="onItemChecked(payroll.id, $event)"
+    ></td>
+    <td>{{(i + 1) + ((tablePayroll.nzPageIndex - 1) * pageSize)}}</td>
+    <td>{{payroll.employee.lastName}}</td>
+    <td>{{payroll.branch}}</td>
+    <td>{{payroll.position}}</td>
+  </tr>
+  </tbody>
+</nz-table>
