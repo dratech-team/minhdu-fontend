@@ -1,4 +1,4 @@
-import {CategoryEntity} from "../../../../../../../libs/employee-v2/src/lib/employee/entities/category.entity";
+import {CategoryEntity} from "@minhdu-fontend/employee-v2";
 import {RequireOnlyOne} from "../../../../shared/types";
 
 export interface ModalCategoryData {

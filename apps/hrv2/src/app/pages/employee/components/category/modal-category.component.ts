@@ -44,7 +44,7 @@ export class ModalCategoryComponent implements OnInit {
       branch: [category?.branch, Validators.required],
       name: [category?.name, Validators.required],
       note: [category?.note],
-      employeeIds: [[]]
+      employeeIds: [category?.employees ? category.employees.map(e => e.id) : []]
     });
   }
 

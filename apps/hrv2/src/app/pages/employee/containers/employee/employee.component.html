@@ -35,9 +35,9 @@
         <div class="d-flex">
           <div style='width: fit-content'>
             <nz-select class='px-2' style='width:200px' [formControl]='categoryControl'>
-              <nz-option [nzValue]='""' nzLabel="Tất cả"></nz-option>
-              <nz-option *ngFor='let item of categories$ | async' [nzValue]='item.id' [nzLabel]="item.name"></nz-option>
-              <nz-option [nzValue]='0'  nzLabel="Tạo mới"></nz-option>
+              <nz-option [nzValue]="''" nzLabel="Tất cả"></nz-option>
+              <nz-option *ngFor='let item of categories$ | async' [nzValue]='item' [nzLabel]="item.name"></nz-option>
+              <nz-option [nzValue]='0' nzLabel="Tạo mới"></nz-option>
             </nz-select>
           </div>
           <button *ngIf='categoryControl.value && categoryControl.value !==0 && this.role !== roleEnum.HUMAN_RESOURCE '

@@ -25,7 +25,7 @@ import {ProvinceService} from "@minhdu-fontend/location";
 import {FlatSalaryTypeEnum} from "../../enums/flat-salary-type.enum";
 import {BranchActions, BranchQuery, PositionQuery} from "@minhdu-fontend/orgchart-v2";
 import {ModalCategoryComponent} from "../../components/category/modal-category.component";
-import {DataAddOrUpdateCategory} from "../../data/modal-category.data";
+import {DataAddOrUpdateCategory, ModalCategoryData} from "../../data/modal-category.data";
 import {ModalEmployeeComponent} from "../../components/employee/modal-employee.component";
 import {ModalEmployeeData} from "../../data/modal-employee.data";
 
@@ -168,7 +168,9 @@ export class EmployeeComponent implements OnInit {
         status: val.status,
         employeeType: val.employeeType,
         isFlatSalary: val.flatSalary as FlatSalaryTypeEnum,
-        categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : ''
+        categoryId: this.categoryControl.value?.id && this.categoryControl.value.id !== 0
+          ? this.formGroup.value.id
+          : ''
       },
       isPaginate: isPagination
     };
@@ -199,10 +201,12 @@ export class EmployeeComponent implements OnInit {
 
   onAddCategory() {
     this.modal.create({
-      nzWidth:'fit-content',
+      nzWidth: 'fit-content',
       nzTitle: 'Thêm Phòng ban',
       nzContent: ModalCategoryComponent,
       nzFooter: []
+    }).afterClose.subscribe(_ => {
+      this.actions$.dispatch(EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false)))
     })
   }
 
@@ -218,6 +222,16 @@ export class EmployeeComponent implements OnInit {
   }
 
   onUpdateCategory(): any {
-
+    this.modal.create({
+      nzTitle: 'Cập nhật Phòng ban',
+      nzContent: ModalCategoryComponent,
+      nzComponentParams: <{ data?: DataAddOrUpdateCategory }>{
+        data: {
+          update: {
+            category: this.categoryControl.value
+          }
+        }
+      }
+    })
   }
 }
