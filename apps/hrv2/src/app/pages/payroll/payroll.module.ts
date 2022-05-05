@@ -75,10 +75,10 @@ import {SettingModule} from "../setting/setting.module";
     RangeDateTimePipe,
     PayslipComponent,
     AllowanceSalaryComponent,
-    UpdatePayrollComponent
+    UpdatePayrollComponent,
   ],
   exports: [
-    TablePayrollComponent
+    TablePayrollComponent,
   ],
   providers: [
     DatePipe
