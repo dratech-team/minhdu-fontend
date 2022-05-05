@@ -1,57 +1,44 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {select, Store} from '@ngrx/store';
-import {ConvertBoolean, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {Category, Employee} from '@minhdu-fontend/data-models';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {Employee} from '@minhdu-fontend/data-models';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {debounceTime, mergeMap, startWith, tap} from 'rxjs/operators';
-import {combineLatest, forkJoin, of} from 'rxjs';
-import {
-  EmployeeAction,
-  selectEmployeeLoaded,
-  selectorAllEmployee,
-  selectorTotalEmployee
-} from '@minhdu-fontend/employee';
-import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
-import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
-import {searchAutocomplete} from '@minhdu-fontend/utils';
-import {checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComplete} from '@minhdu-fontend/utils';
+import {debounceTime, mergeMap} from 'rxjs/operators';
+import {pickOne, someComplete} from '@minhdu-fontend/utils';
 import {MatDialog} from "@angular/material/dialog";
 import {DialogSharedComponent} from "../dialog-shared/dialog-shared.component";
 import {CategoryService} from "../../../../employee/src/lib/+state/service/category.service";
 import {EmployeeService} from "../../../../employee/src/lib/+state/service/employee.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {BranchQuery, PositionQuery} from "@minhdu-fontend/orgchart-v2";
+import {BranchActions, BranchQuery, PositionActions, PositionQuery} from "@minhdu-fontend/orgchart-v2";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {PaginationDto} from "@minhdu-fontend/constants";
+import {Actions} from "@datorama/akita-ng-effects";
 
 @Component({
-  selector: 'app-pick-employee',
+  selector: '@minhdu-fontend-pick-employee',
   templateUrl: './pick-employee.component.html'
 })
 export class PickEmployeeComponent implements OnInit {
+  @Input() formGroup!: FormGroup
   @Output() EventSelectEmployee = new EventEmitter<Employee[]>();
   positions$ = this.positionQuery.selectAll()
   branches$ = this.branchQuery.selectAll()
-  loaded$ = this.store.pipe(select(selectEmployeeLoaded));
 
-  pageSize = 30;
-  pageIndex = 0;
   type = SalaryTypeEnum;
   employees: Employee[] = [];
   total!: number
   employeeId!: number;
-  isEventSearch = false;
   isSelectAll = false;
   employeesSelected: Employee[] = []
 
 
-  formGroup = new FormGroup({
+  formGroupTable = new FormGroup({
     name: new FormControl('', Validators.required),
     position: new FormControl('', Validators.required),
     branch: new FormControl('', Validators.required)
   });
 
   constructor(
-    private readonly store: Store,
+    private readonly actions$: Actions,
     private readonly dialog: MatDialog,
     private readonly categoryService: CategoryService,
     private readonly employeeService: EmployeeService,
@@ -62,29 +49,19 @@ export class PickEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.employeeService.pagination({take: this.pageSize, skip: this.pageIndex, isFlatSalary: -1, status: 0})
+    this.employeeService.pagination(this.mapEmployee())
       .subscribe(val => {
         this.employees = val.data;
         this.total = val.total
       })
-    this.store.dispatch(PositionActions.loadPosition());
-    this.store.dispatch(OrgchartActions.init());
+    this.actions$.dispatch(BranchActions.loadAll({}))
+    this.actions$.dispatch(PositionActions.loadAll({}))
 
-    this.formGroup.valueChanges
+    this.formGroupTable.valueChanges
       .pipe(
         debounceTime(1000),
         mergeMap(val => {
-          this.isEventSearch = true;
-          const param = {
-            take: this.pageSize,
-            skip: this.pageIndex,
-            name: val.name,
-            branch: val?.branch ? val.branch : '',
-            position: val?.position ? val.position : '',
-            isFlatSalary: -1,
-            status: 0
-          }
-          return this.employeeService.pagination(param)
+          return this.employeeService.pagination(this.mapEmployee())
         })
       ).subscribe(res => {
       this.employees = res.data
@@ -94,6 +71,7 @@ export class PickEmployeeComponent implements OnInit {
 
   updateSelect(employee: Employee) {
     this.isSelectAll = pickOne(employee, this.employeesSelected, this.employees).isSelectAll;
+    this.formGroup.get('employeeIds')?.setValue(this.employeesSelected.map(e => e.id))
     this.EventSelectEmployee.emit(this.employeesSelected);
   }
 
@@ -117,30 +95,14 @@ export class PickEmployeeComponent implements OnInit {
         }
       }
     });
+    this.formGroup.get('employeeIds')?.setValue(this.employeesSelected.map(e => e.id))
     this.EventSelectEmployee.emit(this.employeesSelected);
   }
 
-  onSelectPosition(positionName: string) {
-    this.formGroup.get('position')?.patchValue(positionName);
-  }
-
-  onSelectBranch(branchName: string) {
-    this.formGroup.get('branch')?.patchValue(branchName);
-  }
-
   onScroll() {
-    this.isEventSearch = false;
-    const val = this.formGroup.value;
-    const param = {
-      take: this.pageSize,
-      skip: this.employees.length,
-      name: val.name,
-      branch: val?.branch ? val.branch : '',
-      position: val?.position ? val.position : '',
-      isFlatSalary: -1,
-      status: 0
-    }
-    this.employeeService.pagination(param).subscribe(val => {
+    this.employeeService.pagination(
+      Object.assign({}, this.mapEmployee(), {take: PaginationDto.take, skip: this.employees.length})
+    ).subscribe(val => {
       this.total = val.total
       if (val.data.length > 0) {
         val.data.forEach(emp => {
@@ -152,6 +114,19 @@ export class PickEmployeeComponent implements OnInit {
         this.message.info('Đã lấy hết nhân viên')
       }
     })
+  }
+
+  mapEmployee() {
+    const val = this.formGroupTable.value
+    return {
+      take: PaginationDto.take,
+      skip: PaginationDto.skip,
+      name: val.name,
+      branch: val?.branch ? val.branch : '',
+      position: val?.position ? val.position : '',
+      isFlatSalary: -1,
+      status: 1
+    }
   }
 
 
@@ -169,13 +144,7 @@ export class PickEmployeeComponent implements OnInit {
     }).afterClosed()
       .subscribe(val => {
         if (val && employee.category?.id) {
-          this.categoryService.removeEmployee(employee.category.id, {employeeId: employee.id}).subscribe(_ => {
-              this.store.dispatch(EmployeeAction.loadInit({
-                employee: {take: this.pageSize, skip: this.pageIndex, status: 0},
-                isPickEmp: true
-              }))
-            }
-          )
+          this.categoryService.removeEmployee(employee.category.id, {employeeId: employee.id}).subscribe()
           delete employee.category
         }
       })

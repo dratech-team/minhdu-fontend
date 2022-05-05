@@ -43,7 +43,8 @@ export class ModalCategoryComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       branch: [category?.branch, Validators.required],
       name: [category?.name, Validators.required],
-      note: [category?.note]
+      note: [category?.note],
+      employeeIds: [[]]
     });
   }
 

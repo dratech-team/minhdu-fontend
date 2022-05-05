@@ -28,7 +28,7 @@
   </form>
 </ng-template>
 <ng-template [ngIf]="stepIndex === 1">
-<!--  chọn nhân viên-->
+  <minhdu-fontend-pick-employee [formGroup]="formGroup"></minhdu-fontend-pick-employee>
 </ng-template>
 <div class="mt-2 ml-2" >
   <button nz-button nzType="default" (click)="move('pre')" *ngIf="stepIndex > 0">
@@ -37,7 +37,7 @@
   <button class="ml-2" nz-button nzType="default" (click)="move('next')" *ngIf="stepIndex < 1">
     <span>Tiếp theo</span>
   </button>
-  <button class="ml-2" nz-button nzType="primary" (click)="onSubmit()" *ngIf="stepIndex === 1">
+  <button class="ml-2" nz-button nzType="primary" [nzLoading]="submitting" (click)="onSubmit()" *ngIf="stepIndex === 1">
     <span>Xác nhận</span>
   </button>
 </div>

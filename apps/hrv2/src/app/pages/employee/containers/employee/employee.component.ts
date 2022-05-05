@@ -198,8 +198,8 @@ export class EmployeeComponent implements OnInit {
   }
 
   onAddCategory() {
-    console.log('ssss')
     this.modal.create({
+      nzWidth:'fit-content',
       nzTitle: 'Thêm Phòng ban',
       nzContent: ModalCategoryComponent,
       nzFooter: []
