@@ -77,7 +77,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   };
 
   disableApprenticeDate = (cur: Date): boolean => {
-    return  validateDayInMonth(cur, this.fistDateInMonth)
+    return validateDayInMonth(cur, this.fistDateInMonth)
   };
 
   constructor(
@@ -94,7 +94,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.fistDateInMonth = getFirstDayInMonth(
-      new Date( this.data.add ? this.data.add.payroll.createdAt : this.data.update.salary.startedAt)
+      new Date(this.data.add ? this.data.add.payroll.createdAt : this.data.update.salary.startedAt)
     )
     this.actions$.dispatch(SettingSalaryActions.loadAll({
       search: {types: [this.data.type]}
@@ -135,7 +135,9 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
 
     this.formGroup.get('startTime')?.valueChanges.subscribe(val => {
       if (val) {
-        this.limitEndTime = getBeforeTime(val.getHours()).concat(getAfterTime(workingTime.afternoon.end.getHours(), 'HOUR'));
+        this.limitEndTime = getBeforeTime(val.getHours()).concat(
+          getAfterTime(this.formGroup.get('partialDay')?.value.endTime.getHours(), 'HOUR')
+        );
         if (this.formGroup.value.endTime && val.getTime() > this.formGroup.value.endTime.getTime()) {
           this.formGroup.get('endTime')?.setValue(undefined);
         }
@@ -197,8 +199,8 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   mapSalary(value: any) {
     const salary = {
       rate: value.rate,
-      title: value.template.id === 0 ? value.title : value.template.title,
-      partial: value.template.id === 0 ? PartialDayEnum.CUSTOM : value.partialDay.value,
+      title: value.template.title,
+      partial: value.partialDay.value,
       unit: value.unit,
       price: value.price,
       note: value.note,
@@ -209,7 +211,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
           seconds: new Date().getSeconds()
         }
       ),
-      endedAt:moment(value.rangeDay[1]).set(
+      endedAt: moment(value.rangeDay[1]).set(
         {
           hours: new Date().getHours(),
           minutes: new Date().getMinutes(),
