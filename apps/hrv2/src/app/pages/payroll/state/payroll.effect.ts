@@ -7,6 +7,7 @@ import {of} from 'rxjs';
 import {PayrollActions} from './payroll.action';
 import {AddPayrollDto} from '../dto';
 import {Injectable} from '@angular/core';
+import {AllowanceSalaryEntity} from "../../salary/entities";
 
 @Injectable({providedIn: 'root'})
 export class PayrollEffect {
@@ -72,6 +73,18 @@ export class PayrollEffect {
     ofType(PayrollActions.loadOne),
     switchMap(props => {
       return this.service.getOne(props).pipe(
+        map(res => {
+          if (res.allowances?.length) {
+            res.totalAllowance = res.allowances.reduce((a, b) => {
+              return {
+                price: a.price + (b.price || 0),
+                total: a.total + b.total,
+                duration: a.duration + b.duration
+              }
+            }, {price: 0, total: 0, duration: 0})
+          }
+          return res
+        }),
         tap(res => {
           this.payrollStore.upsert(res.id, res);
         }),

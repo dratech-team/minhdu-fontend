@@ -302,18 +302,21 @@
                   </div>
                 </td>
               </tr>
-              <tr *ngIf="tableAllowance.data.length > 0">
+              <tr *ngIf="payroll.totalAllowance">
                 <td class="font-weight-bold">Tổng cộng :</td>
                 <td></td>
-                <td>{{tableAllowance.data}}</td>
+                <td>{{payroll.totalAllowance.duration}}</td>
                 <td></td>
                 <td></td>
                 <td style='color: #29CC97'>
-                  {{tableAllowance.data
-                  |totalprice
+                  {{payroll.totalAllowance.price
                   | number: '1.0'
                   | notEmpty: '0' }}đ</td>
-                <td></td>
+                <td style='color: #29CC97'>
+                  {{payroll.totalAllowance.total
+                  | number: '1.0'
+                  | notEmpty: '0' }}đ
+                </td>
                 <td></td>
                 <td></td>
               </tr>

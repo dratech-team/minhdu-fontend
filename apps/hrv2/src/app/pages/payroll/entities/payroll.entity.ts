@@ -49,4 +49,9 @@ export interface PayrollEntity extends BasePayrollEntity {
   allowances: AllowanceSalaryEntity[],
   remotes: RemoteSalaryEntity[],
   payrollIds?: number[]
+  totalAllowance?: {
+    total: number,
+    duration: number,
+    price?: number
+  }
 }
