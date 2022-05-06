@@ -7,7 +7,15 @@ import {of} from 'rxjs';
 import {PayrollActions} from './payroll.action';
 import {AddPayrollDto} from '../dto';
 import {Injectable} from '@angular/core';
-import {AllowanceSalaryEntity} from "../../salary/entities";
+import {
+  AbsentSalaryEntity,
+  AllowanceSalaryEntity,
+  OvertimeSalaryEntity,
+  RemoteSalaryEntity
+} from "../../salary/entities";
+import {TotalSalary} from "../entities";
+import {DatetimeUnitEnum} from "@minhdu-fontend/enums";
+import {PartialDayEnum} from "@minhdu-fontend/data-models";
 
 @Injectable({providedIn: 'root'})
 export class PayrollEffect {
@@ -18,6 +26,7 @@ export class PayrollEffect {
     private readonly payrollStore: PayrollStore
   ) {
   }
+
 
   @Effect()
   addPayroll$ = this.action$.pipe(
@@ -74,14 +83,18 @@ export class PayrollEffect {
     switchMap(props => {
       return this.service.getOne(props).pipe(
         map(res => {
+
           if (res.allowances?.length) {
-            res.totalAllowance = res.allowances.reduce((a, b) => {
-              return {
-                price: a.price + (b.price || 0),
-                total: a.total + b.total,
-                duration: a.duration + b.duration
-              }
-            }, {price: 0, total: 0, duration: 0})
+            res.totalAllowance = this.getTotalAllowance(res.allowances)
+          }
+          if (res.overtimes?.length) {
+            res.totalOvertime = this.getTotalOvertimeOrAbsent(res.overtimes)
+          }
+          if (res.absents?.length) {
+            res.totalAbsent = this.getTotalOvertimeOrAbsent(res.absents)
+          }
+          if (res.remotes?.length) {
+            res.totalRemote = this.getTotalRemote(res.remotes)
           }
           return res
         }),
@@ -178,4 +191,46 @@ export class PayrollEffect {
       );
     })
   );
+
+  getTotalAllowance(salary: AllowanceSalaryEntity[]): TotalSalary {
+    return salary.reduce((a, b) => {
+      return {
+        price: a.price + (b.price || 0),
+        total: a.total + b.total,
+        duration: {
+          day: a.duration.day + b.duration,
+        }
+      }
+    }, {price: 0, total: 0, duration: {day: 0}})
+  }
+
+  getTotalOvertimeOrAbsent(salary: (AbsentSalaryEntity | OvertimeSalaryEntity)[]): TotalSalary {
+    return salary.reduce((a, b) => {
+      const unit = b.setting?.unit
+      return {
+        price: a.price + (b.price || 0),
+        total: a.total + b.total,
+        duration: {
+          day: a.duration.day + ((unit === DatetimeUnitEnum.DAY || unit === DatetimeUnitEnum.MONTH)
+            ? (b.partial === PartialDayEnum.ALL_DAY ?
+                b.duration
+                : (b.duration / 2)
+            )
+            : 0),
+          hour: a.duration.hour + (unit === DatetimeUnitEnum.MINUTE || unit === DatetimeUnitEnum.HOUR
+            ? b.duration
+            : 0)
+        }
+      }
+    }, {price: 0, total: 0, duration: {day: 0, hour: 0}})
+  }
+
+  getTotalRemote(salary: RemoteSalaryEntity[]) {
+    return salary.reduce((a, b) => {
+      return {
+        duration: a.duration + b.duration
+      }
+    }, {duration: 0})
+  }
+
 }
