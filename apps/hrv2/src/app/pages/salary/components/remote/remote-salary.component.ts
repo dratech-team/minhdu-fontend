@@ -3,7 +3,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {NzModalRef} from 'ng-zorro-antd/modal';
-import {PayrollEntity} from '../../../payroll/entities';
 import {SalaryRemoteService} from '../../service';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {throwError} from 'rxjs';
@@ -25,8 +24,6 @@ export class RemoteSalaryComponent implements OnInit {
   @Input() data!: ModalAddOrUpdateRemote;
   remoteConstant = RemoteConstant
   formGroup!: FormGroup;
-
-  payrollSelected: PayrollEntity [] = [];
 
   stepIndex = 0;
   submitting = false;
@@ -56,9 +53,7 @@ export class RemoteSalaryComponent implements OnInit {
         ? this.data.add.payroll.createdAt
         : this.data.update.salary.startedAt
     ))
-    if (this.data.add) {
-      this.payrollSelected.push(this.data.add.payroll);
-    }
+
     const payroll = this.data.add?.payroll;
     const salary = this.data.update?.salary;
     this.formGroup = this.formBuilder.group({
@@ -70,7 +65,8 @@ export class RemoteSalaryComponent implements OnInit {
         ],
         Validators.required
       ],
-      note: [salary?.note]
+      note: [salary?.note],
+      payrollIds: [payroll ? [payroll.id] : []]
     })
     ;
   }
@@ -128,7 +124,7 @@ export class RemoteSalaryComponent implements OnInit {
     return Object.assign(
       salary,
       this.data.add
-        ? {payrollIds: this.payrollSelected.map(payroll => payroll.id)}
+        ? {payrollIds: value.payrollIds}
         : {salaryIds: [this.data.update.salary.id]}
     );
   }
@@ -146,7 +142,10 @@ export class RemoteSalaryComponent implements OnInit {
     this.modalRef.close();
   }
 
-  move(type: 'next' | 'previous'): void {
+  move(type: 'next' | 'previous'): any {
+    if (this.formGroup.invalid) {
+      return this.message.warning('Chưa nhập đủ thông tin')
+    }
     type === 'next' ? this.stepIndex += 1 : this.stepIndex -= 1
   }
 }

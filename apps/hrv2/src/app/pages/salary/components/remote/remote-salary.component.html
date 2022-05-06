@@ -50,7 +50,12 @@
       </div>
     </form>
   </ng-template>
-  <ng-template [ngIf]='stepIndex=== 1'>
+  <ng-template [ngIf]='stepIndex=== 1 && data.add'>
+    <minhdu-fontend-select-payroll
+      [formGroup]="formGroup"
+      [createdAt]="data.add.payroll.createdAt"
+    >
+    </minhdu-fontend-select-payroll>
   </ng-template>
   <div>
     <button class="mr-2" nz-button nzType='default' (click)="move('previous')" *ngIf='stepIndex > 0'>
@@ -61,8 +66,7 @@
     </button>
     <button nz-button nzType='primary'
             [nzLoading]="submitting"
-            (click)='onSubmit()'
-            *ngIf='stepIndex === 1 || !data.update?.multiple'>
+            (click)='onSubmit()'>
       <span>Xác nhận</span>
     </button>
   </div>
