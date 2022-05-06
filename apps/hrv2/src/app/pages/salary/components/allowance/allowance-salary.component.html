@@ -1,13 +1,11 @@
 <div>
   <nz-steps [nzCurrent]="indexStep">
-    <nz-step *ngIf="data?.update?.multiple" nzTitle="Nhân viên đã chọn"></nz-step>
     <nz-step nzTitle="Bảng Phụ cấp khác"></nz-step>
+    <nz-step *ngIf="data.add" nzTitle="Chọn nhân viên"></nz-step>
+    <nz-step *ngIf="data.update?.multiple" nzTitle="Nhân viên đã chọn"></nz-step>
   </nz-steps>
 
   <ng-template [ngIf]="indexStep === 0">
-    <!--    Nhân viên đã chọn-->
-  </ng-template>
-  <ng-template [ngIf]="indexStep === 1">
     <form [formGroup]='formGroup' class='mx-3'>
       <div class='form-group'>
         <div>
@@ -77,6 +75,16 @@
       </div>
     </form>
   </ng-template>
+  <ng-template [ngIf]="indexStep === 1 && data.add">
+    <minhdu-fontend-select-payroll
+      [formGroup]="formGroup"
+      [createdAt]="data.add.payroll.createdAt"
+    >
+    </minhdu-fontend-select-payroll>
+  </ng-template>
+  <ng-template [ngIf]="indexStep === 1 && data?.update?.multiple">
+    <!--    Nhân viên đã chọn-->
+  </ng-template>
   <div class="steps-action">
     <button class="ml-2" nz-button nzType="default" (click)="move('next')" *ngIf="indexStep > 0">
       <span>Trở lại</span>
@@ -84,8 +92,7 @@
     <button class="ml-2" nz-button nzType="default" (click)="move('pre')" *ngIf="indexStep < 1">
       <span>Tiếp theo</span>
     </button>
-    <button class="ml-2" nz-button nzType="primary" [nzLoading]="submitting" (click)="onSubmit()"
-            *ngIf="indexStep === 1 || !this.data.add?.multiple">
+    <button class="ml-2" nz-button nzType="primary" [nzLoading]="submitting" (click)="onSubmit()">
       <span>Xác nhận</span>
     </button>
   </div>

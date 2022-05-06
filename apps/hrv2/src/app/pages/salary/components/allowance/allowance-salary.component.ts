@@ -1,21 +1,20 @@
-import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { getFirstDayInMonth, getLastDayInMonth, isEqualDatetime } from 'libs/utils/daytime.until';
-import { SalaryPayroll } from '@minhdu-fontend/data-models';
-import { AllowanceSalaryService } from '../../service';
-import { PayrollEntity } from '../../../payroll/entities';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import { Actions } from '@datorama/akita-ng-effects';
-import { PayrollActions } from '../../../payroll/state/payroll.action';
-import { ResponseMessageEntity } from '@minhdu-fontend/base-entity';
-import { ModalAddOrUpdateAllowance } from '../../../payroll/data';
-import { validateDayInMonth } from '../../utils/validate-day-in-month.util';
+import {DatePipe} from '@angular/common';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {getFirstDayInMonth, getLastDayInMonth, isEqualDatetime} from 'libs/utils/daytime.until';
+import {SalaryPayroll} from '@minhdu-fontend/data-models';
+import {AllowanceSalaryService} from '../../service';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
+import {catchError} from 'rxjs/operators';
+import {throwError} from 'rxjs';
+import {Actions} from '@datorama/akita-ng-effects';
+import {PayrollActions} from '../../../payroll/state/payroll.action';
+import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
+import {ModalAddOrUpdateAllowance} from '../../../payroll/data';
+import {validateDayInMonth} from '../../utils/validate-day-in-month.util';
 import * as moment from 'moment';
 
 @Component({
@@ -26,7 +25,6 @@ export class AllowanceSalaryComponent implements OnInit {
 
   formGroup!: FormGroup;
   salariesSelected: SalaryPayroll [] = [];
-  payrollSelected: PayrollEntity [] = [];
 
   indexStep = 0;
   submitting = false;
@@ -79,7 +77,8 @@ export class AllowanceSalaryComponent implements OnInit {
       inOffice: [this.data.update ? salary?.inOffice : true],
       endedAt: [salary?.endedAt],
       rate: [salary?.rate || 1],
-      inWorkday: [this.data.update ? salary?.inWorkday : true]
+      inWorkday: [this.data.update ? salary?.inWorkday : true],
+      payrollIds: [payroll ? [payroll.id] : []]
     });
     this.formGroup.get('unit')?.valueChanges.subscribe(unit => {
       switch (unit) {
@@ -145,8 +144,8 @@ export class AllowanceSalaryComponent implements OnInit {
 
     return Object.assign(salary,
       this.data.add
-        ? { payrollIds: this.payrollSelected.map(payroll => payroll.id).concat([this.data.add.payroll.id]) }
-        : { salaryIds: this.salariesSelected.map(item => item.salary.id).concat([this.data.update.salary.id]) }
+        ? {payrollIds: value.payrollIds}
+        : {salaryIds: this.salariesSelected.map(item => item.salary.id).concat([this.data.update.salary.id])}
     );
   }
 
@@ -166,7 +165,10 @@ export class AllowanceSalaryComponent implements OnInit {
     this.modalRef.close();
   }
 
-  move(type: 'next' | 'pre') {
+  move(type: 'next' | 'pre'): any {
+    if (this.formGroup.invalid) {
+      return this.message.warning('Chưa nhập đủ thông tin')
+    }
     type === 'next' ? this.indexStep += 1 : this.indexStep -= 1;
   }
 
