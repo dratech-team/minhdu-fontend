@@ -35,6 +35,7 @@ import {AllowanceSalaryComponent} from "../salary/components/allowance/allowance
 import {UpdatePayrollComponent} from "./components/update/update-payroll.component";
 import {NzAlertModule} from "ng-zorro-antd/alert";
 import {SettingModule} from "../setting/setting.module";
+import {SharedModule} from "../../../shared/shared.module";
 
 @NgModule({
     imports: [
@@ -65,7 +66,8 @@ import {SettingModule} from "../setting/setting.module";
         NzSpinModule,
         NgxSkeletonLoaderModule,
         NzAlertModule,
-        SettingModule
+        SettingModule,
+        SharedModule
     ],
   declarations: [
     PayrollComponent,
