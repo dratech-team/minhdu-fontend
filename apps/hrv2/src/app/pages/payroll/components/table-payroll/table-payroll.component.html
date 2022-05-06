@@ -178,12 +178,31 @@
 
       <!--      salary-->
       <ng-template [ngIf]="
-      formGroup.value.filterType === filterTypeEnum.BASIC
+      formGroup.value.filterType === filterTypeEnum.PAYROLL
       || formGroup.value.filterType === filterTypeEnum.ABSENT
       || formGroup.value.filterType === filterTypeEnum.OVERTIME
       || formGroup.value.filterType === filterTypeEnum.STAY
       || formGroup.value.filterType === filterTypeEnum.ALLOWANCE">
         <th>
+          <div>Chọn</div>
+        </th>
+        <th>
+          <div>Loại lương cơ bản</div>
+          <nz-select style="width: 100%"
+                     [nzMaxTagCount]="1"
+                     [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
+                     nzMode="multiple"
+                     nzPlaceHolder="Chọn loại lương"
+                     formControlName="titles"
+          >
+            <nz-option *ngFor="let item of template$| async" [nzLabel]="item.title" [nzValue]="item.title"></nz-option>
+            <nz-option [nzLabel]="'Tất cả'" [nzValue]="''"></nz-option>
+          </nz-select>
+          <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn
+          </ng-template>
+        </th>
+        <th>
+          <div>Thành tiền</div>
         </th>
       </ng-template>
     </tr>
@@ -316,47 +335,20 @@
           </td>
         </ng-template>
         <!--    basic-->
-        <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.BASIC">
-          <nz-table
-            *ngIf="payroll.salariesv2.length > 0"
-            [nzData]="['']"
-            [nzShowPagination]="false">
-            <thead>
-              <tr>
-              <th>
-                <div>Chọn</div>
-              </th>
-              <th>
-                <div>Loại lương cơ bản</div>
-                <nz-select style="width: 100%"
-                           [nzMaxTagCount]="1"
-                           [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
-                           nzMode="multiple"
-                           nzPlaceHolder="Chọn loại phụ cấp"
-                           formControlName="titles"
-                >
-                  <nz-option *ngFor="let item of template$| async" [nzLabel]="item.title" [nzValue]="item.title"></nz-option>
-                  <nz-option [nzLabel]="'Tất cả'" [nzValue]="''"></nz-option>
-                </nz-select>
-                <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn</ng-template>
-              </th>
-              <th>
-                <div>Thành tiền</div>
-              </th>
-            </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let salary of payroll.salariesv2|filterSalary: [salaryType.BASIC_INSURANCE, salaryType.BASIC]">
-              <div>
-                <label nz-checkbox [nzChecked]="selectSalary(salary.id)"
-                       (nzCheckedChange)="updateSelectSalary(salary, $event)"
-                ></label>
-              </div>
-              <td>{{salary.title}}</td>
-              <td>{{(salary?.price || 0)|number:'1.0-0'}}VND</td>
-            </tr>
-            </tbody>
-          </nz-table>
+        <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.PAYROLL">
+          <td>
+            <div *ngFor="let salary of payroll.salariesv2|filterSalary:[salaryType.BASIC, salaryType.BASIC_INSURANCE]">
+              <label nz-checkbox [nzChecked]="selectSalary(salary.id)"
+                     (nzCheckedChange)="updateSelectSalary(salary, $event)">
+              </label>
+            </div>
+          </td>
+          <td  *ngFor="let salary of payroll.salariesv2|filterSalary:[salaryType.BASIC, salaryType.BASIC_INSURANCE]">
+            {{salary.title}}
+          </td>
+          <td  *ngFor="let salary of payroll.salariesv2|filterSalary:[salaryType.BASIC, salaryType.BASIC_INSURANCE]">
+            {{(salary?.price || 0)|number:'1.0-0'}}VND
+          </td>
         </ng-template>
       </tr>
     </ng-template>

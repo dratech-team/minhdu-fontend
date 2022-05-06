@@ -80,6 +80,9 @@ export class TablePayrollComponent implements OnInit {
         case FilterTypeEnum.BASIC:
           this.scroll = {x: '2000px', y: '56vh'}
           break
+        case FilterTypeEnum.PAYROLL:
+          this.scroll = {x: '5000px', y: '56vh'}
+          break
         default:
           this.scroll = {x: '4200px', y: '56vh'}
       }

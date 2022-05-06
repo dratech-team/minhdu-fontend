@@ -4,13 +4,13 @@ import {PayrollQuery, PayrollStore} from "../../state";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../state/payroll.action";
 import {EmployeeStatusConstant, PaginationDto, PayrollConstant} from "@minhdu-fontend/constants";
-import {FilterTypeEnum} from "@minhdu-fontend/enums";
+import {FilterTypeEnum, Role, SalaryTypeEnum} from "@minhdu-fontend/enums";
 import {debounceTime, map} from "rxjs/operators";
-import {BranchActions, BranchQuery} from "../../../../../../../../libs/orgchart-v2/src/lib/branch/state";
+import {BranchActions, BranchQuery} from "@minhdu-fontend/orgchart-v2";
 import {Observable, Subject} from "rxjs";
 import {Category} from "@minhdu-fontend/data-models";
-import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
+import {SettingSalaryActions} from "../../../setting/salary/state";
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -53,7 +53,8 @@ export class PayrollComponent implements OnInit {
     rangeDay: new FormControl([
       this.stateSearch.startedAt,
       this.stateSearch.endedAt
-    ])
+    ]),
+    titles: new FormControl([])
   })
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
@@ -93,6 +94,16 @@ export class PayrollComponent implements OnInit {
         ...state, search: val
       }))
       this.onLoadPayroll(false)
+      if (val.filterType in SalaryTypeEnum) {
+        this.actions$.dispatch(SettingSalaryActions.loadAll({
+          search: {
+            types: val.filterType === SalaryTypeEnum.BASIC
+              ? [SalaryTypeEnum.BASIC, SalaryTypeEnum.BASIC_INSURANCE]
+              : [val.filterType]
+          }
+        }))
+      }
+
     })
 
     this.formGroup.get('category')?.valueChanges.subscribe(val => {
