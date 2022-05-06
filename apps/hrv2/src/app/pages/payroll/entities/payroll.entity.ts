@@ -18,6 +18,15 @@ interface Salary {
   }
 }
 
+export interface TotalSalary {
+  duration:{
+    day: number,
+    hour?: number
+  }
+  total: number,
+  price: number
+}
+
 interface Timesheet {
   datetime: any[];
   total: number
@@ -49,4 +58,10 @@ export interface PayrollEntity extends BasePayrollEntity {
   allowances: AllowanceSalaryEntity[],
   remotes: RemoteSalaryEntity[],
   payrollIds?: number[]
+  totalAllowance?:TotalSalary
+  totalOvertime?: TotalSalary
+  totalAbsent?: TotalSalary
+  totalRemote?: {
+    duration: number
+  }
 }
