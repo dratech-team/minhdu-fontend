@@ -102,7 +102,7 @@ export class DeductionSalaryComponent implements OnInit {
     );
   }
 
-  move(type: 'next' | 'previous'): any {
+  move(type: 'next' | 'previous'): void {
     this.indexStep = MoveStepUtil(type, this.indexStep, this.formGroup)
   }
 
