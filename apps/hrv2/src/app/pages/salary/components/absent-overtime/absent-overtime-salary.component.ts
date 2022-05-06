@@ -6,7 +6,6 @@ import {DatetimeUnitEnum, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enum
 import {catchError, map} from 'rxjs/operators';
 import {SettingSalaryActions, SettingSalaryQuery} from '../../../setting/salary/state';
 import {PriceType} from '../../../setting/salary/enums';
-import {PayrollEntity} from '../../../payroll/entities';
 import {AbsentSalaryService, OvertimeSalaryService} from '../../service';
 import {NzModalRef} from 'ng-zorro-antd/modal';
 import {NzMessageService} from 'ng-zorro-antd/message';
@@ -46,7 +45,6 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   settingsLoading$ = this.settingSalaryQuery.select(state => state.loading);
 
   salaryPayrolls: SalaryPayroll[] = [];
-  payrollSelected: PayrollEntity[] = [];
   limitStartHour: number [] = [];
   limitEndTime: number [] = [];
 
@@ -122,7 +120,8 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       titleAllowance: [salary?.allowance?.title || ''],
       constraintHoliday: [],
       constraintOvertime: [],
-      reference: []
+      reference: [],
+      payrollIds: [this.data.add ? [this.data.add.payroll.id] : []]
     });
 
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
@@ -225,7 +224,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
 
     return Object.assign(salary,
       this.data.add
-        ? {payrollIds: this.payrollSelected.map(payroll => payroll.id).concat(this.data.add.payroll.id)}
+        ? {payrollIds: value.payrollIds}
         : {},
       this.data.update
         ? {salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.update.salary.id)}
@@ -241,9 +240,11 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     );
   }
 
-  move(type: 'next' | 'previous'): void {
-    if (type === 'next') this.indexStep += 1;
-    else this.indexStep -= 1;
+  move(type: 'next' | 'previous'): any {
+    if (this.formGroup.invalid) {
+      return this.message.warning('Chưa nhập đủ thông tin')
+    }
+    type === 'next' ? this.indexStep += 1 : this.indexStep -= 1
   }
 
   private onSubmitError(err: string) {
