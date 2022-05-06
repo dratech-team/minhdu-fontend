@@ -79,8 +79,8 @@
           </ng-template>
             <td class='pointer'>{{customer.lastName}}</td>
             <td class='pointer'>{{customer.phone}}</td>
-            <td>{{customer?.type  | transform:CustomerTypeConstant }} </td>
-            <td>{{customer?.resource | transform:customerResourcesConstant}}</td>
+            <td>{{customer?.type  | transformconstant:CustomerTypeConstant }} </td>
+            <td>{{customer?.resource | transformconstant:customerResourcesConstant}}</td>
         </tr>
       </ng-template>
       </tbody>

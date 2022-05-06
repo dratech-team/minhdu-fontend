@@ -1,28 +1,27 @@
-import {DatetimeUnitEnum} from "@minhdu-fontend/enums";
-import {SalaryTypeEnum} from "../enums";
+import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
+import { SalaryTypeEnum } from '../enums';
 
-
-export const UnitDatetimeConstant:{name: string, value: DatetimeUnitEnum, salaryType: SalaryTypeEnum[]}[] =[
+export const UnitDatetimeConstant: { name: string, value: DatetimeUnitEnum, salaryType: SalaryTypeEnum[] }[] = [
+  // {
+  //   name:'Tháng',
+  //   value: DatetimeUnitEnum.MONTH,
+  //   salaryType: [SalaryTypeEnum.ABSENT]
+  // },
   {
-    name:'Tháng',
-    value: DatetimeUnitEnum.MONTH,
-    salaryType: [SalaryTypeEnum.ABSENT]
-  },
-  {
-    name:'Ngày',
+    name: 'Ngày',
     value: DatetimeUnitEnum.DAY,
-    salaryType: [SalaryTypeEnum.ABSENT,SalaryTypeEnum.OVERTIME]
+    salaryType: [SalaryTypeEnum.ABSENT, SalaryTypeEnum.OVERTIME]
   },
   {
-    name:'Giờ',
+    name: 'Giờ',
     value: DatetimeUnitEnum.HOUR,
     salaryType: [SalaryTypeEnum.OVERTIME]
   },
   {
-    name:'Phút',
+    name: 'Phút',
     value: DatetimeUnitEnum.MINUTE,
     salaryType: [SalaryTypeEnum.ABSENT]
   }
-]
+];
 
 

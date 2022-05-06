@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { PartialDayEnum } from '@minhdu-fontend/data-models';
 import * as moment from 'moment';
-import {SessionConstant} from "../constants/session.constant";
+import {SessionConstant} from '../../../../shared/constants';
 
 @Pipe({
   name: 'rangeDatetimePipe'

@@ -22,39 +22,44 @@ import {AbsentOvertimeSalaryComponent} from "./components/absent-overtime/absent
 import {NzTimePickerModule} from "ng-zorro-antd/time-picker";
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
 import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
-import {TransformSalaryTypePipe} from "./pipes";
+import { PartialdayPipe, TransformSalaryTypePipe } from './pipes';
 import {SettingModule} from "../setting/setting.module";
 import {RemoteSalaryComponent} from "./components/remote/remote-salary.component";
+import {DeductionSalaryComponent} from "./components/deduction/deduction-salary.component";
+import {SharedModule} from "../../../shared/shared.module";
 
 @NgModule({
-    imports: [
-        HttpClientModule,
-        CommonModule,
-        AkitaNgEffectsModule.forFeature([PayrollEffect, SettingSalaryEffect]),
-        ReactiveFormsModule,
-        FormsModule,
-        NzMessageModule,
-        NzModalModule,
-        NzCollapseModule,
-        NzRadioModule,
-        NzTableModule,
-        NzInputModule,
-        NzButtonModule,
-        NzPopoverModule,
-        NzStepsModule,
-        NzSelectModule,
-        NgxCurrencyModule,
-        NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
-        NzTimePickerModule,
-        NzDatePickerModule,
-        NzCheckboxModule,
-        SettingModule,
-    ],
+  imports: [
+    HttpClientModule,
+    CommonModule,
+    AkitaNgEffectsModule.forFeature([PayrollEffect, SettingSalaryEffect]),
+    ReactiveFormsModule,
+    FormsModule,
+    NzMessageModule,
+    NzModalModule,
+    NzCollapseModule,
+    NzRadioModule,
+    NzTableModule,
+    NzInputModule,
+    NzButtonModule,
+    NzPopoverModule,
+    NzStepsModule,
+    NzSelectModule,
+    NgxCurrencyModule,
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
+    NzTimePickerModule,
+    NzDatePickerModule,
+    NzCheckboxModule,
+    SettingModule,
+    SharedModule,
+  ],
   declarations: [
     PermanentSalaryComponent,
     AbsentOvertimeSalaryComponent,
+    RemoteSalaryComponent,
+    DeductionSalaryComponent,
     TransformSalaryTypePipe,
-    RemoteSalaryComponent
+    PartialdayPipe,
   ],
   providers: [
     DatePipe,

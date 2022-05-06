@@ -7,7 +7,7 @@ import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {ReactiveFormsModule} from "@angular/forms";
 import {ComponentsModule} from "@minhdu-fontend/components";
 import {NzDropDownModule} from "ng-zorro-antd/dropdown";
-import { NzIconModule } from 'ng-zorro-antd/icon';
+import {NzIconModule} from 'ng-zorro-antd/icon';
 import {SharedModule} from "../../../shared/shared.module";
 
 @NgModule({
@@ -22,9 +22,8 @@ import {SharedModule} from "../../../shared/shared.module";
     NzDropDownModule,
     NzIconModule,
   ],
-  declarations:[RankComponent],
+  declarations: [RankComponent],
 })
 
-export class RankModule{
-
+export class RankModule {
 }

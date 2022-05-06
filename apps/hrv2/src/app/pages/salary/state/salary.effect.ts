@@ -1,13 +1,12 @@
-import {Injectable} from '@angular/core';
-import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
-import {catchError, map, switchMap, tap} from 'rxjs/operators';
-import {of} from 'rxjs';
-import {SalaryActions} from './salary.actions';
-import {SalaryPermanentService} from '../service';
-import {SalaryQuery} from './salary.query';
-import {SalaryStore} from './salary.store';
-import {NzMessageService} from 'ng-zorro-antd/message';
-import {SalaryTypeEnum} from "@minhdu-fontend/enums";
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
+import { catchError, switchMap, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { SalaryActions } from './salary.actions';
+import { SalaryPermanentService } from '../service';
+import { SalaryQuery } from './salary.query';
+import { SalaryStore } from './salary.store';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable()
 export class SalaryEffect {
@@ -16,7 +15,7 @@ export class SalaryEffect {
     private readonly salaryStore: SalaryStore,
     private readonly salaryQuery: SalaryQuery,
     private readonly salaryService: SalaryPermanentService,
-    private readonly message: NzMessageService,
+    private readonly message: NzMessageService
   ) {
   }
 
@@ -24,13 +23,13 @@ export class SalaryEffect {
   @Effect()
   addOne$ = this.action$.pipe(
     ofType(SalaryActions.addOne),
-    switchMap((props ) => {
+    switchMap((props) => {
       this.salaryStore.update(state => ({
         ...state, added: false
       }));
       return this.salaryService.addOne(props).pipe(
         tap((res) => {
-          this.message.success('Thêm thành công')
+            this.message.success('Thêm thành công');
             this.salaryStore.update(state => ({
               ...state, added: true
             }));
@@ -41,10 +40,10 @@ export class SalaryEffect {
           this.salaryStore.update(state => ({
             ...state, added: null
           }));
-          return of(SalaryActions.error(err))
-        }),
+          return of(SalaryActions.error(err));
+        })
       );
-    }),
+    })
   );
 
 
@@ -55,19 +54,19 @@ export class SalaryEffect {
         this.salaryStore.update(state => ({
           ...state, added: false
         }));
-        return this.salaryService.update(props).pipe(
+        return this.salaryService.update(props.id, props.updates).pipe(
           tap(response => {
             this.salaryStore.update(state => ({
               ...state, added: true
             }));
           }),
-          catchError(err =>{
+          catchError(err => {
               this.salaryStore.update(state => ({
                 ...state, added: null
               }));
-            return of(SalaryActions.error(err))
-          }
-            )
+              return of(SalaryActions.error(err));
+            }
+          )
         );
       }
     )
@@ -76,12 +75,12 @@ export class SalaryEffect {
   @Effect()
   deleteSalary = this.action$.pipe(
     ofType(SalaryActions.remove),
-    switchMap((props) => this.salaryService.delete(props.id).pipe(
-      map(() =>{
-        this.message.success('Xoá thành công')
-        return  this.salaryStore.remove(props.id)
-      }
-       ),
+    switchMap((props) => this.salaryService.deleteMany(props.salaryIds).pipe(
+      tap((res) => {
+          this.message.success(res.message);
+          return this.salaryStore.remove(props.salaryIds);
+        }
+      ),
       catchError((err) => of(SalaryActions.error(err)))
     ))
   );

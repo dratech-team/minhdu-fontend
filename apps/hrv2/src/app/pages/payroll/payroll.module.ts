@@ -34,37 +34,39 @@ import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader";
 import {AllowanceSalaryComponent} from "../salary/components/allowance/allowance-salary.component";
 import {UpdatePayrollComponent} from "./components/update/update-payroll.component";
 import {NzAlertModule} from "ng-zorro-antd/alert";
+import {SettingModule} from "../setting/setting.module";
 
 @NgModule({
-  imports: [
-    ComponentsModule,
-    PayrollRoutingModule,
-    NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
-    CommonModule,
-    ReactiveFormsModule,
-    FormsModule,
-    AkitaNgEffectsModule.forFeature([PayrollEffect, SettingSalaryEffect]),
-    OrgchartV2Module,
-    NzMessageModule,
-    NzSelectModule,
-    NzTableModule,
-    NzInputModule,
-    NgxCurrencyModule,
-    MatRadioModule,
-    NzDatePickerModule,
-    NzTimePickerModule,
-    NzRadioModule,
-    NzCheckboxModule,
-    NzButtonModule,
-    NzStepsModule,
-    NzSwitchModule,
-    MatSortModule,
-    NzCarouselModule,
-    SalaryModule,
-    NzSpinModule,
-    NgxSkeletonLoaderModule,
-    NzAlertModule
-  ],
+    imports: [
+        ComponentsModule,
+        PayrollRoutingModule,
+        NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
+        AkitaNgEffectsModule.forFeature([PayrollEffect, SettingSalaryEffect]),
+        OrgchartV2Module,
+        NzMessageModule,
+        NzSelectModule,
+        NzTableModule,
+        NzInputModule,
+        NgxCurrencyModule,
+        MatRadioModule,
+        NzDatePickerModule,
+        NzTimePickerModule,
+        NzRadioModule,
+        NzCheckboxModule,
+        NzButtonModule,
+        NzStepsModule,
+        NzSwitchModule,
+        MatSortModule,
+        NzCarouselModule,
+        SalaryModule,
+        NzSpinModule,
+        NgxSkeletonLoaderModule,
+        NzAlertModule,
+        SettingModule
+    ],
   declarations: [
     PayrollComponent,
     TablePayrollComponent,
@@ -73,10 +75,10 @@ import {NzAlertModule} from "ng-zorro-antd/alert";
     RangeDateTimePipe,
     PayslipComponent,
     AllowanceSalaryComponent,
-    UpdatePayrollComponent
+    UpdatePayrollComponent,
   ],
   exports: [
-    TablePayrollComponent
+    TablePayrollComponent,
   ],
   providers: [
     DatePipe

@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {PayrollEntity} from "../../entities";
 import {FormGroup} from "@angular/forms";
-import {PositionActions, PositionQuery} from "../../../../../../../../libs/orgchart-v2/src/lib/position/state";
-import {BranchQuery} from "../../../../../../../../libs/orgchart-v2/src/lib/branch/state";
+import {PositionActions, PositionQuery} from "@minhdu-fontend/orgchart-v2";
+import {BranchQuery} from "@minhdu-fontend/orgchart-v2";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollQuery, PayrollStore} from "../../state";
 import {FilterTypeEnum, ItemContextMenu, SalaryTypeEnum} from "@minhdu-fontend/enums";
@@ -15,7 +15,7 @@ import {
   ModalDatePickerComponent
 } from "../../../../../../../../libs/components/src/lib/modal-date-picker/modal-date-picker.component";
 import {ModalAlertComponent} from "@minhdu-fontend/components";
-import {ModalAlertEntity} from "../../../../../../../../libs/entities/modal-alert.entity";
+import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 import {DatePipe} from "@angular/common";
 import {PayrollActions} from "../../state/payroll.action";
 import {Subject} from "rxjs";

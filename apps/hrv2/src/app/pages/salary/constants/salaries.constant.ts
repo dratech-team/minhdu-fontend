@@ -1,12 +1,12 @@
-import {SalaryTypeEnum} from "@minhdu-fontend/enums";
+import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 
-export const SalariesConstant = [
+export const SalariesConstant: Array<{ name: string; value: SalaryTypeEnum }> = [
   {
     name: 'Tăng ca',
     value: SalaryTypeEnum.OVERTIME
   },
   {
-    name: 'Khấu trừ',
+    name: 'Vắng',
     value: SalaryTypeEnum.ABSENT
   },
   {
@@ -21,5 +21,8 @@ export const SalariesConstant = [
     name: 'Phụ cấp khác',
     value: SalaryTypeEnum.ALLOWANCE
   },
-
-]
+  {
+    name: 'Khấu trừ',
+    value: SalaryTypeEnum.DEDUCTION
+  }
+];

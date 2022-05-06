@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Api} from '@minhdu-fontend/constants';
 import {Observable} from 'rxjs';
-import {DeductionSalaryEntity} from "../entities";
 import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
 import {BaseService} from "@minhdu-fontend/service";
+import {DeductionSalaryEntity} from "../entities/deduction-salary.entity";
 
 @Injectable({providedIn: 'root'})
 export class DeductionSalaryService extends BaseService<DeductionSalaryEntity> {
