@@ -6,6 +6,8 @@ import {PayrollEntity} from "../../../app/pages/payroll/entities";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 import {PaginationDto} from "@minhdu-fontend/constants";
 import {EmployeeType, FilterTypeEnum} from "@minhdu-fontend/enums";
+import {catchError} from "rxjs/operators";
+import {throwError} from "rxjs";
 
 @Component({
   selector: '@minhdu-fontend-select-payroll',
@@ -72,6 +74,10 @@ export class TableSelectPayrollComponent implements OnInit {
       ? Object.assign({}, this.mapPayroll(),
         {skip: PaginationDto.skip})
       : this.mapPayroll())
+      .pipe(catchError(err => {
+        this.loading = false
+        return throwError(err)
+      }))
       .subscribe(res => {
         this.loading = false
         pagination
