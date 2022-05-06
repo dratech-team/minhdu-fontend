@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {DatetimeUnitEnum, EmployeeType, RecipeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, EmployeeType, RecipeType, Role, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {PartialDayEnum} from '@minhdu-fontend/data-models';
 import {getDaysInMonth} from '@minhdu-fontend/utils';
 import {DatePipe} from '@angular/common';
-import {Role} from '@minhdu-fontend/enums';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {Sort} from '@angular/material/sort';
 import {catchError, map} from 'rxjs/operators';
@@ -73,7 +72,7 @@ export class DetailPayrollComponent implements OnInit {
 
   remoteConstant = RemoteConstant
   unitSalaryConstant = UnitSalaryConstant
-  titleSession = SessionConstant;
+  sessionConstant = SessionConstant
 
   sortedSalaryOver: OvertimeSalaryEntity[] = [];
 
@@ -143,7 +142,7 @@ export class DetailPayrollComponent implements OnInit {
         salary: Object.assign({}, salary,
           type === SalaryTypeEnum.ALLOWANCE
             ? {workedAt: payroll?.employee.workedAt}
-            : {}
+            :{},
         )
       });
   }

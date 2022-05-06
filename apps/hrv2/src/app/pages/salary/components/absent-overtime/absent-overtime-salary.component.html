@@ -1,16 +1,10 @@
 <div class='px-2'>
   <nz-steps [nzCurrent]='indexStep'>
-    <nz-step *ngIf='data?.update?.multiple' nzTitle='Nhân viên đã chọn'></nz-step>
     <nz-step nzTitle='Bảng {{this.data.type | transformSalaryType}}'></nz-step>
+    <nz-step *ngIf='data.add' nzTitle='Chọn nhân viên'></nz-step>
+    <nz-step *ngIf='data?.update?.multiple' nzTitle='Nhân viên đã chọn'></nz-step>
   </nz-steps>
-
-  <ng-template [ngIf]='indexStep === 0 && data?.update?.multiple'>
-    <!--    <app-table-salaries-selected-->
-    <!--      [salaries]='salaryPayrolls'-->
-    <!--      (EmitSalariesSelected)='changeSalariesSelected($event)'>-->
-    <!--    </app-table-salaries-selected>-->
-  </ng-template>
-  <ng-template [ngIf]='indexStep === 1'>
+  <ng-template [ngIf]='indexStep === 0'>
     <form [formGroup]='formGroup' class='px-2 pt-2' style='max-height: 40vh; overflow-y: scroll'>
       <div class='mb-2'>
         <span class='font-weight-bold'>Khoản {{this.data.type |transformSalaryType}}</span><span class='star'>*</span>
@@ -149,6 +143,20 @@
         <input nz-input placeholder='Nhập chú thích ' formControlName='note'>
       </div>
     </form>
+  </ng-template>
+  <ng-template [ngIf]='indexStep === 1 && data.add'>
+    <minhdu-fontend-select-payroll
+      [employeeType]="employeeType.EMPLOYEE_FULL_TIME"
+      [formGroup]="formGroup"
+      [createdAt]="data.add.payroll.createdAt"
+    >
+    </minhdu-fontend-select-payroll>
+  </ng-template>
+  <ng-template [ngIf]='indexStep === 1 && data.update?.multiple'>
+    <!--    <app-table-salaries-selected-->
+    <!--      [salaries]='salaryPayrolls'-->
+    <!--      (EmitSalariesSelected)='changeSalariesSelected($event)'>-->
+    <!--    </app-table-salaries-selected>-->
   </ng-template>
   <div class='steps-action'>
     <button class='ml-2' nz-button nzType='default' (click)="move('previous')" *ngIf='indexStep > 0'>

@@ -2,11 +2,10 @@ import {DatePipe} from '@angular/common';
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PartialDayEnum, SalaryPayroll} from '@minhdu-fontend/data-models';
-import {DatetimeUnitEnum, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, EmployeeType, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {catchError, map} from 'rxjs/operators';
 import {SettingSalaryActions, SettingSalaryQuery} from '../../../setting/salary/state';
 import {PriceType} from '../../../setting/salary/enums';
-import {PayrollEntity} from '../../../payroll/entities';
 import {AbsentSalaryService, OvertimeSalaryService} from '../../service';
 import {NzModalRef} from 'ng-zorro-antd/modal';
 import {NzMessageService} from 'ng-zorro-antd/message';
@@ -20,7 +19,6 @@ import {throwError} from 'rxjs';
 import {PayrollActions} from '../../../payroll/state/payroll.action';
 import {ModalAddOrUpdateAbsentOrOvertime} from '../../../payroll/data';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
-
 import * as moment from "moment";
 import {validateDayInMonth} from "../../utils/validate-day-in-month.util";
 
@@ -46,11 +44,10 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   settingsLoading$ = this.settingSalaryQuery.select(state => state.loading);
 
   salaryPayrolls: SalaryPayroll[] = [];
-  payrollSelected: PayrollEntity[] = [];
   limitStartHour: number [] = [];
   limitEndTime: number [] = [];
 
-  indexStep = 1;
+  indexStep = 0;
   submitting = false;
 
   titleSession = SessionConstant;
@@ -60,6 +57,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
   fistDateInMonth!: Date
+  employeeType = EmployeeType
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
   disabledHoursStart = (): number[] => {
@@ -122,7 +120,8 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       titleAllowance: [salary?.allowance?.title || ''],
       constraintHoliday: [],
       constraintOvertime: [],
-      reference: []
+      reference: [],
+      payrollIds: [this.data.add ? [this.data.add.payroll.id] : []]
     });
 
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
@@ -225,7 +224,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
 
     return Object.assign(salary,
       this.data.add
-        ? {payrollIds: this.payrollSelected.map(payroll => payroll.id).concat(this.data.add.payroll.id)}
+        ? {payrollIds: value.payrollIds}
         : {},
       this.data.update
         ? {salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.update.salary.id)}
@@ -242,8 +241,10 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   }
 
   move(type: 'next' | 'previous'): void {
-    if (type === 'next') this.indexStep += 1;
-    else this.indexStep -= 1;
+    if (this.formGroup.invalid) {
+      return
+    }
+    type === "next" ? this.indexStep += 1 : this.indexStep -= 1
   }
 
   private onSubmitError(err: string) {

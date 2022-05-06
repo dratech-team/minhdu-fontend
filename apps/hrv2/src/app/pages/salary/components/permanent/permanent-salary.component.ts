@@ -1,19 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Role, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { SalaryPayroll } from '@minhdu-fontend/data-models';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzModalRef } from 'ng-zorro-antd/modal';
-import { PayrollEntity } from '../../../payroll/entities';
-import { SalaryPermanentService } from '../../service';
-import { SettingSalaryActions, SettingSalaryQuery } from '../../../setting/salary/state';
-import { Actions } from '@datorama/akita-ng-effects';
-import { PayrollActions } from '../../../payroll/state/payroll.action';
-import { catchError, map } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import { ResponseMessageEntity } from '@minhdu-fontend/base-entity';
-import { ModalAddOrUpdatePermanent } from '../../../payroll/data';
-import { EmployeeService } from '@minhdu-fontend/employee-v2';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {EmployeeType, Role, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {SalaryPayroll} from '@minhdu-fontend/data-models';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {NzModalRef} from 'ng-zorro-antd/modal';
+import {SalaryPermanentService} from '../../service';
+import {SettingSalaryActions, SettingSalaryQuery} from '../../../setting/salary/state';
+import {Actions} from '@datorama/akita-ng-effects';
+import {PayrollActions} from '../../../payroll/state/payroll.action';
+import {catchError, map} from 'rxjs/operators';
+import {throwError} from 'rxjs';
+import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
+import {ModalAddOrUpdatePermanent} from '../../../payroll/data';
+import {EmployeeService} from '@minhdu-fontend/employee-v2';
 
 @Component({
   templateUrl: 'permanent-salary.component.html'
@@ -45,12 +44,12 @@ export class PermanentSalaryComponent implements OnInit {
   );
   loadingSettingSalary$ = this.settingSalaryQuery.select(state => state.loading);
 
-  payrollSelected: PayrollEntity[] = [];
   salariesSelected: SalaryPayroll[] = [];
 
   role = localStorage.getItem('role');
-  stepIndex = 0;
+  indexStep = 0;
   submitting = false;
+  employeeType = EmployeeType
 
   salaryTypeEnum = SalaryTypeEnum;
   roleEnum = Role;
@@ -69,11 +68,8 @@ export class PermanentSalaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.data.add || this.data.update) {
-      this.stepIndex = 1;
-      if (this.data.update?.multiple) {
-        this.salariesSelected = [...this.data.update.multiple?.salariesSelected];
-      }
+    if (this.data.update?.multiple) {
+      this.salariesSelected = [...this.data.update.multiple?.salariesSelected]
     }
     this.actions$.dispatch(SettingSalaryActions.loadAll({
       search: {
@@ -87,7 +83,8 @@ export class PermanentSalaryComponent implements OnInit {
       template: ['', Validators.required],
       price: [salary?.price, Validators.required],
       rate: [salary?.rate, Validators.required],
-      unit: [salary?.unit]
+      unit: [salary?.unit],
+      payrollIds: [[this.data.add?.payroll.id]],
     });
 
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
@@ -120,11 +117,11 @@ export class PermanentSalaryComponent implements OnInit {
       .subscribe(res => this.onSubmitSuccess(res,
         this.data.add
           ? (!this.data.add.multiple
-            ? this.data.add.payroll.id
-            : undefined
+              ? this.data.add.payroll.id
+              : undefined
           ) : (!this.data.update?.multiple
-            ? this.data.update.salary.payrollId
-            : undefined
+              ? this.data.update.salary.payrollId
+              : undefined
           )
       ));
   }
@@ -138,8 +135,8 @@ export class PermanentSalaryComponent implements OnInit {
       settingId: value.template.id
     };
     return Object.assign(salary, this.data.add
-      ? { payrollIds: this.payrollSelected.map(payroll => payroll.id).concat([this.data.add.payroll.id]) }
-      : { salaryIds: this.salariesSelected.map(item => item.salary.id).concat([this.data.update.salary.id]) }
+      ? {payrollIds: value.payrollIds}
+      : {salaryIds: this.salariesSelected.map(item => item.salary.id).concat([this.data.update.salary.id])}
     );
   }
 
@@ -147,7 +144,7 @@ export class PermanentSalaryComponent implements OnInit {
     this.submitting = false;
     this.message.success(res.message);
     if (payrollId) {
-      this.actions$.dispatch(PayrollActions.loadOne({ id: payrollId }));
+      this.actions$.dispatch(PayrollActions.loadOne({id: payrollId}));
     }
     this.modalRef.close();
   }
@@ -157,16 +154,10 @@ export class PermanentSalaryComponent implements OnInit {
     return throwError(err);
   }
 
-
-  pickPayroll(payrolls: PayrollEntity[]) {
-    this.payrollSelected = [...payrolls];
-  }
-
-  pre(): void {
-    this.stepIndex -= 1;
-  }
-
-  next(): void {
-    this.stepIndex += 1;
+  move(type: 'next' | 'previous'): void {
+    if (this.formGroup.invalid) {
+      return
+    }
+    type === "next" ? this.indexStep += 1 : this.indexStep -= 1
   }
 }
