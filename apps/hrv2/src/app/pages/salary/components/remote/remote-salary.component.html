@@ -1,9 +1,9 @@
 <div>
-  <nz-steps [nzCurrent]='stepIndex'>
+  <nz-steps [nzCurrent]='indexStep'>
     <nz-step nzTitle='Onsite'></nz-step>
     <nz-step nzTitle='Chọn nhân viên'></nz-step>
   </nz-steps>
-  <ng-template [ngIf]='stepIndex === 0'>
+  <ng-template [ngIf]='indexStep === 0'>
     <form [formGroup]='formGroup'>
       <div>
         <div class='row mb-3'>
@@ -50,7 +50,7 @@
       </div>
     </form>
   </ng-template>
-  <ng-template [ngIf]='stepIndex=== 1 && data.add'>
+  <ng-template [ngIf]='indexStep=== 1 && data.add'>
     <minhdu-fontend-select-payroll
       [formGroup]="formGroup"
       [createdAt]="data.add.payroll.createdAt"
@@ -58,10 +58,10 @@
     </minhdu-fontend-select-payroll>
   </ng-template>
   <div>
-    <button class="mr-2" nz-button nzType='default' (click)="move('previous')" *ngIf='stepIndex > 0'>
+    <button class="mr-2" nz-button nzType='default' (click)="move('previous')" *ngIf='indexStep > 0'>
       <span>Trở lại</span>
     </button>
-    <button class="mr-2" nz-button nzType='default' (click)='move("next")' *ngIf='stepIndex < 1'>
+    <button class="mr-2" nz-button nzType='default' (click)='move("next")' *ngIf='indexStep < 1'>
       <span>Tiếp theo</span>
     </button>
     <button nz-button nzType='primary'

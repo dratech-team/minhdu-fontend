@@ -16,6 +16,7 @@ import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {ModalAddOrUpdateAllowance} from '../../../payroll/data';
 import {validateDayInMonth} from '../../utils/validate-day-in-month.util';
 import * as moment from 'moment';
+import {MoveStepUtil} from "../../utils/move-step.util";
 
 @Component({
   templateUrl: 'allowance-salary.component.html'
@@ -165,11 +166,8 @@ export class AllowanceSalaryComponent implements OnInit {
     this.modalRef.close();
   }
 
-  move(type: 'next' | 'pre'): any {
-    if (this.formGroup.invalid) {
-      return this.message.warning('Chưa nhập đủ thông tin')
-    }
-    type === 'next' ? this.indexStep += 1 : this.indexStep -= 1;
+  move(type: 'next' | 'previous'): any {
+  this.indexStep = MoveStepUtil(type, this.indexStep, this.formGroup)
   }
 
   onSelectWorkedAt() {

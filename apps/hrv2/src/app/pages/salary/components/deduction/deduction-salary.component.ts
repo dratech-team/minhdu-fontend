@@ -13,6 +13,7 @@ import {PayrollActions} from '../../../payroll/state/payroll.action';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {ModalAddOrUpdateDeduction} from '../../../payroll/data/modal-deduction-salary.data';
 import {DeductionSalaryService} from '../../service';
+import {MoveStepUtil} from "../../utils/move-step.util";
 
 @Component({
   templateUrl: 'deduction-salary.component.html'
@@ -101,10 +102,7 @@ export class DeductionSalaryComponent implements OnInit {
   }
 
   move(type: 'next' | 'previous'): any {
-    if (this.formGroup.invalid) {
-      return this.message.warning('Chưa nhập đủ thông tin')
-    }
-    type === 'next' ? this.indexStep += 1 : this.indexStep -= 1
+    this.indexStep = MoveStepUtil(type, this.indexStep, this.formGroup)
   }
 
   private onSubmitError(err: string) {

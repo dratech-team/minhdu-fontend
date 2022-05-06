@@ -22,6 +22,7 @@ import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 
 import * as moment from "moment";
 import {validateDayInMonth} from "../../utils/validate-day-in-month.util";
+import {MoveStepUtil} from "../../utils/move-step.util";
 
 @Component({
   templateUrl: 'absent-overtime-salary.component.html'
@@ -241,10 +242,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   }
 
   move(type: 'next' | 'previous'): any {
-    if (this.formGroup.invalid) {
-      return this.message.warning('Chưa nhập đủ thông tin')
-    }
-    type === 'next' ? this.indexStep += 1 : this.indexStep -= 1
+   this.indexStep = MoveStepUtil(type, this.indexStep, this.formGroup)
   }
 
   private onSubmitError(err: string) {

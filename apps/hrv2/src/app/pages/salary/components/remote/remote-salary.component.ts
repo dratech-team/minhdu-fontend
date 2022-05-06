@@ -16,6 +16,7 @@ import {RemoteConstant} from "../../constants/remote.constant";
 import {validateDayInMonth} from "../../utils/validate-day-in-month.util";
 import * as moment from "moment";
 import {SessionConstant} from "../../../../../shared/constants";
+import {MoveStepUtil} from "../../utils/move-step.util";
 
 @Component({
   templateUrl: 'remote-salary.component.html'
@@ -25,7 +26,7 @@ export class RemoteSalaryComponent implements OnInit {
   remoteConstant = RemoteConstant
   formGroup!: FormGroup;
 
-  stepIndex = 0;
+  indexStep = 0;
   submitting = false;
   fistDateInMonth!: Date
 
@@ -143,9 +144,6 @@ export class RemoteSalaryComponent implements OnInit {
   }
 
   move(type: 'next' | 'previous'): any {
-    if (this.formGroup.invalid) {
-      return this.message.warning('Chưa nhập đủ thông tin')
-    }
-    type === 'next' ? this.stepIndex += 1 : this.stepIndex -= 1
+    this.indexStep = MoveStepUtil(type, this.indexStep, this.formGroup)
   }
 }

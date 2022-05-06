@@ -86,10 +86,10 @@
     <!--    Nhân viên đã chọn-->
   </ng-template>
   <div class="steps-action">
-    <button class="ml-2" nz-button nzType="default" (click)="move('next')" *ngIf="indexStep > 0">
+    <button class="ml-2" nz-button nzType="default" (click)="move('previous')" *ngIf="indexStep > 0">
       <span>Trở lại</span>
     </button>
-    <button class="ml-2" nz-button nzType="default" (click)="move('pre')" *ngIf="indexStep < 1">
+    <button class="ml-2" nz-button nzType="default" (click)="move('next')" *ngIf="indexStep < 1">
       <span>Tiếp theo</span>
     </button>
     <button class="ml-2" nz-button nzType="primary" [nzLoading]="submitting" (click)="onSubmit()">
