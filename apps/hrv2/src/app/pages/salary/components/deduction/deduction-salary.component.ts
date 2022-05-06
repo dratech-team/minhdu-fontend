@@ -2,7 +2,7 @@ import {DatePipe} from '@angular/common';
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SalaryPayroll} from '@minhdu-fontend/data-models';
-import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, EmployeeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {catchError} from 'rxjs/operators';
 import {SettingSalaryQuery} from '../../../setting/salary/state';
 import {NzModalRef} from 'ng-zorro-antd/modal';
@@ -26,7 +26,8 @@ export class DeductionSalaryComponent implements OnInit {
   salaryPayrolls: SalaryPayroll[] = [];
 
   submitting = false;
-  indexStep = 1;
+  indexStep = 0;
+  employeeType = EmployeeType
 
   constructor(
     public readonly datePipe: DatePipe,

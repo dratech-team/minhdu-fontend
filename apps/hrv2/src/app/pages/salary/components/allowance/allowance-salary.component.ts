@@ -2,7 +2,7 @@ import {DatePipe} from '@angular/common';
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
-import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, EmployeeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {getFirstDayInMonth, getLastDayInMonth, isEqualDatetime} from 'libs/utils/daytime.until';
 import {SalaryPayroll} from '@minhdu-fontend/data-models';
 import {AllowanceSalaryService} from '../../service';
@@ -32,6 +32,7 @@ export class AllowanceSalaryComponent implements OnInit {
   workedAt!: Date;
   fistDateInMonth!: Date;
   salaryTypeEnum = SalaryTypeEnum;
+  employeeType = EmployeeType
 
   disableApprenticeDate = (cur: Date): boolean => {
     return validateDayInMonth(cur, this.fistDateInMonth);
@@ -56,9 +57,7 @@ export class AllowanceSalaryComponent implements OnInit {
         ? this.data.add.payroll.createdAt
         : this.data.update.salary.startedAt
     ));
-    if (!this.data.update?.multiple) {
-      this.indexStep = 1;
-    }
+
     if (this.data.update?.multiple) {
       this.salariesSelected = [...this.data.update.multiple.salariesSelected];
     }
@@ -167,7 +166,7 @@ export class AllowanceSalaryComponent implements OnInit {
   }
 
   move(type: 'next' | 'previous'): any {
-  this.indexStep = MoveStepUtil(type, this.indexStep, this.formGroup)
+    this.indexStep = MoveStepUtil(type, this.indexStep, this.formGroup)
   }
 
   onSelectWorkedAt() {

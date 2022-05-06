@@ -1,7 +1,7 @@
 import {DatePipe} from '@angular/common';
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, EmployeeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {NzModalRef} from 'ng-zorro-antd/modal';
 import {SalaryRemoteService} from '../../service';
 import {NzMessageService} from 'ng-zorro-antd/message';
@@ -33,6 +33,7 @@ export class RemoteSalaryComponent implements OnInit {
   titleSession = SessionConstant;
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
+  employeeType = EmployeeType;
 
   disableApprenticeDate = (cur: Date): boolean => {
     return validateDayInMonth(cur, this.fistDateInMonth)

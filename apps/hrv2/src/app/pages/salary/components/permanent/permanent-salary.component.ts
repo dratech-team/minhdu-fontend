@@ -13,6 +13,7 @@ import {throwError} from 'rxjs';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {ModalAddOrUpdatePermanent} from '../../../payroll/data';
 import {EmployeeService} from '@minhdu-fontend/employee-v2';
+import {MoveStepUtil} from "../../utils/move-step.util";
 
 @Component({
   templateUrl: 'permanent-salary.component.html'
@@ -47,7 +48,7 @@ export class PermanentSalaryComponent implements OnInit {
   salariesSelected: SalaryPayroll[] = [];
 
   role = localStorage.getItem('role');
-  stepIndex = 0;
+  indexStep = 0;
   submitting = false;
   employeeType = EmployeeType
 
@@ -154,10 +155,7 @@ export class PermanentSalaryComponent implements OnInit {
     return throwError(err);
   }
 
-  move(type: 'next' | 'pre'): any {
-    if (this.formGroup.invalid) {
-      return this.message.success('Chưa nhập đủ thông tin')
-    }
-    type === 'next' ? this.stepIndex += 1 : this.stepIndex -= 1;
+  move(type: 'next' | 'previous'): any {
+    this.indexStep = MoveStepUtil(type, this.indexStep, this.formGroup)
   }
 }

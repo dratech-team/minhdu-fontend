@@ -1,10 +1,10 @@
 <div>
-  <nz-steps [nzCurrent]="stepIndex">
+  <nz-steps [nzCurrent]="indexStep">
     <nz-step [nzTitle]="this.data.type === salaryTypeEnum.STAY?'Phụ cấp lương':'Lương cơ bản'"></nz-step>
     <nz-step nzTitle="Chọn nhân viên" *ngIf="this.data.add"></nz-step>
     <nz-step *ngIf="data?.update?.multiple" nzTitle="Nhân viên đã chọn"></nz-step>
   </nz-steps>
-  <ng-template [ngIf]="stepIndex === 0">
+  <ng-template [ngIf]="indexStep === 0">
     <form [formGroup]="formGroup">
       <div *ngIf='false' class=' mb-5 title-popup'>
         <span> Lương cơ bản</span>
@@ -79,7 +79,7 @@
       </div>
     </form>
   </ng-template>
-  <ng-template [ngIf]="stepIndex === 1 && this.data.add ">
+  <ng-template [ngIf]="indexStep === 1 && this.data.add ">
     <div class="py-2">
       <minhdu-fontend-select-payroll
         [employeeType]="employeeType.EMPLOYEE_FULL_TIME"
@@ -88,17 +88,17 @@
       </minhdu-fontend-select-payroll>
     </div>
   </ng-template>
-  <ng-template [ngIf]="stepIndex === 1 && this.data.update?.multiple">
+  <ng-template [ngIf]="indexStep === 1 && this.data.update?.multiple">
     <!--    <app-table-salaries-selected-->
     <!--      [salaries]='salariesSelected'-->
     <!--      (EmitSalariesSelected)='changeSalariesSelected($event)'>-->
     <!--    </app-table-salaries-selected>-->
   </ng-template>
   <div>
-    <button class="mr-2" nz-button nzType="default" (click)="move('pre')" *ngIf="stepIndex > 0">
+    <button class="mr-2" nz-button nzType="default" (click)="move('previous')" *ngIf="indexStep > 0">
       <span>Trở lại</span>
     </button>
-    <button class="mr-2" nz-button nzType="default" (click)="move('next')" *ngIf="stepIndex < 1">
+    <button class="mr-2" nz-button nzType="default" (click)="move('next')" *ngIf="indexStep < 1">
       <span>Tiếp theo</span>
     </button>
     <button nz-button nzType="primary"

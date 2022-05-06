@@ -2,7 +2,7 @@ import {DatePipe} from '@angular/common';
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PartialDayEnum, SalaryPayroll} from '@minhdu-fontend/data-models';
-import {DatetimeUnitEnum, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, EmployeeType, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {catchError, map} from 'rxjs/operators';
 import {SettingSalaryActions, SettingSalaryQuery} from '../../../setting/salary/state';
 import {PriceType} from '../../../setting/salary/enums';
@@ -49,7 +49,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   limitStartHour: number [] = [];
   limitEndTime: number [] = [];
 
-  indexStep = 1;
+  indexStep = 0;
   submitting = false;
 
   titleSession = SessionConstant;
@@ -59,6 +59,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
   fistDateInMonth!: Date
+  employeeType = EmployeeType
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
   disabledHoursStart = (): number[] => {
