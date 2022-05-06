@@ -12,5 +12,6 @@ export interface AbsentSalaryEntity extends BaseSalaryEntity {
   readonly unit: DatetimeUnitEnum;
   readonly rate: number
   readonly startedAt?: Date,
-  readonly endedAt?: Date
+  readonly endedAt?: Date,
+  readonly duration: number,
 }

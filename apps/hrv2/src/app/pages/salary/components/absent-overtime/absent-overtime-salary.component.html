@@ -36,7 +36,7 @@
         <span class='font-weight-bold'>Buổi</span><span class='star'>*</span>
         <nz-select class='mt-1' style='width: 100%' formControlName='partialDay'>
           <nz-option
-            *ngFor='let item of titleSession | partialday: formGroup.get("unit")?.value'
+            *ngFor='let item of titleSession'
             [nzValue]='item'
             [nzLabel]='item.name'
           ></nz-option>
@@ -64,7 +64,7 @@
             <span class='font-weight-bold'>Từ giờ</span><span class='star'>*</span>
             <nz-time-picker
               class='mt-1'
-              [nzDisabled]=' formGroup.value.partialDay?.value !== partialDayEnum.CUSTOM'
+              [nzDisabled]='formGroup.value.unit === datetimeUnit.DAY'
               formControlName='startTime'
               nzFormat='HH:mm'
               [nzDisabledHours]='disabledHoursStart'
@@ -78,7 +78,7 @@
             <span class='font-weight-bold'>Đến giờ</span><span class='star'>*</span>
             <nz-time-picker
               class='mt-1'
-              [nzDisabled]='formGroup.value.partialDay?.value !== partialDayEnum.CUSTOM'
+              [nzDisabled]='formGroup.value.unit === datetimeUnit.DAY'
               formControlName='endTime'
               nzFormat='HH:mm'
               [nzDisabledHours]='disabledHoursEnd'

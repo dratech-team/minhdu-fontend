@@ -10,9 +10,11 @@ import {NzSelectModule} from "ng-zorro-antd/select";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzMessageModule} from "ng-zorro-antd/message";
+import {TableSelectPayrollComponent} from "./components/table-select-payroll/table-select-payroll.component";
 
 @NgModule({
   declarations: [
+    TableSelectPayrollComponent
   ],
   imports: [
     CommonModule,
@@ -28,6 +30,7 @@ import {NzMessageModule} from "ng-zorro-antd/message";
     NzButtonModule
   ],
   exports: [
+    TableSelectPayrollComponent
   ]
 })
 export class SharedModule {
