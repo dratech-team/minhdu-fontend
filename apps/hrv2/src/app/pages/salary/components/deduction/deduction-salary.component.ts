@@ -13,7 +13,6 @@ import {PayrollActions} from '../../../payroll/state/payroll.action';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {ModalAddOrUpdateDeduction} from '../../../payroll/data/modal-deduction-salary.data';
 import {DeductionSalaryService} from '../../service';
-import {MoveStepUtil} from "../../utils/move-step.util";
 
 @Component({
   templateUrl: 'deduction-salary.component.html'
@@ -103,7 +102,10 @@ export class DeductionSalaryComponent implements OnInit {
   }
 
   move(type: 'next' | 'previous'): void {
-    this.indexStep = MoveStepUtil(type, this.indexStep, this.formGroup)
+    if (this.formGroup.invalid) {
+      return
+    }
+    type === "next" ? this.indexStep += 1 : this.indexStep -= 1
   }
 
   private onSubmitError(err: string) {

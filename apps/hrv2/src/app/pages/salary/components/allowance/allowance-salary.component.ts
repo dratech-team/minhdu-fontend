@@ -16,7 +16,6 @@ import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {ModalAddOrUpdateAllowance} from '../../../payroll/data';
 import {validateDayInMonth} from '../../utils/validate-day-in-month.util';
 import * as moment from 'moment';
-import {MoveStepUtil} from "../../utils/move-step.util";
 
 @Component({
   templateUrl: 'allowance-salary.component.html'
@@ -166,7 +165,10 @@ export class AllowanceSalaryComponent implements OnInit {
   }
 
   move(type: 'next' | 'previous'): void {
-    this.indexStep = MoveStepUtil(type, this.indexStep, this.formGroup)
+    if (this.formGroup.invalid) {
+      return
+    }
+    type === "next" ? this.indexStep += 1 : this.indexStep -= 1
   }
 
   onSelectWorkedAt() {

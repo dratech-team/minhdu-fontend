@@ -13,7 +13,6 @@ import {throwError} from 'rxjs';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {ModalAddOrUpdatePermanent} from '../../../payroll/data';
 import {EmployeeService} from '@minhdu-fontend/employee-v2';
-import {MoveStepUtil} from "../../utils/move-step.util";
 
 @Component({
   templateUrl: 'permanent-salary.component.html'
@@ -156,6 +155,9 @@ export class PermanentSalaryComponent implements OnInit {
   }
 
   move(type: 'next' | 'previous'): void {
-    this.indexStep = MoveStepUtil(type, this.indexStep, this.formGroup)
+    if (this.formGroup.invalid) {
+      return
+    }
+    type === "next" ? this.indexStep += 1 : this.indexStep -= 1
   }
 }

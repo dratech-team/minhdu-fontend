@@ -19,10 +19,8 @@ import {throwError} from 'rxjs';
 import {PayrollActions} from '../../../payroll/state/payroll.action';
 import {ModalAddOrUpdateAbsentOrOvertime} from '../../../payroll/data';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
-
 import * as moment from "moment";
 import {validateDayInMonth} from "../../utils/validate-day-in-month.util";
-import {MoveStepUtil} from "../../utils/move-step.util";
 
 @Component({
   templateUrl: 'absent-overtime-salary.component.html'
@@ -243,7 +241,10 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   }
 
   move(type: 'next' | 'previous'): void {
-   this.indexStep = MoveStepUtil(type, this.indexStep, this.formGroup)
+    if (this.formGroup.invalid) {
+      return
+    }
+    type === "next" ? this.indexStep += 1 : this.indexStep -= 1
   }
 
   private onSubmitError(err: string) {
