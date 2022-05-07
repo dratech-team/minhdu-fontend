@@ -8,4 +8,5 @@ export interface RemoteSalaryEntity extends BaseSalaryEntity {
   readonly startedAt: Date,
   readonly endedAt: Date
   readonly partial: PartialDayEnum
+  readonly duration: number
 }

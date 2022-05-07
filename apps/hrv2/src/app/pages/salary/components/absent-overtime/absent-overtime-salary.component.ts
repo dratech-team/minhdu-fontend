@@ -200,7 +200,6 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       rate: value.rate,
       title: value.template.title,
       partial: value.partialDay.value,
-      unit: value.unit,
       price: value.price,
       note: value.note,
       startedAt: moment(value.rangeDay[0]).set(
