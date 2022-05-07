@@ -102,6 +102,7 @@ export class PayrollEffect {
               allowance: this.getTotalAllowance(res.allowances),
               overtime: this.getTotalOvertimeOrAbsent(res.overtimes),
               absent: this.getTotalOvertimeOrAbsent(res.absents),
+              deduction: res.deductions?.reduce((a, b) => a + (b?.price || 0), 0),
               remote: this.getTotalRemote(res.remotes)
             },
             overtimes: res.overtimes.map(overtime => Object.assign(overtime, { expand: false }))

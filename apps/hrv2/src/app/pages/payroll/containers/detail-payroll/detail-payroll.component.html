@@ -140,16 +140,13 @@
                     </div>
                   </td>
                 </tr>
-                <tr *ngIf="payroll.basics.length !== 0">
+                <tr>
                   <td class="font-weight-bold">Tổng cộng: </td>
                   <td></td>
                   <td style='color: #05981C'>
                     {{ payroll.total.basic | number: '1.0' | notEmpty: '0' }}đ
                   </td>
                   <td></td>
-                </tr>
-                <tr *ngIf="payroll.basics.length === 0">
-                  <td colspan="4" style="height: 100px"> Chưa có lương cơ bản!</td>
                 </tr>
                 </tbody>
               </table>
@@ -195,15 +192,12 @@
                     </div>
                   </td>
                 </tr>
-                <tr *ngIf="payroll.total.stay">
+                <tr>
                   <td class="font-weight-bold">Tổng cộng :</td>
                   <td style='color: #05981C'>
                     {{payroll.total.stay | number: '1.0'| notEmpty: '0' }} đ
                   </td>
                   <td></td>
-                </tr>
-                <tr *ngIf="payroll.stays.length === 0">
-                  <td colspan="3" style="height: 100px"> Chưa có phụ cấp lương!</td>
                 </tr>
                 </tbody>
               </table>
@@ -305,9 +299,6 @@
                 </td>
                 <td></td>
                 <td></td>
-              </tr>
-              <tr *ngIf="payroll.allowances.length === 0">
-                <td colspan="9" style="height: 100px"> Chưa có phụ cấp!</td>
               </tr>
               </tbody>
             </table>
@@ -411,7 +402,7 @@
             </nz-table>
             </tr>
             </ng-template>
-            <tr *ngIf="payroll.overtimes.length > 0">
+            <tr *ngIf='payroll.overtimes?.length > 0'>
               <td></td>
               <td></td>
               <td class="font-weight-bold">Tổng cộng :</td>
@@ -517,7 +508,7 @@
                   </div>
                 </td>
               </tr>
-              <tr *ngIf="payroll.absents?.length > 0">
+              <tr>
                 <td></td>
                 <td class="font-weight-bold">Tổng cộng :</td>
                 <td></td>
@@ -534,13 +525,10 @@
                 <td></td>
                 <td></td>
               </tr>
-              <tr *ngIf="payroll.absents.length === 0">
-                <td colspan="8" style="height: 100px">Chưa có vắng!</td>
-              </tr>
               </tbody>
             </table>
           </div>
-          <!--            Khấu trừ-->
+          <!--Khấu trừ-->
           <div #absent class='col-12 mt-5'>
             <table>
               <thead>
@@ -602,13 +590,20 @@
                   </div>
                 </td>
               </tr>
-              <tr *ngIf="payroll.deductions.length === 0">
-                <td colspan="5" style="height: 100px">Chưa có khấu trừ!</td>
+              <tr *ngIf="payroll.total.remote">
+                <td></td>
+                <td class="font-weight-bold">Tổng cộng :</td>
+                <td>
+                  {{payroll.total.deduction}} đ
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
               </tr>
               </tbody>
             </table>
           </div>
-          <!--      ngày lễ-->
+          <!--ngày lễ-->
           <div #holiday class='col-12 mt-5' *ngIf="false">
             <table style="width: 100%">
               <thead>
@@ -689,7 +684,6 @@
               </tbody>
             </table>
           </div>
-
           <!--WFH-->
           <div #absent class='col-12 mt-5'>
             <table style="width: 100%">
@@ -758,7 +752,7 @@
                   </div>
                 </td>
               </tr>
-              <tr *ngIf="payroll.total.remote">
+              <tr>
                 <td></td>
                 <td class="font-weight-bold">Tổng cộng :</td>
                 <td></td>
@@ -769,15 +763,9 @@
                 <td></td>
                 <td></td>
               </tr>
-              <tr *ngIf="payroll.remotes.length === 0">
-                <td colspan="8" style="height: 100px">
-                  Chưa có remote/wfh/onsite
-                </td>
-              </tr>
               </tbody>
             </table>
           </div>
-
           <!--chú thích-->
           <div #note class='col-12 mt-5'>
             <table>
@@ -794,19 +782,12 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngIf="payroll.note else tableNote">
+              <tr>
                 <td>
-                  <span>{{payroll.note}}</span>
+                  <span>{{payroll.note || "Chưa có chú thích"}}</span>
                 </td>
                 <td width='10%'></td>
               </tr>
-              <ng-template #tableNote>
-                <tr>
-                  <td colspan="2" style="height: 100px">
-                    Chưa có thú thích
-                  </td>
-                </tr>
-              </ng-template>
               </tbody>
             </table>
           </div>

@@ -62,11 +62,12 @@ export interface PayrollEntity extends BasePayrollEntity {
   payrollIds?: number[];
   total: {
     payroll: number;
-    allowance: TotalSalary;
-    absent: TotalSalary;
-    overtime: TotalSalary;
-    remote: {duration: number};
     basic: number;
     stay: number;
+    allowance: TotalSalary;
+    absent: TotalSalary;
+    deduction: number;
+    overtime: TotalSalary;
+    remote: {duration: number};
   }
 }
