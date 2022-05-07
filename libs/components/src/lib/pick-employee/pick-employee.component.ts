@@ -8,7 +8,13 @@ import {MatDialog} from "@angular/material/dialog";
 import {DialogSharedComponent} from "../dialog-shared/dialog-shared.component";
 import {CategoryService} from "../../../../employee/src/lib/+state/service/category.service";
 import {EmployeeService} from "../../../../employee/src/lib/+state/service/employee.service";
-import {BranchActions, BranchQuery, PositionActions, PositionQuery} from "@minhdu-fontend/orgchart-v2";
+import {
+  BranchActions,
+  BranchQuery,
+  DepartmentActions, DepartmentQuery,
+  PositionActions,
+  PositionQuery
+} from "@minhdu-fontend/orgchart-v2";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {PaginationDto} from "@minhdu-fontend/constants";
 import {Actions} from "@datorama/akita-ng-effects";
@@ -22,6 +28,7 @@ export class PickEmployeeComponent implements OnInit {
   @Output() EventSelectEmployee = new EventEmitter<Employee[]>();
   positions$ = this.positionQuery.selectAll()
   branches$ = this.branchQuery.selectAll()
+  removeEmp$ = this.departmentQuery.select('removeEmp')
 
   type = SalaryTypeEnum;
   employees: Employee[] = [];
@@ -43,6 +50,7 @@ export class PickEmployeeComponent implements OnInit {
     private readonly categoryService: CategoryService,
     private readonly employeeService: EmployeeService,
     private readonly branchQuery: BranchQuery,
+    private readonly departmentQuery: DepartmentQuery,
     private readonly positionQuery: PositionQuery,
     private readonly message: NzMessageService,
   ) {
@@ -144,8 +152,14 @@ export class PickEmployeeComponent implements OnInit {
     }).afterClosed()
       .subscribe(val => {
         if (val && employee.category?.id) {
-          this.categoryService.removeEmployee(employee.category.id, {employeeId: employee.id}).subscribe()
-          delete employee.category
+          this.actions$.dispatch(DepartmentActions.removeEmployee({
+            id: employee.category.id, body: {employeeId: employee.id}
+          }))
+          this.removeEmp$.subscribe(val => {
+            if (val) {
+              delete employee.category
+            }
+          })
         }
       })
   }
