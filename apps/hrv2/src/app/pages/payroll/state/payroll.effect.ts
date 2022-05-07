@@ -16,6 +16,7 @@ import {
 import {TotalSalary} from "../entities";
 import {DatetimeUnitEnum} from "@minhdu-fontend/enums";
 import {PartialDayEnum} from "@minhdu-fontend/data-models";
+import {PayrollQuery} from "./payroll.query";
 
 @Injectable({providedIn: 'root'})
 export class PayrollEffect {
@@ -23,7 +24,8 @@ export class PayrollEffect {
     private readonly action$: Actions,
     private readonly service: PayrollService,
     private readonly message: NzMessageService,
-    private readonly payrollStore: PayrollStore
+    private readonly payrollStore: PayrollStore,
+    private readonly payrollQuery: PayrollQuery
   ) {
   }
 
@@ -84,18 +86,22 @@ export class PayrollEffect {
       return this.service.getOne(props).pipe(
         map(res => {
 
-          if (res.allowances?.length) {
-            res.totalAllowance = this.getTotalAllowance(res.allowances)
-          }
-          if (res.overtimes?.length) {
-            res.totalOvertime = this.getTotalOvertimeOrAbsent(res.overtimes)
-          }
-          if (res.absents?.length) {
-            res.totalAbsent = this.getTotalOvertimeOrAbsent(res.absents)
-          }
-          if (res.remotes?.length) {
-            res.totalRemote = this.getTotalRemote(res.remotes)
-          }
+          res.totalAllowance = res.allowances?.length
+            ? this.getTotalAllowance(res.allowances)
+            : undefined
+
+          res.totalOvertime = res.overtimes.length ?
+            this.getTotalOvertimeOrAbsent(res.overtimes)
+            : undefined
+
+          res.totalAbsent = res.absents?.length
+            ? this.getTotalOvertimeOrAbsent(res.absents)
+            : undefined
+
+          res.totalRemote = res.remotes?.length
+            ? this.getTotalRemote(res.remotes)
+            : undefined
+          
           return res
         }),
         tap(res => {
