@@ -7,7 +7,7 @@ module.exports = {
     '<rootDir>/apps/sell',
     '<rootDir>/libs/employee',
     '<rootDir>/libs/location',
-    '<rootDir>/apps/category',
+    '<rootDir>/apps/modal-department',
     '<rootDir>/apps/admin',
     '<rootDir>/libs/system-history',
     '<rootDir>/apps/breed',

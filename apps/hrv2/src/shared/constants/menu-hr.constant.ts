@@ -59,9 +59,14 @@ export const MenuHrConstant: MenuHrConstant[] = [
         href: 'to-chuc/don-vi'
       },
       {
+        name: 'Phòng ban',
+        href: 'to-chuc/phong-ban'
+      },
+      {
         name: 'Chức vụ',
         href: 'to-chuc/chuc-vu'
-      }
+      },
+
     ]
   },
   {
