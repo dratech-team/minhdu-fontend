@@ -1,7 +1,6 @@
 import {BaseEmployeeEntity} from "../../base";
-import {BaseAddDto, BaseSearchDto} from "@minhdu-fontend/base-dto";
-import {PaginationDto} from "@minhdu-fontend/constants";
-import {EmployeeType, Gender} from "@minhdu-fontend/enums";
+import {BaseSearchDto} from "@minhdu-fontend/base-dto";
+import {EmployeeType} from "@minhdu-fontend/enums";
 import {FlatSalaryTypeEnum} from "../../../../../../../apps/hrv2/src/app/pages/employee/enums/flat-salary-type.enum";
 import {StatusEnum} from "../../../../../../../apps/sell/src/app/shared/enums/status.enum";
 

@@ -39,6 +39,14 @@ const routes: Routes = [
         canActivate: [RouteGuard]
       },
       {
+        path: TabEnum.ORGCHART,
+        loadChildren: () =>
+          import('./pages/orgchart/orgchart.module').then(
+            (m) => m.OrgchartModule
+          ),
+        canActivate: [RouteGuard]
+      },
+      {
         path: TabEnum.RANK,
         loadChildren: () =>
           import('./pages/rank/rank.module').then(

@@ -4,8 +4,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {EmployeeStatusEnum, EmployeeType, Gender, ItemContextMenu, Role} from '@minhdu-fontend/enums';
 import {catchError, debounceTime, tap} from 'rxjs/operators';
 import {EmployeeStatusConstant, GenderTypeConstant, PaginationDto} from '@minhdu-fontend/constants';
-import {Observable, throwError} from 'rxjs';
-import {Category, District, Employee, Ward} from '@minhdu-fontend/data-models';
+import {throwError} from 'rxjs';
+import {District, Employee, Ward} from '@minhdu-fontend/data-models';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalService} from 'ng-zorro-antd/modal';
@@ -23,7 +23,13 @@ import {EmployeeTypeConstant} from "../../constants/employee-type.constant";
 import {FlatSalaryTypeConstant} from "../../constants/flat-salary-type.constant";
 import {ProvinceService} from "@minhdu-fontend/location";
 import {FlatSalaryTypeEnum} from "../../enums/flat-salary-type.enum";
-import {BranchActions, BranchQuery, PositionQuery} from "@minhdu-fontend/orgchart-v2";
+import {
+  BranchActions,
+  BranchQuery,
+  DepartmentActions,
+  DepartmentQuery,
+  PositionQuery
+} from "@minhdu-fontend/orgchart-v2";
 import {ModalEmployeeComponent} from "../../components/employee/modal-employee.component";
 import {ModalEmployeeData} from "../../data/modal-employee.data";
 
@@ -40,7 +46,7 @@ export class EmployeeComponent implements OnInit {
   positions$ = this.positionQuery.selectAll()
   branches$ = this.branchQuery.selectAll()
   provinces$ = this.provinceService.getAll()
-  categories$ = new Observable<Category[]>();
+  departments$ = this.departmentQuery.selectAll();
 
   districts: District[] = []
   wards: Ward[] = []
@@ -58,7 +64,7 @@ export class EmployeeComponent implements OnInit {
   pageSize = 15
   empStatusEnum = EmployeeStatusEnum
 
-  categoryControl = new FormControl('');
+  departmentControl = new FormControl('');
   formGroup = new FormGroup({
     name: new FormControl(''),
     phone: new FormControl(''),
@@ -90,26 +96,39 @@ export class EmployeeComponent implements OnInit {
     private readonly positionQuery: PositionQuery,
     private readonly branchQuery: BranchQuery,
     private readonly provinceService: ProvinceService,
+    private readonly departmentQuery: DepartmentQuery
   ) {
   }
 
   ngOnInit(): void {
-    this.actions$.dispatch(
-      EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false))
-    );
 
     this.actions$.dispatch(BranchActions.loadAll({}));
+    this.actions$.dispatch(DepartmentActions.loadAll({}))
+    this.activeRouter.queryParams.subscribe(val => {
+      if (val.departmentId) {
+        this.departmentQuery.selectEntity(val.departmentId).subscribe(
+          department => {
+            this.departmentControl.setValue(department, {emitEvent: false});
+            this.actions$.dispatch(
+              EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false))
+            );
+          }
+        )
+      }else{
+        this.actions$.dispatch(
+          EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false))
+        );
+      }
+    });
 
     this.formGroup.valueChanges
       .pipe(debounceTime(1500))
-      .subscribe(val => {
+      .subscribe(_ => {
         this.actions$.dispatch(EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false)));
       });
 
-    this.categoryControl.valueChanges.subscribe(val => {
-      if (val !== 0) {
-        this.actions$.dispatch(EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false)));
-      }
+    this.departmentControl.valueChanges.subscribe(_ => {
+      this.actions$.dispatch(EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false)));
     });
 
     this.formGroup.get('branch')?.valueChanges.subscribe(branch => {
@@ -133,7 +152,7 @@ export class EmployeeComponent implements OnInit {
   onAdd(employeeInit?: EmployeeEntity): void {
     this.modal.create({
       nzTitle: 'Thêm nhân viên',
-      nzWidth:'700px',
+      nzWidth: '700px',
       nzContent: ModalEmployeeComponent,
       nzComponentParams: <{ data: ModalEmployeeData }>{
         data: {
@@ -165,7 +184,7 @@ export class EmployeeComponent implements OnInit {
         status: val.status,
         employeeType: val.employeeType,
         isFlatSalary: val.flatSalary as FlatSalaryTypeEnum,
-        categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : ''
+        categoryId: this.departmentControl.value ? this.departmentControl.value.id : ''
       },
       isPaginate: isPagination
     };
@@ -194,9 +213,6 @@ export class EmployeeComponent implements OnInit {
   onRestore($event: any) {
   }
 
-  onAddCategory() {
-  }
-
   onDrop(event: CdkDragDrop<Employee[]>) {
     moveItemInArray(this.employees, event.previousIndex, event.currentIndex);
     const sort = this.employees.map((employee, i) => ({id: employee.id, stt: i + 1}));
@@ -206,9 +222,5 @@ export class EmployeeComponent implements OnInit {
         return throwError(err);
       })
     ).subscribe();
-  }
-
-  onUpdateCategory(): any {
-
   }
 }

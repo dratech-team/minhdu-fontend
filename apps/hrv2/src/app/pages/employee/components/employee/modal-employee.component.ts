@@ -13,8 +13,8 @@ import {Actions} from "@datorama/akita-ng-effects";
 import {EmployeeActions, EmployeeQuery} from "@minhdu-fontend/employee-v2";
 import {FlatSalaryTypeConstant} from "../../constants/flat-salary-type.constant";
 import {FlatSalaryTypeEnum} from "../../enums/flat-salary-type.enum";
-import {ModalEmployeeData} from "../../data/modal-employee.data";
 import {Observable} from "rxjs";
+import {ModalEmployeeData} from "../../data/modal-employee.data";
 
 @Component({
   templateUrl: 'modal-employee.component.html'
