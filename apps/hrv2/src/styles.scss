@@ -214,13 +214,13 @@ table tbody tr td {
 table tbody tr:nth-child(even),
 table tbody tr:nth-child(even) td
 {
-  background: #dddddd!important;
+  background: #dddddd;
 }
 
-table tbody tr:nth-child(odd),
-table tbody tr:nth-child(odd) td
+tr table tbody tr:nth-child(odd),
+tr table tbody tr:nth-child(odd) td
 {
-  background: white !important;
+  background: white;
 }
 
 .pointer {

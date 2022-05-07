@@ -4,7 +4,7 @@ import {SalarySettingComponent} from "./salary/containers/salary-setting";
 
 const routes: Routes = [
   {
-    path:'luong',
+    path:'',
     component: SalarySettingComponent
   }
 ];
