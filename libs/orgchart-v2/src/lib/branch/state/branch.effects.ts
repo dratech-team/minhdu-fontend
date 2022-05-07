@@ -32,11 +32,6 @@ export class BranchEffects {
       return this.branchService.pagination(props as SearchBranchDto).pipe(
         map((response) => {
           this.branchStore.update(state => ({...state, loading: false, total: response.total}));
-          if (response.data.length === 0) {
-            this.message.warning('Đã lấy hết đơn vị');
-          } else {
-            this.message.success('tải danh sách đơn vị thành công');
-          }
           if(response.data.length === 1 && response.data[0].positions){
             this.positionStore.set(response.data[0].positions)
           }

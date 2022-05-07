@@ -13,23 +13,29 @@ import {
   OvertimeSalaryEntity,
   RemoteSalaryEntity
 } from '../../salary/entities';
-import { TotalSalary } from '../entities';
+import { PayrollEntity, TotalSalary } from '../entities';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { PartialDayEnum } from '@minhdu-fontend/data-models';
+import { StateHistoryPlugin } from '@datorama/akita';
+import { PayrollQuery } from './payroll.query';
 
 @Injectable({ providedIn: 'root' })
 export class PayrollEffect {
+  private stateHistory: StateHistoryPlugin;
+
   constructor(
     private readonly action$: Actions,
     private readonly service: PayrollService,
     private readonly message: NzMessageService,
-    private readonly payrollStore: PayrollStore
+    private readonly payrollStore: PayrollStore,
+    private readonly payrollQuery: PayrollQuery
   ) {
+    this.stateHistory = new StateHistoryPlugin(this.payrollQuery);
   }
 
 
   @Effect()
-  addPayroll$ = this.action$.pipe(
+  add$ = this.action$.pipe(
     ofType(PayrollActions.addOne),
     switchMap((props: AddPayrollDto) => {
       this.payrollStore.update(state => ({
@@ -91,23 +97,7 @@ export class PayrollEffect {
     switchMap(props => {
       return this.service.getOne(props).pipe(
         map(res => {
-          const basics = res.salariesv2.filter(item => item.type === SalaryTypeEnum.BASIC || item.type === SalaryTypeEnum.BASIC_INSURANCE);
-          const stays = res.salariesv2.filter(item => item.type === SalaryTypeEnum.STAY);
-          return Object.assign(res, {
-            basics: basics,
-            stays: stays,
-            total: {
-              payroll: res.total,
-              basic: basics?.reduce((a, b) => a + (b?.price || 0), 0),
-              stay: stays?.reduce((a, b) => a + (b?.price || 0), 0),
-              allowance: this.getTotalAllowance(res.allowances),
-              overtime: this.getTotalOvertimeOrAbsent(res.overtimes),
-              absent: this.getTotalOvertimeOrAbsent(res.absents),
-              deduction: res.deductions?.reduce((a, b) => a + (b?.price || 0), 0),
-              remote: this.getTotalRemote(res.remotes)
-            },
-            overtimes: res.overtimes.map(overtime => Object.assign(overtime, { expand: false }))
-          });
+          return this.mapToPayroll(res);
         }),
         tap(res => {
           this.payrollStore.upsert(res.id, res);
@@ -127,11 +117,12 @@ export class PayrollEffect {
         ...state, added: false
       }));
       return this.service.update(props).pipe(
+        map(res => this.mapToPayroll(res)),
         tap(res => {
           this.payrollStore.update(state => ({
             ...state, added: true
           }));
-          this.payrollStore.update(res?.id, res);
+          this.payrollStore.update(res.id, res);
         }),
         catchError(err => {
           this.payrollStore.update(state => ({
@@ -166,6 +157,7 @@ export class PayrollEffect {
         ...state, added: false
       }));
       return this.service.confirm(props).pipe(
+        map(res => this.mapToPayroll(res)),
         tap(res => {
           this.payrollStore.update(state => ({
             ...state, added: true
@@ -203,7 +195,27 @@ export class PayrollEffect {
     })
   );
 
-  getTotalAllowance(allowances: AllowanceSalaryEntity[]): TotalSalary {
+  private mapToPayroll(payroll: PayrollEntity): PayrollEntity {
+    const basics = payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.BASIC || item.type === SalaryTypeEnum.BASIC_INSURANCE);
+    const stays = payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.STAY);
+    return Object.assign(payroll, {
+      basics: basics,
+      stays: stays,
+      total: {
+        payroll: payroll.total,
+        basic: basics?.reduce((a, b) => a + (b?.price || 0), 0),
+        stay: stays?.reduce((a, b) => a + (b?.price || 0), 0),
+        allowance: this.getTotalAllowance(payroll.allowances),
+        overtime: this.getTotalOvertimeOrAbsent(payroll.overtimes),
+        absent: this.getTotalOvertimeOrAbsent(payroll.absents),
+        deduction: payroll.deductions?.reduce((a, b) => a + (b?.price || 0), 0),
+        remote: this.getTotalRemote(payroll.remotes)
+      },
+      overtimes: payroll.overtimes.map(overtime => Object.assign(overtime, { expand: false }))
+    });
+  }
+
+  private getTotalAllowance(allowances: AllowanceSalaryEntity[]): TotalSalary {
     return allowances?.reduce((a, b) => {
       return {
         price: a.price + (b.price || 0),
@@ -216,7 +228,7 @@ export class PayrollEffect {
     }, { price: 0, total: 0, duration: { day: 0, hour: 0 } });
   }
 
-  getTotalOvertimeOrAbsent(salary: (AbsentSalaryEntity | OvertimeSalaryEntity)[]): TotalSalary {
+  private getTotalOvertimeOrAbsent(salary: (AbsentSalaryEntity | OvertimeSalaryEntity)[]): TotalSalary {
     return salary.reduce((a, b) => {
       const unit = b.setting?.unit;
       return {
@@ -237,7 +249,7 @@ export class PayrollEffect {
     }, { price: 0, total: 0, duration: { day: 0, hour: 0 } });
   }
 
-  getTotalRemote(salary: RemoteSalaryEntity[]) {
+  private getTotalRemote(salary: RemoteSalaryEntity[]) {
     return salary?.reduce((a, b) => {
       return {
         duration: a.duration + b.partial === PartialDayEnum.ALL_DAY ? b.duration : (b.duration / 2)

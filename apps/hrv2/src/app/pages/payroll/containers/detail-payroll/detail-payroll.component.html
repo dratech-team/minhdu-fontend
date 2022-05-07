@@ -34,7 +34,7 @@
                   <div class='col-12 d-flex justify-content-start ' style='color: black'>
                     <span class='d-inline-block font-weight-bold'>Ngày xác nhận phiếu lương: </span>
                     <span class='ml-2 pointer  px-1 rounded'>
-                  {{payroll.accConfirmedAt ? (payroll.accConfirmedAt|date: 'dd/MM/yyyy') : 'Chưa xác nhận'}}
+                  {{(payroll.accConfirmedAt | date: 'dd/MM/yyyy') || 'Chưa xác nhận'}}
                 </span>
                   </div>
                   <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}'
