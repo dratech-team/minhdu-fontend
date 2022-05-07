@@ -228,7 +228,7 @@ export class PayrollEffect {
   getTotalRemote(salary: RemoteSalaryEntity[]) {
     return salary.reduce((a, b) => {
       return {
-        duration: a.duration + b.duration
+        duration: a.duration + b.partial === PartialDayEnum.ALL_DAY ? b.duration : (b.duration / 2)
       }
     }, {duration: 0})
   }
