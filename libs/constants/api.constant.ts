@@ -32,7 +32,7 @@ export const Api = {
       CONTRACT: 'contract',
       POSITION: 'position',
       BRANCH: 'branch',
-      DEPARTMENT: 'modal-department',
+      DEPARTMENT: 'department',
       EMPLOYEE_EXPORT: 'employee/export/employee',
       CATEGORY: 'category',
       SORT_STT: 'employee/sort/stt',
@@ -96,7 +96,7 @@ export const Api = {
     CONSIGNMENT: 'consignment',
     IOI_RECEIPT: 'ioi-receipt',
     STOCK:'stock',
-    HISTORY: 'modal-department-history'
+    HISTORY: 'category-history'
   },
   BREED: {
     EGG_TYPE: 'egg-type',
