@@ -19,7 +19,7 @@ interface Salary {
 }
 
 export interface TotalSalary {
-  duration:{
+  duration: {
     day: number,
     hour?: number
   }
@@ -51,6 +51,8 @@ export interface PayrollEntity extends BasePayrollEntity {
   branch?: string,
   position?: string
   salariesv2: PermanentSalaryEntity[],
+  basics: PermanentSalaryEntity[],
+  stays: PermanentSalaryEntity[],
   salaries: SalaryEntity[],
   absents: AbsentSalaryEntity [],
   deductions: DeductionSalaryEntity [],
@@ -58,10 +60,12 @@ export interface PayrollEntity extends BasePayrollEntity {
   allowances: AllowanceSalaryEntity[],
   remotes: RemoteSalaryEntity[],
   payrollIds?: number[]
-  totalAllowance?:TotalSalary
+  totalAllowance?: TotalSalary
   totalOvertime?: TotalSalary
   totalAbsent?: TotalSalary
   totalRemote?: {
     duration: number
   }
+  totalBasic?: number
+  totalStay?: number
 }

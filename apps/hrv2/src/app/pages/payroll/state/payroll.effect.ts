@@ -14,7 +14,7 @@ import {
   RemoteSalaryEntity
 } from "../../salary/entities";
 import {TotalSalary} from "../entities";
-import {DatetimeUnitEnum} from "@minhdu-fontend/enums";
+import {DatetimeUnitEnum, SalaryTypeEnum} from "@minhdu-fontend/enums";
 import {PartialDayEnum} from "@minhdu-fontend/data-models";
 
 @Injectable({providedIn: 'root'})
@@ -58,6 +58,13 @@ export class PayrollEffect {
     switchMap((props) => {
       this.payrollStore.update(state => ({...state, loading: true}));
       return this.service.paginationPayroll(props.search).pipe(
+        map(res => {
+          res.data.map(payroll => {
+            payroll.basics = payroll.salariesv2.filter(item => item.type !== SalaryTypeEnum.STAY)
+            payroll.stays = payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.STAY)
+          })
+          return res
+        }),
         tap((res) => {
           this.payrollStore.update(state => ({...state, loading: false}));
           if (res.data.length === 0) {
@@ -98,6 +105,22 @@ export class PayrollEffect {
 
           res.totalRemote = res.remotes?.length
             ? this.getTotalRemote(res.remotes)
+            : undefined
+
+          const salaryBasic = res.salariesv2.filter(item => item.type !== SalaryTypeEnum.STAY)
+          res.basics = salaryBasic
+          res.totalBasic = salaryBasic.length
+            ? salaryBasic.reduce((a, b) => {
+              return a + b.price
+            }, 0)
+            : undefined
+
+          const salaryStay = res.salariesv2.filter(item => item.type === SalaryTypeEnum.STAY)
+          res.stays = salaryStay
+          res.totalStay = salaryStay.length
+            ? salaryStay.reduce((a, b) => {
+              return a + b.price
+            }, 0)
             : undefined
           return res
         }),

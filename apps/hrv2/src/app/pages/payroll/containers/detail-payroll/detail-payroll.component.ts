@@ -5,7 +5,6 @@ import {PartialDayEnum} from '@minhdu-fontend/data-models';
 import {getDaysInMonth} from '@minhdu-fontend/utils';
 import {DatePipe} from '@angular/common';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {Sort} from '@angular/material/sort';
 import {catchError, map} from 'rxjs/operators';
 import {PayrollQuery, PayrollStore} from '../../state';
 import {PayrollActions} from '../../state/payroll.action';
@@ -61,7 +60,8 @@ export class DetailPayrollComponent implements OnInit {
         } else {
           this.daysInMonth = new Date().getDate();
         }
-        this.sortedSalaryOver = JSON.parse(JSON.stringify(payroll.overtimes));
+        this.overtimes =JSON.parse(JSON.stringify(payroll.overtimes))
+        this.overtimes.map(item => item.expand = false)
       }
       return payroll;
     })
@@ -74,7 +74,7 @@ export class DetailPayrollComponent implements OnInit {
   unitSalaryConstant = UnitSalaryConstant
   sessionConstant = SessionConstant
 
-  sortedSalaryOver: OvertimeSalaryEntity[] = [];
+  overtimes: OvertimeSalaryEntity[] = [];
 
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
@@ -381,22 +381,6 @@ export class DetailPayrollComponent implements OnInit {
     });
   }
 
-  sortData(sort: Sort) {
-    this.sortedSalaryOver = this.sortedSalaryOver.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'title':
-          return this.compare(b.title, a.title, isAsc);
-        case 'datetime':
-          return this.compare(b.startedAt, a.endedAt, isAsc);
-        case 'unit':
-          return this.compare(b.unit, a.unit, isAsc);
-        default:
-          return 0;
-      }
-    });
-  }
-
   compare(a: number | string | Date, b: number | string | Date, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
@@ -407,7 +391,7 @@ export class DetailPayrollComponent implements OnInit {
 
   onSalarySetting(title: string | undefined) {
     if (title) {
-      this.router.navigate(['ban-mau'], {
+      this.router.navigate(['cai-dat'], {
         queryParams: {
           title: title
         }
