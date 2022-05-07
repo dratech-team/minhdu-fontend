@@ -32,7 +32,7 @@ export class UpdatePayrollComponent implements OnInit {
   }));
   added$ = this.payrollQuery.select(state => state.added)
   compareFN = (o1: any, o2: any) => (typeof o1 === 'string' && o2 ? o1 === o2.name : o1.id === o2.id);
-  compareRecipe = (o1: any, o2: any) => (o1 && o2 ? ( o1 === o2.value || o1.value === o2.value) : o1 === o2);
+  compareRecipe = (o1: any, o2: any) => (o1 && o2 ? (o1 === o2.value || o1.value === o2.value) : o1 === o2);
 
   constructor(
     private readonly branchQuery: BranchQuery,
@@ -45,15 +45,16 @@ export class UpdatePayrollComponent implements OnInit {
   }
 
   ngOnInit() {
+    const payroll = this.data.payroll
     this.actions$.dispatch(BranchActions.loadAll({}))
     this.formGroup = this.formBuilder.group({
-      createdAt: [this.data.payroll.createdAt, Validators.required],
-      branch: [this.data.payroll.branch, Validators.required],
-      position: [this.data.payroll.position, Validators.required],
-      workday: [this.data.payroll.workday, Validators.required],
-      recipeType: [this.data.payroll.recipeType, Validators.required],
-      isFlatSalary: [this.data.payroll.isFlatSalary, Validators.required],
-      tax: [this.data.payroll.tax ? this.data.payroll.tax * 100 : ''],
+      createdAt: [payroll.createdAt],
+      branch: [payroll.branch],
+      position: [payroll.position],
+      workday: [payroll.workday],
+      recipeType: [payroll.recipeType],
+      isFlatSalary: [payroll.isFlatSalary],
+      tax: [payroll.tax ? payroll.tax * 100 : ''],
     })
 
     this.formGroup.get('branch')?.valueChanges.subscribe(val => {
