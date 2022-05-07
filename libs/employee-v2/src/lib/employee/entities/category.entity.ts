@@ -7,6 +7,7 @@ export interface CategoryEntity {
   id: number,
   name: string,
   app?: App,
+  branchId?: number
   branch?: BranchEntity,
   employees: EmployeeEntity[]
   note?: string

@@ -50,7 +50,7 @@ export function createInitialState(): SettingSalaryState {
 }
 
 @Injectable({providedIn: 'root'})
-@StoreConfig({name: 'salary-setting'})
+@StoreConfig({name: 'category'})
 export class SettingSalaryStore extends EntityStore<SettingSalaryState> {
   constructor() {
     super(createInitialState());

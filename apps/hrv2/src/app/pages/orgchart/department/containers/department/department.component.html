@@ -1,0 +1,60 @@
+<div class="d-flex mt-3 ml-2">
+  <div class='d-flex flex-column ml-3 border p-2' style='height: 80vh; width:250px; overflow-y: scroll'>
+    <nz-collapse>
+      <nz-collapse-panel
+        nzHeader='Tìm kiếm'
+        nzActive='true'>
+        <div [formGroup]='formGroup'>
+          <input nz-input class='form-control' type='search' formControlName='search'>
+        </div>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </div>
+  <div class="d-flex flex-column ml-2" style="width: 80vw">
+    <div class="mt-2 d-flex flex-column">
+      <div class="d-flex mb-2 justify-content-between align-items-center">
+        <div>
+          <span class="font-weight-bold">Tổng: </span> {{total$|async}}
+        </div>
+       <div>
+         <button nz-button nzType="primary" (click)="onAdd()">Thêm</button>
+       </div>
+      </div>
+      <nz-table #tableDepartment
+                [nzLoading]="loading$|async"
+                [nzScroll]="{ x: '',y: '58vh'}"
+                nzSize='small'
+                [nzData]="(departments$|async)|| []"
+                [nzPageSize]="pageSizeTable"
+                (nzPageIndexChange)="onPagination($event)"
+      >
+        <thead>
+        <tr>
+          <th nzLeft nzWidth="60px">STT</th>
+          <th>Mã Phòng ban</th>
+          <th nzLeft>Tên phòng ban</th>
+          <th nzLeft>Đơn vị</th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-template ngFor let-department [ngForOf]="tableDepartment.data" let-i='index'>
+          <tr (click)="onEmployee(department)" (contextmenu)='child.onContextMenu($event,department)'>
+            <td nzLeft>{{(i + 1) + ((tableDepartment.nzPageIndex - 1) * pageSizeTable)}}</td>
+            <td>{{department.id}}</td>
+            <td nzLeft>{{department.name}}</td>
+            <td>{{department.branch.name}}</td>
+          </tr>
+        </ng-template>
+        </tbody>
+      </nz-table>
+    </div>
+
+  </div>
+</div>
+<app-mouse-right
+  #child
+  (onAdd)='onAdd($event)'
+  (onUpdate)='onUpdate($event)'
+  (onDel)='onDelete($event)'
+></app-mouse-right>
+
