@@ -57,20 +57,20 @@ export class DepartmentEffects {
     ofType(DepartmentActions.addOne),
     switchMap((props) => {
       this.departmentStore.update(state => ({
-        ...state, added: false
+        ...state, addeds: false
       }));
       return this.departmentService.addOne(props).pipe(
         tap((res) => {
             this.message.success('Thêm đơn vị thành công')
             this.departmentStore.update(state => ({
-              ...state, added: true
+              ...state, addeds: true
             }));
             this.departmentStore.add(res);
           }
         ),
         catchError(err => {
           this.departmentStore.update(state => ({
-            ...state, added: null
+            ...state, addeds: null
           }));
           return of(DepartmentActions.error(err))
         }),
@@ -92,18 +92,18 @@ export class DepartmentEffects {
     ofType(DepartmentActions.update),
     switchMap((props) => {
         this.departmentStore.update(state => ({
-          ...state, added: false
+          ...state, addeds: false
         }));
         return this.departmentService.update(props).pipe(
           tap(response => {
             this.departmentStore.update(state => ({
-              ...state, added: true
+              ...state, addeds: true
             }));
             this.departmentStore.update(response.id, response);
           }),
           catchError(err => {
               this.departmentStore.update(state => ({
-                ...state, added: null
+                ...state, addeds: null
               }));
               return of(DepartmentActions.error(err))
             }

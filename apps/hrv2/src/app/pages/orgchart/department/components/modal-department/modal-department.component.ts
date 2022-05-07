@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {DatePipe} from '@angular/common';
 import {Actions} from "@datorama/akita-ng-effects";
 import {DataAddOrUpdateDepartment} from "../../data/modal-department.data";
-import {BranchActions, BranchQuery, DepartmentActions} from "@minhdu-fontend/orgchart-v2";
+import {BranchActions, BranchQuery, DepartmentActions, DepartmentQuery} from "@minhdu-fontend/orgchart-v2";
 import {tap} from "rxjs/operators";
 import {NzModalRef} from "ng-zorro-antd/modal";
 
@@ -21,7 +21,7 @@ export class ModalDepartmentComponent implements OnInit {
           this.formGroup.get('branch')?.setValue(branches[0])
         }
       }))
-  added$ = this.branchQuery.select('added')
+  added$ = this.departmentQuery.select(state => state.added)
 
   stepIndex = 0;
   formGroup!: FormGroup;
@@ -34,6 +34,7 @@ export class ModalDepartmentComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly branchQuery: BranchQuery,
     private readonly modalRef: NzModalRef,
+    private readonly departmentQuery: DepartmentQuery,
   ) {
   }
 

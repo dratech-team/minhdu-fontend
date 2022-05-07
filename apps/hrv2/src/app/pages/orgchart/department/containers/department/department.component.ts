@@ -18,8 +18,8 @@ import {Router} from "@angular/router";
 })
 export class DepartmentComponent implements OnInit {
   departments$ = this.departmentQuery.selectAll()
-  loading$ = this.departmentQuery.select('loading')
-  total$ = this.departmentQuery.select('total')
+  loading$ = this.departmentQuery.select(state => state.loading)
+  total$ = this.departmentQuery.select(state => state.total)
   pageSizeTable = 10;
 
   formGroup = new FormGroup(
