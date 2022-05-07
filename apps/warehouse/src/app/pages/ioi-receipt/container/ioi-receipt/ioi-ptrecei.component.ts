@@ -16,7 +16,7 @@ import { WarehouseAction, WarehouseQuery } from '../../../warehouse/state';
 import {IoiReceiptDialogComponent} from "../../components";
 
 @Component({
-  selector: 'minhdu-fontend-category',
+  selector: 'minhdu-fontend-modal-department',
   templateUrl: 'ioi-receipt.component.html'
 
 })

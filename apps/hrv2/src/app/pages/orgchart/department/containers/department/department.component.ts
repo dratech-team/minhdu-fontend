@@ -6,8 +6,8 @@ import {PaginationDto} from '@minhdu-fontend/constants';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {DepartmentActions, DepartmentQuery} from "@minhdu-fontend/orgchart-v2";
-import {ModalDepartmentComponent} from "../../components/category/modal-department.component";
-import {DataAddOrUpdateCategory} from "../../data/modal-department.data";
+import {ModalDepartmentComponent} from "../../components/modal-department/modal-department.component";
+import {DataAddOrUpdateDepartment} from "../../data/modal-department.data";
 import {DepartmentEntity} from "@minhdu-fontend/orgchart-v2";
 import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
@@ -77,7 +77,7 @@ export class DepartmentComponent implements OnInit {
       nzWidth: 'fit-content',
       nzTitle: 'Tạo phòng ban',
       nzContent: ModalDepartmentComponent,
-      nzComponentParams: <{ data?: DataAddOrUpdateCategory }>{
+      nzComponentParams: <{ data?: DataAddOrUpdateDepartment }>{
         data: {
           add: {
             category: department
@@ -93,7 +93,7 @@ export class DepartmentComponent implements OnInit {
       nzWidth: 'fit-content',
       nzTitle: 'Cập nhật phòng ban',
       nzContent: ModalDepartmentComponent,
-      nzComponentParams: <{ data?: DataAddOrUpdateCategory }>{
+      nzComponentParams: <{ data?: DataAddOrUpdateDepartment }>{
         data: {
           update: {
             department: department

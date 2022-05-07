@@ -1,4 +1,3 @@
-import {CategoryEntity} from "@minhdu-fontend/employee-v2";
 import {RequireOnlyOne} from "../../../../../shared/types";
 import {DepartmentEntity} from "@minhdu-fontend/orgchart-v2";
 
@@ -11,4 +10,4 @@ export interface ModalDepartmentData {
   }
 }
 
-export type DataAddOrUpdateCategory = RequireOnlyOne<ModalDepartmentData, 'add' | 'update'>
+export type DataAddOrUpdateDepartment = RequireOnlyOne<ModalDepartmentData, 'add' | 'update'>

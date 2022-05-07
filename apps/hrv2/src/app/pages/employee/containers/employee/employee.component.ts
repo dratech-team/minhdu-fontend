@@ -30,8 +30,6 @@ import {
   DepartmentQuery,
   PositionQuery
 } from "@minhdu-fontend/orgchart-v2";
-import {ModalDepartmentComponent} from "../../../orgchart/department/components/category/modal-department.component";
-import {DataAddOrUpdateCategory} from "../../../orgchart/department/data/modal-department.data";
 import {ModalEmployeeComponent} from "../../components/employee/modal-employee.component";
 import {ModalEmployeeData} from "../../data/modal-employee.data";
 
@@ -215,17 +213,6 @@ export class EmployeeComponent implements OnInit {
   onRestore($event: any) {
   }
 
-  onAddCategory() {
-    this.modal.create({
-      nzWidth: 'fit-content',
-      nzTitle: 'Thêm Phòng ban',
-      nzContent: ModalDepartmentComponent,
-      nzFooter: []
-    }).afterClose.subscribe(_ => {
-      this.actions$.dispatch(EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false)))
-    })
-  }
-
   onDrop(event: CdkDragDrop<Employee[]>) {
     moveItemInArray(this.employees, event.previousIndex, event.currentIndex);
     const sort = this.employees.map((employee, i) => ({id: employee.id, stt: i + 1}));
@@ -235,23 +222,5 @@ export class EmployeeComponent implements OnInit {
         return throwError(err);
       })
     ).subscribe();
-  }
-
-  onUpdateCategory(): any {
-    this.modal.create({
-      nzWidth: 'fit-content',
-      nzTitle: 'Cập nhật Phòng ban',
-      nzContent: ModalDepartmentComponent,
-      nzComponentParams: <{ data?: DataAddOrUpdateCategory }>{
-        data: {
-          update: {
-            department: this.departmentControl.value
-          }
-        }
-      },
-      nzFooter: []
-    }).afterClose.subscribe(_ => {
-      this.actions$.dispatch(EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false)))
-    })
   }
 }

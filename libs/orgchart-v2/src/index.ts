@@ -9,7 +9,7 @@ export * from './lib/position/entities/position.entity'
 export * from './lib/position/state/position.actions'
 export * from './lib/position/state/position.query'
 export * from './lib/position/state/position.store'
-//department
+//modal-department
 export * from './lib/department/state/department.query'
 export * from './lib/department/state/department.store'
 export * from './lib/department/state/department.actions'

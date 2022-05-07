@@ -12,7 +12,7 @@ import {SalarySettingEntity} from "../../entities";
 import {SettingSalaryDialogComponent} from "../../components/salary-setting";
 
 @Component({
-  selector: 'minhdu-fontend-department',
+  selector: 'minhdu-fontend-salary-setting',
   templateUrl: 'salary-setting.component.html'
 })
 export class SalarySettingComponent implements OnInit {

@@ -20,7 +20,7 @@ import {MatChipsModule} from "@angular/material/chips";
 import {MatIconModule} from "@angular/material/icon";
 import {DepartmentComponent} from "./department/containers/department/department.component";
 import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
-import {ModalDepartmentComponent} from "./department/components/category/modal-department.component";
+import {ModalDepartmentComponent} from "./department/components/modal-department/modal-department.component";
 import {NzStepsModule} from "ng-zorro-antd/steps";
 
 @NgModule({

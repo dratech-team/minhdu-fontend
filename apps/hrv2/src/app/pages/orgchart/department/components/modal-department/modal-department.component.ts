@@ -1,11 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {DatePipe} from '@angular/common';
-import {Branch, Employee} from "@minhdu-fontend/data-models";
 import {Actions} from "@datorama/akita-ng-effects";
-import {DataAddOrUpdateCategory} from "../../data/modal-department.data";
+import {DataAddOrUpdateDepartment} from "../../data/modal-department.data";
 import {BranchActions, BranchQuery, DepartmentActions} from "@minhdu-fontend/orgchart-v2";
 import {tap} from "rxjs/operators";
+import {NzModalRef} from "ng-zorro-antd/modal";
 
 
 @Component({
@@ -13,7 +13,7 @@ import {tap} from "rxjs/operators";
 })
 
 export class ModalDepartmentComponent implements OnInit {
-  @Input() data?: DataAddOrUpdateCategory
+  @Input() data?: DataAddOrUpdateDepartment
   branches$ = this.branchQuery.selectAll()
     .pipe(
       tap(branches => {
@@ -21,14 +21,11 @@ export class ModalDepartmentComponent implements OnInit {
           this.formGroup.get('branch')?.setValue(branches[0])
         }
       }))
-
-  employeeSelected: Employee[] = [];
-  branchSelected?: Branch
+  added$ = this.branchQuery.select('added')
 
   stepIndex = 0;
-  submitting = false;
-
   formGroup!: FormGroup;
+
   compareFn = (o1: any, o2: any) => (o1 && o2 ? (o1 == o2.id || o1.id === o2.id) : o1 === o2);
 
   constructor(
@@ -36,6 +33,7 @@ export class ModalDepartmentComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly formBuilder: FormBuilder,
     private readonly branchQuery: BranchQuery,
+    private readonly modalRef: NzModalRef,
   ) {
   }
 
@@ -56,8 +54,6 @@ export class ModalDepartmentComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submitting = true;
-
     if (this.formGroup.invalid) {
       return;
     }
@@ -68,6 +64,11 @@ export class ModalDepartmentComponent implements OnInit {
         ? DepartmentActions.update({id: this.data.update.department.id, updates: department})
         : DepartmentActions.addOne({body: department})
     )
+    this.added$.subscribe(added => {
+      if (added) {
+        this.modalRef.close()
+      }
+    })
   }
 
   mapDepartment() {

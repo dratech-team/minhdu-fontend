@@ -6,7 +6,7 @@ export const FeatureName = {
   ORG_CHART: 'orgchart',
   EMPLOYEE: 'employee',
   PAYROLL: 'payroll',
-  DEPARTMENT: 'department',
+  DEPARTMENT: 'modal-department',
   POSITION: 'position',
   TEMPLATE_OVERTIME :'template overtime',
   TEMPLATE_SALARY :'template salary',

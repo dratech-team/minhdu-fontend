@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {EmployeeStatusEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {Employee} from '@minhdu-fontend/data-models';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {debounceTime, mergeMap} from 'rxjs/operators';
@@ -18,6 +18,8 @@ import {
 import {NzMessageService} from "ng-zorro-antd/message";
 import {PaginationDto} from "@minhdu-fontend/constants";
 import {Actions} from "@datorama/akita-ng-effects";
+import {StatusEnum} from "../../../../../apps/sell/src/app/shared/enums/status.enum";
+import {FlatSalaryTypeEnum} from "../../../../../apps/hrv2/src/app/pages/employee/enums/flat-salary-type.enum";
 
 @Component({
   selector: '@minhdu-fontend-pick-employee',
@@ -132,8 +134,8 @@ export class PickEmployeeComponent implements OnInit {
       name: val.name,
       branch: val?.branch ? val.branch : '',
       position: val?.position ? val.position : '',
-      isFlatSalary: -1,
-      status: 1
+      isFlatSalary: FlatSalaryTypeEnum.ALL,
+      status: EmployeeStatusEnum.IS_ACTIVE
     }
   }
 
