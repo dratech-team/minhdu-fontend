@@ -344,6 +344,7 @@
                 <th mat-sort-header='title'>Tăng ca</th>
                 <th mat-sort-header='datetime'>Thời gian</th>
                 <th>Tổng ngày</th>
+                <th>Hệ số</th>
                 <th>Đơn giá</th>
                 <th>Thành tiền</th>
                 <th>Chú thích</th>
@@ -379,6 +380,9 @@
                 <td>
                   {{salary.duration}} {{ salary.partial | transformconstant: sessionConstant}}
                 </td>
+                <td>
+                  {{salary.rate}}
+                </td>
                 <td style='color: #05981C'>
                 <span>
                   {{salary.price| number: '1.0' | notEmpty :'0' }} đ
@@ -387,7 +391,7 @@
                   + {{salary.allowance.price | number : '1.0'}}
                 </span>
                 </td>
-                <td style='color: #29CC97'>
+                <td style='color: #05981C'>
                 <span>
                   {{ salary.total | number:'1.0'}}
                 </span>
@@ -416,11 +420,8 @@
                   {{payroll.totalOvertime.duration.day}} ngày
                   <br>{{payroll.totalOvertime.duration.hour}} Giờ
                 </td>
-                <td style='color: #05981C'>
-                  {{payroll.totalOvertime.price
-                  | number: '1.0'
-                  | notEmpty: '0' }}đ
-                </td>
+                <td></td>
+                <td></td>
                 <td style='color: #05981C'>
                   {{payroll.totalOvertime.total
                   | number: '1.0'
