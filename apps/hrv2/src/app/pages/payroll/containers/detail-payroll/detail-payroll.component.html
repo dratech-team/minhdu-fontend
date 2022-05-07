@@ -35,7 +35,11 @@
                   </div>
                   <div class='col-12 d-flex justify-content-start ' style='color: black'>
                     <span class='d-inline-block font-weight-bold'>Lương thực nhân: </span>
-                    <span class='ml-1'>{{payroll.total.payroll | roundingnumber :1000|number:'1.0-0'| notEmpty:'0'}}
+                    <span class='ml-1'>
+                      {{payroll.total.payroll
+                      | roundingnumber :1000
+                      |number:'1.0-0'
+                      | notEmpty:'0'}}
                       đ</span>
                   </div>
                 </div>
@@ -112,7 +116,10 @@
                   <td> {{salary.title}}</td>
                   <td> {{salary.rate}}</td>
                   <td class=' text-center ' style='color: #05981C'>
-                    {{salary.price | number:'1.0' | notEmpty:'0'}} đ
+                    {{salary.price
+                    | roundingnumber :1000
+                    | number:'1.0'
+                    | notEmpty:'0'}} đ
                   </td>
                   <td width='22%' class='col-md-2'>
                     <div class='d-flex justify-content-around'>
@@ -133,7 +140,10 @@
                   <td class="font-weight-bold">Tổng cộng:</td>
                   <td></td>
                   <td style='color: #05981C'>
-                    {{ payroll.total.basic | number: '1.0' | notEmpty: '0' }}đ
+                    {{ payroll.total.basic
+                    | roundingnumber :1000
+                    | number: '1.0'
+                    | notEmpty: '0' }} đ
                   </td>
                   <td></td>
                 </tr>
@@ -164,7 +174,10 @@
                 <tr *ngFor="let salary of payroll.stays">
                   <td> {{salary.title}}</td>
                   <td style='color: #05981C'>
-                    {{salary.price|number:'1.0'|notEmpty:'0'}} đ
+                    {{salary.price
+                    | roundingnumber :1000
+                    |number:'1.0'
+                    |notEmpty:'0'}} đ
                   </td>
                   <td>
                     <div class='d-flex justify-content-around'>
@@ -184,7 +197,10 @@
                 <tr>
                   <td class="font-weight-bold">Tổng cộng :</td>
                   <td style='color: #05981C'>
-                    {{payroll.total.stay | number: '1.0'| notEmpty: '0' }} đ
+                    {{payroll.total.stay
+                    | roundingnumber :1000
+                    | number: '1.0'
+                    | notEmpty: '0' }} đ
                   </td>
                   <td></td>
                 </tr>
@@ -250,9 +266,15 @@
                 <td>
                   <label nz-checkbox nzDisabled [nzChecked]="salary.inWorkday"></label>
                 </td>
-                <td style='color: #05981C'>{{salary.price|number:'1.0'| notEmpty:'0'}}đ
+                <td style='color: #05981C'>{{salary.price
+                  | roundingnumber :1000
+                  |number:'1.0'
+                  | notEmpty:'0'}} đ
                 </td>
-                <td style='color: #05981C'>{{salary.total|number:'1.0'| notEmpty:'0'}}đ
+                <td style='color: #05981C'>{{salary.total
+                  | roundingnumber :1000
+                  |number:'1.0'
+                  | notEmpty:'0'}} đ
                 </td>
                 <td>
                   <span>{{salary?.note}}</span>
@@ -278,13 +300,15 @@
                 <td></td>
                 <td style='color: #05981C'>
                   {{payroll.total.allowance.price
+                  | roundingnumber :1000
                   | number: '1.0'
-                  | notEmpty: '0' }}đ
+                  | notEmpty: '0' }} đ
                 </td>
                 <td style='color: #05981C'>
                   {{payroll.total.allowance.total
+                  | roundingnumber :1000
                   | number: '1.0'
-                  | notEmpty: '0' }}đ
+                  | notEmpty: '0' }} đ
                 </td>
                 <td></td>
                 <td></td>
@@ -344,7 +368,9 @@
                   </td>
                   <td style='color: #05981C'>
                 <span>
-                  {{ salary.total | number:'1.0'}}
+                  {{ salary.total
+                  | roundingnumber :1000
+                  | number:'1.0'}} đ
                 </span>
                   </td>
                   <td>
@@ -384,7 +410,11 @@
                 <td style="background: white">{{item.datetime | date:'dd-MM-yyyy'}}</td>
                 <td style="background: white">{{item.duration}}</td>
                 <td style="background: white">{{item.rate}}</td>
-                <td style="background: white">{{item.price | number:'1.0-0'}}</td>
+                <td style="background: white">
+                  {{item.price
+                  | roundingnumber :1000
+                  | number:'1.0-0'}} đ
+                </td>
                 <td style="background: white">{{item.total | number:'1.0-0'}}</td>
               </tr>
               </tbody>
@@ -401,7 +431,10 @@
                 <br>{{payroll.total.overtime.duration.hour}} Giờ
               </td>
               <td style='color: #05981C'>
-                {{payroll.total.overtime.total | number: '1.0' | notEmpty: '0' }}đ
+                {{payroll.total.overtime.total
+                | roundingnumber :1000
+                | number: '1.0'
+                | notEmpty: '0' }} đ
               </td>
               <td></td>
               <td></td>
@@ -473,12 +506,16 @@
                 </td>
                 <td>
                     <span style='color: red'>
-                      {{salary.price | number:'1.0-0'}} đ
+                      {{salary.price
+                      | roundingnumber :1000
+                      | number:'1.0-0'}} đ
                     </span>
                 </td>
                 <td>
                     <span style='color: red'>
-                      {{salary.total | number:'1.0-0'}} đ
+                      {{salary.total
+                      | roundingnumber :1000
+                      | number:'1.0-0'}} đ
                     </span>
                 </td>
                 <td>
@@ -506,10 +543,16 @@
                   <br>{{payroll.total.absent.duration.hour}} Giờ
                 </td>
                 <td style='color: #05981C'>
-                  {{payroll.total.absent.price | number: '1.0-0' | notEmpty: '0' }}đ
+                  {{payroll.total.absent.price
+                  | roundingnumber :1000
+                  | number: '1.0-0'
+                  | notEmpty: '0' }} đ
                 </td>
                 <td style='color: #05981C'>
-                  {{payroll.total.absent.total | number: '1.0-0' | notEmpty: '0' }}đ
+                  {{payroll.total.absent.total
+                  | roundingnumber :1000
+                  | number: '1.0-0'
+                  | notEmpty: '0' }} đ
                 </td>
                 <td></td>
                 <td></td>
@@ -583,7 +626,10 @@
                 <td></td>
                 <td class="font-weight-bold">Tổng cộng :</td>
                 <td>
-                  {{payroll.total.deduction}} đ
+                  {{payroll.total.deduction
+                  | roundingnumber :1000
+                  |number:'1.0-0'
+                  }} đ
                 </td>
                 <td></td>
                 <td></td>
@@ -652,7 +698,10 @@
                   <span>{{salary.rate}}</span>
                 </td>
                 <td class=' text-center'>
-                  {{salary.price | number:'1.0' | notEmpty:'Theo hệ số lương cơ bản'}}
+                  {{salary.price
+                  | roundingnumber :1000
+                  | number:'1.0'
+                  | notEmpty:'Theo hệ số lương cơ bản'}}
                 </td>
                 <td class=' text-center'>
                   {{(salary.price * salary.times * salary.rate) | number:'1.0' | notEmpty:'Theo hệ số lương cơ bản'}}
@@ -746,7 +795,10 @@
                 <td class="font-weight-bold">Tổng cộng :</td>
                 <td></td>
                 <td>
-                  {{payroll.total.remote.duration}} ngày
+                  {{payroll.total.remote.duration
+                  | roundingnumber :1000
+                  | number:'1.0-0'
+                  }} ngày
                 </td>
                 <td></td>
                 <td></td>
@@ -850,7 +902,11 @@
                   </span>
                       <ng-template #total>
                       <span>
-                     {{salary.price * salary.times + salary.allowance.price|number:'1.0'|notEmpty:'0'}} đ
+                     {{salary.price * salary.times +
+                      salary.allowance.price
+                        | roundingnumber :1000
+                        |number:'1.0'
+                        |notEmpty:'0'}} đ
                   </span>
                       </ng-template>
                     </td>
