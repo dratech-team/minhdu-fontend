@@ -141,9 +141,11 @@
 }
 
 .employee {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
   border: solid 1px white;
-  padding: 25px;
   border-radius: 15px;
 }
 .sticky-scroll{

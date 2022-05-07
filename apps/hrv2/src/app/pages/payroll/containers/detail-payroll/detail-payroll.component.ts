@@ -60,10 +60,8 @@ export class DetailPayrollComponent implements OnInit {
         } else {
           this.daysInMonth = new Date().getDate();
         }
-        this.overtimes =JSON.parse(JSON.stringify(payroll.overtimes))
-        this.overtimes.map(item => item.expand = false)
+        return JSON.parse(JSON.stringify(payroll));
       }
-      return payroll;
     })
   );
   loading$ = this.payrollQuery.select(state => state.loading);
@@ -73,8 +71,6 @@ export class DetailPayrollComponent implements OnInit {
   remoteConstant = RemoteConstant
   unitSalaryConstant = UnitSalaryConstant
   sessionConstant = SessionConstant
-
-  overtimes: OvertimeSalaryEntity[] = [];
 
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;

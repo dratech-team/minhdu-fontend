@@ -122,6 +122,8 @@ export class PayrollEffect {
               return a + b.price
             }, 0)
             : undefined
+
+          res.overtimes.map(item => item.expand = false)
           return res
         }),
         tap(res => {

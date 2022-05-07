@@ -68,4 +68,5 @@ export interface PayrollEntity extends BasePayrollEntity {
   }
   totalBasic?: number
   totalStay?: number
+  total: number
 }
