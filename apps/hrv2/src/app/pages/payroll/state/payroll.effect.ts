@@ -16,7 +16,6 @@ import {
 import {TotalSalary} from "../entities";
 import {DatetimeUnitEnum} from "@minhdu-fontend/enums";
 import {PartialDayEnum} from "@minhdu-fontend/data-models";
-import {PayrollQuery} from "./payroll.query";
 
 @Injectable({providedIn: 'root'})
 export class PayrollEffect {
@@ -25,7 +24,6 @@ export class PayrollEffect {
     private readonly service: PayrollService,
     private readonly message: NzMessageService,
     private readonly payrollStore: PayrollStore,
-    private readonly payrollQuery: PayrollQuery
   ) {
   }
 
@@ -101,7 +99,6 @@ export class PayrollEffect {
           res.totalRemote = res.remotes?.length
             ? this.getTotalRemote(res.remotes)
             : undefined
-
           return res
         }),
         tap(res => {
@@ -238,5 +235,4 @@ export class PayrollEffect {
       }
     }, {duration: 0})
   }
-
 }

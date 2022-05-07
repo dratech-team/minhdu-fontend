@@ -18,11 +18,12 @@ import {select, Store} from '@ngrx/store';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import {Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {debounceTime} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedAddingPayroll,
-  selectedBranchPayroll, selectedEmpStatusPayroll,
+  selectedBranchPayroll,
+  selectedEmpStatusPayroll,
   selectedLoadedPayroll,
   selectedPositionPayroll,
   selectedRangeDayPayroll,

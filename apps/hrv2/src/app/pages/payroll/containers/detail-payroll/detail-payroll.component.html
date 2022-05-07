@@ -373,9 +373,7 @@
                   </div>
                 </td>
                 <td class=' text-center '>
-                  Từ. {{salary.startedAt | date:'dd-MM-yyyy'}}
-                  <br/>
-                  đến {{salary.endedAt | date:'dd-MM-yyyy'}}
+                  {{salary.datetime | date:'dd-MM-yyyy'}}
                 </td>
                 <td>
                   {{salary.duration}} {{ salary.partial | transformconstant: sessionConstant}}

@@ -142,7 +142,7 @@ export class DetailPayrollComponent implements OnInit {
         salary: Object.assign({}, salary,
           type === SalaryTypeEnum.ALLOWANCE
             ? {workedAt: payroll?.employee.workedAt}
-            :{},
+            : {},
         )
       });
   }
