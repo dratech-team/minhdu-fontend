@@ -98,8 +98,8 @@ export class PayrollEffect {
             stays: stays,
             total: {
               payroll: res.total,
-              basic: basics?.reduce((a, b) => a + b.price, 0),
-              stay: stays?.reduce((a, b) => a + b.price, 0),
+              basic: basics?.reduce((a, b) => a + (b?.price || 0), 0),
+              stay: stays?.reduce((a, b) => a + (b?.price || 0), 0),
               allowance: this.getTotalAllowance(res.allowances),
               overtime: this.getTotalOvertimeOrAbsent(res.overtimes),
               absent: this.getTotalOvertimeOrAbsent(res.absents),
