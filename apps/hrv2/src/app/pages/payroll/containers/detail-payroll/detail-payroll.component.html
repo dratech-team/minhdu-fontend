@@ -123,7 +123,7 @@
                   <td> {{salary.title}}</td>
                   <td> {{salary.rate}}</td>
                   <td class=' text-center ' style='color: #05981C'>
-                    {{salary.price|number:'1.0'|notEmpty:'0'}} đ
+                    {{salary.price | number:'1.0' | notEmpty:'0'}} đ
                   </td>
                   <td width='22%' class='col-md-2'>
                     <div class='d-flex justify-content-around'>
@@ -140,11 +140,11 @@
                     </div>
                   </td>
                 </tr>
-                <tr *ngIf="payroll.total.basic">
-                  <td class="font-weight-bold">Tổng cộng :</td>
+                <tr *ngIf="payroll.basics.length !== 0">
+                  <td class="font-weight-bold">Tổng cộng: </td>
                   <td></td>
                   <td style='color: #05981C'>
-                    {{ payroll.total.basic | number: '1.0'| notEmpty: '0' }}đ
+                    {{ payroll.total.basic | number: '1.0' | notEmpty: '0' }}đ
                   </td>
                   <td></td>
                 </tr>
@@ -343,7 +343,7 @@
               </tr>
               </thead>
               <tbody>
-              <ng-template ngFor let-salary [ngForOf]="tableOvertime.data" let-i='index'>
+              <ng-template *ngFor let-salary [ngForOf]="tableOvertime.data" let-i='index'>
                 <tr (click)='onSalarySetting(salary.setting.title)'>
                   <td (click)="$event.stopPropagation()" [(nzExpand)]="salary.expand"></td>
                   <td>
@@ -401,17 +401,17 @@
               </thead>
               <tbody>
               <tr *ngFor="let item of innerTable.data">
-                <td style="background: white">{{item.datetime|date:'dd-MM-yyyy'}}</td>
+                <td style="background: white">{{item.datetime | date:'dd-MM-yyyy'}}</td>
                 <td style="background: white">{{item.duration}}</td>
                 <td style="background: white">{{item.rate}}</td>
-                <td style="background: white">{{item.price|number:'1.0-0'}}</td>
-                <td style="background: white">{{item.total|number:'1.0-0'}}</td>
+                <td style="background: white">{{item.price | number:'1.0-0'}}</td>
+                <td style="background: white">{{item.total | number:'1.0-0'}}</td>
               </tr>
               </tbody>
             </nz-table>
             </tr>
             </ng-template>
-            <tr *ngIf="payroll.total.overtime">
+            <tr *ngIf="payroll.overtimes.length > 0">
               <td></td>
               <td></td>
               <td class="font-weight-bold">Tổng cộng :</td>
@@ -517,7 +517,7 @@
                   </div>
                 </td>
               </tr>
-              <tr *ngIf="payroll.total.absent">
+              <tr *ngIf="payroll.absents?.length > 0">
                 <td></td>
                 <td class="font-weight-bold">Tổng cộng :</td>
                 <td></td>
@@ -526,14 +526,10 @@
                   <br>{{payroll.total.absent.duration.hour}} Giờ
                 </td>
                 <td style='color: #05981C'>
-                  {{payroll.total.absent.price
-                  | number: '1.0-0'
-                  | notEmpty: '0' }}đ
+                  {{payroll.total.absent.price | number: '1.0-0' | notEmpty: '0' }}đ
                 </td>
                 <td style='color: #05981C'>
-                  {{payroll.total.absent.total
-                  | number: '1.0-0'
-                  | notEmpty: '0' }}đ
+                  {{payroll.total.absent.total | number: '1.0-0' | notEmpty: '0' }}đ
                 </td>
                 <td></td>
                 <td></td>
