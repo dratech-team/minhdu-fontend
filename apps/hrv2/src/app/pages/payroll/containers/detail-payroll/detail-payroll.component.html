@@ -4,7 +4,7 @@
       <div style="max-width: 90vw ; margin: auto">
         <div class='row'>
           <div class='col-12 font-weight-bold font-lg text-center'>
-            Phiếu lương tháng {{payroll.createdAt|date: 'MM/yyyy'}}
+            Phiếu lương tháng {{payroll.createdAt | date: 'MM/yyyy'}}
           </div>
           <div class='row col-md-12'>
             <div class=' col-4 pointer '>
@@ -45,7 +45,7 @@
                   <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}'
                        class='col-12 d-flex justify-content-start ' style='color: black'>
                     <span class='d-inline-block font-weight-bold'>Lương thực nhân: </span>
-                    <span class='ml-1'>{{payroll.total|number:'1.0-0'|notEmpty:'0'}} đ</span>
+                    <span class='ml-1'>{{payroll.total.payroll | number:'1.0-0' | notEmpty:'0'}} đ</span>
                   </div>
                 </div>
                 <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}'
@@ -140,11 +140,11 @@
                     </div>
                   </td>
                 </tr>
-                <tr *ngIf="payroll?.totalBasic">
+                <tr *ngIf="payroll.total.basic">
                   <td class="font-weight-bold">Tổng cộng :</td>
                   <td></td>
                   <td style='color: #05981C'>
-                    {{ payroll.totalBasic| number: '1.0'| notEmpty: '0' }}đ
+                    {{ payroll.total.basic | number: '1.0'| notEmpty: '0' }}đ
                   </td>
                   <td></td>
                 </tr>
@@ -195,10 +195,10 @@
                     </div>
                   </td>
                 </tr>
-                <tr *ngIf="payroll?.totalStay">
+                <tr *ngIf="payroll.total.stay">
                   <td class="font-weight-bold">Tổng cộng :</td>
                   <td style='color: #05981C'>
-                    {{payroll.totalStay| number: '1.0'| notEmpty: '0' }} đ
+                    {{payroll.total.stay | number: '1.0'| notEmpty: '0' }} đ
                   </td>
                   <td></td>
                 </tr>
@@ -287,19 +287,19 @@
                   </div>
                 </td>
               </tr>
-              <tr *ngIf="payroll.totalAllowance">
+              <tr *ngIf="payroll.total.allowance">
                 <td class="font-weight-bold">Tổng cộng :</td>
                 <td></td>
-                <td>{{payroll.totalAllowance.duration.day}}</td>
+                <td>{{payroll.total.allowance.duration.day}}</td>
                 <td></td>
                 <td></td>
                 <td style='color: #05981C'>
-                  {{payroll.totalAllowance.price
+                  {{payroll.total.allowance.price
                   | number: '1.0'
                   | notEmpty: '0' }}đ
                 </td>
                 <td style='color: #05981C'>
-                  {{payroll.totalAllowance.total
+                  {{payroll.total.allowance.total
                   | number: '1.0'
                   | notEmpty: '0' }}đ
                 </td>
@@ -411,19 +411,17 @@
             </nz-table>
             </tr>
             </ng-template>
-            <tr *ngIf="payroll.totalOvertime">
+            <tr *ngIf="payroll.total.overtime">
               <td></td>
               <td></td>
               <td class="font-weight-bold">Tổng cộng :</td>
               <td></td>
               <td>
-                {{payroll.totalOvertime.duration.day}} ngày
-                <br>{{payroll.totalOvertime.duration.hour}} Giờ
+                {{payroll.total.overtime.duration.day}} ngày
+                <br>{{payroll.total.overtime.duration.hour}} Giờ
               </td>
               <td style='color: #05981C'>
-                {{payroll.totalOvertime.total
-                | number: '1.0'
-                | notEmpty: '0' }}đ
+                {{payroll.total.overtime.total | number: '1.0' | notEmpty: '0' }}đ
               </td>
               <td></td>
               <td></td>
@@ -519,21 +517,21 @@
                   </div>
                 </td>
               </tr>
-              <tr *ngIf="payroll.totalAbsent">
+              <tr *ngIf="payroll.total.absent">
                 <td></td>
                 <td class="font-weight-bold">Tổng cộng :</td>
                 <td></td>
                 <td>
-                  {{payroll.totalAbsent.duration.day}} ngày
-                  <br>{{payroll.totalAbsent.duration.hour}} Giờ
+                  {{payroll.total.absent.duration.day}} ngày
+                  <br>{{payroll.total.absent.duration.hour}} Giờ
                 </td>
                 <td style='color: #05981C'>
-                  {{payroll.totalAbsent.price
+                  {{payroll.total.absent.price
                   | number: '1.0-0'
                   | notEmpty: '0' }}đ
                 </td>
                 <td style='color: #05981C'>
-                  {{payroll.totalAbsent.total
+                  {{payroll.total.absent.total
                   | number: '1.0-0'
                   | notEmpty: '0' }}đ
                 </td>
@@ -764,12 +762,12 @@
                   </div>
                 </td>
               </tr>
-              <tr *ngIf="payroll.totalRemote">
+              <tr *ngIf="payroll.total.remote">
                 <td></td>
                 <td class="font-weight-bold">Tổng cộng :</td>
                 <td></td>
                 <td>
-                  {{payroll.totalRemote.duration}} ngày
+                  {{payroll.total.remote.duration}} ngày
                 </td>
                 <td></td>
                 <td></td>
@@ -940,7 +938,7 @@
     </div>
   </nz-carousel>
 </div>
-<nz-spin *ngIf="(scanned$|async) === false" nzSize="large" style="position: fixed; top:50%; left: 50% ">
+<nz-spin *ngIf="(scanned$ | async) === false" nzSize="large" style="position: fixed; top:50%; left: 50% ">
 </nz-spin>
 <style>
 
