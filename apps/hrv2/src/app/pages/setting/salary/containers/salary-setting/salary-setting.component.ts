@@ -10,6 +10,9 @@ import {SalaryTypeEnum} from "../../enums";
 import {blockSalariesConstant} from "../../constants";
 import {SalarySettingEntity} from "../../entities";
 import {SettingSalaryDialogComponent} from "../../components/salary-setting";
+import {AddOrUpdateSettingSalary} from "../../data/modal-setting-salary.data";
+import {ModalAlertComponent} from "@minhdu-fontend/components";
+import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 
 @Component({
   selector: 'minhdu-fontend-salary-setting',
@@ -18,18 +21,27 @@ import {SettingSalaryDialogComponent} from "../../components/salary-setting";
 export class SalarySettingComponent implements OnInit {
   settingSalaries$ = this.settingSalaryQuery.selectAll();
   loading$ = this.settingSalaryQuery.selectLoading();
+
   stateSearch = this.settingSalaryQuery.getValue().search;
-  formGroup = new FormGroup(
-    {
-      search: new FormControl(''),
-    }
-  );
+
+  blockSalaries = blockSalariesConstant.concat([{
+    title: 'Lương trích bảo hiểm',
+    type: SalaryTypeEnum.BASIC_INSURANCE
+  }]);
+
   panelOpenState = false;
   pageSizeTable = 10;
   visible = false;
   pageSize = 10;
   salaryTypeEnum = SalaryTypeEnum;
-  blockSalaries = blockSalariesConstant;
+
+
+  formGroup = new FormGroup(
+    {
+      search: new FormControl(''),
+      types: new FormControl(this.stateSearch.types || []),
+    }
+  );
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
@@ -67,22 +79,23 @@ export class SalarySettingComponent implements OnInit {
   }
 
   mapProduct(dataFG: any, isPagination: boolean) {
+
     this.settingSalaryStore.update(state => ({
       ...state, search: dataFG
     }));
-    Object.assign(dataFG, {
-      take: PaginationDto.take,
-      skip: isPagination ? this.settingSalaryQuery.getCount() : PaginationDto.skip
-    });
-    return dataFG;
+    return Object.assign(dataFG, {
+        take: PaginationDto.take,
+        skip: isPagination ? this.settingSalaryQuery.getCount() : PaginationDto.skip
+      }
+    );
   }
 
-  onAdd(template?: SalarySettingEntity) {
+  onAdd() {
     this.modal.create({
       nzWidth: '30vw',
       nzTitle: 'Tạo bản mẫu lương',
       nzContent: SettingSalaryDialogComponent,
-      nzFooter: null,
+      nzFooter: [],
     })
   }
 
@@ -91,13 +104,29 @@ export class SalarySettingComponent implements OnInit {
       nzWidth: 'fit-content',
       nzTitle: 'Tạo bản mẫu lương',
       nzContent: SettingSalaryDialogComponent,
-      nzComponentParams: {
-        data: {update: {template: template}}
+      nzComponentParams: <{ data?: AddOrUpdateSettingSalary }>{
+        data: {
+          update: {template: template}
+        }
       },
-      nzFooter: null,
+      nzFooter: [],
     })
   }
 
   onDelete(template: SalarySettingEntity) {
+    this.modal.create({
+      nzTitle: `Xoá Bản mẫu ${template.title}`,
+      nzContent: ModalAlertComponent,
+      nzComponentParams: <{ data: ModalAlertEntity }>{
+        data: {
+          description: `bạn có chắc chắn muốn xoá bản mẫu ${template.title} này không ?`
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe(val => {
+      if (val) {
+        this.actions$.dispatch(SettingSalaryActions.remove({id: template.id}))
+      }
+    })
   }
 }

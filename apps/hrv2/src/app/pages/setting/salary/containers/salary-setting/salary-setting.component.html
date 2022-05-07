@@ -9,6 +9,22 @@
         </div>
       </nz-collapse-panel>
     </nz-collapse>
+    <nz-collapse>
+      <nz-collapse-panel
+        nzHeader='Loại bản mẫu'
+        nzActive='true'>
+        <div [formGroup]='formGroup'>
+          <nz-select
+            nzShowSearch
+            formControlName="types"
+            nzMode="multiple"
+            style="width: 100%"
+          >
+            <nz-option *ngFor="let item of blockSalaries" [nzValue]="item.type" [nzLabel]="item.title"></nz-option>
+          </nz-select>
+        </div>
+      </nz-collapse-panel>
+    </nz-collapse>
   </div>
   <div class="d-flex flex-column ml-2" style="width: 80vw">
     <div class="ml-2 d-flex justify-content-between">
@@ -29,6 +45,7 @@
       <nz-table #tableRank
                 [nzScroll]="{ x: '1700px',y: '58vh'}"
                 nzSize='middle'
+                [nzLoading]="loading$|async"
                 [nzData]="(settingSalaries$|async)|| []"
                 [nzPageSize]="pageSize"
                 (nzPageIndexChange)="onPagination($event)"
@@ -52,9 +69,9 @@
             <td nzLeft>{{settingSalary.title}}</td>
             <td nzLeft>{{
               settingSalary.type === salaryTypeEnum.ABSENT || settingSalary.type === salaryTypeEnum.OVERTIME
-                ? ((settingSalary.prices && settingSalary.prices.length > 0 ?(settingSalary.prices|prices): (settingSalary.totalOf|salarytype:'transform'))
-                + ' / '
-                + (settingSalary.workday ? settingSalary.workday: 'Ngày công chuẩn')
+                ? ((settingSalary.prices && settingSalary.prices.length > 0 ? (settingSalary.prices|prices) : (settingSalary.totalOf|salarytype:'transform'))
+                  + ' / '
+                  + (settingSalary.workday ? settingSalary.workday : 'Ngày công chuẩn')
                 )
                 : (settingSalary.prices|prices)}}</td>
             <td>{{settingSalary.rate}}</td>
@@ -73,7 +90,7 @@
 </ng-template>
 <app-mouse-right
   #child
-  (onAdd)='onAdd($event)'
+  (onAdd)='onAdd()'
   (onUpdate)='onUpdate($event)'
   (onDel)='onDelete($event)'
 ></app-mouse-right>

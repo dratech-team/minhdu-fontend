@@ -8,19 +8,15 @@ import {blockSalariesConstant} from "../../constants";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {Actions} from "@datorama/akita-ng-effects";
 import {SettingSalaryActions, SettingSalaryQuery} from "../../state";
-import {SalarySettingEntity} from "../../entities";
 import {DiveEnum} from "../../enums/dive.enum";
 import {SalaryTypePipe} from "../../pipes/salary-type.pipe";
+import {AddOrUpdateSettingSalary} from "../../data/modal-setting-salary.data";
 
 @Component({
   templateUrl: 'setting-salary-dialog.component.html'
 })
 export class SettingSalaryDialogComponent implements OnInit {
-  @Input() data?: {
-    update?: {
-      template: SalarySettingEntity
-    }
-  }
+  @Input() data?: AddOrUpdateSettingSalary
   added$ = this.settingSalaryQuery.select(state => state.added);
   numberChars = new RegExp('[^0-9]', 'g');
   formGroup!: FormGroup;

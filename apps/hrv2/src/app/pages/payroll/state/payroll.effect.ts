@@ -101,7 +101,7 @@ export class PayrollEffect {
           res.totalRemote = res.remotes?.length
             ? this.getTotalRemote(res.remotes)
             : undefined
-          
+
           return res
         }),
         tap(res => {
