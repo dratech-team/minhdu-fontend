@@ -59,11 +59,12 @@ export class PayrollEffect {
       this.payrollStore.update(state => ({ ...state, loading: true }));
       return this.service.paginationPayroll(props.search).pipe(
         map(res => {
-          res.data.map(payroll => {
-            payroll.basics = payroll.salariesv2.filter(item => item.type !== SalaryTypeEnum.STAY);
-            payroll.stays = payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.STAY);
+          return Object.assign(res, {
+            data: res.data.map(payroll => Object.assign(payroll, {
+              basics: payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.BASIC || item.type === SalaryTypeEnum.BASIC_INSURANCE),
+              stays: payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.STAY)
+            }))
           });
-          return res;
         }),
         tap((res) => {
           this.payrollStore.update(state => ({ ...state, loading: false }));
