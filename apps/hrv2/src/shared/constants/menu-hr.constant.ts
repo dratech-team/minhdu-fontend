@@ -33,20 +33,10 @@ export const MenuHrConstant: MenuHrConstant[] = [
     href: TabEnum.PAYROLL,
   },
   {
-    name: 'Cài đặt',
+    name: 'Thiết lập lương',
     icon: '/assets/icons/menu/templates.png',
     state: MenuHrEnum.SETTING,
     href: TabEnum.SETTING,
-    children: [
-      {
-        name: 'Lương',
-        href: 'cai-dat/luong'
-      },
-      {
-        name: 'Ngày lễ',
-        href: 'cai-dat/ngay-le'
-      }
-    ]
   },
   {
     name: 'Tổ chức',

@@ -19,9 +19,9 @@ interface Salary {
 }
 
 export interface TotalSalary {
-  duration:{
+  duration: {
     day: number,
-    hour?: number
+    hour: number
   }
   total: number,
   price: number
@@ -40,28 +40,34 @@ export interface PayrollEntity extends BasePayrollEntity {
   manConfirmedAt: Date;
   paidAt: Date;
   accConfirmedAt: Date;
-  workday?: number;
+  workday: number;
   isFlatSalary: boolean,
   totalWorkday: number;
-  actualday?: number;
+  actualday: number;
   taxed: boolean;
   tax: number
   recipeType: RecipeType;
-  note?: string
-  branch?: string,
-  position?: string
+  note: string
+  branch: string,
+  position: string
   salariesv2: PermanentSalaryEntity[],
+  basics: PermanentSalaryEntity[],
+  stays: PermanentSalaryEntity[],
   salaries: SalaryEntity[],
   absents: AbsentSalaryEntity [],
   deductions: DeductionSalaryEntity [],
   overtimes: OvertimeSalaryEntity [],
   allowances: AllowanceSalaryEntity[],
   remotes: RemoteSalaryEntity[],
-  payrollIds?: number[]
-  totalAllowance?:TotalSalary
-  totalOvertime?: TotalSalary
-  totalAbsent?: TotalSalary
-  totalRemote?: {
-    duration: number
+  payrollIds?: number[];
+  total: {
+    payroll: number;
+    basic: number;
+    stay: number;
+    allowance: TotalSalary;
+    absent: TotalSalary;
+    deduction: number;
+    overtime: TotalSalary;
+    remote: {duration: number};
   }
 }
