@@ -11,6 +11,7 @@ import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 import {AllowanceBranchComponent} from "../../components/modal-allowance-branch/allowance-branch.component";
 import {DataAddOrUpAllowanceBranch} from "../../data/modal-allowance-branch.data";
+import {AllowanceSalaryEntity} from "../../../../salary/entities";
 
 @Component({
   templateUrl: 'detail-branch.component.html'
@@ -50,7 +51,19 @@ export class DetailBranchComponent implements OnInit {
     })
   }
 
-  onUpdateAllowance(allowance: any, branchId: number) {
+  onUpdateAllowance(allowance: AllowanceSalaryEntity) {
+    this.modal.create({
+      nzTitle: `Cập nhật phụ cấp cho đơn vị`,
+      nzContent: AllowanceBranchComponent,
+      nzComponentParams: <{ data: DataAddOrUpAllowanceBranch }>{
+        data: {
+          update: {
+            allowance: allowance
+          }
+        }
+      },
+      nzFooter: []
+    })
   }
 
   updateBranch(branch: BranchEntity) {
@@ -94,7 +107,21 @@ export class DetailBranchComponent implements OnInit {
     })
   }
 
-  deleteAllowance(allowanceId: number, branchId: number) {
+  deleteAllowance(allowance: AllowanceSalaryEntity) {
+    this.modal.create({
+      nzTitle: `Xoá Phụ cấp  ${allowance.title}`,
+      nzContent: ModalAlertComponent,
+      nzComponentParams: <{ data: ModalAlertEntity }>{
+        data: {
+          description: `Bạn có chắc chắn muốn xoá phụ cấp${allowance.title} này không`
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe(val => {
+      if (val) {
+        this.actions$.dispatch(BranchActions.deleteAllowance({salaryId: allowance.id}))
+      }
+    })
   }
 
   onListPosition(id: number) {

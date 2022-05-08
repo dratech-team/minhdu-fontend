@@ -1,7 +1,7 @@
 import {BaseBranchEntity} from "../bases";
 import {RecipeType} from "@minhdu-fontend/enums";
-import {Position, Salary} from "@minhdu-fontend/data-models";
 import {PositionEntity} from "../../position/entities/position.entity";
+import {AllowanceSalaryEntity} from "../../../../../../apps/hrv2/src/app/pages/salary/entities";
 
 export interface BranchEntity extends BaseBranchEntity {
   recipe: RecipeType,
@@ -9,7 +9,7 @@ export interface BranchEntity extends BaseBranchEntity {
     employees: number,
     employeeLeft: number
   },
-  allowances?: Salary [],
+  allowances?: AllowanceSalaryEntity [],
   positions?: PositionEntity[],
   phone?: string,
   address?: string,
