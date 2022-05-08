@@ -84,10 +84,22 @@
           </div>
         </div>
       </div>
-      <div class='mb-3'>
-        <span class='font-weight-bold'>Hệ số</span><span class='star'>*</span>
-        <div class='form-control mt-1' style='background: #dddddd'>{{formGroup.value.rate}}</div>
+      <div class='mb-3 row d-flex align-items-center'>
+        <div class="col">
+          <span class='font-weight-bold'>Hệ số</span><span class='star'>*</span>
+          <div class='form-control mt-1' style='background: #dddddd'>{{formGroup.value.rate}}</div>
+        </div>
+        <div *ngIf="formGroup.value.template?.type === salaryTypeEnum.OVERTIME" class="col mt-3 align-items-center">
+          <div class="font-weight-bold">Ràng buộc hệ số bởi ngày công chuẩn :
+            <label
+              [nzDisabled]="true"
+              class=" ml-2"
+              nz-checkbox
+              formControlName="hasConstraints"></label>
+          </div>
+        </div>
       </div>
+
       <div class='mb-3 d-flex flex-column'>
         <div>
           <span class='font-weight-bold'>Khấu trừ theo</span><span class='star'>*</span>
@@ -108,8 +120,12 @@
         <span class='font-weight-bold'>Đơn giá</span>
         <div *ngIf='formGroup.value?.template' class='form-control' style='background: #dddddd'>{{
           ((formGroup.value.template.prices && formGroup.value.template.prices.length > 0 ? (formGroup.value.template.prices|prices) : (formGroup.value.template.totalOf|salarytype:'transform'))
-            + ' / '
-            + (formGroup.value.template.workday ? formGroup.value.template.workday : 'Ngày công chuẩn')
+            + (formGroup.value.template.workday
+                ? +' / ' + formGroup.value.template.workday
+                : formGroup.value.template.type === salaryTypeEnum.OVERTIME && formGroup.value.template.totalOf.length === 0
+                  ? ''
+                  : '/ Ngày công chuẩn'
+            )
           )
           }} </div>
       </div>

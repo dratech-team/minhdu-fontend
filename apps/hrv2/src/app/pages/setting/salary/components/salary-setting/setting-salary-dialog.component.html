@@ -19,22 +19,38 @@
         <span class='font-weight-bold'>Trích bảo hiểm</span>
         <label class='ml-2' nz-checkbox formControlName='insurance'></label>
       </div>
-      <div class=' main-popup mt-2' *ngIf='formGroup.value?.block?.rate'>
-        <div><span class='main-title'>Hệ số</span><span class='star'>*</span></div>
-        <input
-          nz-input type='number'
-          formControlName='rate'
-          [ngStyle]="{
+      <div class='d-flex mt-2' *ngIf='formGroup.value?.block?.rate'>
+        <div>
+          <div class="d-flex row">
+            <div class="col">
+              <div><span class='main-title'>Hệ số</span><span class='star'>*</span></div>
+              <input
+                nz-input type='number'
+                formControlName='rate'
+                [ngStyle]="{
                  'pointer-events':formGroup.value.block.rate.disabled ? 'none': 'auto',
                  'background':formGroup.value.block.rate.disabled ? '#dddddd':'white'
                   }"
-        >
-        <div *ngIf='checkValid.rate.errors?.required ' class='invalid-feedback'>
-          <div>Chưa nhập hệ số</div>
+              >
+            </div>
+            <div *ngIf="formGroup.value.block?.hasConstraints?.show" class="col-7 mt-3 mr-2 align-items-center">
+              <div class="font-weight-bold">Ràng buộc hệ số bởi ngày công chuẩn :
+                <label
+                  [nzDisabled]="formGroup.value.block?.hasConstraints?.disable"
+                  class=" ml-2"
+                  nz-checkbox
+                  formControlName="hasConstraints"></label>
+              </div>
+            </div>
+          </div>
+          <div *ngIf='checkValid.rate.errors?.required ' class='invalid-feedback ml-2'>
+            <div>Chưa nhập hệ số</div>
+          </div>
+
         </div>
       </div>
       <div class=' main-popup mt-2' *ngIf='formGroup.value?.block?.units'>
-        <div><span class='main-title'>Đơn vị</span><span class='star'>*</span></div>
+        <div><span class='main-title'>Đơn vị thời gian</span><span class='star'>*</span></div>
         <nz-select style="width: 100%" formControlName="unit">
           <nz-option *ngFor="let item of formGroup.value.block.units"
                      [nzValue]="item.value"
@@ -158,20 +174,51 @@
           </div>
         </div>
       </div>
-<!--      <div class="mt-2" *ngIf='formGroup.value.block?.employeeConstant'>-->
-<!--        <span class="font-weight-bold">Loại nhân viên</span><span class="star">*</span>-->
-<!--        <nz-select style="width: 100%" formControlName="employeeType">-->
-<!--          <nz-option-->
-<!--            *ngFor="let item of formGroup.value.block?.employeeConstant"-->
-<!--            [nzValue]="item.value"-->
-<!--            [nzLabel]="item.name"-->
-<!--          >-->
-<!--          </nz-option>-->
-<!--        </nz-select>-->
-<!--      </div>-->
+      <div class="mt-2" *ngIf="formGroup.value.block?.branch?.show">
+        <div class="font-weight-bold">Đơn vị</div>
+        <nz-select style="width: 100%"
+                   [nzDisabled]="formGroup.value.block.branch?.disabled"
+                   [nzMaxTagCount]="3"
+                   [nzMaxTagPlaceholder]="tagPlaceHolderBranch"
+                   nzMode="multiple"
+                   nzPlaceHolder="Chọn đơn vị"
+                   formControlName="branches"
+        >
+          <nz-option *ngFor="let item of branches$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
+        </nz-select>
+        <ng-template #tagPlaceHolderBranch let-positionSelected>và {{ positionSelected.length }} đã chọn
+        </ng-template>
+      </div>
+      <div class="mt-2" *ngIf="formGroup.value.block?.position?.show">
+        <div class='font-weight-bold'>Chức vụ</div>
+        <nz-select style="width: 100%"
+                   [nzDisabled]="formGroup.value.block.position?.disabled"
+                   [nzMaxTagCount]="3"
+                   [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
+                   nzMode="multiple"
+                   nzPlaceHolder="Chọn chức vụ"
+                   formControlName="positions"
+        >
+          <nz-option *ngFor="let item of positions$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
+        </nz-select>
+        <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn
+        </ng-template>
+      </div>
+      <!--      <div class="mt-2" *ngIf='formGroup.value.block?.employeeConstant'>-->
+      <!--        <span class="font-weight-bold">Loại nhân viên</span><span class="star">*</span>-->
+      <!--        <nz-select style="width: 100%" formControlName="employeeType">-->
+      <!--          <nz-option-->
+      <!--            *ngFor="let item of formGroup.value.block?.employeeConstant"-->
+      <!--            [nzValue]="item.value"-->
+      <!--            [nzLabel]="item.name"-->
+      <!--          >-->
+      <!--          </nz-option>-->
+      <!--        </nz-select>-->
+      <!--      </div>-->
     </div>
   </form>
   <div class='row ml-2 mt-2'>
-    <button nz-button nzType="primary" [nzLoading]="(added$|async) === false" (click)='onSubmit()' class='ml-2'>Lưu</button>
+    <button nz-button nzType="primary" [nzLoading]="(added$|async) === false" (click)='onSubmit()' class='ml-2'>Lưu
+    </button>
   </div>
 </div>
