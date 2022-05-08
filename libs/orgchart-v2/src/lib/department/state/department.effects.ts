@@ -29,11 +29,6 @@ export class DepartmentEffects {
       return this.departmentService.pagination(props).pipe(
         map((response) => {
           this.departmentStore.update(state => ({...state, loading: false, total: response.total}));
-          if (response.data.length === 0) {
-            this.message.warning('Đã lấy hết phòng ban');
-          } else {
-            this.message.success('tải danh sách phòng ban thành công');
-          }
           if (props.isPaginate) {
             this.departmentStore.add(response.data);
           } else {
