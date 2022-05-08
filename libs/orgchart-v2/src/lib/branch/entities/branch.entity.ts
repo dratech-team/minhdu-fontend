@@ -4,7 +4,10 @@ import {Position, Salary} from "@minhdu-fontend/data-models";
 
 export interface BranchEntity extends BaseBranchEntity{
   recipe: RecipeType,
-  _count?: any,
+  _count?: {
+    employees: number,
+    employeeLeft: number
+  },
   allowances?: Salary [],
   positions?: Position[],
   phone?: string,
