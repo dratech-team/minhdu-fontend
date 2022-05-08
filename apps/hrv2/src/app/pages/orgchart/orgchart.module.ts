@@ -22,6 +22,8 @@ import {DepartmentComponent} from "./department/containers/department/department
 import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
 import {ModalDepartmentComponent} from "./department/components/modal-department/modal-department.component";
 import {NzStepsModule} from "ng-zorro-antd/steps";
+import {PositionComponent} from "./position/containers/position/position.component";
+import {ModalPositionComponent} from "./position/components/modal-position/modal-position.component";
 import {BranchComponent} from "./branch/containers/branch/branch.component";
 import {ContextMenuModule} from "ngx-contextmenu";
 import {ModalBranchComponent} from "./branch/components/modal-branch/modal-branch.component";
@@ -58,6 +60,8 @@ import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
   declarations: [
     DepartmentComponent,
     ModalDepartmentComponent,
+    PositionComponent,
+    ModalPositionComponent,
     BranchComponent,
     ModalBranchComponent,
     DetailBranchComponent,
