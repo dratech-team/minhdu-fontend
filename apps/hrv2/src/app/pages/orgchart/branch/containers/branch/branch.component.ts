@@ -39,7 +39,7 @@ export class BranchComponent implements OnInit {
   formGroup = new FormGroup(
     {
       search: new FormControl(this.stateSearch.name),
-      position: new FormControl(this.stateSearch.position|| ''),
+      position: new FormControl(this.stateSearch.position || ''),
     }
   );
 
@@ -139,37 +139,37 @@ export class BranchComponent implements OnInit {
     })
   }
 
-  onEmployee(branch: BranchEntity) {
-    this.positionStore.add(branch.positions || [])
-    this.employeeStore.update(state => ({
-      ...state, search: Object.assign(JSON.parse(JSON.stringify(state.search)), {branch: branch})
-    }))
-    this.router.navigate(['nhan-vien']).then();
-  }
 
   onDetail(branch: BranchEntity) {
     this.router.navigate(['to-chuc/don-vi/chi-tiet-don-vi/', branch.id]).then();
   }
 
-  onEmployeePosition(item: { position: PositionEntity, branch: BranchEntity }) {
-    this.positionStore.add(item.branch.positions || [])
+  onEmployee(branch: BranchEntity, position?: PositionEntity,) {
+    this.positionStore.add(branch.positions || [])
     this.employeeStore.update(state => ({
       ...state,
       search: Object.assign(JSON.parse(JSON.stringify(state.search)),
-        {position: item.position, branch: item.branch})
+        {branch: branch},
+        position
+          ? {position: position}
+          : {}
+      )
     }))
     this.router.navigate(['nhan-vien']).then();
   }
 
-  onPayrollPosition(item: { position: PositionEntity, branch: BranchEntity }, filterType: FilterTypeEnum) {
-    this.positionStore.add(item.branch.positions || [])
-
+  onPayroll(branch: BranchEntity, filterType: FilterTypeEnum, position?: PositionEntity) {
+    this.positionStore.add(branch.positions || [])
     this.payrollStore.update(state => ({
-      ...state, search: Object.assign(JSON.parse(JSON.stringify(state.search)), {
-        position: item.position,
-        branch: item.branch,
-        filterType: filterType
-      })
+      ...state, search: Object.assign(JSON.parse(JSON.stringify(state.search)),
+        {
+          branch: branch,
+          filterType: filterType
+        },
+        position
+          ? {position: position}
+          : {}
+      )
     }))
     this.router.navigate(['phieu-luong']).then();
   }

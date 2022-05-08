@@ -85,28 +85,30 @@
   </div>
 </div>
 <app-mouse-right
-  [items]="[itemContextMenu.PROFILE]"
+  [items]="[itemContextMenu.PROFILE, itemContextMenu.PAYROLL,itemContextMenu.OVERTIME]"
   #child
   (onAdd)='onAdd()'
   (onUpdate)='onUpdate($event)'
   (onDel)='onDelete($event)'
   (onProfile)="onEmployee($event)"
+  (onPayroll)="onPayroll($event, filterType.PAYROLL)"
+  (onOvertime)="onPayroll($event, filterType.OVERTIME)"
 ></app-mouse-right>
 
 <context-menu #childChip>
   <ng-template
     contextMenuItem
-    (execute)='onEmployeePosition($event.item)'>
+    (execute)='onEmployee($event.item.branch, $event.item.position)'>
     Nhân viên
   </ng-template>
   <ng-template
     contextMenuItem
-    (execute)='onPayrollPosition($event.item, filterType.PAYROLL)'>
+    (execute)='onPayroll( $event.item.branch, filterType.PAYROLL, $event.item.position)'>
     Bảng lương
   </ng-template>
   <ng-template
     contextMenuItem
-    (execute)='onPayrollPosition($event.item, filterType.OVERTIME)'>
+    (execute)='onPayroll( $event.item.branch,  filterType.OVERTIME, $event.item.position)'>
     Tăng ca
   </ng-template>
 </context-menu>
