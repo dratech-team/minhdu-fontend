@@ -37,10 +37,6 @@ import {ModalEmployeeData} from "../../data/modal-employee.data";
   templateUrl: 'employee.component.html'
 })
 export class EmployeeComponent implements OnInit {
-  employees$ = this.employeeQuery.selectAll().pipe(tap(item => {
-      this.employees = item
-    }
-  ))
   total$ = this.employeeQuery.select(state => state.total)
   loading$ = this.employeeQuery.select(state => state.loading)
   positions$ = this.positionQuery.selectAll()
@@ -103,6 +99,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.employeeQuery.selectAll().subscribe(item => this.employees = item)
 
     this.actions$.dispatch(BranchActions.loadAll({}));
 

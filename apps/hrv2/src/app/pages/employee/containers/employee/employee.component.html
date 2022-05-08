@@ -63,7 +63,7 @@
         [formGroup]='formGroup'
         [nzLoading]="loading$|async"
         [nzScroll]="{x:'3200px',y:'60vh'}"
-        [nzData]="(employees$|async) || []"
+        [nzData]="this.employees"
         (nzPageIndexChange)="onPagination($event)"
       >
         <thead>
@@ -213,11 +213,10 @@
         </tr>
         </thead>
         <tbody cdkDropList (cdkDropListDropped)='onDrop($event)'>
-        <ng-template ngFor let-employee [ngForOf]="tableEmployee.data" let-i='index'>
-          <tr
-            class="pointer"
-            (contextmenu)='child.onContextMenu($event,employee)'
-            (click)='onUpdate(employee)' cdkDrag>
+          <tr *ngFor="let employee of this.employees; let i = index"
+              class="pointer"
+              (contextmenu)='child.onContextMenu($event,employee)'
+              (click)='onUpdate(employee)' cdkDrag>
             <td nzLeft nzWidth="100px">
               <div>{{(i + 1) + ((tableEmployee.nzPageIndex - 1) * pageSize)}}</div>
             </td>
@@ -294,12 +293,6 @@
               </div>
             </td>
           </tr>
-          <tr *ngIf='employees.length === 0' style='height: 50vh'>
-            <td colspan='100' class='text-center check-content font-weight-bold font-xl relative '>
-              <span style='position: absolute; top: 50%;left: 50%;'>Hiện không có nhân viên nào !</span>
-            </td>
-          </tr>
-        </ng-template>
         </tbody>
       </nz-table>
     </div>
