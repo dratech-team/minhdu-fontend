@@ -8,7 +8,7 @@ import {NzModalService} from 'ng-zorro-antd/modal';
 import {
   BranchActions,
   BranchEntity,
-  BranchQuery,
+  BranchQuery, BranchStore,
   PositionActions,
   PositionEntity,
   PositionQuery,
@@ -31,13 +31,15 @@ export class BranchComponent implements OnInit {
   loading$ = this.branchQuery.select(state => state.loading)
   total$ = this.branchQuery.select(state => state.total)
   positions$ = this.positionQuery.selectAll()
+
   pageSizeTable = 10;
   filterType = FilterTypeEnum
 
+  stateSearch = this.branchQuery.getValue().search
   formGroup = new FormGroup(
     {
-      search: new FormControl(''),
-      position: new FormControl(''),
+      search: new FormControl(this.stateSearch.name),
+      position: new FormControl(this.stateSearch.position|| ''),
     }
   );
 
@@ -48,6 +50,7 @@ export class BranchComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
     private readonly branchQuery: BranchQuery,
+    private readonly branchStore: BranchStore,
     private readonly payrollStore: PayrollStore,
     private readonly employeeStore: EmployeeStore,
     private readonly positionStore: PositionStore,
@@ -84,6 +87,9 @@ export class BranchComponent implements OnInit {
   }
 
   mapBranch(dataFG: any, isPagination: boolean) {
+    this.branchStore.update(state => ({
+      ...state, search: dataFG
+    }))
     return Object.assign({}, dataFG, {
       position: dataFG.position.name,
       take: PaginationDto.take,
