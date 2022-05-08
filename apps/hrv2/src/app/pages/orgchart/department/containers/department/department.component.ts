@@ -12,6 +12,7 @@ import {DepartmentEntity} from "@minhdu-fontend/orgchart-v2";
 import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 import {Router} from "@angular/router";
+import {EmployeeStore} from "@minhdu-fontend/employee-v2";
 
 @Component({
   templateUrl: 'department.component.html'
@@ -35,6 +36,7 @@ export class DepartmentComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
     private readonly departmentQuery: DepartmentQuery,
+    private readonly employeeStore: EmployeeStore,
     private readonly router: Router,
   ) {
   }
@@ -122,10 +124,9 @@ export class DepartmentComponent implements OnInit {
   }
 
   onEmployee(department: DepartmentEntity) {
-    this.router.navigate(['nhan-vien'], {
-      queryParams: {
-        departmentId: department.id
-      }
-    }).then();
+    this.employeeStore.update(state => ({
+      ...state, search: Object.assign(JSON.parse(JSON.stringify(state.search)), {department: department})
+    }))
+    this.router.navigate(['nhan-vien']).then();
   }
 }

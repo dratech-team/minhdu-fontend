@@ -105,23 +105,12 @@ export class EmployeeComponent implements OnInit {
   ngOnInit(): void {
 
     this.actions$.dispatch(BranchActions.loadAll({}));
+
     this.actions$.dispatch(DepartmentActions.loadAll({}))
-    this.activeRouter.queryParams.subscribe(val => {
-      if (val.departmentId) {
-        this.departmentQuery.selectEntity(val.departmentId).subscribe(
-          department => {
-            this.departmentControl.setValue(department, {emitEvent: false});
-            this.actions$.dispatch(
-              EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false))
-            );
-          }
-        )
-      } else {
-        this.actions$.dispatch(
-          EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false))
-        );
-      }
-    });
+
+    this.actions$.dispatch(
+      EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false))
+    );
 
     this.formGroup.valueChanges
       .pipe(debounceTime(1500))
