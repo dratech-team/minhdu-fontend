@@ -45,13 +45,16 @@
             <td>{{position.id}}</td>
             <td nzLeft>{{position.name}}</td>
             <td>
-              <mat-chip-list>
-                <mat-chip
-                  [style]='{"background": formGroup.get("branch")?.value.id === branch.id ? "red" : "#00000040"}'
-                  *ngFor='let branch of position.branches'>
-                  {{branch.name}}
-                </mat-chip>
-              </mat-chip-list>
+              <span class="font-weight-bold" *ngIf="position.branches.length === 0 else chip">Thuộc tất cả đơn vị</span>
+              <ng-template #chip>
+                <mat-chip-list>
+                  <mat-chip
+                    [style]='{"background": formGroup.get("branch")?.value.id === branch.id ? "red" : "#00000040"}'
+                    *ngFor='let branch of position.branches'>
+                    {{branch.name}}
+                  </mat-chip>
+                </mat-chip-list>
+              </ng-template>
             </td>
             <td>{{position.workday}}</td>
             <td>{{position._count.employees}}</td>
