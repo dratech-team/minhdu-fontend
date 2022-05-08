@@ -11,6 +11,14 @@ import {SettingSalaryActions, SettingSalaryQuery} from "../../state";
 import {DiveEnum} from "../../enums/dive.enum";
 import {SalaryTypePipe} from "../../pipes/salary-type.pipe";
 import {AddOrUpdateSettingSalary} from "../../data/modal-setting-salary.data";
+import {
+  BranchActions,
+  BranchEntity,
+  BranchQuery,
+  PositionActions,
+  PositionEntity,
+  PositionQuery
+} from "@minhdu-fontend/orgchart-v2";
 
 @Component({
   templateUrl: 'setting-salary-dialog.component.html'
@@ -18,22 +26,30 @@ import {AddOrUpdateSettingSalary} from "../../data/modal-setting-salary.data";
 export class SettingSalaryDialogComponent implements OnInit {
   @Input() data?: AddOrUpdateSettingSalary
   added$ = this.settingSalaryQuery.select(state => state.added);
-  numberChars = new RegExp('[^0-9]', 'g');
-  formGroup!: FormGroup;
+  branches$ = this.branchQuery.selectAll();
+  positions$ = this.positionQuery.selectAll();
+
   blockSalary = blockSalariesConstant;
   salaryTypeEnum = SalaryTypeEnum
-  branches = new FormControl();
+  priceType = PriceType
+  dateTimeUnit = DatetimeUnitEnum
+
+
   branchesSelected: Branch[] = [];
   constraint: SalaryTypeEnum[] = []
   prices: number[] = []
-  priceType = PriceType
-  dateTimeUnit = DatetimeUnitEnum
+
+  branches = new FormControl();
+  formGroup!: FormGroup;
+
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type || o1.type === o2.type : o1 === o2);
 
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly actions$: Actions,
     private readonly settingSalaryQuery: SettingSalaryQuery,
+    private readonly branchQuery: BranchQuery,
+    private readonly positionQuery: PositionQuery,
     private readonly message: NzMessageService,
     private readonly modalRef: NzModalRef,
     private readonly salaryType: SalaryTypePipe
@@ -60,7 +76,10 @@ export class SettingSalaryDialogComponent implements OnInit {
       constraintOvertime: [template?.constraints?.some(constraint => constraint.type === SalaryTypeEnum.OVERTIME)],
       insurance: [template?.type === SalaryTypeEnum.BASIC_INSURANCE],
       employeeType: [template?.employeeType || EmployeeType.EMPLOYEE_FULL_TIME],
-      prices: [template?.prices && template.prices.length === 1 ? template.prices[0] : '']
+      prices: [template?.prices && template.prices.length === 1 ? template.prices[0] : ''],
+      branches: [template?.branches || []],
+      positions: [template?.positions || []],
+      hasConstraints: [this.data?.update ? template?.hasConstraints : true]
     });
 
     this.formGroup.get('block')?.valueChanges.subscribe(item => {
@@ -73,6 +92,8 @@ export class SettingSalaryDialogComponent implements OnInit {
           this.formGroup.get('block')?.setValue('')
           break
         case SalaryTypeEnum.OVERTIME:
+          this.actions$.dispatch(BranchActions.loadAll({}))
+          this.actions$.dispatch(PositionActions.loadAll({}))
           this.formGroup.get('unit')?.setValue(DatetimeUnitEnum.DAY)
           break
         default:
@@ -140,6 +161,7 @@ export class SettingSalaryDialogComponent implements OnInit {
       prices: value.prices ? this.prices.concat([value.prices]) : this.prices
     };
     if (value.block.type === SalaryTypeEnum.ABSENT || value.block.type === SalaryTypeEnum.OVERTIME) {
+
       if (value.block.type === SalaryTypeEnum.ABSENT) {
         if (value.constraintHoliday) {
           this.constraint.push(SalaryTypeEnum.HOLIDAY)
@@ -147,22 +169,28 @@ export class SettingSalaryDialogComponent implements OnInit {
         if (value.constraintOvertime) {
           this.constraint.push(SalaryTypeEnum.OVERTIME)
         }
-        Object.assign(template, {
-          constraint: this.constraint
-        })
+        Object.assign(template, {constraint: this.constraint})
       }
-      if (value.totalOf.value === PriceType.PRICE) {
-        Object.assign(template, {
-          workday: value.workday ? value.workday : null,
-          totalOf: null,
-        })
-      } else {
-        Object.assign(template, {
-          workday: value.workday ? value.workday : null,
-          price: null,
-          totalOf: value.salaries.map((recipe: any) => recipe),
-        })
-      }
+
+      Object.assign(template, value.block.type === SalaryTypeEnum.OVERTIME
+          ? {
+            hasConstraints: value.hasConstraints,
+            branchIds: value.branches.map((branch: BranchEntity) => branch.id),
+            positionIds: value.positions.map((position: PositionEntity) => position.id),
+          }
+          : {},
+        value.totalOf.value === PriceType.PRICE
+          ? {
+            workday: value.workday ? value.workday : null,
+            totalOf: null,
+          }
+          : {
+            workday: value.workday ? value.workday : null,
+            price: null,
+            totalOf: value.salaries.map((recipe: any) => recipe),
+          }
+      )
+
     }
     return template
   }

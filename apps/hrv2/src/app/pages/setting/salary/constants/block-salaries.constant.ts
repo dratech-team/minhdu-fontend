@@ -1,5 +1,5 @@
 import {PriceType, SalaryTypeEnum} from "../enums";
-import {recipesConstant} from "./recipes.constant";
+import {recipesConstant, recipesConstantOvertime} from "./recipes.constant";
 import {DatetimeUnitEnum, EmployeeType} from "@minhdu-fontend/enums";
 import {UnitDatetimeConstant} from "./unit-datetime.constant";
 import {EmployeeTypeConstant} from "./employee-type.constant";
@@ -40,6 +40,18 @@ interface BlockSalary {
   insurance?: {
     disabled?: boolean,
     show?: boolean
+  }
+  branch?: {
+    disabled?: boolean,
+    show: boolean
+  },
+  position?: {
+    disabled?: boolean,
+    show: boolean
+  },
+  hasConstraints?: {
+    disabled?: boolean,
+    show: boolean
   }
 }
 
@@ -105,14 +117,26 @@ export const blockSalariesConstant: BlockSalary[] = [
   {
     title: 'Tăng ca',
     type: SalaryTypeEnum.OVERTIME,
-    employeeConstant:EmployeeTypeConstant,
+    employeeConstant: EmployeeTypeConstant,
     units: UnitDatetimeConstant.filter(item => item.salaryType.includes(SalaryTypeEnum.OVERTIME)),
-    recipesConstant: recipesConstant,
+    recipesConstant: recipesConstantOvertime,
     rate: {
       disabled: false,
       show: true
     },
     price: {
+      disabled: false,
+      show: true
+    },
+    branch: {
+      disabled: false,
+      show: true,
+    },
+    position: {
+      disabled: false,
+      show: true,
+    },
+    hasConstraints: {
       disabled: false,
       show: true
     }
@@ -127,6 +151,6 @@ export const blockSalariesConstant: BlockSalary[] = [
     price: {
       disabled: false,
       show: true
-    }
+    },
   },
 ];

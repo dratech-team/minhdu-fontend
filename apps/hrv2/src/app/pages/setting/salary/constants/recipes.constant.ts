@@ -55,4 +55,17 @@ export const recipesConstant: recipeType [] = [
   },
 ];
 
+export const recipesConstantOvertime: recipeType [] = [
+  {
+    name: 'Đơn giá',
+    value: PriceType.PRICE,
+  },
+  {
+    name: 'Loại lương',
+    value: PriceType.BLOCK,
+    diveFor: diveForConstant,
+    salariesConstant: salariesConstant
+  },
+];
+
 
