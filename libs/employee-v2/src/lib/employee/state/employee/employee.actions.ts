@@ -6,10 +6,10 @@ import {
   RemoveEmployeeDto,
   SearchEmployeeDto,
   UpdateEmployeeDto
-} from "../dto/employee";
-import {EmployeeEntity} from "../entities";
-import {AddRelativeDto, RemoveRelativeDto, UpdateRelativeDto} from "../dto/relative";
-import {AddDegreeDto, RemoveDegreeDto, UpdateDegreeDto} from "../dto/degree";
+} from "../../dto/employee";
+import {EmployeeEntity} from "../../entities";
+import {AddRelativeDto, RemoveRelativeDto, UpdateRelativeDto} from "../../dto/relative";
+import {AddDegreeDto, RemoveDegreeDto, UpdateDegreeDto} from "../../dto/degree";
 
 
 export const addOne = createAction(

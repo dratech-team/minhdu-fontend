@@ -1,8 +1,8 @@
 import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
 import {Injectable} from '@angular/core';
 import {BaseSearchBranchDto} from "../dto";
-import {StorageName} from "../../constants";
 import {BranchEntity} from "../entities/branch.entity";
+import { StorageName } from '@minhdu-fontend/constants';
 
 export interface BranchState extends EntityState<BranchEntity> {
   loading: boolean;

@@ -1,10 +1,9 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 import { persistState } from '@datorama/akita';
-import { StorageName } from 'libs/orgchart-v2/src/lib/constants';
+import { StorageName } from '@minhdu-fontend/constants';
 
 if (environment.production) {
   enableProdMode();

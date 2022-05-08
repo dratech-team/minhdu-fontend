@@ -6,9 +6,9 @@ import {Actions, Effect, ofType} from "@datorama/akita-ng-effects";
 import {EmployeeService} from "@minhdu-fontend/employee-v2";
 import {EmployeeStore} from "./employee.store";
 import {EmployeeActions} from "./employee.actions";
-import {RemoveEmployeeDto} from "../dto/employee";
-import {RelativeService} from "../services/relative.service";
-import {DegreeService} from "../services/degree.service";
+import {RemoveEmployeeDto} from "../../dto/employee";
+import {RelativeService} from "../../services/relative.service";
+import {DegreeService} from "../../services/degree.service";
 import {PaginationDto} from "@minhdu-fontend/constants";
 import {EmployeeQuery} from "./employee.query";
 

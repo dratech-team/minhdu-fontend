@@ -1,10 +1,9 @@
 import {EntityState, EntityStore, StoreConfig} from "@datorama/akita";
-import {EmployeeEntity} from "../entities";
+import {EmployeeEntity} from "../../entities";
 import {Injectable} from "@angular/core";
 import {EmployeeStatusEnum, EmployeeType, Gender} from "@minhdu-fontend/enums";
-import {FlatSalaryTypeEnum} from "../../../../../../apps/hrv2/src/app/pages/employee/enums/flat-salary-type.enum";
-import {SearchEmployeeStateEntity} from "../entities/search-employee-state.entity";
-
+import {SearchEmployeeStateEntity} from "../../entities/search-employee-state.entity";
+import { FlatSalaryTypeEnum } from '../../../../../../../apps/hrv2/src/app/pages/employee/enums/flat-salary-type.enum';
 
 export interface EmployeeState extends EntityState<EmployeeEntity> {
   readonly total: number

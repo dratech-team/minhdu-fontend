@@ -1,8 +1,8 @@
 import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
 import {Injectable} from '@angular/core';
 import {BaseSearchDepartmenthDto} from "../dto";
-import {StorageName} from "../../constants";
 import {DepartmentEntity} from "../entities/department.entity";
+import { StorageName } from '@minhdu-fontend/constants';
 
 export interface DepartmentState extends EntityState<DepartmentEntity> {
   loading: boolean;

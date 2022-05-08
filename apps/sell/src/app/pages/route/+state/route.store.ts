@@ -1,10 +1,9 @@
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
-import { RouteEntity } from '../entities/route.entity';
+import { RouteEntity, routeVisibleEntity } from '../entities';
 import { StorageName } from '../../../shared/constaints/storage-name.const';
-import { SearchRouteDto } from '../dto/search-route.dto';
+import { SearchRouteDto } from '../dto';
 import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
-import { routeVisibleEntity } from '../entities/route-visible.entity';
 import { updateStateUiUtil } from '../../../utils/update-state-ui.util';
 
 export interface RouteState extends EntityState<RouteEntity> {
