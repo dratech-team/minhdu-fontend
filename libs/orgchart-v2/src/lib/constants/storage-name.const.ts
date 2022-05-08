@@ -3,4 +3,5 @@ export const StorageName = {
   BRANCH: 'branch',
   POSITION: 'position',
   DEPARTMENT: 'department',
+  EMPLOYEE_DRAFT: 'employee-draft',
 };
