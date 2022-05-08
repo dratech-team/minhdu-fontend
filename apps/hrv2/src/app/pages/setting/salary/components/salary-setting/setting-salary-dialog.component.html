@@ -2,13 +2,13 @@
   <form [formGroup]='formGroup' style='max-height: 45vh; overflow-y: scroll'>
     <div class='m-4'>
       <div class=' main-popup mt-2'>
-        <div><span class='main-title'>Khối lương</span><span class='star'>*</span></div>
+        <div><span class='font-weight-bold'>Khối lương</span><span class='star'>*</span></div>
         <nz-select formControlName='block' style='width: 100%' [compareWith]='compareFN'>
           <nz-option *ngFor='let item of blockSalary' [nzValue]='item' [nzLabel]='item.title'></nz-option>
         </nz-select>
       </div>
       <div class=' main-popup mt-2'>
-        <div><span class='main-title'>Tiêu đề</span><span class='star'>*</span></div>
+        <div><span class='font-weight-bold'>Tiêu đề</span><span class='star'>*</span></div>
         <input class='form-control mt-1' type='text' formControlName='title'>
         <div *ngIf='checkValid.title.errors ' class='invalid-feedback'>
           <div>Chưa nhập tiêu đề</div>
@@ -23,7 +23,7 @@
         <div>
           <div class="d-flex row">
             <div class="col">
-              <div><span class='main-title'>Hệ số</span><span class='star'>*</span></div>
+              <div><span class='font-weight-bold'>Hệ số</span><span class='star'>*</span></div>
               <input
                 nz-input type='number'
                 formControlName='rate'
@@ -50,7 +50,7 @@
         </div>
       </div>
       <div class=' main-popup mt-2' *ngIf='formGroup.value?.block?.units'>
-        <div><span class='main-title'>Đơn vị thời gian</span><span class='star'>*</span></div>
+        <div><span class='font-weight-bold'>Đơn vị thời gian</span><span class='star'>*</span></div>
         <nz-select style="width: 100%" formControlName="unit">
           <nz-option *ngFor="let item of formGroup.value.block.units"
                      [nzValue]="item.value"
@@ -61,7 +61,7 @@
         </div>
       </div>
       <div class='d-flex mt-2' *ngIf='formGroup.value.block?.constraintHoliday?.show'>
-        <div><span class='main-title'>Ràng buộc ngày lễ:</span></div>
+        <div><span class='font-weight-bold'>Ràng buộc ngày lễ:</span></div>
         <label
           nz-checkbox
           class='ml-2'
@@ -71,7 +71,7 @@
         </label>
       </div>
       <div class='d-flex mt-2' *ngIf='formGroup.value.block?.constraintOvertime?.show'>
-        <div><span class='main-title'>Ràng buộc tăng ca:</span></div>
+        <div><span class='font-weight-bold'>Ràng buộc tăng ca:</span></div>
         <label
           nz-checkbox
           class='ml-2'
@@ -116,7 +116,7 @@
         </div>
         <div class='mt-2'>
           <div>
-            <span class='main-title'>Tổng của</span><span class='star'>*</span>
+            <span class='font-weight-bold'>Tổng của</span><span class='star'>*</span>
           </div>
           <nz-radio-group formControlName='totalOf'>
             <label nz-radio *ngFor='let item of formGroup.value.block?.recipesConstant'
@@ -161,7 +161,7 @@
         </div>
         <div class='mt-2'
              *ngIf='formGroup.value.totalOf?.diveFor'>
-          <div><span class='main-title'>Chia cho</span><span class='star'>*</span></div>
+          <div><span class='font-weight-bold'>Chia cho</span><span class='star'>*</span></div>
           <div class='d-flex'>
             <nz-radio-group formControlName='diveFor'>
               <label *ngFor='let item of formGroup.value.totalOf.diveFor' nz-radio
