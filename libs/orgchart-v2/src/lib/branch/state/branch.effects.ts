@@ -115,14 +115,29 @@ export class BranchEffects {
   @Effect()
   remove$ = this.action$.pipe(
     ofType(BranchActions.remove),
-    switchMap((props) => this.branchService.delete(props.id).pipe(
-      map(() => {
-          this.message.success('Xoá khách hàng thành công')
-          return this.branchStore.remove(props.id)
-        }
-      ),
-      catchError((err) => of(BranchActions.error(err)))
-    ))
+    switchMap((props) => {
+        this.branchStore.update(state => ({
+          ...state, deleted: false
+        }))
+        return this.branchService.delete(props.id).pipe(
+          map(() => {
+              this.branchStore.update(state => ({
+                ...state, deleted: true
+              }))
+              this.message.success('Xoá đơn vị thành công')
+              return this.branchStore.remove(props.id)
+            }
+          ),
+          catchError((err) => {
+              this.branchStore.update(state => ({
+                ...state, deleted: null
+              }))
+              return of(BranchActions.error(err))
+            }
+          )
+        )
+      }
+    )
   );
 
   @Effect()

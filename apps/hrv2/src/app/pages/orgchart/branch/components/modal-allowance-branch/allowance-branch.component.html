@@ -1,0 +1,35 @@
+<form [formGroup]='formGroup'>
+    <div class='mt-2'>
+      <div class='title-item'><span>Tên phụ cấp</span> <span class='star'>*</span></div>
+      <input class='mt-2 form-control' formControlName='title' type='text'>
+      <div *ngIf='checkValid.title.errors?.required' class='invalid-feedback'>
+        <div>Chưa nhập tên phụ cấp</div>
+      </div>
+    </div>
+    <div class='mt-2'>
+      <div class='title-item'><span>Mức phụ cấp</span> <span class='star'>*</span></div>
+      <input
+        class='mt-2'
+        formControlName='price'
+        nz-input
+        currencyMask
+        [options]="{ suffix: ' đ' }"
+        type='text'>
+      <div *ngIf='checkValid.price.errors?.required' class='invalid-feedback'>
+        <div>Chưa nhập mức phụ cấp</div>
+      </div>
+    </div>
+    <div class='mt-2'>
+      <div class='title-item'><span>Tháng</span> <span class='star'>*</span></div>
+      <nz-date-picker style="width: 100%"
+                      nzFormat="MM-yyyy"
+                      nzMode="month"
+                      formControlName='datetime'>
+
+      </nz-date-picker>
+      <div *ngIf=' checkValid.datetime.errors?.required' class='invalid-feedback'>
+        <div>Chưa chọn tháng</div>
+      </div>
+    </div>
+</form>
+<button class="mt-2" nz-button nzType="primary" [nzLoading]="summiting" (click)='onsubmit()'>Lưu</button>

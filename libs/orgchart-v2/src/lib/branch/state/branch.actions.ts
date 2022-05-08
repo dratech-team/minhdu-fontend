@@ -27,12 +27,12 @@ const update = createAction(
 );
 
 const remove = createAction(
-  '[ORDER] Remove',
+  '[Branch] Remove',
   props<RemoveBranchDto>()
 );
 
 const error = createAction(
-  '[ORDER] Error',
+  '[Branch] Error',
   props<{ error: string }>()
 );
 

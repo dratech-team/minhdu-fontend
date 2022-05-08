@@ -19,7 +19,7 @@ import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 import {Router} from "@angular/router";
 import {PayrollStore} from "../../../../payroll/state";
 import {EmployeeStore} from "@minhdu-fontend/employee-v2";
-import {FilterTypeEnum} from "@minhdu-fontend/enums";
+import {FilterTypeEnum, ItemContextMenu} from "@minhdu-fontend/enums";
 import {ModalBranchComponent} from "../../components/modal-branch/modal-branch.component";
 import {DataAddOrUpBranch} from "../../data/modal-department.data";
 
@@ -34,7 +34,7 @@ export class BranchComponent implements OnInit {
 
   pageSizeTable = 10;
   filterType = FilterTypeEnum
-
+  itemContextMenu = ItemContextMenu
   stateSearch = this.branchQuery.getValue().search
   formGroup = new FormGroup(
     {
@@ -148,7 +148,7 @@ export class BranchComponent implements OnInit {
   }
 
   onDetail(branch: BranchEntity) {
-    this.router.navigate(['to-chuc/chi-tiet-don-vi/', branch.id]).then();
+    this.router.navigate(['to-chuc/don-vi/chi-tiet-don-vi/', branch.id]).then();
   }
 
   onEmployeePosition(item: { position: PositionEntity, branch: BranchEntity }) {

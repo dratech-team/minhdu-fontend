@@ -56,14 +56,16 @@
         </thead>
         <tbody>
         <ng-template ngFor let-branch [ngForOf]="tableBranch.data" let-i='index'>
-          <tr class="pointer" (click)="onEmployee(branch)" (contextmenu)='child.onContextMenu($event,branch)'>
+          <tr class="pointer"
+              (click)='onDetail(branch)'
+              (contextmenu)='child.onContextMenu($event,branch)'>
             <td nzLeft>{{(i + 1) + ((tableBranch.nzPageIndex - 1) * pageSizeTable)}}</td>
             <td>{{branch.id}}</td>
             <td nzLeft>{{branch.name}}</td>
             <td>
               <mat-chip-list>
                 <mat-chip
-                  (click)='onDetail(branch)'
+                  (click)="$event.stopPropagation()"
                   [contextMenu]='childChip'
                   [contextMenuSubject]='{position: position, branch: branch}'
                   [style]='{"background": formGroup.get("position")?.value.id === position.id ? "red" : "#00000040"}'
@@ -83,10 +85,12 @@
   </div>
 </div>
 <app-mouse-right
+  [items]="[itemContextMenu.PROFILE]"
   #child
   (onAdd)='onAdd()'
   (onUpdate)='onUpdate($event)'
   (onDel)='onDelete($event)'
+  (onProfile)="onEmployee($event)"
 ></app-mouse-right>
 
 <context-menu #childChip>

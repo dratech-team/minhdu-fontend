@@ -1,0 +1,72 @@
+<div *ngIf='(branch$|async) as branch'>
+  <div class='w-100 d-flex justify-content-center my-2 '>
+    <div class='w-100 px-5'>
+      <div class='w-100'>
+        <div class='rounded px-3  py-2 shadow-lg p-2' style="width:fit-content">
+          <div class=' h5 '>Đơn vị {{branch.name}}</div>
+          <div class='mt-2'><span class='font-sm font-weight-bold'>Mã đơn vị</span>: {{branch.id}}</div>
+          <div class='mt-2'><span
+            class='font-sm font-weight-bold'>Tổng số nhân viên</span>: {{branch?._count?.employees}}</div>
+          <div class='mt-2'>
+            <button class="mr-2" nz-button nzType="primary" (click)='onListPosition(branch.id)'>Danh sách chức vụ</button>
+            <button class="mr-2" nz-button nzType="primary"  (click)='updateBranch(branch)'>Sửa đơn vị</button>
+            <button class="mr-2" nz-button nzDanger (click)='onDelete(branch)'>Xóa đơn vị</button>
+          </div>
+        </div>
+      </div>
+      <div class='d-flex my-2 justify-content-between'>
+        <div class='font-weight-bold font-lg d-flex align-items-center'>
+          <span>
+           Bảng dach sách phụ cấp
+        </span>
+        </div>
+       <button nz-button nzType="primary" (click)="onAddAllowance(branch)">Thêm mục</button>
+      </div>
+      <nz-table
+        [nzScroll]="{x:'', y:'50vh'}"
+        class="shadow-lg"
+        #tableBranch
+        [nzData]="branch.allowances|| []"
+      >
+        <thead>
+        <tr>
+          <th nzWidth="60px">STT</th>
+          <th>Mã phụ cấp</th>
+          <th>Ngày</th>
+          <th>Tên phụ cấp</th>
+          <th>Mức phụ cấp</th>
+          <th style='width: 100px'>Xoá</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor='let allowance of tableBranch.data let i = index'
+            (click)='onUpdateAllowance(allowance, branch.id)'
+            class='pointer'
+        >
+          <th>
+            {{i + 1}}
+          </th>
+          <th>
+            {{allowance.id}}
+          </th>
+          <th>
+            {{allowance?.datetime|date:'dd/MM/yyyy'}}
+          </th>
+          <th>
+            {{allowance.title}}
+          </th>
+          <th>
+            {{allowance?.price|number:'1.0-0'}} đ
+          </th>
+          <th class='pointer'>
+            <button nz-button nzDanger
+                    (click)='deleteAllowance(allowance.id, branch.id); $event.stopPropagation()'>
+              Xóa
+            </button>
+          </th>
+        </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>
