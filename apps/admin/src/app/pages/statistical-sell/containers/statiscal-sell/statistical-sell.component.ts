@@ -20,7 +20,7 @@ export class StatisticalSellComponent implements OnInit {
   overview$: Observable<OverviewSell> = this.service.getAll({
     filter: 'MONTH',
     datetime: new Date()
-  }).pipe(tap(c => console.log(c)));
+  });
 
   constructor(
     private readonly formBuilder: FormBuilder,

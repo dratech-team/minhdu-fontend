@@ -92,7 +92,7 @@ export class SalarySettingComponent implements OnInit {
 
   onAdd() {
     this.modal.create({
-      nzWidth: '30vw',
+      nzWidth: '35vw',
       nzTitle: 'Tạo bản mẫu lương',
       nzContent: SettingSalaryDialogComponent,
       nzFooter: [],
@@ -101,7 +101,7 @@ export class SalarySettingComponent implements OnInit {
 
   onUpdate(template: SalarySettingEntity) {
     this.modal.create({
-      nzWidth: 'fit-content',
+      nzWidth: '35vw',
       nzTitle: 'Tạo bản mẫu lương',
       nzContent: SettingSalaryDialogComponent,
       nzComponentParams: <{ data?: AddOrUpdateSettingSalary }>{

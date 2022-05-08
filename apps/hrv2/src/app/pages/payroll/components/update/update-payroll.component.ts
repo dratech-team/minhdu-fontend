@@ -27,7 +27,6 @@ export class UpdatePayrollComponent implements OnInit {
     } else {
       this.positions = branches.find(branch => branch.name === this.data.payroll.branch)?.positions
     }
-    console.log(branches)
     return branches
   }));
   added$ = this.payrollQuery.select(state => state.added)

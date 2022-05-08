@@ -120,8 +120,9 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       titleAllowance: [salary?.allowance?.title || ''],
       constraintHoliday: [],
       constraintOvertime: [],
+      hasConstraints: [],
       reference: [],
-      payrollIds: [this.data.add ? [this.data.add.payroll.id] : []]
+      payrollIds: [this.data.add ? [this.data.add.payroll.id] : []],
     });
 
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
@@ -129,7 +130,10 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       this.formGroup.get('constraintOvertime')?.setValue(template?.constraints?.some((item: any) => item.value === SalaryTypeEnum.HOLIDAY));
       this.formGroup.get('rate')?.setValue(template?.rate);
       this.formGroup.get('unit')?.setValue(template?.unit);
-      this.formGroup.get('reference')?.setValue(template?.types ? PriceType.BLOCK : PriceType.PRICE);
+      this.formGroup.get('reference')?.setValue(template?.totalOf.length > 0 ? PriceType.BLOCK : PriceType.PRICE);
+      if(template.type === SalaryTypeEnum.OVERTIME){
+        this.formGroup.get('hasConstraints')?.setValue(template?.hasConstraints);
+      }
     });
 
     this.formGroup.get('startTime')?.valueChanges.subscribe(val => {
