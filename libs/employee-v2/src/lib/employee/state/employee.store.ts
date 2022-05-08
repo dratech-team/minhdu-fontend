@@ -1,12 +1,16 @@
-import {EntityState, EntityStore, Store, StoreConfig} from "@datorama/akita";
+import {EntityState, EntityStore, StoreConfig} from "@datorama/akita";
 import {EmployeeEntity} from "../entities";
 import {Injectable} from "@angular/core";
+import {EmployeeStatusEnum, EmployeeType, Gender} from "@minhdu-fontend/enums";
+import {FlatSalaryTypeEnum} from "../../../../../../apps/hrv2/src/app/pages/employee/enums/flat-salary-type.enum";
+import {SearchEmployeeStateEntity} from "../entities/search-employee-state.entity";
 
 
 export interface EmployeeState extends EntityState<EmployeeEntity> {
   readonly total: number
   readonly loading: boolean,
   readonly added: boolean | null,
+  readonly search: Partial<SearchEmployeeStateEntity>
 }
 
 export function createInitialState(): EmployeeState {
@@ -14,6 +18,16 @@ export function createInitialState(): EmployeeState {
     total: 0,
     loading: true,
     added: null,
+    search: {
+      name: '',
+      phone: '',
+      identify:'',
+      address:'',
+      status: EmployeeStatusEnum.IS_ACTIVE,
+      gender: Gender.ALL,
+      flatSalary: FlatSalaryTypeEnum.ALL,
+      employeeType: EmployeeType.EMPLOYEE_FULL_TIME,
+    }
   }
 }
 

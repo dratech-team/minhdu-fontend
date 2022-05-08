@@ -150,6 +150,7 @@
               style='width:100%'
               formControlName='province'
               nzPlaceHolder='Chọn tỉnh thành'
+              [compareWith]="compareFN"
             >
               <nz-option
                 *ngFor='let province of provinces$|async'
@@ -167,6 +168,7 @@
               style='width:100%'
               formControlName='district'
               nzPlaceHolder='Chọn Quận/Huyện'
+              [compareWith]="compareFN"
             >
               <nz-option
                 *ngFor='let district of districts'
@@ -184,6 +186,7 @@
               style='width:100%'
               formControlName='ward'
               nzPlaceHolder='Chọn Quận/Huyện'
+              [compareWith]="compareFN"
             >
               <nz-option
                 *ngFor='let ward of wards'

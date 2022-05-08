@@ -48,14 +48,16 @@ export class EmployeeComponent implements OnInit {
   provinces$ = this.provinceService.getAll()
   departments$ = this.departmentQuery.selectAll();
 
-  districts: District[] = []
-  wards: Ward[] = []
-  employees: EmployeeEntity[] = []
+  stateEmployee = this.employeeQuery.getValue().search
 
   employeeTypeConstant = EmployeeTypeConstant
   genderTypeConstant = GenderTypeConstant
   flatSalaryTypeConstant = FlatSalaryTypeConstant
   empStatusContain = EmployeeStatusConstant;
+
+  districts: District[] = this.stateEmployee.province?.districts || []
+  wards: Ward[] = this.stateEmployee.district?.wards || []
+  employees: EmployeeEntity[] = []
 
   roleEnum = Role;
   role = window.localStorage.getItem('role')
@@ -64,21 +66,21 @@ export class EmployeeComponent implements OnInit {
   pageSize = 15
   empStatusEnum = EmployeeStatusEnum
 
-  departmentControl = new FormControl('');
+  departmentControl = new FormControl(this.stateEmployee.department || '');
   formGroup = new FormGroup({
-    name: new FormControl(''),
-    phone: new FormControl(''),
-    identify: new FormControl(''),
-    address: new FormControl(''),
-    province: new FormControl(''),
-    district: new FormControl(''),
-    ward: new FormControl(''),
-    gender: new FormControl(''),
-    flatSalary: new FormControl(FlatSalaryTypeEnum.ALL),
-    position: new FormControl(''),
-    branch: new FormControl(''),
-    employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME),
-    status: new FormControl(EmployeeStatusEnum.IS_ACTIVE)
+    name: new FormControl(this.stateEmployee.name),
+    phone: new FormControl(this.stateEmployee.phone),
+    identify: new FormControl(this.stateEmployee.phone),
+    address: new FormControl(this.stateEmployee.address),
+    province: new FormControl(this.stateEmployee.province || ''),
+    district: new FormControl(this.stateEmployee.district || ''),
+    ward: new FormControl(this.stateEmployee.ward || ''),
+    gender: new FormControl(this.stateEmployee.gender),
+    flatSalary: new FormControl(this.stateEmployee.flatSalary),
+    position: new FormControl(this.stateEmployee.position || ''),
+    branch: new FormControl(this.stateEmployee.branch || ''),
+    employeeType: new FormControl(this.stateEmployee.employeeType),
+    status: new FormControl(this.stateEmployee.status)
   });
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
@@ -114,7 +116,7 @@ export class EmployeeComponent implements OnInit {
             );
           }
         )
-      }else{
+      } else {
         this.actions$.dispatch(
           EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false))
         );
@@ -167,6 +169,9 @@ export class EmployeeComponent implements OnInit {
   }
 
   mapEmployeeDto(val: any, isPagination: boolean): SearchEmployeeDto {
+    this.employeeStore.update(state => ({
+      ...state, search: Object.assign(val, {department: this.departmentControl.value})
+    }))
     return {
       search: {
         take: PaginationDto.take,
