@@ -15,7 +15,7 @@ export interface SalarySettingEntity extends BaseSalarySettingEntity {
   unit?: DatetimeUnitEnum
   totalOf: SalaryTypeEnum [],
   workday?: number,
-  employeeType?:EmployeeType
+  employeeType?: EmployeeType
   positions?: PositionEntity[]
   hasConstraints?: boolean
 }
