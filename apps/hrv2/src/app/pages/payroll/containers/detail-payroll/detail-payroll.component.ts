@@ -224,7 +224,7 @@ export class DetailPayrollComponent implements OnInit {
     salary: SalaryEntity & AllowanceSalaryEntity & OvertimeSalaryEntity & AbsentSalaryEntity & DeductionSalaryEntity & RemoteSalaryEntity
   ) {
     this.modal.create({
-      nzTitle: `Xoá ${salary.title|| salary.setting.title}`,
+      nzTitle: `Xoá ${salary?.title|| salary.setting?.title}`,
       nzContent: ModalAlertComponent,
       nzComponentParams: <{ data: ModalAlertEntity }>{
         data: {

@@ -93,7 +93,7 @@ export class PositionComponent implements OnInit {
   onUpdate(position: PositionEntity) {
     this.modal.create({
       nzWidth: 'fit-content',
-      nzTitle: 'Tạo phòng ban',
+      nzTitle: 'Cập nhật chức vụ',
       nzContent: ModalPositionComponent,
       nzComponentParams: <{ data?: DataAddOrUpdatePosition }>{
         data: {

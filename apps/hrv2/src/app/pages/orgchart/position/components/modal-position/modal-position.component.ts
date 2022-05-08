@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {BranchActions, BranchEntity, BranchQuery, PositionActions} from "@minhdu-fontend/orgchart-v2";
+import {BranchActions, BranchEntity, BranchQuery, PositionActions, PositionQuery} from "@minhdu-fontend/orgchart-v2";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {DataAddOrUpdatePosition} from "../../data/modal-position.data";
 import {Actions} from "@datorama/akita-ng-effects";
@@ -12,13 +12,16 @@ export class ModalPositionComponent implements OnInit {
   @Input() data?: DataAddOrUpdatePosition
 
   branches$ = this.branchQuery.selectAll()
-  added$ = this.branchQuery.select(state => state.added)
+  added$ = this.positionQuery.select(state => state.added)
   formGroup!: FormGroup;
+
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id === o2.id : o1 === o2)
 
   constructor(
     private readonly actions$: Actions,
     private readonly modalRef: NzModalRef,
     private readonly branchQuery: BranchQuery,
+    private readonly positionQuery: PositionQuery,
     private readonly formBuilder: FormBuilder,
   ) {
   }

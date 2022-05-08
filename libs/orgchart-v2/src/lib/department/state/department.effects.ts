@@ -77,7 +77,7 @@ export class DepartmentEffects {
   );
 
   @Effect()
-  getCustomer$ = this.action$.pipe(
+  loadOne$ = this.action$.pipe(
     ofType(DepartmentActions.loadOne),
     switchMap((props) => this.departmentService.getOne(props).pipe(
       map(branch => this.departmentStore.upsert(branch.id, branch)),
@@ -86,22 +86,22 @@ export class DepartmentEffects {
   );
 
   @Effect()
-  updateCustomer$ = this.action$.pipe(
+  update$ = this.action$.pipe(
     ofType(DepartmentActions.update),
     switchMap((props) => {
         this.departmentStore.update(state => ({
-          ...state, addeds: false
+          ...state, added: false
         }));
         return this.departmentService.update(props).pipe(
           tap(response => {
             this.departmentStore.update(state => ({
-              ...state, addeds: true
+              ...state, added: true
             }));
             this.departmentStore.update(response.id, response);
           }),
           catchError(err => {
               this.departmentStore.update(state => ({
-                ...state, addeds: null
+                ...state, added: null
               }));
               return of(DepartmentActions.error(err))
             }
