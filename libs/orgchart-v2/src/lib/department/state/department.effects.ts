@@ -26,10 +26,8 @@ export class DepartmentEffects {
       this.departmentStore.update(state => ({
         ...state, loading: true
       }));
-      console.log(props)
       return this.departmentService.pagination(props).pipe(
         map((response) => {
-          console.log(response)
           this.departmentStore.update(state => ({...state, loading: false, total: response.total}));
           if (response.data.length === 0) {
             this.message.warning('Đã lấy hết phòng ban');

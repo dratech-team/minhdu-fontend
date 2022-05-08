@@ -234,7 +234,6 @@ export class DetailPayrollComponent implements OnInit {
       nzFooter: ' '
     }).afterClose.subscribe(value => {
       if (value) {
-        console.log(type);
         const service = ((type === SalaryTypeEnum.BASIC || type === SalaryTypeEnum.STAY)
             ? this.permanentService
             : type === SalaryTypeEnum.ALLOWANCE
