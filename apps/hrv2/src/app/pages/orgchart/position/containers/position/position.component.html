@@ -1,0 +1,65 @@
+<div class="d-flex mt-3 ml-2">
+  <div class='d-flex flex-column ml-3 border p-2' style='height: 80vh; width:250px; overflow-y: scroll'>
+    <nz-collapse>
+      <nz-collapse-panel
+        nzHeader='Tìm kiếm'
+        nzActive='true'>
+        <div [formGroup]='formGroup'>
+          <input nz-input class='form-control' type='search' formControlName='search'>
+        </div>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </div>
+  <div class="d-flex flex-column ml-2" style="width: 80vw">
+    <div class="mt-2 d-flex flex-column">
+      <div class="d-flex mb-2 justify-content-between align-items-center">
+        <div>
+          <span class="font-weight-bold">Tổng: </span> {{total$|async}}
+        </div>
+       <div>
+         <button nz-button nzType="primary" (click)="onAdd()">Thêm</button>
+       </div>
+      </div>
+      <nz-table #tablePosition
+                [nzLoading]="loading$|async"
+                [nzScroll]="{ x: '',y: '58vh'}"
+                nzSize='small'
+                [nzData]="(positions$|async)|| []"
+                [nzPageSize]="pageSizeTable"
+                (nzPageIndexChange)="onPagination($event)"
+      >
+        <thead>
+        <tr>
+          <th nzLeft nzWidth="60px">STT</th>
+          <th>Mã chức vụ</th>
+          <th nzLeft>Tên chức vụ</th>
+          <th> Ngày công chuẩn <br /> (Mỗi nhân viên có thể sẽ khác nhau)</th>
+          <th>Tổng nhân viên</th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-template ngFor let-position [ngForOf]="tablePosition.data" let-i='index'>
+          <tr class="pointer" (contextmenu)='child.onContextMenu($event,position)'>
+            <td nzLeft>{{(i + 1) + ((tablePosition.nzPageIndex - 1) * pageSizeTable)}}</td>
+            <td>{{position.id}}</td>
+            <td nzLeft>{{position.name}}</td>
+            <td>{{position.workday}}</td>
+            <td>{{position._count.employees}}</td>
+          </tr>
+        </ng-template>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>
+<app-mouse-right
+  [items]='[itemContextMenu.PAYROLL, itemContextMenu.PROFILE, itemContextMenu.OVERTIME]'
+  #child
+  (onAdd)='onAdd()'
+  (onUpdate)='onUpdate($event)'
+  (onDel)='onDelete($event)'
+  (onProfile)="onEmployee($event)"
+  (onPayroll)="onPayroll($event, filterType.PAYROLL)"
+  (onOvertime)="onPayroll($event, filterType.OVERTIME)"
+></app-mouse-right>
+

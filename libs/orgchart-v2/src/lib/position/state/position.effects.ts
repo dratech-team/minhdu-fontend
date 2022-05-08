@@ -50,7 +50,6 @@ export class PositionEffects {
         })
       );
     }),
-
   );
 
   @Effect()
@@ -66,7 +65,7 @@ export class PositionEffects {
             this.positionStore.update(state => ({
               ...state, added: true
             }));
-            this.positionStore.add(res);
+            this.positionStore.upsert(res.id, res);
           }
         ),
         catchError(err => {
@@ -80,7 +79,7 @@ export class PositionEffects {
   );
 
   @Effect()
-  getCustomer$ = this.action$.pipe(
+  loadOne$ = this.action$.pipe(
     ofType(PositionActions.loadOne),
     switchMap((props) => this.branchService.getOne(props).pipe(
       map(branch => this.positionStore.upsert(branch.id, branch)),
@@ -89,7 +88,7 @@ export class PositionEffects {
   );
 
   @Effect()
-  updateCustomer$ = this.action$.pipe(
+  update$ = this.action$.pipe(
     ofType(PositionActions.update),
     switchMap((props) => {
         this.positionStore.update(state => ({
@@ -102,7 +101,7 @@ export class PositionEffects {
             }));
             this.positionStore.update(response.id, response);
           }),
-          catchError(err =>{
+          catchError(err => {
               this.positionStore.update(state => ({
                 ...state, added: null
               }));
@@ -118,9 +117,9 @@ export class PositionEffects {
   remove$ = this.action$.pipe(
     ofType(PositionActions.remove),
     switchMap((props) => this.branchService.delete(props.id).pipe(
-      map(() =>{
-          this.message.success('Xoá khách hàng thành công')
-          return  this.positionStore.remove(props.id)
+      map(() => {
+          this.message.success('Xoá chức vụ thành công')
+          return this.positionStore.remove(props.id)
         }
       ),
       catchError((err) => of(PositionActions.error(err)))
