@@ -42,6 +42,6 @@ export class BranchService extends BaseService<BranchEntity> {
   }
 
   deleteAllowanceInBranch(salaryId: number): Observable<BranchEntity> {
-    return this.http.delete<Branch>(Api.HR.PAYROLL.BRANCH_ALLOWANCE + `/${salaryId}`);
+    return this.http.delete<BranchEntity>(Api.HR.PAYROLL.BRANCH_ALLOWANCE + `/${salaryId}`);
   }
 }
