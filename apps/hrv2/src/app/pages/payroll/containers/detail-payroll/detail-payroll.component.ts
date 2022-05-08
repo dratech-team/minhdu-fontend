@@ -221,10 +221,10 @@ export class DetailPayrollComponent implements OnInit {
 
   removeSalary(
     type: SalaryTypeEnum,
-    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | AbsentSalaryEntity | DeductionSalaryEntity | RemoteSalaryEntity
+    salary: SalaryEntity & AllowanceSalaryEntity & OvertimeSalaryEntity & AbsentSalaryEntity & DeductionSalaryEntity & RemoteSalaryEntity
   ) {
     this.modal.create({
-      nzTitle: `Xoá ${salary.title || salary.type}`,
+      nzTitle: `Xoá ${salary.title|| salary.setting.title}`,
       nzContent: ModalAlertComponent,
       nzComponentParams: <{ data: ModalAlertEntity }>{
         data: {

@@ -5,6 +5,7 @@ import {LoadOneBranchDto} from "../dto";
 import {UpdateBranchDto} from "../dto";
 import {RemoveBranchDto} from "../dto";
 import {Salary} from "@minhdu-fontend/data-models";
+import {AllowanceSalaryEntity} from "../../../../../../apps/hrv2/src/app/pages/salary/entities";
 
 const addOne = createAction(
   '[Branch] Add One',
@@ -27,18 +28,18 @@ const update = createAction(
 );
 
 const remove = createAction(
-  '[ORDER] Remove',
+  '[Branch] Remove',
   props<RemoveBranchDto>()
 );
 
 const error = createAction(
-  '[ORDER] Error',
+  '[Branch] Error',
   props<{ error: string }>()
 );
 
 const deleteAllowance = createAction(
   '[BRANCH] Delete Allowance',
-  props<{salaryId: Salary['id']}>()
+  props<{salaryId: AllowanceSalaryEntity['id']}>()
 );
 
 export const BranchActions = {
