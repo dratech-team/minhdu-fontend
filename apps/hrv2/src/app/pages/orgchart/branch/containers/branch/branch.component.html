@@ -9,6 +9,22 @@
         </div>
       </nz-collapse-panel>
     </nz-collapse>
+    <nz-collapse>
+      <nz-collapse-panel
+        [formGroup]="formGroup"
+        class="mt-2"
+        nzHeader='Chức vụ'
+        nzActive='true'>
+        <nz-select style="width: 100%"
+                   nzShowSearch
+                   [compareWith]="compareFN"
+                   nzPlaceHolder="Chọn chức vụ"
+                   formControlName="position"
+        >
+          <nz-option *ngFor="let item of positions$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
+        </nz-select>
+      </nz-collapse-panel>
+    </nz-collapse>
   </div>
   <div class="d-flex flex-column ml-2" style="width: 80vw">
     <div class="mt-2 d-flex flex-column">
@@ -16,13 +32,13 @@
         <div>
           <span class="font-weight-bold">Tổng: </span> {{total$|async}}
         </div>
-       <div>
-         <button nz-button nzType="primary" (click)="onAdd()">Thêm</button>
-       </div>
+        <div>
+          <button nz-button nzType="primary" (click)="onAdd()">Thêm</button>
+        </div>
       </div>
       <nz-table #tableBranch
                 [nzLoading]="loading$|async"
-                [nzScroll]="{ x: '',y: '58vh'}"
+                [nzScroll]="{ x: '1500px',y: '58vh'}"
                 nzSize='small'
                 [nzData]="(branches$|async)|| []"
                 [nzPageSize]="pageSizeTable"
@@ -33,9 +49,9 @@
           <th nzLeft nzWidth="60px">STT</th>
           <th>Mã đơn vị</th>
           <th nzLeft>Tên Đơn vị</th>
-          <th nzLeft>Chức vụ</th>
-          <th nzLeft>Tổng nhân viên</th>
-          <th nzLeft>Tổng nhân viên đã nghỉ việc</th>
+          <th>Chức vụ</th>
+          <th>Tổng nhân viên</th>
+          <th>Tổng nhân viên đã nghỉ việc</th>
         </tr>
         </thead>
         <tbody>
@@ -50,7 +66,7 @@
                   (click)='onDetail(branch)'
                   [contextMenu]='childChip'
                   [contextMenuSubject]='{position: position, branch: branch}'
-                  [style]='{"background": formGroup.get("position")?.value === position.name ? "red" : i%2  === 0? "#dddddd":"white"}'
+                  [style]='{"background": formGroup.get("position")?.value.id === position.id ? "red" : "#00000040"}'
                   *ngFor='let position of branch.positions'>
                   {{position.name}}
                 </mat-chip>
@@ -77,7 +93,7 @@
   <ng-template
     contextMenuItem
     (execute)='onEmployeePosition($event.item)'>
-    Hồ sơ
+    Nhân viên
   </ng-template>
   <ng-template
     contextMenuItem

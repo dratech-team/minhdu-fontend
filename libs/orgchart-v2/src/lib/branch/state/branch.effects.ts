@@ -32,7 +32,7 @@ export class BranchEffects {
       return this.branchService.pagination(props as SearchBranchDto).pipe(
         map((response) => {
           this.branchStore.update(state => ({...state, loading: false, total: response.total}));
-          if(response.data.length === 1 && response.data[0].positions){
+          if (response.data.length === 1 && response.data[0].positions) {
             this.positionStore.set(response.data[0].positions)
           }
           if (props.isPaginate) {
@@ -78,7 +78,7 @@ export class BranchEffects {
   );
 
   @Effect()
-  getCustomer$ = this.action$.pipe(
+  loadOne$ = this.action$.pipe(
     ofType(BranchActions.loadOne),
     switchMap((props) => this.branchService.getOne(props).pipe(
       map(branch => this.branchStore.upsert(branch.id, branch)),
@@ -87,7 +87,7 @@ export class BranchEffects {
   );
 
   @Effect()
-  updateCustomer$ = this.action$.pipe(
+  update$ = this.action$.pipe(
     ofType(BranchActions.update),
     switchMap((props) => {
         this.branchStore.update(state => ({
@@ -100,7 +100,7 @@ export class BranchEffects {
             }));
             this.branchStore.update(response.id, response);
           }),
-          catchError(err =>{
+          catchError(err => {
               this.branchStore.update(state => ({
                 ...state, added: null
               }));
@@ -116,9 +116,9 @@ export class BranchEffects {
   remove$ = this.action$.pipe(
     ofType(BranchActions.remove),
     switchMap((props) => this.branchService.delete(props.id).pipe(
-      map(() =>{
+      map(() => {
           this.message.success('Xoá khách hàng thành công')
-          return  this.branchStore.remove(props.id)
+          return this.branchStore.remove(props.id)
         }
       ),
       catchError((err) => of(BranchActions.error(err)))
@@ -129,9 +129,9 @@ export class BranchEffects {
   deleteAllowance$ = this.action$.pipe(
     ofType(BranchActions.deleteAllowance),
     switchMap((props) => this.branchService.deleteAllowanceInBranch(props.salaryId).pipe(
-      map((branch) =>{
+      map((branch) => {
           this.message.success('Xoá Phụ cấp cho đơn vị thành công')
-          return  this.branchStore.update(branch.id, branch)
+          return this.branchStore.update(branch.id, branch)
         }
       ),
       catchError((err) => of(BranchActions.error(err)))

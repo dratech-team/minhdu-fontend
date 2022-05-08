@@ -5,7 +5,15 @@ import {debounceTime, map} from 'rxjs/operators';
 import {PaginationDto} from '@minhdu-fontend/constants';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from 'ng-zorro-antd/modal';
-import {BranchActions, BranchEntity, BranchQuery, PositionEntity} from "@minhdu-fontend/orgchart-v2";
+import {
+  BranchActions,
+  BranchEntity,
+  BranchQuery,
+  PositionActions,
+  PositionEntity,
+  PositionQuery,
+  PositionStore
+} from "@minhdu-fontend/orgchart-v2";
 import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 import {Router} from "@angular/router";
@@ -22,13 +30,14 @@ export class BranchComponent implements OnInit {
   branches$ = this.branchQuery.selectAll()
   loading$ = this.branchQuery.select(state => state.loading)
   total$ = this.branchQuery.select(state => state.total)
-
+  positions$ = this.positionQuery.selectAll()
   pageSizeTable = 10;
   filterType = FilterTypeEnum
 
   formGroup = new FormGroup(
     {
       search: new FormControl(''),
+      position: new FormControl(''),
     }
   );
 
@@ -41,14 +50,18 @@ export class BranchComponent implements OnInit {
     private readonly branchQuery: BranchQuery,
     private readonly payrollStore: PayrollStore,
     private readonly employeeStore: EmployeeStore,
+    private readonly positionStore: PositionStore,
+    private readonly positionQuery: PositionQuery,
     private readonly router: Router,
   ) {
   }
 
   ngOnInit() {
+    this.actions$.dispatch(PositionActions.loadAll({}))
     this.actions$.dispatch(BranchActions.loadAll({
       search: this.mapBranch(this.formGroup.value, false)
     }));
+
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       map(value => {
@@ -71,7 +84,8 @@ export class BranchComponent implements OnInit {
   }
 
   mapBranch(dataFG: any, isPagination: boolean) {
-    return Object.assign(dataFG, {
+    return Object.assign({}, dataFG, {
+      position: dataFG.position.name,
       take: PaginationDto.take,
       skip: isPagination ? this.branchQuery.getCount() : PaginationDto.skip
     });
@@ -93,7 +107,9 @@ export class BranchComponent implements OnInit {
       nzContent: ModalBranchComponent,
       nzComponentParams: <{ data?: DataAddOrUpBranch }>{
         data: {
-          update: branch
+          update: {
+            branch: branch
+          }
         }
       },
       nzFooter: []
@@ -117,48 +133,31 @@ export class BranchComponent implements OnInit {
     })
   }
 
-  onEmployee(branch
-               :
-               BranchEntity
-  ) {
+  onEmployee(branch: BranchEntity) {
+    this.positionStore.add(branch.positions || [])
     this.employeeStore.update(state => ({
       ...state, search: Object.assign(JSON.parse(JSON.stringify(state.search)), {branch: branch})
     }))
     this.router.navigate(['nhan-vien']).then();
   }
 
-  onDetail($event
-             :
-             any
-  ) {
-    this.router.navigate(['to-chuc/chi-tiet-don-vi/', $event.id]).then();
+  onDetail(branch: BranchEntity) {
+    this.router.navigate(['to-chuc/chi-tiet-don-vi/', branch.id]).then();
   }
 
-  onEmployeePosition(item
-                       :
-                       {
-                         position: PositionEntity, branch
-                           :
-                           BranchEntity
-                       }
-  ) {
+  onEmployeePosition(item: { position: PositionEntity, branch: BranchEntity }) {
+    this.positionStore.add(item.branch.positions || [])
     this.employeeStore.update(state => ({
       ...state,
-      search: Object.assign(JSON.parse(JSON.stringify(state.search)), {position: item.position, branch: item.branch})
+      search: Object.assign(JSON.parse(JSON.stringify(state.search)),
+        {position: item.position, branch: item.branch})
     }))
-    this.router.navigate(['ho-so']).then();
+    this.router.navigate(['nhan-vien']).then();
   }
 
-  onPayrollPosition(item
-                      :
-                      {
-                        position: PositionEntity, branch
-                          :
-                          BranchEntity
-                      }
-    ,
-                    filterType: FilterTypeEnum
-  ) {
+  onPayrollPosition(item: { position: PositionEntity, branch: BranchEntity }, filterType: FilterTypeEnum) {
+    this.positionStore.add(item.branch.positions || [])
+
     this.payrollStore.update(state => ({
       ...state, search: Object.assign(JSON.parse(JSON.stringify(state.search)), {
         position: item.position,

@@ -30,14 +30,14 @@ export class TablePayrollComponent implements OnInit {
   @Input() pageSize = 10;
   @Input() scroll: { x: string, y: string } = {x: '5000px', y: '56vh'}
   @Input() onChange?: Subject<void>
-  @Output() onloadPayroll = new EventEmitter<{isPagination: boolean}>()
+  @Output() onloadPayroll = new EventEmitter<{ isPagination: boolean }>()
   loading$ = this.payrollQuery.select(state => state.loading)
   added$ = this.payrollQuery.select(state => state.added)
   positions$ = this.positionQuery.selectAll()
   ItemContextMenu = ItemContextMenu;
   confirmConstant = ConfirmConstant
   paidConstant = PaidConstant
-  daysInMonth = rageDaysInMonth(this.payrollQuery.getValue().search.startedAt)
+  daysInMonth = rageDaysInMonth(new Date(this.payrollQuery.getValue().search.startedAt))
   filterTypeEnum = FilterTypeEnum
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
 
@@ -55,8 +55,8 @@ export class TablePayrollComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.added$.subscribe(added =>{
-      if(added){
+    this.added$.subscribe(added => {
+      if (added) {
         this.onloadPayroll.emit({isPagination: false})
       }
     })
@@ -74,9 +74,9 @@ export class TablePayrollComponent implements OnInit {
     })
     this.actions$.dispatch(PositionActions.loadAll({}))
     this.payrollQuery.select(state => state.search.startedAt).subscribe(val => {
-      this.daysInMonth = rageDaysInMonth(val)
+      this.daysInMonth = rageDaysInMonth(new Date(val))
     })
-    if(this.onChange){
+    if (this.onChange) {
       this.onChange.subscribe(_ => this.onAdd())
     }
   }

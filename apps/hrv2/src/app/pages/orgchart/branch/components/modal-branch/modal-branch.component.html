@@ -10,17 +10,18 @@
   <div class='mt-2'>
     <div><span class='ml-1 title-item'>Danh sách chức vụ</span></div>
     <div>
-        <nz-select style="width: 100%"
-                   [nzMaxTagCount]="5"
-                   [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
-                   nzMode="multiple"
-                   nzPlaceHolder="Chọn chức vụ"
-                   formControlName="positions"
-        >
-          <nz-option *ngFor="let item of positions$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
-        </nz-select>
-        <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn
-        </ng-template>
+      <nz-select style="width: 100%"
+                 [compareWith]="compareFn"
+                 [nzMaxTagCount]="5"
+                 [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
+                 nzMode="multiple"
+                 nzPlaceHolder="Chọn chức vụ"
+                 formControlName="positions"
+      >
+        <nz-option *ngFor="let item of positions$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
+      </nz-select>
+      <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn
+      </ng-template>
     </div>
   </div>
   <div class='mt-4'>

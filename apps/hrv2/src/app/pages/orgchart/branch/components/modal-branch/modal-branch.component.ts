@@ -9,12 +9,13 @@ import {DataAddOrUpBranch} from "../../data/modal-department.data";
   templateUrl: 'modal-branch.component.html'
 })
 export class ModalBranchComponent implements OnInit {
-  @Input() data?:DataAddOrUpBranch
+  @Input() data?: DataAddOrUpBranch
 
   positions$ = this.positionQuery.selectAll()
   added$ = this.branchQuery.select(state => state.added)
 
   formGroup!: FormGroup;
+  compareFn = (o1: any, o2: any) => (o1 && o2 ? o1.id === o2.id : o1 === o2);
 
   constructor(
     private readonly modalRef: NzModalRef,
@@ -54,7 +55,7 @@ export class ModalBranchComponent implements OnInit {
         : BranchActions.addOne({body: branch})
     )
     this.added$.subscribe(val => {
-      if (val){
+      if (val) {
         this.modalRef.close()
       }
     })

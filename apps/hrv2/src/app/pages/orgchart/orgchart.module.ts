@@ -22,7 +22,7 @@ import {DepartmentComponent} from "./department/containers/department/department
 import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
 import {ModalDepartmentComponent} from "./department/components/modal-department/modal-department.component";
 import {NzStepsModule} from "ng-zorro-antd/steps";
-import {BranchComponent} from "./branch/containers/department/branch.component";
+import {BranchComponent} from "./branch/containers/branch/branch.component";
 import {ContextMenuModule} from "ngx-contextmenu";
 import {ModalBranchComponent} from "./branch/components/modal-branch/modal-branch.component";
 
