@@ -347,7 +347,7 @@
               </tr>
               </thead>
               <tbody>
-              <ng-template *ngFor let-salary [ngForOf]="tableOvertime.data" let-i='index'>
+              <ng-template ngFor let-salary [ngForOf]="tableOvertime.data" let-i='index'>
                 <tr (click)='onSalarySetting(salary.setting.title)'>
                   <td (click)="$event.stopPropagation()" [(nzExpand)]="salary.expand"></td>
                   <td>
