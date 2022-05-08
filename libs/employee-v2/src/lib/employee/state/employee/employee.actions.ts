@@ -11,88 +11,87 @@ import {EmployeeEntity} from "../../entities";
 import {AddRelativeDto, RemoveRelativeDto, UpdateRelativeDto} from "../../dto/relative";
 import {AddDegreeDto, RemoveDegreeDto, UpdateDegreeDto} from "../../dto/degree";
 
-
-export const addOne = createAction(
+const addOne = createAction(
   '[EMPLOYEE] Load One',
   props<AddEmployeeDto>()
 );
 
-export const addOneRelative = createAction(
+const addOneRelative = createAction(
   '[EMPLOYEE] Add One Relative',
   props<AddRelativeDto>()
 );
 
-export const addOneDegree = createAction(
+const addOneDegree = createAction(
   '[EMPLOYEE] Add One Degree',
   props<AddDegreeDto>()
 );
 
-export const loadAll = createAction(
+const loadAll = createAction(
   '[EMPLOYEE] Load All',
   props<SearchEmployeeDto>()
 );
 
-export const loadOne = createAction(
+const loadOne = createAction(
   '[EMPLOYEE] Load one',
   props<LoadOneEmployeeDto>()
 );
 
-export const update = createAction(
+const update = createAction(
   '[EMPLOYEE] Update',
   props<UpdateEmployeeDto>()
 );
 
-export const updateRelative = createAction(
+const updateRelative = createAction(
   '[EMPLOYEE] Update Relative',
   props<UpdateRelativeDto>()
 );
 
-export const updateDegree = createAction(
+const updateDegree = createAction(
   '[EMPLOYEE] Update Degree',
   props<UpdateDegreeDto>()
 );
 
-export const updateHistorySalary = createAction(
+const updateHistorySalary = createAction(
   '[EMPLOYEE] Update History Salary',
   props<{ id: number, salary: Partial<Salary>, employeeId: EmployeeEntity['id'] }>()
 )
 
-export const remove = createAction(
+const remove = createAction(
   '[EMPLOYEE] Remove',
   props<RemoveEmployeeDto>()
 );
 
-export const removeRelative = createAction(
+const removeRelative = createAction(
   '[EMPLOYEE] Remove Relative',
   props<RemoveRelativeDto>()
 );
 
-export const removeDegree = createAction(
+const removeDegree = createAction(
   '[EMPLOYEE] Remove Degree',
   props<RemoveDegreeDto>()
 );
 
-export const leave = createAction(
+const leave = createAction(
   '[EMPLOYEE] Leave employee',
   props<{ id: number, body: any }>()
 );
 
-export const removeWorkHistory = createAction(
+const removeWorkHistory = createAction(
   '[EMPLOYEE] Remove Work History',
   props<{ id: number, employeeId: EmployeeEntity['id'] }>()
 )
 
-export const removeHistorySalary = createAction(
+const removeHistorySalary = createAction(
   '[EMPLOYEE] Remove History Salary ',
   props<{ id: number, employeeId: number }>()
 );
 
-export const removeContracts = createAction(
+const removeContracts = createAction(
   '[EMPLOYEE] Remove Contracts  ',
   props<{ id: number, employeeId: number }>()
 );
 
-export const error = createAction(
+const error = createAction(
   '[EMPLOYEE] Error',
   props<{ error: string }>()
 )
