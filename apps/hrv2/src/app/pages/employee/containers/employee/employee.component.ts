@@ -96,11 +96,10 @@ export class EmployeeComponent implements OnInit {
     private readonly provinceService: ProvinceService,
     private readonly departmentQuery: DepartmentQuery
   ) {
+    this.employeeQuery.selectAll().subscribe(item => this.employees = item)
   }
 
   ngOnInit(): void {
-    this.employeeQuery.selectAll().subscribe(item => this.employees = item)
-
     this.actions$.dispatch(BranchActions.loadAll({}));
 
     this.actions$.dispatch(DepartmentActions.loadAll({}))
