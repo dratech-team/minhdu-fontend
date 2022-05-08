@@ -14,7 +14,36 @@
           <div>Chưa nhập tiêu đề</div>
         </div>
       </div>
-
+      <div class="mt-2" *ngIf="formGroup.value.block?.branch?.show">
+        <div class="font-weight-bold">Đơn vị</div>
+        <nz-select style="width: 100%"
+                   [nzDisabled]="formGroup.value.block.branch?.disabled"
+                   [nzMaxTagCount]="3"
+                   [nzMaxTagPlaceholder]="tagPlaceHolderBranch"
+                   nzMode="multiple"
+                   nzPlaceHolder="Chọn đơn vị"
+                   formControlName="branches"
+        >
+          <nz-option *ngFor="let item of branches$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
+        </nz-select>
+        <ng-template #tagPlaceHolderBranch let-positionSelected>và {{ positionSelected.length }} đã chọn
+        </ng-template>
+      </div>
+      <div class="mt-2" *ngIf="formGroup.value.block?.position?.show">
+        <div class='font-weight-bold'>Chức vụ</div>
+        <nz-select style="width: 100%"
+                   [nzDisabled]="formGroup.value.block.position?.disabled"
+                   [nzMaxTagCount]="3"
+                   [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
+                   nzMode="multiple"
+                   nzPlaceHolder="Chọn chức vụ"
+                   formControlName="positions"
+        >
+          <nz-option *ngFor="let item of positions$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
+        </nz-select>
+        <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn
+        </ng-template>
+      </div>
       <div class='mt-2' *ngIf='formGroup.value.block?.insurance?.show'>
         <span class='font-weight-bold'>Trích bảo hiểm</span>
         <label class='ml-2' nz-checkbox formControlName='insurance'></label>
@@ -174,47 +203,6 @@
           </div>
         </div>
       </div>
-      <div class="mt-2" *ngIf="formGroup.value.block?.branch?.show">
-        <div class="font-weight-bold">Đơn vị</div>
-        <nz-select style="width: 100%"
-                   [nzDisabled]="formGroup.value.block.branch?.disabled"
-                   [nzMaxTagCount]="3"
-                   [nzMaxTagPlaceholder]="tagPlaceHolderBranch"
-                   nzMode="multiple"
-                   nzPlaceHolder="Chọn đơn vị"
-                   formControlName="branches"
-        >
-          <nz-option *ngFor="let item of branches$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
-        </nz-select>
-        <ng-template #tagPlaceHolderBranch let-positionSelected>và {{ positionSelected.length }} đã chọn
-        </ng-template>
-      </div>
-      <div class="mt-2" *ngIf="formGroup.value.block?.position?.show">
-        <div class='font-weight-bold'>Chức vụ</div>
-        <nz-select style="width: 100%"
-                   [nzDisabled]="formGroup.value.block.position?.disabled"
-                   [nzMaxTagCount]="3"
-                   [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
-                   nzMode="multiple"
-                   nzPlaceHolder="Chọn chức vụ"
-                   formControlName="positions"
-        >
-          <nz-option *ngFor="let item of positions$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
-        </nz-select>
-        <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn
-        </ng-template>
-      </div>
-      <!--      <div class="mt-2" *ngIf='formGroup.value.block?.employeeConstant'>-->
-      <!--        <span class="font-weight-bold">Loại nhân viên</span><span class="star">*</span>-->
-      <!--        <nz-select style="width: 100%" formControlName="employeeType">-->
-      <!--          <nz-option-->
-      <!--            *ngFor="let item of formGroup.value.block?.employeeConstant"-->
-      <!--            [nzValue]="item.value"-->
-      <!--            [nzLabel]="item.name"-->
-      <!--          >-->
-      <!--          </nz-option>-->
-      <!--        </nz-select>-->
-      <!--      </div>-->
     </div>
   </form>
   <div class='row ml-2 mt-2'>
