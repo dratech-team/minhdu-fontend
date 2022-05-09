@@ -1,0 +1,35 @@
+<div class="d-flex row mx-auto mt-2 h-100" style="width: 95%">
+  <div class="col-9 border shadow p-2" style="height: 78vh">
+    <div class="h-100">
+      <nz-table class="mt-2 border">
+        <thead>
+        <tr>
+          <th nzWidth="100px">STT</th>
+          <th>Ngày nghỉ</th>
+          <th>Xếp loại</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+  <form [formGroup]="formGroup" class="col-3 d-flex flex-column">
+      <div>
+        <div class="font-weight-bold">Từ ngày <span class="star">*</span></div>
+        <input nz-input formControlName="from" [min]="1" type="number">
+      </div>
+      <div class="mt-2">
+        <div class="font-weight-bold">Đến ngày <span class="star">*</span></div>
+        <input nz-input formControlName="to" [min]="1" type="number">
+      </div>
+      <div class="mt-2">
+        <div class="font-weight-bold">Xếp loại <span class="star">*</span></div>
+        <input #inputRating nz-input formControlName="rating" type="text" [maxlength]="1" [ngModel]="inputRating.value|uppercase">
+      </div>
+    <div class="mt-5 d-flex">
+      <button nz-button nzType="default" class="mr-2" (click)="formGroup.reset()">Huỷ</button>
+      <button nz-button nzType="primary" (click)="onSubmit">Xác nhận</button>
+    </div>
+  </form>
+</div>
