@@ -73,11 +73,11 @@ export const MenuHrConstant: MenuHrConstant[] = [
     children: [
       {
         name: 'Lịch sử hệ thống',
-        href: 'to-chuc/lich-su-he-thong'
+        href: 'he-thong'
       },
       {
         name: 'Quản lý tài khản',
-        href: 'to-chuc/quan-ly-tai-khoan'
+        href: 'he-thong/quan-ly-tai-khoan'
       }
     ]
   },

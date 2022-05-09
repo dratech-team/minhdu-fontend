@@ -1,9 +1,9 @@
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
 import { BaseSearchCustomerDto, CustomerEntity, CustomerVisibleEntity } from '../entities';
-import { StorageName } from '../../../shared/constaints/storage-name.const';
 import { CustomerResource, CustomerType, Gender } from '@minhdu-fontend/enums';
 import { updateStateUiUtil } from '../../../utils/update-state-ui.util';
+import {StorageName} from "@minhdu-fontend/constants";
 
 export interface CustomerState extends EntityState<CustomerEntity> {
   loading: boolean;

@@ -54,6 +54,11 @@ const routes: Routes = [
           ),
         canActivate: [RouteGuard]
       },
+      {
+        path: TabEnum.SYSTEM,
+        loadChildren: () => import('@minhdu-fontend/system').then(m => m.SystemModule),
+        canActivate: [RouteGuard]
+      },
     ],
   },
   {path: '**', redirectTo: ''}
