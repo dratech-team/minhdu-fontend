@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {EmployeeStatusEnum, EmployeeType, Gender, ItemContextMenu, Role} from '@minhdu-fontend/enums';
-import {catchError, debounceTime, tap} from 'rxjs/operators';
+import {EmployeeStatusEnum, Gender, ItemContextMenu, Role, sortEmployeeTypeEnum} from '@minhdu-fontend/enums';
+import {catchError, debounceTime} from 'rxjs/operators';
 import {EmployeeStatusConstant, GenderTypeConstant, PaginationDto} from '@minhdu-fontend/constants';
 import {throwError} from 'rxjs';
-import {District, Employee, Ward} from '@minhdu-fontend/data-models';
+import {District, Employee, Sort, Ward} from '@minhdu-fontend/data-models';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalService} from 'ng-zorro-antd/modal';
@@ -50,6 +50,7 @@ export class EmployeeComponent implements OnInit {
   genderTypeConstant = GenderTypeConstant
   flatSalaryTypeConstant = FlatSalaryTypeConstant
   empStatusContain = EmployeeStatusConstant;
+  sortEnum = sortEmployeeTypeEnum;
 
   districts: District[] = this.stateEmployee.province?.districts || []
   wards: Ward[] = this.stateEmployee.district?.wards || []
@@ -61,6 +62,7 @@ export class EmployeeComponent implements OnInit {
   ItemContextMenu = ItemContextMenu;
   pageSize = 15
   empStatusEnum = EmployeeStatusEnum
+  valueSort?: Sort;
 
   departmentControl = new FormControl(this.stateEmployee.department || '');
   formGroup = new FormGroup({
@@ -96,7 +98,9 @@ export class EmployeeComponent implements OnInit {
     private readonly provinceService: ProvinceService,
     private readonly departmentQuery: DepartmentQuery
   ) {
-    this.employeeQuery.selectAll().subscribe(item => this.employees = item)
+    this.employeeQuery.selectAll().subscribe(item => {
+      this.employees = item
+    })
   }
 
   ngOnInit(): void {
@@ -155,7 +159,10 @@ export class EmployeeComponent implements OnInit {
 
   mapEmployeeDto(val: any, isPagination: boolean): SearchEmployeeDto {
     this.employeeStore.update(state => ({
-      ...state, search: Object.assign(val, {department: this.departmentControl.value})
+      ...state, search: Object.assign(JSON.parse(JSON.stringify(val)),
+        {department: this.departmentControl.value},
+        this.valueSort
+      )
     }))
     return {
       search: {
@@ -174,7 +181,9 @@ export class EmployeeComponent implements OnInit {
         status: val.status,
         employeeType: val.employeeType,
         isFlatSalary: val.flatSalary as FlatSalaryTypeEnum,
-        categoryId: this.departmentControl.value ? this.departmentControl.value.id : ''
+        categoryId: this.departmentControl.value ? this.departmentControl.value.id : '',
+        orderBy: this.valueSort?.orderBy || '',
+        orderType: this.valueSort?.orderType || '',
       },
       isPaginate: isPagination
     };
@@ -212,5 +221,12 @@ export class EmployeeComponent implements OnInit {
         return throwError(err);
       })
     ).subscribe();
+  }
+
+  onSort(sort: Sort) {
+    this.valueSort = sort;
+    this.actions$.dispatch(
+      EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false))
+    );
   }
 }
