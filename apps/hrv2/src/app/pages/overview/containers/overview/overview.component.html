@@ -1,0 +1,49 @@
+<div class='mx-3 mb-5'>
+  <div class='h3'>Tổng quan</div>
+  <div class='mt-5 mx-3 '>
+    <div class='border overflow-auto  w-100'>
+      <div class='title-item font-lg mt-2 ml-2'>
+        <div class='w-100 d-flex justify-content-between'>
+          <span> Thống kê nhân sự theo độ tuổi</span>
+          <!--          <div>-->
+          <!--            <img (click)='statisticalEmployee()' class='mr-2 pointer'-->
+          <!--                 src='/assets/icon/gear.svg'-->
+          <!--                 alt='setting'>-->
+          <!--          </div>-->
+        </div>
+      </div>
+      <div class='w-100'>
+        <div class='mx-auto' style='width: fit-content ; position: relative'>
+          <app-pie-chart class='mt-1'
+                         [view]='[undefined,450]'
+                         [data]='(overviewAgeEmployee$|async ) || []'
+          ></app-pie-chart>
+        </div>
+      </div>
+    </div>
+    <div class='border overflow-auto w-100 mt-3 '>
+      <div class='title-item font-lg mt-2 ml-2'>
+        <div class='w-100 d-flex justify-content-between'>
+          <span> Biến động nhân sự</span>
+          <!--          <div>-->
+          <!--            <img (click)='statisticalEmployee()' class='mr-2 pointer'-->
+          <!--                 src='/assets/icon/gear.svg'-->
+          <!--                 alt='setting'>-->
+          <!--          </div>-->
+        </div>
+      </div>
+      <div class='w-100'>
+        <div class='mx-auto' style='width: fit-content'>
+          <app-staked-vertical-chart class='mt-1'
+                                     [height]='450'
+                                     [labelX]='"Năm"'
+                                     [labelY]='"Nhân viên"'
+                                     [legend]='true'
+                                     [data]='(overviewTotalEmployee$|async) || []'
+          ></app-staked-vertical-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
