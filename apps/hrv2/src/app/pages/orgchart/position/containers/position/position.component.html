@@ -49,6 +49,9 @@
               <ng-template #chip>
                 <mat-chip-list>
                   <mat-chip
+                    (click)="$event.stopPropagation()"
+                    [contextMenu]='childChip'
+                    [contextMenuSubject]='{position: position, branch: branch}'
                     [style]='{"background": formGroup.get("branch")?.value.id === branch.id ? "red" : "#00000040"}'
                     *ngFor='let branch of position.branches'>
                     {{branch.name}}
@@ -75,4 +78,20 @@
   (onPayroll)="onPayroll($event, filterType.PAYROLL)"
   (onOvertime)="onPayroll($event, filterType.OVERTIME)"
 ></app-mouse-right>
-
+<context-menu #childChip>
+  <ng-template
+    contextMenuItem
+    (execute)='onEmployee($event.item.branch, $event.item.position)'>
+    Nhân viên
+  </ng-template>
+  <ng-template
+    contextMenuItem
+    (execute)='onPayroll( $event.item.branch, filterType.PAYROLL, $event.item.position)'>
+    Bảng lương
+  </ng-template>
+  <ng-template
+    contextMenuItem
+    (execute)='onPayroll( $event.item.branch,  filterType.OVERTIME, $event.item.position)'>
+    Tăng ca
+  </ng-template>
+</context-menu>

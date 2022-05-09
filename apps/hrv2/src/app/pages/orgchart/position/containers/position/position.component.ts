@@ -5,7 +5,13 @@ import {debounceTime, map} from 'rxjs/operators';
 import {PaginationDto} from '@minhdu-fontend/constants';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from 'ng-zorro-antd/modal';
-import {DepartmentActions, PositionActions, PositionEntity, PositionQuery} from "@minhdu-fontend/orgchart-v2";
+import {
+  BranchEntity,
+  DepartmentActions,
+  PositionActions,
+  PositionEntity,
+  PositionQuery
+} from "@minhdu-fontend/orgchart-v2";
 import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 import {Router} from "@angular/router";
@@ -123,21 +129,31 @@ export class PositionComponent implements OnInit {
     })
   }
 
-  onEmployee(position: PositionEntity) {
+  onEmployee(position: PositionEntity, branch?: BranchEntity) {
     this.employeeStore.update(state => ({
-      ...state, search: Object.assign(JSON.parse(JSON.stringify(state.search)), {
-        position: position
-      })
+      ...state, search: Object.assign(JSON.parse(JSON.stringify(state.search)),
+        {
+          position: position
+        },
+        branch
+          ? {branch: branch}
+          : {}
+      )
     }))
     this.router.navigate(['nhan-vien']).then();
   }
 
-  onPayroll(position: PositionEntity, filterType: FilterTypeEnum) {
+  onPayroll(position: PositionEntity, filterType: FilterTypeEnum, branch?: BranchEntity) {
     this.payrollStore.update(state => ({
-      ...state, search: Object.assign(JSON.parse(JSON.stringify(state.search)), {
-        position: position,
-        filterType: filterType
-      })
+      ...state, search: Object.assign(JSON.parse(JSON.stringify(state.search)),
+        {
+          position: position,
+          filterType: filterType
+        },
+        branch
+          ? {branch: branch}
+          : {}
+      )
     }))
     this.router.navigate(['phieu-luong']).then();
   }
