@@ -89,7 +89,7 @@ export class CustomerComponent implements OnInit {
       nzTitle: 'Thêm khách hàng',
       nzContent: CustomerDialogComponent,
       nzViewContainerRef: this.viewContentRef,
-      nzFooter: null,
+      nzFooter: [],
       nzWidth: '65vw',
       nzMaskClosable: false
     });
