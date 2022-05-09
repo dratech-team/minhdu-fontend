@@ -10,6 +10,8 @@ import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {NzWaveModule} from "ng-zorro-antd/core/wave";
 import {NzButtonModule} from "ng-zorro-antd/button";
+import {NzModalModule} from "ng-zorro-antd/modal";
+import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
 
 
 @NgModule({
@@ -24,6 +26,8 @@ import {NzButtonModule} from "ng-zorro-antd/button";
     NzSelectModule,
     NzWaveModule,
     NzButtonModule,
+    NzModalModule,
+    OrgchartV2Module
   ],
   exports: [
     OverviewHrComponent

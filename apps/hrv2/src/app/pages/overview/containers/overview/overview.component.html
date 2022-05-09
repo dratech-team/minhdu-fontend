@@ -5,18 +5,18 @@
       <div class='title-item font-lg mt-2 ml-2'>
         <div class='w-100 d-flex justify-content-between'>
           <span> Thống kê nhân sự theo độ tuổi</span>
-<!--          <div>-->
-<!--            <img (click)='statisticalEmployee()' class='mr-2 pointer'-->
-<!--                 src='/assets/icon/gear.svg'-->
-<!--                 alt='setting'>-->
-<!--          </div>-->
+          <!--          <div>-->
+          <!--            <img (click)='statisticalEmployee()' class='mr-2 pointer'-->
+          <!--                 src='/assets/icon/gear.svg'-->
+          <!--                 alt='setting'>-->
+          <!--          </div>-->
         </div>
       </div>
       <div class='w-100'>
         <div class='mx-auto' style='width: fit-content ; position: relative'>
           <app-pie-chart class='mt-1'
                          [view]='[undefined,450]'
-                         [data]='overviewAgeEmployee'
+                         [data]='(overviewAgeEmployee$|async ) || []'
           ></app-pie-chart>
         </div>
       </div>
@@ -25,11 +25,11 @@
       <div class='title-item font-lg mt-2 ml-2'>
         <div class='w-100 d-flex justify-content-between'>
           <span> Biến động nhân sự</span>
-<!--          <div>-->
-<!--            <img (click)='statisticalEmployee()' class='mr-2 pointer'-->
-<!--                 src='/assets/icon/gear.svg'-->
-<!--                 alt='setting'>-->
-<!--          </div>-->
+          <!--          <div>-->
+          <!--            <img (click)='statisticalEmployee()' class='mr-2 pointer'-->
+          <!--                 src='/assets/icon/gear.svg'-->
+          <!--                 alt='setting'>-->
+          <!--          </div>-->
         </div>
       </div>
       <div class='w-100'>
@@ -39,7 +39,7 @@
                                      [labelX]='"Năm"'
                                      [labelY]='"Nhân viên"'
                                      [legend]='true'
-                                     [data]='overviewTotalEmployee'
+                                     [data]='(overviewTotalEmployee$|async) || []'
           ></app-staked-vertical-chart>
         </div>
       </div>

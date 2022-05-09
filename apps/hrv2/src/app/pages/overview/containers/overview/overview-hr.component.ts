@@ -1,36 +1,31 @@
-import {Component, OnInit} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {
-  StatisticalEmployeeComponent
-} from '../../components/dialog-statistical-employee/statistical-employee.component';
+import {Component} from '@angular/core';
 import {OverviewService} from '../../service/overview.service';
 import {OverviewFilterEnum} from '@minhdu-fontend/enums';
-import {Chart, stakedChart} from '@minhdu-fontend/data-models';
+import {NzModalService} from "ng-zorro-antd/modal";
+import {
+  StatisticalEmployeeComponent
+} from "../../components/dialog-statistical-employee/statistical-employee.component";
 
 @Component({
   templateUrl: 'overview.component.html'
 })
-export class OverviewHrComponent implements OnInit {
-  overviewAgeEmployee: Chart [] = [];
-  overviewTotalEmployee:stakedChart [] = [];
+export class OverviewHrComponent  {
+  overviewAgeEmployee$ = this.overviewService.overviewAge({ filter: OverviewFilterEnum.AGE })
+  overviewTotalEmployee$ = this.overviewService.overviewTotalEmp({ filter: OverviewFilterEnum.CREATED_AT })
 
   constructor(
-    private readonly dialog: MatDialog,
+    private readonly modal: NzModalService,
     private readonly overviewService: OverviewService
   ) {
-
   }
 
-  ngOnInit() {
-    this.overviewService.overviewAge({ filter: OverviewFilterEnum.AGE }).subscribe(val => {
-      this.overviewAgeEmployee = val;
-    });
-    this.overviewService.overviewTotalEmp({ filter: OverviewFilterEnum.CREATED_AT }).subscribe(val => {
-      this.overviewTotalEmployee = val;
-    });
-  }
 
   statisticalEmployee() {
-    this.dialog.open(StatisticalEmployeeComponent, { width: 'fit-content' });
+    this.modal.create({
+      nzWidth:'20vw',
+      nzTitle:'Lọc biểu đồ',
+      nzContent: StatisticalEmployeeComponent,
+      nzFooter: []
+    })
   }
 }
