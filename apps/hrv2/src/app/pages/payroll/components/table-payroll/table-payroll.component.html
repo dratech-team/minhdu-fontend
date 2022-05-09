@@ -259,7 +259,7 @@
             {{payroll.payslip?.total| number: '1.0-0'}} VND
           </td>
           <td nzRight>
-            <div (click)='confirmPaidAt(payroll, "paidAt"); $event.stopPropagation()'>
+            <div (click)='onConfirmPaidAtOrAccConfirm(payroll, "paidAt"); $event.stopPropagation()'>
               <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.paidAt !== null'>
             </div>
           </td>
@@ -286,7 +286,7 @@
             {{payroll?.payslip?.total ? (payroll?.payslip?.total | number:'1.0-0') + 'đ' : 'Đang cập nhật'}}
           </td>
           <td>
-            <div (click)=' $event.stopPropagation(); confirmPaidAt(payroll, "accConfirmedAt")'>
+            <div (click)=' $event.stopPropagation(); onConfirmPaidAtOrAccConfirm(payroll, "accConfirmedAt")'>
               <input
                 disabled
                 type='checkbox'
@@ -299,7 +299,7 @@
             {{payroll?.accConfirmedAt ? (payroll.accConfirmedAt|date:'dd-MM-yyyy') : 'Chưa xác nhận'}}
           </td>
           <td>
-            <div (click)='confirmPaidAt(payroll, "paidAt");$event.stopPropagation()'>
+            <div (click)='onConfirmPaidAtOrAccConfirm(payroll, "paidAt");$event.stopPropagation()'>
               <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.paidAt !== null'>
             </div>
           </td>

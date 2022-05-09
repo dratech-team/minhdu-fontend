@@ -174,10 +174,10 @@ export class TablePayrollComponent implements OnInit {
 
   }
 
-  confirmPaidAt(payroll: PayrollEntity, type: 'paidAt'|'accConfirmedAt') {
+  onConfirmPaidAtOrAccConfirm(payroll: PayrollEntity, type: 'paidAt' | 'accConfirmedAt') {
     this.modal.create({
-      nzWidth:'250px',
-      nzTitle: type === "paidAt"? 'Xác nhận thanh toán' : 'Kế toán xác nhận',
+      nzWidth: '250px',
+      nzTitle: type === "paidAt" ? 'Xác nhận thanh toán' : 'Kế toán xác nhận',
       nzContent: ModalDatePickerComponent,
       nzComponentParams: <{ data: ModalDatePickerEntity }>{
         data: {
@@ -198,7 +198,7 @@ export class TablePayrollComponent implements OnInit {
     })
   }
 
-  onUpdateManConfirm(payroll: PayrollEntity , ) {
+  onUpdateManConfirm(payroll: PayrollEntity,) {
     this.modal.create({
       nzTitle: 'Xác nhận phiếu chấm công',
       nzContent: ModalAlertComponent,
