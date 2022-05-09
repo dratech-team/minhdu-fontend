@@ -62,7 +62,10 @@ export class EmployeeComponent implements OnInit {
   ItemContextMenu = ItemContextMenu;
   pageSize = 15
   empStatusEnum = EmployeeStatusEnum
-  valueSort?: Sort;
+  valueSort = {
+    orderBy: this.stateEmployee.orderBy,
+    orderType: this.stateEmployee.orderType
+  };
 
   departmentControl = new FormControl(this.stateEmployee.department || '');
   formGroup = new FormGroup({
