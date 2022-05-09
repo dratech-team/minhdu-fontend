@@ -9,9 +9,9 @@ import {
 @Component({
   templateUrl: 'overview.component.html'
 })
-export class OverviewHrComponent  {
-  overviewAgeEmployee$ = this.overviewService.overviewAge({ filter: OverviewFilterEnum.AGE })
-  overviewTotalEmployee$ = this.overviewService.overviewTotalEmp({ filter: OverviewFilterEnum.CREATED_AT })
+export class OverviewHrComponent {
+  overviewAgeEmployee$ = this.overviewService.overviewAge({filter: OverviewFilterEnum.AGE})
+  overviewTotalEmployee$ = this.overviewService.overviewTotalEmp({filter: OverviewFilterEnum.CREATED_AT})
 
   constructor(
     private readonly modal: NzModalService,
@@ -22,8 +22,8 @@ export class OverviewHrComponent  {
 
   statisticalEmployee() {
     this.modal.create({
-      nzWidth:'20vw',
-      nzTitle:'Lọc biểu đồ',
+      nzWidth: '20vw',
+      nzTitle: 'Lọc biểu đồ',
       nzContent: StatisticalEmployeeComponent,
       nzFooter: []
     })
