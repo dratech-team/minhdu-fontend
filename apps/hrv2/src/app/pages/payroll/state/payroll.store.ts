@@ -3,14 +3,14 @@ import {Injectable} from '@angular/core';
 import {PayrollEntity} from "../entities";
 import {EmployeeStatusEnum, EmployeeType, FilterTypeEnum} from "@minhdu-fontend/enums";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
-import {BranchEntity, PositionEntity} from "@minhdu-fontend/orgchart-v2";
+import {BranchEntity, DepartmentEntity, PositionEntity} from "@minhdu-fontend/orgchart-v2";
 import {confirmTypeEnums, PaidTypeEnums} from "../enums";
 
 export interface PayrollEntityState extends EntityState<PayrollEntity> {
   loading: boolean;
   added: boolean | null;
-  scanned: boolean|null
-  search : {
+  scanned: boolean | null
+  search: {
     code?: string,
     name?: string
     branch?: BranchEntity;
@@ -22,7 +22,8 @@ export interface PayrollEntityState extends EntityState<PayrollEntity> {
     endedAt: Date,
     accConfirmed: confirmTypeEnums,
     manConfirmedAt: confirmTypeEnums,
-    paidAt: PaidTypeEnums
+    paidAt: PaidTypeEnums,
+    department?: DepartmentEntity
   }
 }
 

@@ -60,10 +60,9 @@
       </div>
       <div [formGroup]="formGroup" style='width: fit-content' class='ml-2'>
         <div class="font-weight-bold">Phòng ban</div>
-        <nz-select style='width:200px' formControlName="category">
+        <nz-select style='width:200px' formControlName="department">
           <nz-option [nzValue]="''" nzLabel='Tất cả'>Tất cả</nz-option>
-          <nz-option *ngFor='let item of categories$|async' [nzValue]='item.id' [nzLabel]='item.name'></nz-option>
-          <nz-option [nzValue]='0' nzLabel='Tạo mới'></nz-option>
+          <nz-option *ngFor='let item of categories$|async' [nzValue]='item' [nzLabel]='item.name'></nz-option>
         </nz-select>
       </div>
       <div [formGroup]="formGroup" class='ml-2'>
@@ -85,9 +84,6 @@
     <div>
       <button nz-button nzType="primary" (click)="onAdd()">Tạo tự động</button>
     </div>
-    <button *ngIf='formGroup.value.category && formGroup.value.category !==0 && this.role !== roleEnum.HUMAN_RESOURCE '
-            class='btn btn-primary ml-1' (click)='onUpdateCategory()'>Sửa
-    </button>
   </div>
   <div class="mt-2">
     <minhdu-fontend-table-payroll

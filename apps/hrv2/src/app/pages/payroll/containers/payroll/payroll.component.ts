@@ -4,12 +4,10 @@ import {PayrollQuery, PayrollStore} from "../../state";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../state/payroll.action";
 import {EmployeeStatusConstant, PaginationDto, PayrollConstant} from "@minhdu-fontend/constants";
-import {FilterTypeEnum} from "@minhdu-fontend/enums";
+import {FilterTypeEnum, Role} from "@minhdu-fontend/enums";
 import {debounceTime, map} from "rxjs/operators";
-import {BranchActions, BranchQuery} from "../../../../../../../../libs/orgchart-v2/src/lib/branch/state";
-import {Observable, Subject} from "rxjs";
-import {Category} from "@minhdu-fontend/data-models";
-import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
+import {BranchActions, BranchQuery, DepartmentActions, DepartmentQuery} from "@minhdu-fontend/orgchart-v2";
+import {Subject} from "rxjs";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 
 @Component({
@@ -26,7 +24,7 @@ export class PayrollComponent implements OnInit {
     }
     return branches
   }));
-  categories$ = new Observable<Category[]>();
+  categories$ = this.departmentQuery.selectAll();
   onChange = new Subject<void>();
 
   stateSearch = this.payrollQuery.getValue().search
@@ -45,7 +43,7 @@ export class PayrollComponent implements OnInit {
     startedAt: new FormControl(this.stateSearch.startedAt || ''),
     endedAt: new FormControl(this.stateSearch.endedAt || ''),
     employeeType: new FormControl(this.stateSearch.employeeType || ''),
-    category: new FormControl(''),
+    department: new FormControl(this.stateSearch.department || ''),
     filterType: new FormControl(this.stateSearch.filterType || ''),
     accConfirmed: new FormControl(this.stateSearch.accConfirmed),
     paidAt: new FormControl(this.stateSearch.paidAt),
@@ -62,12 +60,16 @@ export class PayrollComponent implements OnInit {
     private readonly payrollStore: PayrollStore,
     private readonly payrollQuery: PayrollQuery,
     private readonly branchQuery: BranchQuery,
+    private readonly departmentQuery: DepartmentQuery,
     private readonly actions$: Actions
   ) {
   }
 
   ngOnInit() {
     this.actions$.dispatch(BranchActions.loadAll({}))
+
+    this.actions$.dispatch(DepartmentActions.loadAll({}))
+
     this.onLoadPayroll(false)
     this.payrollQuery.select(state => state.search).subscribe(
       val => {
@@ -89,9 +91,6 @@ export class PayrollComponent implements OnInit {
           endedAt: new Date(getLastDayInMonth(val.startedAt) + '-00')
         })
       }
-      this.payrollStore.update(state => ({
-        ...state, search: val
-      }))
       this.onLoadPayroll(false)
     })
 
@@ -110,18 +109,16 @@ export class PayrollComponent implements OnInit {
   }
 
   mapPayroll(formData: any, isPagination?: boolean) {
-    if (formData.category === 0) {
-      delete formData.category
-    }
-    Object.assign(formData, {
+    this.payrollStore.update(state => ({
+      ...state, search: formData
+    }))
+    return Object.assign({}, formData, {
+      categoryId: formData.department?.id || '',
       branch: formData.branch?.name || '',
-      position: formData.position?.name || ''
-    })
-    Object.assign(formData, {
+      position: formData.position?.name || '',
       take: PaginationDto.take,
       skip: isPagination ? this.payrollQuery.getCount() : PaginationDto.skip
     })
-    return formData
   }
 
   onAddCategory() {
