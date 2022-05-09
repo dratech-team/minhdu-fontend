@@ -4,7 +4,7 @@ import {FormGroup} from "@angular/forms";
 import {BranchQuery, PositionActions, PositionQuery} from "@minhdu-fontend/orgchart-v2";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollQuery, PayrollStore} from "../../state";
-import {FilterTypeEnum, ItemContextMenu} from "@minhdu-fontend/enums";
+import {FilterTypeEnum, ItemContextMenu, Role} from "@minhdu-fontend/enums";
 import {rageDaysInMonth} from "@minhdu-fontend/utils";
 import {PaidConstant} from "../../constants/paid.constant";
 import {ConfirmConstant} from "../../constants/confirm.constant";
@@ -18,6 +18,8 @@ import {ModalAlertEntity, ModalDatePickerEntity} from "@minhdu-fontend/base-enti
 import {DatePipe} from "@angular/common";
 import {PayrollActions} from "../../state/payroll.action";
 import {Subject} from "rxjs";
+import {PayslipComponent} from "../payslip/payslip.component";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 
 @Component({
@@ -39,6 +41,7 @@ export class TablePayrollComponent implements OnInit {
   paidConstant = PaidConstant
   daysInMonth = rageDaysInMonth(new Date(this.payrollQuery.getValue().search.startedAt))
   filterTypeEnum = FilterTypeEnum
+  role = localStorage.getItem('role')
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
 
 
@@ -50,7 +53,8 @@ export class TablePayrollComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly router: Router,
     private readonly modal: NzModalService,
-    private readonly datePipe: DatePipe
+    private readonly datePipe: DatePipe,
+    private readonly message: NzMessageService
   ) {
   }
 
@@ -126,27 +130,96 @@ export class TablePayrollComponent implements OnInit {
   onUpdate($event: any) {
   }
 
-  onRestore($event: any) {
-
+  onRestore(payroll: PayrollEntity) {
+    this.modal.create({
+      nzTitle: 'Khôi phục phiếu lương',
+      nzContent: ModalAlertComponent,
+      nzComponentParams: <{ data: ModalAlertEntity }>{
+        data: {
+          description: `bạn có chắc chắn muốn khôi phục phiếu lương tháng
+          ${this.datePipe.transform(payroll.createdAt, 'MM-yyyy')}
+          cho nhân viên ${payroll.employee.lastName}`
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe(val => {
+      if (val) {
+        this.actions$.dispatch(PayrollActions.restore({id: payroll.id}))
+      }
+    })
   }
 
   onHistory($event: any) {
 
   }
 
-  onConfirm($event: any) {
-
+  onConfirm(payroll: PayrollEntity) {
+    if (this.role !== Role.HUMAN_RESOURCE) {
+      this.modal.create({
+        nzTitle: 'Xác nhận phiếu lương tháng ' + this.datePipe.transform(payroll.createdAt, 'yyyy-MM'),
+        nzContent: PayslipComponent,
+        nzComponentParams: <{ data: { payroll: PayrollEntity } }>{
+          data: {
+            payroll: payroll
+          }
+        },
+        nzFooter: ' '
+      });
+    } else {
+      this.message.warning('Quản lý nhân sự không được xác nhận phiếu lương')
+    }
   }
 
   onPrint($event: any) {
 
   }
 
-  updateConfirm(id: number, paidAt: string) {
-
+  confirmPaidAt(payroll: PayrollEntity, type: 'paidAt'|'accConfirmedAt') {
+    this.modal.create({
+      nzWidth:'250px',
+      nzTitle: type === "paidAt"? 'Xác nhận thanh toán' : 'Kế toán xác nhận',
+      nzContent: ModalDatePickerComponent,
+      nzComponentParams: <{ data: ModalDatePickerEntity }>{
+        data: {
+          type: 'date',
+          dateInit: new Date()
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe(val => {
+      if (val) {
+        this.actions$.dispatch(PayrollActions.confirmPayroll({
+          id: payroll.id,
+          data: {
+            datetime: new Date(val)
+          }
+        }))
+      }
+    })
   }
 
-  updateManConfirm(id: number, manConfirmedAt: any, createdAt?: Date) {
+  onUpdateManConfirm(payroll: PayrollEntity , ) {
+    this.modal.create({
+      nzTitle: 'Xác nhận phiếu chấm công',
+      nzContent: ModalAlertComponent,
+      nzComponentParams: <{ data: ModalAlertEntity }>{
+        data: {
+          description: `bạn có chắc chắn muốn xác nhận phiếu chấm công tháng
+          ${this.datePipe.transform(payroll.createdAt, 'MM-yyyy')}
+          cho nhân viên ${payroll.employee.lastName}`
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe(val => {
+      if (val) {
+        this.actions$.dispatch(PayrollActions.confirmPayroll({
+          id: payroll.id,
+          data: {
+            datetime: payroll.manConfirmedAt ? null : new Date(payroll.createdAt)
+          }
+        }))
+      }
+    })
   }
 
   async onDetail(payroll: PayrollEntity) {

@@ -262,26 +262,39 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   confirmPayroll(payroll: PayrollEntity) {
-    this.modal.create({
-      nzTitle: 'Xác nhận phiếu lương tháng ' + this.datePipe.transform(payroll.createdAt, 'yyyy-MM'),
-      nzContent: PayslipComponent,
-      nzComponentParams: <{ data: { payroll: PayrollEntity } }>{
-        data: {
-          payroll
-        }
-      },
-      nzFooter: ' '
-    });
-    // if(this.role !== Role.HUMAN_RESOURCE){
-    //
-    // }else{
-    //   if(payroll.accConfirmedAt !== null){
-    //     // restore payroll
-    //   }else{
-    //     this.message.warning('Phiếu lương chưa được xác nhận')
-    //   }
-    // }
-
+    if(this.role !== Role.HUMAN_RESOURCE){
+      this.modal.create({
+        nzTitle: 'Xác nhận phiếu lương tháng ' + this.datePipe.transform(payroll.createdAt, 'yyyy-MM'),
+        nzContent: PayslipComponent,
+        nzComponentParams: <{ data: { payroll: PayrollEntity } }>{
+          data: {
+            payroll
+          }
+        },
+        nzFooter: ' '
+      });
+    }else{
+      if(payroll.accConfirmedAt !== null){
+        this.modal.create({
+          nzTitle: 'Khôi phục phiếu lương',
+          nzContent: ModalAlertComponent,
+          nzComponentParams: <{ data: ModalAlertEntity }>{
+            data: {
+              description: `bạn có chắc chắn muốn khôi phục phiếu lương tháng
+          ${this.datePipe.transform(payroll.createdAt, 'MM-yyyy')}
+          cho nhân viên ${payroll.employee.lastName}`
+            }
+          },
+          nzFooter: []
+        }).afterClose.subscribe(val => {
+          if (val) {
+            this.actions$.dispatch(PayrollActions.restore({id: payroll.id}))
+          }
+        })
+      }else{
+        this.message.warning('Phiếu lương chưa được xác nhận')
+      }
+    }
   }
 
   historySalary(payroll: PayrollEntity) {
