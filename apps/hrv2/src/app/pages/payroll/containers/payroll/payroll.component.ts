@@ -105,12 +105,6 @@ export class PayrollComponent implements OnInit {
       }
 
     })
-
-    this.formGroup.get('category')?.valueChanges.subscribe(val => {
-      if (val === 0) {
-        this.onAddCategory()
-      }
-    })
   }
 
   onLoadPayroll(isPagination: boolean) {
@@ -131,12 +125,6 @@ export class PayrollComponent implements OnInit {
       take: PaginationDto.take,
       skip: isPagination ? this.payrollQuery.getCount() : PaginationDto.skip
     })
-  }
-
-  onAddCategory() {
-  }
-
-  onUpdateCategory() {
   }
 
   onAdd() {
