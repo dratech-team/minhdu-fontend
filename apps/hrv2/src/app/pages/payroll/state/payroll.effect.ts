@@ -1,25 +1,25 @@
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { PayrollStore } from './payroll.store';
-import { PayrollService } from '../services/payroll.service';
-import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { PayrollActions } from './payroll.action';
-import { AddPayrollDto } from '../dto';
-import { Injectable } from '@angular/core';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {PayrollStore} from './payroll.store';
+import {PayrollService} from '../services/payroll.service';
+import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {of} from 'rxjs';
+import {PayrollActions} from './payroll.action';
+import {AddPayrollDto} from '../dto';
+import {Injectable} from '@angular/core';
 import {
   AbsentSalaryEntity,
   AllowanceSalaryEntity,
   OvertimeSalaryEntity,
   RemoteSalaryEntity
 } from '../../salary/entities';
-import { PayrollEntity, TotalSalary } from '../entities';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { PartialDayEnum } from '@minhdu-fontend/data-models';
-import { StateHistoryPlugin } from '@datorama/akita';
-import { PayrollQuery } from './payroll.query';
+import {PayrollEntity, TotalSalary} from '../entities';
+import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {PartialDayEnum} from '@minhdu-fontend/data-models';
+import {StateHistoryPlugin} from '@datorama/akita';
+import {PayrollQuery} from './payroll.query';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class PayrollEffect {
   private stateHistory: StateHistoryPlugin;
 
@@ -62,7 +62,7 @@ export class PayrollEffect {
   loadAll$ = this.action$.pipe(
     ofType(PayrollActions.loadAll),
     switchMap((props) => {
-      this.payrollStore.update(state => ({ ...state, loading: true }));
+      this.payrollStore.update(state => ({...state, loading: true}));
       return this.service.paginationPayroll(props.search).pipe(
         map(res => {
           return Object.assign(res, {
@@ -73,7 +73,7 @@ export class PayrollEffect {
           });
         }),
         tap((res) => {
-          this.payrollStore.update(state => ({ ...state, loading: false }));
+          this.payrollStore.update(state => ({...state, loading: false}));
           if (res.data.length === 0) {
             this.message.warning('Đã lấy hết phiếu lương');
           }
@@ -84,7 +84,7 @@ export class PayrollEffect {
           }
         }),
         catchError((err) => {
-          this.payrollStore.update(state => ({ ...state, loading: false }));
+          this.payrollStore.update(state => ({...state, loading: false}));
           return of(PayrollActions.error(err));
         })
       );
@@ -195,6 +195,21 @@ export class PayrollEffect {
     })
   );
 
+  @Effect()
+  restore$ = this.action$.pipe(
+    ofType(PayrollActions.restore),
+    switchMap((props) => {
+      return this.service.restore(props.id).pipe(
+        tap(res => {
+          this.message.success(res.message)
+        }),
+        catchError(err => {
+          return of(PayrollActions.error(err));
+        })
+      );
+    })
+  );
+
   private mapToPayroll(payroll: PayrollEntity): PayrollEntity {
     const basics = payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.BASIC || item.type === SalaryTypeEnum.BASIC_INSURANCE);
     const stays = payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.STAY);
@@ -211,7 +226,7 @@ export class PayrollEffect {
         deduction: payroll.deductions?.reduce((a, b) => a + (b?.price || 0), 0),
         remote: this.getTotalRemote(payroll.remotes)
       },
-      overtimes: payroll.overtimes.map(overtime => Object.assign(overtime, { expand: false }))
+      overtimes: payroll.overtimes.map(overtime => Object.assign(overtime, {expand: false}))
     });
   }
 
@@ -225,7 +240,7 @@ export class PayrollEffect {
           hour: 0
         }
       };
-    }, { price: 0, total: 0, duration: { day: 0, hour: 0 } });
+    }, {price: 0, total: 0, duration: {day: 0, hour: 0}});
   }
 
   private getTotalOvertimeOrAbsent(salary: (AbsentSalaryEntity | OvertimeSalaryEntity)[]): TotalSalary {
@@ -246,7 +261,7 @@ export class PayrollEffect {
             : 0)
         }
       };
-    }, { price: 0, total: 0, duration: { day: 0, hour: 0 } });
+    }, {price: 0, total: 0, duration: {day: 0, hour: 0}});
   }
 
   private getTotalRemote(salary: RemoteSalaryEntity[]) {
@@ -254,6 +269,6 @@ export class PayrollEffect {
       return {
         duration: a.duration + b.partial === PartialDayEnum.ALL_DAY ? b.duration : (b.duration / 2)
       };
-    }, { duration: 0 });
+    }, {duration: 0});
   }
 }

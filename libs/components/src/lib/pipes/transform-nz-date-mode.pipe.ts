@@ -6,27 +6,35 @@ import {NzDateMode} from "ng-zorro-antd/date-picker";
 })
 
 export class TransformNzDateModePipe implements PipeTransform {
-  nzDateModeConstant: { name: string, value: NzDateMode }[] = [
+  nzDateModeConstant: { name: string, value: NzDateMode, format: string }[] = [
     {
       name: 'Ngày',
-      value: 'date'
+      value: 'date',
+      format: 'dd-MM-yyyy'
     },
     {
       name: 'Tháng',
-      value: 'month'
+      value: 'month',
+      format: 'MM-yyyy'
     },
     {
       name: 'Năm',
-      value: 'year'
+      value: 'year',
+      format: 'yyyy'
     },
     {
       name: 'Tuần',
-      value: 'week'
+      value: 'week',
+      format: 'ww-MM-yyyy'
     },
   ]
 
-  transform(mode: NzDateMode): any {
-    return this.nzDateModeConstant.find((item: any) => item.value === mode)?.name;
+  transform(mode: NzDateMode, type: 'name' | 'format'): any {
+    return this.nzDateModeConstant.find((item: any) => {
+      return type === 'name'
+        ? item.value === mode
+        : item.format === mode
+    })?.name;
   }
 }
 

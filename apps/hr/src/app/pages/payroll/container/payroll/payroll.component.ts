@@ -57,7 +57,7 @@ import {Branch, Category, Position, RangeDay} from "@minhdu-fontend/data-models"
 import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 import {ExportService} from "@minhdu-fontend/service";
 import {ConfirmPayrollComponent} from "../../component/confirm-payroll/confirm-payroll.component";
-import { EmployeeStatusEnum } from '../../../../../../../../libs/enums/hr/employee-status.enum';
+import {EmployeeStatusEnum} from '../../../../../../../../libs/enums/hr/employee-status.enum';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -341,7 +341,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     })
   }
 
-  onChange(event: any){
+  onChange(event: any) {
   }
 
   ngAfterContentChecked() {

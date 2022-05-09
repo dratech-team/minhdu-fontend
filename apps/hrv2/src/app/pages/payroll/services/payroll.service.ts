@@ -7,6 +7,7 @@ import {Observable} from 'rxjs';
 import {PayrollEntity} from "../entities";
 import {AddPayrollDto, LoadOnePayrollDto, UpdatePayrollDto} from "../dto";
 import {ConfirmPayrollDto} from "../dto/confirm-payroll.dto";
+import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
 
 @Injectable({providedIn: 'root'})
 export class PayrollService extends BaseService<PayrollEntity> {
@@ -51,5 +52,9 @@ export class PayrollService extends BaseService<PayrollEntity> {
 
   cancelConfirm(id: number, body?: any): Observable<any> {
     return this.http.patch<any>(Api.HR.PAYROLL.CANCEL_CONFIRM+ `/${id}`,body);
+  }
+
+  restore(id: number, body?: any): Observable<ResponseMessageEntity> {
+    return this.http.patch<ResponseMessageEntity>(Api.HR.PAYROLL.RESTORE_PAYROLL + `/${id}`, body);
   }
 }
