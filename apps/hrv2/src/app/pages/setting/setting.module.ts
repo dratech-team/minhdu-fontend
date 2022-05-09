@@ -26,6 +26,7 @@ import {MatChipsModule} from "@angular/material/chips";
 import {MatIconModule} from "@angular/material/icon";
 import {PricesPipe} from "./salary/pipes/prices.pipe";
 import {SalaryTypePipe} from "./salary/pipes/salary-type.pipe";
+import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
 
 @NgModule({
   imports: [
@@ -48,7 +49,8 @@ import {SalaryTypePipe} from "./salary/pipes/salary-type.pipe";
     NzButtonModule,
     NzInputModule,
     MatChipsModule,
-    MatIconModule
+    MatIconModule,
+    OrgchartV2Module
   ],
   declarations: [
     SalarySettingComponent,

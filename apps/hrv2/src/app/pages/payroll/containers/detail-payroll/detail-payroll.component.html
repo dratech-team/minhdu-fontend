@@ -4,26 +4,18 @@
       <div style="max-width: 90vw ; margin: auto">
         <div class='row'>
           <div class='col-12 font-weight-bold font-lg text-center'>
-            Phiếu lương tháng {{payroll.createdAt|date: 'MM/yyyy'}}
+            Phiếu lương tháng {{payroll.createdAt | date: 'MM/yyyy'}}
           </div>
           <div class='row col-md-12'>
             <div class=' col-4 pointer '>
-              <div class='employee row col-md-12 mt-3 d-flex flex-column align-items-center justify-content-center '
+              <div routerLink='/nhan-vien/chi-tiet-nhan-vien/{{payroll.employee.id}}'
+                   class='employee row col-md-12 mt-3 d-flex flex-column align-items-center justify-content-center '
                    style='min-height: 116px; padding: 10px;background: white'>
-                <!--            <div class='row col-md-3 mr-1 info-employee'>-->
-                <!--              <img-->
-                <!--                class='rounded-circle'-->
-                <!--                alt='50x50'-->
-                <!--                src='{{payroll.employee?.avt}}'-->
-                <!--                data-holder-rendered='true'-->
-                <!--                height='64px'-->
-                <!--              />-->
-                <!--            </div>-->
-                <div class='row d-flex flex-column '>
+                <div class='d-flex flex-column '>
                   <div class='d-flex justify-content-between font-weight-bold'>
-                    <div class='ml-3'
-                         routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}'>{{payroll.employee.lastName}}</div>
-                    <div (click)='updatePayroll(payroll)' style='background: #1b8eb7' class='p-1 rounded'>
+                    <div class='ml-3'>{{payroll.employee.lastName}}</div>
+                    <div (click)='updatePayroll(payroll); $event.stopPropagation()' style='background: #1b8eb7'
+                         class='p-1 rounded'>
                       <img style='height: 10px; width:15px' src='/assets/img/share/pencil-fill.svg' alt='edit icon'>
                     </div>
                   </div>
@@ -34,33 +26,39 @@
                   <div class='col-12 d-flex justify-content-start ' style='color: black'>
                     <span class='d-inline-block font-weight-bold'>Ngày xác nhận phiếu lương: </span>
                     <span class='ml-2 pointer  px-1 rounded'>
-                  {{payroll.accConfirmedAt ? (payroll.accConfirmedAt|date: 'dd/MM/yyyy') : 'Chưa xác nhận'}}
+                  {{(payroll.accConfirmedAt | date: 'dd/MM/yyyy') || 'Chưa xác nhận'}}
                 </span>
                   </div>
-                  <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}'
-                       class='col-12 d-flex justify-content-start ' style='color: black'>
+                  <div class='col-12 d-flex justify-content-start ' style='color: black'>
                     <span class='d-inline-block font-weight-bold'>Đơn vị: </span>
                     <span class='ml-1'>{{payroll.branch}}</span>
                   </div>
+                  <div class='col-12 d-flex justify-content-start ' style='color: black'>
+                    <span class='d-inline-block font-weight-bold'>Lương thực nhân: </span>
+                    <span class='ml-1'>
+                      {{payroll.total.payroll
+                      |roundingnumber :1000
+                      |number:'1.0-0'
+                      | notEmpty:'0'}}
+                      đ</span>
+                  </div>
                 </div>
-                <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}'
-                     class='col-12 d-flex align-items-center mt-2'>
-                  <div class='row' style='width: 100%;'>
-                    <div class='col-6 ' style='border-radius: 20px;height: 24px ;min-width: 150px;'>
+                <div class='d-flex mt-2'>
+                  <div class="mr-2" style='width: 100%;'>
+                    <div style='border-radius: 20px;height: 24px ;min-width: 150px;'>
                       <div class='col-md position btn btn-primary'>{{payroll.position}}</div>
                     </div>
                   </div>
-                  <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}' class='col-6 '
-                       style='border-radius: 20px;height: 24px ;min-width: 150px;'>
-                    <div class='col-md position btn btn-primary'>
-                      <span class='mr-2'>{{payroll.recipeType}}</span>
+                  <div class="ml-2" style='border-radius: 20px;height: 24px ;min-width: 150px;'>
+                    <div class='position btn btn-primary'>
+                      <span class='mr-2'>{{payroll.recipeType}}</span>|
                       <span class='ml-2'>{{payroll.employee.id}}</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div style='background: white' *ngIf='payroll.recipeType !== recipeType.CT3' class='employee row col mt-3'>
+            <div style='background: white' *ngIf='payroll.recipeType !== recipeType.CT3' class='employee row col mt-3 '>
               <div class='col' style='min-width: 170px'>
                 <div class='row d-flex justify-content-center '>Ngày làm việc chuẩn</div>
                 <div class='row content-title'>
@@ -80,15 +78,8 @@
                 </div>
               </div>
               <div class='col' style='min-width: 170px'>
-                <div class='row justify-content-center'> Thuộc diện hợp đồng</div>
-                <div class='row' style='display: flex;justify-content: center;align-items: center;height: 43px;'>
-                  <div *ngIf='payroll.tax > 0 else tax'
-                       class='font-weight-bold font-lg'>{{payroll.tax | percent:'0.0-3':'vi'}}</div>
-                  <ng-template #tax>
-                    <img [src]="'../../../../../assets/img/share/x-lg.svg'" [alt]="'not contract' ">
-                  </ng-template>
-                </div>
-                <div class='row d-flex justify-content-center align-items-center'>
+                <div class='row justify-content-center mb-2'> Thuộc diện hợp đồng</div>
+                <div class='row d-flex justify-content-center align-items-center mt-3'>
                   <div class='pointer' (click)='updateTaxed(payroll)'>
                     <nz-switch style='pointer-events: none' [ngModel]='payroll.taxed'></nz-switch>
                   </div>
@@ -104,23 +95,14 @@
              *ngIf='payroll.recipeType !== recipeType.CT3; else seasonal'>
           <div #basic class='d-flex'>
             <!--Lương cơ bản-->
-            <div class='col-6'>
-              <nz-table
-                [nzData]='payroll.salariesv2'
-                [nzShowPagination]='false'
-              >
+            <div class='col'>
+              <table style="width: 100%">
                 <thead>
-                <tr style='background-color: white;'>
-                  <th>
-                    <div> Lương cơ bản</div>
-                  </th>
-                  <th>
-                    <div>Hệ số</div>
-                  </th>
-                  <th>
-                    <div>Thành tiền</div>
-                  </th>
-                  <th (click)='onAdd(salaryTypeEnum.BASIC,payroll)'>
+                <tr>
+                  <th>Lương cơ bản</th>
+                  <th>Hệ số</th>
+                  <th>Thành tiền</th>
+                  <th width="100px" (click)='onAdd(salaryTypeEnum.BASIC,payroll)'>
                     <div class="d-flex">
                       <span class='mr-1 pointer' style='color: #1b8eb7'>Thêm mục</span>
                       <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
@@ -130,40 +112,48 @@
                 </tr>
                 </thead>
                 <tbody>
-                <ng-template ngFor let-salary
-                             [ngForOf]="payroll.salariesv2 | filterSalary:['BASIC_INSURANCE','BASIC' ] ">
-                  <tr>
-                    <td> {{salary.title}}</td>
-                    <td> {{salary.rate}}</td>
-                    <td class=' text-center ' style='color: #4B3880'>
-                      {{salary.price|number:'1.0'|notEmpty:'0'}} đ
-                    </td>
-                    <td width='22%' class='col-md-2'>
-                      <div class='d-flex justify-content-around'>
-                        <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa '
-                                class='edit animated mr-2'
-                                (click)='updateSalary(salaryTypeEnum.BASIC,salary)'>
-                          <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg'
-                               alt='edit icon'>
-                        </button>
-                        <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                                (click)='removeSalary(salaryTypeEnum.BASIC, salary)'>
-                          <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                </ng-template>
+                <tr *ngFor="let salary of payroll.basics">
+                  <td> {{salary.title}}</td>
+                  <td> {{salary.rate}}</td>
+                  <td class=' text-center ' style='color: #05981C'>
+                    {{salary.price
+                    | roundingnumber :1000
+                    | number:'1.0'
+                    | notEmpty:'0'}} đ
+                  </td>
+                  <td width='22%' class='col-md-2'>
+                    <div class='d-flex justify-content-around'>
+                      <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa '
+                              class='edit animated mr-2'
+                              (click)='updateSalary(salaryTypeEnum.BASIC,salary)'>
+                        <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg'
+                             alt='edit icon'>
+                      </button>
+                      <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
+                              (click)='removeSalary(salaryTypeEnum.BASIC, salary)'>
+                        <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bold">Tổng cộng:</td>
+                  <td></td>
+                  <td style='color: #05981C'>
+                    {{ payroll.total.basic
+                    | roundingnumber :1000
+                    | number: '1.0'
+                    | notEmpty: '0' }} đ
+                  </td>
+                  <td></td>
+                </tr>
                 </tbody>
-              </nz-table>
+              </table>
             </div>
             <!--Phụ cấp lương-->
-            <div class='col-6'>
-              <nz-table
-                [nzData]='payroll.salariesv2'
-                [nzShowPagination]='false'
-              >
-                <thead>
+            <div class='col'>
+              <table style="width: 100%">
+                <thead style='background-color: white;'>
                 <tr>
                   <th>
                     <div> Phụ cấp lương</div>
@@ -171,7 +161,7 @@
                   <th>
                     <div>Thành tiền</div>
                   </th>
-                  <th nzWidth='100px' (click)='onAdd(salaryTypeEnum.STAY,payroll)'>
+                  <th width='100px' (click)='onAdd(salaryTypeEnum.STAY,payroll)'>
                     <div class="d-flex">
                       <span class='mr-1 pointer' style='color: #1b8eb7'>Thêm mục</span>
                       <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
@@ -181,56 +171,61 @@
                 </tr>
                 </thead>
                 <tbody>
-                <ng-template ngFor let-salary [ngForOf]="payroll.salariesv2 | filterSalary:['STAY' ] ">
-                  <tr>
-                    <td> {{salary.title}}</td>
-                    <td style='color: #4B3880'>
-                      {{salary.price|number:'1.0'|notEmpty:'0'}} đ
-                    </td>
-                    <td>
-                      <div class='d-flex justify-content-around'>
-                        <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa '
-                                class='edit animated mr-2'
-                                (click)='updateSalary(salaryTypeEnum.STAY,salary)'>
-                          <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg'
-                               alt='edit icon'>
-                        </button>
-                        <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                                (click)='removeSalary(salaryTypeEnum.STAY, salary)'>
-                          <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                </ng-template>
-
+                <tr *ngFor="let salary of payroll.stays">
+                  <td> {{salary.title}}</td>
+                  <td style='color: #05981C'>
+                    {{salary.price
+                    | roundingnumber :1000
+                    |number:'1.0'
+                    |notEmpty:'0'}} đ
+                  </td>
+                  <td>
+                    <div class='d-flex justify-content-around'>
+                      <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa '
+                              class='edit animated mr-2'
+                              (click)='updateSalary(salaryTypeEnum.STAY,salary)'>
+                        <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg'
+                             alt='edit icon'>
+                      </button>
+                      <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
+                              (click)='removeSalary(salaryTypeEnum.STAY, salary)'>
+                        <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bold">Tổng cộng :</td>
+                  <td style='color: #05981C'>
+                    {{payroll.total.stay
+                    | roundingnumber :1000
+                    | number: '1.0'
+                    | notEmpty: '0' }} đ
+                  </td>
+                  <td></td>
+                </tr>
                 </tbody>
-
-              </nz-table>
+              </table>
             </div>
           </div>
           <!--Phụ cấp -->
           <div #allowance class='mt-5 col-12'>
-            <nz-table
-              [nzShowPagination]="false"
-              #tableAllowance
-              [nzData]="payroll.allowances"
-            >
+            <table style="width: 100%;">
               <thead>
               <tr>
                 <th>
                   <div>Phụ cấp</div>
                 </th>
-                <th nzWidth='15%'>
+                <th width='15%'>
                   <div>Thời gian</div>
                 </th>
                 <th>
                   <div>Tổng ngày</div>
                 </th>
-                <th>
+                <th width='100px'>
                   <div>Làm tại cty</div>
                 </th>
-                <th>
+                <th style="width: 150px">
                   <div>Theo ngày làm thực tế</div>
                 </th>
                 <th>
@@ -242,7 +237,7 @@
                 <th>
                   <div>Chú thích</div>
                 </th>
-                <th nzWidth='100px' style='padding: 0; color: #1b8eb7'
+                <th width='100px' style='padding: 0; color: #1b8eb7'
                     (click)='onAdd(salaryTypeEnum.ALLOWANCE, payroll ) '>
                   <div class="d-flex">
                     <span class='mr-1 pointer'>Thêm mục</span>
@@ -253,8 +248,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let salary of tableAllowance.data "
-                  style='background: white !important;'>
+              <tr *ngFor="let salary of payroll.allowances">
                 <td>
                   <span>{{salary.title}}</span>
                 </td>
@@ -272,14 +266,20 @@
                 <td>
                   <label nz-checkbox nzDisabled [nzChecked]="salary.inWorkday"></label>
                 </td>
-                <td style='color: #29CC97'>{{salary.price|number:'1.0'| notEmpty:'0'}}đ
+                <td style='color: #05981C'>{{salary.price
+                  | roundingnumber :1000
+                  |number:'1.0'
+                  | notEmpty:'0'}} đ
                 </td>
-                <td style='color: #29CC97'>{{salary.total|number:'1.0'| notEmpty:'0'}}đ
+                <td style='color: #05981C'>{{salary.total
+                  | roundingnumber :1000
+                  |number:'1.0'
+                  | notEmpty:'0'}} đ
                 </td>
                 <td>
                   <span>{{salary?.note}}</span>
                 </td>
-                <td>
+                <td style="width: 100px">
                   <div class='d-flex justify-content-around '>
                     <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
                             (click)='updateSalary(salaryTypeEnum.ALLOWANCE, salary, payroll)'>
@@ -292,24 +292,48 @@
                   </div>
                 </td>
               </tr>
+              <tr *ngIf="payroll.total.allowance">
+                <td class="font-weight-bold">Tổng cộng :</td>
+                <td></td>
+                <td>{{payroll.total.allowance.duration.day}}</td>
+                <td></td>
+                <td></td>
+                <td style='color: #05981C'>
+                  {{payroll.total.allowance.price
+                  | roundingnumber :1000
+                  | number: '1.0'
+                  | notEmpty: '0' }} đ
+                </td>
+                <td style='color: #05981C'>
+                  {{payroll.total.allowance.total
+                  | roundingnumber :1000
+                  | number: '1.0'
+                  | notEmpty: '0' }} đ
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
               </tbody>
-            </nz-table>
+            </table>
           </div>
           <!--Tăng ca -->
           <div #overtime class='col-12 mt-5'>
             <nz-table
+              style="
+              border: solid 1px #EBEBEB !important;
+              border-radius: 10px !important;
+              box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06) !important;"
               #tableOvertime
-              matSort (matSortChange)='sortData($event)'
-              [nzData]="sortedSalaryOver"
+              [nzData]="payroll.overtimes"
               nzShowPagination="false"
             >
               <thead>
               <tr>
+                <th nzWidth="60px"></th>
                 <th nzWidth="60px">STT</th>
-                <th mat-sort-header='title' >Tăng ca</th>
-                <th mat-sort-header='datetime'>Thời gian</th>
+                <th>Tăng ca</th>
+                <th>Thời gian</th>
                 <th>Tổng ngày</th>
-                <th>Đơn giá</th>
                 <th>Thành tiền</th>
                 <th>Chú thích</th>
                 <th nzWidth='100px' style='padding: 0; color: #1b8eb7'
@@ -323,74 +347,113 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor='let salary of tableOvertime.data; let i = index'
-                  style='background: white !important;'
-                  (click)='onSalarySetting(salary?.setting?.title)'
-              >
-                <td>
-                  <span>{{i + 1}}</span>
-                </td>
-                <td>
-                  <div>
-                    <span>{{salary.setting.title}}</span>
-                    <span class='ml-2' *ngIf='salary.allowance'> + {{salary.allowance.title}}</span>
-                  </div>
-                </td>
-                <td class=' text-center '>
-                  Từ. {{salary.startedAt | date:'dd-MM-yyyy'}}
-                  <br/>
-                  đến {{salary.endedAt | date:'dd-MM-yyyy'}}
-                </td>
-                <td>
-                  {{salary.duration}} {{ salary.partial | transformconstant: sessionConstant}}
-                </td>
-                <td style='color: #29CC97'>
+              <ng-template ngFor let-salary [ngForOf]="tableOvertime.data" let-i='index'>
+                <tr (click)='onSalarySetting(salary.setting.title)'>
+                  <td (click)="$event.stopPropagation()" [(nzExpand)]="salary.expand"></td>
+                  <td>
+                    <span>{{i + 1}}</span>
+                  </td>
+                  <td>
+                    <div>
+                      <span>{{salary.setting.title}}</span>
+                      <span class='ml-2' *ngIf='salary.allowance'> + {{salary.allowance.title}}</span>
+                    </div>
+                  </td>
+                  <td class=' text-center '>
+                    Từ  {{salary.startedAt | date:'dd-MM-yyyy'}}
+                    <br> đến {{salary.endedAt | date:'dd-MM-yyyy'}}
+                  </td>
+                  <td>
+                    {{salary.duration}} {{ salary.partial | transformconstant: sessionConstant}}
+                  </td>
+                  <td style='color: #05981C'>
                 <span>
-                  {{salary.price| number: '1.0' | notEmpty :'0' }} đ
+                  {{ salary.total
+                  | roundingnumber :1000
+                  | number:'1.0'}} đ
                 </span>
-                  <span *ngIf='salary.allowance'>
-                  + {{salary.allowance.price | number : '1.0'}}
-                </span>
+                  </td>
+                  <td>
+                    <span>{{salary.note}}</span>
+                  </td>
+                  <td>
+                    <div class='d-flex justify-content-around '>
+                      <button data-placement='top' title=' chỉnh sửa ' class='edit animated'
+                              (click)='updateSalary(salaryTypeEnum.OVERTIME, salary); $event.stopPropagation()'>
+                        <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+                      </button>
+                      <button title='xóa' class='trash animated'
+                              (click)='removeSalary( salaryTypeEnum.OVERTIME, salary); $event.stopPropagation()'>
+                        <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr [nzExpand]="salary.expand">
+                  <nz-table
+                    #innerTable
+                    [nzData]="salary.details"
+                    nzSize="small"
+                    nzShowPagination="false"
+                  >
+              <thead>
+              <tr>
+                <th>Ngày</th>
+                <th>Tổng ngày</th>
+                <th>Hệ số</th>
+                <th>Đơn giá</th>
+                <th>Thành tiên</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let item of innerTable.data">
+                <td style="background: white">{{item.datetime | date:'dd-MM-yyyy'}}</td>
+                <td style="background: white">{{item.duration}}</td>
+                <td style="background: white">{{item.rate}}</td>
+                <td style="background: white">
+                  {{item.price
+                  | roundingnumber :1000
+                  | number:'1.0-0'}} đ
                 </td>
-                <td style='color: #29CC97'>
-                <span>
-                  {{ salary.total | number:'1.0'}}
-                </span>
-                </td>
-                <td>
-                  <span>{{salary.note}}</span>
-                </td>
-                <td>
-                  <div class='d-flex justify-content-around '>
-                    <button data-placement='top' title=' chỉnh sửa ' class='edit animated'
-                            (click)='updateSalary(salaryTypeEnum.OVERTIME, salary); $event.stopPropagation()'>
-                      <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
-                    </button>
-                    <button title='xóa' class='trash animated'
-                            (click)='removeSalary( salaryTypeEnum.OVERTIME, salary); $event.stopPropagation()'>
-                      <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
-                    </button>
-                  </div>
-                </td>
+                <td style="background: white">{{item.total | number:'1.0-0'}}</td>
               </tr>
               </tbody>
+            </nz-table>
+            </tr>
+            </ng-template>
+            <tr *ngIf='payroll.overtimes?.length > 0'>
+              <td></td>
+              <td></td>
+              <td class="font-weight-bold">Tổng cộng :</td>
+              <td></td>
+              <td>
+                {{payroll.total.overtime.duration.day}} ngày
+                <br>{{payroll.total.overtime.duration.hour}} Giờ
+              </td>
+              <td style='color: #05981C'>
+                {{payroll.total.overtime.total
+                | roundingnumber :1000
+                | number: '1.0'
+                | notEmpty: '0' }} đ
+              </td>
+              <td></td>
+              <td></td>
+            </tr>
+            </tbody>
             </nz-table>
           </div>
           <!--Vắng-->
           <div #absent class='col-12 mt-5'>
-            <nz-table
-              #tableAbsent
-              [nzShowPagination]='false'
-              [nzData]='payroll.absents'>
+            <table>
               <thead>
               <tr>
-                <th nzWidth='60px'>
+                <th width='60px'>
                   <div>STT</div>
                 </th>
-                <th nzWidth="20%">
+                <th width="20%">
                   <div>Loại vắng</div>
                 </th>
-                <th nzWidth="13%">
+                <th width="13%">
                   Thời gian
                 </th>
                 <th>
@@ -409,7 +472,7 @@
                     Chú thích
                   </div>
                 </th>
-                <th nzWidth='100px' style='padding: 0; color: #1b8eb7'
+                <th width='100px' style='padding: 0; color: #1b8eb7'
                     (click)='onAdd(salaryTypeEnum.ABSENT, payroll ) '>
                   <div class="d-flex">
                     <span class='mr-1 pointer'>Thêm mục</span>
@@ -420,7 +483,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let salary of tableAbsent.data; let i = index"
+              <tr *ngFor="let salary of payroll.absents; let i = index"
                   class='pointer'
                   (click)='onSalarySetting(salary?.setting?.title)'>
                 <td>
@@ -443,12 +506,16 @@
                 </td>
                 <td>
                     <span style='color: red'>
-                      {{salary.price | number:'1.0-0'}} đ
+                      {{salary.price
+                      | roundingnumber :1000
+                      | number:'1.0-0'}} đ
                     </span>
                 </td>
                 <td>
                     <span style='color: red'>
-                      {{salary.total | number:'1.0-0'}} đ
+                      {{salary.total
+                      | roundingnumber :1000
+                      | number:'1.0-0'}} đ
                     </span>
                 </td>
                 <td>
@@ -467,18 +534,38 @@
                   </div>
                 </td>
               </tr>
+              <tr>
+                <td></td>
+                <td class="font-weight-bold">Tổng cộng :</td>
+                <td></td>
+                <td>
+                  {{payroll.total.absent.duration.day}} ngày
+                  <br>{{payroll.total.absent.duration.hour}} Giờ
+                </td>
+                <td style='color: #05981C'>
+                  {{payroll.total.absent.price
+                  | roundingnumber :1000
+                  | number: '1.0-0'
+                  | notEmpty: '0' }} đ
+                </td>
+                <td style='color: #05981C'>
+                  {{payroll.total.absent.total
+                  | roundingnumber :1000
+                  | number: '1.0-0'
+                  | notEmpty: '0' }} đ
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
               </tbody>
-            </nz-table>
+            </table>
           </div>
-          <!--            Khấu trừ-->
+          <!--Khấu trừ-->
           <div #absent class='col-12 mt-5'>
-            <nz-table
-              #tableDeduction
-              [nzShowPagination]='false'
-              [nzData]='payroll.deductions'>
+            <table>
               <thead>
               <tr>
-                <th nzWidth='3%'>
+                <th width='3%'>
                   <div>STT</div>
                 </th>
                 <th>
@@ -494,7 +581,7 @@
                     Chú thích
                   </div>
                 </th>
-                <th nzWidth='12%' style='padding: 0; color: #1b8eb7'
+                <th width='100px' style='padding: 0; color: #1b8eb7'
                     (click)='onAdd(salaryTypeEnum.DEDUCTION, payroll)'>
                   <div class="d-flex">
                     <span class='mr-1 pointer'>Thêm mục</span>
@@ -505,44 +592,54 @@
               </tr>
               </thead>
               <tbody>
-              <ng-template ngFor let-salary [ngForOf]='tableDeduction.data' let-i='index'>
-                <tr class='pointer'>
-                  <td>
-                    {{i + 1}}
-                  </td>
-                  <td>
-                    <div>
-                      <span>{{salary.title}}</span>
-                    </div>
-                  </td>
-                  <td>
+              <tr class='pointer' *ngFor="let salary of payroll.deductions; let i = index">
+                <td>
+                  {{i + 1}}
+                </td>
+                <td>
+                  <div>
+                    <span>{{salary.title}}</span>
+                  </div>
+                </td>
+                <td>
                     <span style='color: red'>
                       {{salary.price | number:'1.0-0'}} đ
                     </span>
-                  </td>
-                  <td>
-                    <span>{{salary.note}}</span>
-                  </td>
-                  <td>
-                    <div class='d-flex justify-content-around '>
-                      <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
-                              (click)='updateSalary(salaryTypeEnum.DEDUCTION, salary); $event.stopPropagation()'>
-                        <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
-                      </button>
-                      <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                              (click)='removeSalary(salaryTypeEnum.DEDUCTION, salary); $event.stopPropagation()'>
-                        <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </ng-template>
+                </td>
+                <td>
+                  <span>{{salary.note}}</span>
+                </td>
+                <td>
+                  <div class='d-flex justify-content-around '>
+                    <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
+                            (click)='updateSalary(salaryTypeEnum.DEDUCTION, salary); $event.stopPropagation()'>
+                      <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+                    </button>
+                    <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
+                            (click)='removeSalary(salaryTypeEnum.DEDUCTION, salary); $event.stopPropagation()'>
+                      <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="payroll.total.remote">
+                <td></td>
+                <td class="font-weight-bold">Tổng cộng :</td>
+                <td>
+                  {{payroll.total.deduction
+                  | roundingnumber :1000
+                  |number:'1.0-0'
+                  }} đ
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
               </tbody>
-            </nz-table>
+            </table>
           </div>
-          <!--      ngày lễ-->
-          <div #holiday class='col-12 mt-5'>
-            <nz-table>
+          <!--ngày lễ-->
+          <div #holiday class='col-12 mt-5' *ngIf="false">
+            <table style="width: 100%">
               <thead>
               <tr>
                 <th nzWidth='3%'>
@@ -600,7 +697,10 @@
                   <span>{{salary.rate}}</span>
                 </td>
                 <td class=' text-center'>
-                  {{salary.price | number:'1.0' | notEmpty:'Theo hệ số lương cơ bản'}}
+                  {{salary.price
+                  | roundingnumber :1000
+                  | number:'1.0'
+                  | notEmpty:'Theo hệ số lương cơ bản'}}
                 </td>
                 <td class=' text-center'>
                   {{(salary.price * salary.times * salary.rate) | number:'1.0' | notEmpty:'Theo hệ số lương cơ bản'}}
@@ -619,19 +719,14 @@
                 </td>
               </tr>
               </tbody>
-            </nz-table>
+            </table>
           </div>
-
           <!--WFH-->
           <div #absent class='col-12 mt-5'>
-            <nz-table
-              #tableRemote
-              [nzData]="payroll.remotes|| []"
-              nzShowPagination="false"
-            >
+            <table style="width: 100%">
               <thead>
-              <tr style='background-color: #dddddd66;'>
-                <th nzWidth='3%'>
+              <tr>
+                <th width='3%'>
                   STT
                 </th>
                 <th>
@@ -641,7 +736,7 @@
                   Thời gian
                 </th>
                 <th>
-                  Đơn vị
+                  Tổng ngày
                 </th>
                 <th>
                   Chi tiết
@@ -649,7 +744,7 @@
                 <th>
                   Diễn giải
                 </th>
-                <th nzWidth='10%' style='padding: 0; color: #1b8eb7'
+                <th width='100px' style='padding: 0; color: #1b8eb7'
                     (click)='onAdd(salaryTypeEnum.WFH, payroll ) '>
                   <div class="d-flex">
                     <span class='mr-1 pointer'>Thêm mục</span>
@@ -660,19 +755,12 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let salary of tableRemote.data;let i=index "
-                  style='background: white !important;'>
+              <tr *ngFor="let salary of payroll.remotes;let i=index ">
                 <td>
                   <span>{{i + 1}}</span>
                 </td>
                 <td>
                   <span>{{salary.type | transformconstant: remoteConstant}}</span>
-                </td>
-                <td>
-                  {{salary.partial | transformconstant: sessionConstant}}
-                </td>
-                <td>
-                  <span>{{salary.unit | transformconstant: unitSalaryConstant}}</span>
                 </td>
                 <td>
                  <span>
@@ -681,6 +769,10 @@
                    đến  {{salary.endedAt | date:'dd-MM-yyyy'}}
                 </span>
                 </td>
+                <td>
+                  {{salary.duration}} {{salary.partial | transformconstant: sessionConstant}}
+                </td>
+                <td></td>
                 <td>
                   <span>{{salary.note}}</span>
                 </td>
@@ -697,25 +789,30 @@
                   </div>
                 </td>
               </tr>
+              <tr>
+                <td></td>
+                <td class="font-weight-bold">Tổng cộng :</td>
+                <td></td>
+                <td>
+                  {{payroll.total.remote.duration
+                  | roundingnumber :1000
+                  | number:'1.0-0'
+                  }} ngày
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
               </tbody>
-            </nz-table>
+            </table>
           </div>
-
           <!--chú thích-->
           <div #note class='col-12 mt-5'>
-            <nz-table
-              #tableNote
-              [nzData]="payroll?.note?  [payroll.note] : []"
-              nzShowPagination="false"
-            >
+            <table>
               <thead>
-              <tr style='background-color: #dddddd66;'>
-                <th>
-                  <div>
-                    Chú thích phiếu lương
-                  </div>
-                </th>
-                <th nzWidth='10%' style='color: #1b8eb7' (click)='addOrUpdateNote(payroll)'>
+              <tr>
+                <th> Chú thích phiếu lương</th>
+                <th width='100px' style='color: #1b8eb7' (click)='addOrUpdateNote(payroll)'>
                   <div class="d-flex">
                     <span class='mx-2 pointer'>{{payroll?.note ? 'Sửa' : 'Thêm'}}</span>
                     <img class='pointer' style='margin-left: 2px;width: 13px;' src='./assets/img/payroll/plus-lg.svg'
@@ -725,16 +822,14 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let item of tableNote.data">
+              <tr>
                 <td>
-                  <span>{{item}}</span>
+                  <span>{{payroll.note || "Chưa có chú thích"}}</span>
                 </td>
-                <td width='10%'>
-                </td>
+                <td width='10%'></td>
               </tr>
-
               </tbody>
-            </nz-table>
+            </table>
           </div>
 
           <div class='sticky-scroll' *ngIf='isSticky'>
@@ -744,7 +839,7 @@
             <div class='pointer' (click)='scroll(allowance,sticky)'>Phụ cấp</div>
             <div class='pointer' (click)='scroll(overtime,sticky)'>Tăng ca</div>
             <div class='pointer' (click)='scroll(absent,sticky)'>Khấu trừ</div>
-            <div class='pointer' (click)='scroll(holiday,sticky)'>Đi làm ngày lễ</div>
+            <!--            <div class='pointer' (click)='scroll(holiday,sticky)'>Đi làm ngày lễ</div>-->
             <div class='pointer' (click)='scroll(note,sticky)'>Chú thích</div>
             <div class='pointer' (click)='scroll(footer,sticky)'>Lịch sử và xác nhận lương</div>
           </div>
@@ -806,7 +901,11 @@
                   </span>
                       <ng-template #total>
                       <span>
-                     {{salary.price * salary.times + salary.allowance.price|number:'1.0'|notEmpty:'0'}} đ
+                     {{salary.price * salary.times +
+                      salary.allowance.price
+                        | roundingnumber :1000
+                        |number:'1.0'
+                        |notEmpty:'0'}} đ
                   </span>
                       </ng-template>
                     </td>
@@ -860,5 +959,8 @@
     </div>
   </nz-carousel>
 </div>
-<nz-spin *ngIf="(scanned$|async) === false" nzSize="large" style="position: fixed; top:50%; left: 50% ">
+<nz-spin *ngIf="(scanned$ | async) === false" nzSize="large" style="position: fixed; top:50%; left: 50% ">
 </nz-spin>
+<style>
+
+</style>

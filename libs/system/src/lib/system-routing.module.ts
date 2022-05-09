@@ -6,7 +6,7 @@ import { LimitedAccessContainer } from './containers/limited-access/limited-acce
 
 const routes: Routes = [
   {
-    path: 'lich-su-he-thong',
+    path: '',
     component: SystemHistoryContainer
   },
   {

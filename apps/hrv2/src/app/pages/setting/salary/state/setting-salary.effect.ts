@@ -111,6 +111,7 @@ export class SettingSalaryEffect {
     switchMap(props => {
       return this.service.delete(props.id).pipe(
         tap(_ => {
+          this.message.success('Xoá bản mẫu thành công')
           this.settingSalaryStore.remove(props?.id);
         }),
         catchError(err => {

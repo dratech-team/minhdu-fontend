@@ -39,6 +39,9 @@ export class TableSelectPayrollComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.formGroup.value.payrollIds.forEach((id: number) => this.payrollIdsSelected.add(id))
+
     this.onLoadPayroll(false)
 
     this.formGroupTable.valueChanges.subscribe(_ => {

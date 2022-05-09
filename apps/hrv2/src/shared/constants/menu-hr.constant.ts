@@ -33,20 +33,10 @@ export const MenuHrConstant: MenuHrConstant[] = [
     href: TabEnum.PAYROLL,
   },
   {
-    name: 'Cài đặt',
+    name: 'Thiết lập lương',
     icon: '/assets/icons/menu/templates.png',
     state: MenuHrEnum.SETTING,
     href: TabEnum.SETTING,
-    children: [
-      {
-        name: 'Lương',
-        href: 'cai-dat/luong'
-      },
-      {
-        name: 'Ngày lễ',
-        href: 'cai-dat/ngay-le'
-      }
-    ]
   },
   {
     name: 'Tổ chức',
@@ -56,12 +46,17 @@ export const MenuHrConstant: MenuHrConstant[] = [
     children: [
       {
         name: 'Đơn vị',
-        href: 'to-chuc/don-vi'
+        href: 'to-chuc'
+      },
+      {
+        name: 'Phòng ban',
+        href: 'to-chuc/phong-ban'
       },
       {
         name: 'Chức vụ',
         href: 'to-chuc/chuc-vu'
-      }
+      },
+
     ]
   },
   {
@@ -78,11 +73,11 @@ export const MenuHrConstant: MenuHrConstant[] = [
     children: [
       {
         name: 'Lịch sử hệ thống',
-        href: 'to-chuc/lich-su-he-thong'
+        href: 'he-thong'
       },
       {
         name: 'Quản lý tài khản',
-        href: 'to-chuc/quan-ly-tai-khoan'
+        href: 'he-thong/quan-ly-tai-khoan'
       }
     ]
   },

@@ -6,4 +6,8 @@ export const StorageName = {
   COMMODITY_TEMPLATE: 'commodity-template',
   ROUTE: 'route',
   BILL: 'bill',
+  BRANCH: 'branch',
+  POSITION: 'position',
+  DEPARTMENT: 'department',
+  EMPLOYEE_DRAFT: 'employee-draft',
 };

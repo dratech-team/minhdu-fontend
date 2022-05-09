@@ -1,19 +1,18 @@
-import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SalaryPayroll } from '@minhdu-fontend/data-models';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { catchError } from 'rxjs/operators';
-import { SettingSalaryQuery } from '../../../setting/salary/state';
-import { PayrollEntity } from '../../../payroll/entities';
-import { NzModalRef } from 'ng-zorro-antd/modal';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { Actions } from '@datorama/akita-ng-effects';
-import { throwError } from 'rxjs';
-import { PayrollActions } from '../../../payroll/state/payroll.action';
-import { ResponseMessageEntity } from '@minhdu-fontend/base-entity';
-import { ModalAddOrUpdateDeduction } from '../../../payroll/data/modal-deduction-salary.data';
-import { DeductionSalaryService } from '../../service';
+import {DatePipe} from '@angular/common';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {SalaryPayroll} from '@minhdu-fontend/data-models';
+import {DatetimeUnitEnum, EmployeeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {catchError} from 'rxjs/operators';
+import {SettingSalaryQuery} from '../../../setting/salary/state';
+import {NzModalRef} from 'ng-zorro-antd/modal';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {Actions} from '@datorama/akita-ng-effects';
+import {throwError} from 'rxjs';
+import {PayrollActions} from '../../../payroll/state/payroll.action';
+import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
+import {ModalAddOrUpdateDeduction} from '../../../payroll/data/modal-deduction-salary.data';
+import {DeductionSalaryService} from '../../service';
 
 @Component({
   templateUrl: 'deduction-salary.component.html'
@@ -24,10 +23,10 @@ export class DeductionSalaryComponent implements OnInit {
   formGroup!: FormGroup;
 
   salaryPayrolls: SalaryPayroll[] = [];
-  payrollSelected: PayrollEntity[] = [];
 
   submitting = false;
-  indexStep = 1;
+  indexStep = 0;
+  employeeType = EmployeeType
 
   constructor(
     public readonly datePipe: DatePipe,
@@ -48,7 +47,8 @@ export class DeductionSalaryComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       title: [salary?.title, Validators.required],
       price: [salary?.price, Validators.required],
-      note: [salary?.note]
+      note: [salary?.note],
+      payrollIds: [this.data.add ? [this.data.add.payroll.id] : []],
     });
   }
 
@@ -96,14 +96,16 @@ export class DeductionSalaryComponent implements OnInit {
 
     return Object.assign(salary,
       this.data.add
-        ? { payrollIds: this.payrollSelected.map(payroll => payroll.id).concat(this.data.add.payroll.id) }
-        : { salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.update.salary.id) }
+        ? {payrollIds: value.payrollIds}
+        : {salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.update.salary.id)}
     );
   }
 
   move(type: 'next' | 'previous'): void {
-    if (type === 'next') this.indexStep += 1;
-    else this.indexStep -= 1;
+    if (this.formGroup.invalid) {
+      return
+    }
+    type === "next" ? this.indexStep += 1 : this.indexStep -= 1
   }
 
   private onSubmitError(err: string) {
@@ -114,7 +116,7 @@ export class DeductionSalaryComponent implements OnInit {
   private onSubmitSuccess(res: ResponseMessageEntity, payrollId?: number) {
     this.message.success(res.message);
     if (payrollId) {
-      this.actions$.dispatch(PayrollActions.loadOne({ id: payrollId }));
+      this.actions$.dispatch(PayrollActions.loadOne({id: payrollId}));
     }
     this.submitting = false;
     this.modalRef.close();

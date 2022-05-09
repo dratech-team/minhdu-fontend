@@ -47,7 +47,7 @@ export class PermanentSalaryComponent implements OnInit {
   salariesSelected: SalaryPayroll[] = [];
 
   role = localStorage.getItem('role');
-  stepIndex = 0;
+  indexStep = 0;
   submitting = false;
   employeeType = EmployeeType
 
@@ -154,10 +154,10 @@ export class PermanentSalaryComponent implements OnInit {
     return throwError(err);
   }
 
-  move(type: 'next' | 'pre'): any {
+  move(type: 'next' | 'previous'): void {
     if (this.formGroup.invalid) {
-      return this.message.success('Chưa nhập đủ thông tin')
+      return
     }
-    type === 'next' ? this.stepIndex += 1 : this.stepIndex -= 1;
+    type === "next" ? this.indexStep += 1 : this.indexStep -= 1
   }
 }

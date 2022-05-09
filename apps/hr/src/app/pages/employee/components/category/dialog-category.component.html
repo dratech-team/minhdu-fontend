@@ -53,9 +53,8 @@
         </form>
       </mat-tab>
       <mat-tab class='col-12 ' label='Chọn nhân viên'>
-        <app-pick-employee
-          (EventSelectEmployee)="pickEmployees($event)">
-        </app-pick-employee>
+       <minhdu-fontend-pick-employee>
+       </minhdu-fontend-pick-employee>
         <div class='mt-2'>
           <button class='btn btn-dark mr-2' (click)='previousTab(tabGroup)'>Trở lại</button>
           <button class='btn btn-primary' (click)='onSubmit()'>Đồng ý</button>

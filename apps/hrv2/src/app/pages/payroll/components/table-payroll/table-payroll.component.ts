@@ -1,8 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {PayrollEntity} from "../../entities";
 import {FormGroup} from "@angular/forms";
-import {PositionActions, PositionQuery} from "@minhdu-fontend/orgchart-v2";
-import {BranchQuery} from "@minhdu-fontend/orgchart-v2";
+import {BranchQuery, PositionActions, PositionQuery} from "@minhdu-fontend/orgchart-v2";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollQuery, PayrollStore} from "../../state";
 import {FilterTypeEnum, ItemContextMenu, SalaryTypeEnum} from "@minhdu-fontend/enums";
@@ -15,11 +14,10 @@ import {
   ModalDatePickerComponent
 } from "../../../../../../../../libs/components/src/lib/modal-date-picker/modal-date-picker.component";
 import {ModalAlertComponent} from "@minhdu-fontend/components";
-import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
+import {ModalAlertEntity, ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
 import {DatePipe} from "@angular/common";
 import {PayrollActions} from "../../state/payroll.action";
 import {Subject} from "rxjs";
-import {ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
 import {SettingSalaryActions, SettingSalaryQuery} from "../../../setting/salary/state";
 
 
@@ -40,7 +38,7 @@ export class TablePayrollComponent implements OnInit {
   ItemContextMenu = ItemContextMenu;
   confirmConstant = ConfirmConstant
   paidConstant = PaidConstant
-  daysInMonth = rageDaysInMonth(this.payrollQuery.getValue().search.startedAt)
+  daysInMonth = rageDaysInMonth(new Date(this.payrollQuery.getValue().search.startedAt))
   filterTypeEnum = FilterTypeEnum
   template$ = this.settingSalaryQuery.selectAll();
   salaryType = SalaryTypeEnum
@@ -89,7 +87,7 @@ export class TablePayrollComponent implements OnInit {
     })
     this.actions$.dispatch(PositionActions.loadAll({}))
     this.payrollQuery.select(state => state.search.startedAt).subscribe(val => {
-      this.daysInMonth = rageDaysInMonth(val)
+      this.daysInMonth = rageDaysInMonth(new Date(val))
     })
     if (this.onChange) {
       this.onChange.subscribe(_ => this.onAdd())

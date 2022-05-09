@@ -5,4 +5,5 @@ export interface PermanentSalaryEntity extends BaseSalaryEntity {
   readonly payroll?: PayrollEntity,
   readonly rate: number
   readonly datetime?: Date
+  readonly price: number;
 }

@@ -3,9 +3,9 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 import { persistState, PersistStateSelectFn } from '@datorama/akita';
-import { StorageName } from './app/shared/constaints/storage-name.const';
 import { OrderState } from './app/pages/order/+state';
 import { RouteState } from './app/pages/route/+state';
+import {StorageName} from "@minhdu-fontend/constants";
 
 if (environment.production) {
   enableProdMode();

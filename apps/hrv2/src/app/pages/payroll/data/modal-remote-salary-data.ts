@@ -1,4 +1,4 @@
-import { PayrollEntity } from './payroll.entity';
+import { PayrollEntity } from '../entities';
 import { RemoteSalaryEntity } from '../../salary/entities';
 import { SalaryPayroll } from '@minhdu-fontend/data-models';
 import { RequireOnlyOne } from '../../../../shared/types';

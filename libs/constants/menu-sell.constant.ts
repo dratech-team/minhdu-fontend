@@ -30,7 +30,7 @@ export const menuSell = [
     name: 'Lịch sử hệ thống',
     icon: '../../assets/icon/sell-layout/card-list.svg',
     state:MenuEnum.SYSTEM_HISTORY,
-    href:'/he-thong/lich-su-he-thong'
+    href:'/he-thong'
   },
 ]
 

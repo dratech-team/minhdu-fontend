@@ -1,9 +1,8 @@
 import {DatePipe} from '@angular/common';
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, EmployeeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {NzModalRef} from 'ng-zorro-antd/modal';
-import {PayrollEntity} from '../../../payroll/entities';
 import {SalaryRemoteService} from '../../service';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {throwError} from 'rxjs';
@@ -26,15 +25,14 @@ export class RemoteSalaryComponent implements OnInit {
   remoteConstant = RemoteConstant
   formGroup!: FormGroup;
 
-  payrollSelected: PayrollEntity [] = [];
-
-  stepIndex = 0;
+  indexStep = 0;
   submitting = false;
   fistDateInMonth!: Date
 
   titleSession = SessionConstant;
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
+  employeeType = EmployeeType;
 
   disableApprenticeDate = (cur: Date): boolean => {
     return validateDayInMonth(cur, this.fistDateInMonth)
@@ -56,9 +54,7 @@ export class RemoteSalaryComponent implements OnInit {
         ? this.data.add.payroll.createdAt
         : this.data.update.salary.startedAt
     ))
-    if (this.data.add) {
-      this.payrollSelected.push(this.data.add.payroll);
-    }
+
     const payroll = this.data.add?.payroll;
     const salary = this.data.update?.salary;
     this.formGroup = this.formBuilder.group({
@@ -70,7 +66,8 @@ export class RemoteSalaryComponent implements OnInit {
         ],
         Validators.required
       ],
-      note: [salary?.note]
+      note: [salary?.note],
+      payrollIds: [payroll ? [payroll.id] : []]
     })
     ;
   }
@@ -128,7 +125,7 @@ export class RemoteSalaryComponent implements OnInit {
     return Object.assign(
       salary,
       this.data.add
-        ? {payrollIds: this.payrollSelected.map(payroll => payroll.id)}
+        ? {payrollIds: value.payrollIds}
         : {salaryIds: [this.data.update.salary.id]}
     );
   }
@@ -147,6 +144,9 @@ export class RemoteSalaryComponent implements OnInit {
   }
 
   move(type: 'next' | 'previous'): void {
-    type === 'next' ? this.stepIndex += 1 : this.stepIndex -= 1
+    if (this.formGroup.invalid) {
+      return
+    }
+    type === "next" ? this.indexStep += 1 : this.indexStep -= 1
   }
 }

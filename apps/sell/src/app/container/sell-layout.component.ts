@@ -1,17 +1,16 @@
-import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { PickMenuComponent } from '../components/pick-menu-mobile/pick-menu.component';
-import { AuthActions } from '@minhdu-fontend/auth';
-import { Store } from '@ngrx/store';
-import { DevelopmentComponent } from 'libs/components/src/lib/development/development.component';
-import { LogoutComponent } from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
-import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.component/register.component';
-import { Router } from '@angular/router';
-import { Role } from 'libs/enums/hr/role.enum';
-import { menuSell } from '@minhdu-fontend/constants';
-import { of } from 'rxjs';
-import { AppQuery } from '../state/app.query';
-import { map, tap } from 'rxjs/operators';
+import {AfterContentChecked, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {PickMenuComponent} from '../components/pick-menu-mobile/pick-menu.component';
+import {AuthActions} from '@minhdu-fontend/auth';
+import {Store} from '@ngrx/store';
+import {DevelopmentComponent} from 'libs/components/src/lib/development/development.component';
+import {LogoutComponent} from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
+import {RegisterComponent} from 'libs/auth/src/lib/components/dialog-register.component/register.component';
+import {Router} from '@angular/router';
+import {Role} from 'libs/enums/hr/role.enum';
+import {menuSell} from '@minhdu-fontend/constants';
+import {AppQuery} from '../state/app.query';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',

@@ -58,6 +58,8 @@ import {ModalAlertComponent} from "./modal-alert/modal-alert.component";
 import {ModalDatePickerComponent} from "./modal-date-picker/modal-date-picker.component";
 import {TransformNzDateModePipe} from "./pipes/transform-nz-date-mode.pipe";
 import {ModalNoteComponent} from "./modal-note/modal-note.component";
+import {TotalPricePipe} from "./pipes/total-price.pipe";
+import {RoundingNumberPipe} from "./pipes/rounding-number.pipe";
 
 @NgModule({
     imports: [
@@ -124,7 +126,9 @@ import {ModalNoteComponent} from "./modal-note/modal-note.component";
     ModalDatePickerComponent,
     TransformNzDateModePipe,
     ModalAlertComponent,
-    ModalNoteComponent
+    ModalNoteComponent,
+    TotalPricePipe,
+    RoundingNumberPipe
   ],
   exports: [
     SwimLaneChartComponent,
@@ -155,7 +159,9 @@ import {ModalNoteComponent} from "./modal-note/modal-note.component";
     ModalDatePickerComponent,
     TransformNzDateModePipe,
     ModalAlertComponent,
-    ModalNoteComponent
+    ModalNoteComponent,
+    TotalPricePipe,
+    RoundingNumberPipe
   ],
   providers: [
     DecimalPipe,

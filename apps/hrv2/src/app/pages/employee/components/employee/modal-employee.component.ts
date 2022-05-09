@@ -1,46 +1,47 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {EmployeeType, RecipeType} from '@minhdu-fontend/enums';
-import {DatePipe} from '@angular/common';
-import {Branch, Position} from '@minhdu-fontend/data-models';
-import {checkInputNumber} from '@minhdu-fontend/utils';
-import {RecipeTypesConstant} from '@minhdu-fontend/constants';
-import {NzMessageService} from 'ng-zorro-antd/message';
-import {NzModalRef} from "ng-zorro-antd/modal";
-import {map} from "rxjs/operators";
-import {BranchActions, BranchQuery} from "@minhdu-fontend/orgchart-v2";
-import {Actions} from "@datorama/akita-ng-effects";
-import {EmployeeActions, EmployeeQuery} from "@minhdu-fontend/employee-v2";
-import {FlatSalaryTypeConstant} from "../../constants/flat-salary-type.constant";
-import {FlatSalaryTypeEnum} from "../../enums/flat-salary-type.enum";
-import {ModalEmployeeData} from "../../data/modal-employee.data";
-import {Observable} from "rxjs";
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { EmployeeType, RecipeType } from '@minhdu-fontend/enums';
+import { DatePipe } from '@angular/common';
+import { Branch, Position } from '@minhdu-fontend/data-models';
+import { checkInputNumber } from '@minhdu-fontend/utils';
+import { RecipeTypesConstant } from '@minhdu-fontend/constants';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalRef } from 'ng-zorro-antd/modal';
+import { map } from 'rxjs/operators';
+import { BranchActions, BranchQuery } from '@minhdu-fontend/orgchart-v2';
+import { Actions } from '@datorama/akita-ng-effects';
+import { EmployeeActions, EmployeeQuery } from '@minhdu-fontend/employee-v2';
+import { FlatSalaryTypeConstant } from '../../constants/flat-salary-type.constant';
+import { FlatSalaryTypeEnum } from '../../enums/flat-salary-type.enum';
+import { Observable } from 'rxjs';
+import { ModalEmployeeData } from '../../data/modal-employee.data';
+import { DirtyCheckPlugin } from '@datorama/akita';
 
 @Component({
   templateUrl: 'modal-employee.component.html'
 })
-export class ModalEmployeeComponent implements OnInit {
+export class ModalEmployeeComponent implements OnInit, OnDestroy {
   @Input() data!: ModalEmployeeData;
 
   branches$ = this.branchQuery.selectAll().pipe(map(branches => {
     if (branches.length === 1) {
-      this.formGroup.get('branch')?.setValue(branches[0], {emitEvent: false})
+      this.formGroup.get('branch')?.setValue(branches[0], { emitEvent: false });
       if (branches[0].positions)
-        this.lstPosition = branches[0].positions
+        this.lstPosition = branches[0].positions;
     }
-    return branches
+    return branches;
   }));
-  categories$ = new Observable<any>()
-  added$ = this.employeeQuery.select('added')
+  categories$ = new Observable<any>();
+  added$ = this.employeeQuery.select('added');
 
   lstPosition: Position [] = [];
-  flatSalaryTypeConstant = FlatSalaryTypeConstant.filter(item => item.value !== FlatSalaryTypeEnum.ALL)
+  flatSalaryTypeConstant = FlatSalaryTypeConstant.filter(item => item.value !== FlatSalaryTypeEnum.ALL);
   recipeTypesConstant = RecipeTypesConstant;
 
   submitting = false;
   recipeType = RecipeType;
   typeEmployee = EmployeeType;
-  formGroup!: FormGroup
+  formGroup!: FormGroup;
 
   constructor(
     public datePipe: DatePipe,
@@ -54,10 +55,10 @@ export class ModalEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.actions$.dispatch(BranchActions.loadAll({}))
+    this.actions$.dispatch(BranchActions.loadAll({}));
 
-    this.lstPosition = this.data?.update?.employee?.branch?.positions || []
-    const employeeInit = this.data?.add?.employee || this.data?.update?.employee
+    this.lstPosition = this.data?.update?.employee?.branch?.positions || [];
+    const employeeInit = this.data?.add?.employee || this.data?.update?.employee;
 
     this.formGroup = this.formBuilder.group({
       identify: [employeeInit?.identify],
@@ -109,11 +110,11 @@ export class ModalEmployeeComponent implements OnInit {
       branch: [employeeInit?.branch, Validators.required],
       position: [employeeInit?.position, Validators.required]
 
-    })
+    });
 
     this.formGroup.get('branch')?.valueChanges.subscribe((val: Branch) => {
       if (val.positions) {
-        this.formGroup.get('position')?.setValue('')
+        this.formGroup.get('position')?.setValue('');
         this.lstPosition = val.positions;
       }
     });
@@ -148,18 +149,18 @@ export class ModalEmployeeComponent implements OnInit {
     const employee = this.mapEmployee(value);
 
     this.actions$.dispatch(this.data.add
-      ? EmployeeActions.addOne({body: employee})
+      ? EmployeeActions.addOne({ body: employee })
       : EmployeeActions.update({
         id: this.data.update.employee.id,
         updates: employee
       })
-    )
+    );
 
     this.added$.subscribe(added => {
       if (added) {
-        this.modalRef.close()
+        this.modalRef.close();
       }
-    })
+    });
   }
 
   checkNumberInput(event: any) {
@@ -167,7 +168,7 @@ export class ModalEmployeeComponent implements OnInit {
   }
 
   compareFN = (o1: any, o2: any) => {
-    return o1 && o2 ? o1.id == o2.id : o1 === o2
+    return o1 && o2 ? o1.id == o2.id : o1 === o2;
   };
 
   mapEmployee(value: any) {
@@ -208,8 +209,11 @@ export class ModalEmployeeComponent implements OnInit {
     };
 
     return Object.assign(emp,
-      value.phone ? {phone: value.phone} : {},
-      value.workPhone ? {workPhone: value.workPhone} : {}
-    )
+      value.phone ? { phone: value.phone } : {},
+      value.workPhone ? { workPhone: value.workPhone } : {}
+    );
+  }
+
+  ngOnDestroy() {
   }
 }

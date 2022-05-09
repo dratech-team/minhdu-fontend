@@ -34,16 +34,17 @@
         <div class="font-weight-bold">Phòng ban</div>
         <div class="d-flex">
           <div style='width: fit-content'>
-            <nz-select class='px-2' style='width:200px' [formControl]='categoryControl'>
-              <nz-option [nzValue]='""' nzLabel="Tất cả"></nz-option>
-              <nz-option *ngFor='let item of categories$ | async' [nzValue]='item.id' [nzLabel]="item.name"></nz-option>
-              <nz-option [nzValue]='0' (click)='onAddCategory()' nzLabel="Tạo mới"></nz-option>
+            <nz-select
+              nzShowSearch
+              class='px-2'
+              style='width:200px'
+              [formControl]='departmentControl'
+              [compareWith]="compareFN"
+            >
+              <nz-option [nzValue]="''" nzLabel="Tất cả"></nz-option>
+              <nz-option *ngFor='let item of departments$ | async' [nzValue]='item' [nzLabel]="item.name"></nz-option>
             </nz-select>
           </div>
-          <button *ngIf='categoryControl.value && categoryControl.value !==0 && this.role !== roleEnum.HUMAN_RESOURCE '
-                  class='btn btn-primary ml-2'
-                  (click)='onUpdateCategory()'>Sửa
-          </button>
         </div>
       </div>
     </div>
@@ -62,7 +63,7 @@
         [formGroup]='formGroup'
         [nzLoading]="loading$|async"
         [nzScroll]="{x:'3200px',y:'60vh'}"
-        [nzData]="(employees$|async) || []"
+        [nzData]="this.employees"
         (nzPageIndexChange)="onPagination($event)"
       >
         <thead>
@@ -155,6 +156,7 @@
               style='width:100%'
               formControlName='province'
               nzPlaceHolder='Chọn tỉnh thành'
+              [compareWith]="compareFN"
             >
               <nz-option
                 *ngFor='let province of provinces$|async'
@@ -172,6 +174,7 @@
               style='width:100%'
               formControlName='district'
               nzPlaceHolder='Chọn Quận/Huyện'
+              [compareWith]="compareFN"
             >
               <nz-option
                 *ngFor='let district of districts'
@@ -189,6 +192,7 @@
               style='width:100%'
               formControlName='ward'
               nzPlaceHolder='Chọn Quận/Huyện'
+              [compareWith]="compareFN"
             >
               <nz-option
                 *ngFor='let ward of wards'
@@ -209,11 +213,10 @@
         </tr>
         </thead>
         <tbody cdkDropList (cdkDropListDropped)='onDrop($event)'>
-        <ng-template ngFor let-employee [ngForOf]="tableEmployee.data" let-i='index'>
-          <tr
-            class="pointer"
-            (contextmenu)='child.onContextMenu($event,employee)'
-            (click)='onUpdate(employee)' cdkDrag>
+          <tr *ngFor="let employee of this.employees; let i = index"
+              class="pointer"
+              (contextmenu)='child.onContextMenu($event,employee)'
+              (click)='onUpdate(employee)' cdkDrag>
             <td nzLeft nzWidth="100px">
               <div>{{(i + 1) + ((tableEmployee.nzPageIndex - 1) * pageSize)}}</div>
             </td>
@@ -290,12 +293,6 @@
               </div>
             </td>
           </tr>
-          <tr *ngIf='employees.length === 0' style='height: 50vh'>
-            <td colspan='100' class='text-center check-content font-weight-bold font-xl relative '>
-              <span style='position: absolute; top: 50%;left: 50%;'>Hiện không có nhân viên nào !</span>
-            </td>
-          </tr>
-        </ng-template>
         </tbody>
       </nz-table>
     </div>
