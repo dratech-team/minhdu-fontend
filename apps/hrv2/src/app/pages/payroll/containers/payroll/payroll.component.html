@@ -60,7 +60,9 @@
       </div>
       <div [formGroup]="formGroup" style='width: fit-content' class='ml-2'>
         <div class="font-weight-bold">Phòng ban</div>
-        <nz-select style='width:200px' formControlName="department">
+        <nz-select style='width:200px'
+                   [compareWith]="compareFN"
+                   formControlName="department">
           <nz-option [nzValue]="''" nzLabel='Tất cả'>Tất cả</nz-option>
           <nz-option *ngFor='let item of categories$|async' [nzValue]='item' [nzLabel]='item.name'></nz-option>
         </nz-select>

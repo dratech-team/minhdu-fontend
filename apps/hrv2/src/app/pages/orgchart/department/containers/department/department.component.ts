@@ -13,6 +13,8 @@ import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 import {Router} from "@angular/router";
 import {EmployeeStore} from "@minhdu-fontend/employee-v2";
+import {PayrollStore} from "../../../../payroll/state";
+import {FilterTypeEnum, ItemContextMenu} from "@minhdu-fontend/enums";
 
 @Component({
   templateUrl: 'department.component.html'
@@ -21,8 +23,10 @@ export class DepartmentComponent implements OnInit {
   departments$ = this.departmentQuery.selectAll()
   loading$ = this.departmentQuery.select(state => state.loading)
   total$ = this.departmentQuery.select(state => state.total)
-  pageSizeTable = 10;
 
+  pageSizeTable = 10;
+  itemContext = ItemContextMenu
+  filterTypeEnum = FilterTypeEnum
   formGroup = new FormGroup(
     {
       search: new FormControl(''),
@@ -37,6 +41,7 @@ export class DepartmentComponent implements OnInit {
     private readonly modal: NzModalService,
     private readonly departmentQuery: DepartmentQuery,
     private readonly employeeStore: EmployeeStore,
+    private readonly payrollStore: PayrollStore,
     private readonly router: Router,
   ) {
   }
@@ -128,5 +133,16 @@ export class DepartmentComponent implements OnInit {
       ...state, search: Object.assign(JSON.parse(JSON.stringify(state.search)), {department: department})
     }))
     this.router.navigate(['nhan-vien']).then();
+  }
+
+  onPayroll(department: DepartmentEntity, filterType: FilterTypeEnum) {
+    this.payrollStore.update(state => ({
+      ...state, search: Object.assign(JSON.parse(JSON.stringify(state.search)),
+        {
+          filterType: filterType,
+          department: department
+        })
+    }))
+    this.router.navigate(['phieu-luong']).then();
   }
 }

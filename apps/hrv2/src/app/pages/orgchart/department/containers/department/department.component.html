@@ -54,9 +54,13 @@
   </div>
 </div>
 <app-mouse-right
+  [items]="[itemContext.PROFILE, itemContext.PAYROLL, itemContext.OVERTIME]"
   #child
   (onAdd)='onAdd($event)'
   (onUpdate)='onUpdate($event)'
   (onDel)='onDelete($event)'
+  (onProfile)="onEmployee($event)"
+  (onPayroll)="onPayroll($event, filterTypeEnum.PAYROLL)"
+  (onOvertime)="onPayroll($event, filterTypeEnum.OVERTIME)"
 ></app-mouse-right>
 
