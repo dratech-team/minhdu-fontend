@@ -42,13 +42,21 @@
       </div>
     </div>
     <div>
+      <div class="d-flex justify-content-end">
+        <button
+          (click)="onLoadMore()"
+          [nzLoading]="(loading$|async)"
+          *ngIf="((count$ | async) || 0) < ((total$ | async) || 0)"
+          nz-button
+          nzType="primary">Tải thêm
+        </button>
+      </div>
       <nz-table #tableRank
-                [nzScroll]="{ x: '1700px',y: '58vh'}"
+                nzShowPagination="false"
+                [nzScroll]="{ x: '1700px',y: '53vh'}"
                 nzSize='middle'
                 [nzLoading]="loading$|async"
                 [nzData]="(settingSalaries$|async)|| []"
-                [nzPageSize]="pageSize"
-                (nzPageIndexChange)="onPagination($event)"
       >
         <thead>
         <tr>
@@ -64,7 +72,7 @@
         <tbody>
         <ng-template ngFor let-settingSalary [ngForOf]="tableRank.data" let-i='index'>
           <tr (contextmenu)='child.onContextMenu($event,settingSalary)'>
-            <td nzLeft>{{(i + 1) + ((tableRank.nzPageIndex - 1) * pageSize)}}</td>
+            <td nzLeft>{{i + 1}}</td>
             <td>{{settingSalary.id}}</td>
             <td nzLeft>{{settingSalary.title}}</td>
             <td nzLeft>{{

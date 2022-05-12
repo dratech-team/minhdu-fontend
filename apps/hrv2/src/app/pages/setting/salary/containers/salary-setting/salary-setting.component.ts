@@ -21,9 +21,10 @@ import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 export class SalarySettingComponent implements OnInit {
   settingSalaries$ = this.settingSalaryQuery.selectAll();
   loading$ = this.settingSalaryQuery.selectLoading();
+  total$ = this.settingSalaryQuery.select(state => state.total)
+  count$ = this.settingSalaryQuery.selectCount()
 
   stateSearch = this.settingSalaryQuery.getValue().search;
-
   blockSalaries = blockSalariesConstant.concat([{
     title: 'Lương trích bảo hiểm',
     type: SalaryTypeEnum.BASIC_INSURANCE
@@ -32,7 +33,6 @@ export class SalarySettingComponent implements OnInit {
   panelOpenState = false;
   pageSizeTable = 10;
   visible = false;
-  pageSize = 10;
   salaryTypeEnum = SalaryTypeEnum;
 
 
@@ -68,14 +68,11 @@ export class SalarySettingComponent implements OnInit {
     ).subscribe();
   }
 
-  onPagination(index: number) {
-    const count = this.settingSalaryQuery.getCount();
-    if (index * this.pageSizeTable >= count) {
-      this.actions$.dispatch(SettingSalaryActions.loadAll({
-        search: this.mapProduct(this.formGroup.value, true),
-        isPaginate: true
-      }));
-    }
+  onLoadMore() {
+    this.actions$.dispatch(SettingSalaryActions.loadAll({
+      search: this.mapProduct(this.formGroup.value, true),
+      isPaginate: true
+    }));
   }
 
   mapProduct(dataFG: any, isPagination: boolean) {
