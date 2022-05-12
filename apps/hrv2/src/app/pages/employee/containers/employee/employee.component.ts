@@ -3,7 +3,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EmployeeStatusEnum, Gender, ItemContextMenu, Role, sortEmployeeTypeEnum} from '@minhdu-fontend/enums';
 import {catchError, debounceTime} from 'rxjs/operators';
-import {EmployeeStatusConstant, GenderTypeConstant, PaginationDto} from '@minhdu-fontend/constants';
+import {Api, EmployeeStatusConstant, GenderTypeConstant, PaginationDto} from '@minhdu-fontend/constants';
 import {throwError} from 'rxjs';
 import {District, Employee, Sort, Ward} from '@minhdu-fontend/data-models';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
@@ -32,6 +32,11 @@ import {
 } from "@minhdu-fontend/orgchart-v2";
 import {ModalEmployeeComponent} from "../../components/employee/modal-employee.component";
 import {ModalEmployeeData} from "../../data/modal-employee.data";
+import * as _ from "lodash";
+import {
+  ModalExportExcelComponent
+} from "../../../../../../../../libs/components/src/lib/modal-export/modal-export-excel.component";
+import {ModalExportExcelData} from "../../../../../../../../libs/components/src/lib/data/modal-export-excel.data";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -210,6 +215,22 @@ export class EmployeeComponent implements OnInit {
   }
 
   onPrint() {
+    const employee = Object.assign({},
+      _.omit(this.mapEmployeeDto(this.formGroup.value, false).search, ['take', 'skip']),
+      {exportType: 'EMPLOYEES'})
+    this.modal.create({
+      nzTitle: 'Xuất danh sách nhân viên',
+      nzWidth: 'fit-content',
+      nzContent: ModalExportExcelComponent,
+      nzComponentParams: <{ data: ModalExportExcelData }>{
+        data: {
+          filename: 'Danh sách nhân viên',
+          params: employee,
+          api: Api.HR.EMPLOYEE.EMPLOYEE_EXPORT
+        }
+      },
+      nzFooter: []
+    })
   }
 
   onRestore($event: any) {
