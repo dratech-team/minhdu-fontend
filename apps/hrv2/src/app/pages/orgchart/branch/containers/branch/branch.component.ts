@@ -31,7 +31,7 @@ export class BranchComponent implements OnInit {
   loading$ = this.branchQuery.select(state => state.loading)
   total$ = this.branchQuery.select(state => state.total)
   positions$ = this.positionQuery.selectAll()
-
+  count$ = this.branchQuery.selectCount()
   pageSizeTable = 10;
   filterType = FilterTypeEnum
   itemContextMenu = ItemContextMenu
@@ -76,14 +76,11 @@ export class BranchComponent implements OnInit {
     ).subscribe();
   }
 
-  onPagination(index: number) {
-    const count = this.branchQuery.getCount();
-    if (index * this.pageSizeTable >= count) {
-      this.actions$.dispatch(BranchActions.loadAll({
-        search: this.mapBranch(this.formGroup.value, true),
-        isPaginate: true
-      }));
-    }
+  onLoadMore() {
+    this.actions$.dispatch(BranchActions.loadAll({
+      search: this.mapBranch(this.formGroup.value, true),
+      isPaginate: true
+    }));
   }
 
   mapBranch(dataFG: any, isPagination: boolean) {
