@@ -33,10 +33,12 @@ export class TablePayrollComponent implements OnInit {
   @Input() onChange?: Subject<void>
   @Output() onloadPayroll = new EventEmitter<{ isPagination: boolean }>()
   loading$ = this.payrollQuery.select(state => state.loading)
+  loadMore$ = this.payrollQuery.select(state => state.loadMore)
   added$ = this.payrollQuery.select(state => state.added)
   total$ = this.payrollQuery.select(state => state.total)
   count$ = this.payrollQuery.selectCount()
   positions$ = this.positionQuery.selectAll()
+
   ItemContextMenu = ItemContextMenu;
   confirmConstant = ConfirmConstant
   paidConstant = PaidConstant
@@ -226,7 +228,7 @@ export class TablePayrollComponent implements OnInit {
   }
 
   async onDetail(payroll: PayrollEntity) {
-    return await this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.employee.id],
+    return await this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.id],
       {
         queryParams: {
           isUpdate: true

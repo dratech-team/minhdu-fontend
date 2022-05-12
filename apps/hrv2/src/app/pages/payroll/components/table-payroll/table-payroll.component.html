@@ -305,20 +305,25 @@
         </ng-template>
       </tr>
     </ng-template>
+    <tr *ngIf="payrolls.length > 0">
+      <td [colSpan]="tablePayroll.listOfAutoColWidth.length">
+        <div class="w-100 d-flex justify-content-start" style="position: relative">
+          <button
+            *ngIf="((count$ | async)|| 0) < ((total$ | async)|| 0)"
+            (click)="onPagination()"
+            [nzLoading]="(loadMore$|async)"
+            style="position:sticky; left: 45vw"
+            nz-button
+            nzType="primary"
+          >
+            Tải thêm
+          </button>
+        </div>
+      </td>
+
+    </tr>
     </tbody>
   </nz-table>
-  <div class="d-flex justify-content-center">
-    <button
-      *ngIf="((count$ | async)|| 0) < ((total$ | async)|| 0)"
-      (click)="onPagination()"
-      [nzLoading]="(loading$|async)"
-      class="my-2"
-      nz-button
-      nzType="primary"
-    >
-      Tải thêm
-    </button>
-  </div>
 </div>
 <app-mouse-right
   #child

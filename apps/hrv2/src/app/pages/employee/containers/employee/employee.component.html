@@ -328,17 +328,22 @@
             </div>
           </td>
         </tr>
+        <tr>
+          <td colspan="17" >
+           <div class="w-100 d-flex justify-content-start" style="position: relative">
+             <button
+               *ngIf="((count$|async) || 0) < ((total$|async) || 0)"
+               (click)="onLoadMore()"
+               style="position: sticky; left: 45vw"
+               nz-button nzType="primary"
+               [nzLoading]="loadMore$|async">
+               Tải thêm
+             </button>
+           </div>
+          </td>
+        </tr>
         </tbody>
       </nz-table>
-      <div class="my-2 d-flex justify-content-center">
-        <button
-          *ngIf="((count$|async) || 0) < ((total$|async) || 0)"
-          (click)="onLoadMore()"
-          nz-button nzType="primary"
-          [nzLoading]="loading$|async">
-          Tải thêm
-        </button>
-      </div>
     </div>
   </div>
 </div>

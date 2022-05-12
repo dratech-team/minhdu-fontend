@@ -63,7 +63,12 @@ export class PayrollEffect {
   loadAll$ = this.action$.pipe(
     ofType(PayrollActions.loadAll),
     switchMap((props) => {
-      this.payrollStore.update(state => ({...state, loading: true}));
+      this.payrollStore.update(state => (
+        Object.assign({...state}, props.isPaginate
+          ? {loadMore: true}
+          : {loading: true}
+        )
+      ));
       Object.assign(props.search,
         {
           take: PaginationDto.take,
@@ -80,7 +85,12 @@ export class PayrollEffect {
           });
         }),
         tap((res) => {
-          this.payrollStore.update(state => ({...state, loading: false, total: res.total}));
+          this.payrollStore.update(state => (
+            Object.assign({...state, total: res.total}, props.isPaginate
+              ? {loadMore: false}
+              : {loading: false}
+            )
+          ));
           if (res.data.length === 0) {
             this.message.warning('Đã lấy hết phiếu lương');
           }

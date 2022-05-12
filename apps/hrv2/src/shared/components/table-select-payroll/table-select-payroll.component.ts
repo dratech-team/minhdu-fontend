@@ -20,6 +20,7 @@ export class TableSelectPayrollComponent implements OnInit {
 
   payrolls: PayrollEntity[] = []
   loading = true
+  loadMore = false
   submitting = false
   checked = false
   indeterminate = false;
@@ -71,6 +72,7 @@ export class TableSelectPayrollComponent implements OnInit {
   }
 
   onLoadPayroll(pagination: boolean) {
+    pagination ? this.loadMore = true : this.loading = true
     this.payrollService.paginationPayroll(pagination
       ? Object.assign({}, this.mapPayroll(),
         {skip: PaginationDto.skip})
@@ -81,10 +83,14 @@ export class TableSelectPayrollComponent implements OnInit {
       }))
       .subscribe(res => {
         this.total = res.total
-        this.loading = false
-        pagination
-          ? this.payrolls = this.payrolls.concat(res.data)
-          : this.payrolls = res.data
+        if (pagination) {
+          this.loadMore = false
+          this.payrolls = this.payrolls.concat(res.data)
+        }else {
+          this.loading = false
+          this.payrolls = res.data
+        }
+
       })
   }
 
