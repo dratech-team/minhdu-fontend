@@ -162,7 +162,7 @@ export class EmployeeComponent implements OnInit {
     })
   }
 
-  onDelete(employee: EmployeeEntity , ): void {
+  onDelete(employee: EmployeeEntity , permanentlyDeleted?: boolean ): void {
     this.modal.create({
       nzTitle: `Nhân viên ${employee.lastName} tạm thời nghỉ việc` ,
       nzContent: ModalDatePickerComponent,

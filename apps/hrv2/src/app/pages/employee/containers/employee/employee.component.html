@@ -341,7 +341,7 @@
   #child
   [items]='formGroup.value.status === 1 ? [ItemContextMenu.RESTORE] : []'
   (onAdd)='onAdd($event)'
-  (onDel)='onDelete($event)'
+  (onDel)='onDelete($event , )'
   (onRestore)='onRestore($event)'
   (onUpdate)='onUpdate($event,true)'>
 </app-mouse-right>
