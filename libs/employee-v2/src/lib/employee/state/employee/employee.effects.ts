@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { EmployeeService } from '@minhdu-fontend/employee-v2';
-import { EmployeeStore } from './employee.store';
-import { EmployeeActions } from './employee.actions';
-import { RemoveEmployeeDto } from '../../dto/employee';
-import { RelativeService } from '../../services/relative.service';
-import { DegreeService } from '../../services/degree.service';
-import { PaginationDto } from '@minhdu-fontend/constants';
-import { EmployeeQuery } from './employee.query';
+import {Injectable} from '@angular/core';
+import {of} from 'rxjs';
+import {catchError, map, switchMap} from 'rxjs/operators';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
+import {EmployeeService} from '@minhdu-fontend/employee-v2';
+import {EmployeeStore} from './employee.store';
+import {EmployeeActions} from './employee.actions';
+import {RemoveEmployeeDto} from '../../dto/employee';
+import {RelativeService} from '../../services/relative.service';
+import {DegreeService} from '../../services/degree.service';
+import {PaginationDto} from '@minhdu-fontend/constants';
+import {EmployeeQuery} from './employee.query';
 
 @Injectable()
 export class EmployeeEffect {
@@ -107,6 +107,12 @@ export class EmployeeEffect {
   loadAll$ = this.actions$.pipe(
     ofType(EmployeeActions.loadAll),
     switchMap((props) => {
+        this.employeeStore.update(state => ({
+          ...state, loading: true
+        }));
+        if (props.search?.orderType) {
+          Object.assign(props.search, {orderType: props.search?.orderType === 'ascend' ? 'asc' : 'desc'});
+        }
         return this.employeeService.pagination(props).pipe(
           map((res) => {
             this.employeeStore.update(state => ({
@@ -215,7 +221,7 @@ export class EmployeeEffect {
         return this.employeeService.updateHistorySalary(props.id, props.salary).pipe(
           map((res) => {
             this.message.info(res.message);
-            this.actions$.dispatch(EmployeeActions.loadOne({ id: props.employeeId }));
+            this.actions$.dispatch(EmployeeActions.loadOne({id: props.employeeId}));
           }),
           catchError((err) => {
             return of(EmployeeActions.error(err));
@@ -252,7 +258,7 @@ export class EmployeeEffect {
               'Nhân viên đã nghỉ tạm thời' :
               'Đã khôi phục nhân viên thành công');
             this.actions$.dispatch(EmployeeActions.loadAll({
-              search: { take: PaginationDto.take, skip: PaginationDto.skip }
+              search: {take: PaginationDto.take, skip: PaginationDto.skip}
             }));
           }),
           catchError((err) => {
