@@ -21,6 +21,7 @@ import {FilterTypeEnum, ItemContextMenu} from "@minhdu-fontend/enums";
 })
 export class DepartmentComponent implements OnInit {
   departments$ = this.departmentQuery.selectAll()
+  count$ = this.departmentQuery.selectCount()
   loading$ = this.departmentQuery.select(state => state.loading)
   total$ = this.departmentQuery.select(state => state.total)
 
@@ -61,14 +62,11 @@ export class DepartmentComponent implements OnInit {
     ).subscribe();
   }
 
-  onPagination(index: number) {
-    const count = this.departmentQuery.getCount();
-    if (index * this.pageSizeTable >= count) {
-      this.actions$.dispatch(DepartmentActions.loadAll({
-        search: this.mapDepartment(this.formGroup.value, true),
-        isPaginate: true
-      }));
-    }
+  onLoadMore() {
+    this.actions$.dispatch(DepartmentActions.loadAll({
+      search: this.mapDepartment(this.formGroup.value, true),
+      isPaginate: true
+    }));
   }
 
   mapDepartment(dataFG: any, isPagination: boolean) {
