@@ -50,9 +50,10 @@
     </div>
     <div>
       <button *ngIf='formGroup.value.status === empStatusEnum.IS_ACTIVE'
-              (click)='onAdd()' class='mr-2 btn btn-primary'>Thêm
+              nz-button nzType="primary" class="mr-2"
+              (click)='onAdd()'>Thêm
       </button>
-      <button class='btn btn-primary mr-4' (click)='onPrint()'>Xuất</button>
+      <button nz-button nzType="primary" class="mr-2" (click)='onPrint()'>Xuất</button>
     </div>
   </div>
   <div class='mx-auto' style='width: 98%'>
