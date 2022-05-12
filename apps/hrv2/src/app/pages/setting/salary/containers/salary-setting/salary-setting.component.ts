@@ -31,7 +31,6 @@ export class SalarySettingComponent implements OnInit {
   }]);
 
   panelOpenState = false;
-  pageSizeTable = 10;
   visible = false;
   salaryTypeEnum = SalaryTypeEnum;
 
@@ -81,7 +80,7 @@ export class SalarySettingComponent implements OnInit {
       ...state, search: dataFG
     }));
     return Object.assign(dataFG, {
-        take: PaginationDto.take,
+        take: 5,
         skip: isPagination ? this.settingSalaryQuery.getCount() : PaginationDto.skip
       }
     );
