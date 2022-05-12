@@ -145,11 +145,20 @@ export class PayrollEffect {
   remove$ = this.action$.pipe(
     ofType(PayrollActions.remove),
     switchMap((props) => {
+      this.payrollStore.update(state => ({
+        ...state, deleted: false
+      }))
       return this.service.delete(props.id).pipe(
         tap(_ => {
+          this.payrollStore.update(state => ({
+            ...state, deleted: true
+          }))
           this.payrollStore.remove(props.id);
         }),
         catchError(err => {
+          this.payrollStore.update(state => ({
+            ...state, deleted: null
+          }))
           return of(PayrollActions.error(err));
         })
       );

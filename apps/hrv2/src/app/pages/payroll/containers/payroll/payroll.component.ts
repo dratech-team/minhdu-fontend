@@ -3,22 +3,21 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {PayrollQuery, PayrollStore} from "../../state";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../state/payroll.action";
-import {EmployeeStatusConstant, PaginationDto, PayrollConstant} from "@minhdu-fontend/constants";
+import {EmployeeStatusConstant, PayrollConstant} from "@minhdu-fontend/constants";
 import {FilterTypeEnum, Role} from "@minhdu-fontend/enums";
 import {debounceTime, map} from "rxjs/operators";
 import {BranchActions, BranchQuery, DepartmentActions, DepartmentQuery} from "@minhdu-fontend/orgchart-v2";
 import {Subject} from "rxjs";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 import {NzModalService} from "ng-zorro-antd/modal";
-import {
-  TableSelectPayrollComponent
-} from "../../../../../shared/components/table-select-payroll/table-select-payroll.component";
 
 @Component({
   templateUrl: 'payroll.component.html'
 })
 export class PayrollComponent implements OnInit {
   payrolls$ = this.payrollQuery.selectAll()
+  added$ = this.payrollQuery.select(state => state.added)
+  deleted$ = this.payrollQuery.select(state => state.deleted)
   branches$ = this.branchQuery.selectAll().pipe(map(branches => {
     if (branches.length === 1) {
       this.payrollStore.update(state => ({

@@ -121,10 +121,11 @@ export class TablePayrollComponent implements OnInit {
             this.datePipe.transform(payroll.createdAt, 'MM-yyyy') +
             'của nhân viên ' + payroll.employee.lastName
         }
-      }
+      },
+      nzFooter: []
     }).afterClose.subscribe(val => {
       if (val) {
-        this.onloadPayroll.emit({isPagination: false})
+        this.actions$.dispatch(PayrollActions.remove({id: payroll.id}))
       }
     })
   }
