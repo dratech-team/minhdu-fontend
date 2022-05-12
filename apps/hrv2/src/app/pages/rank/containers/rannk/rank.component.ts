@@ -4,13 +4,13 @@ import {Observable} from "rxjs";
 import {Branch, Position} from "@minhdu-fontend/data-models";
 
 @Component({
-  selector:'minhdu-fontend-rank',
+  selector: 'minhdu-fontend-rank',
   templateUrl: 'rank.component.html'
 })
-export class RankComponent implements OnInit{
+export class RankComponent implements OnInit {
   ranks$ = new Observable<any>()
   positions$ = new Observable<Position[]>()
-  branches$ =  new Observable<Branch[]>()
+  branches$ = new Observable<Branch[]>()
   formGroup = new FormGroup({
     search: new FormControl(''),
     name: new FormControl(''),
@@ -20,8 +20,7 @@ export class RankComponent implements OnInit{
   });
   pageSize = 10
 
-  constructor(
-  ) {
+  constructor() {
   }
 
   ngOnInit() {
