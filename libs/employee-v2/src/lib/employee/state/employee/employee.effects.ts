@@ -257,9 +257,7 @@ export class EmployeeEffect {
             this.message.info(props.body?.leftAt ?
               'Nhân viên đã nghỉ tạm thời' :
               'Đã khôi phục nhân viên thành công');
-            this.actions$.dispatch(EmployeeActions.loadAll({
-              search: {take: PaginationDto.take, skip: PaginationDto.skip}
-            }));
+            this.employeeStore.remove(props.id)
           }),
           catchError((err) => {
             return of(EmployeeActions.error(err));

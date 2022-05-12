@@ -32,11 +32,11 @@ import {
 } from "@minhdu-fontend/orgchart-v2";
 import {ModalEmployeeComponent} from "../../components/employee/modal-employee.component";
 import {ModalEmployeeData} from "../../data/modal-employee.data";
-import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity, ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
 import {
   ModalDatePickerComponent
 } from "../../../../../../../../libs/components/src/lib/modal-date-picker/modal-date-picker.component";
+import {ModalAlertComponent} from "@minhdu-fontend/components";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -162,19 +162,30 @@ export class EmployeeComponent implements OnInit {
     })
   }
 
-  onDelete(employee: EmployeeEntity , permanentlyDeleted?: boolean ): void {
+  onDelete(employee: EmployeeEntity): void {
     this.modal.create({
-      nzTitle: `Nhân viên ${employee.lastName} tạm thời nghỉ việc` ,
+      nzTitle: `Nhân viên ${employee.lastName} ${this.formGroup.value.empStatus === EmployeeStatusEnum.NOT_ACTIVE
+        ? 'nghỉ việc'
+        : 'tạm thời nghỉ việc'}`,
       nzContent: ModalDatePickerComponent,
       nzComponentParams: <{ data: ModalDatePickerEntity }>{
         data: {
-          type:'date',
+          type: 'date',
           dateInit: new Date(),
         }
       },
       nzFooter: []
     }).afterClose.subscribe(val => {
-      this.actions$.dispatch(EmployeeActions.remove({id: employee.id}))
+      if (val) {
+        this.actions$.dispatch(
+          this.formGroup.value.status === EmployeeStatusEnum.NOT_ACTIVE
+            ? EmployeeActions.remove({id: employee.id})
+            : EmployeeActions.leave({
+              id: employee.id,
+              body: {leftAt: new Date(val)}
+            })
+        )
+      }
     })
   }
 
@@ -230,7 +241,26 @@ export class EmployeeComponent implements OnInit {
   onPrint() {
   }
 
-  onRestore($event: any) {
+  onRestore(employee: EmployeeEntity) {
+    this.modal.create({
+      nzTitle: `Khôi phục nhân viên ${employee.lastName}`,
+      nzContent: ModalAlertComponent,
+      nzComponentParams: <{ data: ModalAlertEntity }>{
+        data: {
+          description: `Bạn có chắc chắn muốn khôi phục cho nhân viên ${employee.lastName}`
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe(val => {
+      if (val) {
+        this.actions$.dispatch(
+          EmployeeActions.leave({
+              id: employee.id,
+              body: {leftAt: ''}
+            })
+        )
+      }
+    })
   }
 
   onDrop(event: CdkDragDrop<Employee[]>) {

@@ -339,9 +339,9 @@
 
 <app-mouse-right
   #child
-  [items]='formGroup.value.status === 1 ? [ItemContextMenu.RESTORE] : []'
+  [items]='formGroup.value.status === empStatusEnum.NOT_ACTIVE ? [ItemContextMenu.RESTORE] : []'
   (onAdd)='onAdd($event)'
-  (onDel)='onDelete($event , )'
+  (onDel)='onDelete($event)'
   (onRestore)='onRestore($event)'
   (onUpdate)='onUpdate($event,true)'>
 </app-mouse-right>
