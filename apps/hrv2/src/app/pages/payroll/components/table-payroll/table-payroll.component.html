@@ -2,21 +2,23 @@
   <nz-spin *ngIf="(added$|async)=== false" nzSimple style="position: absolute; top: 50%;left: 50%;"></nz-spin>
   <div class="d-flex justify-content-end">
     <button
+      *ngIf="((count$ | async)|| 0) < ((total$ | async)|| 0)"
+      (click)="onPagination()"
+      [nzLoading]="(loading$|async)"
+      class="mb-1"
       nz-button
       nzType="primary"
-      *ngIf="((count$|async)|| 0) < ((total$|async)|| 0)"
-      (click)="onPagination()"
-      [nzLoading]="(loading$|async)">
+     >
       Tải thêm
     </button>
   </div>
   <nz-table
     #tablePayroll
-    nzShowPagination="false"
     [nzData]="payrolls"
     [formGroup]='formGroup'
+    nzShowPagination="false"
     [nzScroll]="scroll"
-    [nzLoading]="(loading$|async)"
+    [nzLoading]="(loading$ | async)"
     nzSize="small"
   >
     <thead>
@@ -187,7 +189,7 @@
     </tr>
     </thead>
     <tbody>
-    <ng-template ngFor let-payroll [ngForOf]="tablePayroll.data" let-i='index'>
+    <ng-template ngFor let-payroll [ngForOf]="payrolls" let-i='index'>
       <tr (contextmenu)='child.onContextMenu($event,payroll)' class="pointer" (click)="onDetail(payroll)">
         <td nzLeft>
           {{i + 1}}
