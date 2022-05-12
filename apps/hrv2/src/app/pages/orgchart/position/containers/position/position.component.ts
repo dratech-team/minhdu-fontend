@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {debounceTime, map} from 'rxjs/operators';
-import {PaginationDto} from '@minhdu-fontend/constants';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {
@@ -28,9 +27,7 @@ export class PositionComponent implements OnInit {
   positions$ = this.positionQuery.selectAll()
   loading$ = this.positionQuery.select(state => state.loading)
   total$ = this.positionQuery.select(state => state.total)
-  count$ = this.positionQuery.selectCount()
 
-  pageSizeTable = 10;
   stateSearch = this.positionQuery.getValue().search
   itemContextMenu = ItemContextMenu
   filterType = FilterTypeEnum
@@ -56,14 +53,14 @@ export class PositionComponent implements OnInit {
 
   ngOnInit() {
     this.actions$.dispatch(PositionActions.loadAll({
-      search: this.mapPosition(this.formGroup.value, false)
+      search: this.formGroup.value
     }));
 
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       map(value => {
           this.actions$.dispatch(DepartmentActions.loadAll({
-            search: this.mapPosition(this.formGroup.value, false)
+            search: this.formGroup.value
           }));
         }
       )
@@ -72,17 +69,9 @@ export class PositionComponent implements OnInit {
 
   onLoadMore() {
     this.actions$.dispatch(DepartmentActions.loadAll({
-      search: this.mapPosition(this.formGroup.value, true),
+      search: this.formGroup.value,
       isPaginate: true
     }));
-  }
-
-  mapPosition(dataFG: any, isPagination: boolean) {
-    Object.assign(dataFG, {
-      take: PaginationDto.take,
-      skip: isPagination ? this.positionQuery.getCount() : PaginationDto.skip
-    });
-    return dataFG;
   }
 
   onAdd() {

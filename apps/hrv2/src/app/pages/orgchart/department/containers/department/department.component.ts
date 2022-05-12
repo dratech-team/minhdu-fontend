@@ -2,13 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {debounceTime, map} from 'rxjs/operators';
-import {PaginationDto} from '@minhdu-fontend/constants';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from 'ng-zorro-antd/modal';
-import {DepartmentActions, DepartmentQuery} from "@minhdu-fontend/orgchart-v2";
+import {DepartmentActions, DepartmentEntity, DepartmentQuery} from "@minhdu-fontend/orgchart-v2";
 import {ModalDepartmentComponent} from "../../components/modal-department/modal-department.component";
 import {DataAddOrUpdateDepartment} from "../../data/modal-department.data";
-import {DepartmentEntity} from "@minhdu-fontend/orgchart-v2";
 import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 import {Router} from "@angular/router";
@@ -21,7 +19,6 @@ import {FilterTypeEnum, ItemContextMenu} from "@minhdu-fontend/enums";
 })
 export class DepartmentComponent implements OnInit {
   departments$ = this.departmentQuery.selectAll()
-  count$ = this.departmentQuery.selectCount()
   loading$ = this.departmentQuery.select(state => state.loading)
   total$ = this.departmentQuery.select(state => state.total)
 
@@ -49,13 +46,13 @@ export class DepartmentComponent implements OnInit {
 
   ngOnInit() {
     this.actions$.dispatch(DepartmentActions.loadAll({
-      search: this.mapDepartment(this.formGroup.value, false)
+      search: this.formGroup.value
     }));
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       map(value => {
           this.actions$.dispatch(DepartmentActions.loadAll({
-            search: this.mapDepartment(this.formGroup.value, false)
+            search: this.formGroup.value
           }));
         }
       )
@@ -64,17 +61,9 @@ export class DepartmentComponent implements OnInit {
 
   onLoadMore() {
     this.actions$.dispatch(DepartmentActions.loadAll({
-      search: this.mapDepartment(this.formGroup.value, true),
+      search: this.formGroup.value,
       isPaginate: true
     }));
-  }
-
-  mapDepartment(dataFG: any, isPagination: boolean) {
-    Object.assign(dataFG, {
-      take: PaginationDto.take,
-      skip: isPagination ? this.departmentQuery.getCount() : PaginationDto.skip
-    });
-    return dataFG;
   }
 
   onAdd(department?: DepartmentComponent) {

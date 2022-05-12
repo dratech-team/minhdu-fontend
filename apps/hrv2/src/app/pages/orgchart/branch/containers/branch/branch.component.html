@@ -35,14 +35,6 @@
           <button nz-button nzType="primary" (click)="onAdd()">Thêm</button>
         </div>
       </div>
-      <div class="d-flex justify-content-end">
-        <button
-          *ngIf="((count$ | async) || 0) < ((total$ | async) || 0)"
-          (click)="onLoadMore()"
-          [nzLoading]="(loading$|async)"
-          nzType="primary"
-          nz-button></button>
-      </div>
       <nz-table #tableBranch
                 nzShowPagination="false"
                 [nzLoading]="loading$|async"

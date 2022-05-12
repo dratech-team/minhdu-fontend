@@ -2,13 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {debounceTime, map} from 'rxjs/operators';
-import {PaginationDto} from '@minhdu-fontend/constants';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {
   BranchActions,
   BranchEntity,
-  BranchQuery, BranchStore,
+  BranchQuery,
+  BranchStore,
   PositionActions,
   PositionEntity,
   PositionQuery,
@@ -31,7 +31,7 @@ export class BranchComponent implements OnInit {
   loading$ = this.branchQuery.select(state => state.loading)
   total$ = this.branchQuery.select(state => state.total)
   positions$ = this.positionQuery.selectAll()
-  count$ = this.branchQuery.selectCount()
+
   pageSizeTable = 10;
   filterType = FilterTypeEnum
   itemContextMenu = ItemContextMenu
@@ -89,8 +89,6 @@ export class BranchComponent implements OnInit {
     }))
     return Object.assign({}, dataFG, {
       position: dataFG.position.name,
-      take: PaginationDto.take,
-      skip: isPagination ? this.branchQuery.getCount() : PaginationDto.skip
     });
   }
 
