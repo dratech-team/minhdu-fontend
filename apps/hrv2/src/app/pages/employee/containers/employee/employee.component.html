@@ -57,20 +57,11 @@
   </div>
   <div class='mx-auto' style='width: 98%'>
     <div class='my-3'>
-      <div class="d-flex justify-content-end">
-        <button
-          *ngIf="((count$|async) || 0) < ((total$|async) || 0)"
-          (click)="onLoadMore()"
-          nz-button nzType="primary"
-          [nzLoading]="loading$|async">
-          Tải thêm
-        </button>
-      </div>
       <nz-table
         nzShowPagination="false"
         [formGroup]='formGroup'
         [nzLoading]="loading$|async"
-        [nzScroll]="{x:'3200px',y:'53vh'}"
+        [nzScroll]="{x:'3200px',y:'51vh'}"
         [nzData]="this.employees"
       >
         <thead>
@@ -339,6 +330,15 @@
         </tr>
         </tbody>
       </nz-table>
+      <div class="my-2 d-flex justify-content-center">
+        <button
+          *ngIf="((count$|async) || 0) < ((total$|async) || 0)"
+          (click)="onLoadMore()"
+          nz-button nzType="primary"
+          [nzLoading]="loading$|async">
+          Tải thêm
+        </button>
+      </div>
     </div>
   </div>
 </div>

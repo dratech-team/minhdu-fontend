@@ -1,17 +1,5 @@
 <div style="position: relative">
   <nz-spin *ngIf="(added$|async)=== false" nzSimple style="position: absolute; top: 50%;left: 50%;"></nz-spin>
-  <div class="d-flex justify-content-end">
-    <button
-      *ngIf="((count$ | async)|| 0) < ((total$ | async)|| 0)"
-      (click)="onPagination()"
-      [nzLoading]="(loading$|async)"
-      class="mb-1"
-      nz-button
-      nzType="primary"
-     >
-      Tải thêm
-    </button>
-  </div>
   <nz-table
     #tablePayroll
     [nzData]="payrolls"
@@ -319,6 +307,18 @@
     </ng-template>
     </tbody>
   </nz-table>
+  <div class="d-flex justify-content-center">
+    <button
+      *ngIf="((count$ | async)|| 0) < ((total$ | async)|| 0)"
+      (click)="onPagination()"
+      [nzLoading]="(loading$|async)"
+      class="my-2"
+      nz-button
+      nzType="primary"
+    >
+      Tải thêm
+    </button>
+  </div>
 </div>
 <app-mouse-right
   #child

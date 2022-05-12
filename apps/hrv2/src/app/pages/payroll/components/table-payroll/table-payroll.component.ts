@@ -29,7 +29,7 @@ import {NzMessageService} from "ng-zorro-antd/message";
 export class TablePayrollComponent implements OnInit {
   @Input() payrolls!: PayrollEntity[]
   @Input() formGroup!: FormGroup
-  @Input() scroll: { x: string, y: string } = {x: '5000px', y: '53vh'}
+  @Input() scroll: { x: string, y: string } = {x: '5000px', y: '51vh'}
   @Input() onChange?: Subject<void>
   @Output() onloadPayroll = new EventEmitter<{ isPagination: boolean }>()
   loading$ = this.payrollQuery.select(state => state.loading)
@@ -68,13 +68,13 @@ export class TablePayrollComponent implements OnInit {
     this.formGroup.get('filterType')?.valueChanges.subscribe(val => {
       switch (val) {
         case FilterTypeEnum.SEASONAL:
-          this.scroll = {x: '3000px', y: '53vh'}
+          this.scroll = {x: '3000px', y: '51vh'}
           break
         case FilterTypeEnum.TIME_SHEET:
-          this.scroll = {x: '5000px', y: '53vh'}
+          this.scroll = {x: '5000px', y: '51vh'}
           break
         default:
-          this.scroll = {x: '4200px', y: '53vh'}
+          this.scroll = {x: '4200px', y: '51vh'}
       }
     })
     this.actions$.dispatch(PositionActions.loadAll({}))
