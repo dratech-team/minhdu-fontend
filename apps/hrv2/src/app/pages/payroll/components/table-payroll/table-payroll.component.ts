@@ -29,12 +29,13 @@ import {NzMessageService} from "ng-zorro-antd/message";
 export class TablePayrollComponent implements OnInit {
   @Input() payrolls!: PayrollEntity[]
   @Input() formGroup!: FormGroup
-  @Input() pageSize = 10;
   @Input() scroll: { x: string, y: string } = {x: '5000px', y: '56vh'}
   @Input() onChange?: Subject<void>
   @Output() onloadPayroll = new EventEmitter<{ isPagination: boolean }>()
   loading$ = this.payrollQuery.select(state => state.loading)
   added$ = this.payrollQuery.select(state => state.added)
+  total$ = this.payrollQuery.select(state => state.added)
+  count$ = this.payrollQuery.selectCount()
   positions$ = this.positionQuery.selectAll()
   ItemContextMenu = ItemContextMenu;
   confirmConstant = ConfirmConstant
@@ -85,7 +86,8 @@ export class TablePayrollComponent implements OnInit {
     }
   }
 
-  onPagination(index: number) {
+  onPagination() {
+    this.onloadPayroll.emit({isPagination: true})
   }
 
   onAdd(employeeId?: number) {

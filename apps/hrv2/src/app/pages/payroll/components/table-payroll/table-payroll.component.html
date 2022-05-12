@@ -1,11 +1,20 @@
 <div style="position: relative">
   <nz-spin *ngIf="(added$|async)=== false" nzSimple style="position: absolute; top: 50%;left: 50%;"></nz-spin>
+  <div class="d-flex justify-content-end">
+    <button
+      nz-button
+      nzType="primary"
+      *ngIf="((count$|async)|| 0) < ((total$|async)|| 0)"
+      (click)="onPagination()"
+      [nzLoading]="(loading$|async)">
+      Tải thêm
+    </button>
+  </div>
   <nz-table
     #tablePayroll
+    nzShowPagination="false"
     [nzData]="payrolls"
-    [nzPageSize]="pageSize"
     [formGroup]='formGroup'
-    (nzPageIndexChange)="onPagination($event)"
     [nzScroll]="scroll"
     [nzLoading]="(loading$|async)"
     nzSize="small"

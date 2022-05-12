@@ -73,7 +73,7 @@ export class PayrollEffect {
           });
         }),
         tap((res) => {
-          this.payrollStore.update(state => ({...state, loading: false}));
+          this.payrollStore.update(state => ({...state, loading: false, total: res.total}));
           if (res.data.length === 0) {
             this.message.warning('Đã lấy hết phiếu lương');
           }
