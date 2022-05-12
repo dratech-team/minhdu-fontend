@@ -20,13 +20,20 @@
           <button nz-button nzType="primary" (click)="onAdd()">Thêm</button>
         </div>
       </div>
+      <div class="d-flex justify-content-end">
+        <button
+          *ngIf="((count$ | async) || 0) < ((total$ | async) || 0)"
+          (click)="onLoadMore()"
+          [nzLoading]="(loading$|async)"
+          nz-button
+          nzType="primary"></button>
+      </div>
       <nz-table #tablePosition
+                nzShowPagination="false"
                 [nzLoading]="loading$|async"
-                [nzScroll]="{ x: '1500px',y: '58vh'}"
+                [nzScroll]="{ x: '1500px',y: '53vh'}"
                 nzSize='small'
                 [nzData]="(positions$|async)|| []"
-                [nzPageSize]="pageSizeTable"
-                (nzPageIndexChange)="onPagination($event)"
       >
         <thead>
         <tr>
@@ -41,7 +48,7 @@
         <tbody>
         <ng-template ngFor let-position [ngForOf]="tablePosition.data" let-i='index'>
           <tr class="pointer" (contextmenu)='child.onContextMenu($event,position)'>
-            <td nzLeft>{{(i + 1) + ((tablePosition.nzPageIndex - 1) * pageSizeTable)}}</td>
+            <td nzLeft>{{i + 1}}</td>
             <td>{{position.id}}</td>
             <td nzLeft>{{position.name}}</td>
             <td>

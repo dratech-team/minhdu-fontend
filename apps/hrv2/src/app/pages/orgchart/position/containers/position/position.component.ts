@@ -28,6 +28,7 @@ export class PositionComponent implements OnInit {
   positions$ = this.positionQuery.selectAll()
   loading$ = this.positionQuery.select(state => state.loading)
   total$ = this.positionQuery.select(state => state.total)
+  count$ = this.positionQuery.selectCount()
 
   pageSizeTable = 10;
   stateSearch = this.positionQuery.getValue().search
@@ -69,14 +70,11 @@ export class PositionComponent implements OnInit {
     ).subscribe();
   }
 
-  onPagination(index: number) {
-    const count = this.positionQuery.getCount();
-    if (index * this.pageSizeTable >= count) {
-      this.actions$.dispatch(DepartmentActions.loadAll({
-        search: this.mapPosition(this.formGroup.value, true),
-        isPaginate: true
-      }));
-    }
+  onLoadMore() {
+    this.actions$.dispatch(DepartmentActions.loadAll({
+      search: this.mapPosition(this.formGroup.value, true),
+      isPaginate: true
+    }));
   }
 
   mapPosition(dataFG: any, isPagination: boolean) {
