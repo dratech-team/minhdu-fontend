@@ -8,6 +8,12 @@ import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {ModalExportExcelData} from "../data/modal-export-excel.data";
 
+interface itemExport{
+  key: string,
+  value: string,
+  index: number
+}
+
 @Component({
   templateUrl: 'modal-export-excel.component.html'
 })
@@ -15,11 +21,12 @@ export class ModalExportExcelComponent implements OnInit {
   @Input() data!: ModalExportExcelData
   formGroup!: FormGroup;
   exportType = FilterTypeEnum;
-  isSelectAll = true;
-  itemsExport: any[] = [];
-  itemSelected: any[] = [];
+  itemsExports: itemExport[] = [];
   loading = true
   printing = false;
+  checked = false
+  indeterminate = false
+  setOfItem = new Set<itemExport>();
 
   constructor(
     private readonly modalRef: NzModalRef,
@@ -49,13 +56,14 @@ export class ModalExportExcelComponent implements OnInit {
 
     this.itemExportService
       .getItemExport({exportType: this.data.params.exportType})
-      .subscribe((val: any[]) => {
+      .subscribe((val: itemExport[]) => {
         this.loading = false
         val?.map((e, i) => {
           Object.assign(e, {index: i});
         });
-        this.itemsExport = val;
-        this.itemSelected = [...this.itemsExport];
+        this.itemsExports = val;
+        console.log(this.itemsExports)
+        this.onAllChecked(true)
       });
   }
 
@@ -65,10 +73,6 @@ export class ModalExportExcelComponent implements OnInit {
       return;
     }
     const value = this.formGroup.value;
-    this.itemSelected.sort((a, b) => {
-      return a.index - b.index;
-    });
-
     if (this.data?.selectDatetime) {
       if (this.data.typeDate === 'RANGE_DATETIME') {
         Object.assign(this.data.params, {
@@ -88,7 +92,11 @@ export class ModalExportExcelComponent implements OnInit {
     this.exportService.print(
       this.data.api,
       this.data.params,
-      {items: this.itemSelected}
+      {
+        items: Array.from(this.setOfItem).sort((a, b) => {
+          return a.index - b.index;
+        })
+      }
     ).subscribe(val => {
       this.printing = false
       if (val) {
@@ -97,52 +105,27 @@ export class ModalExportExcelComponent implements OnInit {
     })
   }
 
-  someComplete(): boolean {
-    return (
-      this.itemsExport.filter((val: any) =>
-        this.itemSelected.some((item: any) => item.key === val.key)
-      ).length > 0 && !this.isSelectAll
-    );
-  }
-
-  setAll(select: boolean) {
-    this.isSelectAll = select;
-    if (this.itemsExport == null) {
-      return;
-    }
-    this.itemsExport?.forEach((item: any) => {
-      if (select) {
-        if (!this.itemSelected.some((val: any) => val.key === item.key)) {
-          this.itemSelected.push(item);
-        }
-      } else {
-        const index = this.itemSelected.findIndex(
-          (val: any) => val.key === item.key
-        );
-        if (index > -1) {
-          this.itemSelected.splice(index, 1);
-        }
-      }
-    });
-  }
-
-  updateSelect(item: any) {
-    const index = this.itemSelected.findIndex(
-      (val: any) => val.key === item.key
-    );
-    if (index > -1) {
-      this.itemSelected.splice(index, 1);
+  updateCheckedSet(item: itemExport, checked: boolean): void {
+    if (checked) {
+      this.setOfItem.add(item);
     } else {
-      this.itemSelected.push(item);
+      this.setOfItem.delete(item);
     }
-    this.isSelectAll =
-      this.itemsExport !== null &&
-      this.itemsExport.every((item: any) =>
-        this.itemSelected.some((val: any) => val.key === item.key)
-      );
   }
 
-  selectItem(val: any) {
-    return this.itemSelected.some((item: any) => item.key === val.key);
+  refreshCheckedStatus(): void {
+    this.checked = this.itemsExports.every((item) => this.setOfItem.has(item));
+    this.indeterminate = this.itemsExports.some((item) => this.setOfItem.has(item)) && !this.checked;
+  }
+
+  onItemChecked(item: itemExport, checked: boolean): void {
+    this.updateCheckedSet(item, checked);
+    this.refreshCheckedStatus();
+  }
+
+  onAllChecked(checked: boolean): void {
+    this.itemsExports
+      .forEach((item: itemExport) => this.updateCheckedSet(item, checked));
+    this.refreshCheckedStatus();
   }
 }

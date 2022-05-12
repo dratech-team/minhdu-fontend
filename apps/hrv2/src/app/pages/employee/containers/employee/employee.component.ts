@@ -215,9 +215,6 @@ export class EmployeeComponent implements OnInit {
   }
 
   onPrint() {
-    const employee = Object.assign({},
-      _.omit(this.mapEmployeeDto(this.formGroup.value, false).search, ['take', 'skip']),
-      {exportType: 'EMPLOYEES'})
     this.modal.create({
       nzTitle: 'Xuất danh sách nhân viên',
       nzWidth: 'fit-content',
@@ -225,7 +222,9 @@ export class EmployeeComponent implements OnInit {
       nzComponentParams: <{ data: ModalExportExcelData }>{
         data: {
           filename: 'Danh sách nhân viên',
-          params: employee,
+          params: Object.assign({},
+            _.omit(this.mapEmployeeDto(this.formGroup.value, false).search, ['take', 'skip']),
+            {exportType: 'EMPLOYEES'}),
           api: Api.HR.EMPLOYEE.EMPLOYEE_EXPORT
         }
       },
