@@ -68,7 +68,10 @@
       >
         <thead>
         <tr>
-          <th nzLeft nzWidth="100px">
+          <th nzLeft nzWidth="100px"
+              [nzSortFn]='true'
+              (nzSortOrderChange)='onSort({orderBy: sortEnum.STT, orderType:$event})'
+          >
             <div>STT</div>
             <input nz-input type='text' disabled>
           </th>
