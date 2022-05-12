@@ -44,9 +44,9 @@
     <div>
       <div class="d-flex justify-content-end">
         <button
+          *ngIf="((count$ | async) || 0) < ((total$ | async) || 0)"
           (click)="onLoadMore()"
           [nzLoading]="(loading$|async)"
-          *ngIf="((count$ | async) || 0) < ((total$ | async) || 0)"
           nz-button
           nzType="primary">Tải thêm
         </button>

@@ -1,11 +1,18 @@
+<div class="d-flex justify-content-end">
+  <button
+    *ngIf="payrolls.length < total"
+    (click)="onLoadMore()"
+    [nzLoading]="loading"
+    nz-button
+    nzType="primary"
+  ></button>
+</div>
 <nz-table
-  style="width: 70vw"
+  [nzScroll]="{x:'70vw', y:'50vh'}"
   #tablePayroll
   [formGroup]="formGroupTable"
   [nzData]="payrolls"
   [nzLoading]="loading"
-  [nzPageSize]="pageSize"
-  (nzPageIndexChange)="onPagination($event)"
 >
   <thead>
   <tr>
@@ -22,7 +29,7 @@
       [nzChecked]="payrollIdsSelected.has(payroll.id)"
       (nzCheckedChange)="onItemChecked(payroll.id, $event)"
     ></td>
-    <td>{{(i + 1) + ((tablePayroll.nzPageIndex - 1) * pageSize)}}</td>
+    <td>{{i + 1}}</td>
     <td>{{payroll.employee.lastName}}</td>
     <td>{{payroll.branch}}</td>
     <td>{{payroll.position}}</td>

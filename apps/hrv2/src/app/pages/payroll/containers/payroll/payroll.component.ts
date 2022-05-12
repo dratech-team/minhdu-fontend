@@ -9,6 +9,10 @@ import {debounceTime, map} from "rxjs/operators";
 import {BranchActions, BranchQuery, DepartmentActions, DepartmentQuery} from "@minhdu-fontend/orgchart-v2";
 import {Subject} from "rxjs";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {
+  TableSelectPayrollComponent
+} from "../../../../../shared/components/table-select-payroll/table-select-payroll.component";
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -61,7 +65,8 @@ export class PayrollComponent implements OnInit {
     private readonly payrollQuery: PayrollQuery,
     private readonly branchQuery: BranchQuery,
     private readonly departmentQuery: DepartmentQuery,
-    private readonly actions$: Actions
+    private readonly actions$: Actions,
+    private readonly modal: NzModalService
   ) {
   }
 
@@ -77,7 +82,6 @@ export class PayrollComponent implements OnInit {
         this.formGroup.get('startedAt')?.setValue(val.startedAt, {emitEvent: false})
       }
     )
-
 
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe(val => {
       if (val.filterType === FilterTypeEnum.OVERTIME || val.filterType === FilterTypeEnum.ABSENT) {
@@ -108,7 +112,7 @@ export class PayrollComponent implements OnInit {
     }))
   }
 
-  mapPayroll(formData: any, isPagination?: boolean) {
+  mapPayroll(formData: any) {
     this.payrollStore.update(state => ({
       ...state, search: formData
     }))
@@ -116,8 +120,6 @@ export class PayrollComponent implements OnInit {
       categoryId: formData.department?.id || '',
       branch: formData.branch?.name || '',
       position: formData.position?.name || '',
-      take: PaginationDto.take,
-      skip: isPagination ? this.payrollQuery.getCount() : PaginationDto.skip
     })
   }
 

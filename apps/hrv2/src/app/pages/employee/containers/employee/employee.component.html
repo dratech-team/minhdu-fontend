@@ -58,10 +58,12 @@
   <div class='mx-auto' style='width: 98%'>
     <div class='my-3'>
       <div class="d-flex justify-content-end">
-        <button nz-button nzType="primary"
-                [nzLoading]="loading$|async"
-                *ngIf="((count$|async) || 0) < ((total$|async) || 0)"
-                (click)="onLoadMore()">Tải thêm
+        <button
+          *ngIf="((count$|async) || 0) < ((total$|async) || 0)"
+          (click)="onLoadMore()"
+          nz-button nzType="primary"
+          [nzLoading]="loading$|async">
+          Tải thêm
         </button>
       </div>
       <nz-table

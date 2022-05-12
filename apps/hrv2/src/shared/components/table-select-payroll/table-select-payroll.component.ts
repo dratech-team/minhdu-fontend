@@ -21,9 +21,9 @@ export class TableSelectPayrollComponent implements OnInit {
   payrolls: PayrollEntity[] = []
   loading = true
   submitting = false
-  pageSize = 10
   checked = false
   indeterminate = false;
+  total = 0
   payrollIdsSelected = new Set<number>();
 
   formGroupTable = new FormGroup({
@@ -50,10 +50,8 @@ export class TableSelectPayrollComponent implements OnInit {
     })
   }
 
-  onPagination(index: number) {
-    if (index * this.pageSize >= this.payrolls.length) {
-      this.onLoadPayroll(true)
-    }
+  onLoadMore() {
+    this.onLoadPayroll(true)
   }
 
   mapPayroll() {
@@ -82,6 +80,7 @@ export class TableSelectPayrollComponent implements OnInit {
         return throwError(err)
       }))
       .subscribe(res => {
+        this.total = res.total
         this.loading = false
         pagination
           ? this.payrolls = this.payrolls.concat(res.data)

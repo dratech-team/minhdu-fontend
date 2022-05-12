@@ -110,9 +110,15 @@ export class EmployeeEffect {
         this.employeeStore.update(state => ({
           ...state, loading: true
         }));
-        if (props.search?.orderType) {
-          Object.assign(props.search, {orderType: props.search?.orderType === 'ascend' ? 'asc' : 'desc'});
-        }
+        Object.assign(props.search,
+          {
+            take: PaginationDto.take,
+            skip: props.isPaginate ? this.employeeQuery.getCount() : PaginationDto.skip
+          },
+          props.search?.orderType
+            ? {orderType: props.search?.orderType === 'ascend' ? 'asc' : 'desc'}
+            : {}
+        )
         return this.employeeService.pagination(props).pipe(
           map((res) => {
             this.employeeStore.update(state => ({

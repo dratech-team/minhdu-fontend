@@ -18,6 +18,7 @@ import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {PartialDayEnum} from '@minhdu-fontend/data-models';
 import {StateHistoryPlugin} from '@datorama/akita';
 import {PayrollQuery} from './payroll.query';
+import {PaginationDto} from "@minhdu-fontend/constants";
 
 @Injectable({providedIn: 'root'})
 export class PayrollEffect {
@@ -63,6 +64,12 @@ export class PayrollEffect {
     ofType(PayrollActions.loadAll),
     switchMap((props) => {
       this.payrollStore.update(state => ({...state, loading: true}));
+      Object.assign(props.search,
+        {
+          take: PaginationDto.take,
+          skip: props.isPaginate ? this.payrollQuery.getCount() : PaginationDto.skip
+        }
+      )
       return this.service.paginationPayroll(props.search).pipe(
         map(res => {
           return Object.assign(res, {

@@ -169,8 +169,6 @@ export class EmployeeComponent implements OnInit {
     }))
     return {
       search: {
-        take: PaginationDto.take,
-        skip: isPagination ? this.employeeQuery.getCount() : PaginationDto.skip,
         name: val.name,
         phone: val.phone,
         identify: val.identify,
