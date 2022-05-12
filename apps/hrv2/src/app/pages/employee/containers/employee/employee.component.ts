@@ -32,6 +32,11 @@ import {
 } from "@minhdu-fontend/orgchart-v2";
 import {ModalEmployeeComponent} from "../../components/employee/modal-employee.component";
 import {ModalEmployeeData} from "../../data/modal-employee.data";
+import {ModalAlertComponent} from "@minhdu-fontend/components";
+import {ModalAlertEntity, ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
+import {
+  ModalDatePickerComponent
+} from "../../../../../../../../libs/components/src/lib/modal-date-picker/modal-date-picker.component";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -157,7 +162,20 @@ export class EmployeeComponent implements OnInit {
     })
   }
 
-  onDelete(employeeId: any): void {
+  onDelete(employee: EmployeeEntity , ): void {
+    this.modal.create({
+      nzTitle: `Nhân viên ${employee.lastName} tạm thời nghỉ việc` ,
+      nzContent: ModalDatePickerComponent,
+      nzComponentParams: <{ data: ModalDatePickerEntity }>{
+        data: {
+          type:'date',
+          dateInit: new Date(),
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe(val => {
+      this.actions$.dispatch(EmployeeActions.remove({id: employee.id}))
+    })
   }
 
   mapEmployeeDto(val: any, isPagination: boolean): SearchEmployeeDto {
