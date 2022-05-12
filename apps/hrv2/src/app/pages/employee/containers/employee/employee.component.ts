@@ -38,6 +38,7 @@ import {ModalEmployeeData} from "../../data/modal-employee.data";
 })
 export class EmployeeComponent implements OnInit {
   total$ = this.employeeQuery.select(state => state.total)
+  count$ = this.employeeQuery.selectCount()
   loading$ = this.employeeQuery.select(state => state.loading)
   positions$ = this.positionQuery.selectAll()
   branches$ = this.branchQuery.selectAll()
@@ -60,7 +61,6 @@ export class EmployeeComponent implements OnInit {
   role = window.localStorage.getItem('role')
   genderType = Gender;
   ItemContextMenu = ItemContextMenu;
-  pageSize = 15
   empStatusEnum = EmployeeStatusEnum
   valueSort = {
     orderBy: this.stateEmployee.orderBy,
@@ -192,10 +192,8 @@ export class EmployeeComponent implements OnInit {
     };
   }
 
-  onPagination(index: number) {
-    if (index * this.pageSize >= this.employeeQuery.getCount()) {
-      this.actions$.dispatch(EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, true)))
-    }
+  onLoadMore() {
+    this.actions$.dispatch(EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, true)))
   }
 
   onUpdate($event: any, isUpdate?: boolean): void {
