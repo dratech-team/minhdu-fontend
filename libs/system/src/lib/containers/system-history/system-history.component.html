@@ -1,5 +1,6 @@
 <div class="d-flex mt-3 ml-2 px-2 ">
   <div class='d-flex flex-column ml-3 border p-2' style='height: 75vh; width:250px; overflow-y: scroll'>
+
     <nz-collapse>
       <nz-collapse-panel
         nzHeader='Tìm kiếm'
@@ -24,6 +25,7 @@
         </nz-select>
       </nz-collapse-panel>
     </nz-collapse>
+
     <nz-collapse class="mt-2">
       <nz-collapse-panel
         [formGroup]="formGroup"
@@ -37,6 +39,19 @@
         >
           <nz-option *ngFor="let item of methods" [nzLabel]="item.name" [nzValue]="item.value"></nz-option>
         </nz-select>
+      </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse class="mt-2">
+      <nz-collapse-panel
+        [formGroup]="formGroup"
+        nzHeader='Ngày'
+        nzActive='true'>
+      <nz-date-picker
+        class="w-100"
+        nzMode="date"
+        nzFormat="dd-MM-yyyy"
+        formControlName="createdAt"></nz-date-picker>
       </nz-collapse-panel>
     </nz-collapse>
   </div>

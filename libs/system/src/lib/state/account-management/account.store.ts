@@ -10,7 +10,7 @@ export interface AccountState extends EntityState<AccountEntity> {
   loadMore: boolean
   added: boolean | null;
   total: number
-  search?: Partial<BaseSearchAccountDto>;
+  search?: Partial<AccountEntity & {search: string}>;
   deleted: boolean | null
 }
 

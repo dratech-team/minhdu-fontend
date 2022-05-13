@@ -24,6 +24,7 @@ import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
 import {SystemHistoryEffects} from "./state/system-history/system-history.effects";
 import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
+import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
     NzButtonModule,
     MatChipsModule,
     NzCollapseModule,
-    OrgchartV2Module
+    OrgchartV2Module,
+    NzDatePickerModule
   ],
   declarations: [
     systemHistoryComponent,

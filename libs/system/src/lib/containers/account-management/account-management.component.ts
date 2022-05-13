@@ -30,15 +30,16 @@ export class AccountManagementComponent implements OnInit {
   app = App;
   roleHr = roleAppHR;
 
+  stateSearch = this.accountQuery.getValue().search
   formGroup = new FormGroup({
-    search: new  FormControl(''),
-    id: new FormControl(''),
-    username: new FormControl(''),
-    branches: new FormControl([]),
-    role: new FormControl(''),
-    loggedAt: new FormControl(''),
-    ip: new FormControl(''),
-    createdAt: new FormControl('')
+    search: new FormControl(this.stateSearch?.search || ''),
+    id: new FormControl(this.stateSearch?.id || ''),
+    username: new FormControl(this.stateSearch?.username || ''),
+    branches: new FormControl(this.stateSearch?.branches || []),
+    role: new FormControl(this.stateSearch?.role || ''),
+    loggedAt: new FormControl(this.stateSearch?.loggedAt || ''),
+    ip: new FormControl(this.stateSearch?.ip || ''),
+    createdAt: new FormControl(this.stateSearch?.createdAt || '')
   });
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
@@ -83,7 +84,7 @@ export class AccountManagementComponent implements OnInit {
     this.modal.create({
       nzTitle: 'Tạo tài khoản',
       nzContent: RegisterComponent,
-      nzFooter:[]
+      nzFooter: []
     })
   }
 

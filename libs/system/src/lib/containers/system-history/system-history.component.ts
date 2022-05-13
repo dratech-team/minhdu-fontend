@@ -6,6 +6,7 @@ import {Actions} from "@datorama/akita-ng-effects";
 import {SystemHistoryQuery} from "../../state/system-history/system-history.query";
 import {SystemHistoryActions} from "../../state/system-history/system-history.actions";
 import {SystemHistoryStore} from "../../state/system-history/system-history.store";
+import {debounceTime} from "rxjs/operators";
 
 @Component({
   templateUrl: 'system-history.component.html',
@@ -47,7 +48,7 @@ export class systemHistoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.onLoad(false)
-    this.formGroup.valueChanges.subscribe(_ => {
+    this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe(_ => {
       this.onLoad(false)
     })
   }
