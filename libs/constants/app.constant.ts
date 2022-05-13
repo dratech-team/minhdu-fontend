@@ -3,26 +3,22 @@ import { App } from '../enums';
 export const appConstant = [
   {
     name: 'Bán hàng',
-    app: App.SELL,
+    value: App.SELL,
   },
   {
     name: 'kho',
-    app:  App.WAREHOUSE,
+    value:  App.WAREHOUSE,
   },
   {
     name: 'Nhân sự',
-    app: App.HUMAN_RESOURCE,
-  },
-  {
-    name: 'Nhân sự',
-    app: App.HR,
+    value: App.HR,
   },
   {
     name: 'Chưa xác định',
-    app: App.UNKNOWN,
+    value: App.UNKNOWN,
   },
   {
     name: 'Tất cả',
-    app: '',
+    value: '',
   },
 ]

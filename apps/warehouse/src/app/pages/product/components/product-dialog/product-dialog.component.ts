@@ -4,7 +4,6 @@ import {DatePipe} from '@angular/common';
 import {Store} from '@ngrx/store';
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {Actions} from '@datorama/akita-ng-effects';
-import {AppState} from '../../../../reducers';
 import {WarehouseAction, WarehouseQuery} from '../../../warehouse/state';
 import {SupplierActions, SupplierQuery} from '../../../supplier/state';
 import {ProductEntity} from "../../entities";
@@ -13,16 +12,16 @@ import {CategoryUnitConstant} from "../../../../../shared/constant";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {ProductQuery} from "../../state/product.query";
 import {Branch} from "@minhdu-fontend/data-models";
-import {BaseProductEntity} from "../../bases";
 import {BaseAddProductDto} from "../../dto";
 import {TypeProductEnum} from "../../enums";
+import {BranchActions, BranchQuery} from "@minhdu-fontend/orgchart-v2";
 
 @Component({
   templateUrl: 'product-dialog.component.html'
 })
 export class ProductDialogComponent implements OnInit {
   @Input() data?: { product: ProductEntity, isUpdate?: boolean }
-  branches$ = this.store.select(getAllOrgchart);
+  branches$ = this.branchQuery.selectAll();
   warehouses$ = this.categoryQuery.selectAll();
   supplier$ = this.supplierQuery.selectAll()
   added$ = this.productQuery.select(state => state.added)
@@ -32,17 +31,17 @@ export class ProductDialogComponent implements OnInit {
   constructor(
     private readonly formBuilder: FormBuilder,
     public datePipe: DatePipe,
-    private readonly store: Store<AppState>,
     private readonly categoryQuery: WarehouseQuery,
     private readonly supplierQuery: SupplierQuery,
     private readonly productQuery: ProductQuery,
     private readonly action$: Actions,
     private readonly modelRef: NzModalRef,
+    private readonly branchQuery: BranchQuery
   ) {
   }
 
   ngOnInit() {
-    this.store.dispatch(OrgchartActions.init());
+    this.action$.dispatch(BranchActions.loadAll({}));
     this.action$.dispatch(SupplierActions.loadAll({search:{take: 30, skip: 0}}));
     this.action$.dispatch(WarehouseAction.loadAll());
     if (this.data?.product) {

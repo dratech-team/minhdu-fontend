@@ -1,7 +1,5 @@
 import {AfterContentChecked, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {AuthActions} from '@minhdu-fontend/auth';
 import {MatDialog} from '@angular/material/dialog';
-import {Store} from '@ngrx/store';
 import {LogoutComponent} from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
 import {RegisterComponent} from 'libs/auth/src/lib/components/dialog-register.component/register.component';
 import {Role} from 'libs/enums/hr/role.enum';
@@ -9,6 +7,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AppStore} from "../../state/app.store";
 import {AppQuery} from "../../state/app.query";
 import {MenuWarehouseConstant} from "../../../shared/constant";
+import {Actions} from "@datorama/akita-ng-effects";
+import {AccountActions} from "../../../../../../libs/system/src/lib/state/account-management/account.actions";
 
 @Component({
   templateUrl: './warehouse-layout.component.html',
@@ -23,12 +23,12 @@ export class WarehouseLayoutComponent implements OnInit, AfterContentChecked {
 
   constructor(
     private readonly dialog: MatDialog,
-    private readonly store: Store,
     private readonly appQuery: AppQuery,
     private readonly appStore: AppStore,
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly ref: ChangeDetectorRef
+    private readonly ref: ChangeDetectorRef,
+    private readonly actions$: Actions
   ) {
   }
 
@@ -46,7 +46,7 @@ export class WarehouseLayoutComponent implements OnInit, AfterContentChecked {
     const ref = this.dialog.open(LogoutComponent, { width: '30%' });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.store.dispatch(AuthActions.logout());
+        this.actions$.dispatch(AccountActions.logout());
       }
     });
   }
