@@ -9,7 +9,7 @@ export interface SystemHistoryState extends EntityState<SystemHistoryEntity> {
   loadMore: boolean
   added: boolean | null;
   total: number
-  search?: Partial<BaseSearchSystemHistoryDto>;
+  search?: Partial<SystemHistoryEntity & {search: string}>;
   deleted: boolean | null
 }
 
@@ -19,6 +19,7 @@ function createInitState(): SystemHistoryState {
     loadMore: false,
     added: null,
     total: 0,
+    search: {},
     deleted: null
   };
 }

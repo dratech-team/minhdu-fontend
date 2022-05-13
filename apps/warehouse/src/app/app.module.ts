@@ -26,7 +26,6 @@ import { SupplierModule } from './pages/supplier/supplier.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { RouteGuard } from './route.guard';
-import {OrgchartEffects} from "../../../../libs/orgchart/src/lib/+state/Orgchart";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {environment} from "../../../hr/src/environments/environment";
 import { WarehouseModule } from './pages/warehouse/warehosue.module';

@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ErrorInterceptor, JwtInterceptor} from '@minhdu-fontend/auth';
-import {EffectsModule} from '@ngrx/effects';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AuthService} from '../../../auth/src/lib/services/auth.service';
@@ -12,7 +11,7 @@ import {AccountEffects} from './state/account-management/account.effects';
 import {ComponentsModule} from '@minhdu-fontend/components';
 import {SystemRoutingModule} from './system-routing.module';
 import {TransformRolePipe} from './pipes/transform-role.pipe';
-import {SystemHistoryContainer} from './containers/system-history/system-history.container';
+import {systemHistoryComponent} from './containers/system-history/system-history.component';
 import {TransformAppPipe} from './pipes/transform-app.pipe';
 import {TransformMethodPipe} from './pipes/transform-method.pipe';
 import {LimitedAccessContainer} from './containers/limited-access/limited-access.container';
@@ -47,7 +46,7 @@ import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
     OrgchartV2Module
   ],
   declarations: [
-    SystemHistoryContainer,
+    systemHistoryComponent,
     AccountManagementComponent,
     TransformRolePipe,
     TransformAppPipe,

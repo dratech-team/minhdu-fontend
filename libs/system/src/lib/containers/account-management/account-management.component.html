@@ -39,6 +39,7 @@
       <nz-table
         #tableAccount
         nzShowPagination="false"
+        [nzLoading]="loading$|async"
         [nzScroll]="{x: '1500px', y: '53vh'}"
         [nzData]="(accounts$ | async) || []"
         class='mt-3'>

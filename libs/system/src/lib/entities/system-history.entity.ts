@@ -1,8 +1,6 @@
-import {BaseAccountEntity} from "../base/base-account.entity";
-import {App} from "@minhdu-fontend/enums";
-import {BranchEntity} from "@minhdu-fontend/orgchart-v2";
+import {BaseSystemHistoryEntity} from "../base/base-system-history.entity";
 
-export interface SystemHistoryEntity extends BaseAccountEntity {
+export interface SystemHistoryEntity extends BaseSystemHistoryEntity {
 }
 
 
