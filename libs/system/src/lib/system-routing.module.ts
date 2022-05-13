@@ -2,7 +2,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { AccountManagementComponent } from './containers/account-management/account-management.component';
 import { systemHistoryComponent } from './containers/system-history/system-history.component';
-import { LimitedAccessContainer } from './containers/limited-access/limited-access.container';
+import { LimitedAccessComponent } from './containers/limited-access/limited-access.component';
 
 const routes: Routes = [
   {
@@ -15,7 +15,7 @@ const routes: Routes = [
   },
   {
     path: 'han-che-truy-cap',
-    component: LimitedAccessContainer
+    component: LimitedAccessComponent
   }
 ];
 

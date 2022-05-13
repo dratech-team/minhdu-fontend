@@ -61,16 +61,6 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig2)
   ],
   providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: JwtInterceptor,
-      multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
-      multi: true
-    },
     RouteGuard,
     HashLocationStrategy,
     {provide: NZ_ICONS, useValue: icons},

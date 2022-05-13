@@ -14,7 +14,7 @@ import {TransformRolePipe} from './pipes/transform-role.pipe';
 import {systemHistoryComponent} from './containers/system-history/system-history.component';
 import {TransformAppPipe} from './pipes/transform-app.pipe';
 import {TransformMethodPipe} from './pipes/transform-method.pipe';
-import {LimitedAccessContainer} from './containers/limited-access/limited-access.container';
+import {LimitedAccessComponent} from './containers/limited-access/limited-access.component';
 import {NzTableModule} from "ng-zorro-antd/table";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {NzSelectModule} from "ng-zorro-antd/select";
@@ -53,23 +53,12 @@ import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
     TransformRolePipe,
     TransformAppPipe,
     TransformMethodPipe,
-    LimitedAccessContainer
+    LimitedAccessComponent
   ],
   exports: [
     TransformAppPipe
   ],
   providers: [
-    AuthService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: JwtInterceptor,
-      multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
-      multi: true
-    }
   ]
 
 })

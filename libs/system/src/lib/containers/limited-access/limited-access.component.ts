@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-  templateUrl: 'limited-access.container.html',
+  templateUrl: 'limited-access.component.html',
   styleUrls: ['limited-access.scss']
 })
-export class LimitedAccessContainer {
+export class LimitedAccessComponent {
 }
