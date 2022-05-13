@@ -5,6 +5,7 @@ import {BaseSearchSalarySettingDto} from "../dto";
 import {updateStateUiUtil} from "@minhdu-fontend/utils";
 
 export interface SettingSalaryState extends EntityState<SalarySettingEntity> {
+  total: number;
   loading: boolean;
   added: boolean|null;
   search: Partial<BaseSearchSalarySettingDto>;
@@ -13,6 +14,7 @@ export interface SettingSalaryState extends EntityState<SalarySettingEntity> {
 
 export function createInitialState(): SettingSalaryState {
   return {
+    total: 0,
     loading: true,
     added: null,
     search: {},

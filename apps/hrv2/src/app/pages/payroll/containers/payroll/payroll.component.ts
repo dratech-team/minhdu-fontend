@@ -23,6 +23,8 @@ import * as _ from 'lodash'
 })
 export class PayrollComponent implements OnInit {
   payrolls$ = this.payrollQuery.selectAll()
+  added$ = this.payrollQuery.select(state => state.added)
+  deleted$ = this.payrollQuery.select(state => state.deleted)
   branches$ = this.branchQuery.selectAll().pipe(map(branches => {
     if (branches.length === 1) {
       this.payrollStore.update(state => ({
@@ -89,7 +91,6 @@ export class PayrollComponent implements OnInit {
       }
     )
 
-
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe(val => {
       if (val.filterType === FilterTypeEnum.OVERTIME || val.filterType === FilterTypeEnum.ABSENT) {
         Object.assign(val, {
@@ -113,7 +114,7 @@ export class PayrollComponent implements OnInit {
     }))
   }
 
-  mapPayroll(formData: any, isPagination?: boolean) {
+  mapPayroll(formData: any) {
     this.payrollStore.update(state => ({
       ...state, search: formData
     }))
@@ -121,8 +122,6 @@ export class PayrollComponent implements OnInit {
       categoryId: formData.department?.id || '',
       branch: formData.branch?.name || '',
       position: formData.position?.name || '',
-      take: PaginationDto.take,
-      skip: isPagination ? this.payrollQuery.getCount() : PaginationDto.skip
     })
   }
 

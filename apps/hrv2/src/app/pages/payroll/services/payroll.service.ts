@@ -15,8 +15,8 @@ export class PayrollService extends BaseService<PayrollEntity> {
     super(Api.HR.PAYROLL.PAYROLL, http);
   }
 
-  addOne(props: AddPayrollDto): Observable<PayrollEntity> {
-    return super.addOne(props);
+  generate(props: AddPayrollDto): Observable<ResponseMessageEntity> {
+    return this.http.post<ResponseMessageEntity>(Api.HR.PAYROLL.PAYROLL, props);
   }
 
   getOne(props: LoadOnePayrollDto): Observable<PayrollEntity> {
@@ -38,10 +38,6 @@ export class PayrollService extends BaseService<PayrollEntity> {
 
   delete(id: number, params?: any): Observable<void> {
     return super.delete(id, params);
-  }
-
-  generate(params?: any): Observable<any> {
-    return this.http.get<any>(Api.HR.PAYROLL.GENERATE, {params});
   }
 
   scanHoliday(PayrollId: number): Observable<PayrollEntity> {

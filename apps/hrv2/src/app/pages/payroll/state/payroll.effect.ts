@@ -18,6 +18,7 @@ import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {PartialDayEnum} from '@minhdu-fontend/data-models';
 import {StateHistoryPlugin} from '@datorama/akita';
 import {PayrollQuery} from './payroll.query';
+import {PaginationDto} from "@minhdu-fontend/constants";
 
 @Injectable({providedIn: 'root'})
 export class PayrollEffect {
@@ -62,7 +63,18 @@ export class PayrollEffect {
   loadAll$ = this.action$.pipe(
     ofType(PayrollActions.loadAll),
     switchMap((props) => {
-      this.payrollStore.update(state => ({...state, loading: true}));
+      this.payrollStore.update(state => (
+        Object.assign({...state}, props.isPaginate
+          ? {loadMore: true}
+          : {loading: true}
+        )
+      ));
+      Object.assign(props.search,
+        {
+          take: PaginationDto.take,
+          skip: props.isPaginate ? this.payrollQuery.getCount() : PaginationDto.skip
+        }
+      )
       return this.service.paginationPayroll(props.search).pipe(
         map(res => {
           return Object.assign(res, {
@@ -73,7 +85,12 @@ export class PayrollEffect {
           });
         }),
         tap((res) => {
-          this.payrollStore.update(state => ({...state, loading: false}));
+          this.payrollStore.update(state => (
+            Object.assign({...state, total: res.total}, props.isPaginate
+              ? {loadMore: false}
+              : {loading: false}
+            )
+          ));
           if (res.data.length === 0) {
             this.message.warning('Đã lấy hết phiếu lương');
           }
@@ -138,11 +155,20 @@ export class PayrollEffect {
   remove$ = this.action$.pipe(
     ofType(PayrollActions.remove),
     switchMap((props) => {
+      this.payrollStore.update(state => ({
+        ...state, deleted: false
+      }))
       return this.service.delete(props.id).pipe(
         tap(_ => {
+          this.payrollStore.update(state => ({
+            ...state, deleted: true
+          }))
           this.payrollStore.remove(props.id);
         }),
         catchError(err => {
+          this.payrollStore.update(state => ({
+            ...state, deleted: null
+          }))
           return of(PayrollActions.error(err));
         })
       );

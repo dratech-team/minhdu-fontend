@@ -3,11 +3,10 @@
   <nz-table
     #tablePayroll
     [nzData]="payrolls"
-    [nzPageSize]="pageSize"
     [formGroup]='formGroup'
-    (nzPageIndexChange)="onPagination($event)"
+    nzShowPagination="false"
     [nzScroll]="scroll"
-    [nzLoading]="(loading$|async)"
+    [nzLoading]="(loading$ | async)"
     nzSize="small"
   >
     <thead>
@@ -178,7 +177,7 @@
     </tr>
     </thead>
     <tbody>
-    <ng-template ngFor let-payroll [ngForOf]="tablePayroll.data" let-i='index'>
+    <ng-template ngFor let-payroll [ngForOf]="payrolls" let-i='index'>
       <tr (contextmenu)='child.onContextMenu($event,payroll)' class="pointer" (click)="onDetail(payroll)">
         <td nzLeft>
           {{i + 1}}
@@ -306,6 +305,23 @@
         </ng-template>
       </tr>
     </ng-template>
+    <tr *ngIf="payrolls.length > 0">
+      <td [colSpan]="tablePayroll.listOfAutoColWidth.length">
+        <div class="w-100 d-flex justify-content-start" style="position: relative">
+          <button
+            *ngIf="((count$ | async)|| 0) < ((total$ | async)|| 0)"
+            (click)="onPagination()"
+            [nzLoading]="(loadMore$|async)"
+            style="position:sticky; left: 45vw"
+            nz-button
+            nzType="primary"
+          >
+            Tải thêm
+          </button>
+        </div>
+      </td>
+
+    </tr>
     </tbody>
   </nz-table>
 </div>

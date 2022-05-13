@@ -29,13 +29,16 @@ import {NzMessageService} from "ng-zorro-antd/message";
 export class TablePayrollComponent implements OnInit {
   @Input() payrolls!: PayrollEntity[]
   @Input() formGroup!: FormGroup
-  @Input() pageSize = 10;
-  @Input() scroll: { x: string, y: string } = {x: '5000px', y: '56vh'}
+  @Input() scroll: { x: string, y: string } = {x: '5000px', y: '51vh'}
   @Input() onChange?: Subject<void>
   @Output() onloadPayroll = new EventEmitter<{ isPagination: boolean }>()
   loading$ = this.payrollQuery.select(state => state.loading)
+  loadMore$ = this.payrollQuery.select(state => state.loadMore)
   added$ = this.payrollQuery.select(state => state.added)
+  total$ = this.payrollQuery.select(state => state.total)
+  count$ = this.payrollQuery.selectCount()
   positions$ = this.positionQuery.selectAll()
+
   ItemContextMenu = ItemContextMenu;
   confirmConstant = ConfirmConstant
   paidConstant = PaidConstant
@@ -67,13 +70,13 @@ export class TablePayrollComponent implements OnInit {
     this.formGroup.get('filterType')?.valueChanges.subscribe(val => {
       switch (val) {
         case FilterTypeEnum.SEASONAL:
-          this.scroll = {x: '3000px', y: '56vh'}
+          this.scroll = {x: '3000px', y: '51vh'}
           break
         case FilterTypeEnum.TIME_SHEET:
-          this.scroll = {x: '5000px', y: '56vh'}
+          this.scroll = {x: '5000px', y: '51vh'}
           break
         default:
-          this.scroll = {x: '4200px', y: '56vh'}
+          this.scroll = {x: '4200px', y: '51vh'}
       }
     })
     this.actions$.dispatch(PositionActions.loadAll({}))
@@ -85,7 +88,8 @@ export class TablePayrollComponent implements OnInit {
     }
   }
 
-  onPagination(index: number) {
+  onPagination() {
+    this.onloadPayroll.emit({isPagination: true})
   }
 
   onAdd(employeeId?: number) {
@@ -119,10 +123,11 @@ export class TablePayrollComponent implements OnInit {
             this.datePipe.transform(payroll.createdAt, 'MM-yyyy') +
             'của nhân viên ' + payroll.employee.lastName
         }
-      }
+      },
+      nzFooter: []
     }).afterClose.subscribe(val => {
       if (val) {
-        this.onloadPayroll.emit({isPagination: false})
+        this.actions$.dispatch(PayrollActions.remove({id: payroll.id}))
       }
     })
   }
@@ -149,8 +154,13 @@ export class TablePayrollComponent implements OnInit {
     })
   }
 
-  onHistory($event: any) {
-
+  onHistory(payroll: PayrollEntity) {
+    console.log(payroll)
+    this.router.navigate(['phieu-luong/lich-su-luong/', payroll.id], {
+     queryParams:{
+       name: payroll.employee.lastName
+     }
+    }).then()
   }
 
   onConfirm(payroll: PayrollEntity) {
@@ -223,7 +233,7 @@ export class TablePayrollComponent implements OnInit {
   }
 
   async onDetail(payroll: PayrollEntity) {
-    return await this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.employee.id],
+    return await this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.id],
       {
         queryParams: {
           isUpdate: true
