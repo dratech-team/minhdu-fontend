@@ -43,7 +43,9 @@ import {ModalAlertComponent} from "@minhdu-fontend/components";
 })
 export class EmployeeComponent implements OnInit {
   total$ = this.employeeQuery.select(state => state.total)
+  count$ = this.employeeQuery.selectCount()
   loading$ = this.employeeQuery.select(state => state.loading)
+  loadMore$ = this.employeeQuery.select(state => state.loadMore)
   positions$ = this.positionQuery.selectAll()
   branches$ = this.branchQuery.selectAll()
   provinces$ = this.provinceService.getAll()
@@ -65,7 +67,6 @@ export class EmployeeComponent implements OnInit {
   role = window.localStorage.getItem('role')
   genderType = Gender;
   ItemContextMenu = ItemContextMenu;
-  pageSize = 15
   empStatusEnum = EmployeeStatusEnum
   valueSort = {
     orderBy: this.stateEmployee.orderBy,
@@ -198,8 +199,6 @@ export class EmployeeComponent implements OnInit {
     }))
     return {
       search: {
-        take: PaginationDto.take,
-        skip: isPagination ? this.employeeQuery.getCount() : PaginationDto.skip,
         name: val.name,
         phone: val.phone,
         identify: val.identify,
@@ -221,10 +220,8 @@ export class EmployeeComponent implements OnInit {
     };
   }
 
-  onPagination(index: number) {
-    if (index * this.pageSize >= this.employeeQuery.getCount()) {
-      this.actions$.dispatch(EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, true)))
-    }
+  onLoadMore() {
+    this.actions$.dispatch(EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, true)))
   }
 
   onUpdate($event: any, isUpdate?: boolean): void {

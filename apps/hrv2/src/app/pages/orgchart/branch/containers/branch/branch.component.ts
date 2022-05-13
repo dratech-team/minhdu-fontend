@@ -2,13 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {debounceTime, map} from 'rxjs/operators';
-import {PaginationDto} from '@minhdu-fontend/constants';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {
   BranchActions,
   BranchEntity,
-  BranchQuery, BranchStore,
+  BranchQuery,
+  BranchStore,
   PositionActions,
   PositionEntity,
   PositionQuery,
@@ -76,14 +76,11 @@ export class BranchComponent implements OnInit {
     ).subscribe();
   }
 
-  onPagination(index: number) {
-    const count = this.branchQuery.getCount();
-    if (index * this.pageSizeTable >= count) {
-      this.actions$.dispatch(BranchActions.loadAll({
-        search: this.mapBranch(this.formGroup.value, true),
-        isPaginate: true
-      }));
-    }
+  onLoadMore() {
+    this.actions$.dispatch(BranchActions.loadAll({
+      search: this.mapBranch(this.formGroup.value, true),
+      isPaginate: true
+    }));
   }
 
   mapBranch(dataFG: any, isPagination: boolean) {
@@ -92,8 +89,6 @@ export class BranchComponent implements OnInit {
     }))
     return Object.assign({}, dataFG, {
       position: dataFG.position.name,
-      take: PaginationDto.take,
-      skip: isPagination ? this.branchQuery.getCount() : PaginationDto.skip
     });
   }
 

@@ -107,17 +107,32 @@ export class EmployeeEffect {
   loadAll$ = this.actions$.pipe(
     ofType(EmployeeActions.loadAll),
     switchMap((props) => {
-        this.employeeStore.update(state => ({
-          ...state, loading: true
-        }));
-        if (props.search?.orderType) {
-          Object.assign(props.search, {orderType: props.search?.orderType === 'ascend' ? 'asc' : 'desc'});
-        }
+        this.employeeStore.update(state => (
+          Object.assign({
+              ...state,
+            }, props.isPaginate
+              ? {loadMore: true}
+              : {loading: true}
+          )
+        ));
+        Object.assign(props.search,
+          {
+            take: PaginationDto.take,
+            skip: props.isPaginate ? this.employeeQuery.getCount() : PaginationDto.skip
+          },
+          props.search?.orderType
+            ? {orderType: props.search?.orderType === 'ascend' ? 'asc' : 'desc'}
+            : {}
+        )
         return this.employeeService.pagination(props).pipe(
           map((res) => {
-            this.employeeStore.update(state => ({
-              ...state, loading: false, total: res.total
-            }));
+            this.employeeStore.update(state => (  Object.assign({
+                  ...state, total: res.total
+                }, props.isPaginate
+                  ? {loadMore: false}
+                  : {loading: false}
+              )
+            ));
             if (res.data.length === 0) {
               this.message.info('Đã lấy hết nhân viên');
               if (!props.isPaginate) {

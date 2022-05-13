@@ -59,13 +59,11 @@
   <div class='mx-auto' style='width: 98%'>
     <div class='my-3'>
       <nz-table
-        #tableEmployee
-        [nzPageSize]="pageSize"
+        nzShowPagination="false"
         [formGroup]='formGroup'
         [nzLoading]="loading$|async"
-        [nzScroll]="{x:'3200px',y:'60vh'}"
+        [nzScroll]="{x:'3200px',y:'51vh'}"
         [nzData]="this.employees"
-        (nzPageIndexChange)="onPagination($event)"
       >
         <thead>
         <tr>
@@ -256,7 +254,7 @@
             (contextmenu)='child.onContextMenu($event,employee)'
             (click)='onUpdate(employee)' cdkDrag>
           <td nzLeft nzWidth="100px">
-            <div>{{(i + 1) + ((tableEmployee.nzPageIndex - 1) * pageSize)}}</div>
+            <div>{{i + 1}}</div>
           </td>
           <td>
             <div>{{employee.id}}</div>
@@ -329,6 +327,20 @@
             <div>
               {{employee?.note}}
             </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="17" >
+           <div class="w-100 d-flex justify-content-start" style="position: relative">
+             <button
+               *ngIf="((count$|async) || 0) < ((total$|async) || 0)"
+               (click)="onLoadMore()"
+               style="position: sticky; left: 45vw"
+               nz-button nzType="primary"
+               [nzLoading]="loadMore$|async">
+               Tải thêm
+             </button>
+           </div>
           </td>
         </tr>
         </tbody>

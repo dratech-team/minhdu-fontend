@@ -87,7 +87,6 @@
       </nz-select>
     </div>
   </div>
-  <div class="d-flex  mt-3">
-    <button mat-dialog-close class="btn btn-cancel">huỷ</button>
-    <button (click)="onSubmit()" class="ml-2 btn btn-primary"> Xác nhận</button>
+  <div class="d-flex  mt-3 ml-1">
+    <button nz-button nzType="primary" [nzLoading]="(added$|async) === false" (click)="onSubmit()"> Xác nhận</button>
   </div>

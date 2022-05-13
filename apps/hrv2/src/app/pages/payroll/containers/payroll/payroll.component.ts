@@ -3,18 +3,21 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {PayrollQuery, PayrollStore} from "../../state";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../state/payroll.action";
-import {EmployeeStatusConstant, PaginationDto, PayrollConstant} from "@minhdu-fontend/constants";
+import {EmployeeStatusConstant, PayrollConstant} from "@minhdu-fontend/constants";
 import {FilterTypeEnum, Role} from "@minhdu-fontend/enums";
 import {debounceTime, map} from "rxjs/operators";
 import {BranchActions, BranchQuery, DepartmentActions, DepartmentQuery} from "@minhdu-fontend/orgchart-v2";
 import {Subject} from "rxjs";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
+import {NzModalService} from "ng-zorro-antd/modal";
 
 @Component({
   templateUrl: 'payroll.component.html'
 })
 export class PayrollComponent implements OnInit {
   payrolls$ = this.payrollQuery.selectAll()
+  added$ = this.payrollQuery.select(state => state.added)
+  deleted$ = this.payrollQuery.select(state => state.deleted)
   branches$ = this.branchQuery.selectAll().pipe(map(branches => {
     if (branches.length === 1) {
       this.payrollStore.update(state => ({
@@ -61,7 +64,8 @@ export class PayrollComponent implements OnInit {
     private readonly payrollQuery: PayrollQuery,
     private readonly branchQuery: BranchQuery,
     private readonly departmentQuery: DepartmentQuery,
-    private readonly actions$: Actions
+    private readonly actions$: Actions,
+    private readonly modal: NzModalService
   ) {
   }
 
@@ -77,7 +81,6 @@ export class PayrollComponent implements OnInit {
         this.formGroup.get('startedAt')?.setValue(val.startedAt, {emitEvent: false})
       }
     )
-
 
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe(val => {
       if (val.filterType === FilterTypeEnum.OVERTIME || val.filterType === FilterTypeEnum.ABSENT) {
@@ -108,7 +111,7 @@ export class PayrollComponent implements OnInit {
     }))
   }
 
-  mapPayroll(formData: any, isPagination?: boolean) {
+  mapPayroll(formData: any) {
     this.payrollStore.update(state => ({
       ...state, search: formData
     }))
@@ -116,8 +119,6 @@ export class PayrollComponent implements OnInit {
       categoryId: formData.department?.id || '',
       branch: formData.branch?.name || '',
       position: formData.position?.name || '',
-      take: PaginationDto.take,
-      skip: isPagination ? this.payrollQuery.getCount() : PaginationDto.skip
     })
   }
 
