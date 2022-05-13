@@ -16,9 +16,7 @@ export class JwtInterceptor implements HttpInterceptor {
     const token = localStorage.getItem('token');
     const environment = isDevMode() ? envDev : envProd;
     const url = !request.url.startsWith(Api.SLACK_WEBHOOK)
-      ? (request.url.split('/')[0] === Api.HR.PAYROLL.PAYROLL
-      ? environment.environment.subApiUrl
-      : environment.environment.apiUrl) + request.url
+      ?  environment.environment.apiUrl + request.url
       : request.url;
     if (token !== undefined) {
       request = request.clone({
