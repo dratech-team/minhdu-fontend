@@ -15,6 +15,7 @@ import {SearchAccountDto} from "../../dto/account/search-account.dto";
 import {AccountEntity} from "../../entities/account.entity";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
+import {ModalRegisterData} from "../../data/modal-register.data";
 
 @Component({
   templateUrl: 'account-management.component.html'
@@ -39,7 +40,7 @@ export class AccountManagementComponent implements OnInit {
     role: new FormControl(this.stateSearch?.role || ''),
     loggedAt: new FormControl(this.stateSearch?.loggedAt || ''),
     ip: new FormControl(this.stateSearch?.ip || ''),
-    createdAt: new FormControl(this.stateSearch?.createdAt || '')
+    timestamp: new FormControl(this.stateSearch?.timestamp || '')
   });
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
@@ -89,7 +90,18 @@ export class AccountManagementComponent implements OnInit {
   }
 
   onUpdate(account: AccountEntity) {
-    this.dialog.open(RegisterComponent, {width: 'fit-content', data: {account: account, isUpdate: true}});
+    this.modal.create({
+      nzTitle: 'Cập nhật tài khoản',
+      nzContent: RegisterComponent,
+      nzComponentParams: <{data?:ModalRegisterData}>{
+        data: {
+          update: {
+            account: account
+          }
+        }
+      },
+      nzFooter: []
+    })
   }
 
   onDelete(account: AccountEntity) {

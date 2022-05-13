@@ -39,7 +39,6 @@ export class AccountEffects {
           this.accountStore.update(state => ({
             ...state, added: true
           }));
-
           this.accountStore.add(res)
         }),
         catchError(err => {

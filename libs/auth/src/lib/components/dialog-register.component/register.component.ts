@@ -4,24 +4,18 @@ import {App} from '@minhdu-fontend/enums';
 import {RoleService} from '../../services/role.service';
 import {BranchActions, BranchEntity, BranchQuery} from "@minhdu-fontend/orgchart-v2";
 import {Actions} from "@datorama/akita-ng-effects";
-import {AccountEntity} from "../../../../../system/src/lib/entities/account.entity";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {AccountActions} from "../../../../../system/src/lib/state/account-management/account.actions";
 import {NzMessageService} from "ng-zorro-antd/message";
-import {Store} from "@ngrx/store";
-import {BaseUpdateAccount} from "../../../../../system/src/lib/dto/account/update-account.dto";
-import {AddAccountDto, BaseAddAccountDto} from "../../../../../system/src/lib/dto/account/add-account.dto";
+import {BaseAddAccountDto} from "../../../../../system/src/lib/dto/account/add-account.dto";
 import {AccountQuery} from "../../../../../system/src/lib/state/account-management/account.query";
+import {ModalRegisterData} from "../../../../../system/src/lib/data/modal-register.data";
 
 @Component({
   templateUrl: 'register.component.html'
 })
 export class RegisterComponent implements OnInit {
-  @Input() data?: {
-    update: {
-      account: AccountEntity
-    }
-  }
+  @Input() data?: ModalRegisterData
   branches$ = this.branchQuery.selectAll()
   role$ = this.roleService.getAll();
   added$ = this.accountQuery.select(state => state.added)
@@ -45,24 +39,21 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.actions$.dispatch(BranchActions.loadAll({}))
-    if (this.data?.update) {
-      this.formGroup = this.formBuilder.group(
-        {
-          role: [this.data.update.account.role, Validators.required],
-          branches: [this.data.update.account.branches],
-        }
-      );
-    } else {
-      this.formGroup = this.formBuilder.group(
-        {
-          userName: ['', Validators.required],
-          password: ['', Validators.required],
-          password2: ['', Validators.required],
-          role: ['', Validators.required],
-          branches: [[]],
-        }
-      );
-    }
+    const account = this.data?.update.account
+    this.formGroup = this.formBuilder.group(
+      Object.assign({
+          role: [account?.role, Validators.required],
+          branches: [account?.branches || []],
+          userName: [account?.username, Validators.required],
+        },
+        this.data?.update
+          ? {}
+          : {
+            password: ['', Validators.required],
+            password2: ['', Validators.required],
+          }
+      )
+    );
   }
 
   get checkValid() {
@@ -88,7 +79,7 @@ export class RegisterComponent implements OnInit {
         })
       )
     this.added$.subscribe(val => {
-      if(val){
+      if (val) {
         this.modalRef.close();
       }
     })
