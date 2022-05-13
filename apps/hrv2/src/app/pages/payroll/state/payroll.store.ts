@@ -28,6 +28,16 @@ export interface PayrollEntityState extends EntityState<PayrollEntity> {
     paidAt: PaidTypeEnums,
     department?: DepartmentEntity
   }
+  searchHistory:{
+    code?: string,
+    name?: string,
+    branch?: BranchEntity,
+    position?:PositionEntity,
+    rangeDay: Date []
+    accConfirmed?: confirmTypeEnums,
+    manConfirmedAt?: confirmTypeEnums,
+    paidAt?: PaidTypeEnums,
+  }
 }
 
 export function createInitialState(): PayrollEntityState {
@@ -46,6 +56,12 @@ export function createInitialState(): PayrollEntityState {
       accConfirmed: confirmTypeEnums.ALL,
       manConfirmedAt: confirmTypeEnums.ALL,
       paidAt: PaidTypeEnums.ALL
+    },
+    searchHistory:{
+      rangeDay: [
+        new Date(new Date().getFullYear(), 0, 1),
+        new Date()
+      ]
     },
     scanned: null
   };

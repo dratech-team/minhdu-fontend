@@ -154,8 +154,13 @@ export class TablePayrollComponent implements OnInit {
     })
   }
 
-  onHistory($event: any) {
-
+  onHistory(payroll: PayrollEntity) {
+    console.log(payroll)
+    this.router.navigate(['phieu-luong/lich-su-luong/', payroll.id], {
+     queryParams:{
+       name: payroll.employee.lastName
+     }
+    }).then()
   }
 
   onConfirm(payroll: PayrollEntity) {
