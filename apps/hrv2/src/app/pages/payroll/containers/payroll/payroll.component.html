@@ -84,6 +84,7 @@
       </div>
     </div>
     <div>
+      <button class="mr-2" nz-button nzType="primary" (click)="onPrint()">Xuất excel</button>
       <button nz-button nzType="primary" [nzLoading]="(added$|async) === false" (click)="onAdd()">Tạo tự động</button>
     </div>
   </div>

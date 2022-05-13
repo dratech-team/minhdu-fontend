@@ -3,13 +3,18 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {PayrollQuery, PayrollStore} from "../../state";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../state/payroll.action";
-import {EmployeeStatusConstant, PayrollConstant} from "@minhdu-fontend/constants";
+import {Api, EmployeeStatusConstant, PayrollConstant} from "@minhdu-fontend/constants";
 import {FilterTypeEnum, Role} from "@minhdu-fontend/enums";
 import {debounceTime, map} from "rxjs/operators";
 import {BranchActions, BranchQuery, DepartmentActions, DepartmentQuery} from "@minhdu-fontend/orgchart-v2";
 import {Subject} from "rxjs";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 import {NzModalService} from "ng-zorro-antd/modal";
+import {TransformConstantPipe} from "@minhdu-fontend/components";
+import {ModalExportExcelComponent} from "@minhdu-fontend/components";
+import {ModalExportExcelData} from "@minhdu-fontend/components";
+import {DatePipe} from "@angular/common";
+import * as _ from 'lodash'
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -60,6 +65,8 @@ export class PayrollComponent implements OnInit {
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
 
   constructor(
+    private readonly transformConstant: TransformConstantPipe,
+    private readonly datePipe: DatePipe,
     private readonly payrollStore: PayrollStore,
     private readonly payrollQuery: PayrollQuery,
     private readonly branchQuery: BranchQuery,
@@ -96,12 +103,6 @@ export class PayrollComponent implements OnInit {
       }
       this.onLoadPayroll(false)
     })
-
-    this.formGroup.get('category')?.valueChanges.subscribe(val => {
-      if (val === 0) {
-        this.onAddCategory()
-      }
-    })
   }
 
   onLoadPayroll(isPagination: boolean) {
@@ -122,10 +123,32 @@ export class PayrollComponent implements OnInit {
     })
   }
 
-  onAddCategory() {
-  }
-
-  onUpdateCategory() {
+  onPrint() {
+    const payroll = Object.assign(
+      _.omit(this.mapPayroll(this.formGroup.value), ['take', 'skip']),
+      {exportType: this.formGroup.value.filterType}
+    )
+    const data = {
+      filename: `Xuất ${this.transformConstant.transform(payroll.filterType, PayrollConstant)}`
+        + ` từ ngày ${this.datePipe.transform(payroll.startedAt, 'dd-MM-yyy')}`
+        + ` đến ngày ${this.datePipe.transform(payroll.endedAt, 'dd-MM-yyy')}`,
+      params: payroll,
+      selectDatetime: true,
+      api: Api.HR.PAYROLL.EXPORT
+    }
+    this.modal.create({
+      nzWidth: 'fit-content',
+      nzTitle: `Xuất bảng ${this.transformConstant.transform(payroll.filterType, PayrollConstant)}`,
+      nzContent: ModalExportExcelComponent,
+      nzComponentParams: <{ data: ModalExportExcelData }>{
+        data: Object.assign(data,
+          payroll.filterType === FilterTypeEnum.OVERTIME || payroll.filterType === FilterTypeEnum.ABSENT
+            ? {typeDate: 'RANGE_DATETIME'}
+            : {}
+        )
+      },
+      nzFooter: []
+    })
   }
 
   onAdd() {
