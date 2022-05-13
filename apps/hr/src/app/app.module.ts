@@ -9,8 +9,7 @@ import {AppAsideModule, AppBreadcrumbModule, AppFooterModule, AppHeaderModule, A
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {ErrorInterceptor, JwtInterceptor} from '@minhdu-fontend/auth';
+import {HttpClientModule} from '@angular/common/http';
 import {HashLocationStrategy, registerLocaleData} from '@angular/common';
 import {NxModule} from '@nrwl/angular';
 import {DefaultLayoutComponent} from './container/default-layout.component';
