@@ -1,6 +1,6 @@
 <div>
   <nz-steps [nzCurrent]='indexStep'>
-    <nz-step [nzTitle]="data.type === salaryTypeEnum.DAY_OFF ? 'Không đi làm': 'Remote'"></nz-step>
+    <nz-step [nzTitle]="data.type === salaryTypeEnum.WFH ? 'WFH': 'Không đi làm'"></nz-step>
     <nz-step nzTitle='Chọn nhân viên'></nz-step>
   </nz-steps>
   <ng-template [ngIf]='indexStep === 0'>
