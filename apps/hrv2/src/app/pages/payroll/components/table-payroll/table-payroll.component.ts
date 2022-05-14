@@ -102,8 +102,10 @@ export class TablePayrollComponent implements OnInit {
     }).afterClose.subscribe(date => {
       if (date) {
         this.actions$.dispatch(PayrollActions.addOne({
-          createdAt: this.payrollQuery.getValue().search.startedAt,
-          employeeId: payroll.id
+          body: {
+            createdAt: this.payrollQuery.getValue().search.startedAt,
+            employeeId: payroll.employee.id
+          }
         }))
       }
     })
@@ -153,9 +155,9 @@ export class TablePayrollComponent implements OnInit {
   onHistory(payroll: PayrollEntity) {
     console.log(payroll)
     this.router.navigate(['phieu-luong/lich-su-luong/', payroll.id], {
-     queryParams:{
-       name: payroll.employee.lastName
-     }
+      queryParams: {
+        name: payroll.employee.lastName
+      }
     }).then()
   }
 

@@ -166,7 +166,7 @@ export class PayrollComponent implements OnInit {
       nzFooter: []
     }).afterClose.subscribe(val => {
       if (val) {
-        this.actions$.dispatch(PayrollActions.addMany({createdAt: new Date(val)}))
+        this.actions$.dispatch(PayrollActions.addMany({body: {createdAt: new Date(val)}}))
         this.added$.subscribe(val => {
           if (val) {
             this.onLoadPayroll(false)
