@@ -20,7 +20,7 @@ export class PayrollService extends BaseService<PayrollEntity> {
     return super.addOne(props);
   }
 
-  addMany(body: {createdAt: Date}): Observable<ResponseMessageEntity> {
+  addMany(body: { createdAt: Date }): Observable<ResponseMessageEntity> {
     return super.addMany(body);
   }
 
@@ -38,7 +38,7 @@ export class PayrollService extends BaseService<PayrollEntity> {
   }
 
   confirm(props: ConfirmPayrollDto): Observable<PayrollEntity> {
-    return this.http.patch<PayrollEntity>(Api.HR.PAYROLL.CONFIRM_PAYROLL + `/${props.id}`, props.data);
+    return this.http.patch<PayrollEntity>(VersionEnum.V3 + Api.HR.PAYROLL.CONFIRM_PAYROLL + `/${props.id}`, props.data);
   }
 
   delete(id: number, params?: any): Observable<void> {
@@ -47,15 +47,15 @@ export class PayrollService extends BaseService<PayrollEntity> {
 
   scanHoliday(PayrollId: number): Observable<PayrollEntity> {
     return this.http.get<PayrollEntity>(
-      Api.HR.PAYROLL.PAYROLL + `/${PayrollId}/` + Api.HR.PAYROLL.GENERATE_HOLIDAY
+      VersionEnum.V3 + Api.HR.PAYROLL.PAYROLL + `/${PayrollId}/` + Api.HR.PAYROLL.GENERATE_HOLIDAY
     );
   }
 
   cancelConfirm(id: number, body?: any): Observable<any> {
-    return this.http.patch<any>(Api.HR.PAYROLL.CANCEL_CONFIRM+ `/${id}`,body);
+    return this.http.patch<any>(VersionEnum.V3 + Api.HR.PAYROLL.CANCEL_CONFIRM + `/${id}`, body);
   }
 
   restore(id: number, body?: any): Observable<ResponseMessageEntity> {
-    return this.http.patch<ResponseMessageEntity>(Api.HR.PAYROLL.RESTORE_PAYROLL + `/${id}`, body);
+    return this.http.patch<ResponseMessageEntity>(VersionEnum.V3 + Api.HR.PAYROLL.RESTORE_PAYROLL + `/${id}`, body);
   }
 }

@@ -26,7 +26,7 @@ export class RelativeService extends BaseService<EmployeeEntity> {
   }
 
   deleteRelative(id: number): Observable<EmployeeEntity> {
-    return this.http.delete<EmployeeEntity>(Api.HR.EMPLOYEE.RELATIVE + `/${id}`);
+    return this.http.delete<EmployeeEntity>(this.url + `/${id}`);
   }
 
 }

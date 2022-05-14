@@ -62,7 +62,6 @@ export class ModalExportExcelComponent implements OnInit {
           Object.assign(e, {index: i});
         });
         this.itemsExports = val;
-        console.log(this.itemsExports)
         this.onAllChecked(true)
       });
   }

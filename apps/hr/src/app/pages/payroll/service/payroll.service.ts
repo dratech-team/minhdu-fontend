@@ -41,7 +41,7 @@ export class PayrollService extends BaseService<Payroll> {
   }
 
   confirmPayroll(id: number, body?: any): Observable<Payroll> {
-    return this.http.patch<Payroll>(Api.HR.PAYROLL.CONFIRM_PAYROLL + `/${id}`, body);
+    return this.http.patch<Payroll>(VersionEnum.V2 + Api.HR.PAYROLL.CONFIRM_PAYROLL + `/${id}`, body);
   }
 
   delete(id: number): Observable<void> {
@@ -49,24 +49,24 @@ export class PayrollService extends BaseService<Payroll> {
   }
 
   generate(params?: any): Observable<any> {
-    return this.http.get<any>(Api.HR.PAYROLL.GENERATE, {params});
+    return this.http.get<any>(VersionEnum.V2 + Api.HR.PAYROLL.GENERATE, {params});
   }
 
   scanHoliday(PayrollId: number): Observable<any> {
     return this.http.get<any>(
-      Api.HR.PAYROLL.PAYROLL + `/${PayrollId}/` + Api.HR.PAYROLL.GENERATE_HOLIDAY
+      VersionEnum.V2 + Api.HR.PAYROLL.PAYROLL + `/${PayrollId}/` + Api.HR.PAYROLL.GENERATE_HOLIDAY
     );
   }
 
   restorePayroll(id: number, body?: any): Observable<any> {
-    return this.http.patch<any>(Api.HR.PAYROLL.RESTORE_PAYROLL + `/${id}`, body);
+    return this.http.patch<any>(VersionEnum.V2 + Api.HR.PAYROLL.RESTORE_PAYROLL + `/${id}`, body);
   }
 
   getAllTempLate(params?: any): Observable<string[]> {
-    return this.http.get<string[]>(Api.HR.PAYROLL.TEMPLATE_SALARY, {params});
+    return this.http.get<string[]>(VersionEnum.V2 + Api.HR.PAYROLL.TEMPLATE_SALARY, {params});
   }
 
   cancelConfirmPayroll(id: number, body?: any): Observable<any> {
-    return this.http.patch<any>(Api.HR.PAYROLL.CANCEL_CONFIRM+ `/${id}`,body);
+    return this.http.patch<any>(VersionEnum.V2 + Api.HR.PAYROLL.CANCEL_CONFIRM + `/${id}`, body);
   }
 }

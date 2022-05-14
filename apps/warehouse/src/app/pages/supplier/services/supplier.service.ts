@@ -1,12 +1,12 @@
 import { BaseService } from '@minhdu-fontend/service';
-import { SupplierEntity } from '../entities/supplier.entity';
+import { SupplierEntity } from '../entities';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { AddSupplierDto } from '../dto/add-supplier.dto';
-import { UpdateSupplierDto } from '../dto/update-supplier.dto';
+import { AddSupplierDto } from '../dto';
+import { UpdateSupplierDto } from '../dto';
 import {SearchSupplierDto} from "../dto";
 
 @Injectable()

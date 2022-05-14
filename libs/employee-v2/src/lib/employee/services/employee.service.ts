@@ -7,6 +7,7 @@ import {BaseService} from 'libs/service/base.service';
 import {EmployeeEntity} from "../entities";
 import {AddEmployeeDto, LoadOneEmployeeDto, SearchEmployeeDto, UpdateEmployeeDto} from "../dto/employee";
 import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
+import {VersionEnum} from "@minhdu-fontend/enums";
 
 
 @Injectable({providedIn: 'root'})
@@ -36,7 +37,7 @@ export class EmployeeService extends BaseService<EmployeeEntity> {
   }
 
   leaveEmployee(id: number, body?: any): Observable<void> {
-    return this.http.patch<void>(Api.HR.EMPLOYEE.EMPLOYEE + `/${id}/leave`, body);
+    return this.http.patch<void>(this.url + `/${id}/leave`, body);
   }
 
   delete(id: number, params?: any): Observable<void> {
@@ -44,14 +45,14 @@ export class EmployeeService extends BaseService<EmployeeEntity> {
   }
 
   deleteWorkHistory(id: number): Observable<void> {
-    return this.http.delete<void>(Api.HR.EMPLOYEE.EMPLOYEE + `/${id}/work-history`);
+    return this.http.delete<void>(this.url + `/${id}/work-history`);
   }
 
   updateHistorySalary(id: number, body: any): Observable<ResponseMessageEntity> {
-    return this.http.patch<ResponseMessageEntity>(Api.HR.EMPLOYEE.HISTORY_SALARY + `/${id}`, body);
+    return this.http.patch<ResponseMessageEntity>(VersionEnum.V2 + Api.HR.EMPLOYEE.HISTORY_SALARY + `/${id}`, body);
   }
 
   deleteHistorySalary(id: number): Observable<void> {
-    return this.http.delete<void>(Api.HR.EMPLOYEE.HISTORY_SALARY + `/${id}`);
+    return this.http.delete<void>(VersionEnum.V2 + Api.HR.EMPLOYEE.HISTORY_SALARY + `/${id}`);
   }
 }

@@ -1,20 +1,18 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Api } from '@minhdu-fontend/constants';
-import {Category, Employee, ResponsePaginate} from '@minhdu-fontend/data-models';
-import { BaseService } from 'libs/service/base.service';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {Api} from '@minhdu-fontend/constants';
+import {Category} from '@minhdu-fontend/data-models';
+import {BaseService} from 'libs/service/base.service';
 import {tap} from "rxjs/operators";
 import {NzMessageService} from "ng-zorro-antd/message";
-import {UpdateNum} from "@ngrx/entity/src/models";
 
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class CategoryService extends BaseService<Category> {
   constructor(
     public readonly http: HttpClient,
     public readonly message: NzMessageService,
-
   ) {
     super(Api.HR.EMPLOYEE.CATEGORY, http);
   }
@@ -30,6 +28,7 @@ export class CategoryService extends BaseService<Category> {
   getAll(params?: any): Observable<Category[]> {
     return super.getAll(params);
   }
+
   getOne(id: any): Observable<Category> {
     return super.getOne(id);
   }
@@ -37,7 +36,8 @@ export class CategoryService extends BaseService<Category> {
   delete(id: number, params?: any): Observable<void> {
     return super.delete(id, params);
   }
-  removeEmployee(id: number, body: any):Observable<any>{
-    return this.http.patch<any>(Api.HR.EMPLOYEE.CATEGORY + `/${id}/employee`,body)
+
+  removeEmployee(id: number, body: any): Observable<any> {
+    return this.http.patch<any>(this.url + `/${id}/employee`, body)
   }
 }

@@ -3,8 +3,8 @@ import {Observable} from 'rxjs';
 import {Api} from '@minhdu-fontend/constants';
 import {Injectable} from '@angular/core';
 import {BaseService} from '@minhdu-fontend/service';
-import {DepartmentEntity} from "../entities/department.entity";
-import {AddDepartmentDto, LoadOneDepartmentDto, RemoveDepartmentDto, UpdateDepartmentDto} from "../dto";
+import {DepartmentEntity} from "@minhdu-fontend/orgchart-v2";
+import {AddDepartmentDto, LoadOneDepartmentDto, UpdateDepartmentDto} from "../dto";
 
 @Injectable({providedIn: 'root'})
 export class DepartmentService extends BaseService<DepartmentEntity> {
@@ -36,6 +36,6 @@ export class DepartmentService extends BaseService<DepartmentEntity> {
   }
 
   removeEmployee(id: number, body: any): Observable<any> {
-    return this.http.patch<any>(Api.HR.EMPLOYEE.CATEGORY + `/${id}/employee`, body)
+    return this.http.patch<any>(this.url + `/${id}/employee`, body)
   }
 }
