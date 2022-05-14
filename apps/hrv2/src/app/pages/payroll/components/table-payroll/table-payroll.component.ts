@@ -1,4 +1,4 @@
-import {AfterContentChecked, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from "@angular/core";
 import {PayrollEntity} from "../../entities";
 import {FormGroup} from "@angular/forms";
 import {BranchQuery, PositionActions, PositionQuery} from "@minhdu-fontend/orgchart-v2";
@@ -16,13 +16,14 @@ import {DatePipe} from "@angular/common";
 import {PayrollActions} from "../../state/payroll.action";
 import {PayslipComponent} from "../payslip/payslip.component";
 import {NzMessageService} from "ng-zorro-antd/message";
-import {ChangeDetectorRef} from '@angular/core';
+import {NzTableComponent} from "ng-zorro-antd/table";
 
 @Component({
   selector: 'minhdu-fontend-table-payroll',
   templateUrl: 'table-payroll.component.html'
 })
-export class TablePayrollComponent implements OnInit , AfterContentChecked{
+export class TablePayrollComponent implements OnInit{
+  @ViewChild('tablePayroll') tablePayroll!: NzTableComponent<any>
   @Input() payrolls!: PayrollEntity[]
   @Input() formGroup!: FormGroup
   @Input() scroll: { x: string, y: string } = {x: '5000px', y: '51vh'}
@@ -53,13 +54,7 @@ export class TablePayrollComponent implements OnInit , AfterContentChecked{
     private readonly modal: NzModalService,
     private readonly datePipe: DatePipe,
     private readonly message: NzMessageService,
-    private readonly ref: ChangeDetectorRef
   ) {
-  }
-
-
-  ngAfterContentChecked() {
-    this.ref.detectChanges();
   }
 
   ngOnInit() {
@@ -68,6 +63,7 @@ export class TablePayrollComponent implements OnInit , AfterContentChecked{
         this.onloadPayroll.emit({isPagination: false})
       }
     })
+
     this.formGroup.get('filterType')?.valueChanges.subscribe(val => {
       switch (val) {
         case FilterTypeEnum.SEASONAL:
@@ -80,6 +76,7 @@ export class TablePayrollComponent implements OnInit , AfterContentChecked{
           this.scroll = {x: '4200px', y: '51vh'}
       }
     })
+
     this.actions$.dispatch(PositionActions.loadAll({}))
     this.payrollQuery.select(state => state.search.startedAt).subscribe(val => {
       this.daysInMonth = rageDaysInMonth(new Date(val))
