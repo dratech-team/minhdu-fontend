@@ -144,6 +144,16 @@ export const blockSalariesConstant: BlockSalary[] = [
   {
     title: 'Ngày lễ',
     type: SalaryTypeEnum.HOLIDAY,
+    recipesConstant: recipesConstant,
+    constraintHoliday: {
+      disabled: false,
+      show: true
+    },
+    constraintOvertime: {
+      disabled: false,
+      show: true
+    },
+    units: UnitDatetimeConstant.filter(item => item.salaryType.includes(SalaryTypeEnum.HOLIDAY)),
     rate: {
       disabled: false,
       show: true
@@ -151,6 +161,6 @@ export const blockSalariesConstant: BlockSalary[] = [
     price: {
       disabled: false,
       show: true
-    },
+    }
   },
 ];

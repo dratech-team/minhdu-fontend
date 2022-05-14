@@ -1,5 +1,5 @@
-import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
-import { SalaryTypeEnum } from '../enums';
+import {DatetimeUnitEnum} from '@minhdu-fontend/enums';
+import {SalaryTypeEnum} from '../enums';
 
 export const UnitDatetimeConstant: { name: string, value: DatetimeUnitEnum, salaryType: SalaryTypeEnum[] }[] = [
   // {
@@ -10,7 +10,7 @@ export const UnitDatetimeConstant: { name: string, value: DatetimeUnitEnum, sala
   {
     name: 'Ngày',
     value: DatetimeUnitEnum.DAY,
-    salaryType: [SalaryTypeEnum.ABSENT, SalaryTypeEnum.OVERTIME]
+    salaryType: [SalaryTypeEnum.ABSENT, SalaryTypeEnum.OVERTIME, SalaryTypeEnum.HOLIDAY]
   },
   {
     name: 'Giờ',
@@ -20,7 +20,7 @@ export const UnitDatetimeConstant: { name: string, value: DatetimeUnitEnum, sala
   {
     name: 'Phút',
     value: DatetimeUnitEnum.MINUTE,
-    salaryType: [SalaryTypeEnum.ABSENT]
+    salaryType: [SalaryTypeEnum.ABSENT, SalaryTypeEnum.HOLIDAY]
   }
 ];
 

@@ -87,10 +87,6 @@ export class SettingSalaryDialogComponent implements OnInit {
       this.formGroup.get('insurance')?.setValue(false)
       this.prices = []
       switch (item.type) {
-        case SalaryTypeEnum.HOLIDAY:
-          this.message.info('Chức năng đang được phát triền')
-          this.formGroup.get('block')?.setValue('')
-          break
         case SalaryTypeEnum.OVERTIME:
           this.actions$.dispatch(BranchActions.loadAll({}))
           this.actions$.dispatch(PositionActions.loadAll({}))
@@ -113,7 +109,9 @@ export class SettingSalaryDialogComponent implements OnInit {
     }
     const value = this.formGroup.value;
     const template = this.mapTemplate(value)
-    if (value.block.type === SalaryTypeEnum.ABSENT || value.block.type === SalaryTypeEnum.OVERTIME) {
+    if (value.block.type === SalaryTypeEnum.ABSENT
+      || value.block.type === SalaryTypeEnum.HOLIDAY
+      || value.block.type === SalaryTypeEnum.OVERTIME) {
       if (!value.totalOf) {
         return this.message.warning('Chưa chọn tổng của ')
       }
@@ -160,9 +158,13 @@ export class SettingSalaryDialogComponent implements OnInit {
       unit: value.unit,
       prices: value.prices ? this.prices.concat([value.prices]) : this.prices
     };
-    if (value.block.type === SalaryTypeEnum.ABSENT || value.block.type === SalaryTypeEnum.OVERTIME) {
+    if (value.block.type === SalaryTypeEnum.ABSENT
+      || value.block.type === SalaryTypeEnum.HOLIDAY
+      || value.block.type === SalaryTypeEnum.OVERTIME) {
 
-      if (value.block.type === SalaryTypeEnum.ABSENT) {
+      if (value.block.type === SalaryTypeEnum.ABSENT
+        || value.block.type === SalaryTypeEnum.HOLIDAY
+      ) {
         if (value.constraintHoliday) {
           this.constraint.push(SalaryTypeEnum.HOLIDAY)
         }
