@@ -118,7 +118,7 @@ export class PayrollComponent implements OnInit {
     this.payrollStore.update(state => ({
       ...state, search: formData
     }))
-    return Object.assign({}, formData, {
+    return Object.assign({}, _.omit(formData, ['rangeDay', 'department']), {
       categoryId: formData.department?.id || '',
       branch: formData.branch?.name || '',
       position: formData.position?.name || '',
