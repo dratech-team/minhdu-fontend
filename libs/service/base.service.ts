@@ -3,12 +3,17 @@ import {Observable} from 'rxjs';
 import {ResponsePaginate} from '../data-models';
 import {Api} from "../constants";
 import {ResponseMessageEntity} from "../entities";
+import {VersionEnum} from "../enums";
 
 export class BaseService<T> {
+  versionV2 = VersionEnum.V2
+
   constructor(
     public readonly url: string,
-    public readonly http: HttpClient
+    public readonly http: HttpClient,
+    public readonly version?: string,
   ) {
+    this.url = version ? version + this.url : this.versionV2 + this.url
   }
 
   pagination(params?: any): Observable<ResponsePaginate<T> | any> {

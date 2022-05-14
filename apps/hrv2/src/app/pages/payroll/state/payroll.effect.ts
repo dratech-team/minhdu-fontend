@@ -36,13 +36,38 @@ export class PayrollEffect {
 
 
   @Effect()
-  add$ = this.action$.pipe(
+  addOne$ = this.action$.pipe(
     ofType(PayrollActions.addOne),
     switchMap((props: AddPayrollDto) => {
       this.payrollStore.update(state => ({
         ...state, added: false
       }));
-      return this.service.generate(props).pipe(
+      return this.service.addOne(props).pipe(
+        tap(res => {
+          this.payrollStore.update(state => ({
+            ...state, added: true
+          }));
+          this.message.success('Thêm phiếu lương thành công')
+          this.payrollStore.add(res)
+        }),
+        catchError(err => {
+          this.payrollStore.update(state => ({
+            ...state, added: null
+          }));
+          return of(PayrollActions.error(err));
+        })
+      );
+    })
+  );
+
+  @Effect()
+  addMany$ = this.action$.pipe(
+    ofType(PayrollActions.addMany),
+    switchMap((props) => {
+      this.payrollStore.update(state => ({
+        ...state, added: false
+      }));
+      return this.service.addMany(props).pipe(
         tap(res => {
           this.payrollStore.update(state => ({
             ...state, added: true

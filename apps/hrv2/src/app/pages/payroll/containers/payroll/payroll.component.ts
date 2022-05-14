@@ -7,14 +7,17 @@ import {Api, EmployeeStatusConstant, PayrollConstant} from "@minhdu-fontend/cons
 import {FilterTypeEnum, Role} from "@minhdu-fontend/enums";
 import {debounceTime, map} from "rxjs/operators";
 import {BranchActions, BranchQuery, DepartmentActions, DepartmentQuery} from "@minhdu-fontend/orgchart-v2";
-import {Subject} from "rxjs";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 import {NzModalService} from "ng-zorro-antd/modal";
-import {TransformConstantPipe} from "@minhdu-fontend/components";
-import {ModalExportExcelComponent} from "@minhdu-fontend/components";
-import {ModalExportExcelData} from "@minhdu-fontend/components";
+import {
+  ModalDatePickerComponent,
+  ModalExportExcelComponent,
+  ModalExportExcelData,
+  TransformConstantPipe
+} from "@minhdu-fontend/components";
 import {DatePipe} from "@angular/common";
 import * as _ from 'lodash'
+import {ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -33,7 +36,6 @@ export class PayrollComponent implements OnInit {
     return branches
   }));
   categories$ = this.departmentQuery.selectAll();
-  onChange = new Subject<void>();
 
   stateSearch = this.payrollQuery.getValue().search
   empStatusContain = EmployeeStatusConstant;
@@ -151,7 +153,26 @@ export class PayrollComponent implements OnInit {
     })
   }
 
-  onAdd() {
-    this.onChange.next()
+  onAddMany() {
+    this.modal.create({
+      nzTitle: 'Tạo tự động phiếu lương',
+      nzContent: ModalDatePickerComponent,
+      nzComponentParams: <{ data: ModalDatePickerEntity }>{
+        data: {
+          dateInit: this.formGroup.value.startedAt,
+          type: 'month'
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe(val => {
+      if (val) {
+        this.actions$.dispatch(PayrollActions.addMany({createdAt: new Date(val)}))
+        this.added$.subscribe(val => {
+          if (val) {
+            this.onLoadPayroll(false)
+          }
+        })
+      }
+    })
   }
 }

@@ -20,4 +20,3 @@ export * from './HR/payroll.constant';
 //Common
 export * from './gender-type.constant'
 export * from './storage-name.constant'
-export * from './api-v3.constant'

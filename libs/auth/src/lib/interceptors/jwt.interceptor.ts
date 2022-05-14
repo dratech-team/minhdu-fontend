@@ -2,7 +2,7 @@ import {HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest} from 
 import {Injectable, isDevMode} from '@angular/core';
 import {envDev, envProd} from '@minhdu-fontend/environment';
 import {Observable} from 'rxjs';
-import {Api, ApiV3Constant} from '@minhdu-fontend/constants';
+import {Api} from '@minhdu-fontend/constants';
 import {catchError, retry} from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
@@ -16,10 +16,7 @@ export class JwtInterceptor implements HttpInterceptor {
     const token = localStorage.getItem('token');
     const environment = isDevMode() ? envDev : envProd;
     const url = !request.url.startsWith(Api.SLACK_WEBHOOK)
-      ? (ApiV3Constant.includes(request.url)
-        ? environment.environment.apiUrlV3
-        : environment.environment.apiUrlV2
-    ) + request.url
+      ? environment.environment.apiUrl + request.url
       : request.url;
     if (token !== undefined) {
       request = request.clone({

@@ -8,6 +8,11 @@ export const addOne = createAction(
   props<AddPayrollDto>()
 );
 
+export const addMany = createAction(
+  '[PAYROLL] Add Many',
+  props<{createdAt: Date}>()
+);
+
 export const loadAll = createAction(
   '[PAYROLL] Load All',
   props<SearchPayrollDto>()
@@ -51,6 +56,7 @@ export const error = createAction(
 
 export const PayrollActions = {
   addOne,
+  addMany,
   loadAll,
   loadOne,
   update,

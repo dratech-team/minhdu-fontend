@@ -328,7 +328,7 @@
 <app-mouse-right
   #child
   [items]='[ItemContextMenu.RESTORE, ItemContextMenu.HISTORY_PAYROLL,ItemContextMenu.PRINT]'
-  (onAdd)='onAdd($event.id)'
+  (onAdd)='onAdd($event)'
   (onDel)='onDelete($event)'
   (onUpdate)='onUpdate($event)'
   (onRestore)='onRestore($event)'

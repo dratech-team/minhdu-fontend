@@ -30,7 +30,6 @@ export class TablePayrollComponent implements OnInit {
   @Input() payrolls!: PayrollEntity[]
   @Input() formGroup!: FormGroup
   @Input() scroll: { x: string, y: string } = {x: '5000px', y: '51vh'}
-  @Input() onChange?: Subject<void>
   @Output() onloadPayroll = new EventEmitter<{ isPagination: boolean }>()
   loading$ = this.payrollQuery.select(state => state.loading)
   loadMore$ = this.payrollQuery.select(state => state.loadMore)
@@ -83,16 +82,13 @@ export class TablePayrollComponent implements OnInit {
     this.payrollQuery.select(state => state.search.startedAt).subscribe(val => {
       this.daysInMonth = rageDaysInMonth(new Date(val))
     })
-    if (this.onChange) {
-      this.onChange.subscribe(_ => this.onAdd())
-    }
   }
 
   onPagination() {
     this.onloadPayroll.emit({isPagination: true})
   }
 
-  onAdd(employeeId?: number) {
+  onAdd(payroll: PayrollEntity) {
     this.modal.create({
       nzTitle: 'Tạo phiếu lương',
       nzContent: ModalDatePickerComponent,
@@ -107,7 +103,7 @@ export class TablePayrollComponent implements OnInit {
       if (date) {
         this.actions$.dispatch(PayrollActions.addOne({
           createdAt: this.payrollQuery.getValue().search.startedAt,
-          employeeId: employeeId
+          employeeId: payroll.id
         }))
       }
     })

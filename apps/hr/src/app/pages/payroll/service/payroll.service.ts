@@ -5,6 +5,7 @@ import {ResponsePaginateOvertimePayroll} from '@minhdu-fontend/data-models';
 import {BaseService} from 'libs/service/base.service';
 import {Observable} from 'rxjs';
 import {Payroll} from '../+state/payroll/payroll.interface';
+import {VersionEnum} from "@minhdu-fontend/enums";
 
 type Params =
   | HttpParams
@@ -31,7 +32,7 @@ export class PayrollService extends BaseService<Payroll> {
   }
 
   paginationPayroll(params?: any): Observable<ResponsePaginateOvertimePayroll<Payroll>> {
-    return this.http.get<ResponsePaginateOvertimePayroll<Payroll>>(Api.HR.PAYROLL.PAYROLL,
+    return this.http.get<ResponsePaginateOvertimePayroll<Payroll>>(VersionEnum.V2 + Api.HR.PAYROLL.PAYROLL,
       {params})
   }
 

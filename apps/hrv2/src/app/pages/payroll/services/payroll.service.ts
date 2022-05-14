@@ -5,18 +5,23 @@ import {ResponsePaginateOvertimePayroll} from '@minhdu-fontend/data-models';
 import {BaseService} from 'libs/service/base.service';
 import {Observable} from 'rxjs';
 import {PayrollEntity} from "../entities";
-import {AddPayrollDto, LoadOnePayrollDto, UpdatePayrollDto} from "../dto";
+import {LoadOnePayrollDto, UpdatePayrollDto} from "../dto";
 import {ConfirmPayrollDto} from "../dto/confirm-payroll.dto";
 import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
+import {VersionEnum} from "@minhdu-fontend/enums";
 
 @Injectable({providedIn: 'root'})
 export class PayrollService extends BaseService<PayrollEntity> {
   constructor(public readonly http: HttpClient) {
-    super(Api.HR.PAYROLL.PAYROLL, http);
+    super(Api.HR.PAYROLL.PAYROLL, http, VersionEnum.V3);
   }
 
-  generate(props: AddPayrollDto): Observable<ResponseMessageEntity> {
-    return this.http.post<ResponseMessageEntity>(Api.HR.PAYROLL.PAYROLL, props);
+  addOne(props: any): Observable<PayrollEntity> {
+    return super.addOne(props);
+  }
+
+  addMany(body: {createdAt: Date}): Observable<ResponseMessageEntity> {
+    return super.addMany(body);
   }
 
   getOne(props: LoadOnePayrollDto): Observable<PayrollEntity> {
@@ -24,7 +29,7 @@ export class PayrollService extends BaseService<PayrollEntity> {
   }
 
   paginationPayroll(params?: any): Observable<ResponsePaginateOvertimePayroll<PayrollEntity>> {
-    return this.http.get<ResponsePaginateOvertimePayroll<PayrollEntity>>(Api.HR.PAYROLL.PAYROLL,
+    return this.http.get<ResponsePaginateOvertimePayroll<PayrollEntity>>(VersionEnum.V3 + Api.HR.PAYROLL.PAYROLL,
       {params})
   }
 

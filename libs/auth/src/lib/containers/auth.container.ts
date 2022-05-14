@@ -6,6 +6,7 @@ import {Localhost} from '../../../../enums/localhost.enum';
 import {Actions} from "@datorama/akita-ng-effects";
 import {AccountActions} from "../../../../system/src/lib/state/account-management/account.actions";
 import {AccountQuery} from "../../../../system/src/lib/state/account-management/account.query";
+import {appConstant} from "@minhdu-fontend/constants";
 
 @Component({
   templateUrl: 'auth.container.html'
@@ -13,7 +14,6 @@ import {AccountQuery} from "../../../../system/src/lib/state/account-management/
 export class AuthComponent implements OnInit {
   loginForm!: FormGroup;
   loading$ = this.accountQuery.select(state => state.loginLoading)
-  appEnum = App;
   localhost = Localhost;
   constructor(
     private formBuilder: FormBuilder,
@@ -43,15 +43,11 @@ export class AuthComponent implements OnInit {
       return;
     }
     const host = `${window.location.host}`
-    const app = host === this.localhost.APP_HR? this.appEnum.HR:
-                  host === this.localhost.APP_SELL?this.appEnum.SELL:
-                    host === this.localhost.APP_WAREHOUSE? this.appEnum.WAREHOUSE:
-                      host === this.localhost.APP_ADMIN? this.appEnum.ADMIN: '';
     this.actions$.dispatch(
       AccountActions.signIn({
         username: this.f.username.value,
         password: this.f.password.value,
-        app: app
+        app: appConstant.find(app => app.localHost === host)?.value
       })
     );
   }
