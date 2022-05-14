@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {AfterContentChecked, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {PayrollEntity} from "../../entities";
 import {FormGroup} from "@angular/forms";
 import {BranchQuery, PositionActions, PositionQuery} from "@minhdu-fontend/orgchart-v2";
@@ -10,23 +10,19 @@ import {PaidConstant} from "../../constants/paid.constant";
 import {ConfirmConstant} from "../../constants/confirm.constant";
 import {Router} from "@angular/router";
 import {NzModalService} from "ng-zorro-antd/modal";
-import {
-  ModalDatePickerComponent
-} from "../../../../../../../../libs/components/src/lib/modal-date-picker/modal-date-picker.component";
-import {ModalAlertComponent} from "@minhdu-fontend/components";
+import {ModalAlertComponent, ModalDatePickerComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity, ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
 import {DatePipe} from "@angular/common";
 import {PayrollActions} from "../../state/payroll.action";
-import {Subject} from "rxjs";
 import {PayslipComponent} from "../payslip/payslip.component";
 import {NzMessageService} from "ng-zorro-antd/message";
-
+import {ChangeDetectorRef} from '@angular/core';
 
 @Component({
   selector: 'minhdu-fontend-table-payroll',
   templateUrl: 'table-payroll.component.html'
 })
-export class TablePayrollComponent implements OnInit {
+export class TablePayrollComponent implements OnInit , AfterContentChecked{
   @Input() payrolls!: PayrollEntity[]
   @Input() formGroup!: FormGroup
   @Input() scroll: { x: string, y: string } = {x: '5000px', y: '51vh'}
@@ -56,8 +52,14 @@ export class TablePayrollComponent implements OnInit {
     private readonly router: Router,
     private readonly modal: NzModalService,
     private readonly datePipe: DatePipe,
-    private readonly message: NzMessageService
+    private readonly message: NzMessageService,
+    private readonly ref: ChangeDetectorRef
   ) {
+  }
+
+
+  ngAfterContentChecked() {
+    this.ref.detectChanges();
   }
 
   ngOnInit() {
@@ -102,8 +104,10 @@ export class TablePayrollComponent implements OnInit {
     }).afterClose.subscribe(date => {
       if (date) {
         this.actions$.dispatch(PayrollActions.addOne({
-          createdAt: this.payrollQuery.getValue().search.startedAt,
-          employeeId: payroll.id
+          body: {
+            createdAt: this.payrollQuery.getValue().search.startedAt,
+            employeeId: payroll.employee.id
+          }
         }))
       }
     })
@@ -153,9 +157,9 @@ export class TablePayrollComponent implements OnInit {
   onHistory(payroll: PayrollEntity) {
     console.log(payroll)
     this.router.navigate(['phieu-luong/lich-su-luong/', payroll.id], {
-     queryParams:{
-       name: payroll.employee.lastName
-     }
+      queryParams: {
+        name: payroll.employee.lastName
+      }
     }).then()
   }
 

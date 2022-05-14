@@ -20,6 +20,7 @@ import {StateHistoryPlugin} from '@datorama/akita';
 import {PayrollQuery} from './payroll.query';
 import {PaginationDto} from "@minhdu-fontend/constants";
 import {DayOffSalaryEntity} from "../../salary/entities/day-off-salary.entity";
+import {AddManyPayrollDto} from "../dto/add-many-payroll.dto";
 
 @Injectable({providedIn: 'root'})
 export class PayrollEffect {
@@ -64,7 +65,7 @@ export class PayrollEffect {
   @Effect()
   addMany$ = this.action$.pipe(
     ofType(PayrollActions.addMany),
-    switchMap((props) => {
+    switchMap((props: AddManyPayrollDto) => {
       this.payrollStore.update(state => ({
         ...state, added: false
       }));

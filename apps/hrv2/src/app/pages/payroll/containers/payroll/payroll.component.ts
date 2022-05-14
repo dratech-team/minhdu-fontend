@@ -118,7 +118,7 @@ export class PayrollComponent implements OnInit {
     this.payrollStore.update(state => ({
       ...state, search: formData
     }))
-    return Object.assign({}, formData, {
+    return Object.assign({}, _.omit(formData, ['rangeDay', 'department']), {
       categoryId: formData.department?.id || '',
       branch: formData.branch?.name || '',
       position: formData.position?.name || '',
@@ -166,7 +166,7 @@ export class PayrollComponent implements OnInit {
       nzFooter: []
     }).afterClose.subscribe(val => {
       if (val) {
-        this.actions$.dispatch(PayrollActions.addMany({createdAt: new Date(val)}))
+        this.actions$.dispatch(PayrollActions.addMany({body: {createdAt: new Date(val)}}))
         this.added$.subscribe(val => {
           if (val) {
             this.onLoadPayroll(false)

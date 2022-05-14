@@ -5,10 +5,11 @@ import {ResponsePaginateOvertimePayroll} from '@minhdu-fontend/data-models';
 import {BaseService} from 'libs/service/base.service';
 import {Observable} from 'rxjs';
 import {PayrollEntity} from "../entities";
-import {LoadOnePayrollDto, UpdatePayrollDto} from "../dto";
+import {AddPayrollDto, LoadOnePayrollDto, UpdatePayrollDto} from "../dto";
 import {ConfirmPayrollDto} from "../dto/confirm-payroll.dto";
 import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
 import {VersionEnum} from "@minhdu-fontend/enums";
+import {AddManyPayrollDto} from "../dto/add-many-payroll.dto";
 
 @Injectable({providedIn: 'root'})
 export class PayrollService extends BaseService<PayrollEntity> {
@@ -16,12 +17,12 @@ export class PayrollService extends BaseService<PayrollEntity> {
     super(Api.HR.PAYROLL.PAYROLL, http, VersionEnum.V3);
   }
 
-  addOne(props: any): Observable<PayrollEntity> {
-    return super.addOne(props);
+  addOne(props: AddPayrollDto): Observable<PayrollEntity> {
+    return super.addOne(props.body);
   }
 
-  addMany(body: { createdAt: Date }): Observable<ResponseMessageEntity> {
-    return super.addMany(body);
+  addMany(props: AddManyPayrollDto): Observable<ResponseMessageEntity> {
+    return super.addMany(props.body);
   }
 
   getOne(props: LoadOnePayrollDto): Observable<PayrollEntity> {
