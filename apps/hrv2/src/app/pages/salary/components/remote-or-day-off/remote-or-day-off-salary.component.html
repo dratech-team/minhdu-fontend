@@ -1,6 +1,6 @@
 <div>
   <nz-steps [nzCurrent]='indexStep'>
-    <nz-step nzTitle='Onsite'></nz-step>
+    <nz-step [nzTitle]="data.type === salaryTypeEnum.DAY_OFF ? 'Không đi làm': 'Remote'"></nz-step>
     <nz-step nzTitle='Chọn nhân viên'></nz-step>
   </nz-steps>
   <ng-template [ngIf]='indexStep === 0'>
@@ -9,10 +9,19 @@
         <div class='row mb-3'>
           <div [formGroup]='formGroup' class='col-12'>
             <span class='font-weight-bold'>Tiêu đề</span><span class='star'>*</span>
-            <nz-select style="width: 100%" formControlName="type">
+            <nz-select style="width: 100%" formControlName="type" *ngIf="data.type === salaryTypeEnum.WFH else title">
               <nz-option *ngFor="let item of remoteConstant" [nzValue]="item.value" [nzLabel]="item.name"></nz-option>
             </nz-select>
+            <ng-template #title>
+              <input nz-input placeholder="Không đi làm" disabled>
+            </ng-template>
           </div>
+        </div>
+        <div class='mb-3'>
+          <span class='font-weight-bold'>Đơn vị</span><span class='star'>*</span>
+          <nz-select formControlName='unit' style='width: 100%' nzDisabled>
+            <nz-option *ngFor='let item of unitConstant' [nzValue]='item.value' [nzLabel]='item.name'></nz-option>
+          </nz-select>
         </div>
         <div class='mb-3'>
           <span class='font-weight-bold'>Buổi</span><span class='star'>*</span>
