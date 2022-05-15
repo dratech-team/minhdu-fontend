@@ -10,11 +10,11 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {RouteGuard} from "../../../warehouse/src/app/route.guard";
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {AuthModule, ErrorInterceptor, JwtInterceptor} from "@minhdu-fontend/auth";
+import {HttpClientModule} from "@angular/common/http";
+import {AuthModule} from "@minhdu-fontend/auth";
 import {HashLocationStrategy, registerLocaleData} from "@angular/common";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {NZ_ICONS} from "ng-zorro-antd/icon";
+import {NZ_ICONS, NzIconModule} from "ng-zorro-antd/icon";
 import * as AllIcons from "@ant-design/icons-angular/icons";
 import {IconDefinition} from "@ant-design/icons-angular";
 import {NzModalModule} from "ng-zorro-antd/modal";
@@ -27,6 +27,9 @@ import {NZ_I18N, vi_VN} from 'ng-zorro-antd/i18n';
 import localeVi from "@angular/common/locales/vi";
 import {NgxCurrencyModule} from "ngx-currency";
 import {customCurrencyMaskConfig2} from "@minhdu-fontend/config";
+import {AccountEffects} from "../../../../libs/system/src/lib/state/account-management/account.effects";
+import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
+import {SystemHistoryEffects} from "../../../../libs/system/src/lib/state/system-history/system-history.effects";
 
 registerLocaleData(localeVi);
 
@@ -50,6 +53,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     AppSidebarModule,
     PerfectScrollbarModule,
     AkitaNgDevtools.forRoot(),
+    AkitaNgEffectsModule.forRoot([AccountEffects]),
     MatSnackBarModule,
     StoreModule.forRoot({}, {}),
     AuthModule,
@@ -58,7 +62,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     NzButtonModule,
     NzModalModule,
     NzMessageModule,
-    NgxCurrencyModule.forRoot(customCurrencyMaskConfig2)
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig2),
+    NzIconModule
   ],
   providers: [
     RouteGuard,
@@ -67,7 +72,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     {provide: LOCALE_ID, useValue: 'vi-VN'},
     {provide: NZ_CONFIG, useValue: {message: {nzMaxStack: 1}} as NzConfig},
     {provide: NZ_I18N, useValue: vi_VN},
-    {provide: NZ_CONFIG, useValue: {modal:{nzMaskClosable: false}}},
+    {provide: NZ_CONFIG, useValue: {modal: {nzMaskClosable: false}}},
   ],
   bootstrap: [AppComponent],
 })

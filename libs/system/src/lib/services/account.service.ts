@@ -9,9 +9,10 @@ import {LoadOneAccountDto} from "../dto/account/load-one-account.dto";
 import {UpdateAccountDto} from "../dto/account/update-account.dto";
 import {AddAccountDto} from "../dto/account/add-account.dto";
 import {SignInDto} from "../dto/account/sign-in.dto";
+import {VersionEnum} from "@minhdu-fontend/enums";
 
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class AccountService extends BaseService<AccountEntity> {
   constructor(
     public readonly http: HttpClient
@@ -20,7 +21,7 @@ export class AccountService extends BaseService<AccountEntity> {
   }
 
   signUp(props: AddAccountDto): Observable<AccountEntity> {
-    return this.http.post<any>('auth/signup', props.body);
+    return this.http.post<any>(VersionEnum.V2 + 'auth/signup', props.body);
   }
 
   pagination(props: SearchAccountDto): Observable<any> {
@@ -44,10 +45,10 @@ export class AccountService extends BaseService<AccountEntity> {
   }
 
   signIn(body: SignInDto): Observable<any> {
-    return this.http.post<any>('auth/signin', body);
+    return this.http.post<any>(VersionEnum.V2 + 'auth/signin', body);
   }
 
   updatePassword(id: number, body: any): Observable<any> {
-    return this.http.patch<any>('auth' + '/change-password', body);
+    return this.http.patch<any>(VersionEnum.V2 + 'auth' + '/change-password', body);
   }
 }
