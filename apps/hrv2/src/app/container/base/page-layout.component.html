@@ -10,11 +10,15 @@
         </div>
       </div>
       <div class=' col-md-5 col-xm-12   d-flex justify-content-end'>
-        <button (click)="logout()" class="mr-2" nz-button nzType="default">
-          <i nz-icon nzType="logout" nzTheme="outline"></i>
-        </button>
+
         <button class="mr-2" nz-button nzType="primary">
           Thiết lập
+        </button>
+        <button (click)="changePassWord()" class="mr-2" nz-button nzType="default">
+          Đổi mật khẩu
+        </button>
+        <button (click)="logout()" class="mr-2" nz-button nzType="default">
+          <i nz-icon nzType="logout" nzTheme="outline"></i>
         </button>
       </div>
     </div>
