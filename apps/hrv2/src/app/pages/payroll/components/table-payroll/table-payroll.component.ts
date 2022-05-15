@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {PayrollEntity} from "../../entities";
 import {FormGroup} from "@angular/forms";
 import {BranchQuery, PositionActions, PositionQuery} from "@minhdu-fontend/orgchart-v2";
