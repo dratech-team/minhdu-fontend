@@ -75,7 +75,7 @@ export class TableSelectPayrollComponent implements OnInit {
     pagination ? this.loadMore = true : this.loading = true
     this.payrollService.paginationPayroll(pagination
       ? Object.assign({}, this.mapPayroll(),
-        {skip: PaginationDto.skip})
+        {skip: pagination ? this.payrolls.length : PaginationDto.skip})
       : this.mapPayroll())
       .pipe(catchError(err => {
         this.loading = false
@@ -86,11 +86,15 @@ export class TableSelectPayrollComponent implements OnInit {
         if (pagination) {
           this.loadMore = false
           this.payrolls = this.payrolls.concat(res.data)
-        }else {
+        } else {
           this.loading = false
           this.payrolls = res.data
         }
-
+        if(this.checked){
+          this.onAllChecked(true)
+        }else {
+          this.refreshCheckedStatus()
+        }
       })
   }
 
@@ -116,6 +120,7 @@ export class TableSelectPayrollComponent implements OnInit {
   onAllChecked(checked: boolean): void {
     this.payrolls.forEach(({id}) => this.updateCheckedSet(id, checked));
     this.refreshCheckedStatus();
+    console.log(this.payrollIdsSelected)
     this.formGroup.get('payrollIds')?.setValue(Array.from(this.payrollIdsSelected))
   }
 }
