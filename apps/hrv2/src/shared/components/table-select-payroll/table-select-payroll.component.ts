@@ -120,7 +120,6 @@ export class TableSelectPayrollComponent implements OnInit {
   onAllChecked(checked: boolean): void {
     this.payrolls.forEach(({id}) => this.updateCheckedSet(id, checked));
     this.refreshCheckedStatus();
-    console.log(this.payrollIdsSelected)
     this.formGroup.get('payrollIds')?.setValue(Array.from(this.payrollIdsSelected))
   }
 }
