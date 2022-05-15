@@ -58,6 +58,7 @@
           <th nzLeft>Tên bản mẫu</th>
           <th nzLeft>Đơn giá - Công thức lương</th>
           <th>Hệ số</th>
+          <th>Thời gian</th>
           <th>Loại bản mẫu</th>
           <th>Ghi chú</th>
         </tr>
@@ -82,11 +83,21 @@
               )
               : (settingSalary.prices|prices)}}</td>
           <td>{{settingSalary.rate}}</td>
+          <td>
+            <div *ngIf="settingSalary.startedAt else notDate">
+              Từ {{settingSalary.startedAt|date:'dd-MM-yyyy'}}
+              <br>
+              đến {{settingSalary.endedAt|date:'dd-MM-yyyy'}}
+            </div>
+            <ng-template #notDate>
+              -
+            </ng-template>
+          </td>
           <td>{{settingSalary.type|blocksalary: blockSalaries }}</td>
           <td>{{settingSalary.note }}</td>
         </tr>
         <tr *ngIf="((count$|async) || 0) < ((total$|async) || 0)">
-          <td [colSpan]="tableSetting.listOfAutoColWidth.length" >
+          <td [colSpan]="tableSetting.listOfAutoColWidth.length">
             <div class="w-100 d-flex justify-content-start" style="position: relative">
               <button
                 (click)="onLoadMore()"

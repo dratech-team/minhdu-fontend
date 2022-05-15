@@ -77,7 +77,7 @@ export class SalarySettingComponent implements OnInit {
     this.settingSalaryStore.update(state => ({
       ...state, search: dataFG
     }));
-    return Object.assign({},dataFG, {
+    return Object.assign({}, dataFG, {
         take: PaginationDto.take,
         skip: isPagination ? this.settingSalaryQuery.getCount() : PaginationDto.skip
       }

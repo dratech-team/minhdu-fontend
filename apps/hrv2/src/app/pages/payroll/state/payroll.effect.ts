@@ -20,6 +20,8 @@ import {StateHistoryPlugin} from '@datorama/akita';
 import {PayrollQuery} from './payroll.query';
 import {PaginationDto} from "@minhdu-fontend/constants";
 import {AddManyPayrollDto} from "../dto/add-many-payroll.dto";
+import {HolidaySalaryEntity} from "../../salary/entities/holiday-salary.entity";
+import * as moment from 'moment';
 
 @Injectable({providedIn: 'root'})
 export class PayrollEffect {
@@ -103,6 +105,7 @@ export class PayrollEffect {
       )
       return this.service.paginationPayroll(props.search).pipe(
         map(res => {
+          console.log(res)
           return Object.assign(res, {
             data: res.data.map(payroll => Object.assign(payroll, {
               basics: payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.BASIC || item.type === SalaryTypeEnum.BASIC_INSURANCE),
@@ -276,7 +279,8 @@ export class PayrollEffect {
         overtime: this.getTotalOvertimeOrAbsent(payroll.overtimes),
         absent: this.getTotalOvertimeOrAbsent(payroll.absents),
         deduction: payroll.deductions?.reduce((a, b) => a + (b?.price || 0), 0),
-        remote: this.getTotalRemote(payroll.remotes)
+        remote: this.getTotalRemote(payroll.remotes),
+        holiday: this.getTotalHoliday(payroll.holidays)
       },
       overtimes: payroll.overtimes.map(overtime => Object.assign(overtime, {expand: false}))
     });
@@ -320,6 +324,17 @@ export class PayrollEffect {
     return salary?.reduce((a, b) => {
       return {
         duration: a.duration + b.partial === PartialDayEnum.ALL_DAY ? b.duration : (b.duration / 2)
+      };
+    }, {duration: 0});
+  }
+
+  private getTotalHoliday(salary: HolidaySalaryEntity[]) {
+    return salary?.reduce((a, b) => {
+      return {
+        duration: a.duration + (b.setting.startedAt && b.setting.endedAt
+            ? moment(b.setting.endedAt).diff(b.setting.startedAt, 'days') + 1
+            : 0
+        )
       };
     }, {duration: 0});
   }

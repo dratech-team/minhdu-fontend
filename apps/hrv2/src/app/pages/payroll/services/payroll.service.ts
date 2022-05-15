@@ -10,6 +10,7 @@ import {ConfirmPayrollDto} from "../dto/confirm-payroll.dto";
 import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
 import {VersionEnum} from "@minhdu-fontend/enums";
 import {AddManyPayrollDto} from "../dto/add-many-payroll.dto";
+import {tap} from "rxjs/operators";
 
 @Injectable({providedIn: 'root'})
 export class PayrollService extends BaseService<PayrollEntity> {
@@ -31,7 +32,7 @@ export class PayrollService extends BaseService<PayrollEntity> {
 
   paginationPayroll(params?: any): Observable<ResponsePaginateOvertimePayroll<PayrollEntity>> {
     return this.http.get<ResponsePaginateOvertimePayroll<PayrollEntity>>(VersionEnum.V3 + Api.HR.PAYROLL.PAYROLL,
-      {params})
+      {params}).pipe(tap(val => console.log(val)))
   }
 
   update(props: UpdatePayrollDto): Observable<PayrollEntity> {

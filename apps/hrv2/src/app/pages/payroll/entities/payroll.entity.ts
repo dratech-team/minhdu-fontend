@@ -9,6 +9,7 @@ import {
   PermanentSalaryEntity, SalaryEntity, RemoteSalaryEntity
 } from "../../salary/entities";
 import {DeductionSalaryEntity} from "../../salary/entities/deduction-salary.entity";
+import {HolidaySalaryEntity} from "../../salary/entities/holiday-salary.entity";
 
 interface Salary {
   total: number,
@@ -59,6 +60,7 @@ export interface PayrollEntity extends BasePayrollEntity {
   overtimes: OvertimeSalaryEntity [],
   allowances: AllowanceSalaryEntity[],
   remotes: RemoteSalaryEntity[],
+  holidays: HolidaySalaryEntity[]
   payrollIds?: number[];
   total: {
     payroll: number;
@@ -68,6 +70,7 @@ export interface PayrollEntity extends BasePayrollEntity {
     absent: TotalSalary;
     deduction: number;
     overtime: TotalSalary;
-    remote: {duration: number};
+    remote: { duration: number };
+    holiday: {duration: number}
   }
 }
