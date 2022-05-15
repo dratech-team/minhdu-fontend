@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DatetimeUnitEnum, EmployeeType, RecipeType, Role, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { PartialDayEnum } from '@minhdu-fontend/data-models';
-import { getDaysInMonth } from '@minhdu-fontend/utils';
-import { DatePipe } from '@angular/common';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { catchError, map, tap } from 'rxjs/operators';
-import { PayrollQuery, PayrollStore } from '../../state';
-import { PayrollActions } from '../../state/payroll.action';
-import { PayrollEntity } from '../../entities';
-import { tranFormSalaryType } from '../../utils';
-import { PermanentSalaryComponent } from '../../../salary/components/permanent/permanent-salary.component';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { AbsentOvertimeSalaryComponent } from '../../../salary/components/absent-overtime/absent-overtime-salary.component';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {DatetimeUnitEnum, EmployeeType, RecipeType, Role, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {PartialDayEnum} from '@minhdu-fontend/data-models';
+import {getDaysInMonth} from '@minhdu-fontend/utils';
+import {DatePipe} from '@angular/common';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {catchError, map, tap} from 'rxjs/operators';
+import {PayrollQuery, PayrollStore} from '../../state';
+import {PayrollActions} from '../../state/payroll.action';
+import {PayrollEntity} from '../../entities';
+import {tranFormSalaryType} from '../../utils';
+import {PermanentSalaryComponent} from '../../../salary/components/permanent/permanent-salary.component';
+import {NzModalService} from 'ng-zorro-antd/modal';
+import {
+  AbsentOvertimeSalaryComponent
+} from '../../../salary/components/absent-overtime/absent-overtime-salary.component';
 import {
   AbsentSalaryEntity,
   AllowanceSalaryEntity,
@@ -20,17 +22,17 @@ import {
   RemoteSalaryEntity,
   SalaryEntity
 } from '../../../salary/entities';
-import { PayslipComponent } from '../../components/payslip/payslip.component';
-import { AllowanceSalaryComponent } from '../../../salary/components/allowance/allowance-salary.component';
-import { Actions } from '@datorama/akita-ng-effects';
+import {PayslipComponent} from '../../components/payslip/payslip.component';
+import {AllowanceSalaryComponent} from '../../../salary/components/allowance/allowance-salary.component';
+import {Actions} from '@datorama/akita-ng-effects';
 import {
   ModalAddOrUpdateAbsentOrOvertime,
   ModalAddOrUpdateAllowance,
   ModalAddOrUpdateDeduction,
   ModalPermanentSalaryData
 } from '../../data';
-import { ModalAlertComponent, ModalNoteComponent } from '@minhdu-fontend/components';
-import { ModalAlertEntity } from '@minhdu-fontend/base-entity';
+import {ModalAlertComponent, ModalNoteComponent} from '@minhdu-fontend/components';
+import {ModalAlertEntity} from '@minhdu-fontend/base-entity';
 import {
   AbsentSalaryService,
   AllowanceSalaryService,
@@ -39,15 +41,18 @@ import {
   SalaryPermanentService,
   SalaryRemoteService
 } from '../../../salary/service';
-import { throwError } from 'rxjs';
-import { UpdatePayrollComponent } from '../../components/update/update-payroll.component';
-import { RemoteSalaryComponent } from '../../../salary/components/remote/remote-salary.component';
-import { ModalAddOrUpdateRemote } from '../../../salary/data';
-import { DeductionSalaryEntity } from '../../../salary/entities/deduction-salary.entity';
-import { DeductionSalaryComponent } from '../../../salary/components/deduction/deduction-salary.component';
-import { RemoteConstant } from '../../../salary/constants/remote.constant';
-import { UnitSalaryConstant } from '../../../salary/constants';
-import { SessionConstant } from '../../../../../shared/constants';
+import {throwError} from 'rxjs';
+import {UpdatePayrollComponent} from '../../components/update/update-payroll.component';
+import {
+  RemoteOrDayOffSalaryComponent
+} from '../../../salary/components/remote-or-day-off/remote-or-day-off-salary.component';
+import {DeductionSalaryEntity} from '../../../salary/entities/deduction-salary.entity';
+import {DeductionSalaryComponent} from '../../../salary/components/deduction/deduction-salary.component';
+import {RemoteConstant} from '../../../salary/constants/remote.constant';
+import {UnitSalaryConstant} from '../../../salary/constants';
+import {SessionConstant} from '../../../../../shared/constants';
+import {DayOffSalaryEntity} from "../../../salary/entities/day-off-salary.entity";
+import {ModalAddOrUpdateRemoteOrDayOff} from "../../../salary/data";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -128,7 +133,7 @@ export class DetailPayrollComponent implements OnInit {
 
   updateSalary(
     type: SalaryTypeEnum,
-    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | AbsentSalaryEntity | DeductionSalaryEntity,
+    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | AbsentSalaryEntity | DeductionSalaryEntity | DayOffSalaryEntity,
     payroll?: PayrollEntity
   ) {
     const config = {
@@ -193,12 +198,14 @@ export class DetailPayrollComponent implements OnInit {
         }
       }));
     }
-    if (type === SalaryTypeEnum.WFH) {
+    if (type === SalaryTypeEnum.WFH || type === SalaryTypeEnum.DAY_OFF) {
       this.modal.create(Object.assign(config, {
-        nzTitle: (add ? 'Thêm ' : 'Cập nhật ') + 'Remote/Onsite/WFH',
-        nzContent: RemoteSalaryComponent,
-        nzComponentParams: <{ data: ModalAddOrUpdateRemote }>{
+        nzWidth: '400px',
+        nzTitle: (add ? 'Thêm ' : 'Cập nhật ') + (type === SalaryTypeEnum.WFH  ? 'Remote/Onsite/WFH' : 'ngày không đi làm') ,
+        nzContent: RemoteOrDayOffSalaryComponent,
+        nzComponentParams: <{ data: ModalAddOrUpdateRemoteOrDayOff }>{
           data: {
+            type: type,
             add: add,
             update: update
           }

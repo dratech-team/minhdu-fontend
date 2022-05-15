@@ -1,27 +1,27 @@
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {ResponsePaginate} from '../data-models';
-import {Api} from "../constants";
-import {ResponseMessageEntity} from "../entities";
-import {VersionEnum} from "../enums";
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ResponsePaginate } from '../data-models';
+import { Api } from '../constants';
+import { ResponseMessageEntity } from '../entities';
+import { VersionEnum } from '../enums';
 
 export class BaseService<T> {
-  versionV2 = VersionEnum.V2
+  versionV2 = VersionEnum.V2;
 
   constructor(
     public readonly url: string,
     public readonly http: HttpClient,
-    public readonly version?: string,
+    public readonly version?: VersionEnum
   ) {
-    this.url = version ? version + this.url : this.versionV2 + this.url
+    this.url = (version || this.versionV2) + this.url;
   }
 
   pagination(params?: any): Observable<ResponsePaginate<T> | any> {
-    return this.http.get<ResponsePaginate<T> | any>(this.url, {params});
+    return this.http.get<ResponsePaginate<T> | any>(this.url, { params });
   }
 
   getAll(params?: any): Observable<T[]> {
-    return this.http.get<T[]>(this.url, {params});
+    return this.http.get<T[]>(this.url, { params });
   }
 
   getOne(id: any): Observable<T> {
@@ -45,7 +45,7 @@ export class BaseService<T> {
   }
 
   delete(id: number, params?: any): Observable<void> {
-    return this.http.delete<void>(this.url + `/${id}`, {params});
+    return this.http.delete<void>(this.url + `/${id}`, { params });
   }
 
   deleteMany(body: any): Observable<ResponseMessageEntity> {
@@ -53,6 +53,6 @@ export class BaseService<T> {
   }
 
   sort(body: any): Observable<any> {
-    return this.http.patch<any>(Api.HR.EMPLOYEE.SORT_STT, body)
+    return this.http.patch<any>(Api.HR.EMPLOYEE.SORT_STT, body);
   }
 }

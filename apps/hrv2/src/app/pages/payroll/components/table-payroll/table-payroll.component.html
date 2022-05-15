@@ -305,10 +305,9 @@
         </ng-template>
       </tr>
     </ng-template>
-    <tr *ngIf="payrolls.length > 0">
-      <td [colSpan]="tablePayroll.listOfAutoColWidth.length">
-        <div class="w-100 d-flex justify-content-start" style="position: relative">
+    <tr class="border" *ngIf="payrolls.length > 0"  style="position: relative; background: White">
           <button
+            class="my-2"
             *ngIf="((count$ | async)|| 0) < ((total$ | async)|| 0)"
             (click)="onPagination()"
             [nzLoading]="(loadMore$|async)"
@@ -318,9 +317,6 @@
           >
             Tải thêm
           </button>
-        </div>
-      </td>
-
     </tr>
     </tbody>
   </nz-table>
