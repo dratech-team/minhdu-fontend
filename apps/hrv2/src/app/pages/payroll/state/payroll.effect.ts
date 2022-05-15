@@ -105,7 +105,6 @@ export class PayrollEffect {
       )
       return this.service.paginationPayroll(props.search).pipe(
         map(res => {
-          console.log(res)
           return Object.assign(res, {
             data: res.data.map(payroll => Object.assign(payroll, {
               basics: payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.BASIC || item.type === SalaryTypeEnum.BASIC_INSURANCE),
