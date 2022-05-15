@@ -16,14 +16,12 @@ import {DatePipe} from "@angular/common";
 import {PayrollActions} from "../../state/payroll.action";
 import {PayslipComponent} from "../payslip/payslip.component";
 import {NzMessageService} from "ng-zorro-antd/message";
-import {NzTableComponent} from "ng-zorro-antd/table";
 
 @Component({
   selector: 'minhdu-fontend-table-payroll',
   templateUrl: 'table-payroll.component.html'
 })
 export class TablePayrollComponent implements OnInit{
-  @ViewChild('tablePayroll') tablePayroll!: NzTableComponent<any>
   @Input() payrolls!: PayrollEntity[]
   @Input() formGroup!: FormGroup
   @Input() scroll: { x: string, y: string } = {x: '5000px', y: '51vh'}
