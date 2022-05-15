@@ -49,10 +49,24 @@ export class SettingSalaryEffect {
   loadAll$ = this.action$.pipe(
     ofType(SettingSalaryActions.loadAll),
     switchMap((props: SearchSalarySettingDto) => {
-      this.settingSalaryStore.update(state => ({...state, loading: true}))
+      this.settingSalaryStore.update(state => (
+        Object.assign({
+            ...state,
+          }, props.isPaginate
+            ? {loadMore: true}
+            : {loading: true}
+        )
+      ));
       return this.service.pagination(props).pipe(
         tap((res) => {
-          this.settingSalaryStore.update(state => ({...state, loading: false, total: res.total}))
+          this.settingSalaryStore.update(state => (
+            Object.assign({
+                ...state, total: res.total
+              }, props.isPaginate
+                ? {loadMore: false}
+                : {loading: false}
+            )
+          ));
           if (res.data.length === 0) {
             this.message.warning('Đã lấy hết bảng mẫu')
           }
@@ -63,7 +77,14 @@ export class SettingSalaryEffect {
           }
         }),
         catchError((err) => {
-          this.settingSalaryStore.update(state => ({...state, loading: false}))
+          this.settingSalaryStore.update(state => (
+            Object.assign({
+                ...state,
+              }, props.isPaginate
+                ? {loadMore: false}
+                : {loading: false}
+            )
+          ));
           return of(SettingSalaryActions.error(err))
         })
       );

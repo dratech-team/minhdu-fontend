@@ -4,6 +4,7 @@ import {DatetimeUnitEnum, EmployeeType} from "@minhdu-fontend/enums";
 import {UnitDatetimeConstant} from "./unit-datetime.constant";
 import {EmployeeTypeConstant} from "./employee-type.constant";
 import {ReferenceOvertimeConstant} from "./reference-overtime.constant";
+import {NzDateMode} from "ng-zorro-antd/date-picker";
 
 interface BlockSalary {
   title: string,
@@ -12,11 +13,23 @@ interface BlockSalary {
     disabled?: boolean,
     show?: boolean
   }
-  units?: {
-    name: string,
-    value: DatetimeUnitEnum,
-    salaryType: SalaryTypeEnum[]
-  }[],
+  unit?: {
+    units: {
+      name: string,
+      value: DatetimeUnitEnum,
+    }[],
+    disabled?: boolean
+  },
+  datetime?: {
+    type: NzDateMode
+    disabled?: boolean,
+    show?: boolean
+  },
+  rangeDay?: {
+    type: NzDateMode
+    disabled?: boolean,
+    show?: boolean
+  },
   constraintHoliday?: {
     disabled?: boolean,
     show?: boolean
@@ -104,7 +117,9 @@ export const blockSalariesConstant: BlockSalary[] = [
       disabled: false,
       show: true
     },
-    units: UnitDatetimeConstant.filter(item => item.salaryType.includes(SalaryTypeEnum.ABSENT)),
+    unit: {
+      units: UnitDatetimeConstant.filter(item => item.salaryType.includes(SalaryTypeEnum.ABSENT)),
+    },
     rate: {
       disabled: false,
       show: true
@@ -118,7 +133,9 @@ export const blockSalariesConstant: BlockSalary[] = [
     title: 'Tăng ca',
     type: SalaryTypeEnum.OVERTIME,
     employeeConstant: EmployeeTypeConstant,
-    units: UnitDatetimeConstant.filter(item => item.salaryType.includes(SalaryTypeEnum.OVERTIME)),
+    unit: {
+      units: UnitDatetimeConstant.filter(item => item.salaryType.includes(SalaryTypeEnum.OVERTIME)),
+    },
     recipesConstant: recipesConstantOvertime,
     rate: {
       disabled: false,
@@ -145,15 +162,15 @@ export const blockSalariesConstant: BlockSalary[] = [
     title: 'Ngày lễ',
     type: SalaryTypeEnum.HOLIDAY,
     recipesConstant: recipesConstant,
-    constraintHoliday: {
+    unit: {
+      units: UnitDatetimeConstant.filter(item => item.salaryType.includes(SalaryTypeEnum.HOLIDAY)),
+      disabled: true
+    },
+    rangeDay:{
+      type: 'date',
       disabled: false,
       show: true
     },
-    constraintOvertime: {
-      disabled: false,
-      show: true
-    },
-    units: UnitDatetimeConstant.filter(item => item.salaryType.includes(SalaryTypeEnum.HOLIDAY)),
     rate: {
       disabled: false,
       show: true
