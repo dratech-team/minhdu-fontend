@@ -1,12 +1,13 @@
-import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
 import {BonusTypeConstant} from "../../constants/bonus-type.constant";
 import {BonusUnitConstant} from "../../constants/bonus-unit.constant";
+import {Router} from "@angular/router";
 
 @Component({
   templateUrl: 'setting-bonus.component.html'
 })
-export class SettingBonusComponent implements OnInit, AfterViewChecked {
+export class SettingBonusComponent implements OnInit {
 
   bonusConstant = BonusTypeConstant
   bonusUnitConstant = BonusUnitConstant
@@ -24,18 +25,21 @@ export class SettingBonusComponent implements OnInit, AfterViewChecked {
   pageSize = 10
 
   constructor(
-    private cdr: ChangeDetectorRef
+    private readonly router: Router
   ) {
   }
 
-  ngAfterViewChecked(){
-    this.cdr.detectChanges();
-  }
-
   ngOnInit() {
+    this.formGroup.get('diligent')?.valueChanges.subscribe(val =>
+      this.formGroup.get('diligent')?.setValue(val.toUpperCase(), {emitEvent: false})
+    )
   }
 
   onSubmit(): any {
 
   };
+
+  onCancel() {
+    this.router.navigate(['xep-hang']).then()
+  }
 }

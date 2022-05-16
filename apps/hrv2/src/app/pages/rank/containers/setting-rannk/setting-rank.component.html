@@ -25,10 +25,14 @@
       </div>
       <div class="mt-2">
         <div class="font-weight-bold">Xếp loại <span class="star">*</span></div>
-        <input #inputRating nz-input formControlName="rating" type="text" [maxlength]="1" [ngModel]="inputRating.value|uppercase">
+        <input
+          nz-input
+          formControlName="rating"
+          type="text" [maxlength]="1"
+        >
       </div>
     <div class="mt-5 d-flex">
-      <button nz-button nzType="default" class="mr-2" (click)="formGroup.reset()">Huỷ</button>
+      <button nz-button nzType="default" class="mr-2" (click)="onCancel()">Huỷ</button>
       <button nz-button nzType="primary" (click)="onSubmit">Xác nhận</button>
     </div>
   </form>
