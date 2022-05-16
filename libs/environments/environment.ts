@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://100.96.1.3:3000/',
+  apiUrl: 'http://100.96.1.5:3000/',
   apiKey: 'pWPfDJ72krAmNy4g',
 };
 

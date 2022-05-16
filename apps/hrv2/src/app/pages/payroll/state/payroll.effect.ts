@@ -19,7 +19,7 @@ import {PartialDayEnum} from '@minhdu-fontend/data-models';
 import {StateHistoryPlugin} from '@datorama/akita';
 import {PayrollQuery} from './payroll.query';
 import {PaginationDto} from "@minhdu-fontend/constants";
-import {DayOffSalaryEntity} from "../../salary/entities/day-off-salary.entity";
+import {DayOffSalaryEntity} from "../../salary/entities";
 import {AddManyPayrollDto} from "../dto/add-many-payroll.dto";
 
 @Injectable({providedIn: 'root'})
@@ -46,6 +46,7 @@ export class PayrollEffect {
       }));
       return this.service.addOne(props).pipe(
         tap(res => {
+          console.log(res)
           this.payrollStore.update(state => ({
             ...state, added: true
           }));

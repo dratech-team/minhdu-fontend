@@ -153,7 +153,7 @@ export class SettingSalaryDialogComponent implements OnInit {
   mapTemplate(value: any) {
     const template = {
       title: value.title,
-      settingType: value.block.type === SalaryTypeEnum.BASIC && value.insurance ?
+      type: value.block.type === SalaryTypeEnum.BASIC && value.insurance ?
         SalaryTypeEnum.BASIC_INSURANCE :
         value.block.type,
       rate: value.rate,
