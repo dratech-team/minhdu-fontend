@@ -5,6 +5,7 @@ import { AbsentSalaryEntity } from './absent-salary.entity';
 import { DeductionSalaryEntity } from './deduction-salary.entity';
 import { HolidaySalaryEntity } from './holiday-salary.entity';
 import { DayOffSalaryEntity } from './day-off-salary.entity';
+import { RemoteSalaryEntity } from './remote-salary.entity';
 
 export * from './absent-salary.entity';
 export * from './allowance-salary.entity';
@@ -15,7 +16,6 @@ export * from './permanent-salary.entity';
 export * from './remote-salary.entity';
 export * from './salary.entity';
 
-
 export type UnionSalary =
   SalaryEntity
   | AllowanceSalaryEntity
@@ -24,3 +24,12 @@ export type UnionSalary =
   | DeductionSalaryEntity
   | HolidaySalaryEntity
   | DayOffSalaryEntity
+
+export type ExtendSalary =
+  SalaryEntity
+  & AllowanceSalaryEntity
+  & OvertimeSalaryEntity
+  & AbsentSalaryEntity
+  & DeductionSalaryEntity
+  & RemoteSalaryEntity
+  & HolidaySalaryEntity

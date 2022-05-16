@@ -13,15 +13,7 @@ import { tranFormSalaryType } from '../../utils';
 import { PermanentSalaryComponent } from '../../../salary/components/permanent/permanent-salary.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { AbsentOvertimeSalaryComponent } from '../../../salary/components/absent-overtime/absent-overtime-salary.component';
-import {
-  AbsentSalaryEntity,
-  AllowanceSalaryEntity,
-  DeductionSalaryEntity,
-  OvertimeSalaryEntity,
-  RemoteSalaryEntity,
-  SalaryEntity,
-  UnionSalary
-} from '../../../salary/entities';
+import { ExtendSalary, UnionSalary } from '../../../salary/entities';
 import { PayslipComponent } from '../../components/payslip/payslip.component';
 import { AllowanceSalaryComponent } from '../../../salary/components/allowance/allowance-salary.component';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -48,7 +40,6 @@ import { DeductionSalaryComponent } from '../../../salary/components/deduction/d
 import { RemoteConstant } from '../../../salary/constants/remote.constant';
 import { UnitSalaryConstant } from '../../../salary/constants';
 import { SessionConstant } from '../../../../../shared/constants';
-import { HolidaySalaryEntity } from '../../../salary/entities/holiday-salary.entity';
 import { HolidaySalaryComponent } from '../../../salary/components/holiday/holiday-salary.component';
 import { ModalAddOrUpdateHoliday } from '../../../salary/data/modal-holiday-salary.data';
 import { SalaryHolidayService } from '../../../salary/service/salary-holiday.service';
@@ -158,7 +149,7 @@ export class DetailPayrollComponent implements OnInit {
     type: SalaryTypeEnum,
     config: any,
     add?: { payroll: PayrollEntity },
-    update?: { salary: any }
+    update?: { salary: UnionSalary }
   ) {
     if (type === SalaryTypeEnum.ALLOWANCE) {
       this.modal.create(Object.assign(config, {
@@ -241,7 +232,7 @@ export class DetailPayrollComponent implements OnInit {
 
   removeSalary(
     type: SalaryTypeEnum,
-    salary: SalaryEntity & AllowanceSalaryEntity & OvertimeSalaryEntity & AbsentSalaryEntity & DeductionSalaryEntity & RemoteSalaryEntity & HolidaySalaryEntity
+    salary: ExtendSalary
   ) {
     console.log(salary.setting.title);
     this.modal.create({
