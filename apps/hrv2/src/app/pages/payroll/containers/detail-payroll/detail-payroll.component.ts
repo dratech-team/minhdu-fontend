@@ -234,7 +234,6 @@ export class DetailPayrollComponent implements OnInit {
     type: SalaryTypeEnum,
     salary: ExtendSalary
   ) {
-    console.log(salary.setting.title);
     this.modal.create({
       nzTitle: `Xoá ${salary.title || salary.setting.title}`,
       nzContent: ModalAlertComponent,

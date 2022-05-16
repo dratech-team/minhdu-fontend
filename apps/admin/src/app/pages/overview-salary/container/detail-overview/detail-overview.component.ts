@@ -47,7 +47,6 @@ export class DetailOverviewComponent implements OnInit {
     //           this.totalSalary = this.totalSalary + item.total;
     //         });
     //         this.dataDetail = val;
-    //         console.log(this.totalSalary)
     //       }
     //     });
     //   }
