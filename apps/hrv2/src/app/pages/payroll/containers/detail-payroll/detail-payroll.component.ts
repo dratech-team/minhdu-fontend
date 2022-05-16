@@ -43,12 +43,10 @@ import {
 } from '../../../salary/service';
 import {throwError} from 'rxjs';
 import {UpdatePayrollComponent} from '../../components/update/update-payroll.component';
-import {RemoteSalaryComponent} from '../../../salary/components/remote/remote-salary.component';
-import {ModalAddOrUpdateRemote} from '../../../salary/data';
 import {
   RemoteOrDayOffSalaryComponent
 } from '../../../salary/components/remote-or-day-off/remote-or-day-off-salary.component';
-import {DeductionSalaryEntity} from '../../../salary/entities/deduction-salary.entity';
+import {DeductionSalaryEntity} from '../../../salary/entities';
 import {DeductionSalaryComponent} from '../../../salary/components/deduction/deduction-salary.component';
 import {RemoteConstant} from '../../../salary/constants/remote.constant';
 import {UnitSalaryConstant} from '../../../salary/constants';
@@ -57,7 +55,7 @@ import {HolidaySalaryEntity} from "../../../salary/entities/holiday-salary.entit
 import {HolidaySalaryComponent} from "../../../salary/components/holiday/holiday-salary.component";
 import {ModalAddOrUpdateHoliday} from "../../../salary/data/modal-holiday-salary.data";
 import {SalaryHolidayService} from "../../../salary/service/salary-holiday.service";
-import {DayOffSalaryEntity} from "../../../salary/entities/day-off-salary.entity";
+import {DayOffSalaryEntity} from "../../../salary/entities";
 import {ModalAddOrUpdateRemoteOrDayOff} from "../../../salary/data";
 
 @Component({
