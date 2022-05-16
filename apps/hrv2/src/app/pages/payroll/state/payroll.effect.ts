@@ -21,6 +21,8 @@ import {PayrollQuery} from './payroll.query';
 import {PaginationDto} from "@minhdu-fontend/constants";
 import {DayOffSalaryEntity} from "../../salary/entities";
 import {AddManyPayrollDto} from "../dto/add-many-payroll.dto";
+import {HolidaySalaryEntity} from "../../salary/entities/holiday-salary.entity";
+import * as moment from 'moment';
 
 @Injectable({providedIn: 'root'})
 export class PayrollEffect {
@@ -278,6 +280,7 @@ export class PayrollEffect {
         overtime: this.getTotalOvertimeOrAbsent(payroll.overtimes),
         absent: this.getTotalOvertimeOrAbsent(payroll.absents),
         deduction: payroll.deductions?.reduce((a, b) => a + (b?.price || 0), 0),
+        holiday: this.getTotalHoliday(payroll.holidays),
         remote: this.getTotalRemoteOrDayOff(payroll.remotes),
         dayOff: this.getTotalRemoteOrDayOff(payroll.dayOffs)
       },
@@ -323,6 +326,17 @@ export class PayrollEffect {
     return salary?.reduce((a, b) => {
       return {
         duration: a.duration + b.partial === PartialDayEnum.ALL_DAY ? b.duration : (b.duration / 2)
+      };
+    }, {duration: 0});
+  }
+
+  private getTotalHoliday(salary: HolidaySalaryEntity[]) {
+    return salary?.reduce((a, b) => {
+      return {
+        duration: a.duration + (b.setting.startedAt && b.setting.endedAt
+            ? moment(b.setting.endedAt).diff(b.setting.startedAt, 'days') + 1
+            : 0
+        )
       };
     }, {duration: 0});
   }

@@ -1,0 +1,81 @@
+<div>
+  <nz-steps [nzCurrent]='indexStep'>
+    <nz-step nzTitle='Ngày lễ'></nz-step>
+    <nz-step nzTitle='Chọn nhân viên'></nz-step>
+  </nz-steps>
+  <ng-template [ngIf]='indexStep === 0'>
+    <form [formGroup]='formGroup'>
+      <div>
+        <div class='mb-2'>
+          <span class='font-weight-bold'>Loại ngày lễ</span><span class='star'>*</span>
+          <nz-select class='mt-1' style='width: 100%'
+                     formControlName='template'
+                     [compareWith]='compareFN'
+                     [nzLoading]='(settingsLoading$ | async)'
+          >
+            <nz-option *ngFor='let item of templateSalaries$ | async'
+                       [nzValue]='item' [nzLabel]="item.title || '' "></nz-option>
+          </nz-select>
+          <div *ngIf='checkValid.template.errors ' class='invalid-feedback'>
+            <div>Chưa chọn loại ngày lễ</div>
+          </div>
+        </div>
+        <div *ngIf="formGroup.value.template">
+          <div class='mb-3 row d-flex align-items-center'>
+            <div class="col">
+              <span class='font-weight-bold'>Hệ số</span><span class='star'>*</span>
+              <div class='form-control mt-1' style='background: #dddddd'>{{this.formGroup.value.template.rate}}</div>
+            </div>
+          </div>
+          <div class='mb-3'>
+            <span class='font-weight-bold'>Đơn giá</span>
+            <div class='form-control' style='background: #dddddd'>{{
+              ((formGroup.value.template.prices && formGroup.value.template.prices.length > 0 ? (formGroup.value.template.prices|prices) : (formGroup.value.template.totalOf|salarytype:'transform'))
+                + (formGroup.value.template.workday
+                    ? +' / ' + formGroup.value.template.workday
+                    : '/ Ngày công chuẩn'
+                )
+              )
+              }} </div>
+          </div>
+          <div>
+            <span class='font-weight-bold'>Thời gian</span>
+            <div class="form-control" style="background: #dddddd">
+              Từ. {{(formGroup.value.template.startedAt | date:'dd-MM-yyyy')}} -
+              đến {{(formGroup.value.template.endedAt | date:'dd-MM-yyyy')}}
+            </div>
+
+          </div>
+        </div>
+        <div class='row mb-3'>
+          <div [formGroup]='formGroup' class='col-12'>
+            <span class='font-weight-bold'>Chú thích</span>
+            <input class='form-control' placeholder='Nhập chú thích ' formControlName='note'>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <ng-template [ngIf]='indexStep=== 1 && data.add'>
+    <minhdu-fontend-select-payroll
+      [employeeType]="employeeType.EMPLOYEE_FULL_TIME"
+      [formGroup]="formGroup"
+      [createdAt]="data.add.payroll.createdAt"
+    >
+    </minhdu-fontend-select-payroll>
+  </ng-template>
+  <div>
+    <button class="mr-2" nz-button nzType='default' (click)="move('previous')" *ngIf='indexStep > 0'>
+      <span>Trở lại</span>
+    </button>
+    <button class="mr-2" nz-button nzType='default' (click)='move("next")' *ngIf='indexStep < 1'>
+      <span>Tiếp theo</span>
+    </button>
+    <button nz-button nzType='primary'
+            [nzLoading]="submitting"
+            (click)='onSubmit()'>
+      <span>Xác nhận</span>
+    </button>
+  </div>
+</div>
+

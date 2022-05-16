@@ -1,17 +1,17 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Api} from '@minhdu-fontend/constants';
-import {ResponsePaginateOvertimePayroll} from '@minhdu-fontend/data-models';
-import {BaseService} from 'libs/service/base.service';
-import {Observable} from 'rxjs';
-import {PayrollEntity} from "../entities";
-import {AddPayrollDto, LoadOnePayrollDto, UpdatePayrollDto} from "../dto";
-import {ConfirmPayrollDto} from "../dto/confirm-payroll.dto";
-import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
-import {VersionEnum} from "@minhdu-fontend/enums";
-import {AddManyPayrollDto} from "../dto/add-many-payroll.dto";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Api } from '@minhdu-fontend/constants';
+import { ResponsePaginateOvertimePayroll } from '@minhdu-fontend/data-models';
+import { BaseService } from 'libs/service/base.service';
+import { Observable } from 'rxjs';
+import { PayrollEntity } from '../entities';
+import { AddPayrollDto, LoadOnePayrollDto, UpdatePayrollDto } from '../dto';
+import { ConfirmPayrollDto } from '../dto/confirm-payroll.dto';
+import { ResponseMessageEntity } from '@minhdu-fontend/base-entity';
+import { VersionEnum } from '@minhdu-fontend/enums';
+import { AddManyPayrollDto } from '../dto/add-many-payroll.dto';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class PayrollService extends BaseService<PayrollEntity> {
   constructor(public readonly http: HttpClient) {
     super(Api.HR.PAYROLL.PAYROLL, http, VersionEnum.V3);
@@ -31,7 +31,7 @@ export class PayrollService extends BaseService<PayrollEntity> {
 
   paginationPayroll(params?: any): Observable<ResponsePaginateOvertimePayroll<PayrollEntity>> {
     return this.http.get<ResponsePaginateOvertimePayroll<PayrollEntity>>(VersionEnum.V3 + Api.HR.PAYROLL.PAYROLL,
-      {params})
+      { params });
   }
 
   update(props: UpdatePayrollDto): Observable<PayrollEntity> {

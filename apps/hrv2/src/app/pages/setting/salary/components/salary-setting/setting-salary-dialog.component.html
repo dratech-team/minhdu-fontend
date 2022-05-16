@@ -78,10 +78,42 @@
 
         </div>
       </div>
-      <div class=' main-popup mt-2' *ngIf='formGroup.value?.block?.units'>
+      <div class='mt-2' *ngIf='formGroup.value?.block?.datetime?.show'>
+        <div>
+          <span>Chọn {{formGroup.value.block.datetime.type|transformNzDateMode:'name'}}</span>
+          <span class="star">*</span>
+        </div>
+        <div>
+          <nz-date-picker
+            [nzFormat]="formGroup.value.block.datetime.type|transformNzDateMode:'format'"
+            [nzMode]="formGroup.value.block.datetime.type">
+          </nz-date-picker>
+        </div>
+        <div *ngIf='checkValid.datetime.errors?.required ' class='invalid-feedback'>
+          <div>Chưa chọn ngày</div>
+        </div>
+      </div>
+      <div class='mt-2' *ngIf='formGroup.value?.block?.rangeDay?.show'>
+        <div>
+          <span>Chọn từ {{formGroup.value.block.rangeDay.type|transformNzDateMode:'name'}} đên {{formGroup.value.block.rangeDay.type|transformNzDateMode:'name'}}
+          </span>
+          <span class="star">*</span>
+        </div>
+        <div>
+          <nz-range-picker
+            [nzMode]="formGroup.value.block.rangeDay.type"
+            nzFormat="dd-MM-yyyy"
+            formControlName="rangeDay">
+          </nz-range-picker>
+        </div>
+        <div *ngIf='checkValid.rangeDay.errors?.required ' class='invalid-feedback'>
+          <div>Chưa chọn ngày</div>
+        </div>
+      </div>
+      <div class=' main-popup mt-2' *ngIf='formGroup.value?.block?.unit'>
         <div><span class='font-weight-bold'>Đơn vị thời gian</span><span class='star'>*</span></div>
-        <nz-select style="width: 100%" formControlName="unit">
-          <nz-option *ngFor="let item of formGroup.value.block.units"
+        <nz-select style="width: 100%" formControlName="unit" [nzDisabled]="formGroup.value.block.unit.disabled">
+          <nz-option *ngFor="let item of formGroup.value.block.unit.units"
                      [nzValue]="item.value"
                      [nzLabel]="item.name"></nz-option>
         </nz-select>

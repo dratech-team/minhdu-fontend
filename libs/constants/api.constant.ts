@@ -17,6 +17,7 @@ export const Api = {
       ALLOWANCE_SALARY: 'salary/allowance',
       SALARY_EMPLOYEES: 'salary/employees',
       SALARY_REMOTE: 'salary/remote',
+      SALARY_HOLIDAY: 'salary/holiday',
       holiday: 'holiday',
       PAYSLIP: 'payslip',
       BRANCH_ALLOWANCE: 'branch/allowance',

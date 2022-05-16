@@ -27,6 +27,7 @@ import {SettingModule} from "../setting/setting.module";
 import {RemoteOrDayOffSalaryComponent} from "./components/remote-or-day-off/remote-or-day-off-salary.component";
 import {DeductionSalaryComponent} from "./components/deduction/deduction-salary.component";
 import {SharedModule} from "../../../shared/shared.module";
+import {HolidaySalaryComponent} from "./components/holiday/holiday-salary.component";
 
 @NgModule({
   imports: [
@@ -60,6 +61,7 @@ import {SharedModule} from "../../../shared/shared.module";
     DeductionSalaryComponent,
     TransformSalaryTypePipe,
     PartialdayPipe,
+    HolidaySalaryComponent
   ],
   providers: [
     DatePipe,
