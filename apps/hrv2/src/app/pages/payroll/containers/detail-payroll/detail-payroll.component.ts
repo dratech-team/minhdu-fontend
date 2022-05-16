@@ -1,38 +1,38 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {DatetimeUnitEnum, EmployeeType, RecipeType, Role, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {PartialDayEnum} from '@minhdu-fontend/data-models';
-import {getDaysInMonth} from '@minhdu-fontend/utils';
-import {DatePipe} from '@angular/common';
-import {NzMessageService} from 'ng-zorro-antd/message';
-import {catchError, map, tap} from 'rxjs/operators';
-import {PayrollQuery, PayrollStore} from '../../state';
-import {PayrollActions} from '../../state/payroll.action';
-import {PayrollEntity} from '../../entities';
-import {tranFormSalaryType} from '../../utils';
-import {PermanentSalaryComponent} from '../../../salary/components/permanent/permanent-salary.component';
-import {NzModalService} from 'ng-zorro-antd/modal';
-import {
-  AbsentOvertimeSalaryComponent
-} from '../../../salary/components/absent-overtime/absent-overtime-salary.component';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DatetimeUnitEnum, EmployeeType, RecipeType, Role, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { PartialDayEnum } from '@minhdu-fontend/data-models';
+import { getDaysInMonth } from '@minhdu-fontend/utils';
+import { DatePipe } from '@angular/common';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { catchError, map, tap } from 'rxjs/operators';
+import { PayrollQuery, PayrollStore } from '../../state';
+import { PayrollActions } from '../../state/payroll.action';
+import { PayrollEntity } from '../../entities';
+import { tranFormSalaryType } from '../../utils';
+import { PermanentSalaryComponent } from '../../../salary/components/permanent/permanent-salary.component';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { AbsentOvertimeSalaryComponent } from '../../../salary/components/absent-overtime/absent-overtime-salary.component';
 import {
   AbsentSalaryEntity,
   AllowanceSalaryEntity,
+  DeductionSalaryEntity,
   OvertimeSalaryEntity,
   RemoteSalaryEntity,
-  SalaryEntity
+  SalaryEntity,
+  UnionSalary
 } from '../../../salary/entities';
-import {PayslipComponent} from '../../components/payslip/payslip.component';
-import {AllowanceSalaryComponent} from '../../../salary/components/allowance/allowance-salary.component';
-import {Actions} from '@datorama/akita-ng-effects';
+import { PayslipComponent } from '../../components/payslip/payslip.component';
+import { AllowanceSalaryComponent } from '../../../salary/components/allowance/allowance-salary.component';
+import { Actions } from '@datorama/akita-ng-effects';
 import {
   ModalAddOrUpdateAbsentOrOvertime,
   ModalAddOrUpdateAllowance,
   ModalAddOrUpdateDeduction,
   ModalPermanentSalaryData
 } from '../../data';
-import {ModalAlertComponent, ModalNoteComponent} from '@minhdu-fontend/components';
-import {ModalAlertEntity} from '@minhdu-fontend/base-entity';
+import { ModalAlertComponent, ModalNoteComponent } from '@minhdu-fontend/components';
+import { ModalAlertEntity } from '@minhdu-fontend/base-entity';
 import {
   AbsentSalaryService,
   AllowanceSalaryService,
@@ -41,22 +41,18 @@ import {
   SalaryPermanentService,
   SalaryRemoteService
 } from '../../../salary/service';
-import {throwError} from 'rxjs';
-import {UpdatePayrollComponent} from '../../components/update/update-payroll.component';
-import {
-  RemoteOrDayOffSalaryComponent
-} from '../../../salary/components/remote-or-day-off/remote-or-day-off-salary.component';
-import {DeductionSalaryEntity} from '../../../salary/entities';
-import {DeductionSalaryComponent} from '../../../salary/components/deduction/deduction-salary.component';
-import {RemoteConstant} from '../../../salary/constants/remote.constant';
-import {UnitSalaryConstant} from '../../../salary/constants';
-import {SessionConstant} from '../../../../../shared/constants';
-import {HolidaySalaryEntity} from "../../../salary/entities/holiday-salary.entity";
-import {HolidaySalaryComponent} from "../../../salary/components/holiday/holiday-salary.component";
-import {ModalAddOrUpdateHoliday} from "../../../salary/data/modal-holiday-salary.data";
-import {SalaryHolidayService} from "../../../salary/service/salary-holiday.service";
-import {DayOffSalaryEntity} from "../../../salary/entities";
-import {ModalAddOrUpdateRemoteOrDayOff} from "../../../salary/data";
+import { throwError } from 'rxjs';
+import { UpdatePayrollComponent } from '../../components/update/update-payroll.component';
+import { RemoteOrDayOffSalaryComponent } from '../../../salary/components/remote-or-day-off/remote-or-day-off-salary.component';
+import { DeductionSalaryComponent } from '../../../salary/components/deduction/deduction-salary.component';
+import { RemoteConstant } from '../../../salary/constants/remote.constant';
+import { UnitSalaryConstant } from '../../../salary/constants';
+import { SessionConstant } from '../../../../../shared/constants';
+import { HolidaySalaryEntity } from '../../../salary/entities/holiday-salary.entity';
+import { HolidaySalaryComponent } from '../../../salary/components/holiday/holiday-salary.component';
+import { ModalAddOrUpdateHoliday } from '../../../salary/data/modal-holiday-salary.data';
+import { SalaryHolidayService } from '../../../salary/service/salary-holiday.service';
+import { ModalAddOrUpdateRemoteOrDayOff } from '../../../salary/data';
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -115,13 +111,13 @@ export class DetailPayrollComponent implements OnInit {
     private readonly salaryHolidayService: SalaryHolidayService,
     private readonly message: NzMessageService
   ) {
-    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+    this.router.routeReuseStrategy.shouldReuseRoute = function() {
       return false;
     };
   }
 
   ngOnInit() {
-    this.actions$.dispatch(PayrollActions.loadOne({id: this.getPayrollId}));
+    this.actions$.dispatch(PayrollActions.loadOne({ id: this.getPayrollId }));
   }
 
   get getPayrollId(): number {
@@ -133,12 +129,12 @@ export class DetailPayrollComponent implements OnInit {
       nzFooter: ' ',
       nzWidth: 'fit-content'
     };
-    this.onOpenSalary(type, config, {payroll});
+    this.onOpenSalary(type, config, { payroll });
   }
 
   updateSalary(
     type: SalaryTypeEnum,
-    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | AbsentSalaryEntity | DeductionSalaryEntity | HolidaySalaryEntity| DayOffSalaryEntity,
+    salary: UnionSalary,
     payroll?: PayrollEntity
   ) {
     const config = {
@@ -152,7 +148,7 @@ export class DetailPayrollComponent implements OnInit {
       {
         salary: Object.assign({}, salary,
           type === SalaryTypeEnum.ALLOWANCE
-            ? {workedAt: payroll?.employee.workedAt}
+            ? { workedAt: payroll?.employee.workedAt }
             : {}
         )
       });
@@ -206,7 +202,7 @@ export class DetailPayrollComponent implements OnInit {
     if (type === SalaryTypeEnum.WFH || type === SalaryTypeEnum.DAY_OFF) {
       this.modal.create(Object.assign(config, {
         nzWidth: '400px',
-        nzTitle: (add ? 'Thêm ' : 'Cập nhật ') + (type === SalaryTypeEnum.WFH  ? 'Remote/Onsite/WFH' : 'ngày không đi làm') ,
+        nzTitle: (add ? 'Thêm ' : 'Cập nhật ') + (type === SalaryTypeEnum.WFH ? 'Remote/Onsite/WFH' : 'ngày không đi làm'),
         nzContent: RemoteOrDayOffSalaryComponent,
         nzComponentParams: <{ data: ModalAddOrUpdateRemoteOrDayOff }>{
           data: {
@@ -247,7 +243,7 @@ export class DetailPayrollComponent implements OnInit {
     type: SalaryTypeEnum,
     salary: SalaryEntity & AllowanceSalaryEntity & OvertimeSalaryEntity & AbsentSalaryEntity & DeductionSalaryEntity & RemoteSalaryEntity & HolidaySalaryEntity
   ) {
-    console.log(salary.setting.title)
+    console.log(salary.setting.title);
     this.modal.create({
       nzTitle: `Xoá ${salary.title || salary.setting.title}`,
       nzContent: ModalAlertComponent,
@@ -274,14 +270,14 @@ export class DetailPayrollComponent implements OnInit {
                       : this.deductionSalaryService
         );
 
-        service.deleteMany({salaryIds: [salary.id]}).pipe(
+        service.deleteMany({ salaryIds: [salary.id] }).pipe(
           catchError(err => {
             this.message.warning(err);
             return throwError(err);
           })
         ).subscribe(res => {
           this.message.success(res.message);
-          this.actions$.dispatch(PayrollActions.loadOne({id: salary.payrollId}));
+          this.actions$.dispatch(PayrollActions.loadOne({ id: salary.payrollId }));
         });
       }
     });
@@ -315,11 +311,11 @@ export class DetailPayrollComponent implements OnInit {
           nzFooter: []
         }).afterClose.subscribe(val => {
           if (val) {
-            this.actions$.dispatch(PayrollActions.restore({id: payroll.id}))
+            this.actions$.dispatch(PayrollActions.restore({ id: payroll.id }));
           }
-        })
+        });
       } else {
-        this.message.warning('Phiếu lương chưa được xác nhận')
+        this.message.warning('Phiếu lương chưa được xác nhận');
       }
     }
   }
@@ -347,11 +343,11 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   scanHoliday(payrollId: number) {
-    this.actions$.dispatch(PayrollActions.scanHoliday({payrollId}));
+    this.actions$.dispatch(PayrollActions.scanHoliday({ payrollId }));
   }
 
   scroll(target: HTMLElement, sticky: HTMLElement) {
-    target.scrollIntoView({behavior: 'smooth', block: 'center'});
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
     this.onSticky(sticky);
   }
 
@@ -387,7 +383,7 @@ export class DetailPayrollComponent implements OnInit {
       if (value) {
         this.actions$.dispatch(PayrollActions.update({
           id: payroll.id,
-          updates: {taxed: !payroll.taxed}
+          updates: { taxed: !payroll.taxed }
         }));
       }
     });
@@ -404,7 +400,7 @@ export class DetailPayrollComponent implements OnInit {
       },
       nzFooter: ' '
     }).afterClose.subscribe(val => {
-      this.actions$.dispatch(PayrollActions.update({id: payroll.id, updates: {note: val}}));
+      this.actions$.dispatch(PayrollActions.update({ id: payroll.id, updates: { note: val } }));
     });
   }
 
