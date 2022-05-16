@@ -6,4 +6,6 @@ export interface BaseSalarySettingEntity extends BaseEntity {
   salary?: number
   note?: string,
   rate: number
+  startedAt?:Date
+  endedAt?:Date
 }

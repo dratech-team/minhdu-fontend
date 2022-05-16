@@ -1,5 +1,5 @@
 <div class="d-flex mt-3 ml-2">
-  <div class='d-flex flex-column ml-3 border p-2' style='height: 80vh; width:250px; overflow-y: scroll'>
+  <div class='d-flex flex-column ml-3 border p-2' style='height: 75vh; width:250px; overflow-y: scroll'>
     <nz-collapse>
       <nz-collapse-panel
         nzHeader='Tìm kiếm'
@@ -42,22 +42,14 @@
       </div>
     </div>
     <div>
-      <div class="d-flex justify-content-end">
-        <button
-          *ngIf="((count$ | async) || 0) < ((total$ | async) || 0)"
-          (click)="onLoadMore()"
-          [nzLoading]="(loading$|async)"
-          class="mb-1 mt-2"
-          nz-button
-          nzType="primary">Tải thêm
-        </button>
-      </div>
-      <nz-table #tableRank
-                nzShowPagination="false"
-                [nzScroll]="{ x: '1700px',y: '53vh'}"
-                nzSize='middle'
-                [nzLoading]="loading$|async"
-                [nzData]="(settingSalaries$|async)|| []"
+      <nz-table
+        #tableSetting
+        *ngIf=" (settingSalaries$|async) as settingSalaries"
+        nzShowPagination="false"
+        [nzScroll]="{ x: '1700px',y: '67vh'}"
+        nzSize='middle'
+        [nzLoading]="loading$|async"
+        [nzData]="settingSalaries"
       >
         <thead>
         <tr>
@@ -66,32 +58,57 @@
           <th nzLeft>Tên bản mẫu</th>
           <th nzLeft>Đơn giá - Công thức lương</th>
           <th>Hệ số</th>
+          <th>Thời gian</th>
           <th>Loại bản mẫu</th>
           <th>Ghi chú</th>
         </tr>
         </thead>
         <tbody>
-        <ng-template ngFor let-settingSalary [ngForOf]="tableRank.data" let-i='index'>
-          <tr (contextmenu)='child.onContextMenu($event,settingSalary)'>
-            <td nzLeft>{{i + 1}}</td>
-            <td>{{settingSalary.id}}</td>
-            <td nzLeft>{{settingSalary.title}}</td>
-            <td nzLeft>{{
-              settingSalary.type === salaryTypeEnum.ABSENT || settingSalary.type === salaryTypeEnum.OVERTIME
-                ? ((settingSalary.prices && settingSalary.prices.length > 0 ? (settingSalary.prices|prices) : (settingSalary.totalOf|salarytype:'transform'))
-                  + (settingSalary.workday
-                    ? +' / ' + settingSalary.workday
-                    : (settingSalary.type === salaryTypeEnum.OVERTIME && settingSalary.totalOf.length === 0
-                        ? ''
-                        : ' / Ngày công chuẩn'
-                    ))
-                )
-                : (settingSalary.prices|prices)}}</td>
-            <td>{{settingSalary.rate}}</td>
-            <td>{{settingSalary.type|blocksalary: blockSalaries }}</td>
-            <td>{{settingSalary.note }}</td>
-          </tr>
-        </ng-template>
+        <tr *ngFor="let settingSalary of settingSalaries; let i = index"
+            (contextmenu)='child.onContextMenu($event,settingSalary)'>
+          <td nzLeft>{{i + 1}}</td>
+          <td>{{settingSalary.id}}</td>
+          <td nzLeft>{{settingSalary.title}}</td>
+          <td nzLeft>{{
+            settingSalary.type === salaryTypeEnum.ABSENT
+            || settingSalary.type === salaryTypeEnum.OVERTIME
+            || settingSalary.type === salaryTypeEnum.HOLIDAY
+              ? ((settingSalary.prices && settingSalary.prices.length > 0 ? (settingSalary.prices|prices) : (settingSalary.totalOf|salarytype:'transform'))
+                + (settingSalary.workday
+                  ? +' / ' + settingSalary.workday
+                  : (settingSalary.type === salaryTypeEnum.OVERTIME && settingSalary.totalOf.length === 0
+                      ? ''
+                      : ' / Ngày công chuẩn'
+                  ))
+              )
+              : (settingSalary.prices|prices)}}</td>
+          <td>{{settingSalary.rate}}</td>
+          <td>
+            <div *ngIf="settingSalary.startedAt else notDate">
+              Từ {{settingSalary.startedAt|date:'dd-MM-yyyy'}}
+              <br>
+              đến {{settingSalary.endedAt|date:'dd-MM-yyyy'}}
+            </div>
+            <ng-template #notDate>
+              -
+            </ng-template>
+          </td>
+          <td>{{settingSalary.type|blocksalary: blockSalaries }}</td>
+          <td>{{settingSalary.note }}</td>
+        </tr>
+        <tr *ngIf="((count$|async) || 0) < ((total$|async) || 0)">
+          <td [colSpan]="tableSetting.listOfAutoColWidth.length">
+            <div class="w-100 d-flex justify-content-start" style="position: relative">
+              <button
+                (click)="onLoadMore()"
+                style="position: sticky; left: 40vw"
+                nz-button nzType="primary"
+                [nzLoading]="loadMore$|async">
+                Tải thêm
+              </button>
+            </div>
+          </td>
+        </tr>
         </tbody>
       </nz-table>
     </div>

@@ -20,7 +20,8 @@ import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 })
 export class SalarySettingComponent implements OnInit {
   settingSalaries$ = this.settingSalaryQuery.selectAll();
-  loading$ = this.settingSalaryQuery.selectLoading();
+  loading$ = this.settingSalaryQuery.select(state => state.loading);
+  loadMore$ = this.settingSalaryQuery.select(state => state.loadMore);
   total$ = this.settingSalaryQuery.select(state => state.total)
   count$ = this.settingSalaryQuery.selectCount()
 
@@ -53,33 +54,30 @@ export class SalarySettingComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(SettingSalaryActions.loadAll({
-      search: this.mapProduct(this.formGroup.value, false)
-    }));
+    this.onLoad(false)
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
-      map(value => {
-          this.actions$.dispatch(SettingSalaryActions.loadAll({
-            search: this.mapProduct(this.formGroup.value, false)
-          }));
-        }
-      )
-    ).subscribe();
+    ).subscribe(_ => {
+      this.onLoad(false)
+    });
   }
 
   onLoadMore() {
+    this.onLoad(true)
+  }
+
+  onLoad(isPaginate: boolean) {
     this.actions$.dispatch(SettingSalaryActions.loadAll({
-      search: this.mapProduct(this.formGroup.value, true),
-      isPaginate: true
+      search: this.mapSettingSalary(this.formGroup.value, true),
+      isPaginate: isPaginate
     }));
   }
 
-  mapProduct(dataFG: any, isPagination: boolean) {
-
+  mapSettingSalary(dataFG: any, isPagination: boolean) {
     this.settingSalaryStore.update(state => ({
       ...state, search: dataFG
     }));
-    return Object.assign(dataFG, {
+    return Object.assign({}, dataFG, {
         take: PaginationDto.take,
         skip: isPagination ? this.settingSalaryQuery.getCount() : PaginationDto.skip
       }

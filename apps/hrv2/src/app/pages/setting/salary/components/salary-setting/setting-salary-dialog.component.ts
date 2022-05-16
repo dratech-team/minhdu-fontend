@@ -19,6 +19,7 @@ import {
   PositionEntity,
   PositionQuery
 } from "@minhdu-fontend/orgchart-v2";
+import * as moment from "moment";
 
 @Component({
   templateUrl: 'setting-salary-dialog.component.html'
@@ -79,7 +80,10 @@ export class SettingSalaryDialogComponent implements OnInit {
       prices: [template?.prices && template.prices.length === 1 ? template.prices[0] : ''],
       branches: [template?.branches || []],
       positions: [template?.positions || []],
-      hasConstraints: [this.data?.update ? template?.hasConstraints : true]
+      hasConstraints: [this.data?.update ? template?.hasConstraints : true],
+      rangeDay: [
+        [template?.startedAt || '', template?.endedAt || '']
+      ],
     });
 
     this.formGroup.get('block')?.valueChanges.subscribe(item => {
@@ -88,8 +92,7 @@ export class SettingSalaryDialogComponent implements OnInit {
       this.prices = []
       switch (item.type) {
         case SalaryTypeEnum.HOLIDAY:
-          this.message.info('Chức năng đang được phát triền')
-          this.formGroup.get('block')?.setValue('')
+          this.formGroup.get('unit')?.setValue(DatetimeUnitEnum.DAY)
           break
         case SalaryTypeEnum.OVERTIME:
           this.actions$.dispatch(BranchActions.loadAll({}))
@@ -113,7 +116,9 @@ export class SettingSalaryDialogComponent implements OnInit {
     }
     const value = this.formGroup.value;
     const template = this.mapTemplate(value)
-    if (value.block.type === SalaryTypeEnum.ABSENT || value.block.type === SalaryTypeEnum.OVERTIME) {
+    if (value.block.type === SalaryTypeEnum.ABSENT
+      || value.block.type === SalaryTypeEnum.HOLIDAY
+      || value.block.type === SalaryTypeEnum.OVERTIME) {
       if (!value.totalOf) {
         return this.message.warning('Chưa chọn tổng của ')
       }
@@ -160,8 +165,10 @@ export class SettingSalaryDialogComponent implements OnInit {
       unit: value.unit,
       prices: value.prices ? this.prices.concat([value.prices]) : this.prices
     };
-    if (value.block.type === SalaryTypeEnum.ABSENT || value.block.type === SalaryTypeEnum.OVERTIME) {
-
+    if (value.block.type === SalaryTypeEnum.ABSENT
+      || value.block.type === SalaryTypeEnum.OVERTIME
+      || value.block.type === SalaryTypeEnum.HOLIDAY
+    ) {
       if (value.block.type === SalaryTypeEnum.ABSENT) {
         if (value.constraintHoliday) {
           this.constraint.push(SalaryTypeEnum.HOLIDAY)
@@ -186,11 +193,28 @@ export class SettingSalaryDialogComponent implements OnInit {
           }
           : {
             workday: value.workday ? value.workday : null,
-            price: null,
+            prices: [],
             totalOf: value.salaries.map((recipe: any) => recipe),
+          },
+        value.block.type === SalaryTypeEnum.HOLIDAY
+          ? {
+            startedAt: moment(value.rangeDay[0]).set(
+              {
+                hours: new Date().getHours(),
+                minutes: new Date().getMinutes(),
+                seconds: new Date().getSeconds()
+              }
+            ),
+            endedAt: moment(value.rangeDay[1]).set(
+              {
+                hours: new Date().getHours(),
+                minutes: new Date().getMinutes(),
+                seconds: new Date().getSeconds()
+              }
+            ),
           }
+          : {}
       )
-
     }
     return template
   }

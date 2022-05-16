@@ -150,7 +150,6 @@ export class TablePayrollComponent implements OnInit{
   }
 
   onHistory(payroll: PayrollEntity) {
-    console.log(payroll)
     this.router.navigate(['phieu-luong/lich-su-luong/', payroll.id], {
       queryParams: {
         name: payroll.employee.lastName

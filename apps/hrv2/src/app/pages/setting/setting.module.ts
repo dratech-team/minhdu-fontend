@@ -27,31 +27,33 @@ import {MatIconModule} from "@angular/material/icon";
 import {PricesPipe} from "./salary/pipes/prices.pipe";
 import {SalaryTypePipe} from "./salary/pipes/salary-type.pipe";
 import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
+import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 
 @NgModule({
-  imports: [
-    SharedModule,
-    CommonModule,
-    HttpClientModule,
-    SettingRoutingModule,
-    NzTableModule,
-    NzCollapseModule,
-    ReactiveFormsModule,
-    AkitaNgEffectsModule.forFeature([SettingSalaryEffect]),
-    ComponentsModule,
-    NzDropDownModule,
-    NzIconModule,
-    NzSelectModule,
-    NzPopoverModule,
-    NzRadioModule,
-    NzCheckboxModule,
-    NgxCurrencyModule,
-    NzButtonModule,
-    NzInputModule,
-    MatChipsModule,
-    MatIconModule,
-    OrgchartV2Module
-  ],
+    imports: [
+        SharedModule,
+        CommonModule,
+        HttpClientModule,
+        SettingRoutingModule,
+        NzTableModule,
+        NzCollapseModule,
+        ReactiveFormsModule,
+        AkitaNgEffectsModule.forFeature([SettingSalaryEffect]),
+        ComponentsModule,
+        NzDropDownModule,
+        NzIconModule,
+        NzSelectModule,
+        NzPopoverModule,
+        NzRadioModule,
+        NzCheckboxModule,
+        NgxCurrencyModule,
+        NzButtonModule,
+        NzInputModule,
+        MatChipsModule,
+        MatIconModule,
+        OrgchartV2Module,
+        NzDatePickerModule
+    ],
   declarations: [
     SalarySettingComponent,
     BlockSalaryPipe,
