@@ -12,7 +12,7 @@ export class AllowanceBranchService extends BaseService<AllowanceBranchEntity>{
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.HR.ALLOWANCE_BRANCH, http);
+    super(Api.HR.SALARY_BRANCH, http);
   }
 
   addOne(props: AddAllowanceBranchDto): Observable<AllowanceBranchEntity> {
