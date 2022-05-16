@@ -4,8 +4,6 @@ import {Api} from '@minhdu-fontend/constants';
 import {Injectable} from '@angular/core';
 import {Branch} from '@minhdu-fontend/data-models';
 import {BaseService} from '@minhdu-fontend/service';
-import {Update} from '@ngrx/entity';
-import {UpdateNum} from '@ngrx/entity/src/models';
 import {VersionEnum} from "@minhdu-fontend/enums";
 
 @Injectable()

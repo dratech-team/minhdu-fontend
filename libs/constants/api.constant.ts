@@ -38,7 +38,10 @@ export const Api = {
       EMPLOYEE_EXPORT: 'employee/export/employee',
       CATEGORY: 'category',
       SORT_STT: 'employee/sort/stt',
-      HISTORY_SALARY: 'history/salary'
+      HISTORY_SALARY: 'history/salary',
+      RANK: 'rank',
+      SETTING_RANK: 'setting-rank',
+      SETTING_BONUS: 'setting-bonus',
     },
     TEMPLATE: {
       BASIC_TEMPLATE: 'permanent-template',
