@@ -45,6 +45,9 @@ import {throwError} from 'rxjs';
 import {UpdatePayrollComponent} from '../../components/update/update-payroll.component';
 import {RemoteSalaryComponent} from '../../../salary/components/remote/remote-salary.component';
 import {ModalAddOrUpdateRemote} from '../../../salary/data';
+import {
+  RemoteOrDayOffSalaryComponent
+} from '../../../salary/components/remote-or-day-off/remote-or-day-off-salary.component';
 import {DeductionSalaryEntity} from '../../../salary/entities/deduction-salary.entity';
 import {DeductionSalaryComponent} from '../../../salary/components/deduction/deduction-salary.component';
 import {RemoteConstant} from '../../../salary/constants/remote.constant';
@@ -54,6 +57,8 @@ import {HolidaySalaryEntity} from "../../../salary/entities/holiday-salary.entit
 import {HolidaySalaryComponent} from "../../../salary/components/holiday/holiday-salary.component";
 import {ModalAddOrUpdateHoliday} from "../../../salary/data/modal-holiday-salary.data";
 import {SalaryHolidayService} from "../../../salary/service/salary-holiday.service";
+import {DayOffSalaryEntity} from "../../../salary/entities/day-off-salary.entity";
+import {ModalAddOrUpdateRemoteOrDayOff} from "../../../salary/data";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -135,7 +140,7 @@ export class DetailPayrollComponent implements OnInit {
 
   updateSalary(
     type: SalaryTypeEnum,
-    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | AbsentSalaryEntity | DeductionSalaryEntity | HolidaySalaryEntity,
+    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | AbsentSalaryEntity | DeductionSalaryEntity | HolidaySalaryEntity| DayOffSalaryEntity,
     payroll?: PayrollEntity
   ) {
     const config = {
@@ -200,12 +205,14 @@ export class DetailPayrollComponent implements OnInit {
         }
       }));
     }
-    if (type === SalaryTypeEnum.WFH) {
+    if (type === SalaryTypeEnum.WFH || type === SalaryTypeEnum.DAY_OFF) {
       this.modal.create(Object.assign(config, {
-        nzTitle: (add ? 'Thêm ' : 'Cập nhật ') + 'Remote/Onsite/WFH',
-        nzContent: RemoteSalaryComponent,
-        nzComponentParams: <{ data: ModalAddOrUpdateRemote }>{
+        nzWidth: '400px',
+        nzTitle: (add ? 'Thêm ' : 'Cập nhật ') + (type === SalaryTypeEnum.WFH  ? 'Remote/Onsite/WFH' : 'ngày không đi làm') ,
+        nzContent: RemoteOrDayOffSalaryComponent,
+        nzComponentParams: <{ data: ModalAddOrUpdateRemoteOrDayOff }>{
           data: {
+            type: type,
             add: add,
             update: update
           }

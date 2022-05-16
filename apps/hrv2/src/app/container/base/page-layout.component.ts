@@ -6,6 +6,9 @@ import {AppQuery} from "../../state/app.query";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {AccountActions} from "../../../../../../libs/system/src/lib/state/account-management/account.actions";
 import {Actions} from "@datorama/akita-ng-effects";
+import {
+  ModalChangePasswordComponent
+} from "../../../../../../libs/auth/src/lib/components/modal-change-password/modal-change-password.component";
 
 
 @Component({
@@ -40,6 +43,15 @@ export class PageLayoutComponent {
       nzOnOk: (_ => {
         return this.actions$.dispatch(AccountActions.logout())
       })
+    })
+  }
+
+  changePassWord() {
+    this.modal.create({
+      nzWidth:'500px',
+      nzTitle:'Đổi mật khẩu',
+      nzContent: ModalChangePasswordComponent,
+      nzFooter:[]
     })
   }
 }

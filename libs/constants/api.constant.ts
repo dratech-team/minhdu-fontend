@@ -11,6 +11,7 @@ export const Api = {
       OVERTIME: 'payroll/overtime/filter',
       SALARY: 'salaryv2',
       DEDUCTION_SALARY: 'salary/deduction',
+      DAY_OFF_SALARY: 'salary/dayoff',
       ABSENT_SALARY: 'salary/absent',
       OVERTIME_SALARY: 'salary/overtime',
       ALLOWANCE_SALARY: 'salary/allowance',

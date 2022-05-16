@@ -24,7 +24,7 @@ import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
 import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 import { PartialdayPipe, TransformSalaryTypePipe } from './pipes';
 import {SettingModule} from "../setting/setting.module";
-import {RemoteSalaryComponent} from "./components/remote/remote-salary.component";
+import {RemoteOrDayOffSalaryComponent} from "./components/remote-or-day-off/remote-or-day-off-salary.component";
 import {DeductionSalaryComponent} from "./components/deduction/deduction-salary.component";
 import {SharedModule} from "../../../shared/shared.module";
 import {HolidaySalaryComponent} from "./components/holiday/holiday-salary.component";
@@ -57,7 +57,7 @@ import {HolidaySalaryComponent} from "./components/holiday/holiday-salary.compon
   declarations: [
     PermanentSalaryComponent,
     AbsentOvertimeSalaryComponent,
-    RemoteSalaryComponent,
+    RemoteOrDayOffSalaryComponent,
     DeductionSalaryComponent,
     TransformSalaryTypePipe,
     PartialdayPipe,

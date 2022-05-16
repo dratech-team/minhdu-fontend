@@ -15,6 +15,7 @@ import {DialogChangePassword} from './components/dialog-change-password/dialog-c
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {ErrorInterceptor, JwtInterceptor} from "./interceptors";
+import {ModalChangePasswordComponent} from "./components/modal-change-password/modal-change-password.component";
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import {ErrorInterceptor, JwtInterceptor} from "./interceptors";
     RegisterComponent,
     LogoutComponent,
     AuthComponent,
-    DialogChangePassword
+    DialogChangePassword,
+    ModalChangePasswordComponent
   ],
   providers: [
     {

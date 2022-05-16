@@ -11,17 +11,19 @@ import {Actions} from '@datorama/akita-ng-effects';
 import {PayrollActions} from '../../../payroll/state/payroll.action';
 import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
-import {ModalAddOrUpdateRemote} from '../../data';
 import {RemoteConstant} from "../../constants/remote.constant";
 import {validateDayInMonth} from "../../utils/validate-day-in-month.util";
 import * as moment from "moment";
 import {SessionConstant} from "../../../../../shared/constants";
+import {ModalAddOrUpdateRemoteOrDayOff} from "../../data";
+import {DayOffSalaryService} from "../../service/day-off-salary.service";
+import {UnitSalaryConstant} from "../../constants";
 
 @Component({
-  templateUrl: 'remote-salary.component.html'
+  templateUrl: 'remote-or-day-off-salary.component.html'
 })
-export class RemoteSalaryComponent implements OnInit {
-  @Input() data!: ModalAddOrUpdateRemote;
+export class RemoteOrDayOffSalaryComponent implements OnInit {
+  @Input() data!: ModalAddOrUpdateRemoteOrDayOff;
   remoteConstant = RemoteConstant
   formGroup!: FormGroup;
 
@@ -33,6 +35,7 @@ export class RemoteSalaryComponent implements OnInit {
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
   employeeType = EmployeeType;
+  unitConstant = UnitSalaryConstant;
 
   disableApprenticeDate = (cur: Date): boolean => {
     return validateDayInMonth(cur, this.fistDateInMonth)
@@ -44,7 +47,8 @@ export class RemoteSalaryComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly modalRef: NzModalRef,
     private readonly message: NzMessageService,
-    private readonly remoteService: SalaryRemoteService
+    private readonly remoteService: SalaryRemoteService,
+    private readonly dayOffSalaryService: DayOffSalaryService
   ) {
   }
 
@@ -66,6 +70,7 @@ export class RemoteSalaryComponent implements OnInit {
         ],
         Validators.required
       ],
+      unit: [DatetimeUnitEnum.DAY],
       note: [salary?.note],
       payrollIds: [payroll ? [payroll.id] : []]
     })
@@ -82,7 +87,8 @@ export class RemoteSalaryComponent implements OnInit {
     }
     const salary = this.mapSalary(this.formGroup.value);
     this.submitting = true;
-    (this.data.add ? this.remoteService.addMany(salary) : this.remoteService.updateMany(salary))
+    const service = this.data.type === SalaryTypeEnum.DAY_OFF ? this.dayOffSalaryService : this.remoteService;
+    (this.data.add ? service.addMany(salary) : service.updateMany(salary))
       .pipe(catchError(err => {
         this.submitting = false;
         return this.onSubmitError(err);
@@ -103,9 +109,9 @@ export class RemoteSalaryComponent implements OnInit {
 
   mapSalary(value: any) {
     const salary = {
-      type: value.type,
+      type: this.data.type === SalaryTypeEnum.DAY_OFF ? this.data.type : value.type,
       note: value.note,
-      unit: DatetimeUnitEnum.DAY,
+      unit: value.unit,
       partial: value.partial,
       startedAt: moment(value.rangeDay[0]).set(
         {
@@ -126,7 +132,10 @@ export class RemoteSalaryComponent implements OnInit {
       salary,
       this.data.add
         ? {payrollIds: value.payrollIds}
-        : {salaryIds: [this.data.update.salary.id]}
+        : {salaryIds: [this.data.update.salary.id]},
+      this.data.type === SalaryTypeEnum.DAY_OFF
+        ? {title: 'Không đi làm'}
+        : {}
     );
   }
 
