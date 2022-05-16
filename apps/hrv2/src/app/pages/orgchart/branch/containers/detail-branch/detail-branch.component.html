@@ -23,9 +23,10 @@
        <button nz-button nzType="primary" (click)="onAddAllowance(branch)">Thêm mục</button>
       </div>
       <nz-table
+        nzShowPagination="false"
         [nzScroll]="{x:'', y:'50vh'}"
         class="shadow-lg"
-        #tableBranch
+        nzSize="small"
         [nzData]="branch.allowances|| []"
       >
         <thead>
@@ -39,31 +40,31 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor='let allowance of tableBranch.data let i = index'
+        <tr *ngFor='let allowance of branch.allowances let i = index'
             (click)='onUpdateAllowance(allowance)'
             class='pointer'
         >
-          <th>
+          <td>
             {{i + 1}}
-          </th>
-          <th>
+          </td>
+          <td>
             {{allowance.id}}
-          </th>
-          <th>
-            {{allowance?.startedAt|date:'MM/yyyy'}}
-          </th>
-          <th>
+          </td>
+          <td>
+            {{allowance?.datetime|date:'MM/yyyy'}}
+          </td>
+          <td>
             {{allowance.title}}
-          </th>
-          <th>
+          </td>
+          <td>
             {{allowance?.price|number:'1.0-0'}} đ
-          </th>
-          <th class='pointer'>
+          </td>
+          <td class='pointer'>
             <button nz-button nzDanger
                     (click)='deleteAllowance(allowance); $event.stopPropagation()'>
               Xóa
             </button>
-          </th>
+          </td>
         </tr>
         </tbody>
       </nz-table>
