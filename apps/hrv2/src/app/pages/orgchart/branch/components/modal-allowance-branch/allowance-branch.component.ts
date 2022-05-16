@@ -53,8 +53,9 @@ export class AllowanceBranchComponent implements OnInit {
       this.summiting = false
       return throwError(err)
     })).subscribe(_ => {
-      this.message.success('Thêm phụ cấp thành công')
-      const branchId = this.data.add?.branch.id || this.data.update?.allowance.branch?.id
+
+      this.message.success(this.data.add ?' Thêm phụ cấp thành công' : 'Cập nhật phụ cấp thành công')
+      const branchId = this.data.add?.branch.id || this.data.update?.allowance.branchId
       if (branchId) {
         this.actions$.dispatch(BranchActions.loadOne(
           {id: branchId}
@@ -66,7 +67,7 @@ export class AllowanceBranchComponent implements OnInit {
 
   mapAllowance(value: any) {
     return {
-      branchId: this.data.add?.branch.id || this.data.update?.allowance.branch?.id,
+      branchId: this.data.add?.branch.id || this.data.update?.allowance.branchId,
       title: value.title,
       price: value.price,
       datetime: value.datetime,

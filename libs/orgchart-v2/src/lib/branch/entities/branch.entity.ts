@@ -7,13 +7,13 @@ import {
 
 export interface BranchEntity extends BaseBranchEntity {
   recipe: RecipeType,
-  _count?: {
+  _count: {
     employees: number,
     employeeLeft: number
   },
-  allowances?: AllowanceBranchEntity [],
-  positions?: PositionEntity[],
-  phone?: string,
-  address?: string,
-  status?: boolean,
+  allowances: AllowanceBranchEntity [],
+  positions: PositionEntity[],
+  phone: string,
+  address: string,
+  status: boolean,
 }
