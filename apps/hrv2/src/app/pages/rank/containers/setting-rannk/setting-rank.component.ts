@@ -1,10 +1,11 @@
-import {AfterViewChecked, ChangeDetectorRef, Component, OnInit} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
+import {Router} from "@angular/router";
 
 @Component({
   templateUrl: 'setting-rank.component.html'
 })
-export class SettingRankComponent implements OnInit, AfterViewChecked {
+export class SettingRankComponent implements OnInit {
   formGroup = new FormGroup({
     from: new FormControl(''),
     to: new FormControl(''),
@@ -14,18 +15,22 @@ export class SettingRankComponent implements OnInit, AfterViewChecked {
 
 
   constructor(
-    private cdr: ChangeDetectorRef
+    private readonly router: Router
+
   ) {
   }
 
-  ngAfterViewChecked() {
-    this.cdr.detectChanges();
-  }
-
   ngOnInit() {
+    this.formGroup.get('rating')?.valueChanges.subscribe(val =>
+      this.formGroup.get('rating')?.setValue(val.toUpperCase(), {emitEvent: false})
+    )
   }
 
   onSubmit(): any {
 
   };
+
+  onCancel() {
+    this.router.navigate(['xep-hang']).then()
+  }
 }

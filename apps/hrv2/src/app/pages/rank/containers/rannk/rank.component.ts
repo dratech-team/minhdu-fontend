@@ -2,6 +2,8 @@ import {Component, OnInit} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
 import {Observable} from "rxjs";
 import {Branch, Position} from "@minhdu-fontend/data-models";
+import {AppStore} from "../../../../state/app.store";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'minhdu-fontend-rank',
@@ -20,7 +22,10 @@ export class RankComponent implements OnInit {
   });
   pageSize = 10
 
-  constructor() {
+  constructor(
+    private readonly appStore: AppStore,
+    private readonly router: Router,
+  ) {
   }
 
   ngOnInit() {
@@ -31,5 +36,12 @@ export class RankComponent implements OnInit {
 
   onPagination(index: number) {
     //pagination
+  }
+
+  onSetting(type : 'BONUS'|'RANK') {
+    this.appStore.update(state => ({
+      ...state, appName: type === 'BONUS' ? 'Cài đặt thưởng': 'Cài đặt Xếp hạng'
+    }))
+    this.router.navigate(['xep-hang/' + (type === 'BONUS'? 'cai-dat-thuong': 'cai-dat-xep-hang') ]).then()
   }
 }

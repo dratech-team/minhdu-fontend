@@ -37,8 +37,8 @@
       <ul class="border rounded" nz-menu [nzMode]="'vertical'">
         <li nz-submenu nzIcon="setting">
           <ul class="pointer">
-            <li nz-menu-group nzTitle="Xếp loại" routerLink="/xep-hang/cai-dat-xep-hang"></li>
-            <li nz-menu-group nzTitle="Thưởng" routerLink="/xep-hang/cai-dat-thuong"></li>
+            <li nz-menu-group nzTitle="Xếp loại" (click)="onSetting('RANK')"></li>
+            <li nz-menu-group nzTitle="Thưởng" (click)="onSetting('BONUS')"></li>
           </ul>
         </li>
       </ul>
