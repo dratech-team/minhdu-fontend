@@ -14,7 +14,7 @@ import {SearchSettingRankDto} from "../../dto/setting-rank/search-setting-rank.d
 export class SettingRankEffect {
   constructor(
     private readonly action$: Actions,
-    private readonly rankStore: SettingRankStore,
+    private readonly settingRankStore: SettingRankStore,
     private readonly rankQuery: SettingRankQuery,
     private readonly settingRankService: SettingRankService,
     private readonly message: NzMessageService,
@@ -25,7 +25,7 @@ export class SettingRankEffect {
   loadAll$ = this.action$.pipe(
     ofType(SettingRankActions.loadAll),
     switchMap((props: SearchSettingRankDto) => {
-      this.rankStore.update(state => (
+      this.settingRankStore.update(state => (
         Object.assign({
             ...state,
           }, props.isPaginate
@@ -41,7 +41,7 @@ export class SettingRankEffect {
       )
       return this.settingRankService.pagination(props).pipe(
         map((res) => {
-          this.rankStore.update(state => (  Object.assign({
+          this.settingRankStore.update(state => (  Object.assign({
                 ...state, total: res.total
               }, props.isPaginate
                 ? {loadMore: false}
@@ -52,13 +52,13 @@ export class SettingRankEffect {
             this.message.info('Đã lấy hết cài đặt xếp hạng')
           }
           if (props.isPaginate) {
-            this.rankStore.add(res.data);
+            this.settingRankStore.add(res.data);
           } else {
-            this.rankStore.set(res.data);
+            this.settingRankStore.set(res.data);
           }
         }),
         catchError((err) => {
-          this.rankStore.update(state => (  Object.assign({
+          this.settingRankStore.update(state => (  Object.assign({
                 ...state
               }, props.isPaginate
                 ? {loadMore: false}
@@ -75,20 +75,20 @@ export class SettingRankEffect {
   addOne$ = this.action$.pipe(
     ofType(SettingRankActions.addOne),
     switchMap((props) => {
-      this.rankStore.update(state => ({
+      this.settingRankStore.update(state => ({
         ...state, added: false
       }));
       return this.settingRankService.addOne(props).pipe(
         tap((res) => {
             this.message.success('Thêm cài đặt xếp hạng thành công')
-            this.rankStore.update(state => ({
+            this.settingRankStore.update(state => ({
               ...state, added: true
             }));
-            this.rankStore.add(res);
+            this.settingRankStore.add(res);
           }
         ),
         catchError(err => {
-          this.rankStore.update(state => ({
+          this.settingRankStore.update(state => ({
             ...state, added: null
           }));
           return of(SettingRankActions.error(err))
@@ -101,7 +101,7 @@ export class SettingRankEffect {
   loadOne$ = this.action$.pipe(
     ofType(SettingRankActions.loadOne),
     switchMap((props) => this.settingRankService.getOne(props).pipe(
-      map(res => this.rankStore.upsert(res.id, res)),
+      map(res => this.settingRankStore.upsert(res.id, res)),
       catchError((err) => of(SettingRankActions.error(err)))
     )),
   );
@@ -110,18 +110,18 @@ export class SettingRankEffect {
   update$ = this.action$.pipe(
     ofType(SettingRankActions.update),
     switchMap((props) => {
-        this.rankStore.update(state => ({
+        this.settingRankStore.update(state => ({
           ...state, added: false
         }));
         return this.settingRankService.update(props).pipe(
           tap(response => {
-            this.rankStore.update(state => ({
+            this.settingRankStore.update(state => ({
               ...state, added: true
             }));
-            this.rankStore.update(response.id, response);
+            this.settingRankStore.update(response.id, response);
           }),
           catchError(err => {
-              this.rankStore.update(state => ({
+              this.settingRankStore.update(state => ({
                 ...state, added: null
               }));
               return of(SettingRankActions.error(err))
@@ -136,20 +136,20 @@ export class SettingRankEffect {
   remove$ = this.action$.pipe(
     ofType(SettingRankActions.remove),
     switchMap((props) => {
-        this.rankStore.update(state => ({
+        this.settingRankStore.update(state => ({
           ...state, deleted: false
         }))
         return this.settingRankService.delete(props.id).pipe(
           map(() => {
-              this.rankStore.update(state => ({
+              this.settingRankStore.update(state => ({
                 ...state, deleted: true
               }))
               this.message.success('Xoá xếp hạng thành công')
-              return this.rankStore.remove(props.id)
+              return this.settingRankStore.remove(props.id)
             }
           ),
           catchError((err) => {
-              this.rankStore.update(state => ({
+              this.settingRankStore.update(state => ({
                 ...state, deleted: null
               }))
               return of(SettingRankActions.error(err))

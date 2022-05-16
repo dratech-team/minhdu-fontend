@@ -3,12 +3,15 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {BonusTypeConstant} from "../../constants/bonus-type.constant";
 import {BonusUnitConstant} from "../../constants/bonus-unit.constant";
 import {Router} from "@angular/router";
+import {Actions} from "@datorama/akita-ng-effects";
+import {SettingBonusActions} from "../../state/setting-bonus/setting-bonus.action";
+import {SettingBonusQuery} from "../../state/setting-bonus/setting-bonus.query";
 
 @Component({
   templateUrl: 'setting-bonus.component.html'
 })
 export class SettingBonusComponent implements OnInit {
-
+  added$ = this.settingBonusQuery.select(state => state.added)
   bonusConstant = BonusTypeConstant
   bonusUnitConstant = BonusUnitConstant
 
@@ -17,15 +20,16 @@ export class SettingBonusComponent implements OnInit {
     unit: new FormControl(''),
     rate: new FormControl(''),
     price: new FormControl(''),
-    ratings: new FormControl(''),
+    rating: new FormControl(''),
     diligent: new FormControl(''),
     from: new FormControl(''),
     to: new FormControl(''),
   });
-  pageSize = 10
 
   constructor(
-    private readonly router: Router
+    private readonly actions$: Actions,
+    private readonly router: Router,
+    private readonly settingBonusQuery: SettingBonusQuery
   ) {
   }
 
@@ -36,7 +40,14 @@ export class SettingBonusComponent implements OnInit {
   }
 
   onSubmit(): any {
-
+    if (this.formGroup.invalid) {
+      return
+    }
+    this.actions$.dispatch(SettingBonusActions.addOne({
+      body: Object.assign({},
+        this.formGroup.value,
+        {rankSettingId: this.formGroup.value.rating.id})
+    }))
   };
 
   onCancel() {

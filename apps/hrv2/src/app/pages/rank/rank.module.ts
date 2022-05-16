@@ -18,6 +18,7 @@ import {NgxCurrencyModule} from "ngx-currency";
 import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
 import {RankEffect} from "./state/rank/rank.effect";
 import {SettingRankEffect} from "./state/setting-rank/setting-rank.effect";
+import {SettingBonusEffect} from "./state/setting-bonus/setting-bonus.effect";
 
 @NgModule({
   imports: [
@@ -34,7 +35,7 @@ import {SettingRankEffect} from "./state/setting-rank/setting-rank.effect";
     NzButtonModule,
     NzSelectModule,
     NgxCurrencyModule,
-    AkitaNgEffectsModule.forFeature([RankEffect, SettingRankEffect])
+    AkitaNgEffectsModule.forFeature([RankEffect, SettingRankEffect, SettingBonusEffect])
   ],
   declarations: [
     RankComponent,
