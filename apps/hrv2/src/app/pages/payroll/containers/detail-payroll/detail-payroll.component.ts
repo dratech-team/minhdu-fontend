@@ -46,12 +46,12 @@ import {UpdatePayrollComponent} from '../../components/update/update-payroll.com
 import {
   RemoteOrDayOffSalaryComponent
 } from '../../../salary/components/remote-or-day-off/remote-or-day-off-salary.component';
-import {DeductionSalaryEntity} from '../../../salary/entities/deduction-salary.entity';
+import {DeductionSalaryEntity} from '../../../salary/entities';
 import {DeductionSalaryComponent} from '../../../salary/components/deduction/deduction-salary.component';
 import {RemoteConstant} from '../../../salary/constants/remote.constant';
 import {UnitSalaryConstant} from '../../../salary/constants';
 import {SessionConstant} from '../../../../../shared/constants';
-import {DayOffSalaryEntity} from "../../../salary/entities/day-off-salary.entity";
+import {DayOffSalaryEntity} from "../../../salary/entities";
 import {ModalAddOrUpdateRemoteOrDayOff} from "../../../salary/data";
 
 @Component({
