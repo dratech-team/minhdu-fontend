@@ -7,7 +7,6 @@ import {NzMessageService} from "ng-zorro-antd/message";
 import {SalarySettingService} from "../services";
 import {SettingSalaryActions} from "./setting-salary.action";
 import {SearchSalarySettingDto} from "../dto";
-import {PaginationDto} from "@minhdu-fontend/constants";
 import {SettingSalaryQuery} from "./setting-salary.query";
 
 @Injectable()
