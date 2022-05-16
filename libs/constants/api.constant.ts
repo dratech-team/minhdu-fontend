@@ -43,6 +43,7 @@ export const Api = {
       BASIC_TEMPLATE: 'permanent-template',
       OVERTIME_TEMPLATE: 'overtime-template'
     },
+    ALLOWANCE_BRANCH: 'allowance-branch',
     SETTING_SALARY:'settings/salary',
     BLOCK_SETTING_SALARY:'settings/salary-block',
     EXPORT:'export',
