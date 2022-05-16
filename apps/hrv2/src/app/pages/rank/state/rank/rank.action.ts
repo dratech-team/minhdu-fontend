@@ -5,6 +5,9 @@ import {LoadOneRankDto} from "../../dto/rank/load-one-rank.dto";
 import {UpdateRankDto} from "../../dto/rank/update-rank.dto";
 import {RemoveRankDto} from "../../dto/rank/remove-rank.dto";
 
+/**
+ * @deprecated
+ * */
 const addOne = createAction(
   '[RANK] Add One',
   props<AddRankDto>()
@@ -15,16 +18,24 @@ const loadAll = createAction(
   props<SearchRankDto>()
 );
 
+
 const loadOne = createAction(
   '[RANK] Load One',
   props<LoadOneRankDto>()
 );
 
+/**
+ * @deprecated
+ * */
 const update = createAction(
   '[RANK] Update',
   props<UpdateRankDto>()
 );
 
+
+/**
+ * @deprecated
+ * */
 const remove = createAction(
   '[RANK] Remove',
   props<RemoveRankDto>()
