@@ -9,7 +9,10 @@ export const StorageName = {
   BRANCH: 'branch',
   POSITION: 'position',
   DEPARTMENT: 'department',
-  EMPLOYEE_DRAFT: 'employee-draft',
   ACCOUNT: 'account',
-  SYSTEM_HISTORY: 'system-history'
+  SYSTEM_HISTORY: 'system-history',
+  //employee
+  RANK: 'rank',
+  SETTING_RANK: 'setting-rank',
+  EMPLOYEE_DRAFT: 'employee-draft',
 };

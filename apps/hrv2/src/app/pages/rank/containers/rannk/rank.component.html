@@ -45,12 +45,11 @@
     </div>
     <div style='width: 100%'>
       <nz-table #tableRank
+                *ngIf="(ranks$|async) as ranks"
+                [nzLoading]="(loading$|async)"
                 [nzScroll]="{ x: '2000px',y: '58vh'}"
                 nzSize='middle'
-                [nzData]="(ranks$|async)|| []"
-                [nzPageSize]="pageSize"
-                (nzPageIndexChange)="onPagination($event)"
-      >
+                [nzData]="ranks">
         <thead>
         <tr>
           <th nzWidth="60px">STT</th>
@@ -63,17 +62,28 @@
         </tr>
         </thead>
         <tbody>
-        <ng-template ngFor let-rank [ngForOf]="tableRank.data" let-i='index'>
-          <tr>
-            <td>{{(i + 1) + ((tableRank.nzPageIndex - 1) * pageSize)}}</td>
-            <td>{{rank.employee.code}}</td>
-            <td>{{rank.employee.lastName}}</td>
-            <td>{{rank.employee.branch.name}}</td>
-            <td>{{rank.employee.position.name}}</td>
-            <td>{{rank.dayoff}}</td>
-            <td>{{rank.salary}}</td>
-          </tr>
-        </ng-template>
+        <tr *ngFor="let rank of ranks ; let i = index">
+          <td>{{i + 1}}</td>
+          <td>{{rank.employee.code}}</td>
+          <td>{{rank.employee.lastName}}</td>
+          <td>{{rank.employee.branch.name}}</td>
+          <td>{{rank.employee.position.name}}</td>
+          <td>{{rank.dayOff}}</td>
+          <td>{{rank.salary}}</td>
+        </tr>
+        <tr *ngIf="((count$ | async) || 0) < ((total$ | async) || 0)">
+          <td colspan="3">
+            <div class="w-100 d-flex justify-content-start" style="position: relative">
+              <button
+                (click)="onLoadMore()"
+                style="position: sticky; left: 45vw"
+                nz-button nzType="primary"
+                [nzLoading]="loadMore$ | async">
+                Tải thêm
+              </button>
+            </div>
+          </td>
+        </tr>
         </tbody>
       </nz-table>
     </div>
