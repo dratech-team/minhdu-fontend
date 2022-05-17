@@ -1,21 +1,21 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmployeeType, RecipeType } from '@minhdu-fontend/enums';
-import { DatePipe } from '@angular/common';
-import { Branch, Position } from '@minhdu-fontend/data-models';
-import { checkInputNumber } from '@minhdu-fontend/utils';
-import { RecipeTypesConstant } from '@minhdu-fontend/constants';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzModalRef } from 'ng-zorro-antd/modal';
-import { map } from 'rxjs/operators';
-import { BranchActions, BranchQuery } from '@minhdu-fontend/orgchart-v2';
-import { Actions } from '@datorama/akita-ng-effects';
-import { EmployeeActions, EmployeeQuery } from '@minhdu-fontend/employee-v2';
-import { FlatSalaryTypeConstant } from '../../constants/flat-salary-type.constant';
-import { FlatSalaryTypeEnum } from '../../enums/flat-salary-type.enum';
-import { Observable } from 'rxjs';
-import { ModalEmployeeData } from '../../data/modal-employee.data';
-import { DirtyCheckPlugin } from '@datorama/akita';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {EmployeeType, RecipeType} from '@minhdu-fontend/enums';
+import {DatePipe} from '@angular/common';
+import {Branch, Position} from '@minhdu-fontend/data-models';
+import {checkInputNumber} from '@minhdu-fontend/utils';
+import {RecipeTypesConstant} from '@minhdu-fontend/constants';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {NzModalRef} from 'ng-zorro-antd/modal';
+import {map} from 'rxjs/operators';
+import {BranchActions, BranchQuery} from '@minhdu-fontend/orgchart-v2';
+import {Actions} from '@datorama/akita-ng-effects';
+import {EmployeeActions, EmployeeQuery} from '@minhdu-fontend/employee-v2';
+import {FlatSalaryTypeConstant} from '../../constants/flat-salary-type.constant';
+import {FlatSalaryTypeEnum} from '../../enums/flat-salary-type.enum';
+import {Observable} from 'rxjs';
+import {ModalEmployeeData} from '../../data/modal-employee.data';
+import {DirtyCheckPlugin} from '@datorama/akita';
 
 @Component({
   templateUrl: 'modal-employee.component.html'
@@ -25,7 +25,7 @@ export class ModalEmployeeComponent implements OnInit, OnDestroy {
 
   branches$ = this.branchQuery.selectAll().pipe(map(branches => {
     if (branches.length === 1) {
-      this.formGroup.get('branch')?.setValue(branches[0], { emitEvent: false });
+      this.formGroup.get('branch')?.setValue(branches[0], {emitEvent: false});
       if (branches[0].positions)
         this.lstPosition = branches[0].positions;
     }
@@ -147,13 +147,12 @@ export class ModalEmployeeComponent implements OnInit, OnDestroy {
     }
 
     const employee = this.mapEmployee(value);
-
-    this.actions$.dispatch(this.data.add
-      ? EmployeeActions.addOne({ body: employee })
-      : EmployeeActions.update({
+    this.actions$.dispatch(this.data.update
+      ? EmployeeActions.update({
         id: this.data.update.employee.id,
         updates: employee
       })
+      : EmployeeActions.addOne({body: employee})
     );
 
     this.added$.subscribe(added => {
@@ -209,8 +208,8 @@ export class ModalEmployeeComponent implements OnInit, OnDestroy {
     };
 
     return Object.assign(emp,
-      value.phone ? { phone: value.phone } : {},
-      value.workPhone ? { workPhone: value.workPhone } : {}
+      value.phone ? {phone: value.phone} : {},
+      value.workPhone ? {workPhone: value.workPhone} : {}
     );
   }
 

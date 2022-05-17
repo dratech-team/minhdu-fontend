@@ -1,23 +1,16 @@
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest
-} from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
-import { AuthActions, AuthState } from '@minhdu-fontend/auth';
-import { Store } from '@ngrx/store';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {Router} from '@angular/router';
+import {Observable, throwError} from 'rxjs';
+import {catchError} from 'rxjs/operators';
+import {Actions} from "@datorama/akita-ng-effects";
+import {AccountActions} from "../../../../system/src/lib/state/account-management/account.actions";
 
 @Injectable({ providedIn: 'root' })
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(
-    private readonly store: Store<AuthState>,
+    private readonly actions$: Actions,
     private readonly router: Router,
     private readonly snackBar: MatSnackBar
   ) {}
@@ -32,7 +25,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           this.router.navigate(['auth/login']).then();
 
           /// FIXME: action not working
-          this.store.dispatch(AuthActions.logout());
+          this.actions$.dispatch(AccountActions.logout());
         } else if ([403].indexOf(err.status) !== -1) {
           this.router.navigate(['/he-thong/han-che-truy-cap']).then();
         }

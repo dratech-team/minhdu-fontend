@@ -1,14 +1,13 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { UpdateNum } from '@ngrx/entity/src/models';
-import { Api } from '@minhdu-fontend/constants';
-import { Degree, Employee } from '@minhdu-fontend/data-models';
-import { BaseService } from 'libs/service/base.service';
-import {AddDegreeDto, RemoveDegreeDto, UpdateDegreeDto} from "../dto/degree";
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {Api} from '@minhdu-fontend/constants';
+import {BaseService} from 'libs/service/base.service';
+import {AddDegreeDto, UpdateDegreeDto} from "../dto/degree";
 import {EmployeeEntity} from "../entities";
+import {VersionEnum} from "@minhdu-fontend/enums";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class DegreeService extends BaseService<EmployeeEntity> {
   constructor(
     public readonly http: HttpClient
@@ -17,7 +16,7 @@ export class DegreeService extends BaseService<EmployeeEntity> {
   }
 
   addOneDegree(props: AddDegreeDto): Observable<EmployeeEntity> {
-    return this.http.post<EmployeeEntity>(Api.HR.EMPLOYEE.DEGREE, props.body);
+    return this.http.post<EmployeeEntity>(this.url, props.body);
   }
 
   update(props: UpdateDegreeDto): Observable<EmployeeEntity> {
@@ -25,11 +24,11 @@ export class DegreeService extends BaseService<EmployeeEntity> {
   }
 
 
-  deleteDegree(id: number): Observable<EmployeeEntity>{
-    return this.http.delete<EmployeeEntity>(Api.HR.EMPLOYEE.DEGREE + `/${id}`);
+  deleteDegree(id: number): Observable<EmployeeEntity> {
+    return this.http.delete<EmployeeEntity>(this.url + `/${id}`);
   }
 
-  deleteContracts(id: number): Observable<void>{
-    return this.http.delete<void>(Api.HR.EMPLOYEE.CONTRACT + `/${id}`);
+  deleteContracts(id: number): Observable<void> {
+    return this.http.delete<void>(VersionEnum.V2 + Api.HR.EMPLOYEE.CONTRACT + `/${id}`);
   }
 }

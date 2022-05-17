@@ -12,7 +12,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {ErrorInterceptor, JwtInterceptor} from '@minhdu-fontend/auth';
+import {AuthModule, ErrorInterceptor, JwtInterceptor} from '@minhdu-fontend/auth';
 import {HashLocationStrategy, registerLocaleData} from '@angular/common';
 import {EffectsModule} from '@ngrx/effects';
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from '@angular/material/snack-bar';
@@ -23,7 +23,6 @@ import {NxModule} from '@nrwl/angular';
 import {SharedModule} from './shared/shared.module';
 import {PickMenuComponent} from './components/pick-menu-mobile/pick-menu.component';
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogConfig, MatDialogModule} from '@angular/material/dialog';
-import {AuthEffects} from '../../../../libs/auth/src/lib/+state/auth.effects';
 import {MatTabsModule} from '@angular/material/tabs';
 import localeVi from '@angular/common/locales/vi';
 import {NZ_ICONS} from 'ng-zorro-antd/icon';
@@ -53,7 +52,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     MatSnackBarModule,
     HttpClientModule,
     AppRoutingModule,
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot(),
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
@@ -74,20 +73,11 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     MatTabsModule,
     NzMessageModule,
     CommodityTemplateModule,
-    RouteModule
+    RouteModule,
+    AuthModule
   ],
   declarations: [PickMenuComponent, AppComponent, SellLayoutComponent],
   providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: JwtInterceptor,
-      multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
-      multi: true
-    },
     HashLocationStrategy,
     RouteGuard,
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},

@@ -3,11 +3,10 @@
   <nz-table
     #tablePayroll
     [nzData]="payrolls"
-    [nzPageSize]="pageSize"
     [formGroup]='formGroup'
-    (nzPageIndexChange)="onPagination($event)"
+    nzShowPagination="false"
     [nzScroll]="scroll"
-    [nzLoading]="(loading$|async)"
+    [nzLoading]="(loading$ | async)"
     nzSize="small"
   >
     <thead>
@@ -71,7 +70,7 @@
             <nz-option *ngFor="let item of confirmConstant" [nzValue]='item.value' [nzLabel]="item.name"></nz-option>
           </nz-select>
         </th>
-        <th nzWidth="170px">
+        <th nzRight nzWidth="170px">
           <div>Quản lý xác nhận</div>
           <nz-select style="width: 100%" formControlName="manConfirmedAt">
             <nz-option *ngFor="let item of confirmConstant" [nzValue]='item.value' [nzLabel]="item.name"></nz-option>
@@ -127,7 +126,7 @@
           <div>Tổng thu nhập</div>
           <input nz-input type='number' disabled>
         </th>
-        <th nzWidth="150px">
+        <th nzRight nzWidth="150px">
           <div>Thanh toán</div>
           <nz-select style='width: 100%' formControlName='paidAt'>
             <nz-option *ngFor="let item of paidConstant" [nzValue]="item.value" [nzLabel]="item.name"></nz-option>
@@ -208,7 +207,7 @@
     </tr>
     </thead>
     <tbody>
-    <ng-template ngFor let-payroll [ngForOf]="tablePayroll.data" let-i='index'>
+    <ng-template ngFor let-payroll [ngForOf]="payrolls" let-i='index'>
       <tr (contextmenu)='child.onContextMenu($event,payroll)' class="pointer" (click)="onDetail(payroll)">
         <td nzLeft>
           {{i + 1}}
@@ -245,9 +244,9 @@
           <td>
             {{payroll?.accConfirmedAt ? (payroll.accConfirmedAt|date:'dd-MM-yyyy') : 'Chưa xác nhận'}}
           </td>
-          <td>
+          <td nzRight>
             <div
-              (click)='updateManConfirm(payroll.id,payroll.manConfirmedAt, payroll.createdAt) ;$event.stopPropagation()'>
+              (click)='onUpdateManConfirm(payroll) ;$event.stopPropagation()'>
               <input style='pointer-events: none' disabled type='checkbox'
                      [checked]='payroll.manConfirmedAt !== null'>
             </div>
@@ -288,8 +287,8 @@
           <td>
             {{payroll.payslip?.total| number: '1.0-0'}} VND
           </td>
-          <td>
-            <div (click)='updateConfirm(payroll.id,"paidAt" ); $event.stopPropagation()'>
+          <td nzRight>
+            <div (click)='onConfirmPaidAtOrAccConfirm(payroll, "paidAt"); $event.stopPropagation()'>
               <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.paidAt !== null'>
             </div>
           </td>
@@ -316,7 +315,7 @@
             {{payroll?.payslip?.total ? (payroll?.payslip?.total | number:'1.0-0') + 'đ' : 'Đang cập nhật'}}
           </td>
           <td>
-            <div (click)=' $event.stopPropagation(); updateConfirm(payroll.id,"accConfirmedAt")'>
+            <div (click)=' $event.stopPropagation(); onConfirmPaidAtOrAccConfirm(payroll, "accConfirmedAt")'>
               <input
                 disabled
                 type='checkbox'
@@ -329,7 +328,7 @@
             {{payroll?.accConfirmedAt ? (payroll.accConfirmedAt|date:'dd-MM-yyyy') : 'Chưa xác nhận'}}
           </td>
           <td>
-            <div (click)='updateConfirm(payroll.id,"paidAt");$event.stopPropagation()'>
+            <div (click)='onConfirmPaidAtOrAccConfirm(payroll, "paidAt");$event.stopPropagation()'>
               <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.paidAt !== null'>
             </div>
           </td>
@@ -352,17 +351,30 @@
         </ng-template>
       </tr>
     </ng-template>
+    <tr class="border" *ngIf="payrolls.length > 0"  style="position: relative; background: White">
+          <button
+            class="my-2"
+            *ngIf="((count$ | async)|| 0) < ((total$ | async)|| 0)"
+            (click)="onPagination()"
+            [nzLoading]="(loadMore$|async)"
+            style="position:sticky; left: 45vw"
+            nz-button
+            nzType="primary"
+          >
+            Tải thêm
+          </button>
+    </tr>
     </tbody>
   </nz-table>
 </div>
 <app-mouse-right
   #child
   [items]='[ItemContextMenu.RESTORE, ItemContextMenu.HISTORY_PAYROLL,ItemContextMenu.PRINT]'
-  (onAdd)='onAdd($event.id)'
+  (onAdd)='onAdd($event)'
   (onDel)='onDelete($event)'
   (onUpdate)='onUpdate($event)'
   (onRestore)='onRestore($event)'
   (onHisPayroll)='onHistory($event)'
-  (onPrint)='onPrint($event)'
+  (onPrint)='onConfirm($event)'
 >
 </app-mouse-right>

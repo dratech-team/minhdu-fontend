@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { PaymentHistory, ResponsePaginate } from '@minhdu-fontend/data-models';
+import {VersionEnum} from "@minhdu-fontend/enums";
 
 
 @Injectable({ providedIn: 'root' })
@@ -19,11 +20,11 @@ export class PaymentService extends BaseService<PaymentHistory> {
   }
 
   updatePayment(id: any, body: any): Observable<PaymentHistory> {
-    return this.http.patch<PaymentHistory>(Api.SELL.CUSTOMER.PAYMENT + `/${id}`, body);
+    return this.http.patch<PaymentHistory>(VersionEnum.V2 + Api.SELL.CUSTOMER.PAYMENT + `/${id}`, body);
   }
 
   payment(body: any): Observable<PaymentHistory> {
-    return this.http.post<PaymentHistory>(Api.SELL.CUSTOMER.PAYMENT, body);
+    return this.http.post<PaymentHistory>( VersionEnum.V2 + Api.SELL.CUSTOMER.PAYMENT, body);
   }
 
   delete(id: number, params?: any): Observable<void> {

@@ -1,15 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {Actions} from "@datorama/akita-ng-effects";
-import {AllowanceSalaryService} from "../../../../salary/service";
 import {DataAddOrUpAllowanceBranch} from "../../data/modal-allowance-branch.data";
-import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 import {catchError} from "rxjs/operators";
 import {throwError} from "rxjs";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {BranchActions} from "@minhdu-fontend/orgchart-v2";
+import {AllowanceBranchService} from "../../service/allowance-branch.service";
 
 @Component({
   templateUrl: 'allowance-branch.component.html'
@@ -23,7 +21,7 @@ export class AllowanceBranchComponent implements OnInit {
     private readonly modalRef: NzModalRef,
     private readonly formBuilder: FormBuilder,
     private readonly actions$: Actions,
-    private readonly allowanceService: AllowanceSalaryService,
+    private readonly service: AllowanceBranchService,
     private readonly message: NzMessageService
   ) {
   }
@@ -33,9 +31,7 @@ export class AllowanceBranchComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       title: [allowance?.title, Validators.required],
       price: [allowance?.price, Validators.required],
-      datetime: [this.data?.update ?
-        getFirstDayInMonth(new Date(this.data.update.allowance.startedAt))
-        : new Date(), Validators.required]
+      datetime: [allowance?.datetime|| new Date(), Validators.required]
     });
   }
 
@@ -52,13 +48,14 @@ export class AllowanceBranchComponent implements OnInit {
     this.summiting = true;
 
     (this.data?.update
-      ? this.allowanceService.update(this.data.update.allowance.id, allowanceBranch)
-      : this.allowanceService.addOne(allowanceBranch)).pipe(catchError(err => {
+      ? this.service.update({id: this.data.update.allowance.id, updates: allowanceBranch})
+      : this.service.addOne({body: allowanceBranch})).pipe(catchError(err => {
       this.summiting = false
       return throwError(err)
     })).subscribe(_ => {
-      this.message.success('Thêm phụ cấp thành công')
-      const branchId = this.data.add?.branch.id || this.data.update?.allowance.branch?.id
+
+      this.message.success(this.data.add ?' Thêm phụ cấp thành công' : 'Cập nhật phụ cấp thành công')
+      const branchId = this.data.add?.branch.id || this.data.update?.allowance.branchId
       if (branchId) {
         this.actions$.dispatch(BranchActions.loadOne(
           {id: branchId}
@@ -70,13 +67,10 @@ export class AllowanceBranchComponent implements OnInit {
 
   mapAllowance(value: any) {
     return {
-      branchId: this.data.add?.branch.id || this.data.update?.allowance.branch?.id,
+      branchId: this.data.add?.branch.id || this.data.update?.allowance.branchId,
       title: value.title,
       price: value.price,
-      startedAt: getFirstDayInMonth(new Date(value.datetime)),
-      endedAt: getLastDayInMonth(new Date(value.datetime)),
-      unit: DatetimeUnitEnum.MONTH,
-      type: SalaryTypeEnum.ALLOWANCE
+      datetime: value.datetime,
     }
   }
 }

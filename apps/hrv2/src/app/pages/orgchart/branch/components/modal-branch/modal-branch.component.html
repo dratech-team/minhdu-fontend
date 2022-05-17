@@ -1,6 +1,6 @@
 <form [formGroup]='formGroup'>
   <div>
-    <span class='ml-1 title-item'>Tên đơn vị</span> <span class='star'>*</span>
+    <span class='ml-1 font-weight-bold'>Tên đơn vị</span> <span class='star'>*</span>
     <input nz-input type='text' class='mt-1' formControlName='name'
            [ngClass]="{ 'is-invalid': checkValid.name.errors?.required }">
     <div *ngIf='checkValid.name.errors?.required' class='invalid-feedback'>
@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class='mt-2'>
-    <div><span class='ml-1 title-item'>Danh sách chức vụ</span></div>
+    <div><span class='ml-1 font-weight-bold'>Danh sách chức vụ</span></div>
     <div>
       <nz-select style="width: 100%"
                  [compareWith]="compareFn"

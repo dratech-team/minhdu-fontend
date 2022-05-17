@@ -4,7 +4,7 @@ import { select, Store } from '@ngrx/store';
 import { getAllOrgchart, getOrgchartLoaded, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { Branch } from '@minhdu-fontend/data-models';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogBranchComponent } from '../../components/dialog-branch/dialog-branch.component';
+import { DialogBranchComponent } from '../../components';
 import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
 import { debounceTime } from 'rxjs/operators';
 

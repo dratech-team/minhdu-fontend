@@ -4,10 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
-import { CustomerEntity } from '../entities/customer.entity';
-import { AddCustomerDto } from '../dto/add-customer.dto';
-import { UpdateCustomerDto } from '../dto/update-customer.dto';
-import {SearchCustomerDto} from "../dto/search-customer.dto";
+import { CustomerEntity } from '../entities';
+import { AddCustomerDto } from '../dto';
+import { UpdateCustomerDto } from '../dto';
+import {SearchCustomerDto} from "../dto";
 
 @Injectable({ providedIn: 'root' })
 export class CustomerService extends BaseService<CustomerEntity> {

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {throwError} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {EmployeeType, RecipeType} from '@minhdu-fontend/enums';
 import {FormControl} from '@angular/forms';
 import {DatePipe} from '@angular/common';
@@ -10,12 +10,13 @@ import {
 } from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
 import {catchError} from "rxjs/operators";
 import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
-import {PayrollEntity} from "../../entities";
+import {PayrollEntity, PayslipEntity} from "../../entities";
 import {PayslipService} from "../../services/payslip.service";
 import {PayrollService} from "../../services/payroll.service";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../state/payroll.action";
 import {NzModalRef} from "ng-zorro-antd/modal";
+import {getLastDayInMonth} from "@minhdu-fontend/utils";
 
 @Component({
   templateUrl: 'payslip.component.html',
@@ -25,8 +26,8 @@ export class PayslipComponent implements OnInit {
   @Input() data!: {
     payroll: PayrollEntity
   }
+  payslip$ = new Observable<PayslipEntity>()
   accConfirmedAt = new FormControl('');
-  payslip$ = this.payslipService.getOne(this.data.payroll.id);
   recipeType = RecipeType;
   isConfirmed = false;
   typeEmployee = EmployeeType;
@@ -42,14 +43,16 @@ export class PayslipComponent implements OnInit {
     private readonly payrollService: PayrollService,
     private readonly modalRef: NzModalRef
   ) {
+
   }
 
   ngOnInit() {
+    this.payslip$ = this.payslipService.getOne(this.data.payroll.id);
     if (this.data?.payroll?.accConfirmedAt) {
       this.isConfirmed = true;
       this.accConfirmedAt.setValue(this.datePipe.transform(this.data.payroll.accConfirmedAt, 'yyyy-MM-dd'));
-    }else{
-      this.accConfirmedAt.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+    } else {
+      this.accConfirmedAt.setValue(this.datePipe.transform(getLastDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd'));
     }
   }
 

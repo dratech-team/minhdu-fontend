@@ -1,5 +1,4 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {DatetimeUnitEnum} from '@minhdu-fontend/enums';
 
 @Pipe({
   name: 'transformconstant'

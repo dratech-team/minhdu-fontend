@@ -13,13 +13,7 @@ import { tranFormSalaryType } from '../../utils';
 import { PermanentSalaryComponent } from '../../../salary/components/permanent/permanent-salary.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { AbsentOvertimeSalaryComponent } from '../../../salary/components/absent-overtime/absent-overtime-salary.component';
-import {
-  AbsentSalaryEntity,
-  AllowanceSalaryEntity,
-  OvertimeSalaryEntity,
-  RemoteSalaryEntity,
-  SalaryEntity
-} from '../../../salary/entities';
+import { ExtendSalary, UnionSalary } from '../../../salary/entities';
 import { PayslipComponent } from '../../components/payslip/payslip.component';
 import { AllowanceSalaryComponent } from '../../../salary/components/allowance/allowance-salary.component';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -41,13 +35,15 @@ import {
 } from '../../../salary/service';
 import { throwError } from 'rxjs';
 import { UpdatePayrollComponent } from '../../components/update/update-payroll.component';
-import { RemoteSalaryComponent } from '../../../salary/components/remote/remote-salary.component';
-import { ModalAddOrUpdateRemote } from '../../../salary/data';
-import { DeductionSalaryEntity } from '../../../salary/entities/deduction-salary.entity';
+import { RemoteOrDayOffSalaryComponent } from '../../../salary/components/remote-or-day-off/remote-or-day-off-salary.component';
 import { DeductionSalaryComponent } from '../../../salary/components/deduction/deduction-salary.component';
 import { RemoteConstant } from '../../../salary/constants/remote.constant';
 import { UnitSalaryConstant } from '../../../salary/constants';
 import { SessionConstant } from '../../../../../shared/constants';
+import { HolidaySalaryComponent } from '../../../salary/components/holiday/holiday-salary.component';
+import { ModalAddOrUpdateHoliday } from '../../../salary/data/modal-holiday-salary.data';
+import { SalaryHolidayService } from '../../../salary/service/salary-holiday.service';
+import { ModalAddOrUpdateRemoteOrDayOff } from '../../../salary/data';
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -103,6 +99,7 @@ export class DetailPayrollComponent implements OnInit {
     private readonly overtimeSalaryService: OvertimeSalaryService,
     private readonly allowanceSalaryService: AllowanceSalaryService,
     private readonly salaryRemoteService: SalaryRemoteService,
+    private readonly salaryHolidayService: SalaryHolidayService,
     private readonly message: NzMessageService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function() {
@@ -128,7 +125,7 @@ export class DetailPayrollComponent implements OnInit {
 
   updateSalary(
     type: SalaryTypeEnum,
-    salary: SalaryEntity | AllowanceSalaryEntity | OvertimeSalaryEntity | AbsentSalaryEntity | DeductionSalaryEntity,
+    salary: UnionSalary,
     payroll?: PayrollEntity
   ) {
     const config = {
@@ -152,7 +149,7 @@ export class DetailPayrollComponent implements OnInit {
     type: SalaryTypeEnum,
     config: any,
     add?: { payroll: PayrollEntity },
-    update?: { salary: SalaryEntity }
+    update?: { salary: UnionSalary }
   ) {
     if (type === SalaryTypeEnum.ALLOWANCE) {
       this.modal.create(Object.assign(config, {
@@ -193,12 +190,14 @@ export class DetailPayrollComponent implements OnInit {
         }
       }));
     }
-    if (type === SalaryTypeEnum.WFH) {
+    if (type === SalaryTypeEnum.WFH || type === SalaryTypeEnum.DAY_OFF) {
       this.modal.create(Object.assign(config, {
-        nzTitle: (add ? 'Thêm ' : 'Cập nhật ') + 'Remote/Onsite/WFH',
-        nzContent: RemoteSalaryComponent,
-        nzComponentParams: <{ data: ModalAddOrUpdateRemote }>{
+        nzWidth: '400px',
+        nzTitle: (add ? 'Thêm ' : 'Cập nhật ') + (type === SalaryTypeEnum.WFH ? 'Remote/Onsite/WFH' : 'ngày không đi làm'),
+        nzContent: RemoteOrDayOffSalaryComponent,
+        nzComponentParams: <{ data: ModalAddOrUpdateRemoteOrDayOff }>{
           data: {
+            type: type,
             add: add,
             update: update
           }
@@ -217,18 +216,30 @@ export class DetailPayrollComponent implements OnInit {
         }
       }));
     }
+    if (type === SalaryTypeEnum.HOLIDAY) {
+      this.modal.create(Object.assign(config, {
+        nzTitle: add ? 'Thêm ngày lễ' : 'Cập nhật ngày lễ',
+        nzContent: HolidaySalaryComponent,
+        nzComponentParams: <{ data: ModalAddOrUpdateHoliday }>{
+          data: {
+            add: add,
+            update: update
+          }
+        }
+      }));
+    }
   }
 
   removeSalary(
     type: SalaryTypeEnum,
-    salary: SalaryEntity & AllowanceSalaryEntity & OvertimeSalaryEntity & AbsentSalaryEntity & DeductionSalaryEntity & RemoteSalaryEntity
+    salary: ExtendSalary
   ) {
     this.modal.create({
-      nzTitle: `Xoá ${salary?.title|| salary.setting?.title}`,
+      nzTitle: `Xoá ${salary.title || salary.setting.title}`,
       nzContent: ModalAlertComponent,
       nzComponentParams: <{ data: ModalAlertEntity }>{
         data: {
-          description: `Bạn có chắc chắn muốn xoá ${salary.title || salary.type}`
+          description: `Bạn có chắc chắn muốn xoá ${salary.title || salary.setting.title}`
         }
       },
       nzFooter: ' '
@@ -244,7 +255,9 @@ export class DetailPayrollComponent implements OnInit {
                   ? this.salaryRemoteService
                   : type === SalaryTypeEnum.ABSENT
                     ? this.absentSalaryService
-                    : this.deductionSalaryService
+                    : type === SalaryTypeEnum.HOLIDAY
+                      ? this.salaryHolidayService
+                      : this.deductionSalaryService
         );
 
         service.deleteMany({ salaryIds: [salary.id] }).pipe(
@@ -262,26 +275,39 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   confirmPayroll(payroll: PayrollEntity) {
-    this.modal.create({
-      nzTitle: 'Xác nhận phiếu lương tháng ' + this.datePipe.transform(payroll.createdAt, 'yyyy-MM'),
-      nzContent: PayslipComponent,
-      nzComponentParams: <{ data: { payroll: PayrollEntity } }>{
-        data: {
-          payroll
-        }
-      },
-      nzFooter: ' '
-    });
-    // if(this.role !== Role.HUMAN_RESOURCE){
-    //
-    // }else{
-    //   if(payroll.accConfirmedAt !== null){
-    //     // restore payroll
-    //   }else{
-    //     this.message.warning('Phiếu lương chưa được xác nhận')
-    //   }
-    // }
-
+    if (this.role !== Role.HUMAN_RESOURCE) {
+      this.modal.create({
+        nzTitle: 'Xác nhận phiếu lương tháng ' + this.datePipe.transform(payroll.createdAt, 'yyyy-MM'),
+        nzContent: PayslipComponent,
+        nzComponentParams: <{ data: { payroll: PayrollEntity } }>{
+          data: {
+            payroll
+          }
+        },
+        nzFooter: ' '
+      });
+    } else {
+      if (payroll.accConfirmedAt !== null) {
+        this.modal.create({
+          nzTitle: 'Khôi phục phiếu lương',
+          nzContent: ModalAlertComponent,
+          nzComponentParams: <{ data: ModalAlertEntity }>{
+            data: {
+              description: `bạn có chắc chắn muốn khôi phục phiếu lương tháng
+          ${this.datePipe.transform(payroll.createdAt, 'MM-yyyy')}
+          cho nhân viên ${payroll.employee.lastName}`
+            }
+          },
+          nzFooter: []
+        }).afterClose.subscribe(val => {
+          if (val) {
+            this.actions$.dispatch(PayrollActions.restore({ id: payroll.id }));
+          }
+        });
+      } else {
+        this.message.warning('Phiếu lương chưa được xác nhận');
+      }
+    }
   }
 
   historySalary(payroll: PayrollEntity) {

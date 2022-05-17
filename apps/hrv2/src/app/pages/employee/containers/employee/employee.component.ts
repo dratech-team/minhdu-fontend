@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {EmployeeStatusEnum, EmployeeType, Gender, ItemContextMenu, Role} from '@minhdu-fontend/enums';
-import {catchError, debounceTime, tap} from 'rxjs/operators';
-import {EmployeeStatusConstant, GenderTypeConstant, PaginationDto} from '@minhdu-fontend/constants';
+import {EmployeeStatusEnum, Gender, ItemContextMenu, Role, sortEmployeeTypeEnum} from '@minhdu-fontend/enums';
+import {catchError, debounceTime} from 'rxjs/operators';
+import {Api, EmployeeStatusConstant, GenderTypeConstant} from '@minhdu-fontend/constants';
 import {throwError} from 'rxjs';
-import {District, Employee, Ward} from '@minhdu-fontend/data-models';
+import {District, Employee, Sort, Ward} from '@minhdu-fontend/data-models';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalService} from 'ng-zorro-antd/modal';
@@ -32,13 +32,21 @@ import {
 } from "@minhdu-fontend/orgchart-v2";
 import {ModalEmployeeComponent} from "../../components/employee/modal-employee.component";
 import {ModalEmployeeData} from "../../data/modal-employee.data";
+import * as _ from "lodash";
+import {ModalExportExcelComponent} from "@minhdu-fontend/components";
+import {ModalExportExcelData} from "@minhdu-fontend/components";
+import {ModalAlertEntity, ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
+import {ModalDatePickerComponent} from "@minhdu-fontend/components";
+import {ModalAlertComponent} from "@minhdu-fontend/components";
 
 @Component({
   templateUrl: 'employee.component.html'
 })
 export class EmployeeComponent implements OnInit {
   total$ = this.employeeQuery.select(state => state.total)
+  count$ = this.employeeQuery.selectCount()
   loading$ = this.employeeQuery.select(state => state.loading)
+  loadMore$ = this.employeeQuery.select(state => state.loadMore)
   positions$ = this.positionQuery.selectAll()
   branches$ = this.branchQuery.selectAll()
   provinces$ = this.provinceService.getAll()
@@ -50,6 +58,7 @@ export class EmployeeComponent implements OnInit {
   genderTypeConstant = GenderTypeConstant
   flatSalaryTypeConstant = FlatSalaryTypeConstant
   empStatusContain = EmployeeStatusConstant;
+  sortEnum = sortEmployeeTypeEnum;
 
   districts: District[] = this.stateEmployee.province?.districts || []
   wards: Ward[] = this.stateEmployee.district?.wards || []
@@ -59,8 +68,11 @@ export class EmployeeComponent implements OnInit {
   role = window.localStorage.getItem('role')
   genderType = Gender;
   ItemContextMenu = ItemContextMenu;
-  pageSize = 15
   empStatusEnum = EmployeeStatusEnum
+  valueSort = {
+    orderBy: this.stateEmployee.orderBy,
+    orderType: this.stateEmployee.orderType
+  };
 
   departmentControl = new FormControl(this.stateEmployee.department || '');
   formGroup = new FormGroup({
@@ -96,7 +108,9 @@ export class EmployeeComponent implements OnInit {
     private readonly provinceService: ProvinceService,
     private readonly departmentQuery: DepartmentQuery
   ) {
-    this.employeeQuery.selectAll().subscribe(item => this.employees = item)
+    this.employeeQuery.selectAll().subscribe(item => {
+      this.employees = item
+    })
   }
 
   ngOnInit(): void {
@@ -150,17 +164,42 @@ export class EmployeeComponent implements OnInit {
     })
   }
 
-  onDelete(employeeId: any): void {
+  onDelete(employee: EmployeeEntity): void {
+    this.modal.create({
+      nzTitle: `Nhân viên ${employee.lastName} ${this.formGroup.value.empStatus === EmployeeStatusEnum.NOT_ACTIVE
+        ? 'nghỉ việc'
+        : 'tạm thời nghỉ việc'}`,
+      nzContent: ModalDatePickerComponent,
+      nzComponentParams: <{ data: ModalDatePickerEntity }>{
+        data: {
+          type: 'date',
+          dateInit: new Date(),
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe(val => {
+      if (val) {
+        this.actions$.dispatch(
+          this.formGroup.value.status === EmployeeStatusEnum.NOT_ACTIVE
+            ? EmployeeActions.remove({id: employee.id})
+            : EmployeeActions.leave({
+              id: employee.id,
+              body: {leftAt: new Date(val)}
+            })
+        )
+      }
+    })
   }
 
   mapEmployeeDto(val: any, isPagination: boolean): SearchEmployeeDto {
     this.employeeStore.update(state => ({
-      ...state, search: Object.assign(val, {department: this.departmentControl.value})
+      ...state, search: Object.assign(JSON.parse(JSON.stringify(val)),
+        {department: this.departmentControl.value},
+        this.valueSort
+      )
     }))
     return {
       search: {
-        take: PaginationDto.take,
-        skip: isPagination ? this.employeeQuery.getCount() : PaginationDto.skip,
         name: val.name,
         phone: val.phone,
         identify: val.identify,
@@ -174,16 +213,16 @@ export class EmployeeComponent implements OnInit {
         status: val.status,
         employeeType: val.employeeType,
         isFlatSalary: val.flatSalary as FlatSalaryTypeEnum,
-        categoryId: this.departmentControl.value ? this.departmentControl.value.id : ''
+        categoryId: this.departmentControl.value ? this.departmentControl.value.id : '',
+        orderBy: this.valueSort?.orderBy || '',
+        orderType: this.valueSort?.orderType || '',
       },
       isPaginate: isPagination
     };
   }
 
-  onPagination(index: number) {
-    if (index * this.pageSize >= this.employeeQuery.getCount()) {
-      this.actions$.dispatch(EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, true)))
-    }
+  onLoadMore() {
+    this.actions$.dispatch(EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, true)))
   }
 
   onUpdate($event: any, isUpdate?: boolean): void {
@@ -198,9 +237,43 @@ export class EmployeeComponent implements OnInit {
   }
 
   onPrint() {
+    this.modal.create({
+      nzTitle: 'Xuất danh sách nhân viên',
+      nzWidth: 'fit-content',
+      nzContent: ModalExportExcelComponent,
+      nzComponentParams: <{ data: ModalExportExcelData }>{
+        data: {
+          filename: 'Danh sách nhân viên',
+          params: Object.assign({},
+            _.omit(this.mapEmployeeDto(this.formGroup.value, false).search, ['take', 'skip']),
+            {exportType: 'EMPLOYEES'}),
+          api: Api.HR.EMPLOYEE.EMPLOYEE_EXPORT
+        }
+      },
+      nzFooter: []
+    })
   }
 
-  onRestore($event: any) {
+  onRestore(employee: EmployeeEntity) {
+    this.modal.create({
+      nzTitle: `Khôi phục nhân viên ${employee.lastName}`,
+      nzContent: ModalAlertComponent,
+      nzComponentParams: <{ data: ModalAlertEntity }>{
+        data: {
+          description: `Bạn có chắc chắn muốn khôi phục cho nhân viên ${employee.lastName}`
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe(val => {
+      if (val) {
+        this.actions$.dispatch(
+          EmployeeActions.leave({
+              id: employee.id,
+              body: {leftAt: ''}
+            })
+        )
+      }
+    })
   }
 
   onDrop(event: CdkDragDrop<Employee[]>) {
@@ -212,5 +285,12 @@ export class EmployeeComponent implements OnInit {
         return throwError(err);
       })
     ).subscribe();
+  }
+
+  onSort(sort: Sort) {
+    this.valueSort = sort;
+    this.actions$.dispatch(
+      EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, false))
+    );
   }
 }

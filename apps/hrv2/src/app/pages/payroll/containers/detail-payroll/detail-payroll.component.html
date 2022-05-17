@@ -442,6 +442,7 @@
             </tbody>
             </nz-table>
           </div>
+
           <!--Vắng-->
           <div #absent class='col-12 mt-5'>
             <table>
@@ -560,6 +561,85 @@
               </tbody>
             </table>
           </div>
+
+          <!--dayOff-->
+          <div #dayOff class='col-12 mt-5'>
+            <table style="width: 100%">
+              <thead>
+              <tr>
+                <th width='3%'>
+                  STT
+                </th>
+                <th>
+                  Không đi làm
+                </th>
+                <th>
+                  Thời gian
+                </th>
+                <th>
+                  Tổng ngày
+                </th>
+                <th>
+                  Diễn giải
+                </th>
+                <th width='100px' style='padding: 0; color: #1b8eb7'
+                    (click)='onAdd(salaryTypeEnum.DAY_OFF, payroll ) '>
+                  <div class="d-flex">
+                    <span class='mr-1 pointer'>Thêm mục</span>
+                    <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+                         alt='add icon'>
+                  </div>
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let salary of payroll.dayOffs;let i=index ">
+                <td>
+                  <span>{{i + 1}}</span>
+                </td>
+                <td>
+                  <span>{{salary.title}}</span>
+                </td>
+                <td>
+                 <span>
+                 từ {{salary.startedAt | date:'dd-MM-yyyy'}}
+                   <br>
+                   đến  {{salary.endedAt | date:'dd-MM-yyyy'}}
+                </span>
+                </td>
+                <td>
+                  {{salary.duration}} {{salary.partial | transformconstant: sessionConstant}}
+                </td>
+                <td>
+                  <span>{{salary.note}}</span>
+                </td>
+                <td>
+                  <div class='d-flex justify-content-around '>
+                    <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
+                            (click)='updateSalary(salaryTypeEnum.WFH, salary)'>
+                      <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+                    </button>
+                    <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
+                            (click)='removeSalary(salaryTypeEnum.WFH, salary)'>
+                      <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td class="font-weight-bold">Tổng cộng :</td>
+                <td></td>
+                <td>
+                  {{payroll.total?.dayOff?.duration}} ngày
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
           <!--Khấu trừ-->
           <div #absent class='col-12 mt-5'>
             <table>
@@ -637,75 +717,63 @@
               </tbody>
             </table>
           </div>
+
           <!--ngày lễ-->
-          <div #holiday class='col-12 mt-5' *ngIf="false">
+          <div #holiday class='col-12 mt-5'>
             <table style="width: 100%">
               <thead>
               <tr>
-                <th nzWidth='3%'>
-                  <div>
-                    STT
-                  </div>
-                </th>
-                <th nzWidth='22%'>
-                  <div>
-                    Đi làm ngày lễ
-                  </div>
-                </th>
-                <th nzWidth='15%'>
-                  <div>
-                    Ngày
-                  </div>
-                </th>
-                <th nzWidth='9%'>
-                  <div>
-                    Hệ số
-                  </div>
-                </th>
-                <th nzWidth='15%'>
-                  <div>
-                    Đơn giá
-                  </div>
-                </th>
-                <th nzWidth='15%'>
-                  <div>
-                    Tổng tiền
-                  </div>
-                </th>
-                <th nzWidth='10%' style='color: #1b8eb7' (click)='scanHoliday(payroll.id)'>
+                <th nzWidth='3%'>STT</th>
+                <th nzWidth='22%'>Đi làm ngày lễ</th>
+                <th nzWidth='15%'>Đơn vị</th>
+                <th nzWidth='9%'>Hệ số</th>
+                <th nzWidth='15%'> Đơn giá</th>
+                <th nzWidth='15%'>Tổng tiền</th>
+                <th style='color: #1b8eb7; width: 100px' (click)='onAdd(salaryTypeEnum.HOLIDAY, payroll)'>
                   <div class="d-flex">
-                    <span class='mx-2 pointer'>Quét</span>
-                    <img class='pointer' style='margin-left: 2px;width: 13px;' src='./assets/icons/search.svg'
+                    <span class='mx-2 pointer'>Thêm</span>
+                    <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
                          alt='add icon'>
                   </div>
                 </th>
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let salary of payroll.salaries | filterSalary:['HOLIDAY']; let i = index "
+              <tr *ngFor="let salary of payroll.holidays; let i = index "
+                  (click)="onSalarySetting(salary.setting.title)"
                   style='background: white !important;'>
                 <td>
                   {{i + 1}}
                 </td>
                 <td class=' text-center'>
-                  {{salary.datetime | date: "dd/MM/yyyy"}}
+                  Từ. {{(salary.setting.startedAt | date:'dd-MM-yyyy')}}
+                  <br/>
+                  đến {{(salary.setting.endedAt | date:'dd-MM-yyyy')}}
                 </td>
                 <td class=' text-center'>
-                  {{salary.times}} ngày
+                  ngày
                 </td>
                 <td class=' text-center'>
-                  <span>{{salary.rate}}</span>
+                  <span>{{salary.setting.rate}}</span>
                 </td>
                 <td class=' text-center'>
-                  {{salary.price
-                  | roundingnumber :1000
-                  | number:'1.0'
-                  | notEmpty:'Theo hệ số lương cơ bản'}}
-                </td>
-                <td class=' text-center'>
-                  {{(salary.price * salary.times * salary.rate) | number:'1.0' | notEmpty:'Theo hệ số lương cơ bản'}}
+                  {{
+                  ((salary.setting.prices && salary.setting.prices.length > 0
+                      ? (salary.setting.prices|prices)
+                      : (salary.setting.totalOf|salarytype:'transform'))
+                    + (salary.setting.workday
+                        ? +' / ' + salary.setting.workday
+                        : '/ Ngày công chuẩn'
+                    )
+                  )
+                  }}
                 </td>
                 <td>
+                  {{ salary.total
+                  | roundingnumber :1000
+                  | number:'1.0'}} đ
+                </td>
+                <td (click)="$event.stopPropagation()">
                   <div class='d-flex justify-content-around '>
                     <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
                             (click)='updateSalary(salaryTypeEnum.HOLIDAY, salary)'>
@@ -718,11 +786,22 @@
                   </div>
                 </td>
               </tr>
+              <tr *ngIf="payroll.total.holiday">
+                <td></td>
+                <td class="font-weight-bold">Tổng cộng :</td>
+                <td>
+                  {{payroll.total.holiday.duration}} ngày
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
               </tbody>
             </table>
           </div>
           <!--WFH-->
-          <div #absent class='col-12 mt-5'>
+          <div #wfh class='col-12 mt-5'>
             <table style="width: 100%">
               <thead>
               <tr>
@@ -839,7 +918,9 @@
             <div class='pointer' (click)='scroll(allowance,sticky)'>Phụ cấp</div>
             <div class='pointer' (click)='scroll(overtime,sticky)'>Tăng ca</div>
             <div class='pointer' (click)='scroll(absent,sticky)'>Khấu trừ</div>
+            <div class='pointer' (click)='scroll(dayOff,sticky)'>Không đi làm</div>
             <!--            <div class='pointer' (click)='scroll(holiday,sticky)'>Đi làm ngày lễ</div>-->
+            <div class='pointer' (click)='scroll(wfh,sticky)'>WFH</div>
             <div class='pointer' (click)='scroll(note,sticky)'>Chú thích</div>
             <div class='pointer' (click)='scroll(footer,sticky)'>Lịch sử và xác nhận lương</div>
           </div>

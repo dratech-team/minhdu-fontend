@@ -50,3 +50,4 @@ export * from './searchType.enum';
 export * from './input-search.enum';
 export * from './paidType.enum';
 export * from './hr/employee-status.enum';
+export * from './version.enum';

@@ -1,11 +1,10 @@
 <nz-table
-  style="width: 70vw"
+  nzShowPagination="false"
+  [nzScroll]="{x:'70vw', y:'50vh'}"
   #tablePayroll
   [formGroup]="formGroupTable"
   [nzData]="payrolls"
   [nzLoading]="loading"
-  [nzPageSize]="pageSize"
-  (nzPageIndexChange)="onPagination($event)"
 >
   <thead>
   <tr>
@@ -17,15 +16,28 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let payroll of tablePayroll.data; let i = index">
+  <tr *ngFor="let payroll of payrolls; let i = index">
     <td
       [nzChecked]="payrollIdsSelected.has(payroll.id)"
       (nzCheckedChange)="onItemChecked(payroll.id, $event)"
     ></td>
-    <td>{{(i + 1) + ((tablePayroll.nzPageIndex - 1) * pageSize)}}</td>
+    <td>{{i + 1}}</td>
     <td>{{payroll.employee.lastName}}</td>
     <td>{{payroll.branch}}</td>
     <td>{{payroll.position}}</td>
   </tr>
+  <tr *ngIf="payrolls.length > 0">
+    <td [colSpan]="5">
+        <button
+          *ngIf="payrolls.length < total"
+          (click)="onLoadMore()"
+          [nzLoading]="loadMore"
+          nz-button
+          nzType="primary" >
+          Tải thêm
+        </button>
+    </td>
+  </tr>
   </tbody>
 </nz-table>
+

@@ -1,13 +1,14 @@
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Api } from '@minhdu-fontend/constants';
-import { Injectable } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {Api} from '@minhdu-fontend/constants';
+import {Injectable} from '@angular/core';
 import {Branch, ResponsePaginate} from '@minhdu-fontend/data-models';
-import { BaseService } from '@minhdu-fontend/service';
+import {BaseService} from '@minhdu-fontend/service';
 import {BranchEntity} from "../entities/branch.entity";
 import {AddBranchDto, LoadOneBranchDto, SearchBranchDto, UpdateBranchDto} from "../dto";
+import {VersionEnum} from "@minhdu-fontend/enums";
 
-@Injectable({providedIn:'root'})
+@Injectable({providedIn: 'root'})
 export class BranchService extends BaseService<BranchEntity> {
   constructor(
     public readonly http: HttpClient
@@ -20,7 +21,7 @@ export class BranchService extends BaseService<BranchEntity> {
     return super.addOne(addBranchDto.body);
   }
 
-  pagination(searchBranchDto?: SearchBranchDto):Observable<ResponsePaginate<BranchEntity>> {
+  pagination(searchBranchDto?: SearchBranchDto): Observable<ResponsePaginate<BranchEntity>> {
     return super.pagination(searchBranchDto?.search);
   }
 
@@ -32,7 +33,7 @@ export class BranchService extends BaseService<BranchEntity> {
     return super.getOne(loadOneDto.id);
   }
 
-  update(updateBranchDto:UpdateBranchDto): Observable<BranchEntity> {
+  update(updateBranchDto: UpdateBranchDto): Observable<BranchEntity> {
     return super.update(updateBranchDto.id, updateBranchDto.updates);
   }
 
@@ -42,6 +43,6 @@ export class BranchService extends BaseService<BranchEntity> {
   }
 
   deleteAllowanceInBranch(salaryId: number): Observable<BranchEntity> {
-    return this.http.delete<BranchEntity>(Api.HR.PAYROLL.BRANCH_ALLOWANCE + `/${salaryId}`);
+    return this.http.delete<BranchEntity>(VersionEnum.V2 + Api.HR.PAYROLL.BRANCH_ALLOWANCE + `/${salaryId}`);
   }
 }

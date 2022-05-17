@@ -3,19 +3,30 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {PayrollQuery, PayrollStore} from "../../state";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../state/payroll.action";
-import {EmployeeStatusConstant, PaginationDto, PayrollConstant} from "@minhdu-fontend/constants";
 import {FilterTypeEnum, Role, SalaryTypeEnum} from "@minhdu-fontend/enums";
+import {Api, EmployeeStatusConstant, PayrollConstant} from "@minhdu-fontend/constants";
 import {debounceTime, map} from "rxjs/operators";
 import {BranchActions, BranchQuery, DepartmentActions, DepartmentQuery} from "@minhdu-fontend/orgchart-v2";
-import {Subject} from "rxjs";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 import {SettingSalaryActions} from "../../../setting/salary/state";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {
+  ModalDatePickerComponent,
+  ModalExportExcelComponent,
+  ModalExportExcelData,
+  TransformConstantPipe
+} from "@minhdu-fontend/components";
+import {DatePipe} from "@angular/common";
+import * as _ from 'lodash'
+import {ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
 
 @Component({
   templateUrl: 'payroll.component.html'
 })
 export class PayrollComponent implements OnInit {
   payrolls$ = this.payrollQuery.selectAll()
+  added$ = this.payrollQuery.select(state => state.added)
+  deleted$ = this.payrollQuery.select(state => state.deleted)
   branches$ = this.branchQuery.selectAll().pipe(map(branches => {
     if (branches.length === 1) {
       this.payrollStore.update(state => ({
@@ -26,7 +37,6 @@ export class PayrollComponent implements OnInit {
     return branches
   }));
   categories$ = this.departmentQuery.selectAll();
-  onChange = new Subject<void>();
 
   stateSearch = this.payrollQuery.getValue().search
   empStatusContain = EmployeeStatusConstant;
@@ -59,11 +69,14 @@ export class PayrollComponent implements OnInit {
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
 
   constructor(
+    private readonly transformConstant: TransformConstantPipe,
+    private readonly datePipe: DatePipe,
     private readonly payrollStore: PayrollStore,
     private readonly payrollQuery: PayrollQuery,
     private readonly branchQuery: BranchQuery,
     private readonly departmentQuery: DepartmentQuery,
-    private readonly actions$: Actions
+    private readonly actions$: Actions,
+    private readonly modal: NzModalService
   ) {
   }
 
@@ -79,7 +92,6 @@ export class PayrollComponent implements OnInit {
         this.formGroup.get('startedAt')?.setValue(val.startedAt, {emitEvent: false})
       }
     )
-
 
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe(val => {
       if (val.filterType === FilterTypeEnum.OVERTIME || val.filterType === FilterTypeEnum.ABSENT) {
@@ -114,20 +126,69 @@ export class PayrollComponent implements OnInit {
     }))
   }
 
-  mapPayroll(formData: any, isPagination?: boolean) {
+  mapPayroll(formData: any) {
     this.payrollStore.update(state => ({
       ...state, search: formData
     }))
-    return Object.assign({}, formData, {
+    return Object.assign({}, _.omit(formData, ['rangeDay', 'department']), {
       categoryId: formData.department?.id || '',
       branch: formData.branch?.name || '',
       position: formData.position?.name || '',
-      take: PaginationDto.take,
-      skip: isPagination ? this.payrollQuery.getCount() : PaginationDto.skip
     })
   }
 
   onAdd() {
     this.onChange.next()
+  }
+
+  onPrint() {
+    const payroll = Object.assign(
+      _.omit(this.mapPayroll(this.formGroup.value), ['take', 'skip']),
+      {exportType: this.formGroup.value.filterType}
+    )
+    const data = {
+      filename: `Xuất ${this.transformConstant.transform(payroll.filterType, PayrollConstant)}`
+        + ` từ ngày ${this.datePipe.transform(payroll.startedAt, 'dd-MM-yyy')}`
+        + ` đến ngày ${this.datePipe.transform(payroll.endedAt, 'dd-MM-yyy')}`,
+      params: payroll,
+      selectDatetime: true,
+      api: Api.HR.PAYROLL.EXPORT
+    }
+    this.modal.create({
+      nzWidth: 'fit-content',
+      nzTitle: `Xuất bảng ${this.transformConstant.transform(payroll.filterType, PayrollConstant)}`,
+      nzContent: ModalExportExcelComponent,
+      nzComponentParams: <{ data: ModalExportExcelData }>{
+        data: Object.assign(data,
+          payroll.filterType === FilterTypeEnum.OVERTIME || payroll.filterType === FilterTypeEnum.ABSENT
+            ? {typeDate: 'RANGE_DATETIME'}
+            : {}
+        )
+      },
+      nzFooter: []
+    })
+  }
+
+  onAddMany() {
+    this.modal.create({
+      nzTitle: 'Tạo tự động phiếu lương',
+      nzContent: ModalDatePickerComponent,
+      nzComponentParams: <{ data: ModalDatePickerEntity }>{
+        data: {
+          dateInit: this.formGroup.value.startedAt,
+          type: 'month'
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe(val => {
+      if (val) {
+        this.actions$.dispatch(PayrollActions.addMany({body: {createdAt: new Date(val)}}))
+        this.added$.subscribe(val => {
+          if (val) {
+            this.onLoadPayroll(false)
+          }
+        })
+      }
+    })
   }
 }

@@ -50,21 +50,20 @@
     </div>
     <div>
       <button *ngIf='formGroup.value.status === empStatusEnum.IS_ACTIVE'
-              (click)='onAdd()' class='mr-2 btn btn-primary'>Thêm
+              nz-button nzType="primary" class="mr-2"
+              (click)='onAdd()'>Thêm
       </button>
-      <button class='btn btn-primary mr-4' (click)='onPrint()'>Xuất</button>
+      <button nz-button nzType="primary" class="mr-2" (click)='onPrint()'>Xuất</button>
     </div>
   </div>
   <div class='mx-auto' style='width: 98%'>
     <div class='my-3'>
       <nz-table
-        #tableEmployee
-        [nzPageSize]="pageSize"
+        nzShowPagination="false"
         [formGroup]='formGroup'
         [nzLoading]="loading$|async"
-        [nzScroll]="{x:'3200px',y:'60vh'}"
+        [nzScroll]="{x:'3200px',y:'51vh'}"
         [nzData]="this.employees"
-        (nzPageIndexChange)="onPagination($event)"
       >
         <thead>
         <tr>
@@ -76,15 +75,19 @@
           <!--              <div mat-sort-header='{{sortEnum.STT}}' class='border-top text-center'>Sort</div>-->
           <!--              <input class=' text-center' type='text' disabled>-->
           <!--            </th>-->
-          <th>
+          <th [nzSortFn]='true'
+              (nzSortOrderChange)='onSort({orderBy: sortEnum.CODE, orderType:$event})'>
             <div>Mã nhân viên</div>
             <input nz-input type='search' disabled>
           </th>
-          <th nzLeft>
+          <th nzLeft [nzSortFn]='true'
+              (nzSortOrderChange)='onSort({orderBy: sortEnum.NAME, orderType:$event})'>
             <div>Tên nhân viên</div>
             <input nz-input type='search' formControlName='name' placeholder='Trần Gia Hiệu'>
           </th>
-          <th>
+          <th nzWidth="8%"
+              [nzSortFn]='true'
+              (nzSortOrderChange)='onSort({orderBy: sortEnum.EMPLOYEE_TYPE, orderType:$event})'>
             <div>Loại nhân viên</div>
             <nz-select style='width: 100%;' formControlName='employeeType'>
               <nz-option
@@ -94,11 +97,14 @@
               </nz-option>
             </nz-select>
           </th>
-          <th nzWidth='5%'>
+          <th nzWidth='5%'
+              [nzSortFn]='true'
+              (nzSortOrderChange)='onSort({orderBy: sortEnum.BIRTHDAY, orderType:$event})'>
             <div>Ngày sinh</div>
             <input class='text-center' disabled>
           </th>
-          <th>
+          <th [nzSortFn]='true'
+              (nzSortOrderChange)='onSort({orderBy: sortEnum.GENDER, orderType:$event})'>
             <div>Giới tính</div>
             <nz-select style='min-width:100%' formControlName='gender'>
               <nz-option *ngFor="let item of genderTypeConstant" [nzValue]="item.value"
@@ -106,11 +112,17 @@
               <nz-option [nzValue]="genderType.ALL" nzLabel="Tất cả"></nz-option>
             </nz-select>
           </th>
-          <th nzWidth='5%'>
+          <th nzWidth='5%'
+              [nzSortFn]='true'
+              (nzSortOrderChange)='onSort({orderBy: sortEnum.CREATE, orderType:$event})'
+          >
             <div>Ngày vào làm</div>
             <input nz-input disabled>
           </th>
-          <th nzWidth='5%'>
+          <th nzWidth='5%'
+              [nzSortFn]='true'
+              (nzSortOrderChange)='onSort({orderBy: sortEnum.FLAT_SALARY, orderType:$event})'
+          >
             <div>Loại lương</div>
             <nz-select style='width:100%' formControlName='flatSalary'>
               <nz-option *ngFor="let item of flatSalaryTypeConstant" [nzValue]="item.value" [nzLabel]="item.name">Lương
@@ -118,15 +130,24 @@
               </nz-option>
             </nz-select>
           </th>
-          <th nzWidth='5%'>
+          <th nzWidth='5%'
+              [nzSortFn]='true'
+              (nzSortOrderChange)='onSort({orderBy: sortEnum.PHONE, orderType:$event})'
+          >
             <div>Số điện thoại</div>
             <input nz-input type='search' formControlName='phone'>
           </th>
-          <th nzLeft>
+          <th nzLeft
+              [nzSortFn]='true'
+              (nzSortOrderChange)='onSort({orderBy: sortEnum.BRANCH, orderType:$event})'
+          >
             <div>Đơn vị</div>
             <input nz-input type='search' disabled>
           </th>
-          <th nzLeft>
+          <th nzLeft
+              [nzSortFn]='true'
+              (nzSortOrderChange)='onSort({orderBy: sortEnum.POSITION, orderType:$event})'
+          >
             <div>Chức vụ</div>
             <nz-select
               nzShowSearch
@@ -144,11 +165,17 @@
               </nz-option>
             </nz-select>
           </th>
-          <th nzWidth='5%'>
+          <th nzWidth='5%'
+              [nzSortFn]='true'
+              (nzSortOrderChange)='onSort({orderBy: sortEnum.IDENTITY, orderType:$event})'
+          >
             <div>CMND / CCCD</div>
             <input type='search' nz-input formControlName='identify'>
           </th>
-          <th>
+          <th
+            [nzSortFn]='true'
+            (nzSortOrderChange)='onSort({orderBy: sortEnum.PROVINCE, orderType:$event})'
+          >
             <div>Tỉnh / Thành phố</div>
             <nz-select
               nzShowSearch
@@ -166,7 +193,10 @@
               </nz-option>
             </nz-select>
           </th>
-          <th nzWidth='5%'>
+          <th nzWidth='5%'
+              [nzSortFn]='true'
+              (nzSortOrderChange)='onSort({orderBy: sortEnum.DISTRICT, orderType:$event})'
+          >
             <div>Quận / Huyện</div>
             <nz-select
               nzShowSearch
@@ -184,7 +214,10 @@
               </nz-option>
             </nz-select>
           </th>
-          <th nzWidth='7%'>
+          <th nzWidth='7%'
+              [nzSortFn]='true'
+              (nzSortOrderChange)='onSort({orderBy: sortEnum.WARD, orderType:$event})'
+          >
             <div>Phường / Xã</div>
             <nz-select
               nzShowSearch
@@ -202,7 +235,10 @@
               </nz-option>
             </nz-select>
           </th>
-          <th nzWidth='12%'>
+          <th nzWidth='12%'
+              [nzSortFn]='true'
+              (nzSortOrderChange)='onSort({orderBy: sortEnum.ADDRESS, orderType:$event})'
+          >
             <div>Địa chỉ</div>
             <input nz-input type='search' formControlName='address'>
           </th>
@@ -213,86 +249,100 @@
         </tr>
         </thead>
         <tbody cdkDropList (cdkDropListDropped)='onDrop($event)'>
-          <tr *ngFor="let employee of this.employees; let i = index"
-              class="pointer"
-              (contextmenu)='child.onContextMenu($event,employee)'
-              (click)='onUpdate(employee)' cdkDrag>
-            <td nzLeft nzWidth="100px">
-              <div>{{(i + 1) + ((tableEmployee.nzPageIndex - 1) * pageSize)}}</div>
-            </td>
-            <td>
-              <div>{{employee.id}}</div>
-            </td>
-            <td nzLeft>
-              <div>{{employee.lastName}}</div>
-            </td>
-            <td>
-              <div>{{employee.type|transformconstant: employeeTypeConstant}}</div>
-            </td>
-            <td>
-              <div>{{employee.birthday | date:'dd/MM/yyyy'}}</div>
-            </td>
-            <td>
-              <div>
-                {{employee.gender|transformconstant: genderTypeConstant}}
-              </div>
-            </td>
-            <td>
-              <div>
-                {{(employee.createdAt|date: 'dd/MM/yyyy')}}
-              </div>
-            </td>
-            <td>
-              <div>
-                {{employee.isFlatSalary|flatsalarytypepipe}}
-              </div>
-            </td>
-            <td>
-              <div>
-                {{employee?.phone|existpipe}}
-              </div>
-            </td>
-            <td nzLeft>
-              <div>
-                {{employee.branch.name}}
-              </div>
-            </td>
-            <td nzLeft>
-              <div>
-                {{employee.position.name}}
-              </div>
-            </td>
-            <td>
-              <div>
-                {{employee?.identify|existpipe}}
-              </div>
-            </td>
-            <td>
-              <div>
-                {{employee.ward.district.province.name}}
-              </div>
-            </td>
-            <td>
-              <div>
-                {{employee.ward.district.name}}
-              </div>
-            </td>
-            <td>
-              <div>
-                {{employee.ward.name}}
-              </div>
-            </td>
-            <td>
-              <div>
-                {{employee.address}}
-              </div>
-            </td>
-            <td>
-              <div>
-                {{employee?.note}}
-              </div>
-            </td>
-          </tr>
+        <tr *ngFor="let employee of this.employees; let i = index"
+            class="pointer"
+            (contextmenu)='child.onContextMenu($event,employee)'
+            (click)='onUpdate(employee)' cdkDrag>
+          <td nzLeft nzWidth="100px">
+            <div>{{i + 1}}</div>
+          </td>
+          <td>
+            <div>{{employee.id}}</div>
+          </td>
+          <td nzLeft>
+            <div>{{employee.lastName}}</div>
+          </td>
+          <td>
+            <div>{{employee.type|transformconstant: employeeTypeConstant}}</div>
+          </td>
+          <td>
+            <div>{{employee.birthday | date:'dd/MM/yyyy'}}</div>
+          </td>
+          <td>
+            <div>
+              {{employee.gender|transformconstant: genderTypeConstant}}
+            </div>
+          </td>
+          <td>
+            <div>
+              {{(employee.createdAt|date: 'dd/MM/yyyy')}}
+            </div>
+          </td>
+          <td>
+            <div>
+              {{employee.isFlatSalary|flatsalarytypepipe}}
+            </div>
+          </td>
+          <td>
+            <div>
+              {{employee?.phone|existpipe}}
+            </div>
+          </td>
+          <td nzLeft>
+            <div>
+              {{employee.branch.name}}
+            </div>
+          </td>
+          <td nzLeft>
+            <div>
+              {{employee.position.name}}
+            </div>
+          </td>
+          <td>
+            <div>
+              {{employee?.identify|existpipe}}
+            </div>
+          </td>
+          <td>
+            <div>
+              {{employee.ward.district.province.name}}
+            </div>
+          </td>
+          <td>
+            <div>
+              {{employee.ward.district.name}}
+            </div>
+          </td>
+          <td>
+            <div>
+              {{employee.ward.name}}
+            </div>
+          </td>
+          <td>
+            <div>
+              {{employee.address}}
+            </div>
+          </td>
+          <td>
+            <div>
+              {{employee?.note}}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="17" >
+           <div class="w-100 d-flex justify-content-start" style="position: relative">
+             <button
+               *ngIf="((count$|async) || 0) < ((total$|async) || 0)"
+               (click)="onLoadMore()"
+               style="position: sticky; left: 45vw"
+               nz-button nzType="primary"
+               [nzLoading]="loadMore$|async">
+               Tải thêm
+             </button>
+           </div>
+          </td>
+        </tr>
         </tbody>
       </nz-table>
     </div>
@@ -301,7 +351,7 @@
 
 <app-mouse-right
   #child
-  [items]='formGroup.value.status === 1 ? [ItemContextMenu.RESTORE] : []'
+  [items]='formGroup.value.status === empStatusEnum.NOT_ACTIVE ? [ItemContextMenu.RESTORE] : []'
   (onAdd)='onAdd($event)'
   (onDel)='onDelete($event)'
   (onRestore)='onRestore($event)'

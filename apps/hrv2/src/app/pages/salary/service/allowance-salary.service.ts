@@ -4,9 +4,6 @@ import {Api} from '@minhdu-fontend/constants';
 import {Observable} from 'rxjs';
 import {AllowanceSalaryEntity} from "../entities";
 import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
-import {BaseSalaryService} from "./base-salary.service";
-import {NzMessageService} from "ng-zorro-antd/message";
-import {Actions} from "@datorama/akita-ng-effects";
 import {BaseService} from "@minhdu-fontend/service";
 
 @Injectable({providedIn: 'root'})

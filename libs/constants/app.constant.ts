@@ -1,28 +1,30 @@
-import { App } from '../enums';
+import {App} from '../enums';
+import {Localhost} from "../enums/localhost.enum";
 
 export const appConstant = [
   {
     name: 'Bán hàng',
-    app: App.SELL,
+    value: App.SELL,
+    localHost: Localhost.APP_SELL
   },
   {
     name: 'kho',
-    app:  App.WAREHOUSE,
+    value: App.WAREHOUSE,
+    localHost: Localhost.APP_WAREHOUSE
   },
   {
     name: 'Nhân sự',
-    app: App.HUMAN_RESOURCE,
-  },
-  {
-    name: 'Nhân sự',
-    app: App.HR,
+    value: App.HR,
+    localHost: Localhost.APP_HR
   },
   {
     name: 'Chưa xác định',
-    app: App.UNKNOWN,
+    value: App.UNKNOWN,
+    localHost: Localhost.UNKNOWN
   },
   {
     name: 'Tất cả',
-    app: '',
+    value: '',
+    localHost: ''
   },
 ]

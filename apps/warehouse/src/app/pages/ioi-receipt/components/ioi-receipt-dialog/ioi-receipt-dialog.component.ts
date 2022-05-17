@@ -4,7 +4,6 @@ import {DatePipe} from '@angular/common';
 import {Store} from '@ngrx/store';
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {Actions} from '@datorama/akita-ng-effects';
-import {AppState} from '../../../../reducers';
 import {SupplierActions} from '../../../supplier/state';
 import {IoiReceiptActions} from '../../state/ioi-receipt.actions';
 import {ProductActions} from "../../../product/state/product.actions";
@@ -14,13 +13,14 @@ import {BaseUpdateIoiReceiptDto} from "../../dto";
 import {DiscountTypeConstant} from "../../constants";
 import {DiscountTypeEnum, IoiReceiptEnum} from "../../../../../shared/enums";
 import {PaginationDto} from "@minhdu-fontend/constants";
+import {BranchActions, BranchQuery} from "@minhdu-fontend/orgchart-v2";
 
 @Component({
   templateUrl: 'ioi-receipt-dialog.component.html'
 })
 export class IoiReceiptDialogComponent implements OnInit {
   @Input() data!: { ioiReceipt?: IoiReceiptEntity, isUpdate?: boolean, ioiReceiptType: IoiReceiptEnum }
-  branches$ = this.store.select(getAllOrgchart);
+  branches$ = this.branchQuery.selectAll();
   products$ = this.productQuery.selectAll();
   loadingProduct$ = this.productQuery.select(state => state.loading)
   formGroup!: FormGroup
@@ -30,14 +30,14 @@ export class IoiReceiptDialogComponent implements OnInit {
   constructor(
     private readonly formBuilder: FormBuilder,
     public datePipe: DatePipe,
-    private readonly store: Store<AppState>,
     private readonly productQuery: ProductQuery,
-    private readonly actions$: Actions
+    private readonly actions$: Actions,
+    private readonly branchQuery: BranchQuery
   ) {
   }
 
   ngOnInit() {
-    this.store.dispatch(OrgchartActions.init());
+    this.actions$.dispatch(BranchActions.loadAll({}));
     this.actions$.dispatch(SupplierActions.loadAll({}));
     this.actions$.dispatch(ProductActions.loadAll({}))
     if (this.data?.ioiReceipt) {

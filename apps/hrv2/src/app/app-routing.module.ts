@@ -15,6 +15,14 @@ const routes: Routes = [
     component: PageLayoutComponent,
     children: [
       {
+        path: '',
+        loadChildren: () =>
+          import('./pages/overview/overview-hr.module').then(
+            (m) => m.OverviewHrModule
+          ),
+        canActivate: [RouteGuard]
+      },
+      {
         path: TabEnum.EMPLOYEE,
         loadChildren: () =>
           import('./pages/employee/employee.module').then(

@@ -12,6 +12,7 @@ import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 import {AllowanceBranchComponent} from "../../components/modal-allowance-branch/allowance-branch.component";
 import {DataAddOrUpAllowanceBranch} from "../../data/modal-allowance-branch.data";
 import {AllowanceSalaryEntity} from "../../../../salary/entities";
+import {AllowanceBranchEntity} from "../../entities/allowance-branch.entity";
 
 @Component({
   templateUrl: 'detail-branch.component.html'
@@ -51,7 +52,7 @@ export class DetailBranchComponent implements OnInit {
     })
   }
 
-  onUpdateAllowance(allowance: AllowanceSalaryEntity) {
+  onUpdateAllowance(allowance: AllowanceBranchEntity) {
     this.modal.create({
       nzTitle: `Cập nhật phụ cấp cho đơn vị`,
       nzContent: AllowanceBranchComponent,
@@ -107,7 +108,7 @@ export class DetailBranchComponent implements OnInit {
     })
   }
 
-  deleteAllowance(allowance: AllowanceSalaryEntity) {
+  deleteAllowance(allowance: AllowanceBranchEntity) {
     this.modal.create({
       nzTitle: `Xoá Phụ cấp  ${allowance.title}`,
       nzContent: ModalAlertComponent,

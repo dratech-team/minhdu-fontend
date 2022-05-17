@@ -1,10 +1,17 @@
 import {createAction, props} from "@datorama/akita-ng-effects";
 import {AddPayrollDto, LoadOnePayrollDto, RemovePayrollDto, SearchPayrollDto, UpdatePayrollDto} from "../dto";
 import {ConfirmPayrollDto} from "../dto/confirm-payroll.dto";
+import {PayrollEntity} from "../entities";
+import {AddManyPayrollDto} from "../dto/add-many-payroll.dto";
 
 export const addOne = createAction(
   '[PAYROLL] Add One',
   props<AddPayrollDto>()
+);
+
+export const addMany = createAction(
+  '[PAYROLL] Add Many',
+  props<AddManyPayrollDto>()
 );
 
 export const loadAll = createAction(
@@ -33,6 +40,11 @@ export const scanHoliday = createAction(
   props<{ payrollId: number }>()
 );
 
+export const restore = createAction(
+  '[PAYROLL] Restore',
+  props<{id: PayrollEntity['id']}>()
+);
+
 export const remove = createAction(
   '[PAYROLL] Remove',
   props<RemovePayrollDto>()
@@ -45,11 +57,13 @@ export const error = createAction(
 
 export const PayrollActions = {
   addOne,
+  addMany,
   loadAll,
   loadOne,
   update,
   confirmPayroll,
   scanHoliday,
+  restore,
   remove,
   error
 }

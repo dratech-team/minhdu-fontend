@@ -1,24 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthActions, AuthState, selectLoginLoading } from '@minhdu-fontend/auth';
-import { Store } from '@ngrx/store';
-import { App } from '@minhdu-fontend/enums';
-import { MatDialog } from '@angular/material/dialog';
-import { Localhost } from '../../../../enums/localhost.enum';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {App} from '@minhdu-fontend/enums';
+import {MatDialog} from '@angular/material/dialog';
+import {Localhost} from '../../../../enums/localhost.enum';
+import {Actions} from "@datorama/akita-ng-effects";
+import {AccountActions} from "../../../../system/src/lib/state/account-management/account.actions";
+import {AccountQuery} from "../../../../system/src/lib/state/account-management/account.query";
+import {appConstant} from "@minhdu-fontend/constants";
 
 @Component({
-  selector: 'app-dashboard',
   templateUrl: 'auth.container.html'
 })
 export class AuthComponent implements OnInit {
   loginForm!: FormGroup;
-  loading$ = this.store.select(selectLoginLoading);
-  appEnum = App;
+  loading$ = this.accountQuery.select(state => state.loginLoading)
   localhost = Localhost;
   constructor(
     private formBuilder: FormBuilder,
     private readonly dialog: MatDialog,
-    private readonly store: Store<AuthState>
+    private readonly actions$: Actions,
+    private readonly accountQuery:  AccountQuery,
   ) {
   }
 
@@ -42,15 +43,11 @@ export class AuthComponent implements OnInit {
       return;
     }
     const host = `${window.location.host}`
-    const app = host === this.localhost.APP_HR? this.appEnum.HR:
-                  host === this.localhost.APP_SELL?this.appEnum.SELL:
-                    host === this.localhost.APP_WAREHOUSE? this.appEnum.WAREHOUSE:
-                      host === this.localhost.APP_ADMIN? this.appEnum.ADMIN: '';
-    this.store.dispatch(
-      AuthActions.login({
+    this.actions$.dispatch(
+      AccountActions.signIn({
         username: this.f.username.value,
         password: this.f.password.value,
-        app: app
+        app: appConstant.find(app => app.localHost === host)?.value
       })
     );
   }

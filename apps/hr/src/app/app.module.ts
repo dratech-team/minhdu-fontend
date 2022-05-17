@@ -5,18 +5,11 @@ import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ComponentsModule} from '@minhdu-fontend/components';
-import {
-  AppAsideModule,
-  AppBreadcrumbModule,
-  AppFooterModule,
-  AppHeaderModule,
-  AppSidebarModule
-} from '@coreui/angular';
+import {AppAsideModule, AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule} from '@coreui/angular';
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {ErrorInterceptor, JwtInterceptor} from '@minhdu-fontend/auth';
+import {HttpClientModule} from '@angular/common/http';
 import {HashLocationStrategy, registerLocaleData} from '@angular/common';
 import {NxModule} from '@nrwl/angular';
 import {DefaultLayoutComponent} from './container/default-layout.component';
@@ -34,9 +27,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 import {PayrollModule} from './pages/payroll/payroll.module';
 import localeVi from '@angular/common/locales/vi';
-import {AuthEffects} from '../../../../libs/auth/src/lib/+state/auth.effects';
 import {NgxCurrencyModule} from 'ngx-currency';
-import {customCurrencyMaskConfig, customCurrencyMaskConfig2} from '@minhdu-fontend/config';
+import {customCurrencyMaskConfig2} from '@minhdu-fontend/config';
 import {MatDialogConfig} from '@angular/material/dialog/dialog-config';
 import {NZ_CONFIG, NzConfig} from 'ng-zorro-antd/core/config';
 import {NZ_I18N, vi_VN} from 'ng-zorro-antd/i18n';
@@ -64,7 +56,7 @@ registerLocaleData(localeVi);
       logOnly: environment.production, // Restrict extension to log-only mode
       autoPause: true // Pauses recording actions and state changes when the extension window is not open
     }),
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot(),
     NxModule.forRoot(),
     MatSnackBarModule,
     ReactiveFormsModule,
@@ -83,16 +75,6 @@ registerLocaleData(localeVi);
   bootstrap: [AppComponent],
   providers: [
     HashLocationStrategy,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: JwtInterceptor,
-      multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
-      multi: true
-    },
     {provide: LOCALE_ID, useValue: 'vi-VN'},
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {disableClose: true, hasBackdrop: true} as MatDialogConfig},

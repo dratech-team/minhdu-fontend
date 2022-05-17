@@ -6,6 +6,8 @@ import {SettingSalaryStore} from './setting-salary.store';
 import {NzMessageService} from "ng-zorro-antd/message";
 import {SalarySettingService} from "../services";
 import {SettingSalaryActions} from "./setting-salary.action";
+import {SearchSalarySettingDto} from "../dto";
+import {SettingSalaryQuery} from "./setting-salary.query";
 
 @Injectable()
 export class SettingSalaryEffect {
@@ -13,6 +15,7 @@ export class SettingSalaryEffect {
     private readonly action$: Actions,
     private readonly service: SalarySettingService,
     private readonly settingSalaryStore: SettingSalaryStore,
+    private readonly settingSalaryQuery: SettingSalaryQuery,
     private readonly message: NzMessageService
   ) {
   }
@@ -44,11 +47,25 @@ export class SettingSalaryEffect {
   @Effect()
   loadAll$ = this.action$.pipe(
     ofType(SettingSalaryActions.loadAll),
-    switchMap((props) => {
-      this.settingSalaryStore.update(state => ({...state, loading: true}))
+    switchMap((props: SearchSalarySettingDto) => {
+      this.settingSalaryStore.update(state => (
+        Object.assign({
+            ...state,
+          }, props.isPaginate
+            ? {loadMore: true}
+            : {loading: true}
+        )
+      ));
       return this.service.pagination(props).pipe(
         tap((res) => {
-          this.settingSalaryStore.update(state => ({...state, loading: false}))
+          this.settingSalaryStore.update(state => (
+            Object.assign({
+                ...state, total: res.total
+              }, props.isPaginate
+                ? {loadMore: false}
+                : {loading: false}
+            )
+          ));
           if (res.data.length === 0) {
             this.message.warning('Đã lấy hết bảng mẫu')
           }
@@ -59,7 +76,14 @@ export class SettingSalaryEffect {
           }
         }),
         catchError((err) => {
-          this.settingSalaryStore.update(state => ({...state, loading: false}))
+          this.settingSalaryStore.update(state => (
+            Object.assign({
+                ...state,
+              }, props.isPaginate
+                ? {loadMore: false}
+                : {loading: false}
+            )
+          ));
           return of(SettingSalaryActions.error(err))
         })
       );
