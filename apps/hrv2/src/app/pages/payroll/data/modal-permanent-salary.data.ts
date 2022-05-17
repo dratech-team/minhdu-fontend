@@ -1,5 +1,5 @@
 import { PayrollEntity } from '../entities';
-import { PermanentSalaryEntity } from '../../salary/entities';
+import {PermanentSalaryEntity, SalaryEntity} from '../../salary/entities';
 import { SalaryPayroll } from '@minhdu-fontend/data-models';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import {RequireOnlyOne} from "../../../../shared/types";
@@ -11,10 +11,10 @@ export interface ModalPermanentSalaryData {
     multiple?: boolean
   }
   update?: {
-    salary: PermanentSalaryEntity
+    salary: SalaryEntity
     history?: boolean
     multiple?: {
-      salariesSelected: SalaryPayroll[]
+      salaries: SalaryEntity[]
     }
   }
 }

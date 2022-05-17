@@ -7,6 +7,6 @@ export interface BaseSalaryEntity extends BaseEntity {
   readonly title: string;
   readonly price?: number;
   readonly note?: string;
-  readonly unit: DatetimeUnitEnum
+  readonly unit?: DatetimeUnitEnum
 }
 

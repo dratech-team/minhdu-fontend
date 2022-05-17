@@ -109,6 +109,7 @@ export class PayrollEffect {
         map(res => {
           return Object.assign(res, {
             data: res.data.map(payroll => Object.assign(payroll, {
+              expand: this.payrollStore.getValue().expandAll,
               basics: payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.BASIC || item.type === SalaryTypeEnum.BASIC_INSURANCE),
               stays: payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.STAY)
             }))

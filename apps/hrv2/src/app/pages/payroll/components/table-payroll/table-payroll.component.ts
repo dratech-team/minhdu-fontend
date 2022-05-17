@@ -1,11 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from "@angular/core";
 import {PayrollEntity} from "../../entities";
 import {FormGroup} from "@angular/forms";
 import {BranchQuery, PositionActions, PositionQuery} from "@minhdu-fontend/orgchart-v2";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollQuery, PayrollStore} from "../../state";
-import {FilterTypeEnum, ItemContextMenu, Role ,SalaryTypeEnum} from "@minhdu-fontend/enums";
-import {rageDaysInMonth} from "@minhdu-fontend/utils";
+import {FilterTypeEnum, ItemContextMenu, Role, SalaryTypeEnum} from "@minhdu-fontend/enums";
+import {filterSameSalary, rageDaysInMonth} from "@minhdu-fontend/utils";
 import {PaidConstant} from "../../constants/paid.constant";
 import {ConfirmConstant} from "../../constants/confirm.constant";
 import {Router} from "@angular/router";
@@ -17,20 +17,39 @@ import {PayrollActions} from "../../state/payroll.action";
 import {SettingSalaryActions, SettingSalaryQuery} from "../../../setting/salary/state";
 import {PayslipComponent} from "../payslip/payslip.component";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {ScrollTablePayrollConstant} from "../../constants/scroll-table-payroll.constant";
+import {SalaryEntity} from "../../../salary/entities";
+import {ClassifySalaryComponent} from "../classify-salary/classify-salary.component";
+import {PermanentSalaryComponent} from "../../../salary/components/permanent/permanent-salary.component";
+import {ModalAddOrUpdatePermanent} from "../../data";
+import {catchError} from "rxjs/operators";
+import {throwError} from "rxjs";
+import {
+  AbsentSalaryService,
+  AllowanceSalaryService,
+  DeductionSalaryService,
+  OvertimeSalaryService,
+  SalaryPermanentService,
+  SalaryRemoteService
+} from "../../../salary/service";
+import {SalaryHolidayService} from "../../../salary/service/salary-holiday.service";
 
 @Component({
   selector: 'minhdu-fontend-table-payroll',
-  templateUrl: 'table-payroll.component.html'
+  templateUrl: 'table-payroll.component.html',
 })
-export class TablePayrollComponent implements OnInit{
+export class TablePayrollComponent implements OnInit, OnChanges {
   @Input() payrolls!: PayrollEntity[]
   @Input() formGroup!: FormGroup
-  @Input() scroll: { x: string, y: string } = {x: '5000px', y: '51vh'}
+  @Input() isSalaryType: boolean = false
+  @Input() scroll?: { x: string, y: string } = ScrollTablePayrollConstant.find(item =>
+    item.type === this.payrollQuery.getValue().search.filterType)?.scroll
   @Output() onloadPayroll = new EventEmitter<{ isPagination: boolean }>()
   loading$ = this.payrollQuery.select(state => state.loading)
   loadMore$ = this.payrollQuery.select(state => state.loadMore)
   added$ = this.payrollQuery.select(state => state.added)
   total$ = this.payrollQuery.select(state => state.total)
+  expandAll$ = this.payrollQuery.select(state => state.expandAll)
   count$ = this.payrollQuery.selectCount()
   positions$ = this.positionQuery.selectAll()
 
@@ -39,11 +58,13 @@ export class TablePayrollComponent implements OnInit{
   paidConstant = PaidConstant
   daysInMonth = rageDaysInMonth(new Date(this.payrollQuery.getValue().search.startedAt))
   filterTypeEnum = FilterTypeEnum
-  template$ = this.settingSalaryQuery.selectAll();
   salaryType = SalaryTypeEnum
+  deletingSalary = false
+
+  salaries: SalaryEntity[] = []
+  salariesSelected: SalaryEntity[] = []
   role = localStorage.getItem('role')
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
-
 
   constructor(
     private readonly settingSalaryQuery: SettingSalaryQuery,
@@ -56,7 +77,42 @@ export class TablePayrollComponent implements OnInit{
     private readonly modal: NzModalService,
     private readonly datePipe: DatePipe,
     private readonly message: NzMessageService,
+    private readonly absentSalaryService: AbsentSalaryService,
+    private readonly deductionSalaryService: DeductionSalaryService,
+    private readonly permanentService: SalaryPermanentService,
+    private readonly overtimeSalaryService: OvertimeSalaryService,
+    private readonly allowanceSalaryService: AllowanceSalaryService,
+    private readonly salaryRemoteService: SalaryRemoteService,
+    private readonly salaryHolidayService: SalaryHolidayService,
   ) {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.payrolls) {
+      changes.payrolls.currentValue.map((payroll: PayrollEntity) => {
+        switch (this.formGroup.value.filterType) {
+          case FilterTypeEnum.PERMANENT:
+            if (payroll.salariesv2.length > 0) {
+              payroll.salariesv2.map(salary => {
+                if (this.salaries.every(e => e.id !== salary.id)) {
+                  this.salaries.push(salary)
+                }
+              })
+            }
+            break
+          case FilterTypeEnum.ALLOWANCE:
+            if (payroll.allowances.length > 0) {
+              payroll.allowances.map(salary => {
+                if (this.salaries.every(e => e.id !== salary.id)) {
+                  this.salaries.push(salary)
+                }
+              })
+            }
+            break
+        }
+      })
+      console.log(this.salaries)
+    }
   }
 
   ngOnInit() {
@@ -67,25 +123,8 @@ export class TablePayrollComponent implements OnInit{
     })
 
     this.formGroup.get('filterType')?.valueChanges.subscribe(val => {
-      if (val in SalaryTypeEnum) {
-        this.onLoadSettingSalary(val)
-      }
-      switch (val) {
-        case FilterTypeEnum.SEASONAL:
-          this.scroll = {x: '3000px', y: '51vh'}
-          break
-        case FilterTypeEnum.TIME_SHEET:
-          this.scroll = {x: '5000px', y: '51vh'}
-          break
-        case FilterTypeEnum.BASIC:
-          this.scroll = {x: '2000px', y: '56vh'}
-          break
-        case FilterTypeEnum.PAYROLL:
-          this.scroll = {x: '5000px', y: '56vh'}
-          break
-        default:
-          this.scroll = {x: '4200px', y: '51vh'}
-      }
+      this.salaries = []
+      this.scroll = ScrollTablePayrollConstant.find(item => item.type === val)?.scroll
     })
 
     this.actions$.dispatch(PositionActions.loadAll({}))
@@ -258,11 +297,115 @@ export class TablePayrollComponent implements OnInit{
     }))
   }
 
-  selectSalary(salaryId: number): boolean {
-    return false;
+  onUpdateSelectSalary(salary: any, checked: boolean) {
+    this.modal.create({
+      nzTitle: `${checked ? 'Chọn' : 'Bỏ chọn'} loại lương ${salary.title || salary.setting?.title}`,
+      nzContent: ClassifySalaryComponent,
+      nzComponentParams: <{ data: { type: 'SELECT' | 'REMOVE', salary: SalaryEntity } }>{
+        data: {
+          type: checked ? 'SELECT' : 'REMOVE',
+          salary: salary
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe(type => {
+      if (type === 'ALL') {
+        this.salariesSelected = []
+        if (checked) {
+          if (salary.type === SalaryTypeEnum.BASIC
+            || salary.type === SalaryTypeEnum.BASIC_INSURANCE
+            || salary.type === SalaryTypeEnum.STAY) {
+            this.salariesSelected = [...filterSameSalary(this.salaries, salary)]
+          }
+        }
+      } else {
+        if (checked) {
+          this.salariesSelected.push(salary)
+        } else {
+          const index = this.salariesSelected.findIndex(item => item.id === salary.id)
+          this.salariesSelected.splice(index, 1)
+        }
+      }
+    })
   }
 
-  updateSelectSalary(salary: any, checked: boolean) {
+  onExpandAll() {
+    const expandAll = this.payrollQuery.getValue().expandAll;
+    this.payrollQuery.getAll().forEach((payroll: PayrollEntity) => {
+      this.payrollStore.update(payroll.id, {expand: !expandAll});
+    });
+    this.payrollStore.update(state => ({...state, expandAll: !expandAll}));
+  }
+
+  checkSelect(salaryId: number): boolean {
+    return this.salariesSelected.some(e => e.id == salaryId)
+  }
+
+  onUpdateSalary() {
+    this.modal.create({
+      nzTitle: 'Cập nhật lương cố định',
+      nzContent: PermanentSalaryComponent,
+      nzComponentParams: <{ data: ModalAddOrUpdatePermanent }>{
+        data: {
+          type: this.salariesSelected[0].type,
+          update: {
+            salary: this.salariesSelected[0],
+            multiple: {
+              salaries: this.salariesSelected
+            }
+          }
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe(val => {
+      if (val) {
+        this.formGroup.get('titles')?.setValue([val], {emitEvent: false})
+        this.onloadPayroll.emit({isPagination: false})
+      }
+    })
+  }
+
+  onDeleteSalary() {
+    this.modal.create({
+      nzTitle: `Xoá lương  ${this.salariesSelected[0]?.title || this.salariesSelected[0]?.setting?.title}`,
+      nzContent: ModalAlertComponent,
+      nzComponentParams: <{ data: ModalAlertEntity }>{
+        data: {
+          description: `Bạn có có chắc chắn muốn xoá
+          ${this.salariesSelected.length} bảng lương
+          ${this.salariesSelected[0]?.title || this.salariesSelected[0]?.setting?.title}`
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe(value => {
+      if (value) {
+        this.deletingSalary = true
+        const service = ((this.salariesSelected[0].type === SalaryTypeEnum.BASIC
+            || this.salariesSelected[0].type === SalaryTypeEnum.STAY
+            || this.salariesSelected[0].type === SalaryTypeEnum.BASIC_INSURANCE
+          )
+            ? this.permanentService
+            : this.salariesSelected[0].type === SalaryTypeEnum.ALLOWANCE
+              ? this.allowanceSalaryService
+              : this.salariesSelected[0].type === SalaryTypeEnum.OVERTIME
+                ? this.overtimeSalaryService
+                : this.salariesSelected[0].type === SalaryTypeEnum.ABSENT
+                  ? this.absentSalaryService
+                  : this.deductionSalaryService
+        );
+        service.deleteMany({salaryIds: this.salariesSelected.map(e => e.id)}).pipe(
+          catchError(err => {
+            this.deletingSalary = false
+            this.message.warning(err);
+            return throwError(err);
+          })
+        ).subscribe(res => {
+          this.deletingSalary = false
+          this.message.success(res.message);
+          this.onloadPayroll.emit({isPagination: false})
+        });
+      }
+    });
 
   }
 }

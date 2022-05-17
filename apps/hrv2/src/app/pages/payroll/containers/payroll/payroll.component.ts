@@ -8,7 +8,7 @@ import {Api, EmployeeStatusConstant, PayrollConstant} from "@minhdu-fontend/cons
 import {debounceTime, map} from "rxjs/operators";
 import {BranchActions, BranchQuery, DepartmentActions, DepartmentQuery} from "@minhdu-fontend/orgchart-v2";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
-import {SettingSalaryActions} from "../../../setting/salary/state";
+import {SettingSalaryActions, SettingSalaryQuery} from "../../../setting/salary/state";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {
   ModalDatePickerComponent,
@@ -19,12 +19,13 @@ import {
 import {DatePipe} from "@angular/common";
 import * as _ from 'lodash'
 import {ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
+import {SalariesConstant} from "../../../salary/constants";
 
 @Component({
   templateUrl: 'payroll.component.html'
 })
 export class PayrollComponent implements OnInit {
-  payrolls$ = this.payrollQuery.selectAll()
+  payrolls$ = this.payrollQuery.selectAll().pipe(map(payrolls => JSON.parse(JSON.stringify(payrolls))))
   added$ = this.payrollQuery.select(state => state.added)
   deleted$ = this.payrollQuery.select(state => state.deleted)
   branches$ = this.branchQuery.selectAll().pipe(map(branches => {
@@ -36,7 +37,9 @@ export class PayrollComponent implements OnInit {
     }
     return branches
   }));
+  loadingSettingSalary$ = this.settingSalaryQuery.select(state => state.loading)
   categories$ = this.departmentQuery.selectAll();
+  settingSalaries$ = this.settingSalaryQuery.selectAll()
 
   stateSearch = this.payrollQuery.getValue().search
   empStatusContain = EmployeeStatusConstant;
@@ -67,6 +70,10 @@ export class PayrollComponent implements OnInit {
   })
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
+  checkFilterTypeSalary = () => {
+    return this.formGroup.value.filterType === FilterTypeEnum.PERMANENT
+      || SalariesConstant.some(item => item.value === this.formGroup.value.filterType)
+  }
 
   constructor(
     private readonly transformConstant: TransformConstantPipe,
@@ -76,7 +83,8 @@ export class PayrollComponent implements OnInit {
     private readonly branchQuery: BranchQuery,
     private readonly departmentQuery: DepartmentQuery,
     private readonly actions$: Actions,
-    private readonly modal: NzModalService
+    private readonly modal: NzModalService,
+    private readonly settingSalaryQuery: SettingSalaryQuery
   ) {
   }
 
@@ -84,6 +92,8 @@ export class PayrollComponent implements OnInit {
     this.actions$.dispatch(BranchActions.loadAll({}))
 
     this.actions$.dispatch(DepartmentActions.loadAll({}))
+
+    this.actions$.dispatch(SettingSalaryActions.loadAll({}))
 
     this.onLoadPayroll(false)
     this.payrollQuery.select(state => state.search).subscribe(
@@ -94,30 +104,22 @@ export class PayrollComponent implements OnInit {
     )
 
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe(val => {
-      if (val.filterType === FilterTypeEnum.OVERTIME || val.filterType === FilterTypeEnum.ABSENT) {
-        Object.assign(val, {
-          startedAt: new Date(val.rangeDay[0] + '-00'),
-          endedAt: new Date(val.rangeDay[1] + '-00')
-        })
-      } else {
-        Object.assign(val, {
-          startedAt: new Date(getFirstDayInMonth(val.startedAt) + '-00'),
-          endedAt: new Date(getLastDayInMonth(val.startedAt) + '-00')
-        })
-      }
       this.onLoadPayroll(false)
-      if (val.filterType in SalaryTypeEnum) {
+    })
+
+    this.formGroup.get('filterType')?.valueChanges.subscribe(item => {
+      if (item in SalaryTypeEnum || item === FilterTypeEnum.PERMANENT) {
         this.actions$.dispatch(SettingSalaryActions.loadAll({
           search: {
-            types: val.filterType === SalaryTypeEnum.BASIC
-              ? [SalaryTypeEnum.BASIC, SalaryTypeEnum.BASIC_INSURANCE]
-              : [val.filterType]
+            types: item === FilterTypeEnum.PERMANENT
+              ? [SalaryTypeEnum.BASIC, SalaryTypeEnum.BASIC_INSURANCE, SalaryTypeEnum.STAY]
+              : [item]
           }
         }))
       }
-
     })
   }
+
 
   onLoadPayroll(isPagination: boolean) {
     this.actions$.dispatch(PayrollActions.loadAll({
@@ -130,15 +132,30 @@ export class PayrollComponent implements OnInit {
     this.payrollStore.update(state => ({
       ...state, search: formData
     }))
-    return Object.assign({}, _.omit(formData, ['rangeDay', 'department']), {
-      categoryId: formData.department?.id || '',
-      branch: formData.branch?.name || '',
-      position: formData.position?.name || '',
-    })
-  }
-
-  onAdd() {
-    this.onChange.next()
+    return Object.assign({},
+      _.omit(formData, ['rangeDay', 'department']),
+      {
+        categoryId: formData.department?.id || '',
+        branch: formData.branch?.name || '',
+        position: formData.position?.name || '',
+      },
+      formData.filterType === FilterTypeEnum.OVERTIME || formData.filterType === FilterTypeEnum.ABSENT
+        ? {
+          startedAt: new Date(formData.rangeDay[0] + '-00'),
+          endedAt: new Date(formData.rangeDay[1] + '-00')
+        }
+        : (formData.filterType === FilterTypeEnum.PERMANENT)
+          ?
+          {
+            filterType: FilterTypeEnum.PAYROLL,
+            startedAt: new Date(getFirstDayInMonth(formData.startedAt) + '-00'),
+            endedAt: new Date(getLastDayInMonth(formData.startedAt) + '-00')
+          }
+          : {
+            startedAt: new Date(getFirstDayInMonth(formData.startedAt) + '-00'),
+            endedAt: new Date(getLastDayInMonth(formData.startedAt) + '-00')
+          }
+    )
   }
 
   onPrint() {

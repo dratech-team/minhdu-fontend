@@ -12,7 +12,8 @@ export interface PayrollEntityState extends EntityState<PayrollEntity> {
   total: number
   added: boolean | null;
   scanned: boolean | null
-  deleted: boolean | null
+  deleted: boolean | null;
+  expandAll: boolean
   search: {
     code?: string,
     name?: string
@@ -47,6 +48,7 @@ export function createInitialState(): PayrollEntityState {
     loadMore: false,
     added: null,
     deleted: null,
+    expandAll: true,
     search: {
       employeeType: EmployeeType.EMPLOYEE_FULL_TIME,
       empStatus: EmployeeStatusEnum.IS_ACTIVE,

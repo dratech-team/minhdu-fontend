@@ -36,8 +36,9 @@ import {UpdatePayrollComponent} from "./components/update/update-payroll.compone
 import {NzAlertModule} from "ng-zorro-antd/alert";
 import {SettingModule} from "../setting/setting.module";
 import {SharedModule} from "../../../shared/shared.module";
-import {TransformConstantPipe} from "../../../../../../libs/components/src/lib/pipes/transform-constant.pipe";
+import {TransformConstantPipe} from "@minhdu-fontend/components";
 import {HistoryPayrollComponent} from "./containers/history-payroll/history-payroll.component";
+import {ClassifySalaryComponent} from "./components/classify-salary/classify-salary.component";
 
 @NgModule({
     imports: [
@@ -80,7 +81,8 @@ import {HistoryPayrollComponent} from "./containers/history-payroll/history-payr
     PayslipComponent,
     AllowanceSalaryComponent,
     UpdatePayrollComponent,
-    HistoryPayrollComponent
+    HistoryPayrollComponent,
+    ClassifySalaryComponent
   ],
   exports: [
     TablePayrollComponent,

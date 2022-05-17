@@ -44,13 +44,10 @@ export class PermanentSalaryComponent implements OnInit {
   );
   loadingSettingSalary$ = this.settingSalaryQuery.select(state => state.loading);
 
-  salariesSelected: SalaryPayroll[] = [];
-
   role = localStorage.getItem('role');
   indexStep = 0;
   submitting = false;
   employeeType = EmployeeType
-
   salaryTypeEnum = SalaryTypeEnum;
   roleEnum = Role;
 
@@ -68,9 +65,6 @@ export class PermanentSalaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.data.update?.multiple) {
-      this.salariesSelected = [...this.data.update.multiple?.salariesSelected]
-    }
     this.actions$.dispatch(SettingSalaryActions.loadAll({
       search: {
         types: this.data.type === SalaryTypeEnum.BASIC ?
@@ -85,6 +79,7 @@ export class PermanentSalaryComponent implements OnInit {
       rate: [salary?.rate, Validators.required],
       unit: [salary?.unit],
       payrollIds: [[this.data.add?.payroll.id]],
+      salaryIds: [this.data.update?.multiple?.salaries.map(item => item.id)],
     });
 
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
@@ -136,7 +131,9 @@ export class PermanentSalaryComponent implements OnInit {
     };
     return Object.assign(salary, this.data.add
       ? {payrollIds: value.payrollIds}
-      : {salaryIds: this.salariesSelected.map(item => item.salary.id).concat([this.data.update.salary.id])}
+      : this.data.update.multiple
+        ? {salaryIds: value.salaryIds}
+        : {salaryIds: [this.data.update.salary.id]}
     );
   }
 
@@ -146,7 +143,7 @@ export class PermanentSalaryComponent implements OnInit {
     if (payrollId) {
       this.actions$.dispatch(PayrollActions.loadOne({id: payrollId}));
     }
-    this.modalRef.close();
+    this.modalRef.close(this.mapSalary(this.formGroup.value).title);
   }
 
   onSubmitError(err: string) {
