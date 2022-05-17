@@ -82,8 +82,6 @@ export class TablePayrollComponent implements OnInit, OnChanges {
     private readonly permanentService: SalaryPermanentService,
     private readonly overtimeSalaryService: OvertimeSalaryService,
     private readonly allowanceSalaryService: AllowanceSalaryService,
-    private readonly salaryRemoteService: SalaryRemoteService,
-    private readonly salaryHolidayService: SalaryHolidayService,
   ) {
   }
 
@@ -111,7 +109,6 @@ export class TablePayrollComponent implements OnInit, OnChanges {
             break
         }
       })
-      console.log(this.salaries)
     }
   }
 
