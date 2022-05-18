@@ -254,16 +254,6 @@ export class TablePayrollComponent implements OnInit {
       });
   }
 
-  onLoadSettingSalary(type: SalaryTypeEnum) {
-    this.actions$.dispatch(SettingSalaryActions.loadAll({
-      search: {
-        types: type === SalaryTypeEnum.BASIC
-          ? [SalaryTypeEnum.BASIC, SalaryTypeEnum.BASIC_INSURANCE]
-          : [type]
-      }
-    }))
-  }
-
   onUpdateSelectSalary(salary: any, checked: boolean) {
     this.modal.create({
       nzTitle: `${checked ? 'Chọn' : 'Bỏ chọn'} loại lương ${salary.title || salary.setting?.title}`,
