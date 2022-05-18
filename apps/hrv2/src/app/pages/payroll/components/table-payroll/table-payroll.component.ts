@@ -284,7 +284,6 @@ export class TablePayrollComponent implements OnInit {
             this.payrolls.map(payroll => {
               switch (this.formGroup.value.filterType) {
                 case FilterTypeEnum.ALLOWANCE:
-                  console.log(payroll.allowances.map(salary => Object.assign(salary, {payroll: payroll})))
                   return payroll.allowances.map(salary => Object.assign(salary, {payroll: payroll}))
                 default:
                   return payroll.salariesv2.map(salary => Object.assign(salary, {payroll: payroll}))
@@ -335,7 +334,7 @@ export class TablePayrollComponent implements OnInit {
           nzFooter: []
         }).afterClose.subscribe(val => {
           if (val) {
-           this.updateSalarySuccess(val)
+            this.updateSalarySuccess(val)
           }
         })
         break
@@ -362,24 +361,22 @@ export class TablePayrollComponent implements OnInit {
       nzComponentParams: <{ data: ModalAlertEntity }>{
         data: {
           description: `Bạn có có chắc chắn muốn xoá
-          ${this.salariesSelected.length} bảng lương
-          ${this.salariesSelected[0]?.title || this.salariesSelected[0]?.setting?.title}`
+          ${this.salariesSelected.length}
+          ${this.salariesSelected[0]?.title || this.salariesSelected[0]?.setting?.title} này không`
         }
       },
       nzFooter: []
     }).afterClose.subscribe(value => {
       if (value) {
         this.deletingSalary = true
-        const service = ((this.salariesSelected[0].type === SalaryTypeEnum.BASIC
-            || this.salariesSelected[0].type === SalaryTypeEnum.STAY
-            || this.salariesSelected[0].type === SalaryTypeEnum.BASIC_INSURANCE
-          )
+        const filterType = this.formGroup.value.filterType
+        const service = (filterType === FilterTypeEnum.PERMANENT
             ? this.permanentService
-            : this.salariesSelected[0].type === SalaryTypeEnum.ALLOWANCE
+            : filterType === SalaryTypeEnum.ALLOWANCE
               ? this.allowanceSalaryService
-              : this.salariesSelected[0].type === SalaryTypeEnum.OVERTIME
+              : filterType === SalaryTypeEnum.OVERTIME
                 ? this.overtimeSalaryService
-                : this.salariesSelected[0].type === SalaryTypeEnum.ABSENT
+                : filterType === SalaryTypeEnum.ABSENT
                   ? this.absentSalaryService
                   : this.deductionSalaryService
         );
@@ -398,7 +395,7 @@ export class TablePayrollComponent implements OnInit {
     });
   }
 
-  private updateSalarySuccess(title: string){
+  private updateSalarySuccess(title: string) {
     this.salariesSelected = []
     this.formGroup.get('titles')?.setValue([title], {emitEvent: false})
     this.onloadPayroll.emit({isPagination: false})
