@@ -54,7 +54,7 @@ export function createInitialState(): PayrollEntityState {
     search: {
       employeeType: EmployeeType.EMPLOYEE_FULL_TIME,
       empStatus: EmployeeStatusEnum.IS_ACTIVE,
-      filterType: FilterTypeEnum.PAYROLL,
+      filterType: FilterTypeEnum.TIME_SHEET,
       startedAt: new Date(getFirstDayInMonth(new Date()) + '-00'),
       endedAt: new Date(getLastDayInMonth(new Date()) + '-00'),
       accConfirmed: confirmTypeEnums.ALL,
