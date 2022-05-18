@@ -177,13 +177,10 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     }
     const salary = this.mapSalary(value);
     this.submitting = true;
+    const service = this.data.type === SalaryTypeEnum.ABSENT ? this.absentSalaryService : this.overtimeSalaryService;
     (this.data.add
-        ? this.data.type === SalaryTypeEnum.ABSENT
-          ? this.absentSalaryService.addMany(salary)
-          : this.overtimeSalaryService.addMany(salary)
-        : this.data.type === SalaryTypeEnum.ABSENT
-          ? this.absentSalaryService.updateMany(salary)
-          : this.overtimeSalaryService.updateManyOvertime(salary)
+        ? service.addMany(salary)
+        : service.updateMany(salary)
     )
       .pipe(catchError(err => {
         this.submitting = false;
