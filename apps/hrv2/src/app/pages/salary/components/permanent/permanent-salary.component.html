@@ -40,7 +40,8 @@
           <span>Mức lương</span>
           <span class='star'>*</span>
         </div>
-        <div class=' mb-3' [formGroup]='formGroup' *ngIf='formGroup.value.template?.prices?.length > 1 else inputPrice'>
+        <div class=' mb-3' [formGroup]='formGroup'
+             *ngIf='formGroup.value.template?.type === salaryTypeEnum.BASIC_INSURANCE  else inputPrice'>
           <nz-select style="width: 100%" formControlName='price'
                      [ngClass]="{ 'is-invalid': checkValid.price.errors }">
             <nz-option *ngFor='let item of formGroup.value.template.prices' [nzValue]='item'
@@ -88,11 +89,12 @@
       </minhdu-fontend-select-payroll>
     </div>
   </ng-template>
-  <ng-template [ngIf]="indexStep === 1 && this.data.update?.multiple">
-    <!--    <app-table-salaries-selected-->
-    <!--      [salaries]='salariesSelected'-->
-    <!--      (EmitSalariesSelected)='changeSalariesSelected($event)'>-->
-    <!--    </app-table-salaries-selected>-->
+  <ng-template [ngIf]="indexStep === 1 && data.update?.multiple">
+    <minhdu-fontend-table-salaries-selected
+      [formGroup]="formGroup"
+      [salaries]="data.update?.multiple?.salaries || []"
+    >
+    </minhdu-fontend-table-salaries-selected>
   </ng-template>
   <div>
     <button class="mr-2" nz-button nzType="default" (click)="move('previous')" *ngIf="indexStep > 0">

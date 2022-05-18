@@ -1,6 +1,7 @@
-import { Salary, SalaryPayroll } from '../data-models';
+import {Salary, SalaryPayroll} from '../data-models';
 import * as moment from 'moment';
-import { SalaryTypeEnum } from '../enums';
+import {SalaryTypeEnum} from '../enums';
+import {SalaryEntity} from "../../apps/hrv2/src/app/pages/salary/entities";
 
 
 export const filterSalaryPayroll = (salaryPayrolls: SalaryPayroll[], salary: Salary) => {
@@ -24,3 +25,18 @@ export const updateSelectOneSalaryPayroll = (event: boolean, salaryPayroll: Sala
   }
 };
 
+export const filterSameSalary = (salaries: SalaryEntity[], salary: SalaryEntity) => {
+  return salaries.filter(item => {
+    return salary?.setting?.id === item?.setting?.id
+      && salary?.price === item?.price
+      && salary?.inOffice === item?.inOffice
+      && salary?.inWorkday === item?.inWorkday
+      && salary?.title === item?.title
+      && ((salary.startedAt && item.startedAt)
+        ? isSame(salary?.startedAt, item?.startedAt, 'day')
+        : true)
+      && ((salary.endedAt && item.endedAt)
+        ? isSame(salary?.endedAt, item?.endedAt, 'day')
+        : true)
+  })
+}

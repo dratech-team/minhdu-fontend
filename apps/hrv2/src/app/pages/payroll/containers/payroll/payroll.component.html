@@ -56,7 +56,6 @@
             </nz-option>
           </nz-select>
         </div>
-
       </div>
       <div [formGroup]="formGroup" style='width: fit-content' class='ml-2'>
         <div class="font-weight-bold">Phòng ban</div>
@@ -82,6 +81,26 @@
           </nz-select>
         </div>
       </div>
+      <div
+        *ngIf="formGroup.value.filterType === filterTypeEnum.OVERTIME"
+        [formGroup]="formGroup"
+        style='width: fit-content'
+        class='ml-2'>
+        <div class="font-weight-bold">Loại lương</div>
+        <nz-select style="width: 200px"
+                   [nzLoading]="(loadingSettingSalary$|async)"
+                   [nzMaxTagCount]="1"
+                   [nzMaxTagPlaceholder]="tagPlaceHolderSettingSalary"
+                   nzMode="multiple"
+                   nzPlaceHolder="Chọn loại phiếu lương"
+                   formControlName="titles"
+                   [compareWith]="compareFN"
+        >
+          <nz-option *ngFor="let item of settingSalaries$|async" [nzLabel]="item.title" [nzValue]="item.title"></nz-option>
+          <nz-option [nzLabel]="'Tất cả'" [nzValue]="''"></nz-option>
+        </nz-select>
+        <ng-template #tagPlaceHolderSettingSalary let-item>và {{ item.length }} đã chọn</ng-template>
+      </div>
     </div>
     <div>
       <button class="mr-2" nz-button nzType="primary" (click)="onPrint()">Xuất excel</button>
@@ -92,6 +111,7 @@
     <minhdu-fontend-table-payroll
       [formGroup]="formGroup"
       [payrolls]="(payrolls$ | async) || []"
+      [isSalaryType]="checkFilterTypeSalary()"
       (onloadPayroll)="onLoadPayroll($event.isPagination)"
     >
     </minhdu-fontend-table-payroll>

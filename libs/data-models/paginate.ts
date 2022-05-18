@@ -11,7 +11,7 @@ export interface ResponsePaginatePayroll<T> extends ResponsePaginate<T> {
 }
 
 export interface ResponsePaginateOvertimePayroll<T> extends ResponsePaginate<T> {
-  totalSalary?: totalSalary
+  total2?: number
 }
 
 export interface RequestPaginate {

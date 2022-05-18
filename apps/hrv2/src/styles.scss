@@ -221,6 +221,11 @@ tr table tbody tr:nth-child(odd) td {
   background: white;
 }
 
+.inner-table table tbody tr,
+.inner-table table tbody tr td {
+  background: white;
+}
+
 .pointer {
   cursor: pointer;
 }

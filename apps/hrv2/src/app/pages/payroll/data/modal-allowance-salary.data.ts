@@ -1,6 +1,5 @@
 import {PayrollEntity} from "../entities";
-import {AllowanceSalaryEntity} from "../../salary/entities";
-import {SalaryPayroll} from "@minhdu-fontend/data-models";
+import {SalaryEntity} from "../../salary/entities";
 import {RequireOnlyOne} from "../../../../shared/types";
 
 export interface ModalAllowanceSalaryData {
@@ -9,9 +8,9 @@ export interface ModalAllowanceSalaryData {
     multiple?: boolean
   }
   update?: {
-    salary: AllowanceSalaryEntity & { workedAt: Date }
+    salary: SalaryEntity & { workedAt: Date }
     multiple?: {
-      salariesSelected: SalaryPayroll[]
+      salaries: SalaryEntity[]
     },
   }
 }

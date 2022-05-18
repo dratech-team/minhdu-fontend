@@ -84,7 +84,11 @@
     </minhdu-fontend-select-payroll>
   </ng-template>
   <ng-template [ngIf]="indexStep === 1 && data?.update?.multiple">
-    <!--    Nhân viên đã chọn-->
+    <minhdu-fontend-table-salaries-selected
+      [formGroup]="formGroup"
+      [salaries]="data.update?.multiple?.salaries || []"
+    >
+    </minhdu-fontend-table-salaries-selected>
   </ng-template>
   <div class="steps-action">
     <button class="ml-2" nz-button nzType="default" (click)="move('previous')" *ngIf="indexStep > 0">

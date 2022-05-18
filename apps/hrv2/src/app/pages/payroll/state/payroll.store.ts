@@ -9,10 +9,12 @@ import {confirmTypeEnums, PaidTypeEnums} from "../enums";
 export interface PayrollEntityState extends EntityState<PayrollEntity> {
   loading: boolean;
   loadMore: boolean;
-  total: number
+  total: number,
+  totalSalary: number
   added: boolean | null;
   scanned: boolean | null
-  deleted: boolean | null
+  deleted: boolean | null;
+  expandAll: boolean
   search: {
     code?: string,
     name?: string
@@ -43,10 +45,12 @@ export interface PayrollEntityState extends EntityState<PayrollEntity> {
 export function createInitialState(): PayrollEntityState {
   return {
     total: 0,
+    totalSalary: 0,
     loading: true,
     loadMore: false,
     added: null,
     deleted: null,
+    expandAll: true,
     search: {
       employeeType: EmployeeType.EMPLOYEE_FULL_TIME,
       empStatus: EmployeeStatusEnum.IS_ACTIVE,

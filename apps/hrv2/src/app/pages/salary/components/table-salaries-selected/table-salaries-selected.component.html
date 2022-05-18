@@ -1,0 +1,29 @@
+<div>
+  <nz-table
+    [nzData]="salaries"
+    nzShowPagination="false"
+  >
+    <thead>
+    <tr>
+      <th [nzChecked]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="onAllChecked($event)"></th>
+      <th>stt</th>
+      <th>Tên nhân viên</th>
+      <th>Chức vụ</th>
+      <th>Đơn vị</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor='let item of salaries; let i = index'>
+      <td
+        [nzChecked]="salaryIdsSelected.has(item.id)"
+        (nzCheckedChange)="onItemChecked(item.id, $event)"
+      ></td>
+      <td>{{i + 1}}</td>
+      <td>{{item.payroll.employee.lastName}}</td>
+      <td>{{item.payroll.position}}</td>
+      <td>{{item.payroll.branch}}</td>
+    </tr>
+    </tbody>
+  </nz-table>
+</div>
+

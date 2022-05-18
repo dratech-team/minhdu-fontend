@@ -1,0 +1,9 @@
+<div class='px-2  main-popup'>
+  <div class="font-weight-bold mt-3">
+    Bạn có muốn {{data.type === 'REMOVE'? 'bỏ' :''}} chọn tất cả {{data.salary?.title || data.salary.setting?.title}}
+  </div>
+  <div class="d-flex mt-3">
+    <button nz-button nzType='primary' (click)="onSubmit('ONE')">{{data.type === 'REMOVE'? 'bỏ' :''}} chọn một</button>
+    <button class="ml-2" nz-button nzType="primary" (click)="onSubmit('ALL')">{{data.type === 'REMOVE'? 'bỏ' :''}} Chọn tất cả</button>
+  </div>
+</div>
