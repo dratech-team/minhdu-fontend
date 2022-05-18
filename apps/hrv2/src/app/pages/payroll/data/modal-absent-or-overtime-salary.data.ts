@@ -1,5 +1,5 @@
 import { PayrollEntity } from '../entities';
-import { AbsentSalaryEntity, OvertimeSalaryEntity } from '../../salary/entities';
+import {AbsentSalaryEntity, OvertimeSalaryEntity, SalaryEntity} from '../../salary/entities';
 import { SalaryPayroll } from '@minhdu-fontend/data-models';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { RequireOnlyOne } from '../../../../shared/types';
@@ -11,9 +11,9 @@ interface ModalAbsentOrOvertimeSalaryData {
     multiple?: boolean
   }
   update: {
-    salary: OvertimeSalaryEntity & AbsentSalaryEntity
+    salary: SalaryEntity
     multiple?: {
-      salaryPayrolls: SalaryPayroll[]
+      salaries: SalaryEntity[]
     },
   }
 }

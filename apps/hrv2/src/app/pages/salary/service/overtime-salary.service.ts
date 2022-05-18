@@ -19,7 +19,7 @@ export class OvertimeSalaryService extends BaseService<OvertimeSalaryEntity> {
   }
 
   updateMany(body: any): Observable<ResponseMessageEntity> {
-    return super.updateMany(body);
+    return super.updateMany(body, 'put');
   }
 
   deleteMany(body: any): Observable<ResponseMessageEntity> {
