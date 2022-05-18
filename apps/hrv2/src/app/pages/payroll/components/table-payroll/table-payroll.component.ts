@@ -14,14 +14,14 @@ import {ModalAlertComponent, ModalDatePickerComponent} from "@minhdu-fontend/com
 import {ModalAlertEntity, ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
 import {DatePipe} from "@angular/common";
 import {PayrollActions} from "../../state/payroll.action";
-import {SettingSalaryActions, SettingSalaryQuery} from "../../../setting/salary/state";
+import {SettingSalaryQuery} from "../../../setting/salary/state";
 import {PayslipComponent} from "../payslip/payslip.component";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {ScrollTablePayrollConstant} from "../../constants/scroll-table-payroll.constant";
 import {SalaryEntity} from "../../../salary/entities";
 import {ClassifySalaryComponent} from "../classify-salary/classify-salary.component";
 import {PermanentSalaryComponent} from "../../../salary/components/permanent/permanent-salary.component";
-import {ModalAddOrUpdateAllowance, ModalAddOrUpdatePermanent} from "../../data";
+import {ModalAddOrUpdateAbsentOrOvertime, ModalAddOrUpdateAllowance, ModalAddOrUpdatePermanent} from "../../data";
 import {catchError} from "rxjs/operators";
 import {throwError} from "rxjs";
 import {
@@ -32,6 +32,11 @@ import {
   SalaryPermanentService
 } from "../../../salary/service";
 import {AllowanceSalaryComponent} from "../../../salary/components/allowance/allowance-salary.component";
+import {SessionConstant} from "../../../../../shared/constants";
+import {
+  AbsentOvertimeSalaryComponent
+} from "../../../salary/components/absent-overtime/absent-overtime-salary.component";
+import {PartialDayEnum} from "@minhdu-fontend/data-models";
 
 @Component({
   selector: 'minhdu-fontend-table-payroll',
@@ -62,6 +67,8 @@ export class TablePayrollComponent implements OnInit {
   deletingSalary = false
   salariesSelected: SalaryEntity[] = []
   role = localStorage.getItem('role')
+  sessionConstant = SessionConstant;
+  partialDay = PartialDayEnum
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
 
   constructor(
@@ -271,12 +278,14 @@ export class TablePayrollComponent implements OnInit {
         if (checked) {
           this.salariesSelected = [...filterSameSalary(
             this.payrolls.map(payroll => {
-              switch (this.formGroup.value.filterType) {
-                case FilterTypeEnum.ALLOWANCE:
-                  return payroll.allowances.map(salary => Object.assign(salary, {payroll: payroll}))
-                default:
-                  return payroll.salariesv2.map(salary => Object.assign(salary, {payroll: payroll}))
-              }
+              return (this.formGroup.value.filterType === FilterTypeEnum.ABSENT
+                ? payroll.absents
+                : this.formGroup.value.filterType === FilterTypeEnum.OVERTIME
+                  ? payroll.overtimes
+                  : this.formGroup.value.filterType === FilterTypeEnum.ALLOWANCE
+                    ? payroll.allowances
+                    : payroll.salariesv2)
+                .map(salary => Object.assign(salary, {payroll: payroll}))
             }).flat()
             , salary)]
         }
@@ -313,6 +322,21 @@ export class TablePayrollComponent implements OnInit {
       }
     }
     switch (this.formGroup.value.filterType) {
+      case FilterTypeEnum.OVERTIME:
+      case FilterTypeEnum.ABSENT:
+        this.modal.create({
+          nzTitle: `Cập nhật ${this.formGroup.value.filterType === SalaryTypeEnum.OVERTIME ?'tăng ca': 'vắng'}`,
+          nzContent: AbsentOvertimeSalaryComponent,
+          nzComponentParams: <{ data: ModalAddOrUpdateAbsentOrOvertime }>{
+            data: Object.assign(data, {type: this.salariesSelected[0]?.setting?.type})
+          },
+          nzFooter: []
+        }).afterClose.subscribe(val => {
+          if (val) {
+            this.updateSalarySuccess(val)
+          }
+        })
+        break
       case FilterTypeEnum.ALLOWANCE:
         this.modal.create({
           nzTitle: 'Cập nhật Phụ cấp lương',

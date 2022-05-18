@@ -169,10 +169,11 @@
     </minhdu-fontend-select-payroll>
   </ng-template>
   <ng-template [ngIf]='indexStep === 1 && data.update?.multiple'>
-    <!--    <app-table-salaries-selected-->
-    <!--      [salaries]='salaryPayrolls'-->
-    <!--      (EmitSalariesSelected)='changeSalariesSelected($event)'>-->
-    <!--    </app-table-salaries-selected>-->
+    <minhdu-fontend-table-salaries-selected
+      [formGroup]="formGroup"
+      [salaries]="data.update?.multiple?.salaries || []"
+    >
+    </minhdu-fontend-table-salaries-selected>
   </ng-template>
   <div class='steps-action'>
     <button class='ml-2' nz-button nzType='default' (click)="move('previous')" *ngIf='indexStep > 0'>

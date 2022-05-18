@@ -1,7 +1,7 @@
 import {DatePipe} from '@angular/common';
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {PartialDayEnum, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {PartialDayEnum} from '@minhdu-fontend/data-models';
 import {DatetimeUnitEnum, EmployeeType, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {catchError, map} from 'rxjs/operators';
 import {SettingSalaryActions, SettingSalaryQuery} from '../../../setting/salary/state';
@@ -34,7 +34,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     filterBy: [(entity => entity.type === this.data.type)]
   }).pipe(
     map(templates => {
-      if (this.data?.update) {
+      if (this.data?.update && this.data.update.salary.setting) {
         this.formGroup.get('template')?.setValue(
           this.getTemplateSalary(templates, this.data.update.salary.setting.id));
       }
@@ -43,7 +43,6 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   );
   settingsLoading$ = this.settingSalaryQuery.select(state => state.loading);
 
-  salaryPayrolls: SalaryPayroll[] = [];
   limitStartHour: number [] = [];
   limitEndTime: number [] = [];
 
@@ -92,14 +91,11 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.fistDateInMonth = getFirstDayInMonth(
-      new Date(this.data.add ? this.data.add.payroll.createdAt : this.data.update.salary.startedAt)
+      new Date(this.data.add ? this.data.add.payroll.createdAt : this.data.update.salary.startedAt || new Date())
     )
     this.actions$.dispatch(SettingSalaryActions.loadAll({
       search: {types: [this.data.type]}
     }));
-    if (this.data?.update?.multiple) {
-      this.salaryPayrolls = this.data.update.multiple.salaryPayrolls;
-    }
     const salary = this.data?.update?.salary;
     this.formGroup = this.formBuilder.group({
       template: ['', Validators.required],
@@ -113,7 +109,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       endTime: [salary?.endedAt ? new Date(salary.endedAt) : undefined],
       note: [salary?.note],
       rate: [1],
-      unit: [salary?.unit ? salary.unit : DatetimeUnitEnum.MONTH],
+      unit: [salary?.setting?.unit ? salary.setting.unit : DatetimeUnitEnum.MONTH],
       partialDay: [salary?.partial ? this.getPartialDay(salary.partial) : ''],
       isAllowance: [!!salary?.allowance],
       priceAllowance: [salary?.allowance?.price || ''],
@@ -123,16 +119,19 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       hasConstraints: [],
       reference: [],
       payrollIds: [this.data.add ? [this.data.add.payroll.id] : []],
+      salaryIds: [this.data.update?.multiple?.salaries.map(item => item.id)],
     });
 
     this.formGroup.get('template')?.valueChanges.subscribe(template => {
-      this.formGroup.get('constraintHoliday')?.setValue(template?.constraints?.some((item: any) => item.value === SalaryTypeEnum.HOLIDAY));
-      this.formGroup.get('constraintOvertime')?.setValue(template?.constraints?.some((item: any) => item.value === SalaryTypeEnum.HOLIDAY));
-      this.formGroup.get('rate')?.setValue(template?.rate);
-      this.formGroup.get('unit')?.setValue(template?.unit);
-      this.formGroup.get('reference')?.setValue(template?.totalOf.length > 0 ? PriceType.BLOCK : PriceType.PRICE);
-      if(template.type === SalaryTypeEnum.OVERTIME){
-        this.formGroup.get('hasConstraints')?.setValue(template?.hasConstraints);
+      if (template) {
+        this.formGroup.get('constraintHoliday')?.setValue(template?.constraints?.some((item: any) => item.value === SalaryTypeEnum.HOLIDAY));
+        this.formGroup.get('constraintOvertime')?.setValue(template?.constraints?.some((item: any) => item.value === SalaryTypeEnum.HOLIDAY));
+        this.formGroup.get('rate')?.setValue(template?.rate);
+        this.formGroup.get('unit')?.setValue(template?.unit);
+        this.formGroup.get('reference')?.setValue(template?.totalOf.length > 0 ? PriceType.BLOCK : PriceType.PRICE);
+        if (template.type === SalaryTypeEnum.OVERTIME) {
+          this.formGroup.get('hasConstraints')?.setValue(template?.hasConstraints);
+        }
       }
     });
 
@@ -178,8 +177,14 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     }
     const salary = this.mapSalary(value);
     this.submitting = true;
-    const service = this.data.type === SalaryTypeEnum.ABSENT ? this.absentSalaryService : this.overtimeSalaryService;
-    (this.data.add ? service.addMany(salary) : service.updateMany(salary))
+    (this.data.add
+        ? this.data.type === SalaryTypeEnum.ABSENT
+          ? this.absentSalaryService.addMany(salary)
+          : this.overtimeSalaryService.addMany(salary)
+        : this.data.type === SalaryTypeEnum.ABSENT
+          ? this.absentSalaryService.updateMany(salary)
+          : this.overtimeSalaryService.updateManyOvertime(salary)
+    )
       .pipe(catchError(err => {
         this.submitting = false;
         return this.onSubmitError(err);
@@ -212,26 +217,25 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
           minutes: new Date().getMinutes(),
           seconds: new Date().getSeconds()
         }
-      ),
+      ).toDate(),
       endedAt: moment(value.rangeDay[1]).set(
         {
           hours: new Date().getHours(),
           minutes: new Date().getMinutes(),
           seconds: new Date().getSeconds()
         }
-      ),
+      ).toDate(),
       startTime: value.startTime ? new Date(value.startTime) : null,
       endTime: value.endTime ? new Date(value.endTime) : null,
       settingId: value.template?.id
     };
 
     return Object.assign(salary,
-      this.data.add
-        ? {payrollIds: value.payrollIds}
-        : {},
       this.data.update
-        ? {salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.update.salary.id)}
-        : {},
+        ? this.data.update.multiple
+          ? {salaryIds: value.salaryIds}
+          : {salaryIds: [this.data.update.salary.id]}
+        : {payrollIds: value.payrollIds},
       value.priceAllowance && value.titleAllowance
         ? {
           allowance: {
@@ -261,6 +265,6 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       this.actions$.dispatch(PayrollActions.loadOne({id: payrollId}));
     }
     this.submitting = false;
-    this.modalRef.close();
+    this.modalRef.close(this.formGroup.value.template.title);
   }
 }

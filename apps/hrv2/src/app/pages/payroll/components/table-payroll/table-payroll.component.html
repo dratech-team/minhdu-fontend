@@ -343,105 +343,235 @@
             nzShowPagination="false"
             [nzData]="payroll.salariesv2"
           >
-            <thead>
-            <tr>
-              <th nzWidth="100px">
-              </th>
-              <th>Loại lương cố định</th>
-              <th>Hệ số</th>
-              <th>Thành tiền</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let salary of tableBasic.data">
-              <td>
-                <label
-                  nz-checkbox
-                  [nzChecked]="checkSelect(salary.id)"
-                  (nzCheckedChange)="onUpdateSelectSalary(salary, $event)"
-                >
-                </label>
-              </td>
-              <td> {{salary.title}}</td>
-              <td> {{salary.rate}}</td>
-              <td class=' text-center ' style='color: #05981C'>
-                {{salary.price || 0
-                | roundingnumber :1000
-                | number:'1.0'
-                | notEmpty:'0'}} đ
-              </td>
-            </tr>
-            </tbody>
-          </nz-table>
-        </tr>
-      </ng-template>
+    <thead>
+    <tr>
+      <th nzWidth="100px">
+      </th>
+      <th>Loại lương cố định</th>
+      <th>Hệ số</th>
+      <th>Thành tiền</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let salary of tableBasic.data">
+      <td>
+        <label
+          nz-checkbox
+          [nzChecked]="checkSelect(salary.id)"
+          (nzCheckedChange)="onUpdateSelectSalary(salary, $event)"
+        >
+        </label>
+      </td>
+      <td> {{salary.title}}</td>
+      <td> {{salary.rate}}</td>
+      <td class=' text-center ' style='color: #05981C'>
+        {{salary.price || 0
+        | roundingnumber :1000
+        | number:'1.0'
+        | notEmpty:'0'}} đ
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+  </tr>
+  </ng-template>
 
   <!--    Allowance-->
-      <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.ALLOWANCE">
-        <tr [nzExpand]="payroll.expand">
-          <nz-table
-            #tableAllowance
-            nzShowPagination="false"
-            [nzData]="payroll.allowances"
-          >
-            <thead>
-              <tr>
-                <th nzWidth="100px">
-                </th>
-                <th>Phụ cấp</th>
-                <th>Thời gian</th>
-                <th>Tổng ngày</th>
-                <th>Làm tại cty</th>
-                <th>Theo ngày làm thực tế</th>
-                <th>Đơn giá</th>
-                <th>Thành tiền</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let salary of tableAllowance.data">
-                <td>
-                  <label
-                    nz-checkbox
-                    [nzChecked]="checkSelect(salary.id)"
-                    (nzCheckedChange)="onUpdateSelectSalary(salary, $event)"
-                  >
-                  </label>
-                </td>
-                <td>
-                  <span>{{salary.title}}</span>
-                </td>
-                <td>
-                  Từ. {{ salary.startedAt | date:'dd-MM-yyyy' }}
-                  <br/>
-                  đến {{ salary.endedAt | date:'dd-MM-yyyy' }}
-                </td>
-                <td>
-                  {{ salary.duration }}
-                </td>
-                <td>
-                  <label nz-checkbox nzDisabled [nzChecked]="salary.inOffice"></label>
-                </td>
-                <td>
-                  <label nz-checkbox nzDisabled [nzChecked]="salary.inWorkday"></label>
-                </td>
-                <td style='color: #05981C'>{{salary.price || 0
-                  | roundingnumber :1000
-                  |number:'1.0'
-                  | notEmpty:'0'}} đ
-                </td>
-                <td style='color: #05981C'>{{salary.total
-                  | roundingnumber :1000
-                  |number:'1.0'
-                  | notEmpty:'0'}} đ
-                </td>
-                <td>
-                  <span>{{salary?.note}}</span>
-                </td>
-              </tr>
-            </tbody>
-          </nz-table>
+  <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.ALLOWANCE">
+    <tr [nzExpand]="payroll.expand">
+      <nz-table
+        #tableAllowance
+        nzShowPagination="false"
+        [nzData]="payroll.allowances"
+      >
+        <thead>
+        <tr>
+          <th nzWidth="100px">
+          </th>
+          <th>Phụ cấp</th>
+          <th>Thời gian</th>
+          <th>Tổng ngày</th>
+          <th>Làm tại cty</th>
+          <th>Theo ngày làm thực tế</th>
+          <th>Đơn giá</th>
+          <th>Thành tiền</th>
         </tr>
-      </ng-template>
+        </thead>
+        <tbody>
+        <tr *ngFor="let salary of tableAllowance.data">
+          <td>
+            <label
+              nz-checkbox
+              [nzChecked]="checkSelect(salary.id)"
+              (nzCheckedChange)="onUpdateSelectSalary(salary, $event)"
+            >
+            </label>
+          </td>
+          <td>
+            <span>{{salary.title}}</span>
+          </td>
+          <td>
+            Từ. {{ salary.startedAt | date:'dd-MM-yyyy' }}
+            <br/>
+            đến {{ salary.endedAt | date:'dd-MM-yyyy' }}
+          </td>
+          <td>
+            {{ salary.duration }}
+          </td>
+          <td>
+            <label nz-checkbox nzDisabled [nzChecked]="salary.inOffice"></label>
+          </td>
+          <td>
+            <label nz-checkbox nzDisabled [nzChecked]="salary.inWorkday"></label>
+          </td>
+          <td style='color: #05981C'>{{salary.price || 0
+            | roundingnumber :1000
+            |number:'1.0'
+            | notEmpty:'0'}} đ
+          </td>
+          <td style='color: #05981C'>{{salary.total
+            | roundingnumber :1000
+            |number:'1.0'
+            | notEmpty:'0'}} đ
+          </td>
+          <td>
+            <span>{{salary?.note}}</span>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </tr>
+  </ng-template>
+
+  <!--    Overtime-->
+  <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.OVERTIME">
+    <tr [nzExpand]="payroll.expand">
+      <nz-table
+        #tableOvertime
+        nzShowPagination="false"
+        [nzData]="payroll.overtimes"
+      >
+        <thead>
+        <tr>
+          <th nzWidth="100px">
+          </th>
+          <th nzWidth="60px">STT</th>
+          <th>Tăng ca</th>
+          <th>Thời gian</th>
+          <th>Tổng ngày</th>
+          <th>Thành tiền</th>
+          <th>Chú thích</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let salary of tableOvertime.data; let i = index">
+          <td>
+            <label
+              nz-checkbox
+              [nzChecked]="checkSelect(salary.id)"
+              (nzCheckedChange)="onUpdateSelectSalary(salary, $event)"
+            >
+            </label>
+          </td>
+          <td>
+            <span>{{i + 1}}</span>
+          </td>
+          <td>
+            <div>
+              <span>{{salary.setting?.title}}</span>
+              <span class='ml-2' *ngIf='salary.allowance'> + {{salary.allowance.title}}</span>
+            </div>
+          </td>
+          <td class=' text-center '>
+            Từ  {{salary.startedAt | date:'dd-MM-yyyy'}}
+            <br> đến {{salary.endedAt | date:'dd-MM-yyyy'}}
+          </td>
+          <td>
+            {{salary.duration}} {{ salary.partial | transformconstant: sessionConstant}}
+          </td>
+          <td style='color: #05981C'>
+                <span>
+                  {{ salary.total
+                  | roundingnumber :1000
+                  | number:'1.0'}} đ
+                </span>
+          </td>
+          <td>
+            <span>{{salary.note}}</span>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </tr>
+  </ng-template>
+
+  <!--    Absent-->
+  <ng-template [ngIf]="formGroup.value.filterType === filterTypeEnum.ABSENT">
+    <tr [nzExpand]="payroll.expand">
+      <nz-table
+        #tableAbsent
+        nzShowPagination="false"
+        [nzData]="payroll.absents"
+      >
+        <thead>
+        <tr>
+          <th nzWidth="100px">
+          </th>
+          <th nzWidth='60px'>STT</th>
+          <th>Loại vắng</th>
+          <th> Thời gian</th>
+          <th>Tổng ngày</th>
+          <th>Đơn giá</th>
+          <th>Thành tiền</th>
+          <th>Chú thích</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let salary of tableAbsent.data; let i = index">
+          <td>
+            <label
+              nz-checkbox
+              [nzChecked]="checkSelect(salary.id)"
+              (nzCheckedChange)="onUpdateSelectSalary(salary, $event)"
+            >
+            </label>
+          </td>
+          <td>
+            {{i + 1}}
+          </td>
+          <td>{{salary.title}}</td>
+          <td>
+              <span *ngIf='salary.startedAt && salary.endedAt'>
+              Từ. {{salary.partial !== partialDay.CUSTOM ? (salary.startedAt | date:'dd-MM-yyyy') : salary.startedAt | date:'dd-MM-yyyy HH:mm:ss'}}
+                <br/>
+                đến {{salary.partial !== partialDay.CUSTOM ? (salary.endedAt | date:'dd-MM-yyyy') : salary.endedAt | date:'dd-MM-yyyy HH:mm:ss'}}
+                </span>
+          </td>
+          <td>
+            {{salary.duration}} {{salary.partial | transformconstant:sessionConstant}}
+          </td>
+          <td>
+               <span style='color: red'>
+                 {{salary.price || 0
+                 | roundingnumber :1000
+                 | number:'1.0-0'}} đ
+               </span>
+          </td>
+          <td>
+              <span style='color: red'>
+                {{salary.total
+                | roundingnumber :1000
+                | number:'1.0-0'}} đ
+              </span>
+          </td>
+          <td>
+            <span>{{salary.note}}</span>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </tr>
+  </ng-template>
   </ng-template>
   <tr class="border" *ngIf="payrolls.length > 0" style="position: relative; background: White">
     <button
