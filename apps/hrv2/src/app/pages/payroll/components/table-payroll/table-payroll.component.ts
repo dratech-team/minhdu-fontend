@@ -383,6 +383,7 @@ export class TablePayrollComponent implements OnInit {
         service.deleteMany({salaryIds: this.salariesSelected.map(e => e.id)}).pipe(
           catchError(err => {
             this.deletingSalary = false
+            this.salariesSelected = []
             this.message.warning(err);
             return throwError(err);
           })
