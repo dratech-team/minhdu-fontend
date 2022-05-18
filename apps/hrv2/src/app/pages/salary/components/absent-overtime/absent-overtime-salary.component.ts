@@ -34,7 +34,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     filterBy: [(entity => entity.type === this.data.type)]
   }).pipe(
     map(templates => {
-      if (this.data?.update && this.data.update.salary.setting) {
+      if (this.data.update?.salary?.setting) {
         this.formGroup.get('template')?.setValue(
           this.getTemplateSalary(templates, this.data.update.salary.setting.id));
       }
