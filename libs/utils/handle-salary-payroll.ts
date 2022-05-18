@@ -29,6 +29,8 @@ export const filterSameSalary = (salaries: SalaryEntity[], salary: SalaryEntity)
   return salaries.filter(item => {
     return salary?.setting?.id === item?.setting?.id
       && salary?.price === item?.price
+      && salary?.inOffice === item?.inOffice
+      && salary?.inWorkday === item?.inWorkday
       && salary?.title === item?.title
       && ((salary.startedAt && item.startedAt)
         ? isSame(salary?.startedAt, item?.startedAt, 'day')
@@ -36,6 +38,5 @@ export const filterSameSalary = (salaries: SalaryEntity[], salary: SalaryEntity)
       && ((salary.endedAt && item.endedAt)
         ? isSame(salary?.endedAt, item?.endedAt, 'day')
         : true)
-
   })
 }

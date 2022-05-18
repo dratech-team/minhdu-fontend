@@ -144,17 +144,10 @@ export class PayrollComponent implements OnInit {
           startedAt: new Date(formData.rangeDay[0] + '-00'),
           endedAt: new Date(formData.rangeDay[1] + '-00')
         }
-        : (formData.filterType === FilterTypeEnum.PERMANENT)
-          ?
-          {
-            filterType: FilterTypeEnum.PAYROLL,
-            startedAt: new Date(getFirstDayInMonth(formData.startedAt) + '-00'),
-            endedAt: new Date(getLastDayInMonth(formData.startedAt) + '-00')
-          }
-          : {
-            startedAt: new Date(getFirstDayInMonth(formData.startedAt) + '-00'),
-            endedAt: new Date(getLastDayInMonth(formData.startedAt) + '-00')
-          }
+        : {
+          startedAt: new Date(getFirstDayInMonth(formData.startedAt) + '-00'),
+          endedAt: new Date(getLastDayInMonth(formData.startedAt) + '-00')
+        }
     )
   }
 

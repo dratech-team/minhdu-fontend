@@ -82,7 +82,7 @@
         </div>
       </div>
       <div
-        *ngIf="checkFilterTypeSalary()"
+        *ngIf="formGroup.value.filterType === filterTypeEnum.OVERTIME"
         [formGroup]="formGroup"
         style='width: fit-content'
         class='ml-2'>

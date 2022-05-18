@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {PayrollEntity} from "../../entities";
 import {FormGroup} from "@angular/forms";
 import {BranchQuery, PositionActions, PositionQuery} from "@minhdu-fontend/orgchart-v2";
@@ -21,7 +21,7 @@ import {ScrollTablePayrollConstant} from "../../constants/scroll-table-payroll.c
 import {SalaryEntity} from "../../../salary/entities";
 import {ClassifySalaryComponent} from "../classify-salary/classify-salary.component";
 import {PermanentSalaryComponent} from "../../../salary/components/permanent/permanent-salary.component";
-import {ModalAddOrUpdatePermanent} from "../../data";
+import {ModalAddOrUpdateAllowance, ModalAddOrUpdatePermanent} from "../../data";
 import {catchError} from "rxjs/operators";
 import {throwError} from "rxjs";
 import {
@@ -29,16 +29,15 @@ import {
   AllowanceSalaryService,
   DeductionSalaryService,
   OvertimeSalaryService,
-  SalaryPermanentService,
-  SalaryRemoteService
+  SalaryPermanentService
 } from "../../../salary/service";
-import {SalaryHolidayService} from "../../../salary/service/salary-holiday.service";
+import {AllowanceSalaryComponent} from "../../../salary/components/allowance/allowance-salary.component";
 
 @Component({
   selector: 'minhdu-fontend-table-payroll',
   templateUrl: 'table-payroll.component.html',
 })
-export class TablePayrollComponent implements OnInit, OnChanges {
+export class TablePayrollComponent implements OnInit {
   @Input() payrolls!: PayrollEntity[]
   @Input() formGroup!: FormGroup
   @Input() isSalaryType: boolean = false
@@ -49,6 +48,7 @@ export class TablePayrollComponent implements OnInit, OnChanges {
   loadMore$ = this.payrollQuery.select(state => state.loadMore)
   added$ = this.payrollQuery.select(state => state.added)
   total$ = this.payrollQuery.select(state => state.total)
+  totalSalary$ = this.payrollQuery.select(state => state.totalSalary)
   expandAll$ = this.payrollQuery.select(state => state.expandAll)
   count$ = this.payrollQuery.selectCount()
   positions$ = this.positionQuery.selectAll()
@@ -61,7 +61,6 @@ export class TablePayrollComponent implements OnInit, OnChanges {
   salaryType = SalaryTypeEnum
   deletingSalary = false
 
-  salaries: SalaryEntity[] = []
   salariesSelected: SalaryEntity[] = []
   role = localStorage.getItem('role')
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
@@ -85,33 +84,6 @@ export class TablePayrollComponent implements OnInit, OnChanges {
   ) {
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.payrolls) {
-      changes.payrolls.currentValue.map((payroll: PayrollEntity) => {
-        switch (this.formGroup.value.filterType) {
-          case FilterTypeEnum.PERMANENT:
-            if (payroll.salariesv2.length > 0) {
-              payroll.salariesv2.map(salary => {
-                if (this.salaries.every(e => e.id !== salary.id)) {
-                  this.salaries.push(salary)
-                }
-              })
-            }
-            break
-          case FilterTypeEnum.ALLOWANCE:
-            if (payroll.allowances.length > 0) {
-              payroll.allowances.map(salary => {
-                if (this.salaries.every(e => e.id !== salary.id)) {
-                  this.salaries.push(salary)
-                }
-              })
-            }
-            break
-        }
-      })
-    }
-  }
-
   ngOnInit() {
     this.added$.subscribe(added => {
       if (added) {
@@ -120,7 +92,6 @@ export class TablePayrollComponent implements OnInit, OnChanges {
     })
 
     this.formGroup.get('filterType')?.valueChanges.subscribe(val => {
-      this.salaries = []
       this.scroll = ScrollTablePayrollConstant.find(item => item.type === val)?.scroll
     })
 
@@ -309,11 +280,17 @@ export class TablePayrollComponent implements OnInit, OnChanges {
       if (type === 'ALL') {
         this.salariesSelected = []
         if (checked) {
-          if (salary.type === SalaryTypeEnum.BASIC
-            || salary.type === SalaryTypeEnum.BASIC_INSURANCE
-            || salary.type === SalaryTypeEnum.STAY) {
-            this.salariesSelected = [...filterSameSalary(this.salaries, salary)]
-          }
+          this.salariesSelected = [...filterSameSalary(
+            this.payrolls.map(payroll => {
+              switch (this.formGroup.value.filterType) {
+                case FilterTypeEnum.ALLOWANCE:
+                  console.log(payroll.allowances.map(salary => Object.assign(salary, {payroll: payroll})))
+                  return payroll.allowances.map(salary => Object.assign(salary, {payroll: payroll}))
+                default:
+                  return payroll.salariesv2.map(salary => Object.assign(salary, {payroll: payroll}))
+              }
+            }).flat()
+            , salary)]
         }
       } else {
         if (checked) {
@@ -339,27 +316,43 @@ export class TablePayrollComponent implements OnInit, OnChanges {
   }
 
   onUpdateSalary() {
-    this.modal.create({
-      nzTitle: 'Cập nhật lương cố định',
-      nzContent: PermanentSalaryComponent,
-      nzComponentParams: <{ data: ModalAddOrUpdatePermanent }>{
-        data: {
-          type: this.salariesSelected[0].type,
-          update: {
-            salary: this.salariesSelected[0],
-            multiple: {
-              salaries: this.salariesSelected
-            }
-          }
+    const data = {
+      update: {
+        salary: this.salariesSelected[0],
+        multiple: {
+          salaries: this.salariesSelected
         }
-      },
-      nzFooter: []
-    }).afterClose.subscribe(val => {
-      if (val) {
-        this.formGroup.get('titles')?.setValue([val], {emitEvent: false})
-        this.onloadPayroll.emit({isPagination: false})
       }
-    })
+    }
+    switch (this.formGroup.value.filterType) {
+      case FilterTypeEnum.ALLOWANCE:
+        this.modal.create({
+          nzTitle: 'Cập nhật Phụ cấp lương',
+          nzContent: AllowanceSalaryComponent,
+          nzComponentParams: <{ data: ModalAddOrUpdateAllowance }>{
+            data: data
+          },
+          nzFooter: []
+        }).afterClose.subscribe(val => {
+          if (val) {
+           this.updateSalarySuccess(val)
+          }
+        })
+        break
+      default:
+        this.modal.create({
+          nzTitle: 'Cập nhật lương cố định',
+          nzContent: PermanentSalaryComponent,
+          nzComponentParams: <{ data: ModalAddOrUpdatePermanent }>{
+            data: Object.assign(data, {type: this.salariesSelected[0].type})
+          },
+          nzFooter: []
+        }).afterClose.subscribe(val => {
+          if (val) {
+            this.updateSalarySuccess(val)
+          }
+        })
+    }
   }
 
   onDeleteSalary() {
@@ -403,6 +396,11 @@ export class TablePayrollComponent implements OnInit, OnChanges {
         });
       }
     });
+  }
 
+  private updateSalarySuccess(title: string){
+    this.salariesSelected = []
+    this.formGroup.get('titles')?.setValue([title], {emitEvent: false})
+    this.onloadPayroll.emit({isPagination: false})
   }
 }

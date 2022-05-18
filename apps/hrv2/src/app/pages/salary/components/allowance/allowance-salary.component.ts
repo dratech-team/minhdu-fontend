@@ -4,7 +4,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {DatetimeUnitEnum, EmployeeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {getFirstDayInMonth, getLastDayInMonth, isEqualDatetime} from 'libs/utils/daytime.until';
-import {SalaryPayroll} from '@minhdu-fontend/data-models';
 import {AllowanceSalaryService} from '../../service';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
@@ -24,7 +23,6 @@ export class AllowanceSalaryComponent implements OnInit {
   @Input() data!: ModalAddOrUpdateAllowance;
 
   formGroup!: FormGroup;
-  salariesSelected: SalaryPayroll [] = [];
 
   indexStep = 0;
   submitting = false;
@@ -54,12 +52,8 @@ export class AllowanceSalaryComponent implements OnInit {
     this.fistDateInMonth = getFirstDayInMonth(new Date(
       this.data.add
         ? this.data.add.payroll.createdAt
-        : this.data.update.salary.startedAt
+        : this.data.update.salary.startedAt|| new Date()
     ));
-
-    if (this.data.update?.multiple) {
-      this.salariesSelected = [...this.data.update.multiple.salariesSelected];
-    }
     const salary = this.data.update?.salary;
     const payroll = this.data.add?.payroll;
     this.formGroup = this.formBuilder.group({
@@ -77,7 +71,8 @@ export class AllowanceSalaryComponent implements OnInit {
       endedAt: [salary?.endedAt],
       rate: [salary?.rate || 1],
       inWorkday: [this.data.update ? salary?.inWorkday : true],
-      payrollIds: [payroll ? [payroll.id] : []]
+      payrollIds: [payroll ? [payroll.id] : []],
+      salaryIds: [this.data.update?.multiple?.salaries.map(item => item.id)],
     });
     this.formGroup.get('unit')?.valueChanges.subscribe(unit => {
       switch (unit) {
@@ -144,7 +139,7 @@ export class AllowanceSalaryComponent implements OnInit {
     return Object.assign(salary,
       this.data.add
         ? {payrollIds: value.payrollIds}
-        : {salaryIds: this.salariesSelected.map(item => item.salary.id).concat([this.data.update.salary.id])}
+        : {salaryIds: value.salaryIds}
     );
   }
 
@@ -161,7 +156,7 @@ export class AllowanceSalaryComponent implements OnInit {
       }));
     }
     this.submitting = false;
-    this.modalRef.close();
+    this.modalRef.close(this.mapSalary(this.formGroup.value).title);
   }
 
   move(type: 'next' | 'previous'): void {

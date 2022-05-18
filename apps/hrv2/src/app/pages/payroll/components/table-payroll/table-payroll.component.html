@@ -2,7 +2,7 @@
   <nz-spin *ngIf="(added$|async)=== false" nzSimple style="position: absolute; top: 50%;left: 50%;"></nz-spin>
   <div class="d-flex align-items-center">
     <div *ngIf="isSalaryType" class="mr-2">
-      <span class="font-weight-bold">Đã chọn: </span>{{this.salariesSelected.length}}/{{salaries.length}}
+      <span class="font-weight-bold">Đã chọn: </span>{{this.salariesSelected.length}}/{{totalSalary$|async}}
     </div>
     <div *ngIf="salariesSelected.length > 0">
       <button nz-button nzType="primary" class="mr-2" (click)="onUpdateSalary()">Sửa</button>
@@ -386,6 +386,8 @@
           >
             <thead>
               <tr>
+                <th nzWidth="100px">
+                </th>
                 <th>Phụ cấp</th>
                 <th>Thời gian</th>
                 <th>Tổng ngày</th>
@@ -397,6 +399,14 @@
             </thead>
             <tbody>
               <tr *ngFor="let salary of tableAllowance.data">
+                <td>
+                  <label
+                    nz-checkbox
+                    [nzChecked]="checkSelect(salary.id)"
+                    (nzCheckedChange)="onUpdateSelectSalary(salary, $event)"
+                  >
+                  </label>
+                </td>
                 <td>
                   <span>{{salary.title}}</span>
                 </td>

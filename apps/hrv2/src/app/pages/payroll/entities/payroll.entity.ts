@@ -60,7 +60,7 @@ export interface PayrollEntity extends BasePayrollEntity {
   absents: AbsentSalaryEntity [],
   deductions: DeductionSalaryEntity [],
   overtimes: OvertimeSalaryEntity [],
-  allowances: AllowanceSalaryEntity[],
+  allowances: SalaryEntity[],
   remotes: RemoteSalaryEntity[],
   holidays: HolidaySalaryEntity[]
   dayOffs: DayOffSalaryEntity[],

@@ -11,7 +11,7 @@ import {
   AbsentSalaryEntity,
   AllowanceSalaryEntity,
   OvertimeSalaryEntity,
-  RemoteSalaryEntity
+  RemoteSalaryEntity, SalaryEntity
 } from '../../salary/entities';
 import {PayrollEntity, TotalSalary} from '../entities';
 import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
@@ -117,7 +117,7 @@ export class PayrollEffect {
         }),
         tap((res) => {
           this.payrollStore.update(state => (
-            Object.assign({...state, total: res.total}, props.isPaginate
+            Object.assign({...state, total: res.total, totalSalary: res.total2}, props.isPaginate
               ? {loadMore: false}
               : {loading: false}
             )
@@ -289,7 +289,7 @@ export class PayrollEffect {
     });
   }
 
-  private getTotalAllowance(allowances: AllowanceSalaryEntity[]): TotalSalary | undefined {
+  private getTotalAllowance(allowances: SalaryEntity[]): TotalSalary | undefined {
     return allowances?.reduce((a, b) => {
       return {
         price: a.price + (b.price || 0),
