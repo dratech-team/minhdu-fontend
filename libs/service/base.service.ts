@@ -5,10 +5,10 @@ import { Api } from '../constants';
 import { ResponseMessageEntity } from '../entities';
 import { VersionEnum } from '../enums';
 
-export class BaseService<T> {
+export abstract class BaseService<T> {
   versionV2 = VersionEnum.V2;
 
-  constructor(
+  protected constructor(
     public readonly url: string,
     public readonly http: HttpClient,
     public readonly version?: VersionEnum
@@ -40,8 +40,8 @@ export class BaseService<T> {
     return this.http.patch<T>(this.url + `/${id}`, body);
   }
 
-  updateMany(body: any): Observable<ResponseMessageEntity> {
-    return this.http.post<ResponseMessageEntity>(this.url + `/multiple/updation`, body);
+  updateMany(body: any, method?: 'put' | 'patch' | 'post'): Observable<ResponseMessageEntity> {
+    return this.http.request<ResponseMessageEntity>(method ?? 'post', this.url + `/multiple/updation`, { body });
   }
 
   delete(id: number, params?: any): Observable<void> {
