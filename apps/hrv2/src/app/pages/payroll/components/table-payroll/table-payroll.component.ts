@@ -60,7 +60,6 @@ export class TablePayrollComponent implements OnInit {
   filterTypeEnum = FilterTypeEnum
   salaryType = SalaryTypeEnum
   deletingSalary = false
-
   salariesSelected: SalaryEntity[] = []
   role = localStorage.getItem('role')
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
