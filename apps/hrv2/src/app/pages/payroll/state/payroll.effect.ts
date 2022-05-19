@@ -9,9 +9,10 @@ import {AddPayrollDto} from '../dto';
 import {Injectable} from '@angular/core';
 import {
   AbsentSalaryEntity,
-  AllowanceSalaryEntity,
+  DayOffSalaryEntity,
   OvertimeSalaryEntity,
-  RemoteSalaryEntity, SalaryEntity
+  RemoteSalaryEntity,
+  SalaryEntity
 } from '../../salary/entities';
 import {PayrollEntity, TotalSalary} from '../entities';
 import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
@@ -19,7 +20,6 @@ import {PartialDayEnum} from '@minhdu-fontend/data-models';
 import {StateHistoryPlugin} from '@datorama/akita';
 import {PayrollQuery} from './payroll.query';
 import {PaginationDto} from "@minhdu-fontend/constants";
-import {DayOffSalaryEntity} from "../../salary/entities";
 import {AddManyPayrollDto} from "../dto/add-many-payroll.dto";
 import {HolidaySalaryEntity} from "../../salary/entities/holiday-salary.entity";
 import * as moment from 'moment';
@@ -110,8 +110,12 @@ export class PayrollEffect {
           return Object.assign(res, {
             data: res.data.map(payroll => Object.assign(payroll, {
               expand: this.payrollStore.getValue().expandAll,
-              basics: payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.BASIC || item.type === SalaryTypeEnum.BASIC_INSURANCE),
-              stays: payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.STAY)
+              basics: payroll.salariesv2
+                ? payroll.salariesv2.filter(item => item.type !== SalaryTypeEnum.STAY)
+                : [],
+              stays: payroll.salariesv2
+                ? payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.STAY)
+                : []
             }))
           });
         }),
