@@ -10,7 +10,7 @@ export interface ResponsePaginatePayroll<T> extends ResponsePaginate<T> {
   isTimeSheet: boolean
 }
 
-export interface ResponsePaginateOvertimePayrollV2<T> extends ResponsePaginate<T> {
+export interface ResponsePaginateOvertimePayrollV1<T> extends ResponsePaginate<T> {
   totalSalary: totalSalary
 }
 
