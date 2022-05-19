@@ -5,7 +5,7 @@ import {PartialDayEnum} from '@minhdu-fontend/data-models';
 import {getDaysInMonth} from '@minhdu-fontend/utils';
 import {DatePipe} from '@angular/common';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {catchError, map} from 'rxjs/operators';
+import {catchError, map, tap} from 'rxjs/operators';
 import {PayrollQuery, PayrollStore} from '../../state';
 import {PayrollActions} from '../../state/payroll.action';
 import {PayrollEntity} from '../../entities';
@@ -59,16 +59,18 @@ export class DetailPayrollComponent implements OnInit {
   payroll$ = this.payrollQuery.selectEntity(this.getPayrollId).pipe(
     map(payroll => {
       if (payroll) {
-        const result = JSON.parse(JSON.stringify(payroll));
-        this.overtimeSalaries = result.overtimes
-        if (result?.createdAt) {
-          this.daysInMonth = getDaysInMonth(result.createdAt);
-        } else {
-          this.daysInMonth = new Date().getDate();
-        }
-        return result
+       return  JSON.parse(JSON.stringify(payroll));
       }
-    })
+      return payroll
+    }),
+    tap(payroll => {
+      if (payroll?.createdAt) {
+        this.daysInMonth = getDaysInMonth(payroll.createdAt);
+      } else {
+        this.daysInMonth = new Date().getDate();
+      }
+      }
+    )
   );
   loading$ = this.payrollQuery.select(state => state.loading);
   added$ = this.payrollQuery.select(state => state.added);
@@ -90,7 +92,6 @@ export class DetailPayrollComponent implements OnInit {
   ;
   roleEnum = Role;
   filterOvertimeEnum = FilterOvertimeEnum
-  overtimeSalaries: SalaryEntity[] = []
 
   constructor(
     private readonly payrollQuery: PayrollQuery,
@@ -428,8 +429,8 @@ export class DetailPayrollComponent implements OnInit {
     }
   }
 
-  onSort(column: FilterOvertimeEnum, type: NzTableSortOrder) {
-    this.overtimeSalaries.sort((a, b) => {
+  onSort(column: FilterOvertimeEnum, type: NzTableSortOrder , overtimes: SalaryEntity []) {
+    overtimes.sort((a, b) => {
       const isAsc = type === 'ascend';
       switch (column) {
         case FilterOvertimeEnum.TITLE:
@@ -440,11 +441,9 @@ export class DetailPayrollComponent implements OnInit {
           return this.compare(a.duration, b.duration, isAsc);
       }
     });
-    console.log(this.overtimeSalaries)
   }
 
   compare(a: number | string | Date | undefined, b: number | string |Date| undefined, isAsc: boolean) {
-    console.log(a,b)
     return a && b
       ? (a < b ? -1 : 1) * (isAsc ? 1 : -1)
       : 0

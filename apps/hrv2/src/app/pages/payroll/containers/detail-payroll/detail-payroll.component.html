@@ -324,7 +324,7 @@
               border-radius: 10px !important;
               box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06) !important;"
               #tableOvertime
-              [nzData]="overtimeSalaries"
+              [nzData]="payroll.overtimes"
               nzShowPagination="false"
             >
               <thead>
@@ -333,17 +333,17 @@
                 <th nzWidth="60px">STT</th>
                 <th
                   [nzSortFn]='true'
-                  (nzSortOrderChange)='onSort(filterOvertimeEnum.TITLE, $event)'>
+                  (nzSortOrderChange)='onSort(filterOvertimeEnum.TITLE, $event, payroll.overtimes)'>
                   Tăng ca
                 </th>
                 <th
                   [nzSortFn]='true'
-                  (nzSortOrderChange)='onSort(filterOvertimeEnum.DATETIME, $event)'>
+                  (nzSortOrderChange)='onSort(filterOvertimeEnum.DATETIME, $event, payroll.overtimes)'>
                   Thời gian
                 </th>
                 <th
                   [nzSortFn]='true'
-                  (nzSortOrderChange)='onSort(filterOvertimeEnum.TOTAL_DATETIME, $event)'>
+                  (nzSortOrderChange)='onSort(filterOvertimeEnum.TOTAL_DATETIME, $event, payroll.overtimes)'>
                   Tổng ngày
                 </th>
                 <th>Thành tiền</th>
@@ -359,7 +359,7 @@
               </tr>
               </thead>
               <tbody>
-              <ng-template ngFor let-salary [ngForOf]="overtimeSalaries" let-i='index'>
+              <ng-template ngFor let-salary [ngForOf]="payroll.overtimes" let-i='index'>
                 <tr (click)='onSalarySetting(salary.setting?.title)'>
                   <td (click)="$event.stopPropagation()" [(nzExpand)]="salary.expand"></td>
                   <td>
