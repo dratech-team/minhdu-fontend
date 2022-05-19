@@ -2,10 +2,11 @@ import {BaseSalaryEntity} from '../base';
 import {PayrollEntity} from "../../payroll/entities";
 import {PartialDayEnum} from "@minhdu-fontend/data-models";
 import {SalarySettingEntity} from "../../setting/salary/entities";
+import {OvertimeSalaryEntity} from "./overtime-salary.entity";
 
 export interface SalaryEntity extends BaseSalaryEntity {
   readonly payroll: PayrollEntity,
-  readonly setting?: SalarySettingEntity
+  readonly setting: SalarySettingEntity
   readonly partial?: PartialDayEnum;
   readonly allowance?: {
     title: string,
@@ -18,4 +19,6 @@ export interface SalaryEntity extends BaseSalaryEntity {
   readonly inOffice?: boolean
   readonly total: number
   readonly duration: number
+  expand: boolean
+  readonly details: OvertimeSalaryEntity []
 }

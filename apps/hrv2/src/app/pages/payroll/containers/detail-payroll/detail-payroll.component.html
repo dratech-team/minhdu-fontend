@@ -331,9 +331,21 @@
               <tr>
                 <th nzWidth="60px"></th>
                 <th nzWidth="60px">STT</th>
-                <th>Tăng ca</th>
-                <th>Thời gian</th>
-                <th>Tổng ngày</th>
+                <th
+                  [nzSortFn]='true'
+                  (nzSortOrderChange)='onSort(filterOvertimeEnum.TITLE, $event, payroll.overtimes)'>
+                  Tăng ca
+                </th>
+                <th
+                  [nzSortFn]='true'
+                  (nzSortOrderChange)='onSort(filterOvertimeEnum.DATETIME, $event, payroll.overtimes)'>
+                  Thời gian
+                </th>
+                <th
+                  [nzSortFn]='true'
+                  (nzSortOrderChange)='onSort(filterOvertimeEnum.DURATION, $event, payroll.overtimes)'>
+                  Tổng ngày
+                </th>
                 <th>Thành tiền</th>
                 <th>Chú thích</th>
                 <th nzWidth='100px' style='padding: 0; color: #1b8eb7'
@@ -347,7 +359,7 @@
               </tr>
               </thead>
               <tbody>
-              <ng-template ngFor let-salary [ngForOf]="tableOvertime.data" let-i='index'>
+              <ng-template ngFor let-salary [ngForOf]="payroll.overtimes" let-i='index'>
                 <tr (click)='onSalarySetting(salary.setting.title)'>
                   <td (click)="$event.stopPropagation()" [(nzExpand)]="salary.expand"></td>
                   <td>
@@ -411,7 +423,7 @@
                 <td style="background: white">{{item.duration}}</td>
                 <td style="background: white">{{item.rate}}</td>
                 <td style="background: white">
-                  {{item.price
+                  {{item.price || 0
                   | roundingnumber :1000
                   | number:'1.0-0'}} đ
                 </td>

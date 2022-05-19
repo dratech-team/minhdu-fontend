@@ -40,7 +40,7 @@ export abstract class BaseService<T> {
     return this.http.patch<T>(this.url + `/${id}`, body);
   }
 
-  updateMany(body: any, method?: 'put' | 'patch' | 'post'): Observable<ResponseMessageEntity> {
+   updateMany(body: any, method?: 'put' | 'patch' | 'post'): Observable<ResponseMessageEntity> {
     return this.http.request<ResponseMessageEntity>(method ?? 'post', this.url + `/multiple/updation`, { body });
   }
 

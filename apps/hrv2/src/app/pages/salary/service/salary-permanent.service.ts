@@ -18,6 +18,8 @@ export class SalaryPermanentService extends BaseService<PermanentSalaryEntity> {
     return super.addMany(body);
   }
 
+
+
   updateMany(body: any): Observable<ResponseMessageEntity> {
     return super.updateMany(body);
   }
@@ -26,3 +28,4 @@ export class SalaryPermanentService extends BaseService<PermanentSalaryEntity> {
     return super.deleteMany(body);
   }
 }
+
