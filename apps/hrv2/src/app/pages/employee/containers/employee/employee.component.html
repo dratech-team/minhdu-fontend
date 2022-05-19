@@ -89,7 +89,9 @@
               [nzSortFn]='true'
               (nzSortOrderChange)='onSort({orderBy: sortEnum.EMPLOYEE_TYPE, orderType:$event})'>
             <div>Loại nhân viên</div>
-            <nz-select style='width: 100%;' formControlName='employeeType'>
+            <nz-select
+              (click)="$event.stopPropagation()"
+              style='width: 100%;' formControlName='employeeType'>
               <nz-option
                 *ngFor="let item of employeeTypeConstant"
                 [nzValue]='item.value'
@@ -106,7 +108,10 @@
           <th [nzSortFn]='true'
               (nzSortOrderChange)='onSort({orderBy: sortEnum.GENDER, orderType:$event})'>
             <div>Giới tính</div>
-            <nz-select style='min-width:100%' formControlName='gender'>
+            <nz-select
+              (click)="$event.stopPropagation()"
+              style='min-width:100%'
+              formControlName='gender'>
               <nz-option *ngFor="let item of genderTypeConstant" [nzValue]="item.value"
                          [nzLabel]="item.name"></nz-option>
               <nz-option [nzValue]="genderType.ALL" nzLabel="Tất cả"></nz-option>
@@ -124,7 +129,10 @@
               (nzSortOrderChange)='onSort({orderBy: sortEnum.FLAT_SALARY, orderType:$event})'
           >
             <div>Loại lương</div>
-            <nz-select style='width:100%' formControlName='flatSalary'>
+            <nz-select
+              (click)="$event.stopPropagation()"
+              style='width:100%'
+              formControlName='flatSalary'>
               <nz-option *ngFor="let item of flatSalaryTypeConstant" [nzValue]="item.value" [nzLabel]="item.name">Lương
                 cố định
               </nz-option>
@@ -135,7 +143,10 @@
               (nzSortOrderChange)='onSort({orderBy: sortEnum.PHONE, orderType:$event})'
           >
             <div>Số điện thoại</div>
-            <input nz-input type='search' formControlName='phone'>
+            <input
+              (click)="$event.stopPropagation()"
+              nz-input type='search'
+              formControlName='phone'>
           </th>
           <th nzLeft
               [nzSortFn]='true'
@@ -150,6 +161,7 @@
           >
             <div>Chức vụ</div>
             <nz-select
+              (click)="$event.stopPropagation()"
               nzShowSearch
               nzAllowClear
               style='width:100%'
@@ -170,7 +182,10 @@
               (nzSortOrderChange)='onSort({orderBy: sortEnum.IDENTITY, orderType:$event})'
           >
             <div>CMND / CCCD</div>
-            <input type='search' nz-input formControlName='identify'>
+            <input
+              (click)="$event.stopPropagation()"
+              type='search' nz-input
+              formControlName='identify'>
           </th>
           <th
             [nzSortFn]='true'
@@ -178,6 +193,7 @@
           >
             <div>Tỉnh / Thành phố</div>
             <nz-select
+              (click)="$event.stopPropagation()"
               nzShowSearch
               nzAllowClear
               style='width:100%'
@@ -199,6 +215,7 @@
           >
             <div>Quận / Huyện</div>
             <nz-select
+              (click)="$event.stopPropagation()"
               nzShowSearch
               nzAllowClear
               style='width:100%'
@@ -220,6 +237,7 @@
           >
             <div>Phường / Xã</div>
             <nz-select
+              (click)="$event.stopPropagation()"
               nzShowSearch
               nzAllowClear
               style='width:100%'
@@ -240,7 +258,10 @@
               (nzSortOrderChange)='onSort({orderBy: sortEnum.ADDRESS, orderType:$event})'
           >
             <div>Địa chỉ</div>
-            <input nz-input type='search' formControlName='address'>
+            <input
+              (click)="$event.stopPropagation()"
+              nz-input type='search'
+              formControlName='address'>
           </th>
           <th>
             <div>Chú thích</div>
