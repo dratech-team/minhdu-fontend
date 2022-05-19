@@ -1,4 +1,8 @@
-<div class='row animated fadeIn mt-2' *ngIf='(payroll$ | async) as payroll'>
+<ng-template #loadingPayroll>
+  <nz-spin  nzSize="large" style="position: fixed; top:50%; left: 50% ">
+  </nz-spin>
+</ng-template>
+<div class='row animated fadeIn mt-2' *ngIf='(payroll$ | async) as payroll; else loadingPayroll'>
   <nz-carousel [nzEffect]="'effect'" [nzAutoPlay]='false' (nzBeforeChange)='navigatePayroll(payroll)'>
     <div nz-carousel-content *ngFor='let id of payroll.payrollIds'>
       <div style="max-width: 90vw ; margin: auto">
