@@ -50,7 +50,7 @@ import {Role} from '../../../../../../../../libs/enums/hr/role.enum';
 import {ProvinceService} from "../../../../../../../../libs/location/src/lib/service/province.service";
 import {ExportService} from "@minhdu-fontend/service";
 import {values} from "lodash";
-import { EmployeeStatusEnum } from '../../../../../../../../libs/enums/hr/employee-status.enum';
+import {EmployeeStatusEnum} from '../../../../../../../../libs/enums/hr/employee-status.enum';
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -187,7 +187,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       if (branch) {
         this.store.dispatch(OrgchartActions.getBranch({id: branch.id}))
       }
-      this.categories$ = this.categoryService.getAll({branch: branch.name});
+      this.categories$ = this.categoryService.getAll({branch: branch.name || ''});
     });
 
     this.formGroup.get('province')?.valueChanges.subscribe(province => {
