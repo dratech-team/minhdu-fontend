@@ -40,15 +40,13 @@ export class DeductionSalaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.data?.update?.multiple) {
-      this.salaryPayrolls = this.data.update.multiple.salaryPayrolls;
-    }
     const salary = this.data?.update?.salary;
     this.formGroup = this.formBuilder.group({
       title: [salary?.title, Validators.required],
       price: [salary?.price, Validators.required],
       note: [salary?.note],
       payrollIds: [this.data.add ? [this.data.add.payroll.id] : []],
+      salaryIds: [this.data.update?.multiple?.salaries.map(item => item.id)],
     });
   }
 
@@ -97,7 +95,9 @@ export class DeductionSalaryComponent implements OnInit {
     return Object.assign(salary,
       this.data.add
         ? {payrollIds: value.payrollIds}
-        : {salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.update.salary.id)}
+        : this.data.update.multiple
+          ? {salaryIds: value.salaryIds}
+          : {salaryIds: [this.data.update.salary.id]}
     );
   }
 

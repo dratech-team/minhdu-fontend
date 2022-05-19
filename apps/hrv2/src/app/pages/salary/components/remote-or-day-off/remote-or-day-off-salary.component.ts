@@ -58,11 +58,10 @@ export class RemoteOrDayOffSalaryComponent implements OnInit {
         ? this.data.add.payroll.createdAt
         : this.data.update.salary.startedAt
     ))
-
     const payroll = this.data.add?.payroll;
     const salary = this.data.update?.salary;
     this.formGroup = this.formBuilder.group({
-      type: [salary?.type, Validators.required],
+      type: [salary?.type],
       partial: [salary?.partial, Validators.required],
       rangeDay: [
         [payroll ? getFirstDayInMonth(new Date(payroll.createdAt)) : salary?.startedAt,
@@ -72,7 +71,8 @@ export class RemoteOrDayOffSalaryComponent implements OnInit {
       ],
       unit: [DatetimeUnitEnum.DAY],
       note: [salary?.note],
-      payrollIds: [payroll ? [payroll.id] : []]
+      payrollIds: [payroll ? [payroll.id] : []],
+      salaryIds: [this.data.update?.multiple?.salaries.map(item => item.id)],
     })
     ;
   }
@@ -82,6 +82,7 @@ export class RemoteOrDayOffSalaryComponent implements OnInit {
   }
 
   onSubmit(): any {
+    console.log(this.formGroup)
     if (this.formGroup.invalid) {
       return;
     }
@@ -119,20 +120,22 @@ export class RemoteOrDayOffSalaryComponent implements OnInit {
           minutes: new Date().getMinutes(),
           seconds: new Date().getSeconds()
         }
-      ),
+      ).toDate(),
       endedAt: moment(value.rangeDay[1]).set(
         {
           hours: new Date().getHours(),
           minutes: new Date().getMinutes(),
           seconds: new Date().getSeconds()
         }
-      ),
+      ).toDate(),
     };
     return Object.assign(
       salary,
       this.data.add
         ? {payrollIds: value.payrollIds}
-        : {salaryIds: [this.data.update.salary.id]},
+        : this.data.update.multiple
+          ? {salaryIds: value.salaryIds}
+          : {salaryIds: [this.data.update.salary.id]},
       this.data.type === SalaryTypeEnum.DAY_OFF
         ? {title: 'Không đi làm'}
         : {}

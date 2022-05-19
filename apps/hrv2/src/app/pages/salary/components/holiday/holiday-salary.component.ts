@@ -123,7 +123,9 @@ export class HolidaySalaryComponent implements OnInit {
       salary,
       this.data.add
         ? {payrollIds: value.payrollIds}
-        : {salaryIds: [this.data.update.salary.id]}
+        :this.data.update.multiple
+          ? {salaryIds: value.salaryIds}
+          : {salaryIds: [this.data.update.salary.id]}
     );
   }
 

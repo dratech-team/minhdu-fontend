@@ -231,7 +231,9 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       this.data.update
         ? this.data.update.multiple
           ? {salaryIds: value.salaryIds}
-          : {salaryIds: [this.data.update.salary.id]}
+          : this.data.update.multiple
+            ? {salaryIds: value.salaryIds}
+            : {salaryIds: [this.data.update.salary.id]}
         : {payrollIds: value.payrollIds},
       value.priceAllowance && value.titleAllowance
         ? {

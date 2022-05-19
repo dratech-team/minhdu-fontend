@@ -56,14 +56,25 @@
       </div>
     </form>
   </ng-template>
-  <ng-template [ngIf]='indexStep=== 1 && data.add'>
-    <minhdu-fontend-select-payroll
-      [employeeType]="employeeType.EMPLOYEE_FULL_TIME"
-      [formGroup]="formGroup"
-      [createdAt]="data.add.payroll.createdAt"
-    >
-    </minhdu-fontend-select-payroll>
+  <ng-template [ngIf]='indexStep === 1'>
+    <div *ngIf="data.add else alert ">
+      <minhdu-fontend-select-payroll
+        [employeeType]="employeeType.EMPLOYEE_FULL_TIME"
+        [formGroup]="formGroup"
+        [createdAt]="data.add.payroll.createdAt"
+      >
+      </minhdu-fontend-select-payroll>
+    </div>
+    <ng-template #alert>
+      <div
+        class="font-weight-bold d-flex justify-content-center align-items-center"
+        style="height: 100px"
+      >
+        chỉ được cật nhật lương cho nhân viên hiện tại
+      </div>
+    </ng-template>
   </ng-template>
+
   <div>
     <button class="mr-2" nz-button nzType='default' (click)="move('previous')" *ngIf='indexStep > 0'>
       <span>Trở lại</span>

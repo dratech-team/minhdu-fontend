@@ -1,7 +1,7 @@
 import {PayrollEntity} from '../entities';
-import {SalaryPayroll} from '@minhdu-fontend/data-models';
 import {RequireOnlyOne} from '../../../../shared/types';
-import {DeductionSalaryEntity} from "../../salary/entities/deduction-salary.entity";
+import {DeductionSalaryEntity} from "../../salary/entities";
+import {SalaryEntity} from "../../salary/entities";
 
 interface ModalDeductionSalaryData {
   add: {
@@ -11,7 +11,7 @@ interface ModalDeductionSalaryData {
   update: {
     salary: DeductionSalaryEntity
     multiple?: {
-      salaryPayrolls: SalaryPayroll[]
+      salaries: SalaryEntity[]
     },
   }
 }
