@@ -52,7 +52,7 @@ export class AllowanceSalaryComponent implements OnInit {
     this.fistDateInMonth = getFirstDayInMonth(new Date(
       this.data.add
         ? this.data.add.payroll.createdAt
-        : this.data.update.salary.startedAt|| new Date()
+        : this.data.update.salary.startedAt || new Date()
     ));
     const salary = this.data.update?.salary;
     const payroll = this.data.add?.payroll;
@@ -139,7 +139,9 @@ export class AllowanceSalaryComponent implements OnInit {
     return Object.assign(salary,
       this.data.add
         ? {payrollIds: value.payrollIds}
-        : {salaryIds: value.salaryIds}
+        : this.data.update.multiple
+          ? {salaryIds: value.salaryIds}
+          : {salaryIds: [this.data.update.salary.id]}
     );
   }
 
