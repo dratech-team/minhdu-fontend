@@ -2,6 +2,31 @@
   <div class='mat-typography' style='height:45vh; overflow-y: scroll ; overflow-x: hidden' >
     <form [formGroup]='formGroup'>
       <div class='form-group'>
+        <div class='row mb-3 d-flex'>
+          <div class='col-sm'>
+            <label>Loại nhân viên </label><span class='star'>*</span>
+            <div>
+              <nz-select
+                nzShowSearch
+                nzAllowClear
+                style='width:50%'
+                formControlName='employeeType'
+                nzPlaceHolder='Chọn loại nhân viên'
+                [ngClass]="{ 'is-invalid': submitting && f.employeeType.errors?.required }"
+              >
+                <nz-option
+                  *ngFor='let item of employeeTypeConstant'
+                  [nzLabel]='item.name'
+                  [nzValue]='item.value'
+                >
+                </nz-option>
+              </nz-select>
+              <div *ngIf='submitting && f.employeeType.errors?.required' class='invalid-feedback'>
+                <div *ngIf=' f.employeeType.errors?.required'>Chưa chọn loại nhân viên</div>
+              </div>
+            </div>
+          </div>
+        </div>
         <app-add-profile [formGroup]='formGroup' [submitted]='submitting' [form]='f'></app-add-profile>
         <place-selector
           [isUpdateEmployee]="true"

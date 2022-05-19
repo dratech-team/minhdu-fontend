@@ -12,6 +12,7 @@ import {
   WorkHistory
 } from "@minhdu-fontend/data-models";
 import {EmployeeType, RecipeType} from "@minhdu-fontend/enums";
+import {BranchEntity, PositionEntity} from "@minhdu-fontend/orgchart-v2";
 
 
 
@@ -27,8 +28,8 @@ export interface EmployeeEntity extends BaseEmployeeEntity{
   historySalaries: SalaryHistory[];
   salaryHistories: Salary[],
   degrees?: Degree[],
-  position: Position,
-  branch: Branch,
+  position: PositionEntity,
+  branch: BranchEntity,
   category?: Category
   religion?: string,
   ethnicity?: string,

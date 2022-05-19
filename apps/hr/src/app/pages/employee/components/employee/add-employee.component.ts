@@ -15,6 +15,9 @@ import {CategoryService} from '../../../../../../../../libs/employee/src/lib/+st
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {map} from "rxjs/operators";
+import {
+  EmployeeTypeConstant
+} from "../../../../../../../hrv2/src/app/pages/setting/salary/constants/employee-type.constant";
 
 @Component({
   templateUrl: 'add-employee.component.html'
@@ -25,8 +28,7 @@ export class AddEmployeeComponent implements OnInit {
   @Input() employeeInit?: Employee;
   @Input() isUpdate?: boolean;
 
-  positionId?: number;
-  flatSalary = FlatSalary;
+  categories$ = this.categoryService.getAll();
   lstPosition: Position [] = [];
   branches$ = this.store.pipe(select(getAllOrgchart)).pipe(map(branches => {
     if (branches.length === 1) {
@@ -36,11 +38,14 @@ export class AddEmployeeComponent implements OnInit {
     }
     return branches
   }));
+  positionId?: number;
+  flatSalary = FlatSalary;
   submitting = false;
   recipeType = RecipeType;
   typeEmployee = EmployeeType;
   recipeTypesConstant = RecipeTypesConstant;
-  categories$ = this.categoryService.getAll();
+  employeeTypeConstant = EmployeeTypeConstant
+
   formGroup!: FormGroup
 
   constructor(

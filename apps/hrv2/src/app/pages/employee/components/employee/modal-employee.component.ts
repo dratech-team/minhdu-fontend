@@ -8,14 +8,14 @@ import {RecipeTypesConstant} from '@minhdu-fontend/constants';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalRef} from 'ng-zorro-antd/modal';
 import {map} from 'rxjs/operators';
-import {BranchActions, BranchQuery} from '@minhdu-fontend/orgchart-v2';
+import {BranchActions, BranchEntity, BranchQuery, PositionEntity} from '@minhdu-fontend/orgchart-v2';
 import {Actions} from '@datorama/akita-ng-effects';
 import {EmployeeActions, EmployeeQuery} from '@minhdu-fontend/employee-v2';
 import {FlatSalaryTypeConstant} from '../../constants/flat-salary-type.constant';
 import {FlatSalaryTypeEnum} from '../../enums/flat-salary-type.enum';
 import {Observable} from 'rxjs';
 import {ModalEmployeeData} from '../../data/modal-employee.data';
-import {DirtyCheckPlugin} from '@datorama/akita';
+import {EmployeeTypeConstant} from "../../constants/employee-type.constant";
 
 @Component({
   templateUrl: 'modal-employee.component.html'
@@ -34,14 +34,15 @@ export class ModalEmployeeComponent implements OnInit, OnDestroy {
   categories$ = new Observable<any>();
   added$ = this.employeeQuery.select('added');
 
-  lstPosition: Position [] = [];
+  lstPosition: PositionEntity [] = [];
   flatSalaryTypeConstant = FlatSalaryTypeConstant.filter(item => item.value !== FlatSalaryTypeEnum.ALL);
   recipeTypesConstant = RecipeTypesConstant;
-
+  employeeTypeConstant = EmployeeTypeConstant
   submitting = false;
   recipeType = RecipeType;
   typeEmployee = EmployeeType;
   formGroup!: FormGroup;
+
 
   constructor(
     public datePipe: DatePipe,
@@ -112,14 +113,14 @@ export class ModalEmployeeComponent implements OnInit, OnDestroy {
 
     });
 
-    this.formGroup.get('branch')?.valueChanges.subscribe((val: Branch) => {
+    this.formGroup.get('branch')?.valueChanges.subscribe((val: BranchEntity) => {
       if (val.positions) {
         this.formGroup.get('position')?.setValue('');
         this.lstPosition = val.positions;
       }
     });
 
-    this.formGroup.get('position')?.valueChanges.subscribe((val: Position) => {
+    this.formGroup.get('position')?.valueChanges.subscribe((val: PositionEntity) => {
       this.formGroup.get('workday')?.patchValue(val.workday);
     });
 

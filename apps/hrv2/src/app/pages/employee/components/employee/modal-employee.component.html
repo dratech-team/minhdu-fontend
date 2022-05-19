@@ -3,6 +3,32 @@
     <form [formGroup]='formGroup'>
       <div class='form-group'>
 
+        <div class='row mb-3 d-flex'>
+          <div class='col-6'>
+            <label>Loại nhân viên </label><span class='star'>*</span>
+            <div>
+              <nz-select
+                nzShowSearch
+                nzAllowClear
+                style='width:100%'
+                formControlName='employeeType'
+                nzPlaceHolder='Chọn loại nhân viên'
+                [ngClass]="{ 'is-invalid': submitting && checkValid.employeeType.errors?.required }"
+              >
+                <nz-option
+                  *ngFor='let item of employeeTypeConstant'
+                  [nzLabel]='item.name'
+                  [nzValue]='item.value'
+                >
+                </nz-option>
+              </nz-select>
+              <div *ngIf='submitting && checkValid.employeeType.errors?.required' class='invalid-feedback'>
+                <div *ngIf=' checkValid.employeeType.errors?.required'>Chưa chọn loại nhân viên</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <minhdu-fontend-profile
           [formGroup]='formGroup'
           [submitting]='submitting'
