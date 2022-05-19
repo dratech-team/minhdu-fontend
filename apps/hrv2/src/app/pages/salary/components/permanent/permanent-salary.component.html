@@ -89,18 +89,34 @@
       </minhdu-fontend-select-payroll>
     </div>
   </ng-template>
-  <ng-template [ngIf]="indexStep === 1 && data.update?.multiple">
-    <minhdu-fontend-table-salaries-selected
-      [formGroup]="formGroup"
-      [salaries]="data.update?.multiple?.salaries || []"
-    >
-    </minhdu-fontend-table-salaries-selected>
+  <ng-template [ngIf]="indexStep === 1 && data.update">
+    <div *ngIf="data.update.multiple else alert">
+      <minhdu-fontend-table-salaries-selected
+        [formGroup]="formGroup"
+        [salaries]="data.update?.multiple?.salaries || []"
+      >
+      </minhdu-fontend-table-salaries-selected>
+    </div>
+    <ng-template #alert>
+      <div
+        class="font-weight-bold d-flex justify-content-center align-items-center"
+        style="height: 100px"
+      >
+        chỉ được cật nhật lương cho nhân viên hiện tại
+      </div>
+    </ng-template>
   </ng-template>
   <div>
-    <button class="mr-2" nz-button nzType="default" (click)="move('previous')" *ngIf="indexStep > 0">
+    <button
+      *ngIf="indexStep > 0"
+      (click)="move('previous')"
+      class="mr-2" nz-button nzType="default">
       <span>Trở lại</span>
     </button>
-    <button class="mr-2" nz-button nzType="default" (click)="move('next')" *ngIf="indexStep < 1">
+    <button
+      *ngIf="indexStep < 1"
+      (click)="move('next')"
+      class="mr-2" nz-button nzType="default">
       <span>Tiếp theo</span>
     </button>
     <button nz-button nzType="primary"
