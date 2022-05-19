@@ -59,16 +59,16 @@ export class DetailPayrollComponent implements OnInit {
   payroll$ = this.payrollQuery.selectEntity(this.getPayrollId).pipe(
     map(payroll => {
       if (payroll) {
-       return  JSON.parse(JSON.stringify(payroll));
+        return JSON.parse(JSON.stringify(payroll));
       }
       return payroll
     }),
     tap(payroll => {
-      if (payroll?.createdAt) {
-        this.daysInMonth = getDaysInMonth(payroll.createdAt);
-      } else {
-        this.daysInMonth = new Date().getDate();
-      }
+        if (payroll?.createdAt) {
+          this.daysInMonth = getDaysInMonth(payroll.createdAt);
+        } else {
+          this.daysInMonth = new Date().getDate();
+        }
       }
     )
   );
@@ -429,7 +429,7 @@ export class DetailPayrollComponent implements OnInit {
     }
   }
 
-  onSort(column: FilterOvertimeEnum, type: NzTableSortOrder , overtimes: SalaryEntity []) {
+  onSort(column: FilterOvertimeEnum, type: NzTableSortOrder, overtimes: SalaryEntity []) {
     overtimes.sort((a, b) => {
       const isAsc = type === 'ascend';
       switch (column) {
@@ -443,7 +443,7 @@ export class DetailPayrollComponent implements OnInit {
     });
   }
 
-  compare(a: number | string | Date | undefined, b: number | string |Date| undefined, isAsc: boolean) {
+  compare(a: number | string | Date | undefined, b: number | string | Date | undefined, isAsc: boolean) {
     return a && b
       ? (a < b ? -1 : 1) * (isAsc ? 1 : -1)
       : 0
