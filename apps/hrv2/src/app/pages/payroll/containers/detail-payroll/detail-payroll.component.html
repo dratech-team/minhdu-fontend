@@ -324,16 +324,28 @@
               border-radius: 10px !important;
               box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06) !important;"
               #tableOvertime
-              [nzData]="payroll.overtimes"
+              [nzData]="overtimeSalaries"
               nzShowPagination="false"
             >
               <thead>
               <tr>
                 <th nzWidth="60px"></th>
                 <th nzWidth="60px">STT</th>
-                <th>Tăng ca</th>
-                <th>Thời gian</th>
-                <th>Tổng ngày</th>
+                <th
+                  [nzSortFn]='true'
+                  (nzSortOrderChange)='onSort(filterOvertimeEnum.TITLE, $event)'>
+                  Tăng ca
+                </th>
+                <th
+                  [nzSortFn]='true'
+                  (nzSortOrderChange)='onSort(filterOvertimeEnum.DATETIME, $event)'>
+                  Thời gian
+                </th>
+                <th
+                  [nzSortFn]='true'
+                  (nzSortOrderChange)='onSort(filterOvertimeEnum.TOTAL_DATETIME, $event)'>
+                  Tổng ngày
+                </th>
                 <th>Thành tiền</th>
                 <th>Chú thích</th>
                 <th nzWidth='100px' style='padding: 0; color: #1b8eb7'
@@ -347,15 +359,15 @@
               </tr>
               </thead>
               <tbody>
-              <ng-template ngFor let-salary [ngForOf]="tableOvertime.data" let-i='index'>
-                <tr (click)='onSalarySetting(salary.setting.title)'>
+              <ng-template ngFor let-salary [ngForOf]="overtimeSalaries" let-i='index'>
+                <tr (click)='onSalarySetting(salary.setting?.title)'>
                   <td (click)="$event.stopPropagation()" [(nzExpand)]="salary.expand"></td>
                   <td>
                     <span>{{i + 1}}</span>
                   </td>
                   <td>
                     <div>
-                      <span>{{salary.setting.title}}</span>
+                      <span>{{salary?.setting?.title}}</span>
                       <span class='ml-2' *ngIf='salary.allowance'> + {{salary.allowance.title}}</span>
                     </div>
                   </td>
@@ -411,7 +423,7 @@
                 <td style="background: white">{{item.duration}}</td>
                 <td style="background: white">{{item.rate}}</td>
                 <td style="background: white">
-                  {{item.price
+                  {{item.price || 0
                   | roundingnumber :1000
                   | number:'1.0-0'}} đ
                 </td>
