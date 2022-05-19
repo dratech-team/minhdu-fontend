@@ -360,14 +360,14 @@
               </thead>
               <tbody>
               <ng-template ngFor let-salary [ngForOf]="payroll.overtimes" let-i='index'>
-                <tr (click)='onSalarySetting(salary.setting?.title)'>
+                <tr (click)='onSalarySetting(salary.setting.title)'>
                   <td (click)="$event.stopPropagation()" [(nzExpand)]="salary.expand"></td>
                   <td>
                     <span>{{i + 1}}</span>
                   </td>
                   <td>
                     <div>
-                      <span>{{salary?.setting?.title}}</span>
+                      <span>{{salary.setting.title}}</span>
                       <span class='ml-2' *ngIf='salary.allowance'> + {{salary.allowance.title}}</span>
                     </div>
                   </td>
