@@ -1,7 +1,7 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Api} from '@minhdu-fontend/constants';
-import {ResponsePaginateOvertimePayroll} from '@minhdu-fontend/data-models';
+import {ResponsePaginateOvertimePayroll, ResponsePaginateOvertimePayrollV2} from '@minhdu-fontend/data-models';
 import {BaseService} from 'libs/service/base.service';
 import {Observable} from 'rxjs';
 import {Payroll} from '../+state/payroll/payroll.interface';
@@ -31,8 +31,8 @@ export class PayrollService extends BaseService<Payroll> {
     return super.getOne(id);
   }
 
-  paginationPayroll(params?: any): Observable<ResponsePaginateOvertimePayroll<Payroll>> {
-    return this.http.get<ResponsePaginateOvertimePayroll<Payroll>>(VersionEnum.V2 + Api.HR.PAYROLL.PAYROLL,
+  paginationPayroll(params?: any): Observable<ResponsePaginateOvertimePayrollV2<Payroll>> {
+    return this.http.get<ResponsePaginateOvertimePayrollV2<Payroll>>(VersionEnum.V2 + Api.HR.PAYROLL.PAYROLL,
       {params})
   }
 
