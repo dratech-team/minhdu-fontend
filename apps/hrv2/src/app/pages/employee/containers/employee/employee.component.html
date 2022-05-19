@@ -62,7 +62,7 @@
         nzShowPagination="false"
         [formGroup]='formGroup'
         [nzLoading]="loading$|async"
-        [nzScroll]="{x:'3200px',y:'51vh'}"
+        [nzScroll]="{x:'3400px',y:'51vh'}"
         [nzData]="this.employees"
       >
         <thead>
@@ -209,9 +209,9 @@
               </nz-option>
             </nz-select>
           </th>
-          <th nzWidth='5%'
-              [nzSortFn]='true'
-              (nzSortOrderChange)='onSort({orderBy: sortEnum.DISTRICT, orderType:$event})'
+          <th
+            [nzSortFn]='true'
+            (nzSortOrderChange)='onSort({orderBy: sortEnum.DISTRICT, orderType:$event})'
           >
             <div>Quận / Huyện</div>
             <nz-select
@@ -351,17 +351,17 @@
           </td>
         </tr>
         <tr>
-          <td colspan="17" >
-           <div class="w-100 d-flex justify-content-start" style="position: relative">
-             <button
-               *ngIf="((count$|async) || 0) < ((total$|async) || 0)"
-               (click)="onLoadMore()"
-               style="position: sticky; left: 45vw"
-               nz-button nzType="primary"
-               [nzLoading]="loadMore$|async">
-               Tải thêm
-             </button>
-           </div>
+          <td colspan="17">
+            <div class="w-100 d-flex justify-content-start" style="position: relative">
+              <button
+                *ngIf="((count$|async) || 0) < ((total$|async) || 0)"
+                (click)="onLoadMore()"
+                style="position: sticky; left: 45vw"
+                nz-button nzType="primary"
+                [nzLoading]="loadMore$|async">
+                Tải thêm
+              </button>
+            </div>
           </td>
         </tr>
         </tbody>
