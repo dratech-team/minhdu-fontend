@@ -434,7 +434,7 @@ export class DetailPayrollComponent implements OnInit {
       const isAsc = type === 'ascend';
       switch (column) {
         case FilterOvertimeEnum.TITLE:
-          return this.compare(a.setting?.title, b.setting?.title, isAsc);
+          return this.compare(a.setting.title, b.setting.title, isAsc);
         case FilterOvertimeEnum.DATETIME:
           return this.compare(b.startedAt, a.startedAt, isAsc)
         case FilterOvertimeEnum.TOTAL_DATETIME:
