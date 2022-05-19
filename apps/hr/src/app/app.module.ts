@@ -32,6 +32,9 @@ import {customCurrencyMaskConfig2} from '@minhdu-fontend/config';
 import {MatDialogConfig} from '@angular/material/dialog/dialog-config';
 import {NZ_CONFIG, NzConfig} from 'ng-zorro-antd/core/config';
 import {NZ_I18N, vi_VN} from 'ng-zorro-antd/i18n';
+import {AuthModule} from "@minhdu-fontend/auth";
+import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
+import {AccountEffects} from "../../../../libs/system/src/lib/state/account-management/account.effects";
 //
 registerLocaleData(localeVi);
 
@@ -50,6 +53,7 @@ registerLocaleData(localeVi);
     AppFooterModule,
     AppHeaderModule,
     PerfectScrollbarModule,
+    AkitaNgEffectsModule.forRoot([AccountEffects]),
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
@@ -69,7 +73,8 @@ registerLocaleData(localeVi);
     MatButtonModule,
     MatCheckboxModule,
     InfiniteScrollModule,
-    NgxCurrencyModule.forRoot(customCurrencyMaskConfig2)
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig2),
+    AuthModule
   ],
   declarations: [AppComponent, DefaultLayoutComponent],
   bootstrap: [AppComponent],

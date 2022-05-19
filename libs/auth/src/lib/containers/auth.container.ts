@@ -38,7 +38,6 @@ export class AuthComponent implements OnInit {
   }
 
   onSubmit(): void {
-    // stop here if form is invalid
     if (this.loginForm.invalid) {
       return;
     }

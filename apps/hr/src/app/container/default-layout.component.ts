@@ -1,12 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { navItems } from './_nav';
-import { Store } from '@ngrx/store';
-import { MatDialog } from '@angular/material/dialog';
-import { LogoutComponent } from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
-import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.component/register.component';
-import { Role } from 'libs/enums/hr/role.enum';
-import { Router } from '@angular/router';
-import { DialogChangePassword } from '../../../../../libs/auth/src/lib/components/dialog-change-password/dialog-change-password';
+import {Component, OnInit} from '@angular/core';
+import {navItems} from './_nav';
+import {Store} from '@ngrx/store';
+import {MatDialog} from '@angular/material/dialog';
+import {LogoutComponent} from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
+import {RegisterComponent} from 'libs/auth/src/lib/components/dialog-register.component/register.component';
+import {Role} from 'libs/enums/hr/role.enum';
+import {Router} from '@angular/router';
+import {
+  DialogChangePassword
+} from '../../../../../libs/auth/src/lib/components/dialog-change-password/dialog-change-password';
 import {Actions} from "@datorama/akita-ng-effects";
 import {AccountActions} from "../../../../../libs/system/src/lib/state/account-management/account.actions";
 

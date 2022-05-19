@@ -29,7 +29,6 @@ import {NgxCurrencyModule} from "ngx-currency";
 import {customCurrencyMaskConfig2} from "@minhdu-fontend/config";
 import {AccountEffects} from "../../../../libs/system/src/lib/state/account-management/account.effects";
 import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
-import {SystemHistoryEffects} from "../../../../libs/system/src/lib/state/system-history/system-history.effects";
 
 registerLocaleData(localeVi);
 
