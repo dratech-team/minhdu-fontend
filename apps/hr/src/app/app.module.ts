@@ -35,6 +35,7 @@ import {NZ_I18N, vi_VN} from 'ng-zorro-antd/i18n';
 import {AuthModule} from "@minhdu-fontend/auth";
 import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
 import {AccountEffects} from "../../../../libs/system/src/lib/state/account-management/account.effects";
+import {DepartmentEffects} from "../../../../libs/orgchart-v2/src/lib/department/state";
 //
 registerLocaleData(localeVi);
 
@@ -53,7 +54,7 @@ registerLocaleData(localeVi);
     AppFooterModule,
     AppHeaderModule,
     PerfectScrollbarModule,
-    AkitaNgEffectsModule.forRoot([AccountEffects]),
+    AkitaNgEffectsModule.forRoot([AccountEffects, DepartmentEffects]),
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
