@@ -350,7 +350,7 @@
             </div>
           </td>
         </tr>
-        <tr *ngIf="((count$|async) || 0) < ((total$|async) || 0)">
+        <tr *ngIf="((count$|async) || 0) <= ((total$|async) || 0) && (total$|async) !== 0">
           <td colspan="17">
             <div class="w-100 d-flex justify-content-start" style="position: relative">
               <button
