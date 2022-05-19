@@ -19,6 +19,7 @@ import {AppComponent} from './app.component';
 import {AppContainer} from './containers/app/app.container';
 import {AdminLayoutComponent} from './containers/layout-admin/admin-layout.component';
 import {AdminReducer} from './states/admin.reducer';
+import {AuthModule} from "@minhdu-fontend/auth";
 
 @NgModule({
   imports: [
@@ -41,12 +42,14 @@ import {AdminReducer} from './states/admin.reducer';
     NxModule.forRoot(),
     AppFooterModule,
     MatMenuModule,
+    AuthModule
   ],
   declarations: [AdminLayoutComponent, AppComponent, AppContainer],
   bootstrap: [AppComponent],
   providers: [
     HashLocationStrategy,
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
   ],
 })
-export class AppModule {}
+export class AppModule {
+}

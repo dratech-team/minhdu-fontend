@@ -13,6 +13,7 @@ import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { DetailOverviewComponent } from '../detail-overview/detail-overview.component';
 import { of } from 'rxjs';
+import {MenuAdminEnum} from "../../../../../enums/menu-admin.enum";
 
 
 @Component({
@@ -44,7 +45,7 @@ export class OverviewSalaryComponent implements OnInit {
       this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
       this.branches$
     );
-    this.store.dispatch(AdminAction.updateStateMenu({ tab: MenuWarehouseEum.OVERVIEW }));
+    this.store.dispatch(AdminAction.updateStateMenu({ tab: MenuAdminEnum.OVERVIEW }));
     this.salaryPaymentService.getAll({ take: 30, skip: 0 }).subscribe(val => {
       if (val) {
         this.totalSalary = val.totalSalary;
