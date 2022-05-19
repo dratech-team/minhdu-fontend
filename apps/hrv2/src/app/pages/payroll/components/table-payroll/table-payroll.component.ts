@@ -15,7 +15,6 @@ import {ModalAlertEntity, ModalDatePickerEntity} from "@minhdu-fontend/base-enti
 import {DatePipe} from "@angular/common";
 import {PayrollActions} from "../../state/payroll.action";
 import {SettingSalaryQuery} from "../../../setting/salary/state";
-import {SettingSalaryActions} from "../../../setting/salary/state";
 import {PayslipComponent} from "../payslip/payslip.component";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {ScrollTablePayrollConstant} from "../../constants/scroll-table-payroll.constant";

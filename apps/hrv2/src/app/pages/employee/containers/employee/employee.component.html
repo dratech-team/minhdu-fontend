@@ -350,11 +350,10 @@
             </div>
           </td>
         </tr>
-        <tr>
+        <tr *ngIf="((count$|async) || 0) < ((total$|async) || 0)">
           <td colspan="17">
             <div class="w-100 d-flex justify-content-start" style="position: relative">
               <button
-                *ngIf="((count$|async) || 0) < ((total$|async) || 0)"
                 (click)="onLoadMore()"
                 style="position: sticky; left: 45vw"
                 nz-button nzType="primary"
