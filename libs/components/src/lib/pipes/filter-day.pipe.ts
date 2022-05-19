@@ -6,7 +6,7 @@ import {sortDatetime} from '../../../../utils/daytime.until';
   pure: false,
 })
 export class FilterDayPipe implements PipeTransform {
-  transform(arr: readonly any[]) {
+  transform(arr: (readonly any[] ) | any []) {
     const arrResult = [...arr]
     return sortDatetime(arrResult)
   }
