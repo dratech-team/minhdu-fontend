@@ -437,7 +437,7 @@ export class DetailPayrollComponent implements OnInit {
           return this.compare(a.setting.title, b.setting.title, isAsc);
         case FilterOvertimeEnum.DATETIME:
           return this.compare(b.startedAt, a.startedAt, isAsc)
-        case FilterOvertimeEnum.TOTAL_DATETIME:
+        case FilterOvertimeEnum.DURATION:
           return this.compare(a.duration, b.duration, isAsc);
       }
     });
