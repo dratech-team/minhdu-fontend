@@ -35,7 +35,7 @@ export class EmployeeEffect {
         return this.employeeService.addOne(props).pipe(
           map((res) => {
             this.employeeStore.update(state => ({
-              ...state, added: true
+              ...state, added: true, total: state.total + 1
             }));
             this.message.info('Thêm nhân viên thành công');
             this.employeeStore.add(res);
@@ -126,7 +126,7 @@ export class EmployeeEffect {
         )
         return this.employeeService.pagination(props).pipe(
           map((res) => {
-            this.employeeStore.update(state => (  Object.assign({
+            this.employeeStore.update(state => (Object.assign({
                   ...state, total: res.total
                 }, props.isPaginate
                   ? {loadMore: false}
@@ -252,6 +252,9 @@ export class EmployeeEffect {
     switchMap((props: RemoveEmployeeDto) => {
         return this.employeeService.delete(props.id).pipe(
           map((res) => {
+            this.employeeStore.update(state => ({
+              ...state, total: state.total - 1
+            }));
             this.message.info('Xoá nhân viên thành công');
             this.employeeStore.remove(props.id);
           }),
@@ -269,6 +272,9 @@ export class EmployeeEffect {
     switchMap((props) => {
         return this.employeeService.leaveEmployee(props.id, props.body).pipe(
           map((res) => {
+            this.employeeStore.update(state => ({
+              ...state, total: state.total - 1
+            }));
             this.message.info(props.body?.leftAt ?
               'Nhân viên đã nghỉ tạm thời' :
               'Đã khôi phục nhân viên thành công');

@@ -48,9 +48,8 @@ export class PayrollEffect {
       }));
       return this.service.addOne(props).pipe(
         tap(res => {
-          console.log(res)
           this.payrollStore.update(state => ({
-            ...state, added: true
+            ...state, added: true, total: state.total + 1
           }));
           this.message.success('Thêm phiếu lương thành công')
           this.payrollStore.add(res)
@@ -196,7 +195,7 @@ export class PayrollEffect {
       return this.service.delete(props.id).pipe(
         tap(_ => {
           this.payrollStore.update(state => ({
-            ...state, deleted: true
+            ...state, deleted: true, total: state.total - 1
           }))
           this.payrollStore.remove(props.id);
         }),

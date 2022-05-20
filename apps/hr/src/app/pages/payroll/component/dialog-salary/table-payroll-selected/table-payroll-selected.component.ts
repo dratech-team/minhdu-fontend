@@ -1,16 +1,6 @@
-import {
-  Component, DoCheck,
-  EventEmitter,
-  Input, IterableDiffers,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges
-} from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { Employee } from '@minhdu-fontend/data-models';
-import { pickAll, pickOne, someComplete } from '../../../../../../../../../libs/utils/pick-item.ultil';
+import {Component, EventEmitter, Input, IterableDiffers, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {pickOne, someComplete} from '@minhdu-fontend/utils';
 import {Payroll} from "../../../+state/payroll/payroll.interface";
 
 @Component({
