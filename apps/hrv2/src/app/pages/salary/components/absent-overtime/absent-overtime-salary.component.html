@@ -5,7 +5,7 @@
     <nz-step *ngIf='data?.update?.multiple' nzTitle='Nhân viên đã chọn'></nz-step>
   </nz-steps>
   <ng-template [ngIf]='indexStep === 0'>
-    <form [formGroup]='formGroup' class='px-2 pt-2' style="height: 57vh; overflow-y: scroll; overflow-x: hidden" >
+    <form [formGroup]='formGroup' class='px-2 pt-2' style="height: 57vh; overflow-y: scroll; overflow-x: hidden">
       <div class='mb-2'>
         <span class='font-weight-bold'>Khoản {{this.data.type |transformSalaryType}}</span><span class='star'>*</span>
         <nz-select class='mt-1' style='width: 100%'
@@ -180,7 +180,7 @@
         class="font-weight-bold d-flex justify-content-center align-items-center"
         style="height: 100px"
       >
-        chỉ được cật nhật lương cho nhân viên hiện tại
+        Chỉ được cật nhật lương cho nhân viên hiện tại
       </div>
     </ng-template>
   </ng-template>
