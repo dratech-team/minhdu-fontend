@@ -6,14 +6,12 @@ import { ResponseMessageEntity } from '../entities';
 import { VersionEnum } from '../enums';
 
 export abstract class BaseService<T> {
-  versionV2 = VersionEnum.V2;
-
   protected constructor(
     public readonly url: string,
     public readonly http: HttpClient,
     public readonly version?: VersionEnum
   ) {
-    this.url = (version || this.versionV2) + this.url;
+    this.url = (version || VersionEnum.V1) + this.url;
   }
 
   pagination(params?: any): Observable<ResponsePaginate<T> | any> {
@@ -40,7 +38,7 @@ export abstract class BaseService<T> {
     return this.http.patch<T>(this.url + `/${id}`, body);
   }
 
-   updateMany(body: any, method?: 'put' | 'patch' | 'post'): Observable<ResponseMessageEntity> {
+  updateMany(body: any, method?: 'put' | 'patch' | 'post'): Observable<ResponseMessageEntity> {
     return this.http.request<ResponseMessageEntity>(method ?? 'post', this.url + `/multiple/updation`, { body });
   }
 

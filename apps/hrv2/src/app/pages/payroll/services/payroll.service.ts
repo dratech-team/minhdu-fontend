@@ -14,7 +14,7 @@ import { AddManyPayrollDto } from '../dto/add-many-payroll.dto';
 @Injectable({ providedIn: 'root' })
 export class PayrollService extends BaseService<PayrollEntity> {
   constructor(public readonly http: HttpClient) {
-    super(Api.HR.PAYROLL.PAYROLL, http, VersionEnum.V3);
+    super(Api.HR.PAYROLL.PAYROLL, http, VersionEnum.V2);
   }
 
   addOne(props: AddPayrollDto): Observable<PayrollEntity> {
@@ -30,7 +30,7 @@ export class PayrollService extends BaseService<PayrollEntity> {
   }
 
   paginationPayroll(params?: any): Observable<ResponsePaginateOvertimePayroll<PayrollEntity>> {
-    return this.http.get<ResponsePaginateOvertimePayroll<PayrollEntity>>(VersionEnum.V3 + Api.HR.PAYROLL.PAYROLL,
+    return this.http.get<ResponsePaginateOvertimePayroll<PayrollEntity>>(VersionEnum.V2 + Api.HR.PAYROLL.PAYROLL,
       { params });
   }
 
@@ -39,7 +39,7 @@ export class PayrollService extends BaseService<PayrollEntity> {
   }
 
   confirm(props: ConfirmPayrollDto): Observable<PayrollEntity> {
-    return this.http.patch<PayrollEntity>(VersionEnum.V3 + Api.HR.PAYROLL.CONFIRM_PAYROLL + `/${props.id}`, props.data);
+    return this.http.patch<PayrollEntity>(VersionEnum.V2 + Api.HR.PAYROLL.CONFIRM_PAYROLL + `/${props.id}`, props.data);
   }
 
   delete(id: number, params?: any): Observable<void> {
@@ -48,15 +48,15 @@ export class PayrollService extends BaseService<PayrollEntity> {
 
   scanHoliday(PayrollId: number): Observable<PayrollEntity> {
     return this.http.get<PayrollEntity>(
-      VersionEnum.V3 + Api.HR.PAYROLL.PAYROLL + `/${PayrollId}/` + Api.HR.PAYROLL.GENERATE_HOLIDAY
+      VersionEnum.V2 + Api.HR.PAYROLL.PAYROLL + `/${PayrollId}/` + Api.HR.PAYROLL.GENERATE_HOLIDAY
     );
   }
 
   cancelConfirm(id: number, body?: any): Observable<any> {
-    return this.http.patch<any>(VersionEnum.V3 + Api.HR.PAYROLL.CANCEL_CONFIRM + `/${id}`, body);
+    return this.http.patch<any>(VersionEnum.V2 + Api.HR.PAYROLL.CANCEL_CONFIRM + `/${id}`, body);
   }
 
   restore(id: number, body?: any): Observable<ResponseMessageEntity> {
-    return this.http.patch<ResponseMessageEntity>(VersionEnum.V3 + Api.HR.PAYROLL.RESTORE_PAYROLL + `/${id}`, body);
+    return this.http.patch<ResponseMessageEntity>(VersionEnum.V2 + Api.HR.PAYROLL.RESTORE_PAYROLL + `/${id}`, body);
   }
 }
