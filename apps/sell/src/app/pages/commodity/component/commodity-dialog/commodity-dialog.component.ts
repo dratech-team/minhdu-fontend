@@ -2,11 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityUnit } from '@minhdu-fontend/enums';
-import { CommodityAction } from '../../+state/commodity.action';
-import { CommodityService } from '../../service/commodity.service';
+import { CommodityAction } from '../../+state';
+import { CommodityService } from '../../service';
 import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
 import { Actions } from '@datorama/akita-ng-effects';
-import { CommodityQuery } from '../../+state/commodity.query';
+import { CommodityQuery } from '../../+state';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 
 @Component({

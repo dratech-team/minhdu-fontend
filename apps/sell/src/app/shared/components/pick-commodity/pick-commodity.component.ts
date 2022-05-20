@@ -72,9 +72,9 @@ export class PickCommodityComponent implements OnInit {
 
   addCommodity() {
     this.modal.create({
-      nzTitle: 'Thêm hàngh hoá',
+      nzTitle: 'Thêm hàngg hoá',
       nzContent: CommodityDialogComponent,
-      nzFooter: null
+      nzFooter: []
     }).afterClose.subscribe((value => {
     }));
   }

@@ -11,8 +11,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {AuthModule, ErrorInterceptor, JwtInterceptor} from '@minhdu-fontend/auth';
+import {HttpClientModule} from '@angular/common/http';
+import {AuthModule} from '@minhdu-fontend/auth';
 import {HashLocationStrategy, registerLocaleData} from '@angular/common';
 import {EffectsModule} from '@ngrx/effects';
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from '@angular/material/snack-bar';
@@ -35,6 +35,9 @@ import {NZ_CONFIG, NzConfig} from 'ng-zorro-antd/core/config';
 import {NzMessageModule} from 'ng-zorro-antd/message';
 import {CommodityTemplateModule} from './pages/commodity-template/commodity-template.module';
 import {RouteModule} from './pages/route/route.module';
+import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
+import {AccountEffects} from "../../../../libs/system/src/lib/state/account-management/account.effects";
+
 registerLocaleData(localeVi);
 
 const antDesignIcons = AllIcons as {
@@ -53,6 +56,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     HttpClientModule,
     AppRoutingModule,
     EffectsModule.forRoot(),
+    AkitaNgEffectsModule.forRoot([AccountEffects]),
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states

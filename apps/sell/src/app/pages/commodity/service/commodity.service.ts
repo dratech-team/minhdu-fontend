@@ -8,6 +8,7 @@ import {AddCommodityDto} from '../dto';
 import {CommodityEntity} from '../entities';
 import {SearchCommodityDto} from '../dto';
 import {UpdateCommodityDto} from '../dto';
+import {VersionEnum} from "@minhdu-fontend/enums";
 
 @Injectable({providedIn: 'root'})
 export class CommodityService extends BaseService<CommodityEntity> {
@@ -26,7 +27,7 @@ export class CommodityService extends BaseService<CommodityEntity> {
   }
 
   getTemplate(): Observable<any> {
-    return this.http.get(Api.SELL.COMMODITY_TEMPLATE);
+    return this.http.get(this.url);
   }
 
   pagination(params: SearchCommodityDto): Observable<ResponsePaginate<CommodityEntity>> {
