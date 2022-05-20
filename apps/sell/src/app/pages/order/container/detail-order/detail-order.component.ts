@@ -20,6 +20,11 @@ import {OrderHistoryEntity} from '../../enitities';
 import {CommodityEntity} from '../../../commodity/entities';
 import {NzModalService} from "ng-zorro-antd/modal";
 import {OrderEntity} from "../../enitities/order.entity";
+import {ModalAlertComponent} from "@minhdu-fontend/components";
+import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
+import {
+  ModalUpdateClosedCommodityComponent
+} from "../../../commodity/component/modal-update-closed-commodity/modal-update-closed-commodity.component";
 
 @Component({
   templateUrl: 'detail-order.component.html'
@@ -146,22 +151,27 @@ export class DetailOrderComponent implements OnInit {
   }
 
   closingCommodity(commodity: CommodityEntity, orderId: number) {
-    this.dialog.open(DialogSharedComponent, {
-      width: 'fit-content', data: {
-        title: 'Chốt hàng hoá',
-        description: 'Bạn có chắc chắn muốn ' + (commodity.closed ? 'bỏ chốt ' : 'chốt ') + commodity.name
+    this.modal.create({
+      nzTitle:'Chốt hàng hoá',
+      nzContent: ModalUpdateClosedCommodityComponent,
+      nzComponentParams: <{data: ModalAlertEntity}>{
+        data: {
+          description: `Bạn có chắc chắn muốn ${(commodity.closed ? 'bỏ chốt ' : 'chốt ') + commodity.name}`,
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe(val => {
+      if(val){
+          this.actions$.dispatch(CommodityAction.update({
+            id: commodity.id,
+            updates:{
+              histored : val.save,
+              orderId: orderId,
+              closed: !commodity.closed
+            }
+          }))
       }
-    }).afterClosed().subscribe(val => {
-      if (val) {
-        this.actions$.dispatch(CommodityAction.update({
-          id: commodity.id,
-          updates: {
-            orderId: orderId,
-            closed: !commodity.closed
-          },
-        }));
-      }
-    });
+    })
   }
 
   loadMoreOrderHistory() {
