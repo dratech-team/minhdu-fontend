@@ -19,7 +19,7 @@ export interface OrderState extends EntityState<OrderEntity> {
   readonly search: SearchOrderDto
 }
 
-export function createInitialState(): OrderState {
+function createInitState(): OrderState {
   return {
     loading: true,
     added: null,
@@ -130,7 +130,7 @@ export function createInitialState(): OrderState {
 @StoreConfig({name: StorageName.ORDER})
 export class OrderStore extends EntityStore<OrderState> {
   constructor() {
-    super(createInitialState());
+    super(createInitState());
   }
 
   updateUI(newState: Partial<OrderVisibleEntity>, type: 'visible' | 'pinned') {
