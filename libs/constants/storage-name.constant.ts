@@ -1,11 +1,5 @@
 export const StorageName = {
   APP: 'app',
-  CUSTOMER: 'customer',
-  ORDER: 'order',
-  COMMODITY: 'commodity',
-  COMMODITY_TEMPLATE: 'commodity-template',
-  ROUTE: 'route',
-  BILL: 'bill',
   BRANCH: 'branch',
   POSITION: 'position',
   DEPARTMENT: 'department',
@@ -16,5 +10,12 @@ export const StorageName = {
   SETTING_RANK: 'setting-rank',
   SETTING_BONUS: 'setting-rank',
   EMPLOYEE_DRAFT: 'employee-draft',
-  SETTING_SALARY: 'setting-salary'
+  SETTING_SALARY: 'setting-salary',
+  //Sell
+  COMMODITY_TEMPLATE:'commodity-template',
+  COMMODITY: 'commodity',
+  CUSTOMER: 'customer',
+  BILL: 'bill',
+  ROUTE: 'route',
+  ORDER: 'order',
 };
