@@ -58,7 +58,6 @@ export class CustomerEffect {
         })
       );
     }),
-
   );
 
   @Effect()
@@ -66,11 +65,11 @@ export class CustomerEffect {
     ofType(CustomerActions.addOne),
     switchMap((props: AddCustomerDto) => {
       this.customerStore.update(state => ({
-        ...state, added: false
+        ...state, added: false, total: state.total + 1
       }));
       return this.customerService.addOne(props).pipe(
         tap((res) => {
-          this.message.success('Thêm khác hành thành công')
+            this.message.success('Thêm khác hành thành công')
             this.customerStore.update(state => ({
               ...state, added: true
             }));
@@ -110,13 +109,13 @@ export class CustomerEffect {
             }));
             this.customerStore.update(response.id, response);
           }),
-          catchError(err =>{
+          catchError(err => {
               this.customerStore.update(state => ({
                 ...state, added: null
               }));
-            return of(CustomerActions.error(err))
-          }
-            )
+              return of(CustomerActions.error(err))
+            }
+          )
         );
       }
     )
@@ -125,14 +124,28 @@ export class CustomerEffect {
   @Effect()
   deleteCustomer$ = this.action$.pipe(
     ofType(CustomerActions.remove),
-    switchMap((props) => this.customerService.delete(props.id).pipe(
-      map(() =>{
-        this.message.success('Xoá khách hàng thành công')
-        return  this.customerStore.remove(props.id)
+    switchMap((props) => {
+      this.customerStore.update(state => ({
+        ...state, deleted: false
+      }));
+      return this.customerService.delete(props.id).pipe(
+        map(() => {
+            this.customerStore.update(state => ({
+              ...state, total: state.total - 1, deleted: true
+            }));
+            this.message.success('Xoá khách hàng thành công')
+            return this.customerStore.remove(props.id)
+          }
+        ),
+        catchError((err) => {
+          this.customerStore.update(state => ({
+            ...state, deleted: null
+          }));
+          return of(CustomerActions.error(err))
+        })
+      )
       }
-       ),
-      catchError((err) => of(CustomerActions.error(err)))
-    ))
+    )
   );
 
 

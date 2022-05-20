@@ -42,44 +42,46 @@ import { CustomerService } from './service';
 import { PaymentService } from './service';
 import { OrderService } from '../order/service';
 import { OrderModule } from '../order/order.module';
+import {NzSpinModule} from "ng-zorro-antd/spin";
 
 @NgModule({
-  imports: [
-    ComponentsModule,
-    MatSnackBarModule,
-    HttpClientModule,
-    CustomerRoutingModule,
-    MatInputModule,
-    InfiniteScrollModule,
-    CommonModule,
-    StoreModule.forFeature(FeatureName.PAYMENT, PaymentReducer),
-    AkitaNgEffectsModule.forFeature([
-      OrderEffect,
-      CustomerEffect,
-      CommodityEffect,
-      RouteEffect
-    ]),
-    MatCheckboxModule,
-    ReactiveFormsModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatDialogModule,
-    FormsModule,
-    MatTabsModule,
-    MatStepperModule,
-    SharedModule,
-    NgxSkeletonLoaderModule.forRoot(),
-    NzMessageModule,
-    MatSortModule,
-    NzModalModule,
-    NzCollapseModule,
-    NzRadioModule,
-    NzTableModule,
-    NzInputModule,
-    NzButtonModule,
-    NzPopoverModule,
-    OrderModule
-  ],
+    imports: [
+        ComponentsModule,
+        MatSnackBarModule,
+        HttpClientModule,
+        CustomerRoutingModule,
+        MatInputModule,
+        InfiniteScrollModule,
+        CommonModule,
+        StoreModule.forFeature(FeatureName.PAYMENT, PaymentReducer),
+        AkitaNgEffectsModule.forFeature([
+            OrderEffect,
+            CustomerEffect,
+            CommodityEffect,
+            RouteEffect
+        ]),
+        MatCheckboxModule,
+        ReactiveFormsModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatDialogModule,
+        FormsModule,
+        MatTabsModule,
+        MatStepperModule,
+        SharedModule,
+        NgxSkeletonLoaderModule.forRoot(),
+        NzMessageModule,
+        MatSortModule,
+        NzModalModule,
+        NzCollapseModule,
+        NzRadioModule,
+        NzTableModule,
+        NzInputModule,
+        NzButtonModule,
+        NzPopoverModule,
+        OrderModule,
+        NzSpinModule
+    ],
   declarations: [
     TablePaymentComponent,
     CustomerComponent,

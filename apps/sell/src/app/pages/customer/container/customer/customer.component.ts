@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Api } from '@minhdu-fontend/constants';
 import { CustomerType, ItemContextMenu, SortCustomerEnum } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
-import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
+import {DialogDeleteComponent, DialogExportComponent, ModalAlertComponent} from '@minhdu-fontend/components';
 import { debounceTime, map, tap } from 'rxjs/operators';
 import { CustomerActions, CustomerQuery, CustomerStore } from '../../+state';
 import { CustomerDialogComponent, PaymentDialogComponent } from '../../component';
@@ -17,6 +17,8 @@ import { Sort } from '@minhdu-fontend/data-models';
 import { OrderActions } from '../../../order/+state';
 import * as _ from 'lodash';
 import { OrderEntity } from '../../../order/enitities/order.entity';
+import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
+import {CustomerEntity} from "../../entities";
 
 @Component({
   templateUrl: 'customer.component.html'
@@ -26,6 +28,7 @@ export class CustomerComponent implements OnInit {
   loading$ = this.customerQuery.selectLoading();
   total$ = this.customerQuery.select(state => state.total);
   ui$ = this.customerQuery.select(state => state.ui);
+  deleted$ = this.customerQuery.select(state => state.deleted);
 
   pageSize = 25;
   pageIndexInit = 0;
@@ -119,13 +122,12 @@ export class CustomerComponent implements OnInit {
     }).then();
   }
 
-  deleteCustomer($event: any) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '25%' });
-    dialogRef.afterClosed().subscribe((val) => {
-      if (val) {
-        this.actions$.dispatch(CustomerActions.remove({ id: $event.id }));
-      }
-    });
+  deleteCustomer(customer: CustomerEntity) {
+    this.modal.warning({
+      nzTitle: 'Xoá khách hàng',
+      nzContent:  `Bạn có chắc chắn muốn xoá khác hàng ${customer.lastName}`,
+      nzOnOk: () => this.actions$.dispatch(CustomerActions.remove({ id: customer.id }))
+    })
   }
 
   payment($event: any) {
