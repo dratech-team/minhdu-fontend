@@ -1,21 +1,18 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
-import {OrderService} from '../service/order.service';
+import {OrderService} from '../service';
 import {OrderActions} from './order.actions';
 import {catchError, map, switchMap} from 'rxjs/operators';
-import {of, throwError} from 'rxjs';
+import {of} from 'rxjs';
 import {ConvertBoolean} from '@minhdu-fontend/enums';
 import {Router} from '@angular/router';
-import {BaseOrderEntity} from '../enitities/base-order.entity';
 import {getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
 import {OrderQuery} from './order.query';
 import {OrderStore} from './order.store';
-import {RouteActions} from '../../route/+state/routeActions';
+import {RouteActions} from '../../route/+state';
 import {CommodityEntity, CommodityUniq} from '../../commodity/entities';
-import {UpdateCommodityDto} from '../../commodity/dto';
 import {NzMessageService} from "ng-zorro-antd/message";
 import {CustomerQuery, CustomerStore} from "../../customer/+state";
-import {CustomerEntity} from "../../customer/entities";
 import {OrderEntity} from "../enitities/order.entity";
 
 @Injectable()
@@ -124,6 +121,7 @@ export class OrderEffect {
     ofType(OrderActions.loadOne),
     switchMap((props) => this.orderService.getOne(props.id).pipe(
       map((order) => {
+        this.message.info('Tải đơn hàng thành công');
           return this.orderStore.upsert(order.id, order);
         }
       ),

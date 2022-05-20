@@ -2,7 +2,7 @@
   <form [formGroup]='formGroup' style="max-height:50vh; overflow-y: scroll ">
     <div class='form-group'>
       <div class='row'>
-        <div class='col-sm' [formGroup]='formGroup'>
+        <div class='col-sm'>
           <label for='code'>Mã hàng hóa<span class='star'>*</span>
           </label>
           <input class='form-control' id='code' type='search' matInput [matAutocomplete]='code' formControlName='code'>
@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class='row mt-2'>
-        <div class='col-sm' [formGroup]='formGroup'>
+        <div class='col-sm'>
           <label for='name'>Tên hàng hóa<span class='star'>*</span></label>
           <input class='form-control' id='name' type='search' matInput [matAutocomplete]='name' formControlName='name'>
           <mat-autocomplete #name='matAutocomplete'>
@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class='row mt-2'>
-        <div class='col-sm' [formGroup]='formGroup'>
+        <div class='col-sm'>
           <label for='price'>Giá<span class='star'>*</span></label>
           <input type='text' class='form-control' id='price'
                  placeholder='200,000' formControlName='price' currencyMask
@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class='row mt-2'>
-        <div class='col-sm' [formGroup]='formGroup'>
+        <div class='col-sm'>
           <label for='amount'>Số lượng<span class='star'>*</span></label>
           <input type='text' class='form-control' id='amount'
                  placeholder='1,000'
@@ -43,21 +43,21 @@
         </div>
       </div>
       <div class='row mt-2'>
-        <div class='col-sm' [formGroup]='formGroup'>
+        <div class='col-sm'>
           <label for='gift'>Khuyến mãi</label>
           <input type='text' class='form-control' id='gift' placeholder='1,000'
                  formControlName='gift' currencyMask>
         </div>
       </div>
       <div class='row mt-2'>
-        <div class='col-sm' [formGroup]='formGroup'>
+        <div class='col-sm'>
           <label for='more'>Mua thêm</label>
           <input type='text' class='form-control' id='more' placeholder='1,000'
                  formControlName='more' currencyMask>
         </div>
       </div>
       <div class='row mt-2'>
-        <div class='col-sm' [formGroup]='formGroup'>
+        <div class='col-sm'>
           <label for='unit'>Đơn vị<span class='star'>*</span></label>
           <mat-select id='unit' class='form-control' formControlName='unit'>
             <mat-option value='{{CommodityUnit.KG}}'>
