@@ -104,6 +104,12 @@ export class ModalSettingSalaryComponent implements OnInit {
           break
       }
     })
+
+    this.formGroup.get('insurance')?.valueChanges.subscribe(_ =>{
+        this.prices = []
+        this.formGroup.get('prices')?.setValue('')
+    }
+    )
   }
 
   get checkValid() {
