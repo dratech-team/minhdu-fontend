@@ -92,6 +92,7 @@
         </div>
         <div class='mt-3 mb-5'>
           <nz-table #nestedTable
+                    [nzLoading]="!route.orders"
                     nzSize='middle'
                     [nzScroll]="{y:'500px'}"
                     [nzData]="route.orders"
