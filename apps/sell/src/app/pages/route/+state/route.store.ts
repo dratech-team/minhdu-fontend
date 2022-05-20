@@ -1,14 +1,15 @@
-import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { Injectable } from '@angular/core';
-import { RouteEntity, routeVisibleEntity } from '../entities';
-import { SearchRouteDto } from '../dto';
-import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
-import { updateStateUiUtil } from '../../../utils/update-state-ui.util';
+import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
+import {Injectable} from '@angular/core';
+import {RouteEntity, routeVisibleEntity} from '../entities';
+import {SearchRouteDto} from '../dto';
+import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
+import {updateStateUiUtil} from '../../../utils/update-state-ui.util';
 import {StorageName} from "@minhdu-fontend/constants";
 
 export interface RouteState extends EntityState<RouteEntity> {
   loading: boolean;
   added: boolean | null,
+  deleted: boolean | null
   total: number,
   expandedAll: boolean,
   search: SearchRouteDto,
@@ -18,6 +19,7 @@ export interface RouteState extends EntityState<RouteEntity> {
 export const createInitialState = () => ({
   loading: true,
   added: null,
+  deleted: null,
   total: 0,
   expandedAll: false,
   search: {
@@ -66,8 +68,8 @@ export const createInitialState = () => ({
   }
 });
 
-@Injectable({ providedIn: 'root' })
-@StoreConfig({ name: StorageName.ROUTE })
+@Injectable({providedIn: 'root'})
+@StoreConfig({name: StorageName.ROUTE})
 export class RouteStore extends EntityStore<RouteState> {
   constructor() {
     super(createInitialState());

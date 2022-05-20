@@ -35,40 +35,42 @@ import {VisibleRouteComponent} from './component/custom-visible/visible-route.co
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {RouteService} from './service/route.service';
 import {RouteMiddleware} from './middlewares/route.middleware';
+import {NzSpinModule} from "ng-zorro-antd/spin";
 
 @NgModule({
-  imports: [
-    AkitaNgEffectsModule.forFeature([
-      OrderEffect,
-      CustomerEffect,
-      CommodityEffect,
-      RouteEffect
-    ]),
-    ComponentsModule,
-    RouteRoutingModule,
-    MatDialogModule,
-    ReactiveFormsModule,
-    MatSelectModule,
-    MatInputModule,
-    InfiniteScrollModule,
-    CommonModule,
-    MatRadioModule,
-    MatTabsModule,
-    MatCheckboxModule,
-    FormsModule,
-    SharedModule,
-    NgxSkeletonLoaderModule.forRoot(),
-    MatDatepickerModule,
-    NzTableModule,
-    MatSortModule,
-    NzCollapseModule,
-    NzRadioModule,
-    NzModalModule,
-    NzStepsModule,
-    NzInputModule,
-    NzButtonModule,
-    NzPopoverModule
-  ],
+    imports: [
+        AkitaNgEffectsModule.forFeature([
+            OrderEffect,
+            CustomerEffect,
+            CommodityEffect,
+            RouteEffect
+        ]),
+        ComponentsModule,
+        RouteRoutingModule,
+        MatDialogModule,
+        ReactiveFormsModule,
+        MatSelectModule,
+        MatInputModule,
+        InfiniteScrollModule,
+        CommonModule,
+        MatRadioModule,
+        MatTabsModule,
+        MatCheckboxModule,
+        FormsModule,
+        SharedModule,
+        NgxSkeletonLoaderModule.forRoot(),
+        MatDatepickerModule,
+        NzTableModule,
+        MatSortModule,
+        NzCollapseModule,
+        NzRadioModule,
+        NzModalModule,
+        NzStepsModule,
+        NzInputModule,
+        NzButtonModule,
+        NzPopoverModule,
+        NzSpinModule
+    ],
   declarations: [
     RouteComponent,
     DetailRouteComponent,
