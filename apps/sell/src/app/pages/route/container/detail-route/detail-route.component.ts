@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {RouteEntity} from '../../entities/route.entity';
+import {RouteEntity} from '../../entities';
 import {MatDialog} from '@angular/material/dialog';
-import {RouteDialogComponent} from '../../component/route-dialog/route-dialog.component';
+import {RouteDialogComponent} from '../../component';
 import {ActivatedRoute, Router} from '@angular/router';
-import {RouteActions} from '../../+state/routeActions';
+import {RouteActions} from '../../+state';
 import {PaymentType} from '@minhdu-fontend/enums';
 import {
   DialogDatePickerComponent
@@ -11,12 +11,11 @@ import {
 import {
   DialogSharedComponent
 } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import {BaseOrderEntity} from '../../../order/enitities/base-order.entity';
 import {Actions} from '@datorama/akita-ng-effects';
-import {RouteQuery} from '../../+state/route.query';
-import {CancelEnum} from '../../enums/cancel.enum';
-import {CommodityEntity} from '../../../commodity/entities/commodity.entity';
-import {OrderActions} from '../../../order/+state/order.actions';
+import {RouteQuery} from '../../+state';
+import {CancelEnum} from '../../enums';
+import {CommodityEntity} from '../../../commodity/entities';
+import {OrderActions} from '../../../order/+state';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {UpdateTypeEnum} from "../../enums/update-type.enum";
 import {OrderEntity} from "../../../order/enitities/order.entity";

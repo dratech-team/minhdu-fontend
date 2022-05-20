@@ -194,7 +194,8 @@ export class RouteEffect {
   private handelOrder(orders: OrderEntity []) {
     return orders.map(order => Object.assign(order, {
       commodityTotal: getCommodityTotal(order.commodities),
-      totalCommodity: getTotalCommodity(order.commodities)
+      totalCommodity: getTotalCommodity(order.commodities),
+      expand: false
     }));
   }
 

@@ -15,7 +15,7 @@ import {NzModalService} from 'ng-zorro-antd/modal';
 import {
   AbsentOvertimeSalaryComponent
 } from '../../../salary/components/absent-overtime/absent-overtime-salary.component';
-import {SalaryEntity, UnionSalary} from '../../../salary/entities';
+import {PermanentSalaryEntity, SalaryEntity, UnionSalary} from '../../../salary/entities';
 import {PayslipComponent} from '../../components/payslip/payslip.component';
 import {AllowanceSalaryComponent} from '../../../salary/components/allowance/allowance-salary.component';
 import {Actions} from '@datorama/akita-ng-effects';
