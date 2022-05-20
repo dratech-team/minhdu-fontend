@@ -1,21 +1,20 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {EmployeeType, RecipeType} from '@minhdu-fontend/enums';
-import {DatePipe} from '@angular/common';
-import {Branch, Position} from '@minhdu-fontend/data-models';
-import {checkInputNumber} from '@minhdu-fontend/utils';
-import {RecipeTypesConstant} from '@minhdu-fontend/constants';
-import {NzMessageService} from 'ng-zorro-antd/message';
-import {NzModalRef} from 'ng-zorro-antd/modal';
-import {map} from 'rxjs/operators';
-import {BranchActions, BranchEntity, BranchQuery, PositionEntity} from '@minhdu-fontend/orgchart-v2';
-import {Actions} from '@datorama/akita-ng-effects';
-import {EmployeeActions, EmployeeQuery} from '@minhdu-fontend/employee-v2';
-import {FlatSalaryTypeConstant} from '../../constants/flat-salary-type.constant';
-import {FlatSalaryTypeEnum} from '../../enums/flat-salary-type.enum';
-import {Observable} from 'rxjs';
-import {ModalEmployeeData} from '../../data/modal-employee.data';
-import {EmployeeTypeConstant} from "../../constants/employee-type.constant";
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { EmployeeType, RecipeType } from '@minhdu-fontend/enums';
+import { DatePipe } from '@angular/common';
+import { checkInputNumber } from '@minhdu-fontend/utils';
+import { RecipeTypesConstant } from '@minhdu-fontend/constants';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalRef } from 'ng-zorro-antd/modal';
+import { map } from 'rxjs/operators';
+import { BranchActions, BranchEntity, BranchQuery, PositionEntity } from '@minhdu-fontend/orgchart-v2';
+import { Actions } from '@datorama/akita-ng-effects';
+import { EmployeeActions, EmployeeQuery } from '@minhdu-fontend/employee-v2';
+import { FlatSalaryTypeConstant } from '../../constants/flat-salary-type.constant';
+import { FlatSalaryTypeEnum } from '../../enums/flat-salary-type.enum';
+import { Observable } from 'rxjs';
+import { ModalEmployeeData } from '../../data/modal-employee.data';
+import { EmployeeTypeConstant } from '../../constants/employee-type.constant';
 
 @Component({
   templateUrl: 'modal-employee.component.html'
@@ -25,7 +24,7 @@ export class ModalEmployeeComponent implements OnInit, OnDestroy {
 
   branches$ = this.branchQuery.selectAll().pipe(map(branches => {
     if (branches.length === 1) {
-      this.formGroup.get('branch')?.setValue(branches[0], {emitEvent: false});
+      this.formGroup.get('branch')?.setValue(branches[0], { emitEvent: false });
       if (branches[0].positions)
         this.lstPosition = branches[0].positions;
     }
@@ -37,7 +36,7 @@ export class ModalEmployeeComponent implements OnInit, OnDestroy {
   lstPosition: PositionEntity [] = [];
   flatSalaryTypeConstant = FlatSalaryTypeConstant.filter(item => item.value !== FlatSalaryTypeEnum.ALL);
   recipeTypesConstant = RecipeTypesConstant;
-  employeeTypeConstant = EmployeeTypeConstant
+  employeeTypeConstant = EmployeeTypeConstant;
   submitting = false;
   recipeType = RecipeType;
   typeEmployee = EmployeeType;
@@ -102,7 +101,7 @@ export class ModalEmployeeComponent implements OnInit, OnDestroy {
       createAtContract: [''],
       expiredAtContract: [''],
       recipeType: [employeeInit?.recipeType || this.recipeType.CT2],
-      employeeType: [employeeInit ?
+      type: [employeeInit ?
         employeeInit.type : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
       category: [employeeInit?.category?.id],
       province: [employeeInit?.ward?.district?.province, Validators.required],
@@ -124,7 +123,7 @@ export class ModalEmployeeComponent implements OnInit, OnDestroy {
       this.formGroup.get('workday')?.patchValue(val.workday);
     });
 
-    this.formGroup.get('employeeType')?.valueChanges.subscribe(val => {
+    this.formGroup.get('type')?.valueChanges.subscribe(val => {
       if (val === EmployeeType.EMPLOYEE_SEASONAL) {
         this.formGroup.get('recipeType')?.setValue(RecipeType.CT3);
       }
@@ -153,7 +152,7 @@ export class ModalEmployeeComponent implements OnInit, OnDestroy {
         id: this.data.update.employee.id,
         updates: employee
       })
-      : EmployeeActions.addOne({body: employee})
+      : EmployeeActions.addOne({ body: employee })
     );
 
     this.added$.subscribe(added => {
@@ -173,7 +172,7 @@ export class ModalEmployeeComponent implements OnInit, OnDestroy {
 
   mapEmployee(value: any) {
     const emp = {
-      isFlatSalary: value.employeeType === EmployeeType.EMPLOYEE_FULL_TIME ?
+      isFlatSalary: value.type === EmployeeType.EMPLOYEE_FULL_TIME ?
         value.isFlatSalary === FlatSalaryTypeEnum.FLAT_SALARY : false,
       positionId: value.position.id,
       branchId: value.branch.id,
@@ -195,7 +194,7 @@ export class ModalEmployeeComponent implements OnInit, OnDestroy {
       zalo: value?.zalo ? value?.zalo?.toString() : undefined,
       note: value.note ? value.note : undefined,
       workday: value.workday ? value.workday : 0,
-      type: value.employeeType,
+      type: value.type,
       contract: {
         createdAt: value.createAtContract
           ? new Date(value.createAtContract)
@@ -209,8 +208,8 @@ export class ModalEmployeeComponent implements OnInit, OnDestroy {
     };
 
     return Object.assign(emp,
-      value.phone ? {phone: value.phone} : {},
-      value.workPhone ? {workPhone: value.workPhone} : {}
+      value.phone ? { phone: value.phone } : {},
+      value.workPhone ? { workPhone: value.workPhone } : {}
     );
   }
 

@@ -211,7 +211,7 @@ export class EmployeeComponent implements OnInit {
         position: val.position ? val.position.name : '',
         branch: val.branch ? val.branch.name : '',
         status: val.status,
-        employeeType: val.employeeType,
+        type: val.type,
         isFlatSalary: val.flatSalary as FlatSalaryTypeEnum,
         categoryId: this.departmentControl.value ? this.departmentControl.value.id : '',
         orderBy: this.valueSort?.orderBy || '',

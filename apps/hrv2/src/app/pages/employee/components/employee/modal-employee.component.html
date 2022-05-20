@@ -11,9 +11,9 @@
                 nzShowSearch
                 nzAllowClear
                 style='width:100%'
-                formControlName='employeeType'
+                formControlName='type'
                 nzPlaceHolder='Chọn loại nhân viên'
-                [ngClass]="{ 'is-invalid': submitting && checkValid.employeeType.errors?.required }"
+                [ngClass]="{ 'is-invalid': submitting && checkValid.type.errors?.required }"
               >
                 <nz-option
                   *ngFor='let item of employeeTypeConstant'

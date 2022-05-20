@@ -92,7 +92,7 @@
             <div>Loại nhân viên</div>
             <nz-select
               (click)="$event.stopPropagation()"
-              style='width: 100%;' formControlName='employeeType'>
+              style='width: 100%;' formControlName='type'>
               <nz-option
                 *ngFor="let item of employeeTypeConstant"
                 [nzValue]='item.value'

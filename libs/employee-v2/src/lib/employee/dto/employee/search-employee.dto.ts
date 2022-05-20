@@ -12,7 +12,7 @@ export interface BaseSearchEmployeeDto extends BaseEmployeeEntity {
   readonly position: string,
   readonly branch: string,
   readonly status: EmployeeStatusEnum,
-  readonly employeeType: EmployeeType,
+  readonly type: EmployeeType,
   readonly isFlatSalary: FlatSalaryTypeEnum,
   readonly categoryId: number,
   readonly orderBy?: string;
