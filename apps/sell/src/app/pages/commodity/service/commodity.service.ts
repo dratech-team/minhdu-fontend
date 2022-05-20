@@ -26,10 +26,6 @@ export class CommodityService extends BaseService<CommodityEntity> {
     return super.getAll(params);
   }
 
-  getTemplate(): Observable<any> {
-    return this.http.get(this.url);
-  }
-
   pagination(params: SearchCommodityDto): Observable<ResponsePaginate<CommodityEntity>> {
     return super.pagination(params);
   }

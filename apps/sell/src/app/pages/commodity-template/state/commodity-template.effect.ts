@@ -29,7 +29,7 @@ export class CommodityTemplateEffect {
       return this.service.addOne(props).pipe(
         tap(res => {
           this.store.update(state => ({
-            ...state, added: true
+            ...state, added: true, total: state.total + 1
           }))
           this.store.upsert(res.id, res);
         }),
@@ -71,6 +71,7 @@ export class CommodityTemplateEffect {
           if (props.isPaginate) {
             this.store.add(res.data);
           } else {
+            console.log(res)
             this.store.set(res.data);
           }
         }),
@@ -93,7 +94,7 @@ export class CommodityTemplateEffect {
   getOne$ = this.action$.pipe(
     ofType(CommodityTemplateActions.loadOne),
     switchMap(props => {
-      return this.service.getOne(props.id).pipe(
+      return this.service.getOne(props).pipe(
         tap(res => {
           this.store.update(res?.id, res);
         }),
@@ -111,7 +112,7 @@ export class CommodityTemplateEffect {
       this.store.update(state => ({
         ...state, added: false
       }))
-      return this.service.update(props.).pipe(
+      return this.service.update(props).pipe(
         tap(res => {
           this.store.update(state => ({
             ...state, added: true
@@ -135,6 +136,9 @@ export class CommodityTemplateEffect {
       return this.service.delete(props.id).pipe(
         tap(_ => {
           this.message.success('Xoá bản mẫu thành công')
+          this.store.update(state => ({
+            ...state, total: state.total - 1
+          }))
           this.store.remove(props?.id);
         }),
         catchError(err => {

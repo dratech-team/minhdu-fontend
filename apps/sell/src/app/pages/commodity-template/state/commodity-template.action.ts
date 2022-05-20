@@ -3,7 +3,7 @@ import {AddCommodityTemplateDto} from "../dto/add-commodity-template.dto";
 import {SearchCommodityTemplateDto} from "../dto/search-commodity-template.dto";
 import {UpdateCommodityTemplateDto} from "../dto/update-commodity-template.dto";
 import {RemoveCommodityDto} from "../dto/remove-commodity-template.dto";
-import {LoadOnBaseLoadOneDto} from "../dto/load-one-commodity-template.dto";
+import {LoadOneCommodityTemplateDto} from "../dto/load-one-commodity-template.dto";
 
 const addOne = createAction(
   '[COMMODITY_TEMPLATE] Add One',
@@ -17,7 +17,7 @@ const loadAll = createAction(
 
 const loadOne = createAction(
   '[COMMODITY_TEMPLATE] Load One',
-  props<LoadOnBaseLoadOneDto>()
+  props<LoadOneCommodityTemplateDto>()
 );
 
 const update = createAction(

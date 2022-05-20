@@ -1,0 +1,72 @@
+<div class="d-flex mt-3 ml-2">
+  <div class='d-flex flex-column ml-3 border p-2' style='height: 75vh; width:250px; overflow-y: scroll'>
+    <nz-collapse>
+      <nz-collapse-panel
+        nzHeader='Tìm kiếm'
+        nzActive='true'>
+        <div [formGroup]='formGroup'>
+          <input nz-input class='form-control' type='search' formControlName='search'>
+        </div>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </div>
+  <div class="d-flex flex-column ml-2" style="width: 80vw">
+    <div class="ml-2 d-flex justify-content-between">
+      <div class="font-xl font-weight-bold">Quản lý dòng gà</div>
+      <div>
+        <div>
+          <button nz-button nzType="primary" class="ml-2" (click)="onAdd()">Thêm</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="mb-1"> <span class="font-weight-bold">Tổng :</span> {{total$|async}}</div>
+      <nz-table
+        #tableTemplate
+        *ngIf=" (templates$|async) as templates"
+        nzShowPagination="false"
+        nzSize='middle'
+        [nzLoading]="loading$|async"
+        [nzData]="templates"
+      >
+        <thead>
+        <tr>
+          <th nzLeft nzWidth="60px">STT</th>
+          <th>Mã bản mẫu</th>
+          <th>Tên bản mẫu</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let template of templates; let i = index"
+            (click)="onUpdate(template)"
+            (contextmenu)='child.onContextMenu($event,template)'>
+          <td nzLeft>{{i + 1}}</td>
+          <td>{{template.code}}</td>
+          <td>{{template.name}}</td>
+        </tr>
+        <tr *ngIf="((count$|async) || 0) <= ((total$|async) || 0) && (total$|async) !== 0">
+          <td [colSpan]="tableTemplate.listOfAutoColWidth.length">
+            <div class="w-100 d-flex justify-content-start" style="position: relative">
+              <button
+                (click)="onLoadMore()"
+                style="position: sticky; left: 55vw"
+                nz-button nzType="primary"
+                [nzLoading]="loadMore$|async">
+                Tải thêm
+              </button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </div>
+
+  </div>
+</div>
+<app-mouse-right
+  #child
+  (onAdd)='onAdd()'
+  (onUpdate)='onUpdate($event)'
+  (onDel)='onDelete($event)'
+></app-mouse-right>
+

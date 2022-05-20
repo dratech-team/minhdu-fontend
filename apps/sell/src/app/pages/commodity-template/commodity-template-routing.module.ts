@@ -1,11 +1,11 @@
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
-import {CommodityComponent} from "../commodity/container";
+import {CommodityTemplateComponent} from "./container/commodity-template.component";
 
 const routes: Routes = [
   {
     path: '',
-    component:CommodityComponent
+    component:CommodityTemplateComponent
   },
 ]
 @NgModule({
