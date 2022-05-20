@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
-import {debounceTime, map} from 'rxjs/operators';
+import {debounceTime} from 'rxjs/operators';
 import {PaginationDto} from '@minhdu-fontend/constants';
 import {SettingSalaryActions, SettingSalaryQuery, SettingSalaryStore} from '../../state';
 import {Actions} from '@datorama/akita-ng-effects';

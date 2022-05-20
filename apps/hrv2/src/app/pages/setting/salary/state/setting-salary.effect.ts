@@ -8,6 +8,7 @@ import {SalarySettingService} from "../services";
 import {SettingSalaryActions} from "./setting-salary.action";
 import {SearchSalarySettingDto} from "../dto";
 import {SettingSalaryQuery} from "./setting-salary.query";
+import {PaginationDto} from "@minhdu-fontend/constants";
 
 @Injectable()
 export class SettingSalaryEffect {
@@ -56,6 +57,12 @@ export class SettingSalaryEffect {
             : {loading: true}
         )
       ));
+      Object.assign(props.search,
+        {
+          take: PaginationDto.take,
+          skip: props.isPaginate ? this.settingSalaryQuery.getCount() : PaginationDto.skip
+        },
+      )
       return this.service.pagination(props).pipe(
         tap((res) => {
           this.settingSalaryStore.update(state => (
