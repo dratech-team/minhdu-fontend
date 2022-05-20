@@ -8,6 +8,7 @@
     <minhdu-fontend-table-payroll
       [payrolls]="(payrolls$|async)|| []"
       [formGroup]="formGroup"
+      [scroll]="{x: '5000px', y: '51vh'}"
       (onloadPayroll)="onLoadPayroll($event.isPagination)"
     >
     </minhdu-fontend-table-payroll>
