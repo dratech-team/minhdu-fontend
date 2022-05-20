@@ -57,12 +57,6 @@ export class SettingSalaryEffect {
             : {loading: true}
         )
       ));
-      Object.assign(props.search,
-        {
-          take: PaginationDto.take,
-          skip: props.isPaginate ? this.settingSalaryQuery.getCount() : PaginationDto.skip
-        },
-      )
       return this.service.pagination(props).pipe(
         tap((res) => {
           this.settingSalaryStore.update(state => (
