@@ -121,7 +121,7 @@ export class OrderEffect {
     ofType(OrderActions.loadOne),
     switchMap((props) => this.orderService.getOne(props.id).pipe(
       map((order) => {
-        this.message.info('Tải đơn hàng thành công');
+          this.message.info('Tải đơn hàng thành công');
           return this.orderStore.upsert(order.id, order);
         }
       ),
@@ -191,25 +191,35 @@ export class OrderEffect {
   @Effect()
   delete$ = this.actions$.pipe(
     ofType(OrderActions.remove),
-    switchMap((props) =>
-      this.orderService.delete(props.id).pipe(
-        map((_) => {
-          this.message.success('Xoá đơn hàng thành công');
-          const orderDelete = this.orderQuery.getEntity(props.id);
-          if (orderDelete)
+    switchMap((props) => {
+      this.orderStore.update(state => ({
+        ...state, deleted: false
+      }))
+        return this.orderService.delete(props.id).pipe(
+          map((_) => {
+            this.message.success('Xoá đơn hàng thành công');
+            const orderDelete = this.orderQuery.getEntity(props.id);
+            if (orderDelete)
+              this.orderStore.update(state => ({
+                ...state,
+                deleted: true,
+                total: state.total - 1,
+                totalCommodity: orderDelete.commodities?.length > 0 ?
+                  state.totalCommodity - orderDelete.commodities.reduce((a, b) => a + b.amount, 0) : state.commodityUniq,
+                commodityUniq: orderDelete.commodities?.length > 0 ?
+                  this.handleCommodityUniq(state.commodityUniq, orderDelete.commodities, 'delete') :
+                  state.commodityUniq
+              }));
+            this.orderStore.remove(props.id);
+          }),
+          catchError((err) => {
             this.orderStore.update(state => ({
-              ...state,
-              total: state.total ? state.total - 1 : state.total,
-              totalCommodity: orderDelete.commodities?.length > 0 ?
-                state.totalCommodity - orderDelete.commodities.reduce((a, b) => a + b.amount, 0) : state.commodityUniq,
-              commodityUniq: orderDelete.commodities?.length > 0 ?
-                this.handleCommodityUniq(state.commodityUniq, orderDelete.commodities, 'delete') :
-                state.commodityUniq
-            }));
-          this.orderStore.remove(props.id);
-        }),
-        catchError((err) => of(OrderActions.error(err)))
-      )
+              ...state, deleted: null
+            }))
+            return of(OrderActions.error(err))
+          })
+        )
+      }
     )
   );
 
