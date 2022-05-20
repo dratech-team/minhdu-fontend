@@ -14,8 +14,8 @@ import {BlockSalaryPipe} from "./salary/pipes";
 import {NzRadioModule} from "ng-zorro-antd/radio";
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
 import {NgxCurrencyModule} from "ngx-currency";
-import {SalarySettingComponent} from "./salary/containers/salary-setting";
-import {SettingSalaryDialogComponent} from "./salary/components/salary-setting";
+import {SettingSalaryComponent} from "./salary/containers/setting-salary";
+import {ModalSettingSalaryComponent} from "./salary/components/setting-salary";
 import {VisibleSalarySettingComponent} from "./salary/components/custom-visible";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
@@ -55,9 +55,9 @@ import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
         NzDatePickerModule
     ],
   declarations: [
-    SalarySettingComponent,
+    SettingSalaryComponent,
     BlockSalaryPipe,
-    SettingSalaryDialogComponent,
+    ModalSettingSalaryComponent,
     VisibleSalarySettingComponent,
     PricesPipe,
     SalaryTypePipe

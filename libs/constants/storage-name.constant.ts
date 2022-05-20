@@ -16,4 +16,5 @@ export const StorageName = {
   SETTING_RANK: 'setting-rank',
   SETTING_BONUS: 'setting-rank',
   EMPLOYEE_DRAFT: 'employee-draft',
+  SETTING_SALARY: 'setting-salary'
 };

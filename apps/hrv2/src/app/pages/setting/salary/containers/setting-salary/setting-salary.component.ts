@@ -9,16 +9,16 @@ import {NzModalService} from 'ng-zorro-antd/modal';
 import {SalaryTypeEnum} from "../../enums";
 import {blockSalariesConstant} from "../../constants";
 import {SalarySettingEntity} from "../../entities";
-import {SettingSalaryDialogComponent} from "../../components/salary-setting";
+import {ModalSettingSalaryComponent} from "../../components/setting-salary";
 import {AddOrUpdateSettingSalary} from "../../data/modal-setting-salary.data";
 import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 
 @Component({
-  selector: 'minhdu-fontend-salary-setting',
-  templateUrl: 'salary-setting.component.html'
+  selector: 'minhdu-fontend-setting-salary',
+  templateUrl: 'setting-salary.component.html'
 })
-export class SalarySettingComponent implements OnInit {
+export class SettingSalaryComponent implements OnInit {
   settingSalaries$ = this.settingSalaryQuery.selectAll();
   loading$ = this.settingSalaryQuery.select(state => state.loading);
   loadMore$ = this.settingSalaryQuery.select(state => state.loadMore);
@@ -88,7 +88,7 @@ export class SalarySettingComponent implements OnInit {
     this.modal.create({
       nzWidth: '35vw',
       nzTitle: 'Tạo bản mẫu lương',
-      nzContent: SettingSalaryDialogComponent,
+      nzContent: ModalSettingSalaryComponent,
       nzFooter: [],
     })
   }
@@ -97,7 +97,7 @@ export class SalarySettingComponent implements OnInit {
     this.modal.create({
       nzWidth: '35vw',
       nzTitle: 'Tạo bản mẫu lương',
-      nzContent: SettingSalaryDialogComponent,
+      nzContent: ModalSettingSalaryComponent,
       nzComponentParams: <{ data?: AddOrUpdateSettingSalary }>{
         data: {
           update: {template: template}

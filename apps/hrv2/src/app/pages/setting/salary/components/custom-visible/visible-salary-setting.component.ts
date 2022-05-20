@@ -4,7 +4,7 @@ import {SettingSalaryQuery} from "../../state";
 import {SettingSalaryStore} from "../../state";
 
 @Component({
-  selector: 'minhdu-fontend-pinned-salary-setting',
+  selector: 'minhdu-fontend-pinned-setting-salary',
   templateUrl: 'visible-salary-setting.component.html'
 })
 export class VisibleSalarySettingComponent {

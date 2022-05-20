@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {SalarySettingEntity, SettingSalaryVisibleEntity} from '../entities';
 import {BaseSearchSalarySettingDto} from "../dto";
 import {updateStateUiUtil} from "@minhdu-fontend/utils";
+import {StorageName} from "@minhdu-fontend/constants";
 
 export interface SettingSalaryState extends EntityState<SalarySettingEntity> {
   total: number;
@@ -54,7 +55,7 @@ export function createInitialState(): SettingSalaryState {
 }
 
 @Injectable({providedIn: 'root'})
-@StoreConfig({name: 'salary-setting'})
+@StoreConfig({name: StorageName.SETTING_SALARY})
 export class SettingSalaryStore extends EntityStore<SettingSalaryState> {
   constructor() {
     super(createInitialState());

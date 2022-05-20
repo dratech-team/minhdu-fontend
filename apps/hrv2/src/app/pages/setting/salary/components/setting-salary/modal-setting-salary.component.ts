@@ -22,9 +22,9 @@ import {
 import * as moment from "moment";
 
 @Component({
-  templateUrl: 'setting-salary-dialog.component.html'
+  templateUrl: 'modal-setting-salary.component.html'
 })
-export class SettingSalaryDialogComponent implements OnInit {
+export class ModalSettingSalaryComponent implements OnInit {
   @Input() data?: AddOrUpdateSettingSalary
   added$ = this.settingSalaryQuery.select(state => state.added);
   branches$ = this.branchQuery.selectAll();
