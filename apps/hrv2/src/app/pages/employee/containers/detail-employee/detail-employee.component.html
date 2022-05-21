@@ -492,19 +492,21 @@
           <tbody>
           <tr
             *ngFor='let relative of tableRelative.data'
-            (click)='onRelative(employee.id, relative.id, relative)'>
+            (click)='onRelative(employee.id, relative.id, relative)'
+            class="pointer"
+          >
             <td>{{relative.lastName}}</td>
             <td>{{relative.relationship|transformconstant: relationshipConstant}}</td>
             <td>{{relative.birthday |date:'dd/MM/yyyy'}}</td>
             <td>{{relative?.phone | existpipe}}</td>
-            <td>{{relative.email | existpipe}}</td>
+            <td>{{relative?.email | existpipe}}</td>
             <td>
               <input style='margin-left: 50%' disabled type='checkbox' [checked]='relative.sos'>
             </td>
             <td class="not-print">
               <button
                 nz-button nzDanger
-                (click)='onDeleteRelative(relative.id , employee.id); $event.stopPropagation() '>
+                (click)='onDeleteRelative(relative); $event.stopPropagation() '>
                 Xoá
               </button>
             </td>
@@ -544,7 +546,9 @@
           <tbody>
           <tr
             *ngFor='let degree of tableDegree.data'
-            (click)='onDegree(employee.id,degree.id , degree)'>
+            (click)='onDegree(employee.id,degree.id , degree)'
+            class="pointer"
+          >
             <td>
               {{degree.type|transformconstant:degreeConstant }}
             </td>
@@ -559,7 +563,7 @@
             <td class="not-print">
               <button
                 nz-button nzDanger
-                (click)='onDeleteDegree(degree.id , employee.id) ; $event.stopPropagation()'>
+                (click)='onDeleteDegree(degree) ; $event.stopPropagation()'>
                 Xoá
               </button>
             </td>

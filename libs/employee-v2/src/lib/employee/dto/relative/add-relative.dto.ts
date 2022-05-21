@@ -1,8 +1,11 @@
 import {BaseAddDto} from "@minhdu-fontend/base-dto";
 import {BaseRelativeEntity} from "../../base/base-relative.entity";
+import {ConvertBoolean} from "@minhdu-fontend/enums";
 
-export interface BaseRelativeDto extends BaseRelativeEntity {
+export interface BaseAddRelativeDto extends Omit<BaseRelativeEntity, 'id'> {
   employeeId: number
+  sos: ConvertBoolean
+  wardId: number
 }
 
-export type AddRelativeDto = BaseAddDto<BaseRelativeDto>
+export type AddRelativeDto = BaseAddDto<BaseAddRelativeDto>
