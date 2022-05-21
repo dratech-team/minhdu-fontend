@@ -10,6 +10,7 @@ import {
 } from "../../../../../../../../libs/employee-v2/src/lib/employee/dto/relative";
 import {RelationshipConstant} from "../../constants/relationship.constant";
 import {ModalRelative} from "../../data/modal-relative.data";
+import {DatePipe} from "@angular/common";
 
 
 @Component({
@@ -27,6 +28,7 @@ export class ModalRelativeComponent implements OnInit {
   formGroup!: FormGroup;
 
   constructor(
+    private readonly datePipe: DatePipe,
     private readonly formBuilder: FormBuilder,
     private readonly modalRef: NzModalRef,
     private readonly actions$: Actions,
@@ -44,10 +46,16 @@ export class ModalRelativeComponent implements OnInit {
       birthplace: [relative?.birthplace],
       address: [relative?.address],
       identify: [relative?.identify],
-      idCardAt: [relative?.idCardAt],
+      idCardAt: [
+        relative?.idCardAt
+          ? this.datePipe.transform(relative.idCardAt, 'yyyy-MM-dd')
+          : ''
+      ],
       phone: [relative?.phone],
       workPhone: [relative?.workPhone],
-      birthday: [relative?.birthday, Validators.required],
+      birthday: [relative?.birthday
+        ? this.datePipe.transform(relative.birthday, 'yyyy-MM-dd')
+        : '', Validators.required],
       gender: [relative?.gender, Validators.required],
       note: [relative?.note],
       relationship: [relative?.relationship, Validators.required],
@@ -89,7 +97,7 @@ export class ModalRelativeComponent implements OnInit {
 
   }
 
-  private mapRelative(value : any): BaseAddRelativeDto | BaseUpdateRelativeDto {
+  private mapRelative(value: any): BaseAddRelativeDto | BaseUpdateRelativeDto {
     return {
       employeeId: this.data.employeeId,
       relationship: value.relationship,

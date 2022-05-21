@@ -4,28 +4,28 @@ import {Observable} from 'rxjs';
 import {Api} from '@minhdu-fontend/constants';
 import {BaseService} from 'libs/service/base.service';
 import {AddDegreeDto, UpdateDegreeDto} from "../dto/degree";
-import {EmployeeEntity} from "../entities";
 import {VersionEnum} from "@minhdu-fontend/enums";
+import {DegreeEntity} from "../entities/degree.entity";
 
 @Injectable({providedIn: 'root'})
-export class DegreeService extends BaseService<EmployeeEntity> {
+export class DegreeService extends BaseService<DegreeEntity> {
   constructor(
     public readonly http: HttpClient
   ) {
     super(Api.HR.EMPLOYEE.DEGREE, http);
   }
 
-  addOneDegree(props: AddDegreeDto): Observable<EmployeeEntity> {
-    return this.http.post<EmployeeEntity>(this.url, props.body);
+  addOneDegree(props: AddDegreeDto): Observable<DegreeEntity> {
+    return this.http.post<DegreeEntity>(this.url, props.body);
   }
 
-  update(props: UpdateDegreeDto): Observable<EmployeeEntity> {
+  update(props: UpdateDegreeDto): Observable<DegreeEntity> {
     return super.update(props.id, props.updates);
   }
 
 
-  deleteDegree(id: number): Observable<EmployeeEntity> {
-    return this.http.delete<EmployeeEntity>(this.url + `/${id}`);
+  deleteDegree(id: number): Observable<void> {
+    return super.delete(id);
   }
 
   deleteContracts(id: number): Observable<void> {

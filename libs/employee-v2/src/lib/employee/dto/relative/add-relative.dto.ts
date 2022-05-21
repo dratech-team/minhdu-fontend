@@ -3,7 +3,6 @@ import {BaseRelativeEntity} from "../../base/base-relative.entity";
 import {ConvertBoolean} from "@minhdu-fontend/enums";
 
 export interface BaseAddRelativeDto extends Omit<BaseRelativeEntity, 'id'> {
-  employeeId: number
   sos: ConvertBoolean
   wardId: number
 }

@@ -501,7 +501,7 @@
             <td>{{relative?.phone | existpipe}}</td>
             <td>{{relative?.email | existpipe}}</td>
             <td>
-              <input style='margin-left: 50%' disabled type='checkbox' [checked]='relative.sos'>
+              <label nzDisabled nz-checkbox [nzChecked]="relative.sos"></label>
             </td>
             <td class="not-print">
               <button

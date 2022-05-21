@@ -19,4 +19,5 @@ export interface BaseRelativeEntity extends BaseEntity {
   gender?: Gender,
   note?: string,
   email?: string
+  employeeId: number
 }
