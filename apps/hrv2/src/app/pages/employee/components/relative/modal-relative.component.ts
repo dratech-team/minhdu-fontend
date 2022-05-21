@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {DatePipe} from '@angular/common';
 import {ConvertBoolean} from '@minhdu-fontend/enums';
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {Actions} from "@datorama/akita-ng-effects";
@@ -26,7 +25,6 @@ export class ModalRelativeComponent implements OnInit {
   relationshipConstant = RelationshipConstant
 
   constructor(
-    public datePipe: DatePipe,
     private readonly formBuilder: FormBuilder,
     private readonly modalRef: NzModalRef,
     private readonly actions$: Actions,

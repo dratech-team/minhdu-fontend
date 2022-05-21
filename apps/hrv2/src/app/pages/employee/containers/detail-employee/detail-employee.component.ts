@@ -114,7 +114,7 @@ export class DetailEmployeeComponent implements OnInit {
     })
   }
 
-  onDegree(employeeId: number, id?: number, degree?: Degree) {
+  onDegree(employeeId: number, id?: number, degree?: DegreeEntity) {
     this.modal.create({
       nzTitle: degree ? 'Cập nhật bằng cấp' : 'Thêm bằng cấp',
       nzContent: ModalDegreeComponent,
