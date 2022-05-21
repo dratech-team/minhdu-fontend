@@ -1,9 +1,8 @@
 import {BaseAddDto} from '@minhdu-fontend/base-dto';
 import {BaseEmployeeEntity} from "../../base";
-import {FlatSalaryTypeEnum} from "../../../../../../../apps/hrv2/src/app/pages/employee/enums/flat-salary-type.enum";
 
-export interface BaseAddEmployeeDto extends BaseEmployeeEntity {
-  isFlatSalary: FlatSalaryTypeEnum,
+export interface BaseAddEmployeeDto extends Omit<BaseEmployeeEntity, 'id'> {
+  isFlatSalary: boolean,
   positionId: number,
   branchId: number,
   wardId: number
