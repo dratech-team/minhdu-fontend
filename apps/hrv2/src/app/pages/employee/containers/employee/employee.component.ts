@@ -87,7 +87,7 @@ export class EmployeeComponent implements OnInit {
     flatSalary: new FormControl(this.stateEmployee.flatSalary),
     position: new FormControl(this.stateEmployee.position || ''),
     branch: new FormControl(this.stateEmployee.branch || ''),
-    employeeType: new FormControl(this.stateEmployee.employeeType),
+    type: new FormControl(this.stateEmployee.type),
     status: new FormControl(this.stateEmployee.status)
   });
 

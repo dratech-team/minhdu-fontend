@@ -1,25 +1,27 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmployeeType, RecipeType } from '@minhdu-fontend/enums';
-import { DatePipe } from '@angular/common';
-import { checkInputNumber } from '@minhdu-fontend/utils';
-import { RecipeTypesConstant } from '@minhdu-fontend/constants';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzModalRef } from 'ng-zorro-antd/modal';
-import { map } from 'rxjs/operators';
-import { BranchActions, BranchEntity, BranchQuery, PositionEntity } from '@minhdu-fontend/orgchart-v2';
-import { Actions } from '@datorama/akita-ng-effects';
-import { EmployeeActions, EmployeeQuery } from '@minhdu-fontend/employee-v2';
-import { FlatSalaryTypeConstant } from '../../constants/flat-salary-type.constant';
-import { FlatSalaryTypeEnum } from '../../enums/flat-salary-type.enum';
-import { Observable } from 'rxjs';
-import { ModalEmployeeData } from '../../data/modal-employee.data';
-import { EmployeeTypeConstant } from '../../constants/employee-type.constant';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {EmployeeType, RecipeType} from '@minhdu-fontend/enums';
+import {DatePipe} from '@angular/common';
+import {checkInputNumber} from '@minhdu-fontend/utils';
+import {RecipeTypesConstant} from '@minhdu-fontend/constants';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {NzModalRef} from 'ng-zorro-antd/modal';
+import {map} from 'rxjs/operators';
+import {BranchActions, BranchEntity, BranchQuery, PositionEntity} from '@minhdu-fontend/orgchart-v2';
+import {Actions} from '@datorama/akita-ng-effects';
+import {EmployeeActions, EmployeeQuery} from '@minhdu-fontend/employee-v2';
+import {FlatSalaryTypeConstant} from '../../constants/flat-salary-type.constant';
+import {FlatSalaryTypeEnum} from '../../enums/flat-salary-type.enum';
+import {Observable} from 'rxjs';
+import {ModalEmployeeData} from '../../data/modal-employee.data';
+import {EmployeeTypeConstant} from '../../constants/employee-type.constant';
+import {BaseUpdateEmployeeDto} from "../../../../../../../../libs/employee-v2/src/lib/employee/dto/employee";
+import {BaseEmployeeEntity} from "../../../../../../../../libs/employee-v2/src/lib/employee/base";
 
 @Component({
   templateUrl: 'modal-employee.component.html'
 })
-export class ModalEmployeeComponent implements OnInit, OnDestroy {
+export class ModalEmployeeComponent implements OnInit {
   @Input() data!: ModalEmployeeData;
 
   branches$ = this.branchQuery.selectAll().pipe(map(branches => {
@@ -142,7 +144,7 @@ export class ModalEmployeeComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (value.typeEmployee === EmployeeType.EMPLOYEE_FULL_TIME && !value.workday) {
+    if (value.type === EmployeeType.EMPLOYEE_FULL_TIME && !value.workday) {
       return this.message.error('Chưa nhập ngày công chuẩn');
     }
 
@@ -170,49 +172,45 @@ export class ModalEmployeeComponent implements OnInit, OnDestroy {
     return o1 && o2 ? o1.id == o2.id : o1 === o2;
   };
 
-  mapEmployee(value: any) {
-    const emp = {
-      isFlatSalary: value.type === EmployeeType.EMPLOYEE_FULL_TIME ?
-        value.isFlatSalary === FlatSalaryTypeEnum.FLAT_SALARY : false,
-      positionId: value.position.id,
-      branchId: value.branch.id,
-      workedAt: value.workedAt ? new Date(value.workedAt) : undefined,
-      createdAt: value.createdAt ? new Date(value.createdAt) : undefined,
-      lastName: value.lastName,
-      gender: value.gender,
-      birthday: value.birthday ? new Date(value.birthday) : undefined,
-      birthplace: value.birthplace,
-      identify: value?.identify?.toString(),
-      idCardAt: value.idCardAt ? new Date(value.idCardAt) : undefined,
-      issuedBy: value.issuedBy,
-      wardId: value.ward.id,
-      address: value.address,
-      religion: value.religion ? value.religion : undefined,
-      ethnicity: value.ethnicity ? value.ethnicity : undefined,
-      email: value.email ? value.email : undefined,
-      facebook: value?.facebook ? value.facebook : undefined,
-      zalo: value?.zalo ? value?.zalo?.toString() : undefined,
-      note: value.note ? value.note : undefined,
-      workday: value.workday ? value.workday : 0,
-      type: value.type,
-      contract: {
-        createdAt: value.createAtContract
-          ? new Date(value.createAtContract)
-          : undefined,
-        expiredAt: value.expiredAtContract
-          ? new Date(value.expiredAtContract)
-          : undefined
+  mapEmployee(value: any) :Partial<BaseEmployeeEntity> | Partial<BaseUpdateEmployeeDto>{
+    return  Object.assign(
+      {
+        gender: value.gender,
+        identify: value?.identify?.toString(),
+        address: value.address,
+        note: value.note || '',
+        lastName: value.lastName,
+        religion: value.religion ? value.religion : undefined,
+        ethnicity: value.ethnicity ? value.ethnicity : undefined,
+        facebook: value?.facebook ? value.facebook : undefined,
+        birthplace: value.birthplace,
+        recipeType: value.recipeType,
+        createdAt: value.createdAt ? new Date(value.createdAt) : undefined,
+        workedAt: value.workedAt ? new Date(value.workedAt) : undefined,
+        workday: value.workday ? value.workday : 0,
+        idCardAt: value.idCardAt ? new Date(value.idCardAt) : undefined,
+        issuedBy: value.issuedBy,
+        birthday: value.birthday ? new Date(value.birthday) : undefined,
+        email: value.email ? value.email : undefined,
+        isFlatSalary: value.type === EmployeeType.EMPLOYEE_FULL_TIME ?
+          value.isFlatSalary === FlatSalaryTypeEnum.FLAT_SALARY : false,
+        positionId: value.position.id,
+        branchId: value.branch.id,
+        wardId: value.ward.id,
+        zalo: value?.zalo ? value?.zalo?.toString() : undefined,
+        type: value.type,
+        contract: {
+          createdAt: value.createAtContract
+            ? new Date(value.createAtContract)
+            : undefined,
+          expiredAt: value.expiredAtContract
+            ? new Date(value.expiredAtContract)
+            : undefined
+        },
+        categoryId: value.category
       },
-      recipeType: value.recipeType,
-      categoryId: value.category
-    };
-
-    return Object.assign(emp,
       value.phone ? { phone: value.phone } : {},
       value.workPhone ? { workPhone: value.workPhone } : {}
-    );
-  }
-
-  ngOnDestroy() {
+    )
   }
 }

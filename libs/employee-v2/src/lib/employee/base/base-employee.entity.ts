@@ -1,12 +1,29 @@
-import { BaseEntity } from '@minhdu-fontend/base-entity';
-import { Gender } from '@minhdu-fontend/enums';
+import {BaseEntity} from '@minhdu-fontend/base-entity';
+import {EmployeeType, Gender, RecipeType} from '@minhdu-fontend/enums';
 
 export interface BaseEmployeeEntity extends BaseEntity {
-  code: string,
   gender: Gender,
-  phone?: string,
-  identify?: string,
+  phone: string,
+  identify: string,
   address: string,
-  note?: string;
+  note: string;
+  lastName: string,
+  workPhone: string,
+  religion: string,
+  ethnicity: string,
+  mst: string,
+  zalo: string,
+  bhyt: string,
+  facebook: string,
+  birthplace: string,
+  recipeType: RecipeType,
+  createdAt: Date,
+  workedAt: Date;
+  workday: number,
+  idCardAt: Date,
+  issuedBy: string,
+  birthday: Date,
+  email: string,
+  type: EmployeeType,
 }
 
