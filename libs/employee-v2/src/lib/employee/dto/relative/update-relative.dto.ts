@@ -1,9 +1,11 @@
-import {BaseEmployeeEntity} from "../../base";
-import {BaseAddDto, BaseUpdateDto} from "@minhdu-fontend/base-dto";
-import {BaseRelativeDto} from "./add-relative.dto";
+import {BaseUpdateDto} from "@minhdu-fontend/base-dto";
+import {ConvertBoolean} from "@minhdu-fontend/enums";
+import {BaseRelativeEntity} from "../../base/base-relative.entity";
 
-export interface BaseUpdateRelativeDto extends BaseRelativeDto {
-
+export interface BaseUpdateRelativeDto extends Omit<BaseRelativeEntity, 'id'> {
+  employeeId: number
+  sos: ConvertBoolean
+  wardId: number
 }
 
 export type UpdateRelativeDto = BaseUpdateDto<BaseUpdateRelativeDto>

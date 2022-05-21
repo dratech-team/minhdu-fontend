@@ -9,8 +9,7 @@ import {VersionEnum} from "@minhdu-fontend/enums";
 
 @Injectable({providedIn: 'root'})
 export class EmployeeService extends BaseService<Employee> {
-  url = VersionEnum.V2 + Api.HR.EMPLOYEE.EMPLOYEE
-  urlHistory = VersionEnum.V2 + Api.HR.EMPLOYEE.HISTORY_SALARY
+  urlHistory = VersionEnum.V1 + Api.HR.EMPLOYEE.HISTORY_SALARY
 
   constructor(
     public readonly http: HttpClient

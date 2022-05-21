@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Degree, Relative, Salary, WorkHistory} from '@minhdu-fontend/data-models';
+import {Degree, Salary, WorkHistory} from '@minhdu-fontend/data-models';
 import {DegreeLevelEnum, DegreeStatusEnum, RecipeType} from '@minhdu-fontend/enums';
 import {RecipeSalaryConstant} from "../../../../../../../../libs/constants/HR/recipe-salary.constant";
 import {NzModalService} from "ng-zorro-antd/modal";
@@ -14,6 +14,13 @@ import {DegreeLevelTypeConstant} from "../../constants/degree-level-type.constan
 import {DegreeStatusTypeConstant} from "../../constants/degree-status-type.constant";
 import {ModalEmployeeComponent} from "../../components/employee/modal-employee.component";
 import {ModalEmployeeData} from "../../data/modal-employee.data";
+import {RelativeEntity} from "../../../../../../../../libs/employee-v2/src/lib/employee/entities/relative.entity";
+import {ModalRelativeComponent} from "../../components/relative/modal-relative.component";
+import {ModalRelative} from "../../data/modal-relative.data";
+import {ModalDegreeComponent} from "../../components/degree/modal-degree.component";
+import {ModalDegreeData} from "../../data/modal-degree.data";
+import {DegreeEntity} from "../../../../../../../../libs/employee-v2/src/lib/employee/entities/degree.entity";
+import {TransformConstantPipe} from "@minhdu-fontend/components";
 
 @Component({
   templateUrl: 'detail-employee.component.html',
@@ -43,6 +50,7 @@ export class DetailEmployeeComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly modal: NzModalService,
+    private readonly transformConstantPipe: TransformConstantPipe
   ) {
   }
 
@@ -78,17 +86,58 @@ export class DetailEmployeeComponent implements OnInit {
   onDelete(employee: EmployeeEntity, leftAt?: Date): void {
   }
 
-  onRelative(employeeId: number, id?: number, relative?: Relative): void {
-
+  onRelative(employeeId: number, id?: number, relative?: RelativeEntity): void {
+    this.modal.create({
+      nzTitle: relative ? 'Cập nhật người thân' : 'Thêm người thân',
+      nzContent: ModalRelativeComponent,
+      nzComponentParams: <{ data: ModalRelative }>{
+        data: {
+          employeeId: employeeId,
+          update: {
+            relative: relative
+          }
+        }
+      },
+      nzFooter: []
+    })
   }
 
-  onDeleteRelative(id: number, employeeId: number) {
+  onDeleteRelative(relative: RelativeEntity) {
+    this.modal.warning({
+      nzTitle: 'Xoá người thân',
+      nzContent: `Bạn có chắc chắn muốn xoá
+      ${this.transformConstantPipe.transform(relative.relationship, RelationshipConstant)} là
+      ${relative.lastName}
+       này không`,
+      nzOkDanger: true,
+      nzOnOk: () => this.actions$.dispatch(EmployeeActions.removeRelative({id: relative.id}))
+    })
   }
 
-  onDegree(employeeId: number, id?: number, degree?: Degree) {
+  onDegree(employeeId: number, id?: number, degree?: DegreeEntity) {
+    this.modal.create({
+      nzTitle: degree ? 'Cập nhật bằng cấp' : 'Thêm bằng cấp',
+      nzContent: ModalDegreeComponent,
+      nzComponentParams: <{ data: ModalDegreeData }>{
+        data: {
+          employeeId: employeeId,
+          update: {
+            degree: degree
+          }
+        }
+      },
+      nzFooter: []
+    })
   }
 
-  onDeleteDegree(id: number, employeeId: number) {
+  onDeleteDegree(degree: DegreeEntity) {
+    this.modal.warning({
+      nzTitle: 'Xoá bằng cấp',
+      nzContent: `Bạn có chắc chắn muốn xoá bằng
+      ${this.transformConstantPipe.transform(degree.type, DegreeTypeConstant)} này không`,
+      nzOkDanger: true,
+      nzOnOk: () => this.actions$.dispatch(EmployeeActions.removeDegree({id: degree.id}))
+    })
   }
 
   onBHYT(bhyt?: any) {

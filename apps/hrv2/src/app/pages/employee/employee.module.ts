@@ -4,7 +4,7 @@ import {EmployeeRoutingModule} from "./employee-routing.module";
 import {NzTableModule} from "ng-zorro-antd/table";
 import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {ReactiveFormsModule} from "@angular/forms";
-import {ComponentsModule} from "@minhdu-fontend/components";
+import {ComponentsModule, TransformConstantPipe} from "@minhdu-fontend/components";
 import {NzDropDownModule} from "ng-zorro-antd/dropdown";
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {SharedModule} from "../../../shared/shared.module";
@@ -28,6 +28,8 @@ import {ExistPipe} from "./pipes/exist.pipe";
 import {NzStepsModule} from "ng-zorro-antd/steps";
 import {ModalEmployeeComponent} from "./components/employee/modal-employee.component";
 import {ProfileComponent} from "./components/profile/profile.component";
+import {ModalRelativeComponent} from "./components/relative/modal-relative.component";
+import {ModalDegreeComponent} from "./components/degree/modal-degree.component";
 
 @NgModule({
   imports: [
@@ -62,10 +64,13 @@ import {ProfileComponent} from "./components/profile/profile.component";
     FlatSalaryTypePipe,
     ExistPipe,
     ModalEmployeeComponent,
-    ProfileComponent
+    ProfileComponent,
+    ModalRelativeComponent,
+    ModalDegreeComponent
   ],
   providers: [
     DatePipe,
+    TransformConstantPipe
   ]
 })
 
