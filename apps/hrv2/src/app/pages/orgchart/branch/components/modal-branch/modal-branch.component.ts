@@ -57,7 +57,7 @@ export class ModalBranchComponent implements OnInit {
     })
   }
 
-  private mapBranch(): Partial<BaseAddBranchDto> | Partial<BaseUpdateBranchDto> {
+  private mapBranch(): BaseAddBranchDto | BaseUpdateBranchDto {
     const value = this.formGroup.value
     return {
       name: value.name,
