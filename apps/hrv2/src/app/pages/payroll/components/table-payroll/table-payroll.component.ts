@@ -10,8 +10,8 @@ import {PaidConstant} from "../../constants/paid.constant";
 import {ConfirmConstant} from "../../constants/confirm.constant";
 import {Router} from "@angular/router";
 import {NzModalService} from "ng-zorro-antd/modal";
-import {ModalAlertComponent, ModalDatePickerComponent} from "@minhdu-fontend/components";
-import {ModalAlertEntity, ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
+import {ModalDatePickerComponent} from "@minhdu-fontend/components";
+import {ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
 import {DatePipe} from "@angular/common";
 import {PayrollActions} from "../../state/payroll.action";
 import {SettingSalaryQuery} from "../../../setting/salary/state";
@@ -135,21 +135,13 @@ export class TablePayrollComponent implements OnInit {
   }
 
   onDelete(payroll: PayrollEntity) {
-    this.modal.create({
+    this.modal.warning({
       nzTitle: 'Xoá phiếu lương',
-      nzContent: ModalAlertComponent,
-      nzComponentParams: <{ data: ModalAlertEntity }>{
-        data: {
-          description: 'bạn có muốn xoá phiếu lương tháng ' +
-            this.datePipe.transform(payroll.createdAt, 'MM-yyyy') +
-            'của nhân viên ' + payroll.employee.lastName
-        }
-      },
-      nzFooter: []
-    }).afterClose.subscribe(val => {
-      if (val) {
-        this.actions$.dispatch(PayrollActions.remove({id: payroll.id}))
-      }
+      nzContent: 'bạn có muốn xoá phiếu lương tháng ' +
+        this.datePipe.transform(payroll.createdAt, 'MM-yyyy') +
+        'của nhân viên ' + payroll.employee.lastName,
+      nzOkDanger: true,
+      nzOnOk: () => this.actions$.dispatch(PayrollActions.remove({id: payroll.id})),
     })
   }
 
@@ -157,21 +149,13 @@ export class TablePayrollComponent implements OnInit {
   }
 
   onRestore(payroll: PayrollEntity) {
-    this.modal.create({
+    this.modal.info({
       nzTitle: 'Khôi phục phiếu lương',
-      nzContent: ModalAlertComponent,
-      nzComponentParams: <{ data: ModalAlertEntity }>{
-        data: {
-          description: `bạn có chắc chắn muốn khôi phục phiếu lương tháng
+      nzContent: `bạn có chắc chắn muốn khôi phục phiếu lương tháng
           ${this.datePipe.transform(payroll.createdAt, 'MM-yyyy')}
-          cho nhân viên ${payroll.employee.lastName}`
-        }
-      },
-      nzFooter: []
-    }).afterClose.subscribe(val => {
-      if (val) {
-        this.actions$.dispatch(PayrollActions.restore({id: payroll.id}))
-      }
+          cho nhân viên ${payroll.employee.lastName}`,
+      nzOkType: 'default',
+      nzOnOk: () => this.actions$.dispatch(PayrollActions.restore({id: payroll.id}))
     })
   }
 
@@ -229,26 +213,18 @@ export class TablePayrollComponent implements OnInit {
   }
 
   onUpdateManConfirm(payroll: PayrollEntity,) {
-    this.modal.create({
+    this.modal.info({
       nzTitle: 'Xác nhận phiếu chấm công',
-      nzContent: ModalAlertComponent,
-      nzComponentParams: <{ data: ModalAlertEntity }>{
-        data: {
-          description: `bạn có chắc chắn muốn xác nhận phiếu chấm công tháng
+      nzContent: `bạn có chắc chắn muốn xác nhận phiếu chấm công tháng
           ${this.datePipe.transform(payroll.createdAt, 'MM-yyyy')}
-          cho nhân viên ${payroll.employee.lastName}`
+          cho nhân viên ${payroll.employee.lastName}`,
+      nzOkType: 'primary',
+      nzOnOk: () => this.actions$.dispatch(PayrollActions.confirmPayroll({
+        id: payroll.id,
+        data: {
+          datetime: payroll.manConfirmedAt ? null : new Date(payroll.createdAt)
         }
-      },
-      nzFooter: []
-    }).afterClose.subscribe(val => {
-      if (val) {
-        this.actions$.dispatch(PayrollActions.confirmPayroll({
-          id: payroll.id,
-          data: {
-            datetime: payroll.manConfirmedAt ? null : new Date(payroll.createdAt)
-          }
-        }))
-      }
+      }))
     })
   }
 
@@ -325,7 +301,7 @@ export class TablePayrollComponent implements OnInit {
       case FilterTypeEnum.OVERTIME:
       case FilterTypeEnum.ABSENT:
         this.modal.create({
-          nzTitle: `Cập nhật ${this.formGroup.value.filterType === SalaryTypeEnum.OVERTIME ?'tăng ca': 'vắng'}`,
+          nzTitle: `Cập nhật ${this.formGroup.value.filterType === SalaryTypeEnum.OVERTIME ? 'tăng ca' : 'vắng'}`,
           nzContent: AbsentOvertimeSalaryComponent,
           nzComponentParams: <{ data: ModalAddOrUpdateAbsentOrOvertime }>{
             data: Object.assign(data, {type: this.salariesSelected[0]?.setting?.type})
@@ -368,19 +344,13 @@ export class TablePayrollComponent implements OnInit {
   }
 
   onDeleteSalary() {
-    this.modal.create({
+    this.modal.warning({
       nzTitle: `Xoá lương  ${this.salariesSelected[0]?.title || this.salariesSelected[0]?.setting?.title}`,
-      nzContent: ModalAlertComponent,
-      nzComponentParams: <{ data: ModalAlertEntity }>{
-        data: {
-          description: `Bạn có có chắc chắn muốn xoá
+      nzContent: `Bạn có có chắc chắn muốn xoá
           ${this.salariesSelected.length}
-          ${this.salariesSelected[0]?.title || this.salariesSelected[0]?.setting?.title} này không`
-        }
-      },
-      nzFooter: []
-    }).afterClose.subscribe(value => {
-      if (value) {
+          ${this.salariesSelected[0]?.title || this.salariesSelected[0]?.setting?.title} này không`,
+      nzOkDanger: true,
+      nzOnOk: () => {
         this.deletingSalary = true
         const filterType = this.formGroup.value.filterType
         const service = (filterType === FilterTypeEnum.PERMANENT
@@ -406,7 +376,7 @@ export class TablePayrollComponent implements OnInit {
           this.onloadPayroll.emit({isPagination: false})
         });
       }
-    });
+    })
   }
 
   private updateSalarySuccess(title: string) {

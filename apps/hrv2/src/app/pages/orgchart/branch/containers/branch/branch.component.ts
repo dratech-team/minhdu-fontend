@@ -118,19 +118,12 @@ export class BranchComponent implements OnInit {
   }
 
   onDelete(branch: BranchEntity) {
-    this.modal.create({
+    this.modal.warning({
       nzTitle: `Xoá đơn vị ${branch.name}`,
-      nzContent: ModalAlertComponent,
-      nzComponentParams: <{ data: ModalAlertEntity }>{
-        data: {
-          description: `Bạn có chắc chắn muốn xoá đơn vị ${branch.name} này không`
-        }
-      },
+      nzContent: `Bạn có chắc chắn muốn xoá đơn vị ${branch.name} này không`,
+      nzOkDanger: true,
+      nzOnOk: () => this.actions$.dispatch(BranchActions.remove({id: branch.id})),
       nzFooter: []
-    }).afterClose.subscribe(val => {
-      if (val) {
-        this.actions$.dispatch(BranchActions.remove({id: branch.id}))
-      }
     })
   }
 

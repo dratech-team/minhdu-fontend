@@ -4,6 +4,10 @@ import {BranchActions, BranchEntity, BranchQuery, PositionActions, PositionQuery
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {DataAddOrUpdatePosition} from "../../data/modal-position.data";
 import {Actions} from "@datorama/akita-ng-effects";
+import {
+  BaseAddPositionDto,
+  BaseUpdatePositionDto
+} from "../../../../../../../../../libs/orgchart-v2/src/lib/position/dto";
 
 @Component({
   templateUrl: 'modal-position.component.html'
@@ -57,7 +61,7 @@ export class ModalPositionComponent implements OnInit {
     })
   }
 
-  mapPosition() {
+  mapPosition(): BaseAddPositionDto | BaseUpdatePositionDto {
     const value = this.formGroup.value;
     return {
       name: value.name,

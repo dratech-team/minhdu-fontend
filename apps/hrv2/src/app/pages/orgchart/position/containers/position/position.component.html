@@ -39,7 +39,9 @@
         </thead>
         <tbody>
         <ng-template ngFor let-position [ngForOf]="tablePosition.data" let-i='index'>
-          <tr class="pointer" (contextmenu)='child.onContextMenu($event,position)'>
+          <tr class="pointer"
+              (click)="onUpdate(position)"
+              (contextmenu)='child.onContextMenu($event,position)'>
             <td nzLeft>{{i + 1}}</td>
             <td>{{position.id}}</td>
             <td nzLeft>{{position.name}}</td>
