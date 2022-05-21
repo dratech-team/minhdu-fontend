@@ -63,7 +63,7 @@ export class ModalDegreeComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    const degree = this.mapDegree();
+    const degree = this.mapDegree(this.formGroup.value);
     this.actions$.dispatch(
       this.data.update?.degree
         ? EmployeeActions.updateDegree(
@@ -84,8 +84,7 @@ export class ModalDegreeComponent implements OnInit {
     })
   }
 
-  private mapDegree(): BaseAddDegreeDto | BaseUpdateDegreeDto {
-    const value = this.formGroup.value
+  private mapDegree(value: any): BaseAddDegreeDto | BaseUpdateDegreeDto {
     return {
       note: value.note,
       startedAt: new Date(value.startedAt),

@@ -66,7 +66,7 @@ export class ModalRelativeComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    const relative = this.mapRelative();
+    const relative = this.mapRelative(this.formGroup.value);
 
     this.actions$.dispatch(
       this.data.update?.relative
@@ -87,8 +87,7 @@ export class ModalRelativeComponent implements OnInit {
 
   }
 
-  private mapRelative(): BaseAddRelativeDto | BaseUpdateRelativeDto {
-    const value = this.formGroup.value
+  private mapRelative(value : any): BaseAddRelativeDto | BaseUpdateRelativeDto {
     return {
       employeeId: this.data.employeeId,
       relationship: value.relationship,
