@@ -5,13 +5,14 @@ import {Observable} from 'rxjs';
 import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
 import {BaseService} from "@minhdu-fontend/service";
 import {HolidaySalaryEntity} from "../entities/holiday-salary.entity";
+import {VersionEnum} from "@minhdu-fontend/enums";
 
 @Injectable({providedIn: 'root'})
 export class SalaryHolidayService extends BaseService<HolidaySalaryEntity> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.HR.PAYROLL.SALARY_HOLIDAY, http);
+    super(Api.HR.PAYROLL.SALARY_HOLIDAY, http, VersionEnum.V2);
   }
 
   addMany(body: any): Observable<ResponseMessageEntity> {

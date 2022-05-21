@@ -4,6 +4,7 @@ import {NzModalRef} from "ng-zorro-antd/modal";
 import {Actions} from "@datorama/akita-ng-effects";
 import {BranchActions, BranchQuery, PositionActions, PositionEntity, PositionQuery} from "@minhdu-fontend/orgchart-v2";
 import {DataAddOrUpBranch} from "../../data/modal-department.data";
+import {BaseAddBranchDto, BaseUpdateBranchDto} from "../../../../../../../../../libs/orgchart-v2/src/lib/branch/dto";
 
 @Component({
   templateUrl: 'modal-branch.component.html'
@@ -43,12 +44,7 @@ export class ModalBranchComponent implements OnInit {
     if (this.formGroup.invalid) {
       return
     }
-    const value = this.formGroup.value;
-    const branch = {
-      name: value.name,
-      positionIds: value.positions.map((position: PositionEntity) => position.id)
-    }
-
+    const branch = this.mapBranch()
     this.actions$.dispatch(
       this.data?.update
         ? BranchActions.update({id: this.data.update.branch.id, updates: branch})
@@ -59,5 +55,13 @@ export class ModalBranchComponent implements OnInit {
         this.modalRef.close()
       }
     })
+  }
+
+  private mapBranch(): Partial<BaseAddBranchDto> | Partial<BaseUpdateBranchDto> {
+    const value = this.formGroup.value
+    return {
+      name: value.name,
+      positionIds: value.positions.map((position: PositionEntity) => position.id)
+    }
   }
 }

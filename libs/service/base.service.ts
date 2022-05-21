@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { ResponsePaginate } from '../data-models';
-import { Api } from '../constants';
-import { ResponseMessageEntity } from '../entities';
-import { VersionEnum } from '../enums';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {ResponsePaginate} from '../data-models';
+import {Api} from '../constants';
+import {ResponseMessageEntity} from '../entities';
+import {VersionEnum} from '../enums';
 
 export abstract class BaseService<T> {
   protected constructor(
