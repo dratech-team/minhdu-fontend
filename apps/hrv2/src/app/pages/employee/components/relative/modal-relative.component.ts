@@ -23,7 +23,7 @@ export class ModalRelativeComponent implements OnInit {
 
   submitted = false;
   convertBoolean = ConvertBoolean;
-  
+
   formGroup!: FormGroup;
 
   constructor(
@@ -95,10 +95,10 @@ export class ModalRelativeComponent implements OnInit {
       relationship: value.relationship,
       lastName: value.lastName,
       gender: value.gender,
-      phone: value.phone?.toString(),
-      workPhone: value.workPhone?.toString(),
+      phone: value.phone,
+      workPhone: value.workPhone,
       birthplace: value.birthplace,
-      identify: value.identify?.toString(),
+      identify: value.identify,
       issuedBy: value.issuedBy,
       wardId: value.ward.id,
       address: value.address,
