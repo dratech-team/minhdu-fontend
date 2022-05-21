@@ -13,7 +13,7 @@ export interface SearchEmployeeStateEntity {
   readonly position: PositionEntity,
   readonly branch: BranchEntity,
   readonly status: EmployeeStatusEnum,
-  readonly employeeType: EmployeeType,
+  readonly type: EmployeeType,
   readonly flatSalary: FlatSalaryTypeEnum,
   readonly department: DepartmentEntity
   readonly phone: string

@@ -1,26 +1,15 @@
 import {BaseEmployeeEntity} from "../base";
 import {Payroll} from "../../../../../../apps/hr/src/app/pages/payroll/+state/payroll/payroll.interface";
 import {Contracts} from "../../../../../data-models/hr/employee/contracts";
-import {
-  Branch,
-  Category,
-  Degree,
-  Position,
-  Relative,
-  Salary,
-  SalaryHistory, Ward,
-  WorkHistory
-} from "@minhdu-fontend/data-models";
+import {Category, Degree, Relative, Salary, SalaryHistory, Ward, WorkHistory} from "@minhdu-fontend/data-models";
 import {EmployeeType, RecipeType} from "@minhdu-fontend/enums";
 import {BranchEntity, PositionEntity} from "@minhdu-fontend/orgchart-v2";
 
 
-
 export interface EmployeeEntity extends BaseEmployeeEntity{
+  code: string,
   stt?: number,
   avt?: string,
-  lastName: string,
-  workPhone?: string,
   payrolls: Payroll[],
   contracts: Contracts[];
   relatives: Relative[],
@@ -31,27 +20,12 @@ export interface EmployeeEntity extends BaseEmployeeEntity{
   position: PositionEntity,
   branch: BranchEntity,
   category?: Category
-  religion?: string,
-  ethnicity?: string,
-  mst?: string,
-  zalo?: string,
-  bhyt?: string,
-  facebook?: string,
   isSelect?: boolean,
-  birthplace?: string,
   contractType?: string,
   recipeType: RecipeType,
-  type: EmployeeType,
   ward: Ward,
-  createdAt: Date,
-  workedAt?: Date;
-  workday: number,
-  idCardAt?: Date,
-  issuedBy?: string,
-  birthday: Date,
-  email?: string,
+  isFlatSalary: boolean,
   contractAt: string,
   leftAt?: Date,
-  isFlatSalary: boolean,
 }
 
