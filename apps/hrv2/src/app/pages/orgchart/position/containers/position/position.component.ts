@@ -100,19 +100,12 @@ export class PositionComponent implements OnInit {
   }
 
   onDelete(position: PositionEntity) {
-    this.modal.create({
+    this.modal.warning({
       nzTitle: `Xoá chức vụ ${position.name}`,
-      nzContent: ModalAlertComponent,
-      nzComponentParams: <{ data: ModalAlertEntity }>{
-        data: {
-          description: `Bạn có chắc chắn muốn xoá chức vụ ${position.name} này không`
-        }
-      },
+      nzContent: `Bạn có chắc chắn muốn xoá chức vụ ${position.name} này không`,
+      nzOkDanger: true,
+      nzOnOk: () => this.actions$.dispatch(PositionActions.remove({id: position.id})),
       nzFooter: []
-    }).afterClose.subscribe(val => {
-      if (val) {
-        this.actions$.dispatch(PositionActions.remove({id: position.id}))
-      }
     })
   }
 
