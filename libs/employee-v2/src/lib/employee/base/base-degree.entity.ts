@@ -1,7 +1,7 @@
 import {BaseEntity} from "@minhdu-fontend/base-entity";
 import {DegreeLevelEnum, DegreeStatusEnum, DegreeTypeEnum, FormalityEnum} from "@minhdu-fontend/enums";
 
-export interface BaseDegreeEntity extends BaseEntity{
+export interface BaseDegreeEntity extends BaseEntity {
   school: string,
   type: DegreeTypeEnum,
   startedAt: Date,

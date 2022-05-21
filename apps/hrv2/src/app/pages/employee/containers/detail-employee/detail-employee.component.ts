@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Degree, Salary, WorkHistory} from '@minhdu-fontend/data-models';
+import {Salary, WorkHistory} from '@minhdu-fontend/data-models';
 import {DegreeLevelEnum, DegreeStatusEnum, RecipeType} from '@minhdu-fontend/enums';
 import {RecipeSalaryConstant} from "../../../../../../../../libs/constants/HR/recipe-salary.constant";
 import {NzModalService} from "ng-zorro-antd/modal";
@@ -110,7 +110,10 @@ export class DetailEmployeeComponent implements OnInit {
       ${relative.lastName}
        này không`,
       nzOkDanger: true,
-      nzOnOk: () => this.actions$.dispatch(EmployeeActions.removeRelative({id: relative.id, employeeId: relative.employeeId}))
+      nzOnOk: () => this.actions$.dispatch(EmployeeActions.removeRelative({
+        id: relative.id,
+        employeeId: relative.employeeId
+      }))
     })
   }
 
