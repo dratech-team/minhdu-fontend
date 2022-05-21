@@ -1,3 +1,5 @@
 import {BaseRemoveDto} from "@minhdu-fontend/base-dto";
 
-export type RemoveDegreeDto = BaseRemoveDto
+export interface RemoveDegreeDto extends BaseRemoveDto{
+  employeeId: number
+}

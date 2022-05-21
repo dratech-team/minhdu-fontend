@@ -96,7 +96,6 @@ export class ModalRelativeComponent implements OnInit {
       lastName: value.lastName,
       gender: value.gender,
       phone: value.phone,
-      workPhone: value.workPhone,
       birthplace: value.birthplace,
       identify: value.identify,
       issuedBy: value.issuedBy,
@@ -104,14 +103,10 @@ export class ModalRelativeComponent implements OnInit {
       address: value.address,
       birthday: value.birthday,
       idCardAt: value.idCardAt,
-      religion: value.religion,
-      ethnicity: value.ethnicity,
       sos: value.sos ?
         this.convertBoolean.TRUE :
         this.convertBoolean.FALSE,
       career: value.career,
-      note: value.note,
-      email: value.email
     }
   }
 

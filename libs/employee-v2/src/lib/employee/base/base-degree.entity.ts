@@ -11,4 +11,5 @@ export interface BaseDegreeEntity extends BaseEntity{
   level: DegreeLevelEnum,
   status: DegreeStatusEnum,
   note?: string,
+  employeeId: number
 }

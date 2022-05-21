@@ -11,6 +11,10 @@ import {RelativeService} from '../../services/relative.service';
 import {DegreeService} from '../../services/degree.service';
 import {PaginationDto} from '@minhdu-fontend/constants';
 import {EmployeeQuery} from './employee.query';
+import {AddRelativeDto, RemoveRelativeDto, UpdateRelativeDto} from "../../dto/relative";
+import {arrayAdd, arrayRemove, arrayUpdate} from "@datorama/akita";
+import {DegreeEntity} from "../../entities/degree.entity";
+import {RemoveDegreeDto} from "../../dto/degree";
 
 @Injectable()
 export class EmployeeEffect {
@@ -54,7 +58,7 @@ export class EmployeeEffect {
   @Effect()
   addOneRelative$ = this.actions$.pipe(
     ofType(EmployeeActions.addOneRelative),
-    switchMap((props) => {
+    switchMap((props: AddRelativeDto) => {
         this.employeeStore.update(state => ({
           ...state, added: false
         }));
@@ -64,7 +68,9 @@ export class EmployeeEffect {
               ...state, added: true
             }));
             this.message.info('Thêm người thân thành công');
-            this.employeeStore.update(res.id, res);
+            this.employeeStore.update(props.body.employeeId, ({relatives}) =>({
+              relatives : arrayAdd(relatives, res)
+            }))
           }),
           catchError((err) => {
             this.employeeStore.update(state => ({
@@ -90,7 +96,9 @@ export class EmployeeEffect {
               ...state, added: true
             }));
             this.message.info('Thêm bằng cấp thành công');
-            this.employeeStore.update(res.id, res);
+            this.employeeStore.update(props.body.employeeId, ({degrees}) =>({
+              degrees : arrayAdd(degrees, res)
+            }))
           }),
           catchError((err) => {
             this.employeeStore.update(state => ({
@@ -198,15 +206,18 @@ export class EmployeeEffect {
   @Effect()
   updateRelative$ = this.actions$.pipe(
     ofType(EmployeeActions.updateRelative),
-    switchMap((props) => {
-      this.employeeStore.update(state => ({
-        ...state, added: false
-      }));
+    switchMap((props: UpdateRelativeDto) => {
+        this.employeeStore.update(state => ({
+          ...state, added: false
+        }));
         return this.relativeService.update(props).pipe(
           map((res) => {
             this.employeeStore.update(state => ({
               ...state, added: true
             }));
+            this.employeeStore.update(props.updates.employeeId, ({relatives}) =>({
+              relatives : arrayUpdate(relatives, res.id, res)
+            }))
             this.message.info('Cập nhật người thân thành công');
             this.employeeStore.update(res.id, res);
           }),
@@ -225,16 +236,18 @@ export class EmployeeEffect {
   updateDegree$ = this.actions$.pipe(
     ofType(EmployeeActions.updateDegree),
     switchMap((props) => {
-      this.employeeStore.update(state => ({
-        ...state, added: false
-      }));
+        this.employeeStore.update(state => ({
+          ...state, added: false
+        }));
         return this.degreeService.update(props).pipe(
           map((res) => {
             this.employeeStore.update(state => ({
               ...state, added: true
             }));
             this.message.info('Cập nhật bằng cấp thành công');
-            this.employeeStore.update(res.id, res);
+            this.employeeStore.update(props.updates.employeeId, ({degrees}) =>({
+              degrees : arrayUpdate(degrees, res.id, res)
+            }))
           }),
           catchError((err) => {
             this.employeeStore.update(state => ({
@@ -309,11 +322,13 @@ export class EmployeeEffect {
   @Effect()
   removeRelative$ = this.actions$.pipe(
     ofType(EmployeeActions.removeRelative),
-    switchMap((props) => {
+    switchMap((props:RemoveRelativeDto) => {
         return this.relativeService.deleteRelative(props.id).pipe(
           map((res) => {
             this.message.info('Xoá người thân thành công');
-            this.employeeStore.update(res.id, res);
+            this.employeeStore.update(props.employeeId, ({relatives}) =>({
+              relatives : arrayRemove(relatives, props.id)
+            }))
           }),
           catchError((err) => {
             return of(EmployeeActions.error(err));
@@ -326,11 +341,13 @@ export class EmployeeEffect {
   @Effect()
   removeDegree$ = this.actions$.pipe(
     ofType(EmployeeActions.removeDegree),
-    switchMap((props) => {
+    switchMap((props: RemoveDegreeDto) => {
         return this.degreeService.deleteDegree(props.id).pipe(
-          map((res) => {
+          map((_) => {
             this.message.info('Xoá bằng cấp thành công');
-            this.employeeStore.update(res.id, res);
+            this.employeeStore.update(props.employeeId, ({degrees}) =>({
+              degrees : arrayRemove(degrees, props.id)
+            }))
           }),
           catchError((err) => {
             return of(EmployeeActions.error(err));

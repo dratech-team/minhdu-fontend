@@ -30,32 +30,34 @@ import {ModalEmployeeComponent} from "./components/employee/modal-employee.compo
 import {ProfileComponent} from "./components/profile/profile.component";
 import {ModalRelativeComponent} from "./components/relative/modal-relative.component";
 import {ModalDegreeComponent} from "./components/degree/modal-degree.component";
+import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 
 @NgModule({
-  imports: [
-    SharedModule,
-    CommonModule,
-    HttpClientModule,
-    EmployeeRoutingModule,
-    NzTableModule,
-    NzCollapseModule,
-    ReactiveFormsModule,
-    ComponentsModule,
-    OrgchartV2Module,
-    EmployeeLibV2Module,
-    NzDropDownModule,
-    NzIconModule,
-    NzSelectModule,
-    NzPopoverModule,
-    NzRadioModule,
-    NzCheckboxModule,
-    NgxCurrencyModule,
-    NzButtonModule,
-    NzInputModule,
-    NzSpinModule,
-    DragDropModule,
-    NzStepsModule,
-  ],
+    imports: [
+        SharedModule,
+        CommonModule,
+        HttpClientModule,
+        EmployeeRoutingModule,
+        NzTableModule,
+        NzCollapseModule,
+        ReactiveFormsModule,
+        ComponentsModule,
+        OrgchartV2Module,
+        EmployeeLibV2Module,
+        NzDropDownModule,
+        NzIconModule,
+        NzSelectModule,
+        NzPopoverModule,
+        NzRadioModule,
+        NzCheckboxModule,
+        NgxCurrencyModule,
+        NzButtonModule,
+        NzInputModule,
+        NzSpinModule,
+        DragDropModule,
+        NzStepsModule,
+        NzDatePickerModule,
+    ],
 
   declarations: [
     EmployeeComponent,

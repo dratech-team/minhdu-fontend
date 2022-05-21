@@ -110,7 +110,7 @@ export class DetailEmployeeComponent implements OnInit {
       ${relative.lastName}
        này không`,
       nzOkDanger: true,
-      nzOnOk: () => this.actions$.dispatch(EmployeeActions.removeRelative({id: relative.id}))
+      nzOnOk: () => this.actions$.dispatch(EmployeeActions.removeRelative({id: relative.id, employeeId: relative.employeeId}))
     })
   }
 
@@ -136,7 +136,7 @@ export class DetailEmployeeComponent implements OnInit {
       nzContent: `Bạn có chắc chắn muốn xoá bằng
       ${this.transformConstantPipe.transform(degree.type, DegreeTypeConstant)} này không`,
       nzOkDanger: true,
-      nzOnOk: () => this.actions$.dispatch(EmployeeActions.removeDegree({id: degree.id}))
+      nzOnOk: () => this.actions$.dispatch(EmployeeActions.removeDegree({id: degree.id, employeeId: degree.employeeId}))
     })
   }
 
