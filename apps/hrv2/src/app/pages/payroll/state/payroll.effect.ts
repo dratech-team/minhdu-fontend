@@ -213,21 +213,12 @@ export class PayrollEffect {
   confirmPayroll$ = this.action$.pipe(
     ofType(PayrollActions.confirmPayroll),
     switchMap((props) => {
-      this.payrollStore.update(state => ({
-        ...state, added: false
-      }));
       return this.service.confirm(props).pipe(
         map(res => this.mapToPayroll(res)),
         tap(res => {
-          this.payrollStore.update(state => ({
-            ...state, added: true
-          }));
           this.payrollStore.update(res.id, res);
         }),
         catchError(err => {
-          this.payrollStore.update(state => ({
-            ...state, added: true
-          }));
           return of(PayrollActions.error(err));
         })
       );
