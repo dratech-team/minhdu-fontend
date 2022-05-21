@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Store} from '@ngrx/store';
-import {DegreeLevelEnum, DegreeStatusEnum, DegreeTypeEnum} from '@minhdu-fontend/enums';
 import {ModalDegreeData} from "../../data/modal-degree.data";
 import {
   BaseAddDegreeDto,
@@ -22,13 +21,17 @@ import {DegreeLevelTypeConstant} from "../../constants/degree-level-type.constan
 
 export class ModalDegreeComponent implements OnInit {
   @Input() data!: ModalDegreeData
+
   added$ = this.employeeQuery.select(state => state.added)
+
   degreeTypeConstant = DegreeTypeConstant
   formalityTypeConstant = FormalityTypeConstant
   degreeLevelTypeConstant = DegreeLevelTypeConstant
   degreeStatusTypeConstant = DegreeStatusTypeConstant
-  formGroup!: FormGroup;
+
   submitted = false;
+
+  formGroup!: FormGroup;
 
   constructor(
     private readonly formBuilder: FormBuilder,

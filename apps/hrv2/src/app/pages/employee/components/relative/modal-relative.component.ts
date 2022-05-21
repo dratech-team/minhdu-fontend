@@ -17,12 +17,14 @@ import {ModalRelative} from "../../data/modal-relative.data";
 })
 export class ModalRelativeComponent implements OnInit {
   @Input() data!: ModalRelative
-  formGroup!: FormGroup;
-  submitted = false;
-  convertBoolean = ConvertBoolean;
   added$ = this.employeeQuery.select(state => state.added)
 
   relationshipConstant = RelationshipConstant
+
+  submitted = false;
+  convertBoolean = ConvertBoolean;
+  
+  formGroup!: FormGroup;
 
   constructor(
     private readonly formBuilder: FormBuilder,
