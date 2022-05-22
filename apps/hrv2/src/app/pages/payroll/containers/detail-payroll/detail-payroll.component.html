@@ -258,7 +258,7 @@
               </td>
               <td>
                 Từ. {{ salary.startedAt | date:'dd-MM-yyyy' }}
-                <br />
+                <br/>
                 đến {{ salary.endedAt | date:'dd-MM-yyyy' }}
               </td>
               <td>
@@ -514,7 +514,7 @@
               <td>
               <span *ngIf='salary.startedAt && salary.endedAt'>
               Từ. {{salary.partial !== PartialDay.CUSTOM ? (salary.startedAt | date:'dd-MM-yyyy') : salary.startedAt | date:'dd-MM-yyyy HH:mm:ss'}}
-                <br />
+                <br/>
                 đến {{salary.partial !== PartialDay.CUSTOM ? (salary.endedAt | date:'dd-MM-yyyy') : salary.endedAt | date:'dd-MM-yyyy HH:mm:ss'}}
                 </span>
               </td>
@@ -739,6 +739,7 @@
           <table style='width: 100%'>
             <thead>
             <tr>
+              <th nzWidth='60px'></th>
               <th nzWidth='3%'>STT</th>
               <th nzWidth='22%'>Đi làm ngày lễ</th>
               <th nzWidth='15%'>Đơn vị</th>
@@ -755,53 +756,86 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor='let salary of payroll.holidays; let i = index '
-                (click)='onSalarySetting(salary.setting.title)'
-                style='background: white !important;'>
-              <td>
-                {{i + 1}}
-              </td>
-              <td class=' text-center'>
-                Từ. {{(salary.setting.startedAt | date:'dd-MM-yyyy')}}
-                <br />
-                đến {{(salary.setting.endedAt | date:'dd-MM-yyyy')}}
-              </td>
-              <td class=' text-center'>
-                ngày
-              </td>
-              <td class=' text-center'>
-                <span>{{salary.setting.rate}}</span>
-              </td>
-              <td class=' text-center'>
-                {{
-                ((salary.setting.prices && salary.setting.prices.length > 0
-                    ? (salary.setting.prices|prices)
-                    : (salary.setting.totalOf|salarytype:'transform'))
-                  + (salary.setting.workday
-                      ? +' / ' + salary.setting.workday
-                      : '/ Ngày công chuẩn'
+            <ng-template ngFor let-salary [ngForOf]="payroll.holidays" let-i='index'>
+              <tr (click)='onSalarySetting(salary.setting.title)'
+                  style='background: white !important;'>
+                <td (click)='$event.stopPropagation()' [(nzExpand)]='salary.expand'></td>
+                <td>
+                  {{i + 1}}
+                </td>
+                <td class=' text-center'>
+                  Từ. {{(salary.setting.startedAt | date:'dd-MM-yyyy')}}
+                  <br/>
+                  đến {{(salary.setting.endedAt | date:'dd-MM-yyyy')}}
+                </td>
+                <td class=' text-center'>
+                  ngày
+                </td>
+                <td class=' text-center'>
+                  <span>{{salary.setting.rate}}</span>
+                </td>
+                <td class=' text-center'>
+                  {{
+                  ((salary.setting.prices && salary.setting.prices.length > 0
+                      ? (salary.setting.prices|prices)
+                      : (salary.setting.totalOf|salarytype:'transform'))
+                    + (salary.setting.workday
+                        ? +' / ' + salary.setting.workday
+                        : '/ Ngày công chuẩn'
+                    )
                   )
-                )
-                }}
-              </td>
-              <td>
-                {{ salary.total
-                | roundingnumber :1000
-                | number:'1.0'}} đ
-              </td>
-              <td (click)='$event.stopPropagation()'>
-                <div class='d-flex justify-content-around '>
-                  <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
-                          (click)='updateSalary(salaryTypeEnum.HOLIDAY, salary)'>
-                    <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
-                  </button>
-                  <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                          (click)='removeSalary(salaryTypeEnum.HOLIDAY, salary)'>
-                    <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
-                  </button>
-                </div>
-              </td>
+                  }}
+                </td>
+                <td>
+                  {{ salary.total
+                  | roundingnumber :1000
+                  | number:'1.0'}} đ
+                </td>
+                <td (click)='$event.stopPropagation()'>
+                  <div class='d-flex justify-content-around '>
+                    <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
+                            (click)='updateSalary(salaryTypeEnum.HOLIDAY, salary)'>
+                      <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+                    </button>
+                    <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
+                            (click)='removeSalary(salaryTypeEnum.HOLIDAY, salary)'>
+                      <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr [nzExpand]='salary.expand'>
+                <nz-table
+                  #innerTable
+                  [nzData]='salary.details'
+                  nzSize='small'
+                  nzShowPagination='false'
+                >
+            <thead>
+            <tr>
+              <th>Ngày</th>
+              <th>Tổng ngày</th>
+              <th>Hệ số</th>
+              <th>Đơn giá</th>
+              <th>Thành tiên</th>
             </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor='let item of innerTable.data'>
+              <td style='background: white'>{{item.datetime | date:'dd-MM-yyyy'}}</td>
+              <td style='background: white'>{{item.duration}}</td>
+              <td style='background: white'>{{item.rate}}</td>
+              <td style='background: white'>
+                {{item.price || 0
+                | roundingnumber :1000
+                | number:'1.0-0'}} đ
+              </td>
+              <td style='background: white'>{{item.total | number:'1.0-0'}}</td>
+            </tr>
+            </tbody>
+            </nz-table>
+            </tr>
+            </ng-template>
             <tr *ngIf='payroll.total.holiday'>
               <td></td>
               <td class='font-weight-bold'>Tổng cộng :</td>
