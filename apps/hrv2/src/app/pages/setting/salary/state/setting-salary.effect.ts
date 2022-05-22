@@ -30,7 +30,7 @@ export class SettingSalaryEffect {
       return this.service.addOne(props).pipe(
         tap(res => {
           this.settingSalaryStore.update(state => ({
-            ...state, added: true
+            ...state, added: true, total: state.total + 1
           }))
           this.settingSalaryStore.upsert(res.id, res);
         }),
@@ -135,6 +135,9 @@ export class SettingSalaryEffect {
     switchMap(props => {
       return this.service.delete(props.id).pipe(
         tap(_ => {
+          this.settingSalaryStore.update(state => ({
+            ...state, added: true, total: state.total - 1
+          }))
           this.message.success('Xoá bản mẫu thành công')
           this.settingSalaryStore.remove(props?.id);
         }),

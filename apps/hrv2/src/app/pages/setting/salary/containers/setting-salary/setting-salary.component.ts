@@ -78,7 +78,7 @@ export class SettingSalaryComponent implements OnInit {
       ...state, search: dataFG
     }));
     return Object.assign({}, dataFG, {
-        take: 5,
+        take: PaginationDto.take,
         skip: isPagination ? this.settingSalaryQuery.getCount() : PaginationDto.skip
       }
     );
