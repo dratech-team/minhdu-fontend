@@ -38,7 +38,7 @@ export class SettingSalaryComponent implements OnInit {
 
   formGroup = new FormGroup(
     {
-      search: new FormControl(''),
+      search: new FormControl(this.stateSearch.search|| ''),
       types: new FormControl(this.stateSearch.types || []),
     }
   );

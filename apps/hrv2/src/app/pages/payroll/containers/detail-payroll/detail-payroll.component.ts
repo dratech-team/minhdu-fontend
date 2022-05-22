@@ -50,6 +50,7 @@ import {SalaryHolidayService} from '../../../salary/service/salary-holiday.servi
 import {ModalAddOrUpdateRemoteOrDayOff} from '../../../salary/data';
 import {NzTableSortOrder} from "ng-zorro-antd/table";
 import {FilterOvertimeEnum} from "../../enums/filter-overtime.enum";
+import {SettingSalaryStore} from "../../../setting/salary/state";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -96,6 +97,7 @@ export class DetailPayrollComponent implements OnInit {
   constructor(
     private readonly payrollQuery: PayrollQuery,
     private readonly payrollStore: PayrollStore,
+    private readonly settingSalaryStore: SettingSalaryStore,
     private readonly actions$: Actions,
     private readonly activatedRoute: ActivatedRoute,
     public readonly router: Router,
@@ -421,11 +423,10 @@ export class DetailPayrollComponent implements OnInit {
 
   onSalarySetting(title: string | undefined) {
     if (title) {
-      this.router.navigate(['cai-dat'], {
-        queryParams: {
-          title: title
-        }
-      }).then();
+      this.settingSalaryStore.update(state => ({
+        ...state, search: Object.assign(JSON.parse(JSON.stringify(state.search)), {search: title})
+      }))
+      this.router.navigate(['cai-dat']).then();
     }
   }
 
