@@ -70,6 +70,7 @@ export class DetailEmployeeComponent implements OnInit {
 
   onUpdate(employee: EmployeeEntity): void {
     this.modal.create({
+      nzWidth: '700px',
       nzTitle: 'Cập nhật nhân viên',
       nzContent: ModalEmployeeComponent,
       nzComponentParams: <{ data: ModalEmployeeData }>{
@@ -88,6 +89,7 @@ export class DetailEmployeeComponent implements OnInit {
 
   onRelative(employeeId: number, id?: number, relative?: RelativeEntity): void {
     this.modal.create({
+      nzWidth:'700px',
       nzTitle: relative ? 'Cập nhật người thân' : 'Thêm người thân',
       nzContent: ModalRelativeComponent,
       nzComponentParams: <{ data: ModalRelative }>{

@@ -1,11 +1,15 @@
 <form [formGroup]='formGroup' (submit)='onSubmit()' style="height: 60vh; overflow-y: scroll">
   <div>
-    <minhdu-fontend-profile [formGroup]="formGroup" [submitting]="submitted" [form]="checkValid">
+    <minhdu-fontend-profile
+      [formGroup]="formGroup"
+      [submitting]="submitted"
+      [form]="checkValid">
     </minhdu-fontend-profile>
 
     <place-selector
-      [isUpdateEmployee]="true"
-      [ward]='this.data?.update?.relative?.ward'
+      [ward]='data?.update?.relative?.ward'
+      [province]="data?.update?.relative?.ward?.district?.province"
+      [district]="data?.update?.relative?.ward?.district"
       [isUpdate]='!!this.data?.update'
       [formGroup]='formGroup'
       [submitting]='submitted'

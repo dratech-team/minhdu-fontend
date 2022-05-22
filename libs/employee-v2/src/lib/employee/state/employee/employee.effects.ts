@@ -193,7 +193,7 @@ export class EmployeeEffect {
           }),
           catchError((err) => {
             this.employeeStore.update(state => ({
-              ...state, added: true
+              ...state, added: null
             }));
             return of(EmployeeActions.error(err));
           })
