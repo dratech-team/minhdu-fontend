@@ -90,7 +90,6 @@ import {ClassifySalaryComponent} from "./components/classify-salary/classify-sal
   providers: [
     DatePipe,
     TransformConstantPipe,
-    NzTableStyleService
   ]
 })
 export class PayrollModule {

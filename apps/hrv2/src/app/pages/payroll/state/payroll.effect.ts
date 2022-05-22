@@ -128,7 +128,12 @@ export class PayrollEffect {
             this.payrollStore.set(res.data);
           }
           this.payrollStore.update(state => (
-            Object.assign({...state, total: res.total, totalSalary: res.total2, remain: res.total - this.payrollQuery.getCount()},
+            Object.assign({
+                ...state,
+                total: res.total,
+                totalSalary: res.total2,
+                remain: res.total - this.payrollQuery.getCount()
+              },
               props.isPaginate
                 ? {loadMore: false}
                 : {loading: false}
@@ -266,7 +271,7 @@ export class PayrollEffect {
   private mapToPayroll(payroll: PayrollEntity): PayrollEntity {
     const basics = payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.BASIC || item.type === SalaryTypeEnum.BASIC_INSURANCE);
     const stays = payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.STAY);
-    return Object.assign(payroll, {
+    const result = Object.assign(payroll, {
       basics: basics,
       stays: stays,
       total: {
@@ -281,9 +286,10 @@ export class PayrollEffect {
         remote: this.getTotalRemoteOrDayOff(payroll.remotes),
         dayOff: this.getTotalRemoteOrDayOff(payroll.dayOffs)
       },
-      overtimes: payroll.overtimes.map(overtime => Object.assign(overtime, {expand: false})),
-      holidays: payroll.holidays.map(holiday => Object.assign(holiday, {expand: false}))
+      overtimes: payroll.overtimes?.map(overtime => Object.assign(overtime, {expand: false})),
+      holidays: payroll.holidays?.map(holiday => Object.assign(holiday, {expand: false}))
     });
+    return result
   }
 
   private getTotalAllowance(allowances: SalaryEntity[]): TotalSalary | undefined {
