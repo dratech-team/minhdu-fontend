@@ -280,7 +280,8 @@ export class PayrollEffect {
         remote: this.getTotalRemoteOrDayOff(payroll.remotes),
         dayOff: this.getTotalRemoteOrDayOff(payroll.dayOffs)
       },
-      overtimes: payroll.overtimes.map(overtime => Object.assign(overtime, {expand: false}))
+      overtimes: payroll.overtimes.map(overtime => Object.assign(overtime, {expand: false})),
+      holidays: payroll.holidays.map(holiday => Object.assign(holiday, {expand: false}))
     });
   }
 
