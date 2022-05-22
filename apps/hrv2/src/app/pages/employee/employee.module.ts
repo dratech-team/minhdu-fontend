@@ -31,6 +31,7 @@ import {ProfileComponent} from "./components/profile/profile.component";
 import {ModalRelativeComponent} from "./components/relative/modal-relative.component";
 import {ModalDegreeComponent} from "./components/degree/modal-degree.component";
 import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
+import {ModalUpdateContractComponent} from "./components/modal-update-contract/modal-update-contract.component";
 
 @NgModule({
     imports: [
@@ -68,7 +69,8 @@ import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
     ModalEmployeeComponent,
     ProfileComponent,
     ModalRelativeComponent,
-    ModalDegreeComponent
+    ModalDegreeComponent,
+    ModalUpdateContractComponent
   ],
   providers: [
     DatePipe,
