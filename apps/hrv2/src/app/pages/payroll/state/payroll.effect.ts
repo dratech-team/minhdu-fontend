@@ -165,19 +165,20 @@ export class PayrollEffect {
     ofType(PayrollActions.update),
     switchMap(props => {
       this.payrollStore.update(state => ({
-        ...state, added: false
+        ...state, updated: false
       }));
       return this.service.update(props).pipe(
         map(res => this.mapToPayroll(res)),
         tap(res => {
           this.payrollStore.update(state => ({
-            ...state, added: true
+            ...state, updated: true
           }));
+          this.message.success('Cập nhật phiếu lương thành công')
           this.payrollStore.update(res.id, res);
         }),
         catchError(err => {
           this.payrollStore.update(state => ({
-            ...state, added: null
+            ...state, updated: null
           }));
           return of(PayrollActions.error(err));
         })

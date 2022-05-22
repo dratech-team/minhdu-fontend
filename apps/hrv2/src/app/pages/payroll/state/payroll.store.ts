@@ -11,6 +11,7 @@ export interface PayrollEntityState extends EntityState<PayrollEntity> {
   loadMore: boolean;
   total: number,
   totalSalary: number
+  updated: boolean | null;
   added: boolean | null;
   scanned: boolean | null
   deleted: boolean | null;
@@ -30,11 +31,11 @@ export interface PayrollEntityState extends EntityState<PayrollEntity> {
     paidAt: PaidTypeEnums,
     department?: DepartmentEntity
   }
-  searchHistory:{
+  searchHistory: {
     code?: string,
     name?: string,
     branch?: BranchEntity,
-    position?:PositionEntity,
+    position?: PositionEntity,
     rangeDay: Date []
     accConfirmed?: confirmTypeEnums,
     manConfirmedAt?: confirmTypeEnums,
@@ -49,6 +50,7 @@ export function createInitialState(): PayrollEntityState {
     loading: true,
     loadMore: false,
     added: null,
+    updated: null,
     deleted: null,
     expandAll: true,
     search: {
@@ -61,7 +63,7 @@ export function createInitialState(): PayrollEntityState {
       manConfirmedAt: confirmTypeEnums.ALL,
       paidAt: PaidTypeEnums.ALL
     },
-    searchHistory:{
+    searchHistory: {
       rangeDay: [
         new Date(new Date().getFullYear(), 0, 1),
         new Date()

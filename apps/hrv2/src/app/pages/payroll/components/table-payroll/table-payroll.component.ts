@@ -37,6 +37,7 @@ import {
   AbsentOvertimeSalaryComponent
 } from "../../../salary/components/absent-overtime/absent-overtime-salary.component";
 import {PartialDayEnum} from "@minhdu-fontend/data-models";
+import {UpdatePayrollComponent} from "../update/update-payroll.component";
 
 @Component({
   selector: 'minhdu-fontend-table-payroll',
@@ -145,7 +146,17 @@ export class TablePayrollComponent implements OnInit {
     })
   }
 
-  onUpdate($event: any) {
+  onUpdate(payroll: PayrollEntity) {
+    this.modal.create({
+      nzTitle: 'Cập nhật phiếu lương',
+      nzContent: UpdatePayrollComponent,
+      nzComponentParams: <{ data: { payroll: PayrollEntity } }>{
+        data: {
+          payroll
+        }
+      },
+      nzFooter: []
+    });
   }
 
   onRestore(payroll: PayrollEntity) {

@@ -10,6 +10,7 @@ import {BranchActions, BranchQuery} from "../../../../../../../../libs/orgchart-
 import {PayrollEntity} from "../../entities";
 import {PayrollActions} from "../../state/payroll.action";
 import {PayrollQuery} from "../../state";
+import {PositionEntity} from "@minhdu-fontend/orgchart-v2";
 
 @Component({
   templateUrl: 'update-payroll.component.html'
@@ -19,7 +20,7 @@ export class UpdatePayrollComponent implements OnInit {
     payroll: PayrollEntity
   }
   formGroup!: FormGroup
-  positions?: Position[];
+  positions?: PositionEntity[];
   recipeTypeConstant = RecipeTypesConstant
   branches$ = this.branchQuery.selectAll().pipe(map(branches => {
     if (branches.length === 1) {
@@ -29,7 +30,7 @@ export class UpdatePayrollComponent implements OnInit {
     }
     return branches
   }));
-  added$ = this.payrollQuery.select(state => state.added)
+  updated$ = this.payrollQuery.select(state => state.updated)
   compareFN = (o1: any, o2: any) => (typeof o1 === 'string' && o2 ? o1 === o2.name : o1.id === o2.id);
   compareRecipe = (o1: any, o2: any) => (o1 && o2 ? (o1 === o2.value || o1.value === o2.value) : o1 === o2);
 
@@ -70,8 +71,8 @@ export class UpdatePayrollComponent implements OnInit {
     this.actions$.dispatch(PayrollActions.update({
       id: this.data.payroll.id, updates: payroll
     }))
-    this.added$.subscribe(added => {
-      if (added) {
+    this.updated$.subscribe(updated => {
+      if (updated) {
         this.modalRef.close()
       }
     })
