@@ -9,6 +9,6 @@ export interface HolidaySalaryEntity extends BaseEntity {
   readonly duration: number
   readonly note?: string
   readonly total: number;
-  readonly details: HolidaySalaryEntity & { price: number }[]
+  readonly details: HolidaySalaryEntity[]
   expand: boolean
 }

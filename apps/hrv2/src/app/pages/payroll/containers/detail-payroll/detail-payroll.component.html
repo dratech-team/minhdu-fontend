@@ -736,7 +736,15 @@
 
         <!--ngày lễ-->
         <div #holiday class='col-12 mt-5'>
-          <table style='width: 100%'>
+          <nz-table
+            style='
+              border: solid 1px #EBEBEB !important;
+              border-radius: 10px !important;
+              box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06) !important;'
+            [nzData]="payroll.holidays"
+            nzSize="small"
+            nzShowPagination="false"
+            style='width: 100%'>
             <thead>
             <tr>
               <th nzWidth='60px'></th>
@@ -806,7 +814,7 @@
               </tr>
               <tr [nzExpand]='salary.expand'>
                 <nz-table
-                  #innerTable
+                  #innerTableHoliday
                   [nzData]='salary.details'
                   nzSize='small'
                   nzShowPagination='false'
@@ -821,7 +829,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor='let item of innerTable.data'>
+            <tr *ngFor='let item of innerTableHoliday.data'>
               <td style='background: white'>{{item.datetime | date:'dd-MM-yyyy'}}</td>
               <td style='background: white'>{{item.duration}}</td>
               <td style='background: white'>{{item.rate}}</td>
@@ -833,22 +841,22 @@
               <td style='background: white'>{{item.total | number:'1.0-0'}}</td>
             </tr>
             </tbody>
-            </nz-table>
-            </tr>
-            </ng-template>
-            <tr *ngIf='payroll.total.holiday'>
-              <td></td>
-              <td class='font-weight-bold'>Tổng cộng :</td>
-              <td>
-                {{payroll.total.holiday.duration}} ngày
-              </td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            </tbody>
-          </table>
+          </nz-table>
+          </tr>
+          </ng-template>
+          <tr *ngIf='payroll.total.holiday'>
+            <td></td>
+            <td></td>
+            <td class='font-weight-bold'>Tổng cộng: {{payroll.total.holiday.duration}} ngày</td>
+            <td>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          </tbody>
+          </nz-table>
         </div>
         <!--WFH-->
         <div #wfh class='col-12 mt-5'>
