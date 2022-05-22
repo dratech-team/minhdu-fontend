@@ -271,11 +271,11 @@
               <div style='width: fit-content; height: fit-content'
                    (click)='onUpdateContract(employee)'
               >
-                <input
-                  style='pointer-events: none'
-                  disabled
-                  type='checkbox'
-                  [checked]='employee?.contracts?.length !==0'>
+                <label
+                  style="pointer-events: none"
+                  nz-checkbox
+                  [nzChecked]="employee.contracts.length >0">
+                </label>
               </div>
             </div>
           </div>

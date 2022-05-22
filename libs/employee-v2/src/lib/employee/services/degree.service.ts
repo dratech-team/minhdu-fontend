@@ -27,8 +27,4 @@ export class DegreeService extends BaseService<DegreeEntity> {
   deleteDegree(id: number): Observable<void> {
     return super.delete(id);
   }
-
-  deleteContracts(id: number): Observable<void> {
-    return this.http.delete<void>(VersionEnum.V2 + Api.HR.EMPLOYEE.CONTRACT + `/${id}`);
-  }
 }
