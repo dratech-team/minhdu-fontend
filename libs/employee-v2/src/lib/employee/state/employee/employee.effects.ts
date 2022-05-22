@@ -302,10 +302,13 @@ export class EmployeeEffect {
   leaveEmployee$ = this.actions$.pipe(
     ofType(EmployeeActions.leave),
     switchMap((props) => {
+      this.employeeStore.update(state => ({
+        ...state, deleted: false
+      }));
         return this.employeeService.leaveEmployee(props.id, props.body).pipe(
-          map((res) => {
+          map((_) => {
             this.employeeStore.update(state => ({
-              ...state, total: state.total - 1
+              ...state, total: state.total - 1, deleted: true
             }));
             this.message.info(props.body?.leftAt ?
               'Nhân viên đã nghỉ tạm thời' :
@@ -313,6 +316,9 @@ export class EmployeeEffect {
             this.employeeStore.remove(props.id)
           }),
           catchError((err) => {
+            this.employeeStore.update(state => ({
+              ...state, deleted: null
+            }));
             return of(EmployeeActions.error(err));
           })
         );

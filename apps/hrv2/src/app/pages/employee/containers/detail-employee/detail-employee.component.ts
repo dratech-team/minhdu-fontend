@@ -20,10 +20,11 @@ import {ModalRelative} from "../../data/modal-relative.data";
 import {ModalDegreeComponent} from "../../components/degree/modal-degree.component";
 import {ModalDegreeData} from "../../data/modal-degree.data";
 import {DegreeEntity} from "../../../../../../../../libs/employee-v2/src/lib/employee/entities/degree.entity";
-import {TransformConstantPipe} from "@minhdu-fontend/components";
+import {ModalDatePickerComponent, TransformConstantPipe} from "@minhdu-fontend/components";
 import {ModalUpdateContractComponent} from "../../components/modal-update-contract/modal-update-contract.component";
-import {employee} from "../../../../../../../../libs/data-models/hr/salary/payroll-salary";
 import {ContractEntity} from "../../../../../../../../libs/employee-v2/src/lib/employee/entities/contract.entity";
+import {ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
+import {tap} from "rxjs/operators";
 
 @Component({
   templateUrl: 'detail-employee.component.html',
@@ -45,7 +46,6 @@ export class DetailEmployeeComponent implements OnInit {
   status = DegreeStatusEnum;
   level = DegreeLevelEnum;
   recipeType = RecipeType;
-  isOpen = false;
 
   constructor(
     private readonly actions$: Actions,
@@ -87,12 +87,48 @@ export class DetailEmployeeComponent implements OnInit {
     })
   }
 
-  onDelete(employee: EmployeeEntity, leftAt?: Date): void {
+  onDelete(employee: EmployeeEntity): void {
+    this.modal.create({
+      nzTitle: `Tạm thời nghỉ việc`,
+      nzContent: ModalDatePickerComponent,
+      nzComponentParams: <{ data: ModalDatePickerEntity }>{
+        data: {
+          type: 'date',
+          dateInit: new Date(),
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe(val => {
+      if (val) {
+        this.actions$.dispatch(EmployeeActions.leave({
+            id: employee.id,
+            body: {leftAt: new Date(val)}
+          })
+        )
+        this.onEmployee()
+      }
+    })
+  }
+
+  onRestore(employee: EmployeeEntity) {
+    this.modal.info({
+      nzTitle: `Khôi phục nhân viên ${employee.lastName}`,
+      nzContent: `Bạn có chắc chắn muốn khôi phục cho nhân viên ${employee.lastName}`,
+      nzOnOk: () => {
+        this.actions$.dispatch(
+          EmployeeActions.leave({
+            id: employee.id,
+            body: {leftAt: ''}
+          })
+        )
+        this.onEmployee()
+      }
+    })
   }
 
   onRelative(employeeId: number, id?: number, relative?: RelativeEntity): void {
     this.modal.create({
-      nzWidth:'700px',
+      nzWidth: '700px',
       nzTitle: relative ? 'Cập nhật người thân' : 'Thêm người thân',
       nzContent: ModalRelativeComponent,
       nzComponentParams: <{ data: ModalRelative }>{
@@ -177,5 +213,15 @@ export class DetailEmployeeComponent implements OnInit {
   }
 
   onDeleteHistorySalary(salary: Salary) {
+  }
+
+  private onEmployee() {
+    this.employeeQuery.select(state => state.deleted).subscribe(val => {
+        if (val) {
+          this.router.navigate(['nhan-vien']).then()
+        }
+      }
+    );
+
   }
 }

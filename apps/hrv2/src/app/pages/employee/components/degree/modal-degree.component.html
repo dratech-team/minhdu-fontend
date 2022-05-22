@@ -25,7 +25,7 @@
     <div class='col-12 mt-3'>
       <label>Bắt đầu</label><span class='star'>*</span>
       <div>
-        <nz-date-picker style="width: 100%" nzMode="date" nzFormat="dd-MM-yyyy" formControlName='startedAt'>
+        <nz-date-picker style="width: 100%" nzMode="date" nzFormat="dd/MM/yyyy" formControlName='startedAt'>
         </nz-date-picker>
       </div>
       <div *ngIf='submitted && checkValid.startedAt.errors' class='invalid-feedback'>
@@ -35,7 +35,7 @@
     <div class='col-12 mt-3'>
       <label>Kết thúc</label><span class='star'>*</span>
       <div>
-        <nz-date-picker style="width: 100%" nzMode="date" nzFormat="dd-MM-yyyy" formControlName='endedAt'>
+        <nz-date-picker style="width: 100%" nzMode="date" nzFormat="dd/MM/yyyy" formControlName='endedAt'>
         </nz-date-picker>
       </div>
       <div *ngIf='submitted && checkValid.endedAt.errors' class='invalid-feedback'>

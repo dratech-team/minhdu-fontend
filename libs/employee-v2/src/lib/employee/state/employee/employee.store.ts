@@ -3,13 +3,14 @@ import {EmployeeEntity} from "../../entities";
 import {Injectable} from "@angular/core";
 import {EmployeeStatusEnum, EmployeeType, Gender} from "@minhdu-fontend/enums";
 import {SearchEmployeeStateEntity} from "../../entities/search-employee-state.entity";
-import { FlatSalaryTypeEnum } from '../../../../../../../apps/hrv2/src/app/pages/employee/enums/flat-salary-type.enum';
+import {FlatSalaryTypeEnum} from '../../../../../../../apps/hrv2/src/app/pages/employee/enums/flat-salary-type.enum';
 
 export interface EmployeeState extends EntityState<EmployeeEntity> {
   readonly total: number
   readonly loading: boolean,
   readonly loadMore: boolean,
   readonly added: boolean | null,
+  readonly deleted: boolean | null
   readonly search: Partial<SearchEmployeeStateEntity>
 }
 
@@ -18,12 +19,13 @@ export function createInitialState(): EmployeeState {
     total: 0,
     loading: true,
     added: null,
+    deleted: null,
     loadMore: false,
     search: {
       name: '',
       phone: '',
-      identify:'',
-      address:'',
+      identify: '',
+      address: '',
       status: EmployeeStatusEnum.IS_ACTIVE,
       gender: Gender.ALL,
       flatSalary: FlatSalaryTypeEnum.ALL,
