@@ -96,23 +96,22 @@
           <td>{{settingSalary.type|blocksalary: blockSalaries }}</td>
           <td>{{settingSalary.note }}</td>
         </tr>
-        <tr *ngIf="((count$|async) || 0) <= ((total$|async) || 0) && (total$|async) !== 0">
-          <td [colSpan]="tableSetting.listOfAutoColWidth.length">
-            <div class="w-100 d-flex justify-content-start" style="position: relative">
-              <button
-                (click)="onLoadMore()"
-                style="position: sticky; left: 40vw"
-                nz-button nzType="primary"
-                [nzLoading]="loadMore$|async">
-                Tải thêm
-              </button>
-            </div>
-          </td>
-        </tr>
+          <tr *ngIf="((count$|async) || 0) < ((total$|async) || 0) && (total$|async) !== 0">
+            <td [colSpan]="tableSetting.listOfAutoColWidth.length">
+              <div class="w-100 d-flex justify-content-start" style="position: relative">
+                <button
+                  (click)="onLoadMore()"
+                  style="position: sticky; left: 35vw"
+                  nz-button nzType="primary"
+                  [nzLoading]="loadMore$|async">
+                  Tải thêm {{((remain$|async) || 0)}}
+                </button>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </nz-table>
     </div>
-
   </div>
 </div>
 <ng-template #pinned>

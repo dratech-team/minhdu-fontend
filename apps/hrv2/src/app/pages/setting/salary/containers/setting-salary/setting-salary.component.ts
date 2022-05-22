@@ -23,6 +23,7 @@ export class SettingSalaryComponent implements OnInit {
   loading$ = this.settingSalaryQuery.select(state => state.loading);
   loadMore$ = this.settingSalaryQuery.select(state => state.loadMore);
   total$ = this.settingSalaryQuery.select(state => state.total)
+  remain$ = this.settingSalaryQuery.select(state => state.remain)
   count$ = this.settingSalaryQuery.selectCount()
 
   stateSearch = this.settingSalaryQuery.getValue().search;
@@ -30,7 +31,6 @@ export class SettingSalaryComponent implements OnInit {
     title: 'Lương trích bảo hiểm',
     type: SalaryTypeEnum.BASIC_INSURANCE
   }]);
-
   panelOpenState = false;
   visible = false;
   salaryTypeEnum = SalaryTypeEnum;
@@ -78,7 +78,7 @@ export class SettingSalaryComponent implements OnInit {
       ...state, search: dataFG
     }));
     return Object.assign({}, dataFG, {
-        take: PaginationDto.take,
+        take: 5,
         skip: isPagination ? this.settingSalaryQuery.getCount() : PaginationDto.skip
       }
     );

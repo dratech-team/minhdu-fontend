@@ -8,7 +8,6 @@ import {SalarySettingService} from "../services";
 import {SettingSalaryActions} from "./setting-salary.action";
 import {SearchSalarySettingDto} from "../dto";
 import {SettingSalaryQuery} from "./setting-salary.query";
-import {PaginationDto} from "@minhdu-fontend/constants";
 
 @Injectable()
 export class SettingSalaryEffect {
@@ -59,14 +58,6 @@ export class SettingSalaryEffect {
       ));
       return this.service.pagination(props).pipe(
         tap((res) => {
-          this.settingSalaryStore.update(state => (
-            Object.assign({
-                ...state, total: res.total
-              }, props.isPaginate
-                ? {loadMore: false}
-                : {loading: false}
-            )
-          ));
           if (res.data.length === 0) {
             this.message.warning('Đã lấy hết bảng mẫu')
           }
@@ -75,6 +66,14 @@ export class SettingSalaryEffect {
           } else {
             this.settingSalaryStore.set(res.data);
           }
+          this.settingSalaryStore.update(state => (
+            Object.assign({
+                ...state, total: res.total, remain: res.total - this.settingSalaryQuery.getCount()
+              }, props.isPaginate
+                ? {loadMore: false}
+                : {loading: false}
+            )
+          ));
         }),
         catchError((err) => {
           this.settingSalaryStore.update(state => (

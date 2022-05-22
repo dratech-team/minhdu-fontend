@@ -7,6 +7,7 @@ import {StorageName} from "@minhdu-fontend/constants";
 
 export interface SettingSalaryState extends EntityState<SalarySettingEntity> {
   total: number;
+  remain: number,
   loading: boolean;
   loadMore: boolean;
   added: boolean|null;
@@ -17,6 +18,7 @@ export interface SettingSalaryState extends EntityState<SalarySettingEntity> {
 export function createInitialState(): SettingSalaryState {
   return {
     total: 0,
+    remain: 0,
     loading: true,
     loadMore: false,
     added: null,
