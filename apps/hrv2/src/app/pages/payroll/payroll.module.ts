@@ -5,7 +5,7 @@ import {PayrollRoutingModule} from './payroll-routing.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NzMessageModule} from 'ng-zorro-antd/message';
 import {NzSelectModule} from "ng-zorro-antd/select";
-import {NzTableModule} from "ng-zorro-antd/table";
+import {NzTableModule, NzTableStyleService} from "ng-zorro-antd/table";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {NgxCurrencyModule} from "ngx-currency";
 import {customCurrencyMaskConfig} from "@minhdu-fontend/config";
@@ -70,7 +70,7 @@ import {ClassifySalaryComponent} from "./components/classify-salary/classify-sal
         NgxSkeletonLoaderModule,
         NzAlertModule,
         SettingModule,
-        SharedModule
+        SharedModule,
     ],
   declarations: [
     PayrollComponent,
@@ -89,7 +89,8 @@ import {ClassifySalaryComponent} from "./components/classify-salary/classify-sal
   ],
   providers: [
     DatePipe,
-    TransformConstantPipe
+    TransformConstantPipe,
+    NzTableStyleService
   ]
 })
 export class PayrollModule {
