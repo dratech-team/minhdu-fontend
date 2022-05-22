@@ -53,6 +53,6 @@ export class EmployeeService extends BaseService<EmployeeEntity> {
   }
 
   deleteHistorySalary(id: number): Observable<void> {
-    return this.http.delete<void>(VersionEnum.V2 + Api.HR.EMPLOYEE.HISTORY_SALARY + `/${id}`);
+    return this.http.delete<void>(VersionEnum.V1 + Api.HR.EMPLOYEE.HISTORY_SALARY + `/${id}`);
   }
 }

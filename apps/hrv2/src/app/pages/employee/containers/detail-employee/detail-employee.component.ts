@@ -207,6 +207,17 @@ export class DetailEmployeeComponent implements OnInit {
   }
 
   onDeleteWorkHistory(workHistory: WorkHistory, employeeId: number) {
+    this.modal.warning({
+      nzTitle: 'Xoá lịch sử công tác',
+      nzContent: 'bạn có chắc chắn xoá lịch sử công tác này không',
+      nzOkDanger: true,
+      nzOnOk: () => {
+        this.actions$.dispatch(EmployeeActions.removeHistorySalary({
+          id: workHistory.id,
+          employeeId: employeeId
+        }))
+      }
+    })
   }
 
   onUpdateHistorySalary(salary: Salary) {

@@ -107,7 +107,7 @@ export class PayrollEffect {
       return this.service.paginationPayroll(props.search).pipe(
         map(res => {
           return Object.assign(res, {
-            data: res.data.map(payroll => Object.assign(payroll, {
+            data: res.data.map(payroll => Object.assign({}, this.mapToPayroll(payroll), {
               expand: this.payrollStore.getValue().expandAll,
               basics: payroll.salariesv2
                 ? payroll.salariesv2.filter(item => item.type !== SalaryTypeEnum.STAY)
