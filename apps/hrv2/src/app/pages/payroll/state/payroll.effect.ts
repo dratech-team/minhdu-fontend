@@ -271,7 +271,7 @@ export class PayrollEffect {
   private mapToPayroll(payroll: PayrollEntity): PayrollEntity {
     const basics = payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.BASIC || item.type === SalaryTypeEnum.BASIC_INSURANCE);
     const stays = payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.STAY);
-    const result = Object.assign(payroll, {
+    return  Object.assign(payroll, {
       basics: basics,
       stays: stays,
       total: {
@@ -289,7 +289,6 @@ export class PayrollEffect {
       overtimes: payroll.overtimes?.map(overtime => Object.assign(overtime, {expand: false})),
       holidays: payroll.holidays?.map(holiday => Object.assign(holiday, {expand: false}))
     });
-    return result
   }
 
   private getTotalAllowance(allowances: SalaryEntity[]): TotalSalary | undefined {
