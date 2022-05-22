@@ -1,0 +1,36 @@
+  <div>
+    <form [formGroup]='formGroup'>
+      <div>
+        <span class="font-weight-bold"> Ngày kí hợp đồng </span> <span class="star">*</span>
+        <div class="mt-2">
+          <nz-date-picker
+            style="width: 100%"
+            nzMode="date"
+            nzFormat="dd-MM-yyyy"
+            formControlName="createdAt">
+          </nz-date-picker>
+        </div>
+      </div>
+      <div>
+        <span class="font-weight-bold"> Ngày kết thúc hợp đồng</span>
+        <div class="mt-2">
+          <nz-date-picker
+            style="width: 100%"
+            nzMode="date"
+            nzFormat="dd-MM-yyyy"
+            formControlName="expiredAt">
+          </nz-date-picker>
+        </div>
+      </div>
+    </form>
+    <div class='mt-3'>
+      <button (click)='onSubmit()' [nzLoading]="submitting" nz-button nzType="primary">Xác nhận</button>
+      <button *ngIf='data.contracts.length >0'
+              class="ml-2"
+              nz-button
+              nzDanger
+              (click)='onDelete()'>
+        Xóa hợp đồng
+      </button>
+    </div>
+  </div>

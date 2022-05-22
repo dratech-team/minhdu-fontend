@@ -21,6 +21,9 @@ import {ModalDegreeComponent} from "../../components/degree/modal-degree.compone
 import {ModalDegreeData} from "../../data/modal-degree.data";
 import {DegreeEntity} from "../../../../../../../../libs/employee-v2/src/lib/employee/entities/degree.entity";
 import {TransformConstantPipe} from "@minhdu-fontend/components";
+import {ModalUpdateContractComponent} from "../../components/modal-update-contract/modal-update-contract.component";
+import {employee} from "../../../../../../../../libs/data-models/hr/salary/payroll-salary";
+import {ContractEntity} from "../../../../../../../../libs/employee-v2/src/lib/employee/entities/contract.entity";
 
 @Component({
   templateUrl: 'detail-employee.component.html',
@@ -147,6 +150,17 @@ export class DetailEmployeeComponent implements OnInit {
   }
 
   onUpdateContract(employee: EmployeeEntity) {
+    this.modal.create({
+      nzTitle: 'Cập nhật hợp đồng',
+      nzContent: ModalUpdateContractComponent,
+      nzComponentParams: <{ data: { employeeId: number, contracts: ContractEntity [] } }>{
+        data: {
+          contracts: employee.contracts,
+          employeeId: employee.id
+        }
+      },
+      nzFooter: []
+    })
   }
 
   onHistorySalary(employee: EmployeeEntity) {

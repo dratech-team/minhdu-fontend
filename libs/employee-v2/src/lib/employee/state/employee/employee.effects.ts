@@ -14,6 +14,7 @@ import {EmployeeQuery} from './employee.query';
 import {AddRelativeDto, RemoveRelativeDto, UpdateRelativeDto} from "../../dto/relative";
 import {arrayAdd, arrayRemove, arrayUpdate} from "@datorama/akita";
 import {RemoveDegreeDto} from "../../dto/degree";
+import {ContractService} from "../../services/contract.service";
 
 @Injectable()
 export class EmployeeEffect {
@@ -24,7 +25,8 @@ export class EmployeeEffect {
     private readonly employeeService: EmployeeService,
     private readonly relativeService: RelativeService,
     private readonly degreeService: DegreeService,
-    private readonly message: NzMessageService
+    private readonly contractService: ContractService,
+    private readonly message: NzMessageService,
   ) {
   }
 
@@ -359,13 +361,13 @@ export class EmployeeEffect {
   @Effect()
   removeContracts$ = this.actions$.pipe(
     ofType(EmployeeActions.removeContracts),
-    switchMap((props) => {
-        return this.degreeService.deleteContracts(props.id).pipe(
-          map((res) => {
+    switchMap((props: { id: number, employeeId: number }) => {
+        return this.contractService.delete(props.id).pipe(
+          map((_) => {
             this.message.info('Xóa bằng hợp đồng thành công');
-            this.actions$.dispatch(EmployeeActions.loadOne({
-              id: props.id
-            }));
+            this.employeeStore.update(props.employeeId, ({contracts}) => ({
+              contracts: arrayRemove(contracts, props.id)
+            }))
           }),
           catchError((err) => {
             return of(EmployeeActions.error(err));
