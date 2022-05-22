@@ -54,6 +54,7 @@ export class TablePayrollComponent implements OnInit {
   loadMore$ = this.payrollQuery.select(state => state.loadMore)
   added$ = this.payrollQuery.select(state => state.added)
   total$ = this.payrollQuery.select(state => state.total)
+  remain$ = this.payrollQuery.select(state => state.remain)
   totalSalary$ = this.payrollQuery.select(state => state.totalSalary)
   expandAll$ = this.payrollQuery.select(state => state.expandAll)
   count$ = this.payrollQuery.selectCount()

@@ -44,6 +44,7 @@ import {ModalAlertComponent} from "@minhdu-fontend/components";
 })
 export class EmployeeComponent implements OnInit {
   total$ = this.employeeQuery.select(state => state.total)
+  remain$ = this.employeeQuery.select(state => state.remain)
   count$ = this.employeeQuery.selectCount()
   loading$ = this.employeeQuery.select(state => state.loading)
   loadMore$ = this.employeeQuery.select(state => state.loadMore)

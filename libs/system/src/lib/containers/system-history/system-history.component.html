@@ -47,11 +47,11 @@
         [formGroup]="formGroup"
         nzHeader='Ngày'
         nzActive='true'>
-      <nz-date-picker
-        class="w-100"
-        nzMode="date"
-        nzFormat="dd-MM-yyyy"
-        formControlName="createdAt"></nz-date-picker>
+        <nz-date-picker
+          class="w-100"
+          nzMode="date"
+          nzFormat="dd-MM-yyyy"
+          formControlName="createdAt"></nz-date-picker>
       </nz-collapse-panel>
     </nz-collapse>
   </div>
@@ -105,18 +105,18 @@
             {{systemHistory.createdAt|date:'h:mm:ss a, dd-MM-yyyy'}}
           </td>
         </tr>
-        <tr *ngIf='tableSystemHistory.data.length > 0'>
+        <tr *ngIf=" (total$|async) !== 0 && (((count$ | async)|| 0) < ((total$ | async)|| 0)) ">
           <td [colSpan]="tableSystemHistory.listOfAutoColWidth.length">
             <div class="w-100 d-flex justify-content-start" style="position: relative">
               <button
-                *ngIf="((count$ | async)|| 0) < ((total$ | async)|| 0)"
+
                 [nzLoading]="(loadMore$|async)"
                 (click)="onLoadMore()"
                 style="position:sticky; left: 45vw"
                 nz-button
                 nzType="primary"
               >
-                Tải thêm
+                Tải thêm {{remain$|async}}
               </button>
             </div>
           </td>

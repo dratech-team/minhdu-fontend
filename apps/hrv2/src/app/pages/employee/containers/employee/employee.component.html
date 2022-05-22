@@ -359,7 +359,7 @@
                 style="position: sticky; left: 45vw"
                 nz-button nzType="primary"
                 [nzLoading]="loadMore$|async">
-                Tải thêm {{((total$|async) || 0) - ((count$|async) || 0) }} nhân viên
+                Tải thêm {{(remain$|async)}} nhân viên
               </button>
             </div>
           </td>

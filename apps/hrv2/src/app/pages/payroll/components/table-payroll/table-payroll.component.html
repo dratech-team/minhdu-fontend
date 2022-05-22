@@ -574,7 +574,7 @@
     </tr>
   </ng-template>
   </ng-template>
-  <tr *ngIf="((count$|async) || 0) <= ((total$|async) || 0) && (total$|async) !== 0"
+  <tr *ngIf="((count$|async) || 0) < ((total$|async) || 0) && (total$|async) !== 0"
     class="border" style="position: relative; background: White">
     <button
       class="my-2"
@@ -584,7 +584,7 @@
       nz-button
       nzType="primary"
     >
-      Tải thêm
+      Tải thêm {{remain$|async}} phiếu lương
     </button>
   </tr>
   </tbody>

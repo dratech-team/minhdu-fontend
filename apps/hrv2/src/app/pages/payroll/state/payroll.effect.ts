@@ -119,12 +119,6 @@ export class PayrollEffect {
           });
         }),
         tap((res) => {
-          this.payrollStore.update(state => (
-            Object.assign({...state, total: res.total, totalSalary: res.total2}, props.isPaginate
-              ? {loadMore: false}
-              : {loading: false}
-            )
-          ));
           if (res.data.length === 0) {
             this.message.warning('Đã lấy hết phiếu lương');
           }
@@ -133,6 +127,13 @@ export class PayrollEffect {
           } else {
             this.payrollStore.set(res.data);
           }
+          this.payrollStore.update(state => (
+            Object.assign({...state, total: res.total, totalSalary: res.total2, remain: res.total - this.payrollQuery.getCount()},
+              props.isPaginate
+                ? {loadMore: false}
+                : {loading: false}
+            )
+          ));
         }),
         catchError((err) => {
           this.payrollStore.update(state => ({...state, loading: false}));

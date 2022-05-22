@@ -71,7 +71,7 @@
           <td>{{rank.dayOff}}</td>
           <td>{{rank.salary}}</td>
         </tr>
-        <tr *ngIf="((count$ | async) || 0) < ((total$ | async) || 0)">
+        <tr *ngIf="(total$|async) !== 0 && (((count$ | async) || 0) < ((total$ | async) || 0))">
           <td colspan="3">
             <div class="w-100 d-flex justify-content-start" style="position: relative">
               <button
@@ -79,7 +79,7 @@
                 style="position: sticky; left: 45vw"
                 nz-button nzType="primary"
                 [nzLoading]="loadMore$ | async">
-                Tải thêm
+                Tải thêm {{remain$|async}}
               </button>
             </div>
           </td>

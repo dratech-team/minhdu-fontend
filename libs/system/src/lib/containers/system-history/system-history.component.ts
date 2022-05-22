@@ -16,6 +16,7 @@ export class systemHistoryComponent implements OnInit {
   loading$ = this.systemHistoryQuery.select(state => state.loading)
   loadMore$ = this.systemHistoryQuery.select(state => state.loadMore)
   total$ = this.systemHistoryQuery.select(state => state.total);
+  remain$ = this.systemHistoryQuery.select(state => state.remain);
   count$ = this.systemHistoryQuery.selectCount()
 
   app = App;

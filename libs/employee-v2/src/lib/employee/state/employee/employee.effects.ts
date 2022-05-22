@@ -135,13 +135,6 @@ export class EmployeeEffect {
         )
         return this.employeeService.pagination(props).pipe(
           map((res) => {
-            this.employeeStore.update(state => (Object.assign({
-                  ...state, total: res.total
-                }, props.isPaginate
-                  ? {loadMore: false}
-                  : {loading: false}
-              )
-            ));
             if (res.data.length === 0) {
               this.message.info('Đã lấy hết nhân viên');
               if (!props.isPaginate) {
@@ -154,6 +147,13 @@ export class EmployeeEffect {
                 this.employeeStore.set(res.data);
               }
             }
+            this.employeeStore.update(state => (Object.assign({
+                  ...state, total: res.total, remain: res.total - this.employeeQuery.getCount()
+                }, props.isPaginate
+                  ? {loadMore: false}
+                  : {loading: false}
+              )
+            ));
           }),
           catchError((err) => of(EmployeeActions.error(err)))
         );
@@ -302,9 +302,9 @@ export class EmployeeEffect {
   leaveEmployee$ = this.actions$.pipe(
     ofType(EmployeeActions.leave),
     switchMap((props) => {
-      this.employeeStore.update(state => ({
-        ...state, deleted: false
-      }));
+        this.employeeStore.update(state => ({
+          ...state, deleted: false
+        }));
         return this.employeeService.leaveEmployee(props.id, props.body).pipe(
           map((_) => {
             this.employeeStore.update(state => ({

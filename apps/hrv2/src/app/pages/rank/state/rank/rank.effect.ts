@@ -41,13 +41,6 @@ export class RankEffect {
       )
       return this.rankService.pagination(props).pipe(
         map((res) => {
-          this.rankStore.update(state => (  Object.assign({
-                ...state, total: res.total
-              }, props.isPaginate
-                ? {loadMore: false}
-                : {loading: false}
-            )
-          ));
           if(res.data.length === 0){
             this.message.info('Đã lấy hết xếp hạng')
           }
@@ -56,6 +49,13 @@ export class RankEffect {
           } else {
             this.rankStore.set(res.data);
           }
+          this.rankStore.update(state => (  Object.assign({
+                ...state, total: res.total, remain: res.total - this.rankQuery.getCount()
+              }, props.isPaginate
+                ? {loadMore: false}
+                : {loading: false}
+            )
+          ));
         }),
         catchError((err) => {
           this.rankStore.update(state => (  Object.assign({

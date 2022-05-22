@@ -8,6 +8,7 @@ import {FlatSalaryTypeEnum} from '../../../../../../../apps/hrv2/src/app/pages/e
 export interface EmployeeState extends EntityState<EmployeeEntity> {
   readonly total: number
   readonly loading: boolean,
+  readonly remain: number
   readonly loadMore: boolean,
   readonly added: boolean | null,
   readonly deleted: boolean | null
@@ -17,6 +18,7 @@ export interface EmployeeState extends EntityState<EmployeeEntity> {
 export function createInitialState(): EmployeeState {
   return {
     total: 0,
+    remain: 0,
     loading: true,
     added: null,
     deleted: null,

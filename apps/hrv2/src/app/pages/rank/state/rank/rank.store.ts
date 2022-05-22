@@ -4,20 +4,22 @@ import {StorageName} from '@minhdu-fontend/constants';
 import {RankEntity} from "../../entities/rank.entity";
 
 export interface RankState extends EntityState<RankEntity> {
+  total: number
+  remain: number
   loading: boolean;
   loadMore: boolean;
   added: boolean | null;
-  total: number
   search?: Partial<RankEntity>;
   deleted: boolean | null
 }
 
 function createInitState(): RankState {
   return {
+    total: 0,
+    remain: 0,
     loading: true,
     loadMore: false,
     added: null,
-    total: 0,
     deleted: null
   };
 }

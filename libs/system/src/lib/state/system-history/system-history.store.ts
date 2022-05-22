@@ -5,20 +5,22 @@ import {SystemHistoryEntity} from "../../entities/system-history.entity";
 import {BaseSearchSystemHistoryDto} from "../../dto/system-history/search-system-history.dto";
 
 export interface SystemHistoryState extends EntityState<SystemHistoryEntity> {
+  total: number
+  remain: number
   loading: boolean;
   loadMore: boolean
   added: boolean | null;
-  total: number
   search?: Partial<SystemHistoryEntity & {search: string}>;
   deleted: boolean | null
 }
 
 function createInitState(): SystemHistoryState {
   return {
+    total: 0,
+    remain: 0,
     loading: true,
     loadMore: false,
     added: null,
-    total: 0,
     search: {},
     deleted: null
   };

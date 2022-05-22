@@ -64,17 +64,17 @@ export class SystemHistoryEffects {
       })
       return this.accountService.pagination(props).pipe(
         map((res) => {
-          this.systemHistoryStore.update(state => (
-            Object.assign({...state, total: res.total}, props.isPaginate
-              ? {loadMore: false}
-              : {loading: false}
-            )
-          ));
           if (props.isPaginate) {
             this.systemHistoryStore.add(res.data);
           } else {
             this.systemHistoryStore.set(res.data);
           }
+          this.systemHistoryStore.update(state => (
+            Object.assign({...state, total: res.total , remain: res.total - this.systemHistoryQuery.getCount()}, props.isPaginate
+              ? {loadMore: false}
+              : {loading: false}
+            )
+          ));
         }),
         catchError((err) => {
           this.systemHistoryStore.update(state => (

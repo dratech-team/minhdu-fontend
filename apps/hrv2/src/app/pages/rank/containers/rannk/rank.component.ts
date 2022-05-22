@@ -18,6 +18,7 @@ export class RankComponent implements OnInit {
   loading$ = this.rankQuery.select(state => state.loading)
   loadMore$ = this.rankQuery.select(state => state.loadMore)
   total$ = this.rankQuery.select(state => state.total)
+  remain$ = this.rankQuery.select(state => state.total)
   count$ = this.rankQuery.selectCount()
   positions$ = new Observable<Position[]>()
   branches$ = new Observable<Branch[]>()
