@@ -13,10 +13,10 @@ export class OverviewService {
   }
 
   overviewAge(params: any): Observable<Chart[]> {
-    return this.http.get<Chart[]>(VersionEnum.V2 + Api.HR.OVERVIEW, {params});
+    return this.http.get<Chart[]>(VersionEnum.V1 + Api.HR.OVERVIEW, {params});
   }
 
   overviewTotalEmp(params: any): Observable<stakedChart[]> {
-    return this.http.get<stakedChart[]>(VersionEnum.V2 + Api.HR.OVERVIEW, {params});
+    return this.http.get<stakedChart[]>(VersionEnum.V1 + Api.HR.OVERVIEW, {params});
   }
 }
