@@ -18,11 +18,11 @@ export const RelationshipConstant = [
     value: RelationshipEnum.HUSBAND
   },
   {
-    name: 'con trai',
+    name: 'Con trai',
     value: RelationshipEnum.SON
   },
   {
-    name: 'con gái',
+    name: 'Con gái',
     value: RelationshipEnum.DAUGHTER
   },
 ]
