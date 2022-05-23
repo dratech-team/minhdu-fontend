@@ -339,8 +339,9 @@ export class PayrollEffect {
         duration: a.duration + (b.setting.startedAt && b.setting.endedAt
             ? moment(b.setting.endedAt).diff(b.setting.startedAt, 'days') + 1
             : 0
-        )
+        ),
+        total: a.total + b.total
       };
-    }, {duration: 0});
+    }, {duration: 0, total: 0});
   }
 }

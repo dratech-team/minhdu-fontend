@@ -333,7 +333,7 @@
           >
             <thead>
             <tr>
-              <th nzWidth='60px'></th>
+              <th nzWidth='40px'></th>
               <th nzWidth='60px'>STT</th>
               <th
                 [nzSortFn]='true'
@@ -428,7 +428,7 @@
               <td style='background: white'>{{item.rate}}</td>
               <td style='background: white'>
                 {{item.price || 0
-                | roundingnumber :1000
+                | roundingnumber :100
                 | number:'1.0-0'}} đ
               </td>
               <td style='background: white'>{{item.total | number:'1.0-0'}}</td>
@@ -749,11 +749,12 @@
             <tr>
               <th nzWidth='40px'></th>
               <th nzWidth='60px'>STT</th>
-              <th nzWidth='22%'>Đi làm ngày lễ</th>
-              <th nzWidth='15%'>Đơn vị</th>
-              <th nzWidth=''>Hệ số</th>
+              <th nzWidth='20%'>Ngày lễ</th>
+              <th nzWidth='20%'>ngày</th>
+              <th nzWidth='10%'>Đơn vị</th>
+              <th nzWidth='60px'>Hệ số</th>
               <th> Đơn giá</th>
-              <th>Tổng tiền</th>
+              <th nzWidth='150px'>Tổng tiền</th>
               <th style='color: #1b8eb7; width: 100px' (click)='onAdd(salaryTypeEnum.HOLIDAY, payroll)'>
                 <div class='d-flex'>
                   <span class='pointer'>Thêm mục</span>
@@ -771,6 +772,7 @@
                 <td>
                   {{i + 1}}
                 </td>
+                <td> {{salary.setting.title}}</td>
                 <td class=' text-center'>
                   Từ. {{(salary.setting.startedAt | date:'dd-MM-yyyy')}}
                   <br/>
@@ -841,7 +843,8 @@
               <td style='background: white'>{{
                 item.total || 0
                   |roundingnumber:100
-                  | number:'1.0-0'}}</td>
+                  | number:'1.0-0'}} đ
+              </td>
             </tr>
             </tbody>
           </nz-table>
@@ -850,12 +853,18 @@
           <tr *ngIf='payroll.total.holiday?.duration'>
             <td></td>
             <td></td>
-            <td class='font-weight-bold'>Tổng cộng: {{payroll.total.holiday.duration}} ngày</td>
+            <td class="font-weight-bold"> Tổng cộng:</td>
+            <td> {{payroll.total.holiday.duration}} ngày</td>
             <td>
             </td>
             <td></td>
             <td></td>
-            <td></td>
+            <td> {{
+              payroll.total.holiday.total
+                |roundingnumber:100
+                |number: '1.0-0'
+              }} đ
+            </td>
             <td></td>
           </tr>
           </tbody>

@@ -74,7 +74,7 @@ export interface PayrollEntity extends BasePayrollEntity {
     deduction: number;
     overtime: TotalSalary;
     remote: { duration: number };
-    holiday: { duration: number }
+    holiday: { duration: number, total: number }
     dayOff: { duration: number }
   }
   expand: boolean
