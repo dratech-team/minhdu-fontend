@@ -835,10 +835,13 @@
               <td style='background: white'>{{item.rate}}</td>
               <td style='background: white'>
                 {{item.price || 0
-                | roundingnumber :1000
+                | roundingnumber :100
                 | number:'1.0-0'}} đ
               </td>
-              <td style='background: white'>{{item.total | number:'1.0-0'}}</td>
+              <td style='background: white'>{{
+                item.total || 0
+                  |roundingnumber:100
+                  | number:'1.0-0'}}</td>
             </tr>
             </tbody>
           </nz-table>
