@@ -64,7 +64,7 @@ export interface PayrollEntity extends BasePayrollEntity {
   remotes: RemoteSalaryEntity[],
   holidays: HolidaySalaryEntity[]
   dayOffs: DayOffSalaryEntity[],
-  payrollIds?: number[];
+  payrollIds: number[];
   total: {
     payroll: number;
     basic: number;

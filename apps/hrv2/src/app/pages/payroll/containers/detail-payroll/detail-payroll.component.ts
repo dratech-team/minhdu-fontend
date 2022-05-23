@@ -51,6 +51,7 @@ import {ModalAddOrUpdateRemoteOrDayOff} from '../../../salary/data';
 import {NzTableSortOrder} from "ng-zorro-antd/table";
 import {FilterOvertimeEnum} from "../../enums/filter-overtime.enum";
 import {SettingSalaryStore} from "../../../setting/salary/state";
+import {Payroll} from "../../../../../../../hr/src/app/pages/payroll/+state/payroll/payroll.interface";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -448,5 +449,26 @@ export class DetailPayrollComponent implements OnInit {
     return a && b
       ? (a < b ? -1 : 1) * (isAsc ? 1 : -1)
       : 0
+  }
+
+  prePayroll(payroll: PayrollEntity) {
+    const indexPayrollCurrent = payroll.payrollIds.indexOf(payroll.id);
+    const payrollIds = payroll.payrollIds;
+    if (indexPayrollCurrent > 0) {
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[indexPayrollCurrent - 1]]).then();
+    } else {
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[payrollIds.length - 1]]).then();
+    }
+  }
+
+  nextPayroll(payroll: PayrollEntity) {
+    console.log(payroll)
+    const indexPayrollCurrent = payroll.payrollIds.indexOf(payroll.id);
+    const payrollIds = payroll.payrollIds;
+    if (indexPayrollCurrent < payrollIds.length - 1) {
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[indexPayrollCurrent + 1]]).then();
+    } else {
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[0]]).then();
+    }
   }
 }

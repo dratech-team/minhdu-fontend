@@ -39,6 +39,7 @@ import {SharedModule} from "../../../shared/shared.module";
 import {TransformConstantPipe} from "@minhdu-fontend/components";
 import {HistoryPayrollComponent} from "./containers/history-payroll/history-payroll.component";
 import {ClassifySalaryComponent} from "./components/classify-salary/classify-salary.component";
+import {NzIconModule} from "ng-zorro-antd/icon";
 
 @NgModule({
     imports: [
@@ -71,6 +72,7 @@ import {ClassifySalaryComponent} from "./components/classify-salary/classify-sal
         NzAlertModule,
         SettingModule,
         SharedModule,
+        NzIconModule,
     ],
   declarations: [
     PayrollComponent,

@@ -3,6 +3,18 @@
   </nz-spin>
 </ng-template>
 <div class='animated fadeIn mt-2 mx-auto' *ngIf='(payroll$ | async) as payroll; else loadingPayroll'>
+  <div class="transform-payroll" style="left: 0" >
+    <button class="btn-move-page border rounded d-flex justify-content-center align-items-center"
+            (click)="prePayroll(payroll)">
+      <i nz-icon nzType="step-backward" nzTheme="outline"></i>
+    </button>
+  </div>
+ <div class="transform-payroll" style="right: 0">
+   <button class="btn-move-page d-flex justify-content-center align-items-center border rounded"
+           (click)="nextPayroll(payroll)">
+     <i nz-icon nzType="step-forward" nzTheme="outline"></i>
+   </button>
+ </div>
   <div>
     <div style='max-width: 90vw ; margin: auto'>
       <div class='row'>
