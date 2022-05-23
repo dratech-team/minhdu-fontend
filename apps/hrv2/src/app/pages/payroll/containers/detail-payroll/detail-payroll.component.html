@@ -37,7 +37,7 @@
                   <span class='ml-1'>{{payroll.branch}}</span>
                 </div>
                 <div class='col-12 d-flex justify-content-start ' style='color: black'>
-                  <span class='d-inline-block font-weight-bold'>Lương thực nhân: </span>
+                  <span class='d-inline-block font-weight-bold'>Lương thực nhận: </span>
                   <span class='ml-1'>
                       {{payroll.total
                     |roundingnumber :1000
@@ -756,7 +756,7 @@
               <th>Tổng tiền</th>
               <th style='color: #1b8eb7; width: 100px' (click)='onAdd(salaryTypeEnum.HOLIDAY, payroll)'>
                 <div class='d-flex'>
-                  <span class='mx-2 pointer'>Thêm</span>
+                  <span class='pointer'>Thêm mục</span>
                   <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
                        alt='add icon'>
                 </div>
