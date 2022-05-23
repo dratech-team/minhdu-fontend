@@ -105,8 +105,8 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
         : [this.fistDateInMonth, getLastDayInMonth(this.fistDateInMonth)]
         , Validators.required],
       price: [salary?.price],
-      startTime: [salary?.startedAt ? new Date(salary.startedAt) : undefined],
-      endTime: [salary?.endedAt ? new Date(salary.endedAt) : undefined],
+      startTime: [salary?.startTime ? new Date(salary.startTime) : undefined],
+      endTime: [salary?.endTime ? new Date(salary.endTime) : undefined],
       note: [salary?.note],
       rate: [1],
       unit: [salary?.setting?.unit ? salary.setting.unit : DatetimeUnitEnum.MONTH],

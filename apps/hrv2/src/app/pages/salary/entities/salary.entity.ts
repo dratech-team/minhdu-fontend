@@ -14,6 +14,8 @@ export interface SalaryEntity extends BaseSalaryEntity {
   }
   readonly startedAt?: Date,
   readonly endedAt?: Date,
+  readonly startTime?: Date,
+  readonly endTime?: Date,
   readonly rate: number
   readonly inWorkday?: boolean,
   readonly inOffice?: boolean
