@@ -205,8 +205,7 @@ table tbody tr td {
 .highlight { background-color:#FFFF00; }
 
 .transform-payroll{
-  opacity: 0;
-  background: #dddddd;
+  background: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -216,13 +215,13 @@ table tbody tr td {
   bottom: 20px;
   z-index: 200;
 }
-.transform-payroll:hover,
-.transform-payroll:hover .btn-move-page{
-  opacity: 0.7;
+
+.transform-payroll:hover img{
+  opacity: 1 !important;
 }
 
 .btn-move-page{
   height: 40px ;
   width: 40px;
-  opacity:0
+  opacity:0.7
 }
