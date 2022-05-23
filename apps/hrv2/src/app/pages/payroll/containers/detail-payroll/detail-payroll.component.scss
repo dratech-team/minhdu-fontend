@@ -149,8 +149,9 @@
   border-radius: 15px;
 }
 .sticky-scroll{
+  z-index: 200;
   border-radius: 5px;
-  position: absolute;
+  position: fixed;
   top: 170px;
   right: 15px;
   background-color: #c8ced3;
