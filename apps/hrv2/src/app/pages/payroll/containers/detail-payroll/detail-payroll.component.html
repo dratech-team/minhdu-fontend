@@ -38,8 +38,8 @@
                 </div>
                 <div class='col-12 d-flex justify-content-start ' style='color: black'>
                   <span class='d-inline-block font-weight-bold'>Lương thực nhận: </span>
-                  <span class='ml-1'>
-                      {{payroll.total
+                  <span class='ml-1 highlight'>
+                      {{payroll.total.payroll
                     |roundingnumber :1000
                     |number:'1.0-0'
                     | notEmpty:'0'}}
@@ -420,14 +420,14 @@
                 <td>
                   <span>{{salary.note}}</span>
                 </td>
-                <td>
+                <td (click)="$event.stopPropagation()">
                   <div class='d-flex justify-content-around '>
                     <button data-placement='top' title=' chỉnh sửa ' class='edit animated'
-                            (click)='updateSalary(salaryTypeEnum.OVERTIME, salary); $event.stopPropagation()'>
+                            (click)='updateSalary(salaryTypeEnum.OVERTIME, salary)'>
                       <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
                     </button>
                     <button title='xóa' class='trash animated'
-                            (click)='removeSalary( salaryTypeEnum.OVERTIME, salary); $event.stopPropagation()'>
+                            (click)='removeSalary( salaryTypeEnum.OVERTIME, salary)'>
                       <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
                     </button>
                   </div>
