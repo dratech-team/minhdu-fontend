@@ -15,6 +15,7 @@ import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {ModalAddOrUpdateAllowance} from '../../../payroll/data';
 import {validateDayInMonth} from '../../utils/validate-day-in-month.util';
 import * as moment from 'moment';
+import {PayrollQuery} from "../../../payroll/state";
 
 @Component({
   templateUrl: 'allowance-salary.component.html'
@@ -26,7 +27,7 @@ export class AllowanceSalaryComponent implements OnInit {
 
   indexStep = 0;
   submitting = false;
-  workedAt!: Date;
+  workedAt?: Date;
   fistDateInMonth!: Date;
   salaryTypeEnum = SalaryTypeEnum;
   employeeType = EmployeeType
@@ -43,16 +44,17 @@ export class AllowanceSalaryComponent implements OnInit {
     private readonly message: NzMessageService,
     private readonly modal: NzModalService,
     private readonly modalRef: NzModalRef,
-    private readonly actions$: Actions
+    private readonly actions$: Actions,
+    private readonly payrollQuery: PayrollQuery,
   ) {
   }
 
   ngOnInit(): void {
-    this.workedAt = this.data.add ? this.data.add.payroll.employee.workedAt : this.data.update.salary.workedAt;
+    this.workedAt = this.data.add ? this.data.add.payroll?.employee.workedAt : this.data.update.salary.workedAt;
     this.fistDateInMonth = getFirstDayInMonth(new Date(
       this.data.add
-        ? this.data.add.payroll.createdAt
-        : this.data.update.salary.startedAt || new Date()
+        ? this.data.add.payroll?.createdAt || this.payrollQuery.getValue().search.startedAt
+        : this.data.update.salary.startedAt || this.payrollQuery.getValue().search.startedAt
     ));
     const salary = this.data.update?.salary;
     const payroll = this.data.add?.payroll;
@@ -80,7 +82,8 @@ export class AllowanceSalaryComponent implements OnInit {
           this.formGroup.get('datetime')?.setValue('');
           break;
         case DatetimeUnitEnum.MONTH:
-          this.formGroup.get('datetime')?.setValue(this.data.add?.payroll.createdAt);
+          this.formGroup.get('datetime')?.setValue(this.data.add?.payroll?.createdAt
+            || this.payrollQuery.getValue().search.startedAt);
       }
     });
   }
@@ -94,6 +97,9 @@ export class AllowanceSalaryComponent implements OnInit {
       return;
     }
     const value = this.formGroup.value;
+    if(this.data.add?.multiple && value.payrollIds.length === 0){
+     return  this.message.error('Chưa chọn nhân viên')
+    }
     const salary = this.mapSalary(value);
     this.submitting = true;
     (this.data.add ? this.service.addMany(salary) : this.service.updateMany(salary))
@@ -105,7 +111,7 @@ export class AllowanceSalaryComponent implements OnInit {
         this.onSubmitSuccess(res, this.data.add
           ? (
             !this.data.add?.multiple
-              ? this.data.add?.payroll.id
+              ? this.data.add?.payroll?.id
               : undefined
           )
           : (!this.data.update.multiple
@@ -169,24 +175,26 @@ export class AllowanceSalaryComponent implements OnInit {
   }
 
   onSelectWorkedAt() {
-    this.modal.info({
-      nzTitle: 'Chọn từ ngày đến ngày',
-      nzContent: `Nhân viên bắt đầu làm việc chính thức từ ngày
+    if (this.workedAt) {
+      this.modal.info({
+        nzTitle: 'Chọn từ ngày đến ngày',
+        nzContent: `Nhân viên bắt đầu làm việc chính thức từ ngày
         ${this.datePipe.transform(
-        this.data.add
-          ? this.data.add.payroll.employee.workedAt
-          : this.data.update.salary.workedAt, 'dd/MM/yyyy')},
+          this.workedAt, 'dd/MM/yyyy')},
             bạn có muốn chọn ngày này làm ngày bắt đầu
             `,
-      nzOnOk: () => this.formGroup.get('rangeDay')?.setValue(
-        [
-          this.workedAt,
-          getLastDayInMonth(this.fistDateInMonth)
-        ])
-    });
+        nzOnOk: () => this.formGroup.get('rangeDay')?.setValue(
+          [
+            this.workedAt,
+            getLastDayInMonth(this.fistDateInMonth)
+          ])
+      });
+    }
   }
 
   checkWorkedAt(): boolean {
-    return isEqualDatetime(this.workedAt, this.fistDateInMonth, 'month');
+    return this.workedAt
+      ? isEqualDatetime(this.workedAt, this.fistDateInMonth, 'month')
+      : false;
   }
 }

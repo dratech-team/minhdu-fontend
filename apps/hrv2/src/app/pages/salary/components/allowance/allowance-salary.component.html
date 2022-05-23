@@ -37,11 +37,12 @@
               <div>
                 <nz-range-picker
                   nzMode='date'
+                  nzFormat="dd/MM/yyyy"
                   [nzDisabledDate]="disableApprenticeDate"
                   formControlName="rangeDay"></nz-range-picker>
               </div>
               <button
-                *ngIf="checkWorkedAt"
+                *ngIf="checkWorkedAt()"
                 nz-button
                 nzSize="small"
                 nzType="dashed"
@@ -79,7 +80,7 @@
     <minhdu-fontend-select-payroll
       [employeeType]="employeeType.EMPLOYEE_FULL_TIME"
       [formGroup]="formGroup"
-      [createdAt]="data.add.payroll.createdAt"
+      [createdAt]="data.add.payroll?.createdAt || this.fistDateInMonth"
     >
     </minhdu-fontend-select-payroll>
   </ng-template>
