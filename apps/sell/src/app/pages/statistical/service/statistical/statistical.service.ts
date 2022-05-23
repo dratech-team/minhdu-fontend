@@ -15,7 +15,7 @@ export class StatisticalService {
   }
 
   getAll(url: string, params: any): Observable<any[]> {
-    return this.http.get<any[]>(VersionEnum.V2 + url, {params}).pipe(tap(() => {
+    return this.http.get<any[]>(VersionEnum.V1 + url, {params}).pipe(tap(() => {
       this.message.success('Thống kê thành công');
     }));
   }
