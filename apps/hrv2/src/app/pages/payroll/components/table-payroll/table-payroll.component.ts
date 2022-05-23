@@ -402,6 +402,7 @@ export class TablePayrollComponent implements OnInit {
     switch (this.formGroup.value.filterType) {
       case FilterTypeEnum.PERMANENT:
         this.modal.create({
+          nzWidth:'300px',
           nzTitle: 'Chọn Loại lương',
           nzContent: ModalSelectAddSalaryComponent,
           nzFooter: []
@@ -414,6 +415,7 @@ export class TablePayrollComponent implements OnInit {
       case FilterTypeEnum.OVERTIME:
       case FilterTypeEnum.ABSENT:
         this.modal.create({
+          nzWidth:'fit-content',
           nzTitle: `Thêm ${this.formGroup.value.filterType === SalaryTypeEnum.OVERTIME ? 'tăng ca' : 'vắng'}`,
           nzContent: AbsentOvertimeSalaryComponent,
           nzComponentParams: <{ data: ModalAddOrUpdateAbsentOrOvertime }>{
@@ -433,6 +435,7 @@ export class TablePayrollComponent implements OnInit {
         break
       case FilterTypeEnum.ALLOWANCE:
         this.modal.create({
+          nzWidth:'fit-content',
           nzTitle: 'Thêm phụ cấp lương',
           nzContent: AllowanceSalaryComponent,
           nzComponentParams: <{ data: ModalAddOrUpdateAllowance }>{

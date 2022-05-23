@@ -18,6 +18,7 @@ export class ModalSelectAddSalaryComponent {
 
   selectTypeAddMultiple(salaryType: SalaryTypeEnum): any {
     this.modal.create({
+      nzWidth:'fit-content',
       nzTitle: 'Thêm ' + (salaryType === SalaryTypeEnum.STAY ? 'phụ cấp lương' : 'lương cơ bản'),
       nzContent: PermanentSalaryComponent,
       nzComponentParams: <{ data: ModalAddOrUpdatePermanent }>{
