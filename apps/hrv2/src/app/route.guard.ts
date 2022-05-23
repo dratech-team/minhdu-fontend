@@ -3,7 +3,7 @@ import {Observable} from 'rxjs';
 import {ActivatedRouteSnapshot, CanActivate, CanActivateChild, RouterStateSnapshot} from '@angular/router';
 import {AppStore} from './state/app.store';
 
-@Injectable()
+@Injectable({providedIn:"root"})
 export class RouteGuard implements CanActivate, CanActivateChild {
   constructor(private appStore: AppStore) {
   }

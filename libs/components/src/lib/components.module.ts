@@ -29,7 +29,7 @@ import {PickLocationComponent} from './pick-location/pick-location.component';
 import {NotEmptyPipe} from './pipes/notEmty.pipe';
 import {SearchEmployeePipe} from './pipes/searchEmployee.pipe';
 import {TransformUnitPipe} from './pipes/transform-unit.pipe';
-import {TransformPipe} from './pipes/transform.pipe';
+import {TransformConstantPipe} from './pipes/transform-constant.pipe';
 import {ShowAlertComponent} from './show-alert/show-alert.component';
 import {SnackBarComponent} from './snackBar/snack-bar.component';
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
@@ -54,42 +54,51 @@ import {NzRadioModule} from "ng-zorro-antd/radio";
 import {CollapseRadioComponent} from './collapse-radio/collapse-radio.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {CollapseSelectComponent} from "./collapse-select/collapse-select.component";
+import {ModalAlertComponent} from "./modal-alert/modal-alert.component";
+import {ModalDatePickerComponent} from "./modal-date-picker/modal-date-picker.component";
+import {TransformNzDateModePipe} from "./pipes/transform-nz-date-mode.pipe";
+import {ModalNoteComponent} from "./modal-note/modal-note.component";
+import {TotalPricePipe} from "./pipes/total-price.pipe";
+import {RoundingNumberPipe} from "./pipes/rounding-number.pipe";
+import {ModalExportExcelComponent} from "./modal-export/modal-export-excel.component";
+import {NzTableModule} from "ng-zorro-antd/table";
 
 @NgModule({
-    imports: [
-        MatSnackBarModule,
-        CommonModule,
-        RouterModule,
-        MatMenuModule,
-        ContextMenuModule.forRoot({useBootstrap4: true, autoFocus: true}),
-        FormsModule,
-        MatCheckboxModule,
-        MatDialogModule,
-        InfiniteScrollModule,
-        ReactiveFormsModule,
-        NgxChartsModule,
-        MatSelectModule,
-        MatAutocompleteModule,
-        MatInputModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        BsDatepickerModule.forRoot(),
-        NgxSkeletonLoaderModule,
-        NzSelectModule,
-        NzPopoverModule,
-        NzInputModule,
-        NzCollapseModule,
-        MatExpansionModule,
-        MatRadioModule,
-        NzDatePickerModule,
-        NzPopoverModule,
-        NzCollapseModule,
-        NzTypographyModule,
-        NzWaveModule,
-        NzButtonModule,
-        NzRadioModule,
-        MatProgressSpinnerModule,
-    ],
+  imports: [
+    MatSnackBarModule,
+    CommonModule,
+    RouterModule,
+    MatMenuModule,
+    ContextMenuModule.forRoot({useBootstrap4: true, autoFocus: true}),
+    FormsModule,
+    MatCheckboxModule,
+    MatDialogModule,
+    InfiniteScrollModule,
+    ReactiveFormsModule,
+    NgxChartsModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    BsDatepickerModule.forRoot(),
+    NgxSkeletonLoaderModule,
+    NzSelectModule,
+    NzPopoverModule,
+    NzInputModule,
+    NzCollapseModule,
+    MatExpansionModule,
+    MatRadioModule,
+    NzDatePickerModule,
+    NzPopoverModule,
+    NzCollapseModule,
+    NzTypographyModule,
+    NzWaveModule,
+    NzButtonModule,
+    NzRadioModule,
+    MatProgressSpinnerModule,
+    NzTableModule,
+  ],
   declarations: [
     SwimLaneChartComponent,
     SnackBarComponent,
@@ -104,7 +113,7 @@ import {CollapseSelectComponent} from "./collapse-select/collapse-select.compone
     PickLocationComponent,
     ShowAlertComponent,
     TransformUnitPipe,
-    TransformPipe,
+    TransformConstantPipe,
     DialogSharedComponent,
     MouseRightChipPositionComponent,
     DialogExportComponent,
@@ -116,7 +125,14 @@ import {CollapseSelectComponent} from "./collapse-select/collapse-select.compone
     CollapseDatepickerComponent,
     RagePickerComponent,
     CollapseRadioComponent,
-    CollapseSelectComponent
+    CollapseSelectComponent,
+    ModalDatePickerComponent,
+    TransformNzDateModePipe,
+    ModalAlertComponent,
+    ModalNoteComponent,
+    TotalPricePipe,
+    RoundingNumberPipe,
+    ModalExportExcelComponent
   ],
   exports: [
     SwimLaneChartComponent,
@@ -132,7 +148,7 @@ import {CollapseSelectComponent} from "./collapse-select/collapse-select.compone
     PickLocationComponent,
     ShowAlertComponent,
     TransformUnitPipe,
-    TransformPipe,
+    TransformConstantPipe,
     DialogSharedComponent,
     MouseRightChipPositionComponent,
     DialogExportComponent,
@@ -143,7 +159,14 @@ import {CollapseSelectComponent} from "./collapse-select/collapse-select.compone
     TitleDatepickerComponent,
     CollapseDatepickerComponent,
     CollapseRadioComponent,
-    CollapseSelectComponent
+    CollapseSelectComponent,
+    ModalDatePickerComponent,
+    TransformNzDateModePipe,
+    ModalAlertComponent,
+    ModalNoteComponent,
+    TotalPricePipe,
+    RoundingNumberPipe,
+    ModalExportExcelComponent
   ],
   providers: [
     DecimalPipe,

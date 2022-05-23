@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SellLayoutComponent } from './container/sell-layout.component';
 import { RouteGuard } from './route.guard';
-import { TabEnum } from './state/app.entity';
+import { HrefEnum } from './enums/href.enum';
 
 const routes: Routes = [
   {
@@ -18,7 +18,7 @@ const routes: Routes = [
     },
     children: [
       {
-        path: TabEnum.DASHBOARD,
+        path: HrefEnum.DASHBOARD,
         loadChildren: () =>
           import('./pages/statistical/statistical.module').then(
             (m) => m.StatisticalModule
@@ -26,7 +26,7 @@ const routes: Routes = [
         canActivate: [RouteGuard]
       },
       {
-        path: TabEnum.CUSTOMER,
+        path: HrefEnum.CUSTOMER,
         loadChildren: () =>
           import('./pages/customer/customer.module').then(
             (m) => m.CustomerModule
@@ -36,6 +36,9 @@ const routes: Routes = [
         },
         canActivate: [RouteGuard]
       },
+      /**
+       * @deprecated
+       * */
       {
         path: 'hang-hoa',
         loadChildren: () =>
@@ -48,7 +51,7 @@ const routes: Routes = [
         canActivate: [RouteGuard]
       },
       {
-        path: TabEnum.ORDER,
+        path: HrefEnum.ORDER,
         loadChildren: () =>
           import('./pages/order/order.module').then((m) => m.OrderModule),
         data: {
@@ -57,11 +60,15 @@ const routes: Routes = [
         canActivate: [RouteGuard]
       },
       {
-        path: TabEnum.ROUTE,
+        path: HrefEnum.ROUTE,
         loadChildren: () =>
           import('./pages/route/route.module').then((m) => m.RouteModule),
         canActivate: [RouteGuard]
       },
+
+      /**
+       * @deprecated
+       * */
       {
         path: 'bill',
         loadChildren: () =>
@@ -69,7 +76,14 @@ const routes: Routes = [
         canActivate: [RouteGuard]
       },
       {
-        path: 'he-thong',
+        path: HrefEnum.COMMODITY_TEMPLATE,
+        loadChildren: () =>
+          import('./pages/commodity-template/commodity-template.module')
+            .then((m) => m.CommodityTemplateModule),
+        canActivate: [RouteGuard]
+      },
+      {
+        path: HrefEnum.SYSTEM,
         loadChildren: () =>
           import('@minhdu-fontend/system').then((m) => m.SystemModule),
         canActivate: [RouteGuard]

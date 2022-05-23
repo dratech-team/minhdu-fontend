@@ -1,90 +1,85 @@
-<div style='min-width: 850px'>
-    <div class='font-weight-bold mb-1'>Đã chọn:({{this.employeesSelected.length}}/{{(employees$|async)?.total}})</div>
-    <div class='fixTableHead' style='height: 40vh'
-         infiniteScroll
-         [infiniteScrollThrottle]='10'
-         [alwaysCallback]='true'
-         [infiniteScrollDistance]='1'
-         [scrollWindow]='false'
-         (scrolled)='onScroll()'>
-      <table [formGroup]='formGroup' style='width: 850px'>
-        <thead style='z-index: 2'>
-        <tr>
-          <th style='width: 50px'>
-            <div class='border-top text-center'>stt</div>
-            <input class='form-control  '
-                   type='search'
-            >
-          </th>
-          <th>
-            <div class='border-top text-center'>Tên nhân viên</div>
-            <input class='form-control  '
-                   type='search'
-                   placeholder='Trần Gia Hiệu'
-                   formControlName='name'>
-          </th>
-          <th>
-            <div class=' text-center'>Đơn vị</div>
-            <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>
-            <mat-autocomplete #branch='matAutocomplete'>
-              <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
-                          (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
-              >
-                {{branch.name}}
-              </mat-option>
-            </mat-autocomplete>
-          </th>
-          <th>
-            <div class=' text-center'>Chức vụ</div>
-            <input class='form-control' type='search' matInput [matAutocomplete]='position' formControlName='position'>
-            <mat-autocomplete #position='matAutocomplete'>
-              <mat-option *ngFor='let position of positions$ | async'
-                          [value]='position.name' (click)='onSelectPosition(position.name)'
-                          (onSelectionChange)='onSelectPosition(position.name)'>
-                {{position.name}}
-              </mat-option>
-            </mat-autocomplete>
-          </th>
-          <th>
-            <div class='border-top text-center'>Danh mục</div>
-            <input class='form-control  '
-                   type='search'
-                   disabled
-                   >
-          </th>
-          <th style='width: 100px;'>
-            <div class=' text-center' style='background: white'>Tất cả</div>
-            <div class='border-top border-bottom'>
-              <mat-checkbox class='example-margin  mt-2 mx-auto'
-                            [checked]='isSelectAll'
-                            [indeterminate]='someComplete()'
-                            (change)='setAll($event.checked)'>
-              </mat-checkbox>
-            </div>
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor='let employee of employees; let i = index'>
-          <th class='   pointer'>{{i + 1}}</th>
-          <th class='   pointer'>{{employee.lastName}}</th>
-          <th class='   pointer'>{{employee.branch?.name}}</th>
-          <th class='   pointer'>{{employee.position?.name}}</th>
-          <th class='   pointer'>{{employee.category?.name}}</th>
-          <th class='   pointer'>
-            <div class='mt-2'>
-              <mat-checkbox *ngIf="!employee?.category else category"
-                (change)='updateSelect(employee)'
-                [checked]='checkEmployee(employee)'>
-              </mat-checkbox>
-              <ng-template #category>
-                <span (click)="removeEmpInCategory(employee)" style="color: red" >bỏ chọn</span>
-              </ng-template>
-            </div>
-          </th>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+<div style='min-width: 80vw; width: 100%'>
+  <div class='font-weight-bold mb-1'>Đã chọn:({{this.employeesSelected.length}}/{{total}})</div>
+  <div class='fixTableHead' style='height: 40vh ; width: 100%'
+       infiniteScroll
+       [infiniteScrollThrottle]='10'
+       [alwaysCallback]='true'
+       [infiniteScrollDistance]='1'
+       [scrollWindow]='false'
+       (scrolled)='onScroll()'>
+    <table [formGroup]='formGroupTable' style='width:100%' class="border">
+      <thead style='z-index: 2'>
+      <tr>
+        <th style='width: 50px'>
+          <div class='text-center'>stt</div>
+          <input nz-input disabled>
+        </th>
+        <th>
+          <div class='text-center'>Tên nhân viên</div>
+          <input nz-input
+                 type='search'
+                 placeholder='Trần Gia Hiệu'
+                 formControlName='name'>
+        </th>
+        <th>
+          <div class='text-center'>Đơn vị</div>
+          <nz-select style="width: 100%" formControlName="branch">
+            <nz-option *ngFor='let branch of branches$ | async' [nzValue]='branch.name'
+                       [nzLabel]="branch.name"></nz-option>
+          </nz-select>
+        </th>
+        <th>
+          <div class='text-center'>Chức vụ</div>
+          <nz-select style="width: 100%" formControlName="position">
+            <nz-option *ngFor='let position of positions$ | async' [nzValue]='position.name'
+                       [nzLabel]="position.name"></nz-option>
+          </nz-select>
+        </th>
+        <th>
+          <div class='text-center'>Danh mục</div>
+          <input nz-input
+                 type='search'
+                 disabled
+          >
+        </th>
+        <th style='width: 100px;'>
+          <div class=' text-center' style='background: white'>Tất cả</div>
+          <div>
+            <mat-checkbox class='example-margin  mt-2 mx-auto'
+                          [checked]='isSelectAll'
+                          [indeterminate]='someComplete()'
+                          (change)='setAll($event.checked)'>
+            </mat-checkbox>
+          </div>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor='let employee of employees; let i = index'>
+        <th class='pointer'>{{i + 1}}</th>
+        <th class='pointer'>{{employee.lastName}}</th>
+        <th class='pointer'>{{employee.branch?.name}}</th>
+        <th class='pointer'>{{employee.position?.name}}</th>
+        <th class='pointer'>{{employee.category?.name}}</th>
+        <th class='pointer'>
+          <div class='mt-2'>
+            <mat-checkbox *ngIf="!employee?.category else category"
+                          (change)='updateSelect(employee)'
+                          [checked]='checkEmployee(employee)'>
+            </mat-checkbox>
+            <ng-template #category>
+              <span (click)="removeEmpInCategory(employee)" style="color: red">bỏ chọn</span>
+            </ng-template>
+          </div>
+        </th>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+<style>
+  table tbody tr th {
+    text-align: center;
+  }
+</style>
 

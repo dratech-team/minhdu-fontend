@@ -1,4 +1,5 @@
 import {MenuHrEnum} from "../enums";
+import {TabEnum} from "../../app/state/app.entity";
 
 interface MenuHrConstant {
   name: string,
@@ -17,75 +18,66 @@ export const MenuHrConstant: MenuHrConstant[] = [
     name: 'Tổng quan',
     icon: '/assets/icons/menu/clipboard2 (1).svg',
     state: MenuHrEnum.DASHBOARD,
-    href: ''
+    href: TabEnum.DASHBOARD
   },
   {
     name: 'Nhân viên',
     icon: '/assets/icons/menu/person.svg',
     state: MenuHrEnum.EMPLOYEE,
-    href: 'nhan-vien'
+    href: TabEnum.EMPLOYEE
   },
   {
     name: 'Phiếu lương',
     icon: '/assets/icons/menu/clipboard-data.svg',
     state: MenuHrEnum.PAYROLL,
-    href: 'phieu-luong',
+    href: TabEnum.PAYROLL,
   },
   {
-    name: 'Bảng mẫu',
+    name: 'Thiết lập lương',
     icon: '/assets/icons/menu/templates.png',
-    state: MenuHrEnum.TEMPLATE,
-    href: 'bang-mau',
-    children: [
-      {
-        name: 'Lương',
-        href: 'bang-mau/luong'
-      },
-      {
-        name: 'Tăng ca',
-        href: 'bang-mau/tang-ca'
-      },
-      {
-        name: 'Ngày lễ',
-        href: 'bang-mau/ngay-le'
-      }
-    ]
+    state: MenuHrEnum.SETTING,
+    href: TabEnum.SETTING,
   },
   {
     name: 'Tổ chức',
     icon: '/assets/icons/menu/diagram-3-fill.svg',
     state: MenuHrEnum.ORGCHART,
-    href: 'to-chuc',
+    href: TabEnum.ORGCHART,
     children: [
       {
         name: 'Đơn vị',
-        href: 'to-chuc/don-vi'
+        href: 'to-chuc'
+      },
+      {
+        name: 'Phòng ban',
+        href: 'to-chuc/phong-ban'
       },
       {
         name: 'Chức vụ',
         href: 'to-chuc/chuc-vu'
-      }
+      },
+
     ]
   },
   {
     name: 'Xếp hạng',
     icon: '/assets/icons/menu/bar-chart-steps.svg',
     state: MenuHrEnum.RANK,
-    href: 'xep-hang'
+    href: TabEnum.RANK
   },
   {
     name: 'Hệ thống',
     icon: '/assets/icons/menu/gear-wide.svg',
     state: MenuHrEnum.SYSTEM,
-    href: 'he-thong',
+    href: TabEnum.SYSTEM,
     children: [
       {
         name: 'Lịch sử hệ thống',
-        href: 'to-chuc/lich-su-he-thong'
+        href: 'he-thong'
       },
       {
         name: 'Quản lý tài khản',
-        href: 'to-chuc/quan-ly-tai-khoan'
+        href: 'he-thong/quan-ly-tai-khoan'
       }
     ]
   },

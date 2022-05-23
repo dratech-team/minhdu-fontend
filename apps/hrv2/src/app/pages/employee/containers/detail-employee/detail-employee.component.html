@@ -1,0 +1,654 @@
+<div class='animated fadeIn container mb-3  '>
+  <div class='row col-12 d-flex justify-content-between' *ngIf='(employee$ | async)  as employee'>
+    <div class='row mt-5 mr-5'>
+      <div class=' main-title  mr-5'>
+        Thông tin nhân viên
+      </div>
+      <div class=' justify-content-center not-print'>
+        <img
+          class='rounded-circle row'
+          alt='50x50'
+          src='{{employee?.avt}}'
+          data-holder-rendered='true'
+          height='160px'
+        />
+        <button
+          class='row btn d-flex justify-content-between align-items-center mt-2  shadow-sm p-1 mb-3 bg-white rounded not-print'>
+          <img src='../../../../../assets/img/share/person-circle.svg' alt='avatar'>
+          <span class='ml-2' style='color: #80828B;'>
+                  Đổi avatar
+            </span>
+        </button>
+        <button (click)=' employee?.leftAt ? onRestore(employee) :  onDelete(employee)'
+                class='row btn shadow-none p-2 mb-3 bg-light rounded'>
+              <span style='text-align: center; font-weight: 600;font-size: 16px;line-height: 19px; width:240px;'>
+                 {{employee.leftAt ? 'Khôi phục' : 'Nghỉ việc' }}
+              </span>
+        </button>
+      </div>
+    </div>
+    <div class="not-print">
+      <button (click)='onHistorySalary(employee )'
+              class='mt-5 btn d-flex d-flex justify-content-center  align-items-center mr-3'
+              style='border: solid 1px #4B3880'>
+        <img class='mr-1' src='../../../../../assets/img/share/arrow-counterclockwise.svg' alt='history'><span>xem lịch sử lương</span>
+      </button>
+    </div>
+  </div>
+  <div class='row mt-3' style='color:#80828B' *ngIf='(employee$ | async)  as employee'>
+    <div class='col-12'>
+      <div class='row d-flex align-items-center not-print'>
+        <div class='col-2 align-items-center title-table'>Thông tin chung</div>
+        <button
+          *ngIf='!employee.leftAt'
+          data-toggle='tooltip'
+          data-placement='top'
+          title=' chỉnh sửa '
+          class='edit animated not-print'
+          (click)='onUpdate(employee)'>
+          <img style='height: 15px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+        </button>
+      </div>
+      <div class='row mt-3'>
+        <div class='col-6  form-group'>
+          <div class='row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Họ và tên :</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail' style=' color: #3C3B54'>
+             {{employee.lastName}}
+            </span>
+            </div>
+          </div>
+          <div class='row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Giới tính :</span>
+            </div>
+            <div class='col-md-8 d-flex flex-row'>
+              {{employee.gender|transformconstant:genderTypeConstant}}
+            </div>
+          </div>
+          <div class='row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Ngày sinh :</span>
+            </div>
+            <div class='col-md-8 py-2'>
+              <span>
+                  {{employee.birthday|date:'dd/MM/yyyy'}}
+                </span>
+            </div>
+          </div>
+          <div class='row ml-1  align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span> Nguyên quán :</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail' style='color: #3C3B54'>
+              {{employee.birthplace|existpipe}}
+            </span>
+            </div>
+          </div>
+          <div class=' row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>CMND/CCCD:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+            <span class='contain-detail'>
+               {{employee?.identify|existpipe}}
+            </span>
+            </div>
+          </div>
+          <div class=' row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Ngày cấp:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+              <span class='contain-detail'>
+                {{employee?.idCardAt|existpipe}}
+                </span>
+            </div>
+          </div>
+          <div class=' row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Nơi cấp:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+            <span class='contain-detail'>
+              {{employee?.issuedBy|existpipe}}
+            </span>
+            </div>
+          </div>
+          <div class='row ml-1  align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span> Dân tộc :</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail'>
+              {{employee?.ethnicity|existpipe}}
+            </span>
+            </div>
+          </div>
+          <div class='row  ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Ngày công chuẩn :</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail'>
+               {{employee.workday}}
+            </span>
+            </div>
+          </div>
+          <div class='row ml-1  align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Công thức lương:</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail'>
+              {{employee.recipeType|transformconstant:recipeConstant}}
+            </span>
+            </div>
+          </div>
+          <div class='row ml-1  align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Loại lương:</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail'>
+            {{employee.isFlatSalary|flatsalarytypepipe}}
+            </span>
+            </div>
+          </div>
+          <div class='row  ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Ngày vào làm :</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail'>
+               {{employee.createdAt|date:'dd/MM/yyyy'}}
+            </span>
+            </div>
+          </div>
+          <div class='row  ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Ngày làm chính thức:</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail'>
+               {{employee?.workedAt|existpipe}}
+            </span>
+            </div>
+          </div>
+          <div class='row  ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Ngày nghỉ việc:</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail'>
+               {{employee.leftAt|existpipe }}
+            </span>
+            </div>
+          </div>
+        </div>
+        <div class='col-6  form-group'>
+          <div class='row align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>Đơn vị :</span>
+            </div>
+            <div class='col-md-8 py-2'>
+            <span class='contain-detail' style='color: #3C3B54'>
+              {{employee.branch.name}}
+            </span>
+            </div>
+
+          </div>
+          <div class='row align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>Chức vụ :</span>
+            </div>
+            <div class='col py-2 '>
+              <div class='p-1 px-3 '
+                   style='font-weight: 600; font-size: 16px; border: solid 1px #63c2de;width: fit-content'>
+                {{employee.position.name}}
+              </div>
+            </div>
+          </div>
+          <div class='row align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>Địa chỉ :</span>
+            </div>
+            <div class='col-md-8 py-2'>
+            <span class='contain-detail' style='color: #3C3B54'>
+              {{employee.address}}
+            </span>
+            </div>
+          </div>
+          <div class='row align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>Phường xã :</span>
+            </div>
+            <div class='col py-2 '>
+              <div class='contain-detail'>
+                <div>{{employee.ward.name}}</div>
+              </div>
+            </div>
+          </div>
+          <div class='row align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>Quận huyện :</span>
+            </div>
+            <div class='col py-2 '>
+              <div class='contain-detail'>
+                {{employee.ward.district.name}}
+              </div>
+            </div>
+          </div>
+          <div class='row align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>Tỉnh thành:</span>
+            </div>
+            <div class=' col py-2 '>
+              <div class='contain-detail'>
+                {{employee.ward.district.province.name}}
+              </div>
+            </div>
+          </div>
+          <div class='row  align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>Tôn giáo :</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail'>
+               {{employee.religion | existpipe}}
+            </span>
+            </div>
+          </div>
+          <div class='row  align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>Thuộc diện hợp đồng :</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+              <div style='width: fit-content; height: fit-content'
+                   (click)='onUpdateContract(employee)'
+              >
+                <label
+                  style="pointer-events: none"
+                  nz-checkbox
+                  [nzChecked]="employee.contracts.length >0">
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='col-12 mt-3'>
+      <div class=' d-flex align-items-center'>
+        <div class='align-items-center main-title ml-2 mr-4'>Thông tin liên hệ</div>
+      </div>
+      <div class='row pl-3'>
+        <div class='col-6  form-group'>
+          <div class='mt-3 row align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>ĐT di động:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+            <span class='contain-detail' style='color: #7749F8  '>
+                {{employee.phone|existpipe}}
+            </span>
+            </div>
+          </div>
+          <div class='row align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>Số ĐT khác:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+            <span class='contain-detail' style='color: #7749F8  '>
+                {{employee.workPhone | existpipe}}
+            </span>
+            </div>
+          </div>
+          <div class=' row align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>Email cá nhân:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+            <span class='contain-detail'>
+                {{employee.email | existpipe}}
+            </span>
+            </div>
+          </div>
+          <div class=' row align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>Facebook:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+            <span class='contain-detail'>
+                {{employee?.facebook | existpipe}}
+            </span>
+            </div>
+          </div>
+          <div class=' row align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>zalo:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+            <span class='contain-detail'>
+                {{employee?.zalo | existpipe}}
+            </span>
+            </div>
+          </div>
+          <div class=' row align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>Nguyên quán:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+            <span class='contain-detail'>
+                {{employee.birthplace | existpipe}}
+            </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='col-12'>
+      <div class=' d-flex align-items-center'>
+        <div class='ml-2 mt-5  d-flex align-items-center main-title'>Thông tin bảo hiểm
+          <button
+            *ngIf='!employee.leftAt'
+            data-toggle='tooltip'
+            data-placement='top'
+            title=' chỉnh sửa '
+            class='edit animated ml-5 not-print'
+            (click)='onBHYT(employee.bhyt)'>
+            <img style='height: 15px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+          </button>
+        </div>
+      </div>
+      <div class='row pl-3 '>
+        <div class='col-6  form-group'>
+          <div class='mt-3 row align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Ngày tham gia BH:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+              <span class='contain-detail'>
+                {{employee?.bhyt | existpipe}}
+              </span>
+            </div>
+          </div>
+          <div class=' row align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Tỉ lệ đóng bảo hiểm:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+                <span class='contain-detail'>
+                {{employee?.bhyt | existpipe }}
+                </span>
+
+            </div>
+          </div>
+          <div class=' row align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>số sổ BHXH:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+                <span class='contain-detail'>
+                {{employee?.bhyt | existpipe }}
+                </span>
+            </div>
+          </div>
+          <div class=' row align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Mã số BHXH:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+                <span class='contain-detail'>
+                {{employee?.bhyt | existpipe}}
+                </span>
+            </div>
+          </div>
+          <div class=' row align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Mã tỉnh cấp:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+                <span class='contain-detail'>
+                {{employee?.bhyt | existpipe}}
+                </span>
+            </div>
+          </div>
+        </div>
+        <div class='col-6  form-group'>
+          <div class='mt-3 row align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Số thẻ BHYT:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+            <span class='contain-detail'>
+                {{employee?.bhyt | existpipe}}
+            </span>
+            </div>
+          </div>
+          <div class=' row align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Ngày hết hạn:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+                <span *ngIf='employee?.bhyt === null'>
+                  {{employee.bhyt | existpipe}}
+                </span>
+            </div>
+          </div>
+          <div class=' row align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Nơi đăng kí KCB:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+            <span class='contain-detail'>
+                {{employee?.bhyt | existpipe}}
+            </span>
+            </div>
+          </div>
+          <div class=' row align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Mã số nơi KCB:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+            <span class='contain-detail'>
+                {{employee?.bhyt === null | existpipe}}
+            </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='col-12 mt-5'>
+      <div class='row d-flex align-items-center '>
+        <div class=' align-items-center title-table mr-4'>Thành phần gia đình</div>
+        <div class='col-md-4 add not-print' *ngIf='!employee.leftAt' (click)='onRelative(employee.id )'>
+          <span class='mr-1 font-weight-bold '>Thêm mục</span>
+          <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+               alt='add icon'>
+        </div>
+      </div>
+      <div class='mt-3 '>
+        <nz-table
+          #tableRelative
+          nzSize="small"
+          [nzData]="employee.relatives || []"
+          class='mt-3'>
+          <thead>
+          <tr>
+            <th>Họ và tên</th>
+            <th>Quan hệ</th>
+            <th>Ngày sinh</th>
+            <th>Số điện thoại</th>
+            <th>Email</th>
+            <th>Liên hệ khẩn cấp</th>
+            <th>Xóa</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr
+            *ngFor='let relative of tableRelative.data'
+            (click)='onRelative(employee.id, relative.id, relative)'
+            class="pointer"
+          >
+            <td>{{relative.lastName}}</td>
+            <td>{{relative.relationship|transformconstant: relationshipConstant}}</td>
+            <td>{{relative.birthday |date:'dd/MM/yyyy'}}</td>
+            <td>{{relative?.phone | existpipe}}</td>
+            <td>{{relative?.email | existpipe}}</td>
+            <td>
+              <label nzDisabled nz-checkbox [nzChecked]="relative.sos"></label>
+            </td>
+            <td class="not-print">
+              <button
+                nz-button nzDanger
+                (click)='onDeleteRelative(relative); $event.stopPropagation() '>
+                Xoá
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+    <div class='col-12 mt-5'>
+      <div class='row'>
+        <div class=' align-items-center title-table mr-4'>Trình độ bằng cấp</div>
+        <div class='col-md-4 add not-print' *ngIf='!employee.leftAt' (click)='onDegree(employee.id)'>
+          <span class='mr-1 font-weight-bold'>Thêm mục</span>
+          <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+               alt='add icon'>
+        </div>
+      </div>
+      <div class='mt-3 '>
+        <nz-table
+          #tableDegree
+          [nzData]="employee.degrees|| []"
+          nzShowPagination="false"
+          class='mt-3'>
+          <thead>
+          <tr>
+            <th>Bằng cấp</th>
+            <th>Bắt đầu</th>
+            <th>Kết thúc</th>
+            <th>Chuyên ngành</th>
+            <th>hình thức đào tạo</th>
+            <th>Nơi đào tạo</th>
+            <th>Mức tốt nghiệp</th>
+            <th>Tốt nghiệp</th>
+            <th class='not-print'>Xóa</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr
+            *ngFor='let degree of tableDegree.data'
+            (click)='onDegree(employee.id,degree.id , degree)'
+            class="pointer"
+          >
+            <td>
+              {{degree.type|transformconstant:degreeConstant }}
+            </td>
+            <td>{{degree.startedAt |date:'dd/MM/yyyy'}}</td>
+            <td>{{degree.endedAt |date:'dd/MM/yyyy'}}</td>
+            <td>{{degree.major}}</td>
+            <td>{{degree.formality|transformconstant: formalityTypeConstant}}</td>
+            <td>{{degree.school}}</td>
+            <td>{{degree.level|transformconstant:degreeLevelTypeConstant}}</td>
+            <td>{{degree.status|transformconstant: degreeStatusTypeConstant}}
+            </td>
+            <td class="not-print">
+              <button
+                nz-button nzDanger
+                (click)='onDeleteDegree(degree) ; $event.stopPropagation()'>
+                Xoá
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+    <div class='col-12'>
+      <div class=' mt-5 mb-3 row align-items-center title-table'>Lịch sử lương</div>
+      <div>
+        <nz-table
+          #tableSalaryHistory
+          nzSize="small"
+          nzShowPagination="false"
+          [nzScroll]="{x: '300px', y:'100%'}"
+          [nzData]="employee.salaryHistories|| []"
+        >
+          <thead>
+          <tr>
+            <th>Loại lương</th>
+            <th>Mức lương</th>
+            <th>Ngày</th>
+            <th>Hành động</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor='let history of tableSalaryHistory.data|filterDay'>
+            <td>{{history.title}}</td>
+            <td>{{history.price|number:'1.0'}}đ</td>
+            <td>{{history.createdAt|date:'dd/MM/yyyy'}}</td>
+            <td>
+              <div class="text-center">
+                <button
+                  nz-button nzDanger
+                  (click)="onDeleteHistorySalary(history)">
+                  Xoá
+                </button>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+    <div class='col-12 mb-3'>
+      <div class=' mt-5 mb-3 row align-items-center title-table'>Lịch sử công tác</div>
+      <div>
+        <nz-table
+          #tableWorkHistory
+          nzSize="small"
+          nzShowPagination="false"
+          [nzScroll]="{x: '300px', y:'100%'}"
+          [nzData]="employee.workHistories|| []">
+          <thead>
+          <tr>
+            <th>Từ ngày</th>
+            <th>Vị trí công việc</th>
+            <th>Đơn vị công tác</th>
+            <th>Xoá</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor='let workHistory of tableWorkHistory.data|workhistorypipe'>
+            <td>{{workHistory.createdAt|date:'dd/MM/yyyy'}}</td>
+            <td>{{workHistory.position.name}}</td>
+            <td>{{workHistory.branch.name}}</td>
+            <td (click)="onDeleteWorkHistory(workHistory, employee.id)">
+              <button nz-button nzDanger>
+                Xoá
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @media print {
+    .show-table-print {
+      height: auto !important;
+      overflow: auto !important;
+    }
+  }
+</style>

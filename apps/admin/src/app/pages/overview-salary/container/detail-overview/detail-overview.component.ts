@@ -34,7 +34,6 @@ export class DetailOverviewComponent implements OnInit {
           this.totalSalary = this.totalSalary + item.total;
         });
         this.dataDetail = val;
-        console.log(this.totalSalary)
       }
     });
     // this.store.dispatch(AdminAction.updateStateMenu({ tab: MenuWarehouseEum.OVERVIEW }));
@@ -48,7 +47,6 @@ export class DetailOverviewComponent implements OnInit {
     //           this.totalSalary = this.totalSalary + item.total;
     //         });
     //         this.dataDetail = val;
-    //         console.log(this.totalSalary)
     //       }
     //     });
     //   }

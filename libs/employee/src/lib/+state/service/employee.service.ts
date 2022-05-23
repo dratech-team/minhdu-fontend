@@ -1,13 +1,16 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Api } from '@minhdu-fontend/constants';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {Api} from '@minhdu-fontend/constants';
 import {Employee, ResponsePaginate, Salary} from '@minhdu-fontend/data-models';
-import { BaseService } from 'libs/service/base.service';
+import {BaseService} from 'libs/service/base.service';
+import {VersionEnum} from "@minhdu-fontend/enums";
 
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class EmployeeService extends BaseService<Employee> {
+  urlHistory = VersionEnum.V1 + Api.HR.EMPLOYEE.HISTORY_SALARY
+
   constructor(
     public readonly http: HttpClient
   ) {
@@ -37,7 +40,7 @@ export class EmployeeService extends BaseService<Employee> {
   }
 
   leaveEmployee(id: number, body?: any): Observable<void> {
-    return this.http.patch<void>(Api.HR.EMPLOYEE.EMPLOYEE + `/${id}/leave`, body);
+    return this.http.patch<void>(this.url + `/${id}/leave`, body);
   }
 
   delete(id: number, params?: any): Observable<void> {
@@ -45,14 +48,14 @@ export class EmployeeService extends BaseService<Employee> {
   }
 
   deleteWorkHistory(id: number): Observable<void> {
-    return this.http.delete<void>(Api.HR.EMPLOYEE.EMPLOYEE + `/${id}/work-history`);
+    return this.http.delete<void>(this.url + `/${id}/work-history`);
   }
 
   updateHistorySalary(id: number, body: any): Observable<Salary> {
-    return this.http.patch<Salary>(Api.HR.EMPLOYEE.HISTORY_SALARY + `/${id}`, body);
+    return this.http.patch<Salary>(this.urlHistory + `/${id}`, body);
   }
 
   deleteHistorySalary(id: number): Observable<void> {
-    return this.http.delete<void>(Api.HR.EMPLOYEE.HISTORY_SALARY + `/${id}`);
+    return this.http.delete<void>(this.urlHistory + `/${id}`);
   }
 }

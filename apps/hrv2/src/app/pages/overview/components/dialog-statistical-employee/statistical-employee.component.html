@@ -1,0 +1,19 @@
+<form [formGroup]='formGroup'>
+  <div>
+    <div>Chọn từ ngày đến ngày</div>
+    <nz-range-picker nzMode="date" nzFormat="dd-MM-yyyy" formControlName="rangeDay"></nz-range-picker>
+  </div>
+  <div>
+    <div>
+      <span class='title-item'>Đơn vị</span>
+    </div>
+    <div>
+      <nz-select nzShowSearch style="width: 100%" formControlName="branch">
+        <nz-option *ngFor="let branch of branches$|async" [nzValue]="branch" [nzLabel]="branch.name"></nz-option>
+      </nz-select>
+    </div>
+  </div>
+</form>
+<div class='mt-2'>
+  <button nz-button nzType="primary" (click)='onSubmit()'>Đồng ý</button>
+</div>

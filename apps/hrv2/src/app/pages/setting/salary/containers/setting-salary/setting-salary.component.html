@@ -1,0 +1,126 @@
+<div class="d-flex mt-3 ml-2">
+  <div class='d-flex flex-column ml-3 border p-2' style='height: 75vh; width:250px; overflow-y: scroll'>
+    <nz-collapse>
+      <nz-collapse-panel
+        nzHeader='Tìm kiếm'
+        nzActive='true'>
+        <div [formGroup]='formGroup'>
+          <input nz-input class='form-control' type='search' formControlName='search'>
+        </div>
+      </nz-collapse-panel>
+    </nz-collapse>
+    <nz-collapse class="mt-2">
+      <nz-collapse-panel
+        nzHeader='Loại bản mẫu'
+        nzActive='true'>
+        <div [formGroup]='formGroup'>
+          <nz-select
+            nzShowSearch
+            formControlName="types"
+            nzMode="multiple"
+            style="width: 100%"
+          >
+            <nz-option *ngFor="let item of blockSalaries" [nzValue]="item.type" [nzLabel]="item.title"></nz-option>
+          </nz-select>
+        </div>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </div>
+  <div class="d-flex flex-column ml-2" style="width: 80vw">
+    <div class="ml-2 d-flex justify-content-between">
+      <div class="font-2xl font-weight-bold">Cài đặt lương</div>
+      <div>
+        <div>
+          <button nz-button nzType="primary" class="ml-2" (click)="onAdd()">Thêm</button>
+          <button class='ml-2' nz-button nz-popover nzPopoverTitle='Ghim'
+                  [(nzPopoverVisible)]='visible'
+                  nzPopoverPlacement='bottomRight'
+                  [nzPopoverContent]='pinned'
+                  nzPopoverTrigger='click'>Ghim
+          </button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <nz-table
+        #tableSetting
+        *ngIf=" (settingSalaries$|async) as settingSalaries"
+        nzShowPagination="false"
+        [nzScroll]="{ x: '1700px',y: '67vh'}"
+        nzSize='middle'
+        [nzLoading]="loading$|async"
+        [nzData]="settingSalaries"
+      >
+        <thead>
+        <tr>
+          <th nzLeft nzWidth="60px">STT</th>
+          <th>Mã bản mẫu</th>
+          <th nzLeft>Tên bản mẫu</th>
+          <th nzLeft>Đơn giá - Công thức lương</th>
+          <th>Hệ số</th>
+          <th>Thời gian</th>
+          <th>Loại bản mẫu</th>
+          <th>Ghi chú</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let settingSalary of settingSalaries; let i = index"
+            (contextmenu)='child.onContextMenu($event,settingSalary)'>
+          <td nzLeft>{{i + 1}}</td>
+          <td>{{settingSalary.id}}</td>
+          <td nzLeft>{{settingSalary.title}}</td>
+          <td nzLeft>{{
+            settingSalary.type === salaryTypeEnum.ABSENT
+            || settingSalary.type === salaryTypeEnum.OVERTIME
+            || settingSalary.type === salaryTypeEnum.HOLIDAY
+              ? ((settingSalary.prices && settingSalary.prices.length > 0 ? (settingSalary.prices|prices) : (settingSalary.totalOf|salarytype:'transform'))
+                + (settingSalary.workday
+                  ? +' / ' + settingSalary.workday
+                  : (settingSalary.type === salaryTypeEnum.OVERTIME && settingSalary.totalOf.length === 0
+                      ? ''
+                      : ' / Ngày công chuẩn'
+                  ))
+              )
+              : (settingSalary.prices|prices)}}</td>
+          <td>{{settingSalary.rate}}</td>
+          <td>
+            <div *ngIf="settingSalary.startedAt else notDate">
+              Từ {{settingSalary.startedAt|date:'dd-MM-yyyy'}}
+              <br>
+              đến {{settingSalary.endedAt|date:'dd-MM-yyyy'}}
+            </div>
+            <ng-template #notDate>
+              -
+            </ng-template>
+          </td>
+          <td>{{settingSalary.type|blocksalary: blockSalaries }}</td>
+          <td>{{settingSalary.note }}</td>
+        </tr>
+          <tr *ngIf="((count$|async) || 0) < ((total$|async) || 0) && (total$|async) !== 0">
+            <td [colSpan]="tableSetting.listOfAutoColWidth.length">
+              <div class="w-100 d-flex justify-content-start" style="position: relative">
+                <button
+                  (click)="onLoadMore()"
+                  style="position: sticky; left: 35vw"
+                  nz-button nzType="primary"
+                  [nzLoading]="loadMore$|async">
+                  Tải thêm {{((remain$|async) || 0)}}
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>
+<ng-template #pinned>
+  <minhdu-fontend-pinned-setting-salary></minhdu-fontend-pinned-setting-salary>
+</ng-template>
+<app-mouse-right
+  #child
+  (onAdd)='onAdd()'
+  (onUpdate)='onUpdate($event)'
+  (onDel)='onDelete($event)'
+></app-mouse-right>
+

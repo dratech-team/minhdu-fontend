@@ -1,14 +1,10 @@
-import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { AuthActions } from '@minhdu-fontend/auth';
-import { MatDialog } from '@angular/material/dialog';
-import { LogoutComponent } from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
-import { select, Store } from '@ngrx/store';
-import { Router } from '@angular/router';
-import { MenuAdminConstant } from '../../../constant/menu-admin.constant';
-import { AdminAction } from '../../states/admin.action';
-import { MenuWarehouseEum } from '@minhdu-fontend/enums';
-import { selectedTab } from '../../states/admin.selector';
-import { AppState } from '../../reducers';
+import {AfterContentChecked, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {MenuAdminConstant} from '../../../constant/menu-admin.constant';
+import {Actions} from "@datorama/akita-ng-effects";
+import {AccountActions} from "../../../../../../libs/system/src/lib/state/account-management/account.actions";
+import {NzModalService} from "ng-zorro-antd/modal";
 
 
 @Component({
@@ -16,32 +12,29 @@ import { AppState } from '../../reducers';
   templateUrl: 'admin-layout.component.html',
   styleUrls: ['admin-layout.component.scss']
 })
-export class AdminLayoutComponent implements OnInit, AfterContentChecked {
+export class AdminLayoutComponent implements OnInit {
   role = localStorage.getItem('role');
   menuAdminConstant = MenuAdminConstant;
-  tab$ = this.store.pipe(select(selectedTab));
 
   constructor(
+    private readonly actions$: Actions,
     private readonly dialog: MatDialog,
-    private readonly store: Store<AppState>,
     private readonly router: Router,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private modal: NzModalService,
   ) {
-  }
-
-  ngAfterContentChecked() {
-    this.ref.detectChanges();
   }
 
   ngOnInit() {
   }
 
   logout() {
-    const ref = this.dialog.open(LogoutComponent, { width: '30%' });
-    ref.afterClosed().subscribe(val => {
-      if (val) {
-        this.store.dispatch(AuthActions.logout());
-      }
-    });
+    this.modal.warning({
+      nzTitle: 'Đăng xuất',
+      nzContent: 'Bạn có chắc chắn muốn đăng xuất',
+      nzOnOk: (_ => {
+        return this.actions$.dispatch(AccountActions.logout())
+      })
+    })
   }
 }

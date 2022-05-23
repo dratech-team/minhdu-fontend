@@ -183,10 +183,7 @@
                *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='readPayroll(payrollAbsent)'>
-           <span *ngIf='item.unit === datetimeUnit.MINUTE'>
-                  ({{item.times | convertTime }} )
-                </span>
-            <span *ngIf='item.unit === datetimeUnit.TIMES'> {{item.times}} Lần </span>
+            <span *ngIf='item.unit === datetimeUnit.MONTH'>Tháng</span>
             <span *ngIf='item.unit === datetimeUnit.DAY'>Ngày</span>
           </div>
         </th>

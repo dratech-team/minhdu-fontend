@@ -3,9 +3,8 @@ import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {CommodityService} from '../service';
 import {CommodityAction} from './commodity.action';
-import {of, throwError} from 'rxjs';
+import {of} from 'rxjs';
 import {OrderActions} from '../../order/+state';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {CommodityQuery} from './commodity.query';
 import {CommodityStore} from './commodity.store';
 import {SearchCommodityDto} from '../dto';
@@ -101,7 +100,7 @@ export class CommodityEffect {
         this.commodityStore.update(state => ({
           ...state, added: false
         }));
-        return this.commodityService.update(props.id, props.updates).pipe(
+        return this.commodityService.update(props).pipe(
           map(commodity => {
               this.commodityStore.update(state => ({
                 ...state, added: true

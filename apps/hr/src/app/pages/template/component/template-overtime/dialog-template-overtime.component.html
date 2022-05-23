@@ -135,7 +135,7 @@
               }'
               formControlName="priceType">
               <label nz-radio nzValue="{{priceTypeEnum.PRICE}}">Theo đơn giá</label>
-              <label nz-radio nzValue="{{priceTypeEnum.NORMAL}}">Theo lương chuẩn</label>
+              <label nz-radio nzValue="{{priceTypeEnum.STANDARD}}">Theo lương chuẩn</label>
             </nz-radio-group>
             <div *ngIf='submitted && f.priceType.errors?.required' class='invalid-feedback'>
               <div>Chưa chọn loại tăng ca</div>

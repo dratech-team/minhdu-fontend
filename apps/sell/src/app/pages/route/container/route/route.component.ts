@@ -1,25 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { Api } from '@minhdu-fontend/constants';
-import { SortRouteEnum } from '@minhdu-fontend/enums';
-import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
-import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
-import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
-import { debounceTime, map, tap } from 'rxjs/operators';
-import { RouteActions, RouteQuery, RouteStore } from '../../+state';
-import { RouteEntity } from '../../entities';
-import { DialogDeleteComponent } from '@minhdu-fontend/components';
-import { RouteDialogComponent } from '../../component';
-import { Actions } from '@datorama/akita-ng-effects';
-import { DatePipe } from '@angular/common';
-import { OrderActions } from '../../../order/+state';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { Sort } from '@minhdu-fontend/data-models';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {Api} from '@minhdu-fontend/constants';
+import {SortRouteEnum} from '@minhdu-fontend/enums';
+import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
+import {DialogExportComponent} from 'libs/components/src/lib/dialog-export/dialog-export.component';
+import {ItemContextMenu} from 'libs/enums/sell/page-type.enum';
+import {debounceTime, map, tap} from 'rxjs/operators';
+import {RouteActions, RouteQuery, RouteStore} from '../../+state';
+import {RouteEntity} from '../../entities';
+import {RouteDialogComponent} from '../../component';
+import {Actions} from '@datorama/akita-ng-effects';
+import {DatePipe} from '@angular/common';
+import {OrderActions} from '../../../order/+state';
+import {NzModalService} from 'ng-zorro-antd/modal';
+import {Sort} from '@minhdu-fontend/data-models';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { RadiosStatusRouteConstant } from '../../constants';
+import {RadiosStatusRouteConstant} from '../../constants';
 
 @Component({
   templateUrl: 'route.component.html'
@@ -29,6 +28,7 @@ export class RouteComponent implements OnInit {
   routes$ = this.routeQuery.selectAll().pipe(map(routes => JSON.parse(JSON.stringify(routes))));
   loading$ = this.routeQuery.selectLoading();
   total$ = this.routeQuery.select(state => state.total);
+  deleted$ = this.routeQuery.select(state => state.deleted);
   ui$ = this.routeQuery.select(state => state.ui);
   pageSize = 30;
   pageIndexInit = 0;
@@ -65,7 +65,7 @@ export class RouteComponent implements OnInit {
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          this.actions$.dispatch(RouteActions.loadAll({ params: this.mapRoute(val) }));
+          this.actions$.dispatch(RouteActions.loadAll({params: this.mapRoute(val)}));
         })
       )
       .subscribe();
@@ -76,19 +76,17 @@ export class RouteComponent implements OnInit {
       nzWidth: 'fit-content',
       nzTitle: 'Cập nhật tuyến đường',
       nzContent: RouteDialogComponent,
-      nzFooter: null
+      nzFooter: []
     });
   }
 
-  onRemove($event: any) {
-    const ref = this.dialog.open(DialogDeleteComponent, {
-      width: 'fit-content'
-    });
-    ref.afterClosed().subscribe((value) => {
-      if (value) {
-        this.actions$.dispatch(RouteActions.remove({ idRoute: $event.id }));
-      }
-    });
+  onRemove(route: RouteEntity) {
+    this.modal.warning({
+      nzTitle: 'Xoá tuyến đương',
+      nzContent: `Bạn có chắc chắn muốn xoá tuyến đường ${route.name} này không`,
+      nzOkDanger: true,
+      nzOnOk: () => this.actions$.dispatch(RouteActions.remove({idRoute: route.id}))
+    })
   }
 
   onEnd(event: RouteEntity) {
@@ -104,23 +102,23 @@ export class RouteComponent implements OnInit {
       .subscribe((val) => {
         if (val) {
           this.actions$.dispatch(
-            RouteActions.update({ id: event.id, updates: { endedAt: val.day } })
+            RouteActions.update({id: event.id, updates: {endedAt: val.day}})
           );
         }
       });
   }
 
   onDetail(id: number, isUpdate: boolean) {
-    this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id], { queryParams: { isUpdate } }).then();
+    this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id], {queryParams: {isUpdate}}).then();
   }
 
   onPickStartedDay($event: any) {
-    this.formGroup.get('startedAt_start')?.setValue($event.start, { emitEvent: false });
+    this.formGroup.get('startedAt_start')?.setValue($event.start, {emitEvent: false});
     this.formGroup.get('startedAt_end')?.setValue($event.end);
   }
 
   onPickEndedAtDay($event: any) {
-    this.formGroup.get('endedAt_start')?.setValue($event.start, { emitEvent: false });
+    this.formGroup.get('endedAt_start')?.setValue($event.start, {emitEvent: false});
     this.formGroup.get('endedAt_end')?.setValue($event.end);
   }
 
@@ -138,9 +136,9 @@ export class RouteComponent implements OnInit {
   onExpandAll() {
     const expanedAll = this.routeQuery.getValue().expandedAll;
     this.routeQuery.getAll().forEach((route: RouteEntity) => {
-      this.routeStore.update(route.id, { expand: !expanedAll });
+      this.routeStore.update(route.id, {expand: !expanedAll});
     });
-    this.routeStore.update(state => ({ ...state, expandedAll: !expanedAll }));
+    this.routeStore.update(state => ({...state, expandedAll: !expanedAll}));
   }
 
   onSort(sort: Sort) {
@@ -179,7 +177,7 @@ export class RouteComponent implements OnInit {
           this.datePipe.transform(value.startedAt_start, 'dd-MM-yyyy') +
           ' đến ngày ' + this.datePipe.transform(value.endedAt_end, 'dd-MM-yyyy'),
         title: 'Xuât bảng Tuyến đường',
-        params: Object.assign(_.omit(value, ['take', 'skip']), { exportType: 'ROUTE' }),
+        params: Object.assign(_.omit(value, ['take', 'skip']), {exportType: 'ROUTE'}),
         api: Api.SELL.ROUTE.ROUTE_EXPORT,
         selectDatetime: true,
         typeDate: 'RANGE_DATETIME'

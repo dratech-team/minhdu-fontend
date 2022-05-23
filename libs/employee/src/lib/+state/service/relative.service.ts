@@ -1,12 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { UpdateNum } from '@ngrx/entity/src/models';
-import { Api } from '@minhdu-fontend/constants';
-import { Employee, Relative } from '@minhdu-fontend/data-models';
-import { BaseService } from 'libs/service/base.service';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {Api} from '@minhdu-fontend/constants';
+import {Employee} from '@minhdu-fontend/data-models';
+import {BaseService} from 'libs/service/base.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class RelativeService extends BaseService<Employee> {
   constructor(
     public readonly http: HttpClient
@@ -23,7 +22,7 @@ export class RelativeService extends BaseService<Employee> {
   }
 
   deleteRelative(id: number): Observable<Employee> {
-    return this.http.delete<Employee>(Api.HR.EMPLOYEE.RELATIVE + `/${id}`);
+    return this.http.delete<Employee>(this.url + `/${id}`);
   }
 
 }

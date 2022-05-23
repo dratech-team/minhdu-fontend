@@ -1,1 +1,2 @@
-export * from './priceType.enum'
+export * from './salaryReference'
+export * from './dive-type.enum'

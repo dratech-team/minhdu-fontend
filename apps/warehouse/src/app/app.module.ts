@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { ErrorInterceptor, JwtInterceptor } from '@minhdu-fontend/auth';
+import {AuthModule, ErrorInterceptor, JwtInterceptor} from '@minhdu-fontend/auth';
 import { CommonModule, HashLocationStrategy } from '@angular/common';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AppRoutingModule } from './app-routing.module';
@@ -21,13 +21,11 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/mater
 import { AppComponent } from './app.component';
 import { WarehouseLayoutComponent } from './container/base/warehouse-layout.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
 import { OrgchartModule } from '@minhdu-fontend/orgchart';
 import { SupplierModule } from './pages/supplier/supplier.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { RouteGuard } from './route.guard';
-import {OrgchartEffects} from "../../../../libs/orgchart/src/lib/+state/Orgchart";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {environment} from "../../../hr/src/environments/environment";
 import { WarehouseModule } from './pages/warehouse/warehosue.module';
@@ -44,7 +42,7 @@ import { WarehouseModule } from './pages/warehouse/warehosue.module';
     AppRoutingModule,
     BrowserModule,
     AkitaNgDevtools.forRoot(),
-    EffectsModule.forRoot([AuthEffects,OrgchartEffects]),
+    EffectsModule.forRoot(),
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
@@ -67,20 +65,11 @@ import { WarehouseModule } from './pages/warehouse/warehosue.module';
     SupplierModule,
     RouterModule,
     MatTabsModule,
-    WarehouseModule
+    WarehouseModule,
+    AuthModule
   ],
   providers: [
     RouteGuard,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: JwtInterceptor,
-      multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
-      multi: true
-    },
     HashLocationStrategy,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }

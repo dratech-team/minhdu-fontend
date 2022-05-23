@@ -1,0 +1,95 @@
+<form [formGroup]='formGroup' style="height: 50vh ; overflow-y: scroll">
+  <div>
+    <div class='col-12 mt-3'>
+      <div>
+        <label>Bằng cấp</label> <span class='star'>*</span>
+        <div>
+          <nz-select style="width: 100%" formControlName="type">
+            <nz-option *ngFor="let item of degreeTypeConstant" [nzValue]="item.value" [nzLabel]="item.name">
+            </nz-option>
+          </nz-select>
+        </div>
+        <div *ngIf='submitted && checkValid.type.errors' class='invalid-feedback'>
+          <div>Chưa chọn bằng cấp</div>
+        </div>
+      </div>
+    </div>
+    <div class='col-12 mt-3'>
+      <label for='school'>Nơi đào tạo</label><span class='star'>*</span>
+      <input type='text' class='form-control' id='school' placeholder='Đại học Quy Nhơn' formControlName='school'
+             [ngClass]="{ 'is-invalid': submitted && checkValid.school.errors }">
+      <div *ngIf='submitted && checkValid.school.errors' class='invalid-feedback'>
+        <div>Chưa nhập nơi đào tạo</div>
+      </div>
+    </div>
+    <div class='col-12 mt-3'>
+      <label>Bắt đầu</label><span class='star'>*</span>
+      <div>
+        <nz-date-picker style="width: 100%" nzMode="date" nzFormat="dd/MM/yyyy" formControlName='startedAt'>
+        </nz-date-picker>
+      </div>
+      <div *ngIf='submitted && checkValid.startedAt.errors' class='invalid-feedback'>
+        <div>Chưa nhập ngày bắt đầu</div>
+      </div>
+    </div>
+    <div class='col-12 mt-3'>
+      <label>Kết thúc</label><span class='star'>*</span>
+      <div>
+        <nz-date-picker style="width: 100%" nzMode="date" nzFormat="dd/MM/yyyy" formControlName='endedAt'>
+        </nz-date-picker>
+      </div>
+      <div *ngIf='submitted && checkValid.endedAt.errors' class='invalid-feedback'>
+        <div>Chưa nhập ngày kết thúc</div>
+      </div>
+    </div>
+    <div class='col-12 mt-3'>
+      <label for='major'>Chuyên nghành<span class='star'>*</span>
+      </label>
+      <input type='text' class='form-control' id='major' placeholder='Kế toán' formControlName='major'
+             [ngClass]="{ 'is-invalid': submitted && checkValid.major.errors }">
+      <div *ngIf='submitted && checkValid.major.errors' class='invalid-feedback'>
+        <div>Chưa nhập chuyên ngành</div>
+      </div>
+    </div>
+    <div class='col-12 mt-3'>
+      <div>
+        <label for='formality'>Hình thức đào tạo</label><span class='star'>*</span>
+        <nz-select id='formality' style="width: 100%" formControlName='formality'>
+          <nz-option *ngFor="let item of formalityTypeConstant" [nzValue]="item.value" [nzLabel]="item.name">
+          </nz-option>
+        </nz-select>
+        <div *ngIf='submitted && checkValid.formality.errors' class='invalid-feedback'>
+          <div>Chưa chọn hình thức đào tạo</div>
+        </div>
+      </div>
+    </div>
+    <div class='col-12 mt-3'>
+      <div [formGroup]='formGroup'>
+        <label for='level'>Xếp loại</label><span class='star'>*</span>
+        <nz-select id='level' style="width: 100%" formControlName='level'>
+          <nz-option *ngFor="let item of degreeLevelTypeConstant" [nzValue]="item.value" [nzLabel]="item.name">
+          </nz-option>
+        </nz-select>
+        <div *ngIf='submitted && checkValid.level.errors' class='invalid-feedback'>
+          <div>Chưa chọn xếp loại</div>
+        </div>
+      </div>
+    </div>
+    <div class='col-12 mt-3'>
+      <div [formGroup]='formGroup'>
+        <label for='status'>Hoàn thành</label><span class='star'>*</span>
+        <nz-select id='status' style="width: 100%" formControlName='status'>
+          <nz-option *ngFor="let item of degreeStatusTypeConstant" [nzValue]="item.value" [nzLabel]="item.name">
+          </nz-option>
+        </nz-select>
+        <div *ngIf='submitted && checkValid.level.errors' class='invalid-feedback'>
+          <div>Chưa chọn hoàn thành</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div class='row d-flex mt-3 justify-content-center'>
+  <button nz-button nzType="primary" [nzLoading]="(added$|async) === false" (click)='onSubmit()'> Xác nhận</button>
+</div>
+

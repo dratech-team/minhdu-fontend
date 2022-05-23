@@ -47,7 +47,7 @@ export const MenuWarehouseConstant: menuWarehouse[] = [
     name: 'Lịch sử hệ thống',
     icon: '/assets/icon/menu/card-list.svg',
     state: MenuWarehouseEum.ACCOUNT_MANAGEMENT,
-    href: 'he-thong/lich-su-he-thong'
+    href: 'he-thong'
   },
 ]
 

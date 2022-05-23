@@ -9,9 +9,9 @@
     <span class='font-lg'>{{data.description}}</span>
   </div>
   <div class="row mt-4 ml-2">
-    <button mat-dialog-close
+    <button [mat-dialog-close]="onClick()"
             style='font-size: 12px'
-            class="  col-md-2 btn btn-cancel d-flex justify-content-center">Hủy</button>
+            class="  col-md-2 btn btn-cancel d-flex justify-content-center">Không</button>
     <button [mat-dialog-close]="onClick()"
             style='font-size: 12px'
             class="ml-3 col-md-3 btn btn-ok d-flex justify-content-center">Đồng ý

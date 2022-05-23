@@ -1,8 +1,9 @@
 import {Payroll} from '../../../../apps/hr/src/app/pages/payroll/+state/payroll/payroll.interface';
 import {DatetimeUnitEnum, SalaryTypeEnum} from '../../../enums';
 import {SalaryHistory} from './salary-history';
-import {PartialDayEnum} from '@minhdu-fontend/data-models';
 import {Employee} from '../employee/employee';
+import {SalarySetting} from "../../../../apps/hr/src/app/pages/template/+state/teamlate-salary/salary-setting";
+import {PartialDayEnum} from "../../partial-day.enum";
 
 
 export interface Salary {
@@ -17,16 +18,20 @@ export interface Salary {
   datetime: Date,
   startedAt: Date,
   endedAt: Date,
+  startedTime: Date,
+  endedTime: Date,
   forgot: boolean,
   note: string,
   employeeId: number,
-  Payroll: Payroll,
-  PayrollId: number,
+  payroll: Payroll,
+  payrollId: number,
   salaryHistory: SalaryHistory,
   salaryHistoryId: number,
   allowance?: any,
   DAY?: PartialDayEnum,
-  employee?: Employee
+  employee?: Employee,
+  settingId?: number,
+  setting?:SalarySetting
 }
 
 export interface SalaryPayroll {

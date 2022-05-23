@@ -7,4 +7,5 @@ export enum FilterTypeEnum {
   STAY = 'STAY',
   ALLOWANCE = 'ALLOWANCE',
   ABSENT = 'ABSENT',
+  PERMANENT = 'PERMANENT'
 }

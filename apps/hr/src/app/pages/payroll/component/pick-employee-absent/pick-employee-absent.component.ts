@@ -18,7 +18,7 @@ import { searchAutocomplete } from '@minhdu-fontend/utils';
 import { checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComplete } from '@minhdu-fontend/utils';
 
 @Component({
-  selector: 'app-pick-employee-absent',
+  selector: 'app-pick-employee-deduction',
   templateUrl: './pick-employee-absent.component.html'
 })
 export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges {

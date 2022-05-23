@@ -149,30 +149,30 @@ export class PickPayrollComponent implements OnInit, OnChanges {
   }
 
   onScroll() {
-      const val = this.formGroup.value;
-      this.loadMore = true
-      this.payrollService.paginationPayroll(
-        Object.assign(this.mapPayroll(val), {
-          take: this.pageSize,
-          skip: this.payrollS.length
-        })
-      ).subscribe((res: any) => {
-        this.loading = false
-        this.total = res.total
-        if (res.data.length > 0) {
-          this.payrollS = this.payrollS.concat(res.data)
-          if (this.isSelectAll) {
-            res.data.forEach((payroll: Payroll) => {
-              if (this.payrollsSelected.every(val => val.id !== payroll.id))
-                this.payrollsSelected.push(payroll)
-            })
-          }
-          this.EventSelectPayroll.emit(this.payrollsSelected);
-        } else {
-          this.message.warning('Đã lấy hết phiếu lương')
-        }
-        this.loadMore = false
+    const val = this.formGroup.value;
+    this.loadMore = true
+    this.payrollService.paginationPayroll(
+      Object.assign(this.mapPayroll(val), {
+        take: this.pageSize,
+        skip: this.payrollS.length
       })
+    ).subscribe((res: any) => {
+      this.loading = false
+      this.total = res.total
+      if (res.data.length > 0) {
+        this.payrollS = this.payrollS.concat(res.data)
+        if (this.isSelectAll) {
+          res.data.forEach((payroll: Payroll) => {
+            if (this.payrollsSelected.every(val => val.id !== payroll.id))
+              this.payrollsSelected.push(payroll)
+          })
+        }
+        this.EventSelectPayroll.emit(this.payrollsSelected);
+      } else {
+        this.message.warning('Đã lấy hết phiếu lương')
+      }
+      this.loadMore = false
+    })
   }
 
   mapPayroll(val: any) {
@@ -182,6 +182,7 @@ export class PickPayrollComponent implements OnInit, OnChanges {
       branch: val.branch,
       startedAt: getFirstDayInMonth(new Date(this.createdAt)),
       endedAt: getLastDayInMonth(new Date(this.createdAt)),
+      empStatus: 0
     };
   }
 

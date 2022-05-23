@@ -92,13 +92,14 @@
         </div>
         <div class='mt-3 mb-5'>
           <nz-table #nestedTable
+                    [nzLoading]="!route.orders"
                     nzSize='middle'
                     [nzScroll]="{y:'500px'}"
                     [nzData]="route.orders"
                     [nzShowPagination]="false">
             <thead>
             <tr>
-              <th></th>
+              <th nzWidth="30px"></th>
               <th>
                 Khách hàng
               </th>
@@ -124,21 +125,22 @@
             </thead>
             <tbody>
             <ng-template ngFor let-order [ngForOf]="nestedTable.data">
-              <tr>
-                <td [(nzExpand)]="order.expand"></td>
+              <tr (click)='detailOrder(order.id)'>
+                <td (click)='$event.stopPropagation()'
+                    [(nzExpand)]="order.expand"></td>
                 <td class='pointer' (click)='detailOrder(order.id)'>
                   {{order?.customer?.lastName || 'Đang cập nhật'}}
                 </td>
-                <td class='pointer' (click)='detailOrder(order.id)'>
+                <td class='pointer' >
                   {{(order?.createdAt | date: 'dd/MM/yyyy') || ' Đang cập nhật'}}
                 </td>
-                <td class='pointer' (click)='detailOrder(order.id)'>
+                <td class='pointer'>
                   {{order?.ward?.name}}
                 </td>
-                <td class='pointer' (click)='detailOrder(order.id)'>
+                <td class='pointer'>
                   {{order.explain}}
                 </td>
-                <td class='pointer' (click)='detailOrder(order.id)' style="color: red">
+                <td class='pointer' style="color: red">
                   {{order.totalCommodity | number:'1.0-0' | notEmpty:'0'}}
                 </td>
                 <td>
@@ -146,12 +148,12 @@
                     {{order.deliveredAt|date:'dd-MM-yyyy'}}
                   </div>
                   <ng-template #btnDelivered>
-                    <button (click)="updateOrder(order)" nz-button nzType="primary">Nhận hàng</button>
+                    <button (click)="updateOrder(order); $event.stopPropagation()" nz-button nzType="primary">Nhận hàng</button>
                   </ng-template>
                 </td>
                 <td class="pointer">
                   <div class="d-flex justify-content-center align-items-center">
-                    <button nz-button nzType="default" (click)="cancelOrder(order)">huỷ</button>
+                    <button nz-button nzType="default" (click)="cancelOrder(order); $event.stopPropagation()">huỷ</button>
                   </div>
                 </td>
               </tr>

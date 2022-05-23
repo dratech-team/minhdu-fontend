@@ -66,5 +66,5 @@ export interface PayrollDTO {
   startedAt?: Date,
   endedAt?: Date,
   employeeType?: string
-  isLeave?: boolean
+  empStatus?: number
 }

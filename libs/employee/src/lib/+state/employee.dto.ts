@@ -12,7 +12,7 @@ export interface EmployeeDto {
   isSelect?: boolean,
   templateId?: number,
   createdPayroll?: Date,
-  isLeft?: boolean,
+  status?: number,
   employeeType?: EmployeeType,
   recipeType?: RecipeType,
   overtimeTitle?: string,

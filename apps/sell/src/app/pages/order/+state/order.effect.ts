@@ -1,21 +1,18 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
-import {OrderService} from '../service/order.service';
+import {OrderService} from '../service';
 import {OrderActions} from './order.actions';
 import {catchError, map, switchMap} from 'rxjs/operators';
-import {of, throwError} from 'rxjs';
+import {of} from 'rxjs';
 import {ConvertBoolean} from '@minhdu-fontend/enums';
 import {Router} from '@angular/router';
-import {BaseOrderEntity} from '../enitities/base-order.entity';
 import {getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
 import {OrderQuery} from './order.query';
 import {OrderStore} from './order.store';
-import {RouteActions} from '../../route/+state/routeActions';
+import {RouteActions} from '../../route/+state';
 import {CommodityEntity, CommodityUniq} from '../../commodity/entities';
-import {UpdateCommodityDto} from '../../commodity/dto';
 import {NzMessageService} from "ng-zorro-antd/message";
 import {CustomerQuery, CustomerStore} from "../../customer/+state";
-import {CustomerEntity} from "../../customer/entities";
 import {OrderEntity} from "../enitities/order.entity";
 
 @Injectable()
@@ -43,7 +40,6 @@ export class OrderEffect {
       }));
       return this.orderService.addOne(props).pipe(
         map((res) => {
-          console.log(res)
           this.orderStore.update(state => ({
             ...state, added: true,
             total: state.total + 1,
@@ -125,6 +121,7 @@ export class OrderEffect {
     ofType(OrderActions.loadOne),
     switchMap((props) => this.orderService.getOne(props.id).pipe(
       map((order) => {
+          this.message.info('Tải đơn hàng thành công');
           return this.orderStore.upsert(order.id, order);
         }
       ),
@@ -194,25 +191,35 @@ export class OrderEffect {
   @Effect()
   delete$ = this.actions$.pipe(
     ofType(OrderActions.remove),
-    switchMap((props) =>
-      this.orderService.delete(props.id).pipe(
-        map((_) => {
-          this.message.success('Xoá đơn hàng thành công');
-          const orderDelete = this.orderQuery.getEntity(props.id);
-          if (orderDelete)
+    switchMap((props) => {
+      this.orderStore.update(state => ({
+        ...state, deleted: false
+      }))
+        return this.orderService.delete(props.id).pipe(
+          map((_) => {
+            this.message.success('Xoá đơn hàng thành công');
+            const orderDelete = this.orderQuery.getEntity(props.id);
+            if (orderDelete)
+              this.orderStore.update(state => ({
+                ...state,
+                deleted: true,
+                total: state.total - 1,
+                totalCommodity: orderDelete.commodities?.length > 0 ?
+                  state.totalCommodity - orderDelete.commodities.reduce((a, b) => a + b.amount, 0) : state.commodityUniq,
+                commodityUniq: orderDelete.commodities?.length > 0 ?
+                  this.handleCommodityUniq(state.commodityUniq, orderDelete.commodities, 'delete') :
+                  state.commodityUniq
+              }));
+            this.orderStore.remove(props.id);
+          }),
+          catchError((err) => {
             this.orderStore.update(state => ({
-              ...state,
-              total: state.total ? state.total - 1 : state.total,
-              totalCommodity: orderDelete.commodities?.length > 0 ?
-                state.totalCommodity - orderDelete.commodities.reduce((a, b) => a + b.amount, 0) : state.commodityUniq,
-              commodityUniq: orderDelete.commodities?.length > 0 ?
-                this.handleCommodityUniq(state.commodityUniq, orderDelete.commodities, 'delete') :
-                state.commodityUniq
-            }));
-          this.orderStore.remove(props.id);
-        }),
-        catchError((err) => of(OrderActions.error(err)))
-      )
+              ...state, deleted: null
+            }))
+            return of(OrderActions.error(err))
+          })
+        )
+      }
     )
   );
 

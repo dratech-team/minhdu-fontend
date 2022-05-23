@@ -156,7 +156,6 @@ export class DetailEmployeeComponent implements OnInit {
   }
 
   deleteWorkHistory(workHistory: WorkHistory, employeeId: number) {
-    console.log(workHistory)
     this.dialog.open(DialogSharedComponent, {
       width: 'fit-content',
       data: {

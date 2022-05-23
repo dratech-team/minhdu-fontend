@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
@@ -23,7 +23,6 @@ export class DialogCategoryComponent implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart));
   branchSelected?: Branch
   tabIndex = 0;
-  employeeSelected: Employee[] = [];
   categoryInit?: Category
 
   constructor(
@@ -50,7 +49,8 @@ export class DialogCategoryComponent implements OnInit {
       })
       this.formGroup = this.formBuilder.group({
         name: ['', Validators.required],
-        note: ['']
+        note: [''],
+        employeeIds: ['']
       });
     } else {
       this.branches$.subscribe(val =>{
@@ -60,7 +60,8 @@ export class DialogCategoryComponent implements OnInit {
       })
       this.formGroup = this.formBuilder.group({
         name: ['', Validators.required],
-        note: []
+        note: [],
+        employeeIds: ['']
       });
     }
 
@@ -86,7 +87,7 @@ export class DialogCategoryComponent implements OnInit {
       name: value.name,
       note: value?.note,
       branchId: this.branchSelected?.id,
-      employeeIds: this.employeeSelected.map(val => val.id)
+      employeeIds: value.employeeIds
     };
     if (this.data?.isUpdate) {
       this.categoryService.update(this.categoryInit?.id, category).subscribe(val => {
@@ -124,10 +125,6 @@ export class DialogCategoryComponent implements OnInit {
 
   previousTab(tab: any) {
     this.tabIndex = tab._selectedIndex - 1;
-  }
-
-  pickEmployees(employees: Employee[]) {
-    this.employeeSelected = [...employees]
   }
 
   selectTab(tab: any) {

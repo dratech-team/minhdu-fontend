@@ -1,20 +1,24 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { CommodityUnit } from '@minhdu-fontend/enums';
-import { CommodityAction } from '../../+state/commodity.action';
-import { CommodityService } from '../../service/commodity.service';
-import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import { Actions } from '@datorama/akita-ng-effects';
-import { CommodityQuery } from '../../+state/commodity.query';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {CommodityUnit} from '@minhdu-fontend/enums';
+import {CommodityAction} from '../../+state';
+import {CommodityService} from '../../service';
+import {
+  DialogSharedComponent
+} from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import {Actions} from '@datorama/akita-ng-effects';
+import {CommodityQuery} from '../../+state';
+import {NzModalRef} from 'ng-zorro-antd/modal';
+import {CommodityTemplateQuery} from "../../../commodity-template/state/commodity-template.query";
+import {CommodityTemplateActions} from "../../../commodity-template/state/commodity-template.action";
 
 @Component({
   templateUrl: 'commodity-dialog.component.html'
 })
 export class CommodityDialogComponent implements OnInit {
   @Input() data: any;
-  commodities$ = this.service.getTemplate();
+  commodities$ = this.commodityTemplateQuery.selectAll();
   CommodityUnit = CommodityUnit;
   formGroup!: FormGroup;
   added$ = this.commodityQuery.select(state => state.added);
@@ -25,11 +29,13 @@ export class CommodityDialogComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly modalRef: NzModalRef,
     private readonly service: CommodityService,
-    private readonly commodityQuery: CommodityQuery
+    private readonly commodityQuery: CommodityQuery,
+    private readonly commodityTemplateQuery: CommodityTemplateQuery,
   ) {
   }
 
   ngOnInit() {
+    this.actions$.dispatch(CommodityTemplateActions.loadAll({}))
     this.formGroup = this.formBuilder.group({
       name: [this.data?.commodity?.name, Validators.required],
       code: [this.data?.commodity?.code, Validators.required],
@@ -67,7 +73,7 @@ export class CommodityDialogComponent implements OnInit {
           }
         }).afterClosed().subscribe(val => {
           if (val) {
-            Object.assign(commodity, { histored: true });
+            Object.assign(commodity, {histored: true});
           }
           Object.assign(commodity, {
             closed: this.data.commodity.closed || false,
@@ -90,7 +96,7 @@ export class CommodityDialogComponent implements OnInit {
       }
     } else {
       this.actions$.dispatch(
-        CommodityAction.addOne({ body: commodity })
+        CommodityAction.addOne({body: commodity})
       );
     }
     this.added$.subscribe(added => {

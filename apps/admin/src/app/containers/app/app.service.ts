@@ -1,15 +1,17 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { AppInterface } from './app.interface';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {AppInterface} from './app.interface';
+import {VersionEnum} from "@minhdu-fontend/enums";
 
-@Injectable({providedIn:'root'})
+@Injectable({providedIn: 'root'})
 export class AppService {
   constructor(
-    private readonly http:HttpClient
+    private readonly http: HttpClient
   ) {
   }
-  getAll(): Observable<AppInterface[]>{
-    return this.http.get<AppInterface[]>('application')
+
+  getAll(): Observable<AppInterface[]> {
+    return this.http.get<AppInterface[]>(VersionEnum.V2 + 'application')
   }
 }

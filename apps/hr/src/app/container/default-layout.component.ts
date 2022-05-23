@@ -1,13 +1,16 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { navItems } from './_nav';
-import { Store } from '@ngrx/store';
-import { AuthActions } from '@minhdu-fontend/auth';
-import { MatDialog } from '@angular/material/dialog';
-import { LogoutComponent } from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
-import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.component/register.component';
-import { Role } from 'libs/enums/hr/role.enum';
-import { Router } from '@angular/router';
-import { DialogChangePassword } from '../../../../../libs/auth/src/lib/components/dialog-change-password/dialog-change-password';
+import {Component, OnInit} from '@angular/core';
+import {navItems} from './_nav';
+import {Store} from '@ngrx/store';
+import {MatDialog} from '@angular/material/dialog';
+import {LogoutComponent} from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
+import {RegisterComponent} from 'libs/auth/src/lib/components/dialog-register.component/register.component';
+import {Role} from 'libs/enums/hr/role.enum';
+import {Router} from '@angular/router';
+import {
+  DialogChangePassword
+} from '../../../../../libs/auth/src/lib/components/dialog-change-password/dialog-change-password';
+import {Actions} from "@datorama/akita-ng-effects";
+import {AccountActions} from "../../../../../libs/system/src/lib/state/account-management/account.actions";
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +20,12 @@ import { DialogChangePassword } from '../../../../../libs/auth/src/lib/component
 export class DefaultLayoutComponent implements OnInit {
   role = localStorage.getItem('role');
   roleEnum = Role;
+
+  showFiller = false;
+  public sidebarMinimized = false;
+  public navItems = navItems;
   constructor(
+    private readonly actions$: Actions,
     private readonly store: Store,
     private readonly dialog: MatDialog,
     private readonly router: Router
@@ -29,9 +37,7 @@ export class DefaultLayoutComponent implements OnInit {
     }
   }
 
-  showFiller = false;
-  public sidebarMinimized = false;
-  public navItems = navItems;
+
 
   toggleMinimize(e: any): void {
     this.sidebarMinimized = e;
@@ -41,7 +47,7 @@ export class DefaultLayoutComponent implements OnInit {
     const ref = this.dialog.open(LogoutComponent, { width: '30%' });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        return this.store.dispatch(AuthActions.logout());
+        return this.actions$.dispatch(AccountActions.logout());
       }
     });
   }

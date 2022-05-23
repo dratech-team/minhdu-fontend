@@ -30,7 +30,6 @@
   </div>
   <div class='d-flex  justify-content-start my-1 '>
     <button *ngFor='let item of menuAdminConstant'
-            [style]='{"border": item.state === (tab$|async)?"solid 2px": "none"}'
             class=' button ml-2   btn-header font-lg overflow-hidden d-flex align-items-center '
             routerLink='{{item.href}}' mat-menu-item>{{item.name}}</button>
   </div>

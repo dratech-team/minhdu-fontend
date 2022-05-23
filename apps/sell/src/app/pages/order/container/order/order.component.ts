@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
 import {Api, CurrenciesConstant, PaginationDto} from '@minhdu-fontend/constants';
 import {
   ConvertBoolean,
@@ -11,19 +11,18 @@ import {
   SortOrderEnum,
   StatusOrder
 } from '@minhdu-fontend/enums';
-import { ExportService } from '@minhdu-fontend/service';
-import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
-import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
-import { debounceTime, map, tap } from 'rxjs/operators';
-import { OrderActions, OrderQuery, OrderStore } from '../../+state';
-import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import { Actions } from '@datorama/akita-ng-effects';
-import { Sort } from '@minhdu-fontend/data-models';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { OrderDialogComponent } from '../../component';
+import {ExportService} from '@minhdu-fontend/service';
+import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
+import {DialogExportComponent} from 'libs/components/src/lib/dialog-export/dialog-export.component';
+import {debounceTime, map, tap} from 'rxjs/operators';
+import {OrderActions, OrderQuery, OrderStore} from '../../+state';
+import {Actions} from '@datorama/akita-ng-effects';
+import {Sort} from '@minhdu-fontend/data-models';
+import {NzModalService} from 'ng-zorro-antd/modal';
+import {OrderDialogComponent} from '../../component';
 import * as _ from 'lodash';
-import { OrderEntity } from '../../enitities/order.entity';
-import { radiosStatusOrderConstant } from '../../constants';
+import {OrderEntity} from '../../enitities/order.entity';
+import {radiosStatusOrderConstant} from '../../constants';
 import {WidthConstant} from "../../../../shared/constants";
 
 @Component({
@@ -35,6 +34,7 @@ export class OrderComponent implements OnInit {
   orders$ = this.orderQuery.selectAll().pipe(map(value => JSON.parse(JSON.stringify(value))));
   loading$ = this.orderQuery.selectLoading();
   totalOrder$ = this.orderQuery.select(state => state.total);
+  deleted$ = this.orderQuery.select(state => state.deleted);
   commodityUniq$ = this.orderQuery.select(state => state.commodityUniq);
   totalCommodity$ = this.orderQuery.select(state => state.totalCommodity);
   commodities$ = this.orderQuery.selectAll().pipe(
@@ -102,16 +102,16 @@ export class OrderComponent implements OnInit {
   }
 
 
-  add() {
+  onAdd() {
     this.modal.create({
       nzTitle: 'Thêm đơn hàng',
       nzContent: OrderDialogComponent,
       nzWidth: '80vw',
-      nzFooter: null
+      nzFooter: []
     });
   }
 
-  readOrUpdate(id: number, isUpdate: boolean) {
+  onDetail(id: number, isUpdate: boolean) {
     this.router.navigate(['don-hang/chi-tiet-don-hang', id], {
       queryParams: {
         isUpdate: isUpdate
@@ -119,7 +119,7 @@ export class OrderComponent implements OnInit {
     }).then();
   }
 
-  update($event: any) {
+  onUpdate($event: any) {
     this.dialog
       .open(DialogDatePickerComponent, {
         width: 'fit-content',
@@ -143,23 +143,16 @@ export class OrderComponent implements OnInit {
       });
   }
 
-  cancel($event: OrderEntity) {
+  onCancel($event: OrderEntity) {
     this.actions$.dispatch(OrderActions.cancelOrder({ orderId: $event.id }));
   }
 
-  delete($event: any) {
-    const ref = this.dialog.open(DialogSharedComponent, {
-      width: 'fit-content',
-      data: {
-        title: 'Xoá đơn hàng',
-        description: 'Bạn có chắc chắn muốn xoá đơn hàng này vĩnh viễn'
-      }
-    });
-    ref.afterClosed().subscribe(val => {
-      if (val) {
-        this.actions$.dispatch(OrderActions.remove({ id: $event.id }));
-      }
-    });
+  onDelete($event: any) {
+    this.modal.warning({
+      nzTitle: 'Xoá đơn hàng',
+      nzContent: `Bạn có chắc chắn muốn xoá đơn hàng này vĩnh viễn`,
+      nzOnOk: () =>  this.actions$.dispatch(OrderActions.remove({ id: $event.id }))
+    })
   }
 
   onPagination(pageIndex: number) {

@@ -1,0 +1,76 @@
+<div class='animated p-1'>
+    <form [formGroup]='formGroup'>
+      <div class=' mt-1 mb-3 '>
+        <span class='font-weight-bold'>Tên file</span><span class='star'>*</span>
+        <textarea  type='text' class='form-control mt-1' formControlName='name'
+                   [ngClass]="{ 'is-invalid': formGroup.controls.name.errors}">
+
+        </textarea>
+        <div *ngIf='formGroup.controls.name.errors' class='invalid-feedback'>
+          <div *ngIf='formGroup.controls.name.errors'>Chưa nhập tên file</div>
+        </div>
+      </div>
+      <div *ngIf='data?.selectDatetime'>
+        <div class=' mt-1 mb-3 ' *ngIf='data?.typeDate === "RANGE_DATETIME" else createdAt'>
+          <span class='title-item'>Từ ngày đến ngày</span><span class='star'>*</span>
+          <div class='d-flex align-items-center'>
+            <nz-range-picker
+              nzMode="date"
+              nzFormat="dd-MM-yyyy"
+              formControlName="rangeDay" >
+            </nz-range-picker>
+          </div>
+        </div>
+        <ng-template #createdAt>
+          <div class=' mt-1 mb-3 '>
+            <span class='title-item'>Tháng</span><span class='star'>*</span>
+            <div>
+              <nz-date-picker nzMode="month" nzFormat="MM-yyyy" formControlName="createdAt"></nz-date-picker>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </form>
+    <div class='font-weight-bold mb-2'><span>Các mục muốn in</span><span class='star'>*</span></div>
+    <div>
+      <nz-table
+        #tableExport
+        nzSize="small"
+        [nzScroll]="{x:'500px', y: '35vh'}"
+        [nzData]="itemsExports"
+        [nzLoading]="loading"
+        nzShowPagination="false"
+      >
+        <thead>
+        <tr>
+          <th>Mục</th>
+          <th [nzChecked]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="onAllChecked($event)"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor='let item of tableExport.data'>
+          <td>
+            {{item.value}}
+          </td>
+          <td
+            [nzChecked]="setOfItem.has(item)"
+            (nzCheckedChange)="onItemChecked(item, $event)"
+          ></td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  <div>
+  </div>
+  <div class='row mt-4 ml-1 '>
+    <button
+      *ngIf="!loading"
+      nz-button
+      nzType="primary"
+      (click)='onSubmit()'
+      [nzLoading]="printing"
+      >
+      Đồng ý
+    </button>
+  </div>
+</div>

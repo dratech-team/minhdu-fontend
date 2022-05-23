@@ -2,9 +2,9 @@ import {Component, Inject, Input, LOCALE_ID, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {DatePipe} from '@angular/common';
 import {CustomerResource, CustomerType} from '@minhdu-fontend/enums';
-import {CustomerActions} from '../../+state/customer.actions';
+import {CustomerActions} from '../../+state';
 import {Actions} from '@datorama/akita-ng-effects';
-import {CustomerQuery} from '../../+state/customer.query';
+import {CustomerQuery} from '../../+state';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {NzModalRef} from "ng-zorro-antd/modal";
 

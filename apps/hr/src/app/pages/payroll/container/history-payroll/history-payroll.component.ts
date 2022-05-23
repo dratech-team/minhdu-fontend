@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ItemContextMenu, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import {EmployeeStatusEnum, ItemContextMenu, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
@@ -52,7 +52,7 @@ export class HistoryPayrollComponent implements OnInit {
     manConfirmedAt: new FormControl(''),
     createdAt: new FormControl(),
     position: new FormControl(''),
-    branch: new FormControl('')
+    branch: new FormControl(''),
   });
 
   constructor(
@@ -66,7 +66,6 @@ export class HistoryPayrollComponent implements OnInit {
 
   ngOnInit() {
     this.employeeType$ = this.activatedRoute.queryParams.pipe(map(param => {
-        console.log(param.employeeType);
         return param.employeeType;
       }
     ));

@@ -21,10 +21,12 @@ import {
 } from '@minhdu-fontend/employee';
 import {
   ConvertBoolean,
+  EmployeeStatusEnum,
   EmployeeType,
   FlatSalary,
   Gender,
   ItemContextMenu,
+  Role,
   SearchEmployeeType,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
@@ -33,9 +35,9 @@ import {select, Store} from '@ngrx/store';
 import {catchError, debounceTime, map, tap} from 'rxjs/operators';
 import {getAllPosition} from '@minhdu-fontend/orgchart-position';
 import {DeleteEmployeeComponent} from '../../components/dialog-delete-employee/delete-employee.component';
-import {Api, EmployeeConstant} from '@minhdu-fontend/constants';
-import {Observable, Subject, throwError} from 'rxjs';
-import {Category, District, Employee, Ward} from '@minhdu-fontend/data-models';
+import {Api, EmployeeStatusConstant} from '@minhdu-fontend/constants';
+import {Subject, throwError} from 'rxjs';
+import {District, Employee, Ward} from '@minhdu-fontend/data-models';
 import {checkInputNumber} from '@minhdu-fontend/utils';
 import {DialogExportComponent} from '@minhdu-fontend/components';
 import {DialogCategoryComponent} from '../../components/category/dialog-category.component';
@@ -46,9 +48,10 @@ import {MatSort, Sort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {AddEmployeeComponent} from '../../components/employee/add-employee.component';
-import {Role} from '../../../../../../../../libs/enums/hr/role.enum';
-import {ProvinceService} from "../../../../../../../../libs/location/src/lib/service/province.service";
+import {ProvinceService} from "@minhdu-fontend/location";
 import {ExportService} from "@minhdu-fontend/service";
+import {DepartmentActions, DepartmentQuery} from "@minhdu-fontend/orgchart-v2";
+import {Actions} from "@datorama/akita-ng-effects";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -68,7 +71,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   positions$ = this.store.pipe(select(getAllPosition))
   branches$ = this.store.pipe(select(getAllOrgchart)).pipe(map(branches => {
     if (branches.length === 1) {
-      this.categories$ = this.categoryService.getAll({branchId: branches[0].id});
       this.formGroup.get('branch')?.setValue(branches[0], {emitEvent: false});
     }
     return branches;
@@ -84,13 +86,11 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   flatSalary = FlatSalary;
   convertBoolean = ConvertBoolean;
   ItemContextMenu = ItemContextMenu;
-  employeeContain = EmployeeConstant;
+  empStatusContain = EmployeeStatusConstant;
   employeeType = EmployeeType;
-  isLeft = false;
   eventScrollX = new Subject<any>();
-  categories$ = new Observable<Category[]>();
+  categories$ = this.departmentQuery.selectAll();
   employees: Employee[] = [];
-  employeeControl = new FormControl(EmployeeType.EMPLOYEE_FULL_TIME);
   categoryControl = new FormControl('');
   role!: string | null;
   formGroup = new FormGroup({
@@ -107,7 +107,8 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     flatSalary: new FormControl('-1'),
     position: new FormControl(''),
     branch: new FormControl(''),
-    employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME)
+    employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME),
+    status: new FormControl(EmployeeStatusEnum.IS_ACTIVE)
   });
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
@@ -115,6 +116,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   constructor(
     private readonly dialog: MatDialog,
     private readonly store: Store,
+    private readonly actions$: Actions,
     private readonly router: Router,
     private readonly activeRouter: ActivatedRoute,
     private readonly categoryService: CategoryService,
@@ -125,6 +127,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     private readonly viewContentRef: ViewContainerRef,
     private readonly provinceService: ProvinceService,
     private readonly exportService: ExportService,
+    private readonly departmentQuery: DepartmentQuery
   ) {
     this.store.pipe(select(selectorAllEmployee))
       .pipe(tap(employees => this.employees = employees))
@@ -136,11 +139,12 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit(): void {
+    this.actions$.dispatch(DepartmentActions.loadAll({}))
+
     this.role = window.localStorage.getItem('role');
     this.activeRouter.queryParams.subscribe(val => {
       if (val.branch) {
         this.formGroup.get('branch')?.setValue(JSON.parse(val.branch), {emitEvent: false});
-        this.categories$ = this.categoryService.getAll({branchId: JSON.parse(val.branch).id})
       }
       if (val.position) {
         this.formGroup.get('position')?.setValue(JSON.parse(val.position), {emitEvent: false});
@@ -151,7 +155,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
         employee: {
           take: this.pageSize,
           skip: this.pageIndexInit,
-          isLeft: this.isLeft,
+          status: this.formGroup.value.status,
           branch: this.formGroup.value.branch ? this.formGroup.value.branch.name : '',
           position: this.formGroup.value.position ? this.formGroup.value.position.name : '',
           employeeType: EmployeeType.EMPLOYEE_FULL_TIME
@@ -164,28 +168,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
         debounceTime(1500)
       ).subscribe(val => {
       this.store.dispatch(EmployeeAction.loadInit({employee: this.employee(val)}));
-    });
-
-    this.employeeControl.valueChanges.subscribe(val => {
-      switch (val) {
-        case EmployeeType.EMPLOYEE_LEFT_AT:
-          this.isLeft = true;
-          this.store.dispatch(EmployeeAction.loadInit({
-            employee: {take: this.pageSize, skip: this.pageIndexInit, isLeft: this.isLeft}
-          }));
-          break;
-        case EmployeeType.EMPLOYEE_SEASONAL:
-          this.isLeft = false;
-          this.store.dispatch(EmployeeAction.loadInit({
-            employee: {take: this.pageSize, skip: this.pageIndexInit}
-          }));
-          break;
-        default:
-          this.isLeft = false;
-          this.store.dispatch(EmployeeAction.loadInit({
-            employee: {take: this.pageSize, skip: this.pageIndexInit}
-          }));
-      }
     });
 
     this.eventScrollX.pipe(
@@ -208,7 +190,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       if (branch) {
         this.store.dispatch(OrgchartActions.getBranch({id: branch.id}))
       }
-      this.categories$ = this.categoryService.getAll({branch: branch.name});
     });
 
     this.formGroup.get('province')?.valueChanges.subscribe(province => {
@@ -239,14 +220,14 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   delete(employeeId: any): void {
     this.dialog.open(DeleteEmployeeComponent, {
       width: 'fit-content',
-      data: {employee: employeeId, permanentlyDeleted: this.isLeft}
+      data: {employee: employeeId, permanentlyDeleted: this.formGroup.value === 1}
     }).afterClosed().subscribe(() => {
       this.store.dispatch(
         EmployeeAction.loadInit({
           employee: {
             take: this.pageSize,
             skip: this.pageIndexInit,
-            isLeft: this.isLeft,
+            status: this.formGroup.value.status,
             branch: this.formGroup.value.branch ? this.formGroup.value.branch.name : '',
             position: this.formGroup.value.position ? this.formGroup.value.position.name : '',
             employeeType: EmployeeType.EMPLOYEE_FULL_TIME
@@ -276,7 +257,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       position: val.position ? val.position.name : '',
       branch: val.branch ? val.branch.name : '',
       // workedAt: val.workedAt,
-      isLeft: this.isLeft,
+      status: val.status,
       employeeType: val.employeeType,
       isFlatSalary: val.flatSalary,
       categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : ''
@@ -336,7 +317,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       position: val.position ? val.position.name : '',
       branch: val.branch ? val.branch.name : '',
       // workedAt: val.workedAt,
-      isLeft: this.isLeft,
+      status: val.status,
       employeeType: val.employeeType,
       isFlatSalary: val.flatSalary,
       exportType: 'EMPLOYEES'
@@ -365,12 +346,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  addCategory() {
-    this.dialog.open(DialogCategoryComponent, {width: 'fit-content'}).afterClosed().subscribe(() => {
-      this.categories$ = this.categoryService.getAll();
-    });
-  }
-
   onDrop(event: CdkDragDrop<Employee[]>) {
     moveItemInArray(this.employees, event.previousIndex, event.currentIndex);
     const sort = this.employees.map((employee, i) => ({id: employee.id, stt: i + 1}));
@@ -382,19 +357,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     ).subscribe();
   }
 
-  updateCategory(): any {
-    if (this.categoryControl.value === 0 || !this.categoryControl.value) {
-      return this.message.error('Chưa chọn danh mục để sửa');
-    }
-    this.dialog.open(DialogCategoryComponent, {
-      width: 'fit-content',
-      data: {categoryId: this.categoryControl.value, isUpdate: true}
-    })
-      .afterClosed().subscribe(() => {
-      this.categories$ = this.categoryService.getAll();
-      this.store.dispatch(EmployeeAction.loadInit({employee: this.employee(this.formGroup.value)}));
-    });
-  }
 
   sortEmployee(sort: Sort) {
     this.store.dispatch(EmployeeAction.loadInit({

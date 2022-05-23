@@ -1,3 +1,4 @@
+<nz-spin *ngIf="(deleted$| async) === false" class="position-center"></nz-spin>
 <div class='d-flex'>
   <div class='d-flex flex-column ml-3 border p-2' style='height: 80vh; width:280px; overflow-y: scroll'>
     <nz-collapse>
@@ -53,7 +54,7 @@
         Danh sách đơn hàng
       </div>
       <div class='d-flex justify-content-between'>
-        <button (click)='add()' nz-button nzType='primary'>Thêm</button>
+        <button (click)='onAdd()' nz-button nzType='primary'>Thêm</button>
         <button (click)='onPrint()' class='ml-2' nz-button nzType='primary'>Xuất</button>
         <button class='ml-2' nz-button nz-popover nzPopoverTitle='Thêm cột'
                 [(nzPopoverVisible)]='visible'
@@ -68,14 +69,14 @@
     <div>
       <div class="d-flex mb-2">
         <div class="mr-2">
-          <span class='font-weight-bold'>Tổng đơn hàng:</span> {{totalOrder$ | async}}</div>
+          <span class='font-weight-bold'>Tổng đơn hàng:</span> {{(totalOrder$ | async) || 0 | number: '1.0-0'}}</div>
         <div class='d-flex'>
-          <div><span class='font-weight-bold'>Tổng hàng hoá:</span> <span class='ml-1'
-                                                                          style='color: red'>{{totalCommodity$|async}}</span>
+          <div><span class='font-weight-bold'>Tổng hàng hoá:</span>
+            <span class='ml-1' style='color: red'> {{((totalCommodity$|async) || 0) | number:'1.0-0'}}</span>
           </div>
           <div class='ml-3 ' *ngFor='let item of commodityUniq$|async'>
-            <span class='font-weight-bold'>Tổng {{item.name}}:</span> <span class='ml-1'
-                                                                            style='color: red'>{{item.amount}}</span>
+            <span class='font-weight-bold'>Tổng {{item.name}}: </span>
+            <span class='ml-1' style='color: red'>{{item.amount| number:'1.0-0'}}</span>
           </div>
         </div>
       </div>
@@ -127,11 +128,13 @@
               class='text-center font-weight-bold'>
             Xe xuất
           </th>
-          <th [nzWidth]="widthConstant.amount" *ngIf="ui.totalCommodity.visible" [nzLeft]='ui.totalCommodity?.pinned||false'
+          <th [nzWidth]="widthConstant.amount" *ngIf="ui.totalCommodity.visible"
+              [nzLeft]='ui.totalCommodity?.pinned||false'
               class='text-center font-weight-bold width-amount' style='color: red'>
             Tổng số lượng
           </th>
-          <th [nzWidth]="widthConstant.price" *ngIf="ui.commodityTotal.visible" [nzLeft]='ui.commodityTotal?.pinned||false'
+          <th [nzWidth]="widthConstant.price" *ngIf="ui.commodityTotal.visible"
+              [nzLeft]='ui.commodityTotal?.pinned||false'
               class='text-center font-weight-bold'>
             Tiền hàng
           </th>
@@ -151,30 +154,32 @@
         </thead>
         <tbody>
         <ng-template ngFor let-order [ngForOf]='tableOrder.data' let-i='index'>
-          <tr class='pointer' (contextmenu)='child.onContextMenu($event, order)' *ngIf="(ui$|async) as ui">
-            <td style='padding-left: 15px' nzLeft [(nzExpand)]='order.expand'></td>
+          <tr class='pointer'
+              (click)="onDetail(order.id, false)"
+              (contextmenu)='child.onContextMenu($event, order)'
+              *ngIf="(ui$|async) as ui">
+            <td
+              (click)="$event.stopPropagation()"
+              style='padding-left: 15px' nzLeft
+              [(nzExpand)]='order.expand'></td>
             <td *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false'
                 class='text-center'>{{(i + 1) + ((tableOrder.nzPageIndex - 1) * 10)}}</td>
-            <td *ngIf="ui.endedAt.visible" [nzLeft]='ui.endedAt?.pinned||false' (click)='readOrUpdate(order.id, false)'
+            <td *ngIf="ui.endedAt.visible" [nzLeft]='ui.endedAt?.pinned||false'
                 nzLeft>
               {{(order?.endedAt ? (order?.endedAt | date: 'dd/MM/yyyy') : 'Chưa cập nhật')}}
             </td>
-            <td *ngIf="ui.customer.visible" [nzLeft]='ui.customer?.pinned||false' class='text-center'
-                (click)='readOrUpdate(order.id, false)'>
+            <td *ngIf="ui.customer.visible" [nzLeft]='ui.customer?.pinned||false' class='text-center'>
               {{order.customer?.lastName}}
             </td>
-            <td *ngIf="ui.destination.visible" [nzLeft]='ui.destination?.pinned||false' class='text-center'
-                (click)='readOrUpdate(order.id, false)'>
+            <td *ngIf="ui.destination.visible" [nzLeft]='ui.destination?.pinned||false' class='text-center'>
               {{order?.province?.name}}
               {{order?.district?.name ? ' - ' + order?.district?.name : ''}}
               {{order?.ward?.name ? ' - ' + order?.ward?.name : ''}}
             </td>
-            <td *ngIf="ui.createdAt.visible" [nzLeft]='ui.createdAt?.pinned||false' class='text-center'
-                (click)='readOrUpdate(order.id, false)'>
+            <td *ngIf="ui.createdAt.visible" [nzLeft]='ui.createdAt?.pinned||false' class='text-center'>
               {{(order?.createdAt | date: 'dd/MM/yyyy' || 'Chưa cập nhật')}}
             </td>
-            <td class='text-center' (click)='readOrUpdate(order.id, false)' *ngIf="ui.vans.visible"
-                [nzLeft]='ui.vans?.pinned||false'>
+            <td class='text-center' *ngIf="ui.vans.visible" [nzLeft]='ui.vans?.pinned||false'>
               <div *ngIf="order?.routes?.length > 0 else notCar">
                  <span *ngFor='let route of order?.routes'>{{route?.bsx}},
                 </span>
@@ -185,34 +190,31 @@
                 </div>
               </ng-template>
             </td>
-            <td *ngIf="ui.totalCommodity.visible" [nzLeft]='ui.totalCommodity?.pinned||false'
-                class='text-center'
-                (click)='readOrUpdate(order.id, false)' style='color: red'>
+            <td *ngIf="ui.totalCommodity.visible" [nzLeft]='ui.totalCommodity?.pinned||false' class='text-center'>
               {{order.totalCommodity| number:'1.0-0' | notEmpty:'0'}}
             </td>
-            <td *ngIf="ui.commodityTotal.visible" [nzLeft]='ui.commodityTotal?.pinned||false'
-                class='text-center' (click)='readOrUpdate(order.id, false)' style='color: #f86c6b'>
+            <td *ngIf="ui.commodityTotal.visible" [nzLeft]='ui.commodityTotal?.pinned||false' class='text-center'>
               {{order.commodityTotal | number:'1.0-0' | notEmpty:'0'}} đ
             </td>
-            <td *ngIf="ui.paymentTotal.visible" [nzLeft]='ui.paymentTotal?.pinned||false'
-                class='text-center' (click)='readOrUpdate(order.id, false)' style='color: #20c997'>
+            <td *ngIf="ui.paymentTotal.visible" [nzLeft]='ui.paymentTotal?.pinned||false' class='text-center'>
               {{order?.paymentTotal | number:'1.0-0' | notEmpty:'0'}}
             </td>
             <!--        <th>-->
             <!--          {{order.currency | transform:currenciesConstant}}-->
             <!--        </th>-->
-            <td *ngIf="ui.explain.visible" [nzLeft]='ui.explain?.pinned||false'
-                class='text-center' (click)='readOrUpdate(order.id, false)'>{{order?.explain || 'Chưa cập nhật'}} </td>
+            <td *ngIf="ui.explain.visible" [nzLeft]='ui.explain?.pinned||false' class='text-center'>
+              {{order?.explain || 'Chưa cập nhật'}}
+            </td>
             <td *ngIf="ui.status.visible" [nzLeft]='ui.status?.pinned||false'
                 [ngStyle]="{'color': (!order.deliveredAt && order.routes?.length) ? '#32863d' : ''}">
               {{(order.deliveredAt | date: 'dd/MM/YYYY') || ((!order.deliveredAt && order.routes?.length) ? 'Đang giao' : 'Chưa giao')}}
             </td>
           </tr>
           <tr [nzExpand]='order.expand'>
-            <nz-table  #innerTable [nzData]='order.commodities' nzSize='small' [nzShowPagination]='false'>
+            <nz-table #innerTable [nzData]='order.commodities' nzSize='small' [nzShowPagination]='false'>
         <thead>
         <tr>
-          <th class='text-center' >Hàng hoá</th>
+          <th class='text-center'>Hàng hoá</th>
           <th class='text-center' [nzWidth]="widthConstant.amount">Số lượng</th>
           <th class='text-center' [nzWidth]="widthConstant.price">Giá</th>
         </tr>
@@ -235,11 +237,11 @@
 <app-mouse-right
   #child
   [items]='[ItemContextMenu.ENDED_AT,ItemContextMenu.CANCEL_ORDER,ItemContextMenu.PERMANENTLY]'
-  (onAdd)='add()'
-  (onUpdate)='readOrUpdate($event.id, true)'
-  (onEnd)='update($event)'
-  (onCancel)='cancel($event)'
-  (onDelPerm)='delete($event)'
+  (onAdd)='onAdd()'
+  (onUpdate)='onDetail($event.id, true)'
+  (onEnd)='onUpdate($event)'
+  (onCancel)='onCancel($event)'
+  (onDelPerm)='onDelete($event)'
 ></app-mouse-right>
 <ng-template #pinColumn>
   <minhdu-fontend-pin-column-order></minhdu-fontend-pin-column-order>

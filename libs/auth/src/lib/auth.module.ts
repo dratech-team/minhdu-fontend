@@ -1,23 +1,21 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AuthRoutingModule } from './auth-routing.module';
-import { AuthComponent } from './containers/auth.container';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { AuthEffects } from './+state/auth.effects';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { authReducer } from './+state/auth.reducer';
-import { AuthService } from './services/auth.service';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { ErrorInterceptor, JwtInterceptor } from './interceptors';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
-import { LogoutComponent } from './components/dialog-logout.component/logout.component';
-import { MatDialogModule } from '@angular/material/dialog';
-import { RegisterComponent } from './components/dialog-register.component/register.component';
-import { MatSelectModule } from '@angular/material/select';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatInputModule } from '@angular/material/input';
-import { DialogChangePassword } from './components/dialog-change-password/dialog-change-password';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {AuthRoutingModule} from './auth-routing.module';
+import {AuthComponent} from './containers/auth.container';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {LogoutComponent} from './components/dialog-logout.component/logout.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import {RegisterComponent} from './components/dialog-register.component/register.component';
+import {MatSelectModule} from '@angular/material/select';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatInputModule} from '@angular/material/input';
+import {DialogChangePassword} from './components/dialog-change-password/dialog-change-password';
+import {NzButtonModule} from "ng-zorro-antd/button";
+import {NzSelectModule} from "ng-zorro-antd/select";
+import {ErrorInterceptor, JwtInterceptor} from "./interceptors";
+import {ModalChangePasswordComponent} from "./components/modal-change-password/modal-change-password.component";
 
 @NgModule({
   imports: [
@@ -27,21 +25,21 @@ import { DialogChangePassword } from './components/dialog-change-password/dialog
     FormsModule,
     HttpClientModule,
     MatSnackBarModule,
-    StoreModule.forFeature('auth', authReducer),
-    EffectsModule.forFeature([AuthEffects]),
     MatDialogModule,
     MatSelectModule,
     MatAutocompleteModule,
-    MatInputModule
+    MatInputModule,
+    NzButtonModule,
+    NzSelectModule,
   ],
   declarations: [
     RegisterComponent,
     LogoutComponent,
     AuthComponent,
-    DialogChangePassword
+    DialogChangePassword,
+    ModalChangePasswordComponent
   ],
   providers: [
-    AuthService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
@@ -51,8 +49,7 @@ import { DialogChangePassword } from './components/dialog-change-password/dialog
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true
-    },
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }
+    }
   ]
 })
 export class AuthModule {

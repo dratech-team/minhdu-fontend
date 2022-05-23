@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {AccountService} from "../../../../../system/src/lib/services/account.service";
 
 @Component({
   templateUrl: 'dialog-change-password.html'
@@ -14,7 +14,7 @@ export class DialogChangePassword implements OnInit {
 
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly authService: AuthService,
+    private readonly accountService: AccountService,
     private readonly snackBar: MatSnackBar,
     private readonly dialogRef:MatDialogRef<DialogChangePassword>,
   ) {
@@ -37,7 +37,7 @@ export class DialogChangePassword implements OnInit {
       const val = this.fromGroup.value;
       if (val.password === val.password2) {
         const id = parseInt(<string>localStorage.getItem('idAccount'));
-        this.authService.updatePassword(id, { password: val.password }).subscribe(val => {
+        this.accountService.updatePassword(id, { password: val.password }).subscribe(val => {
           this.snackBar.open(val.message, '', { duration: 1500 });
           this.dialogRef.close()
         });

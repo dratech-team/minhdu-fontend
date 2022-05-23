@@ -10,6 +10,7 @@ import { StatisticalSellService } from '../../service/statistical-sell.service';
 import { tap } from 'rxjs/operators';
 import { OverviewSell } from '../../entity/overview.entity';
 import { Observable } from 'rxjs';
+import {MenuAdminEnum} from "../../../../../enums/menu-admin.enum";
 
 
 @Component({
@@ -20,7 +21,7 @@ export class StatisticalSellComponent implements OnInit {
   overview$: Observable<OverviewSell> = this.service.getAll({
     filter: 'MONTH',
     datetime: new Date()
-  }).pipe(tap(c => console.log(c)));
+  });
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -31,7 +32,7 @@ export class StatisticalSellComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(AdminAction.updateStateMenu({ tab: MenuWarehouseEum.OVERVIEW_SELL }));
+    this.store.dispatch(AdminAction.updateStateMenu({ tab: MenuAdminEnum.OVERVIEW_SELL }));
     const btnOrder = document.getElementById('home');
     btnOrder?.classList.add('btn-border');
 

@@ -20,7 +20,7 @@ import {Subject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
-  selectedBranchPayroll,
+  selectedBranchPayroll, selectedEmpStatusPayroll,
   selectedLoadedPayroll,
   selectedPositionPayroll,
   selectedRangeDayPayroll,
@@ -42,14 +42,14 @@ import {ExportService} from "@minhdu-fontend/service";
 import {ClassifyOvertimeComponent} from "../classify-overtime/classify-overtime.component";
 
 @Component({
-  selector: 'app-payroll-absent',
+  selector: 'app-payroll-deduction',
   templateUrl: 'payroll-absent.component.html'
 })
 
 export class PayrollAbsentComponent implements OnInit, OnChanges {
   @Input() eventAddAbsent?: Subject<any>;
   @Input() eventSearchBranch?: Branch;
-  @Input() eventSelectIsLeave?: boolean;
+  @Input() eventSelectEmpStatus?: number;
   @Input() eventExportAbsent?: Subject<boolean>;
   @Input() absentTitle?: string;
   @Input() eventSelectRangeDay = new Subject<boolean>();
@@ -78,7 +78,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
     code: new FormControl(''),
     name: new FormControl(''),
     unit: new FormControl(''),
-    isLeave: new FormControl(false),
+    empStatus: new FormControl(getSelectors<number>(selectedEmpStatusPayroll, this.store)),
     searchType: new FormControl(SearchTypeEnum.CONTAINS),
     position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
     branch: new FormControl(getSelectors(selectedBranchPayroll, this.store)),
@@ -103,8 +103,8 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
     if (changes.eventSearchBranch?.currentValue !== changes.eventSearchBranch?.previousValue) {
       this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
     }
-    if (changes.eventSelectIsLeave?.currentValue !== changes.eventSelectIsLeave?.previousValue) {
-      this.formGroup.get('isLeave')?.setValue(changes.eventSelectIsLeave.currentValue)
+    if (changes.eventSelectEmpStatus?.currentValue !== changes.eventSelectEmpStatus?.previousValue) {
+      this.formGroup.get('empStatus')?.setValue(changes.eventSelectEmpStatus.currentValue)
     }
   }
 
@@ -117,7 +117,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
       endedAt: this.getRangeDay().end,
       position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
       branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
-      isLeave: false
+      empStatus: getSelectors<number>(selectedEmpStatusPayroll, this.store)
     };
 
     this.store.dispatch(
@@ -180,7 +180,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
           titles: value.titles ? value.titles : [],
           startedAt: this.getRangeDay().start,
           endedAt: this.getRangeDay().end,
-          isLeave: value.isLeave
+          empStatus: value.empStatus
         };
         this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
@@ -214,7 +214,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
   addSalaryAbsent(salary: Salary) {
     const ref = this.dialog.open(DialogTimekeepingComponent, {
       width: 'fit-content',
-      data:{
+      data: {
         salary
       }
     });
@@ -380,7 +380,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
         filterType: FilterTypeEnum.ABSENT,
         position: value.position?.name || '',
         branch: value.branch.name || '',
-        isLeave: value.isLeave,
+        empStatus: value.empStatus,
         startedAt: this.getRangeDay().start,
         endedAt: this.getRangeDay().end,
       }

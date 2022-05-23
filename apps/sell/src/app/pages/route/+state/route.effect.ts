@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
 import {RouteActions} from './routeActions';
 import {catchError, map, switchMap, tap} from 'rxjs/operators';
-import {RouteService} from '../service/route.service';
+import {RouteService} from '../service';
 import {of} from 'rxjs';
 import {getCommodityTotal, getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
 import {RouteStore} from './route.store';
@@ -27,7 +27,7 @@ export class RouteEffect {
     switchMap((props) => {
       this.routeStore.update(state => ({
         ...state,
-        added: false,
+        added: false
       }));
       return this.routeService.addOne(props).pipe(
         tap((res) => {
@@ -37,7 +37,7 @@ export class RouteEffect {
             this.routeStore.update(state => ({
               ...state,
               added: true,
-              adding: false
+              total: state.total + 1
             }));
             this.routeStore.add(Object.assign(res, {orders, expand: expanedAll}));
           }
@@ -153,11 +153,26 @@ export class RouteEffect {
   @Effect()
   delete$ = this.action.pipe(
     ofType(RouteActions.remove),
-    switchMap((props) =>
-      this.routeService.delete(props.idRoute).pipe(
-        map((_) => this.routeStore.remove(props.idRoute)),
-        catchError((err) => of(RouteActions.error(err)))
-      )
+    switchMap((props) => {
+        this.routeStore.update(state => ({
+          ...state, deleted: false
+        }))
+        return this.routeService.delete(props.idRoute).pipe(
+          map((_) => {
+            this.routeStore.update(state => ({
+              ...state, deleted: true, total: state.total - 1
+            }))
+            this.message.success('Xoá tuyến đường thành công')
+            return this.routeStore.remove(props.idRoute)
+          }),
+          catchError((err) => {
+            this.routeStore.update(state => ({
+              ...state, deleted: null
+            }))
+            return of(RouteActions.error(err))
+          })
+        )
+      }
     )
   );
 
@@ -179,7 +194,8 @@ export class RouteEffect {
   private handelOrder(orders: OrderEntity []) {
     return orders.map(order => Object.assign(order, {
       commodityTotal: getCommodityTotal(order.commodities),
-      totalCommodity: getTotalCommodity(order.commodities)
+      totalCommodity: getTotalCommodity(order.commodities),
+      expand: false
     }));
   }
 

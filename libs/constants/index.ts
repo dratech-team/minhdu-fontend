@@ -13,7 +13,10 @@ export * from './option-data-picker.constant';
 //hr
 export * from './HR/typePayrollExport.constant';
 export * from './HR/unitAllowance.constant';
-export * from './HR/employee.constant';
-export * from './HR/block-salary.constant';
+export * from './HR/employee-status.constant';
 export * from './HR/payroll.constant';
 //sell
+
+//Common
+export * from './gender-type.constant'
+export * from './storage-name.constant'

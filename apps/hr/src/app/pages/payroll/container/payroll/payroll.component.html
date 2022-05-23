@@ -1,7 +1,7 @@
 <div class='main-content'>
   <div class='row h3 ml-3 d-flex' [formGroup]='formGroup'>
     <div>
-      {{selectedPayroll|transform:payrollConstant}}
+      {{selectedPayroll|transformconstant:payrollConstant}}
     </div>
     <div class='d-flex justify-content-center align-items-center ml-2'>
       <nz-range-picker
@@ -26,15 +26,22 @@
     </div>
   </div>
   <div style='width: fit-content' class='d-flex'>
-    <mat-select class='form-control ml-3 border px-2 ' style='width: 200px' [formControl]='selectPayroll'>
-      <mat-option *ngFor='let item of payrollConstant' [value]='item.value'>
-        {{item.name}}
-      </mat-option>
-    </mat-select>
-    <div>
+    <div class="ml-3">
+      <div class="font-weight-bold">
+        Loại phiếu lương
+      </div>
+      <mat-select class='form-control  border px-2 ' style='width: 200px' [formControl]='selectPayroll'>
+        <mat-option *ngFor='let item of payrollConstant' [value]='item.value'>
+          {{item.name}}
+        </mat-option>
+      </mat-select>
+    </div>
+    <div class='ml-2'>
+      <div class="font-weight-bold">
+        Chi nhánh
+      </div>
       <div>
         <nz-select
-          class='ml-2'
           nzShowSearch
           nzAllowClear
           style='width:250px'
@@ -53,24 +60,27 @@
 
     </div>
     <div style='width: fit-content' class='ml-2'>
+      <div class="font-weight-bold">Phòng ban</div>
       <nz-select style='width:200px' [formControl]='categoryControl'>
         <nz-option [nzValue]="''" nzLabel='Tất cả'>Tất cả</nz-option>
         <nz-option *ngFor='let item of categories$|async' [nzValue]='item.id' [nzLabel]='item.name'></nz-option>
         <nz-option [nzValue]='0' nzLabel='Tạo mới'></nz-option>
       </nz-select>
     </div>
-    <div
-      *ngIf='selectedPayroll === filterTypeEnum.PAYROLL || selectedPayroll === filterTypeEnum.TIME_SHEET || selectedPayroll === filterTypeEnum.SEASONAL'>
-      <nz-select
-        [formControl]='formIsLeave'
-        class='ml-2'
-        nzShowSearch
-        style='width:200px'
-        nzPlaceHolder='Chọn loại nhân viên'
-      >
-        <nz-option [nzValue]='false' [nzLabel]='"Nhân viên còn làm"'></nz-option>
-        <nz-option [nzValue]='true' [nzLabel]='"Nhân viên đã nghỉ"'></nz-option>
-      </nz-select>
+    <div class='ml-2'>
+      <div class="font-weight-bold">
+        Tình trạng nhân viên
+      </div>
+      <div>
+        <nz-select
+          [formControl]='formEmpStatus'
+          nzShowSearch
+          style='width:200px'
+          nzPlaceHolder='Chọn loại nhân viên'
+        >
+          <nz-option *ngFor="let item of empStatusContain" [nzValue]='item.value' [nzLabel]='item.name'></nz-option>
+        </nz-select>
+      </div>
     </div>
     <button *ngIf='categoryControl.value && categoryControl.value !==0 && this.role !== roleEnum.HUMAN_RESOURCE '
             class='btn btn-primary ml-1' (click)='updateCategory()'>Sửa
@@ -395,7 +405,7 @@
       <minhdu-fontend-payroll-overtime
         [eventSelectRangeDay]='pickRangeDayOvertime'
         [overtimeTitle]='overtimeTitle'
-        [eventSelectIsLeave]='selectIsLeaveOvertime'
+        [eventSelectEmpStatus]='selectEmpStatusOvertime'
         [eventSearchBranch]='searchBranchOvertime'
         [eventAddOvertime]='eventAddOvertime'
         [eventExportOvertime]='eventExportOvertime'></minhdu-fontend-payroll-overtime>
@@ -415,19 +425,19 @@
       </minhdu-fontend-payroll-seasonal>
     </div>
     <div *ngIf='selectedPayroll === filterTypeEnum.BASIC '>
-      <minhdu-fontend-payroll-basic
+      <app-payroll-basic
         [eventSelectRangeDay]='pickRangeDayBasic'
-        [eventSelectIsLeave]='selectIsLeaveBasic'
+        [eventSelectEmpStatus]='selectEmpStatusBasic'
         [eventSearchBranch]='searchBranchBasic'
         [eventExportBasic]='eventExportBasic'
-      ></minhdu-fontend-payroll-basic>
+      ></app-payroll-basic>
     </div>
 
     <div *ngIf='selectedPayroll === filterTypeEnum.STAY '>
       <app-payroll-stay
         [eventSelectRangeDay]='pickRangeDayStay'
         [eventExportStay]='eventExportStay'
-        [eventSelectIsLeave]='selectIsLeaveStay'
+        [eventSelectEmpStatus]='selectEmpStatusStay'
         [eventSearchBranch]='searchBranchStay'>
 
       </app-payroll-stay>
@@ -436,19 +446,19 @@
       <app-payroll-allowance
         [eventSelectRangeDay]='pickRangeDayAllowance'
         [allowanceTitle]='allowanceTitle'
-        [eventSelectIsLeave]='selectIsLeaveAllowance'
+        [eventSelectEmpStatus]='selectEmpStatusAllowance'
         [eventAddAllowance]='eventAddAllowance'
         [eventSearchBranch]='searchBranchAllowance'
         [eventExportAllowance]='eventExportAllowance'></app-payroll-allowance>
     </div>
     <div *ngIf='selectedPayroll === filterTypeEnum.ABSENT '>
-      <app-payroll-absent
+      <app-payroll-deduction
         [eventSelectRangeDay]='pickRangeDayAbsent'
         [absentTitle]='absentTitle'
         [eventAddAbsent]='eventAddAbsent'
         [eventSearchBranch]='searchBranchAbsent'
-        [eventSelectIsLeave]='selectIsLeaveAbsent'
-        [eventExportAbsent]='eventExportAbsent'></app-payroll-absent>
+        [eventSelectEmpStatus]='selectEmpStatusAbsent'
+        [eventExportAbsent]='eventExportAbsent'></app-payroll-deduction>
     </div>
   </div>
   <app-mouse-right

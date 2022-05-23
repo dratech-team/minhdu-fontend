@@ -14,6 +14,7 @@ export * from './hr/filterType.enum';
 export * from './hr/type-employee';
 export * from './hr/overviewFilter.enum';
 export * from './hr/type-sort-employee';
+export * from './hr/role.enum';
 
 // sell
 export * from './sell/customer-type';
@@ -31,7 +32,7 @@ export * from './sell/sort-route.enum';
 export * from './sell/sort-order.enum';
 export * from './sell/sort-customer.enum';
 
-// category
+// modal-department
 export * from './warehouse/medicine/medicine-unit.enum';
 export * from './warehouse/warehouse-type.enum';
 export * from './warehouse/menu-warehouse.eum';
@@ -48,3 +49,5 @@ export * from './partial-day.enum';
 export * from './searchType.enum';
 export * from './input-search.enum';
 export * from './paidType.enum';
+export * from './hr/employee-status.enum';
+export * from './version.enum';

@@ -80,7 +80,6 @@ export class HolidayEffect {
       ofType(HolidayAction.UpdateHoliday),
       switchMap((pram) => this.holidayService.update(pram.id, pram.holiday).pipe(
         map(_ => {
-          console.log(pram.updateDetail)
             if (pram.updateDetail) {
 
               return HolidayAction.getHoliday({

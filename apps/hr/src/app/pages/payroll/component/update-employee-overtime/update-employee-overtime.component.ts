@@ -54,7 +54,6 @@ export class UpdateEmployeeOvertimeComponent implements OnInit {
       times: this.search.times || '',
       unit: this.search.unit || ''
     }).subscribe((employee) => {
-      console.log(employee)
       this.loaded = true
       this.employees = JSON.parse(JSON.stringify(employee));
     });

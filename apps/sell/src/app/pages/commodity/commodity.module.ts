@@ -20,12 +20,16 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { CommodityService } from './service/commodity.service';
+import {CommodityTemplateEffect} from "../commodity-template/state/commodity-template.effect";
 
 @NgModule({
   imports: [
     ComponentsModule,
     CommodityRoutingModule,
-    AkitaNgEffectsModule.forFeature([CommodityEffect]),
+    AkitaNgEffectsModule.forFeature([
+      CommodityEffect,
+      CommodityTemplateEffect
+    ]),
     MatInputModule,
     InfiniteScrollModule,
     CommonModule,

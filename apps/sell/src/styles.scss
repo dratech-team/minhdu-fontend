@@ -330,5 +330,13 @@ table thead tr th{
    float: right;
    width: 60%;
  }
+
+.position-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+
 @import "scss/custom-scroll-table";
 @import "~ng-zorro-antd/ng-zorro-antd.min.css";

@@ -1,0 +1,30 @@
+<form [formGroup]='formGroup'>
+  <div>
+    <span class='ml-1 font-weight-bold'>Tên đơn vị</span> <span class='star'>*</span>
+    <input nz-input type='text' class='mt-1' formControlName='name'
+           [ngClass]="{ 'is-invalid': checkValid.name.errors?.required }">
+    <div *ngIf='checkValid.name.errors?.required' class='invalid-feedback'>
+      <div>Chưa nhập Tên đơn vị</div>
+    </div>
+  </div>
+  <div class='mt-2'>
+    <div><span class='ml-1 font-weight-bold'>Danh sách chức vụ</span></div>
+    <div>
+      <nz-select style="width: 100%"
+                 [compareWith]="compareFn"
+                 [nzMaxTagCount]="5"
+                 [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
+                 nzMode="multiple"
+                 nzPlaceHolder="Chọn chức vụ"
+                 formControlName="positions"
+      >
+        <nz-option *ngFor="let item of positions$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
+      </nz-select>
+      <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn
+      </ng-template>
+    </div>
+  </div>
+  <div class='mt-4'>
+    <button nz-button nzType="primary" [nzLoading]="(added$| async) === false" (click)='onsubmit()'>Lưu</button>
+  </div>
+</form>

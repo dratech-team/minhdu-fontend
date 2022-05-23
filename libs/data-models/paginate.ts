@@ -10,8 +10,12 @@ export interface ResponsePaginatePayroll<T> extends ResponsePaginate<T> {
   isTimeSheet: boolean
 }
 
+export interface ResponsePaginateOvertimePayrollV1<T> extends ResponsePaginate<T> {
+  totalSalary: totalSalary
+}
+
 export interface ResponsePaginateOvertimePayroll<T> extends ResponsePaginate<T> {
-  totalSalary?: totalSalary
+  total2?: number
 }
 
 export interface RequestPaginate {

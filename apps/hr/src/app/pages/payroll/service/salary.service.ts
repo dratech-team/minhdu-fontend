@@ -1,11 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Api } from '@minhdu-fontend/constants';
-import { Salary } from '@minhdu-fontend/data-models';
-import { Observable } from 'rxjs';
-import { Update } from '@ngrx/entity';
-import { BaseService } from 'libs/service/base.service';
-import { UpdateNum } from '@ngrx/entity/src/models';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Api} from '@minhdu-fontend/constants';
+import {Salary} from '@minhdu-fontend/data-models';
+import {Observable} from 'rxjs';
+import {BaseService} from 'libs/service/base.service';
 
 @Injectable({ providedIn: 'root' })
 export class SalaryService extends BaseService<Salary> {
@@ -23,6 +21,10 @@ export class SalaryService extends BaseService<Salary> {
 
   update(id: any, body: any): Observable<Salary> {
     return super.update(id, body);
+  }
+
+  updateSalary (body: any): Observable<Salary>{
+    return this.http.post<Salary>(this.url + `/multiple`, body);
   }
 
   delete(id: number): Observable<void> {

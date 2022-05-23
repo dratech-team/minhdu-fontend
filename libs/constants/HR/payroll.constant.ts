@@ -19,12 +19,8 @@ export const PayrollConstant = [
     value: FilterTypeEnum.SEASONAL,
   },
   {
-    name: 'Bảng lương cơ bản',
-    value: FilterTypeEnum.BASIC
-  },
-  {
-    name: 'Bảng phụ cấp lương',
-    value: FilterTypeEnum.STAY
+    name: 'Bảng lương cố định',
+    value: FilterTypeEnum.PERMANENT
   },
   {
     name: 'Bảng phụ cấp khác',

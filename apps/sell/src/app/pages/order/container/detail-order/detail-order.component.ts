@@ -1,33 +1,36 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommodityUnit, PaymentType} from '@minhdu-fontend/enums';
-import {OrderActions} from '../../+state/order.actions';
-import {OrderDialogComponent} from '../../component/order-dialog/order-dialog.component';
+import {OrderActions, OrderQuery} from '../../+state';
+import {OrderDialogComponent} from '../../component';
 import {MatDialog} from '@angular/material/dialog';
-import {CommodityAction} from '../../../commodity/+state/commodity.action';
-import {CommodityDialogComponent} from '../../../commodity/component/commodity-dialog/commodity-dialog.component';
+import {CommodityAction, CommodityQuery} from '../../../commodity/+state';
+import {CommodityDialogComponent} from '../../../commodity/component';
 import {PickCommodityComponent} from '../../../../shared/components/pick-commodity/pick-commodity.component';
 import {
   DialogSharedComponent
 } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import {OrderHistoryService} from '../../service/order-history.service';
+import {OrderHistoryService} from '../../service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {debounceTime} from 'rxjs/operators';
 import {BehaviorSubject} from 'rxjs';
 import {Actions} from '@datorama/akita-ng-effects';
-import {OrderQuery} from '../../+state/order.query';
-import {OrderHistoryEntity} from '../../enitities/order-history.entity';
-import {CommodityEntity} from '../../../commodity/entities/commodity.entity';
-import {CommodityQuery} from '../../../commodity/+state/commodity.query';
+import {OrderHistoryEntity} from '../../enitities';
+import {CommodityEntity} from '../../../commodity/entities';
 import {NzModalService} from "ng-zorro-antd/modal";
 import {OrderEntity} from "../../enitities/order.entity";
+import {ModalAlertComponent} from "@minhdu-fontend/components";
+import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
+import {
+  ModalUpdateClosedCommodityComponent
+} from "../../../commodity/component/modal-update-closed-commodity/modal-update-closed-commodity.component";
 
 @Component({
   templateUrl: 'detail-order.component.html'
 })
 export class DetailOrderComponent implements OnInit {
-  order$ = this.orderQuery.selectEntity(this.getOrderId);
+  order$ = this.orderQuery.selectEntity(this.getOrderId)
   payType = PaymentType;
   commodityUnit = CommodityUnit;
   orderHistories: OrderHistoryEntity[] = [];
@@ -54,8 +57,8 @@ export class DetailOrderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loading$.subscribe(val => console.log(val));
     this.actions$.dispatch(OrderActions.loadOne({id: this.getOrderId}));
+
     this.loadInitOrderHistory();
 
     this.activatedRoute.queryParams.subscribe(param => {
@@ -85,7 +88,7 @@ export class DetailOrderComponent implements OnInit {
         nzComponentParams: {
           data: {order: order, tab: 0, isUpdate: true}
         },
-        nzFooter: null,
+        nzFooter: [],
         nzWidth: '65vw',
         nzMaskClosable: false
       });
@@ -98,7 +101,7 @@ export class DetailOrderComponent implements OnInit {
           formGroup: this.formBuilder.group({customerIds:[]})
         },
         nzWidth: '70vw',
-        nzFooter: null
+        nzFooter: []
       }).afterClose.subscribe(value => {
         if(value){
           this.actions$.dispatch(OrderActions.update({
@@ -123,7 +126,7 @@ export class DetailOrderComponent implements OnInit {
       nzComponentParams: {
         data: {commodity, isUpdate: true,}
       },
-      nzFooter: null,
+      nzFooter: [],
     })
   }
 
@@ -148,22 +151,27 @@ export class DetailOrderComponent implements OnInit {
   }
 
   closingCommodity(commodity: CommodityEntity, orderId: number) {
-    this.dialog.open(DialogSharedComponent, {
-      width: 'fit-content', data: {
-        title: 'Chốt hàng hoá',
-        description: 'Bạn có chắc chắn muốn ' + (commodity.closed ? 'bỏ chốt ' : 'chốt ') + commodity.name
+    this.modal.create({
+      nzTitle:'Chốt hàng hoá',
+      nzContent: ModalUpdateClosedCommodityComponent,
+      nzComponentParams: <{data: ModalAlertEntity}>{
+        data: {
+          description: `Bạn có chắc chắn muốn ${(commodity.closed ? 'bỏ chốt ' : 'chốt ') + commodity.name}`,
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe(val => {
+      if(val){
+          this.actions$.dispatch(CommodityAction.update({
+            id: commodity.id,
+            updates:{
+              histored : val.save,
+              orderId: orderId,
+              closed: !commodity.closed
+            }
+          }))
       }
-    }).afterClosed().subscribe(val => {
-      if (val) {
-        this.actions$.dispatch(CommodityAction.update({
-          id: commodity.id,
-          updates: {
-            orderId: orderId,
-            closed: !commodity.closed
-          },
-        }));
-      }
-    });
+    })
   }
 
   loadMoreOrderHistory() {

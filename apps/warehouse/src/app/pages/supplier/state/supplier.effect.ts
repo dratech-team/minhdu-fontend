@@ -29,7 +29,6 @@ export class SupplierEffect {
           if (res.data.length === 0) {
             this.message.info('Đã lấy hết nhà cung cấp')
           }
-          console.log(res)
           this.supplierStore.update(state => ({
             ...state, total: res.total, loading: false
           }))

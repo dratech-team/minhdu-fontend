@@ -1,16 +1,17 @@
 import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
 import {Injectable} from '@angular/core';
-import {CommodityUniq} from '../../commodity/entities/commodity-uniq.entity';
-import {StorageName} from '../../../shared/constaints/storage-name.const';
-import {OrderVisibleEntity} from '../enitities/order-visible.entity';
-import {SearchOrderDto} from "../dto/search-order.dto";
+import {CommodityUniq} from '../../commodity/entities';
+import {OrderVisibleEntity} from '../enitities';
+import {SearchOrderDto} from "../dto";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 import {updateStateUiUtil} from "../../../utils/update-state-ui.util";
 import {OrderEntity} from "../enitities/order.entity";
+import {StorageName} from "@minhdu-fontend/constants";
 
 export interface OrderState extends EntityState<OrderEntity> {
   readonly loading: boolean
-  readonly added?: boolean | null
+  readonly added: boolean | null
+  readonly deleted: boolean | null
   readonly expandedAll?: boolean
   readonly total: number;
   readonly commodityUniq: CommodityUniq[];
@@ -23,11 +24,10 @@ function createInitState(): OrderState {
   return {
     loading: true,
     added: null,
+    deleted: null,
     expandedAll: false,
     total: 0,
     commodityUniq: [],
-    entities: undefined,
-    ids: [],
     totalCommodity: 0,
     search: {
       search: '',
