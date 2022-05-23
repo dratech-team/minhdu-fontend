@@ -212,7 +212,7 @@ export class DetailEmployeeComponent implements OnInit {
       nzContent: 'bạn có chắc chắn xoá lịch sử công tác này không',
       nzOkDanger: true,
       nzOnOk: () => {
-        this.actions$.dispatch(EmployeeActions.removeHistorySalary({
+        this.actions$.dispatch(EmployeeActions.removeWorkHistory({
           id: workHistory.id,
           employeeId: employeeId
         }))

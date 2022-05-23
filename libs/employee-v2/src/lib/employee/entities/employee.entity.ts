@@ -15,7 +15,7 @@ export interface EmployeeEntity extends BaseEmployeeEntity{
   payrolls: Payroll[],
   contracts: ContractEntity[];
   relatives: RelativeEntity[],
-  workHistories?: WorkHistory[];
+  workHistories: WorkHistory[];
   historySalaries: SalaryHistory[];
   salaryHistories: Salary[],
   degrees: DegreeEntity[],
