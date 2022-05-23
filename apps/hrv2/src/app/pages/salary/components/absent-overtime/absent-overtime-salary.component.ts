@@ -95,7 +95,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     this.fistDateInMonth = getFirstDayInMonth(
       new Date(this.data.add
         ? (this.data.add.payroll?.createdAt || this.payrollQuery.getValue().search.startedAt)
-        : this.data.update.salary.startedAt || new Date())
+        : this.data.update.salary.startedAt || this.payrollQuery.getValue().search.startedAt)
     )
     this.actions$.dispatch(SettingSalaryActions.loadAll({
       search: {types: [this.data.type]}
