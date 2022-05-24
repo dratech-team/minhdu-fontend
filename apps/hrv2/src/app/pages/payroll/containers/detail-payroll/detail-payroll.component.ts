@@ -130,7 +130,7 @@ export class DetailPayrollComponent implements OnInit {
 
   onAdd(type: SalaryTypeEnum, payroll: PayrollEntity) {
     const config = {
-      nzFooter: ' ',
+      nzFooter: [],
       nzWidth: 'fit-content'
     };
     this.onOpenSalary(type, config, {payroll});
@@ -142,7 +142,7 @@ export class DetailPayrollComponent implements OnInit {
     payroll?: PayrollEntity
   ) {
     const config = {
-      nzFooter: ' ',
+      nzFooter: [],
       nzWidth: 'fit-content'
     };
     this.onOpenSalary(

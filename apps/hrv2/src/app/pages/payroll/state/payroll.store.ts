@@ -69,7 +69,10 @@ export function createInitialState(): PayrollEntityState {
       rangeDay: [
         new Date(new Date().getFullYear(), 0, 1),
         new Date()
-      ]
+      ],
+      accConfirmed: confirmTypeEnums.ALL,
+      manConfirmedAt: confirmTypeEnums.ALL,
+      paidAt: PaidTypeEnums.ALL
     },
     scanned: null
   };
