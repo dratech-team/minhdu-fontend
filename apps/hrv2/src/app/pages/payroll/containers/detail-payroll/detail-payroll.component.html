@@ -797,13 +797,13 @@
         <div #holiday class='col-12 mt-5'>
           <nz-table
             style='
+              width: 100%;
               border: solid 1px #EBEBEB !important;
               border-radius: 10px !important;
               box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06) !important;'
             [nzData]="payroll.holidays"
             nzSize="small"
-            nzShowPagination="false"
-            style='width: 100%'>
+            nzShowPagination="false">
             <thead>
             <tr>
               <th nzWidth='40px'></th>
@@ -935,19 +935,36 @@
 
         <!--WFH-->
         <div #wfh class='col-12 mt-5'>
-          <table style='width: 100%'>
+          <nz-table
+            [nzData]="payroll.remotes"
+            nzShowPagination="false"
+            nzSize="small"
+            style='
+              width: 100%;
+              border: solid 1px #EBEBEB !important;
+              border-radius: 10px !important;
+              box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06) !important;'
+          >
             <thead>
             <tr>
               <th width='3%'>
                 STT
               </th>
-              <th>
+              <th
+                [nzSortFn]='true'
+                (nzSortOrderChange)='onSort(filterRemoteEnum.TYPE, $event, payroll.remotes)'
+              >
                 Remote/Onsite/WFH
               </th>
-              <th>
+              <th
+                [nzSortFn]='true'
+                (nzSortOrderChange)='onSort(filterRemoteEnum.DATETIME, $event, payroll.remotes)'>
                 Thời gian
               </th>
-              <th>
+              <th
+                [nzSortFn]='true'
+                (nzSortOrderChange)='onSort(filterRemoteEnum.DURATION, $event, payroll.remotes)'
+              >
                 Tổng ngày
               </th>
               <th>
@@ -968,27 +985,27 @@
             </thead>
             <tbody>
             <tr *ngFor='let salary of payroll.remotes;let i=index '>
-              <td>
+              <td style="background: white">
                 <span>{{i + 1}}</span>
               </td>
-              <td>
+              <td style="background: white">
                 <span>{{salary.type | transformconstant: remoteConstant}}</span>
               </td>
-              <td>
+              <td style="background: white">
                  <span>
                  từ {{salary.startedAt | date:'dd-MM-yyyy'}}
                    <br>
                    đến  {{salary.endedAt | date:'dd-MM-yyyy'}}
                 </span>
               </td>
-              <td>
+              <td style="background: white">
                 {{salary.duration}} {{salary.partial | transformconstant: sessionConstant}}
               </td>
-              <td></td>
-              <td>
+              <td style="background: white"></td>
+              <td style="background: white">
                 <span>{{salary.note}}</span>
               </td>
-              <td>
+              <td style="background: white">
                 <div class='d-flex justify-content-around '>
                   <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
                           (click)='updateSalary(salaryTypeEnum.WFH, salary)'>
@@ -1016,7 +1033,7 @@
               <td></td>
             </tr>
             </tbody>
-          </table>
+          </nz-table>
         </div>
 
         <!--chú thích-->

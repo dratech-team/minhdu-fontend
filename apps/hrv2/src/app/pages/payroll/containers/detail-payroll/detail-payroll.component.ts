@@ -52,6 +52,7 @@ import {NzTableSortOrder} from "ng-zorro-antd/table";
 import {FilterOvertimeEnum} from "../../enums/filter-overtime.enum";
 import {SettingSalaryStore} from "../../../setting/salary/state";
 import {Payroll} from "../../../../../../../hr/src/app/pages/payroll/+state/payroll/payroll.interface";
+import {FilterRemoteEnum} from "../../enums/filter-remote.enum";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -94,6 +95,7 @@ export class DetailPayrollComponent implements OnInit {
   ;
   roleEnum = Role;
   filterOvertimeEnum = FilterOvertimeEnum
+  filterRemoteEnum = FilterRemoteEnum
 
   constructor(
     private readonly payrollQuery: PayrollQuery,
@@ -431,16 +433,20 @@ export class DetailPayrollComponent implements OnInit {
     }
   }
 
-  onSort(column: FilterOvertimeEnum, type: NzTableSortOrder, overtimes: SalaryEntity []) {
-    overtimes.sort((a, b) => {
+  onSort(column: FilterOvertimeEnum | FilterRemoteEnum, type: NzTableSortOrder, salary: SalaryEntity []) {
+    salary.sort((a, b) => {
       const isAsc = type === 'ascend';
       switch (column) {
         case FilterOvertimeEnum.TITLE:
           return this.compare(a.setting.title, b.setting.title, isAsc);
+        case FilterRemoteEnum.DATETIME:
         case FilterOvertimeEnum.DATETIME:
           return this.compare(b.startedAt, a.startedAt, isAsc)
+        case FilterRemoteEnum.DURATION:
         case FilterOvertimeEnum.DURATION:
           return this.compare(a.duration, b.duration, isAsc);
+        case FilterRemoteEnum.TYPE:
+          return this.compare(a.type, b.type, isAsc)
       }
     });
   }
