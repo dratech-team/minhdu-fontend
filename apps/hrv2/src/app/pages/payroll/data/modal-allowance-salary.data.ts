@@ -4,7 +4,7 @@ import {RequireOnlyOne} from "../../../../shared/types";
 
 export interface ModalAllowanceSalaryData {
   add?: {
-    payroll: PayrollEntity,
+    payroll?: PayrollEntity,
     multiple?: boolean
   }
   update?: {

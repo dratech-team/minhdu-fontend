@@ -3,8 +3,11 @@
     <div class="mb-1">
       <span class="font-weight-bold">Tổng phiếu lương: </span>{{total$|async}}
     </div>
-    <div *ngIf="isSalaryType" class="mr-2">
-      <span class="font-weight-bold">Lương đã chọn: </span>{{this.salariesSelected.length}}/{{totalSalary$|async}}
+    <div *ngIf="isSalaryType" class="mr-2 d-flex justify-content-between">
+      <div>
+        <span class="font-weight-bold">Lương đã chọn: </span>{{this.salariesSelected.length}}/{{totalSalary$|async}}
+      </div>
+      <button nz-button nzType="primary" class="ml-2" (click)="onAddSalary()">Thêm hàng loạt</button>
     </div>
     <div *ngIf="salariesSelected.length > 0">
       <button nz-button nzType="primary" class="mr-2" (click)="onUpdateSalary()">Sửa</button>
@@ -15,7 +18,7 @@
     [nzData]="payrolls"
     [formGroup]='formGroup'
     nzShowPagination="false"
-    [nzScroll]="scroll || {x:'5000px', y: '51vh'}"
+    [nzScroll]="scroll || {x:'5000px', y: '50vh'}"
     [nzLoading]="(loading$ | async)"
     nzSize="small"
   >

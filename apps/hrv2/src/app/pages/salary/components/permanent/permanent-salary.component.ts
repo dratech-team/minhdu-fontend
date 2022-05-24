@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {EmployeeType, Role, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {SalaryPayroll} from '@minhdu-fontend/data-models';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {NzModalRef} from 'ng-zorro-antd/modal';
+import {NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
 import {SalaryPermanentService} from '../../service';
 import {SettingSalaryActions, SettingSalaryQuery} from '../../../setting/salary/state';
 import {Actions} from '@datorama/akita-ng-effects';
@@ -13,6 +13,7 @@ import {throwError} from 'rxjs';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {ModalAddOrUpdatePermanent} from '../../../payroll/data';
 import {EmployeeService} from '@minhdu-fontend/employee-v2';
+import {PayrollQuery} from "../../../payroll/state";
 
 @Component({
     templateUrl: 'permanent-salary.component.html'
@@ -29,7 +30,6 @@ export class PermanentSalaryComponent implements OnInit {
                 return this.data.type === SalaryTypeEnum.STAY
                     ? entity.type === this.data.type
                     : entity.type === SalaryTypeEnum.BASIC || entity.type === SalaryTypeEnum.BASIC_INSURANCE
-
             }
         ]
     }).pipe(
@@ -51,17 +51,18 @@ export class PermanentSalaryComponent implements OnInit {
     employeeType = EmployeeType
     salaryTypeEnum = SalaryTypeEnum;
     roleEnum = Role;
-
+    createdAt = this.payrollQuery.getValue().search.startedAt
     compareFn = (o1: any, o2: any) => o1 && o2 ? (o1.id === o2.id || o1 === o2.title) : o1 === o2;
 
     constructor(
         private readonly actions$: Actions,
         private readonly settingSalaryQuery: SettingSalaryQuery,
+        private readonly payrollQuery: PayrollQuery,
         private readonly message: NzMessageService,
         private readonly formBuilder: FormBuilder,
         private readonly modalRef: NzModalRef,
         private readonly service: SalaryPermanentService,
-        private readonly employeeService: EmployeeService
+        private readonly employeeService: EmployeeService,
     ) {
     }
 
@@ -79,7 +80,7 @@ export class PermanentSalaryComponent implements OnInit {
             price: [salary?.price, Validators.required],
             rate: [salary?.rate, Validators.required],
             unit: [salary?.unit],
-            payrollIds: [[this.data.add?.payroll.id]],
+            payrollIds: [this.data.add?.payroll ? [this.data.add.payroll.id] : []],
             salaryIds: [this.data.update?.multiple?.salaries.map(item => item.id)],
         });
 
@@ -102,6 +103,9 @@ export class PermanentSalaryComponent implements OnInit {
             return;
         }
         const value = this.formGroup.value;
+        if (this.data.add?.multiple && value.payrollIds.length === 0) {
+          return  this.message.warning('Chưa chọn nhân viên')
+        }
         const salary = this.mapSalary(value);
         this.submitting = true;
         (this.data.add ?
@@ -112,8 +116,8 @@ export class PermanentSalaryComponent implements OnInit {
             .pipe(catchError(err => this.onSubmitError(err)))
             .subscribe(res => this.onSubmitSuccess(res,
                 this.data.add
-                    ? (!this.data.add.multiple
-                            ? this.data.add.payroll.id
+                    ? (!this.data.add?.multiple
+                            ? this.data.add.payroll?.id
                             : undefined
                     ) : (!this.data.update?.multiple
                             ? this.data.update.salary.payrollId

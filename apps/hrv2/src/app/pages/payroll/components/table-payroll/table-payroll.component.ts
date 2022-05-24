@@ -38,6 +38,7 @@ import {
 } from "../../../salary/components/absent-overtime/absent-overtime-salary.component";
 import {PartialDayEnum} from "@minhdu-fontend/data-models";
 import {UpdatePayrollComponent} from "../update/update-payroll.component";
+import {ModalSelectAddSalaryComponent} from "../modal-select-add-salary/modal-select-add-salary.component";
 
 @Component({
   selector: 'minhdu-fontend-table-payroll',
@@ -321,7 +322,7 @@ export class TablePayrollComponent implements OnInit {
           nzFooter: []
         }).afterClose.subscribe(val => {
           if (val) {
-            this.updateSalarySuccess(val)
+            this.updateOrAddSalarySuccess(val)
           }
         })
         break
@@ -335,7 +336,7 @@ export class TablePayrollComponent implements OnInit {
           nzFooter: []
         }).afterClose.subscribe(val => {
           if (val) {
-            this.updateSalarySuccess(val)
+            this.updateOrAddSalarySuccess(val)
           }
         })
         break
@@ -349,7 +350,7 @@ export class TablePayrollComponent implements OnInit {
           nzFooter: []
         }).afterClose.subscribe(val => {
           if (val) {
-            this.updateSalarySuccess(val)
+            this.updateOrAddSalarySuccess(val)
           }
         })
     }
@@ -391,9 +392,65 @@ export class TablePayrollComponent implements OnInit {
     })
   }
 
-  private updateSalarySuccess(title: string) {
+  private updateOrAddSalarySuccess(title: string) {
     this.salariesSelected = []
     this.formGroup.get('titles')?.setValue([title], {emitEvent: false})
     this.onloadPayroll.emit({isPagination: false})
+  }
+
+  onAddSalary() {
+    switch (this.formGroup.value.filterType) {
+      case FilterTypeEnum.PERMANENT:
+        this.modal.create({
+          nzWidth:'300px',
+          nzTitle: 'Chọn Loại lương',
+          nzContent: ModalSelectAddSalaryComponent,
+          nzFooter: []
+        }).afterClose.subscribe(val => {
+          if (val) {
+            this.updateOrAddSalarySuccess(val)
+          }
+        })
+        break
+      case FilterTypeEnum.OVERTIME:
+      case FilterTypeEnum.ABSENT:
+        this.modal.create({
+          nzWidth:'fit-content',
+          nzTitle: `Thêm ${this.formGroup.value.filterType === SalaryTypeEnum.OVERTIME ? 'tăng ca' : 'vắng'}`,
+          nzContent: AbsentOvertimeSalaryComponent,
+          nzComponentParams: <{ data: ModalAddOrUpdateAbsentOrOvertime }>{
+            data: {
+              type: this.formGroup.value.filterType,
+              add: {
+                multiple: true
+              }
+            }
+          },
+          nzFooter: []
+        }).afterClose.subscribe(val => {
+          if (val) {
+            this.updateOrAddSalarySuccess(val)
+          }
+        })
+        break
+      case FilterTypeEnum.ALLOWANCE:
+        this.modal.create({
+          nzWidth:'fit-content',
+          nzTitle: 'Thêm phụ cấp lương',
+          nzContent: AllowanceSalaryComponent,
+          nzComponentParams: <{ data: ModalAddOrUpdateAllowance }>{
+            data: {
+              add:{
+                multiple: true
+              }
+            }
+          },
+          nzFooter: []
+        }).afterClose.subscribe(val => {
+          if (val) {
+            this.updateOrAddSalarySuccess(val)
+          }
+        })
+    }
   }
 }

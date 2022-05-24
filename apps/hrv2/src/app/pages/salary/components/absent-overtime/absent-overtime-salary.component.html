@@ -17,7 +17,7 @@
                      [nzValue]='item' [nzLabel]="item.title || '' "></nz-option>
         </nz-select>
         <div *ngIf='checkValid.template.errors ' class='invalid-feedback'>
-          <div>Chưa chọn loại khấu trừ</div>
+          <div>Chưa chọn loại lương</div>
         </div>
       </div>
       <div class='mb-3'>
@@ -164,7 +164,7 @@
     <minhdu-fontend-select-payroll
       [employeeType]="employeeType.EMPLOYEE_FULL_TIME"
       [formGroup]="formGroup"
-      [createdAt]="data.add.payroll.createdAt"
+      [createdAt]="data.add.payroll?.createdAt ||fistDateInMonth"
     >
     </minhdu-fontend-select-payroll>
   </ng-template>
