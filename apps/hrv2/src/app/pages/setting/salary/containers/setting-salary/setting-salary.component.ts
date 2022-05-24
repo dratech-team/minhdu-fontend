@@ -13,6 +13,7 @@ import {ModalSettingSalaryComponent} from "../../components/setting-salary";
 import {AddOrUpdateSettingSalary} from "../../data/modal-setting-salary.data";
 import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Component({
   selector: 'minhdu-fontend-setting-salary',
@@ -49,7 +50,8 @@ export class SettingSalaryComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
-    private readonly settingSalaryStore: SettingSalaryStore
+    private readonly settingSalaryStore: SettingSalaryStore,
+    private readonly message: NzMessageService
   ) {
   }
 
@@ -122,5 +124,9 @@ export class SettingSalaryComponent implements OnInit {
         this.actions$.dispatch(SettingSalaryActions.remove({id: template.id}))
       }
     })
+  }
+
+  onDevelopment() {
+    this.message.info('Tính năng đang phát triển')
   }
 }

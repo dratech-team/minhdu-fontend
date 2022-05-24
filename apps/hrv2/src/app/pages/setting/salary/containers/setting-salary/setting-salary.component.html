@@ -32,11 +32,8 @@
       <div>
         <div>
           <button nz-button nzType="primary" class="ml-2" (click)="onAdd()">Thêm</button>
-          <button class='ml-2' nz-button nz-popover nzPopoverTitle='Ghim'
-                  [(nzPopoverVisible)]='visible'
-                  nzPopoverPlacement='bottomRight'
-                  [nzPopoverContent]='pinned'
-                  nzPopoverTrigger='click'>Ghim
+          <button class='ml-2' nz-button nzPopoverTitle='Ghim'
+                  (click)="onDevelopment()">Ghim
           </button>
         </div>
       </div>
