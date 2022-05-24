@@ -40,6 +40,7 @@ import {TransformConstantPipe} from "@minhdu-fontend/components";
 import {HistoryPayrollComponent} from "./containers/history-payroll/history-payroll.component";
 import {ClassifySalaryComponent} from "./components/classify-salary/classify-salary.component";
 import {NzIconModule} from "ng-zorro-antd/icon";
+import {ModalSelectAddSalaryComponent} from "./components/modal-select-add-salary/modal-select-add-salary.component";
 
 @NgModule({
     imports: [
@@ -84,7 +85,8 @@ import {NzIconModule} from "ng-zorro-antd/icon";
     AllowanceSalaryComponent,
     UpdatePayrollComponent,
     HistoryPayrollComponent,
-    ClassifySalaryComponent
+    ClassifySalaryComponent,
+    ModalSelectAddSalaryComponent
   ],
   exports: [
     TablePayrollComponent,

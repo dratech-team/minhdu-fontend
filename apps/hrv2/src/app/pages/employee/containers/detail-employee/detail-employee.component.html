@@ -477,6 +477,8 @@
           #tableRelative
           nzSize="small"
           [nzData]="employee.relatives || []"
+          nzShowPagination="false"
+          [nzScroll]="{x:'',y:'300px'}"
           class='mt-3'>
           <thead>
           <tr>
@@ -529,6 +531,7 @@
           #tableDegree
           [nzData]="employee.degrees|| []"
           nzShowPagination="false"
+          [nzScroll]="{x:'',y:'300px'}"
           class='mt-3'>
           <thead>
           <tr>

@@ -21,6 +21,7 @@ import {ModalAddOrUpdateAbsentOrOvertime} from '../../../payroll/data';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import * as moment from "moment";
 import {validateDayInMonth} from "../../utils/validate-day-in-month.util";
+import {PayrollQuery} from "../../../payroll/state";
 
 @Component({
   templateUrl: 'absent-overtime-salary.component.html'
@@ -85,13 +86,16 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     private readonly message: NzMessageService,
     private readonly absentSalaryService: AbsentSalaryService,
     private readonly overtimeSalaryService: OvertimeSalaryService,
-    private readonly actions$: Actions
+    private readonly actions$: Actions,
+    private readonly payrollQuery: PayrollQuery
   ) {
   }
 
   ngOnInit(): void {
     this.fistDateInMonth = getFirstDayInMonth(
-      new Date(this.data.add ? this.data.add.payroll.createdAt : this.data.update.salary.startedAt || new Date())
+      new Date(this.data.add
+        ? (this.data.add.payroll?.createdAt || this.payrollQuery.getValue().search.startedAt)
+        : this.data.update.salary.startedAt || this.payrollQuery.getValue().search.startedAt)
     )
     this.actions$.dispatch(SettingSalaryActions.loadAll({
       search: {types: [this.data.type]}
@@ -118,7 +122,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       constraintOvertime: [],
       hasConstraints: [],
       reference: [],
-      payrollIds: [this.data.add ? [this.data.add.payroll.id] : []],
+      payrollIds: [this.data.add?.payroll ? [this.data.add.payroll?.id] : []],
       salaryIds: [this.data.update?.multiple?.salaries.map(item => item.id)],
     });
 
@@ -172,6 +176,9 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       return;
     }
     const value = this.formGroup.value;
+    if (this.data.add?.multiple && value.payrollIds.length === 0) {
+      return this.message.warning('Chưa chọn nhân viên')
+    }
     if (value.isAllowance && (!value.priceAllowance || !value.titleAllowance)) {
       return this.message.warning('Chưa nhập đủ thông tin phụ cấp cho tăng ca');
     }
@@ -190,7 +197,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
         this.onSubmitSuccess(res, this.data.add
           ? (
             !this.data.add?.multiple
-              ? this.data.add?.payroll.id
+              ? this.data.add?.payroll?.id
               : undefined
           )
           : (!this.data.update.multiple

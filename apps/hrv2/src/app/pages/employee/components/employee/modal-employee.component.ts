@@ -7,12 +7,18 @@ import {RecipeTypesConstant} from '@minhdu-fontend/constants';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalRef} from 'ng-zorro-antd/modal';
 import {map} from 'rxjs/operators';
-import {BranchActions, BranchEntity, BranchQuery, PositionEntity} from '@minhdu-fontend/orgchart-v2';
+import {
+  BranchActions,
+  BranchEntity,
+  BranchQuery,
+  DepartmentActions,
+  DepartmentQuery,
+  PositionEntity
+} from '@minhdu-fontend/orgchart-v2';
 import {Actions} from '@datorama/akita-ng-effects';
 import {EmployeeActions, EmployeeQuery} from '@minhdu-fontend/employee-v2';
 import {FlatSalaryTypeConstant} from '../../constants/flat-salary-type.constant';
 import {FlatSalaryTypeEnum} from '../../enums/flat-salary-type.enum';
-import {Observable} from 'rxjs';
 import {ModalEmployeeData} from '../../data/modal-employee.data';
 import {EmployeeTypeConstant} from '../../constants/employee-type.constant';
 import {
@@ -34,7 +40,7 @@ export class ModalEmployeeComponent implements OnInit {
     }
     return branches;
   }));
-  categories$ = new Observable<any>();
+  categories$ = this.departmentQuery.selectAll();
   added$ = this.employeeQuery.select('added');
 
   lstPosition: PositionEntity [] = [];
@@ -54,16 +60,17 @@ export class ModalEmployeeComponent implements OnInit {
     private readonly employeeQuery: EmployeeQuery,
     private readonly formBuilder: FormBuilder,
     private readonly message: NzMessageService,
-    private readonly modalRef: NzModalRef
+    private readonly modalRef: NzModalRef,
+    private readonly departmentQuery: DepartmentQuery
   ) {
   }
 
   ngOnInit(): void {
     this.actions$.dispatch(BranchActions.loadAll({}));
-
+    this.actions$.dispatch(DepartmentActions.loadAll({}))
     this.lstPosition = this.data?.update?.employee?.branch?.positions || [];
     const employeeInit = this.data?.add?.employee || this.data?.update?.employee;
-
+    console.log(employeeInit)
     this.formGroup = this.formBuilder.group({
       identify: [employeeInit?.identify],
       issuedBy: [employeeInit?.issuedBy],
@@ -107,7 +114,7 @@ export class ModalEmployeeComponent implements OnInit {
       recipeType: [employeeInit?.recipeType || this.recipeType.CT2],
       type: [employeeInit ?
         employeeInit.type : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
-      category: [employeeInit?.category?.id],
+      category: [employeeInit?.category],
       province: [employeeInit?.ward?.district?.province, Validators.required],
       district: [employeeInit?.ward?.district, Validators.required],
       ward: [employeeInit?.ward, Validators.required],
