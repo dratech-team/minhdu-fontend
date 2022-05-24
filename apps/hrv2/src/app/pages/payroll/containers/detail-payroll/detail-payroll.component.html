@@ -2,7 +2,7 @@
   <nz-spin nzSize='large' style='position: fixed; top:50%; left: 50% '>
   </nz-spin>
 </ng-template>
-<div class='animated fadeIn mt-2 mx-auto container' *ngIf='(payroll$ | async) as payroll; else loadingPayroll'>
+<div class='animated fadeIn mt-2 mx-auto' *ngIf='(payroll$ | async) as payroll; else loadingPayroll'>
   <div class="transform-payroll"
        style="left: 0"
        (click)="prePayroll(payroll)">
