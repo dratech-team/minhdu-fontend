@@ -9,6 +9,8 @@ import {Actions} from "@datorama/akita-ng-effects";
 import {
   ModalChangePasswordComponent
 } from "../../../../../../libs/auth/src/lib/components/modal-change-password/modal-change-password.component";
+import {TabEnum} from "../../state/app.entity";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 
 @Component({
@@ -25,11 +27,15 @@ export class PageLayoutComponent {
     private readonly appStore: AppStore,
     private readonly router: Router,
     private readonly modal: NzModalService,
-    private readonly actions$: Actions
+    private readonly actions$: Actions,
+    private readonly message: NzMessageService
   ) {
   }
 
-  onUpdateStateAppName(appName: string, href: string) {
+  onUpdateStateAppName(appName: string, href: string): any {
+    if (href === TabEnum.RANK) {
+      return this.message.info('Tính năng đang phát triển')
+    }
     this.router.navigate([href]).then()
     this.appStore.update(state => ({
       ...state, appName: appName
@@ -48,10 +54,10 @@ export class PageLayoutComponent {
 
   changePassWord() {
     this.modal.create({
-      nzWidth:'500px',
-      nzTitle:'Đổi mật khẩu',
+      nzWidth: '500px',
+      nzTitle: 'Đổi mật khẩu',
       nzContent: ModalChangePasswordComponent,
-      nzFooter:[]
+      nzFooter: []
     })
   }
 }
