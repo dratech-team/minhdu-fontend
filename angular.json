@@ -686,22 +686,12 @@
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "apps/hrv2/src/styles.scss"
             ],
+            "optimization": false,
             "scripts": []
           },
           "configurations": {
             "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
-                }
-              ],
+              "budgets": [],
               "fileReplacements": [
                 {
                   "replace": "apps/hrv2/src/environments/environment.ts",
@@ -950,7 +940,6 @@
         }
       }
     },
-
     "employee-v2": {
       "projectType": "library",
       "root": "libs/employee-v2",

@@ -13,7 +13,6 @@ import {
 } from '@minhdu-fontend/enums';
 import {ExportService} from '@minhdu-fontend/service';
 import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
-import {DialogExportComponent} from 'libs/components/src/lib/dialog-export/dialog-export.component';
 import {debounceTime, map, tap} from 'rxjs/operators';
 import {OrderActions, OrderQuery, OrderStore} from '../../+state';
 import {Actions} from '@datorama/akita-ng-effects';
@@ -24,6 +23,8 @@ import * as _ from 'lodash';
 import {OrderEntity} from '../../enitities/order.entity';
 import {radiosStatusOrderConstant} from '../../constants';
 import {WidthConstant} from "../../../../shared/constants";
+import {ModalExportExcelComponent, ModalExportExcelData} from "@minhdu-fontend/components";
+import {DatePipe} from "@angular/common";
 
 @Component({
   templateUrl: 'order.component.html'
@@ -78,6 +79,7 @@ export class OrderComponent implements OnInit {
   });
 
   constructor(
+    private readonly datePipe: DatePipe,
     private readonly actions$: Actions,
     private readonly orderQuery: OrderQuery,
     private readonly orderStore: OrderStore,
@@ -212,17 +214,24 @@ export class OrderComponent implements OnInit {
   }
 
   onPrint() {
-    this.dialog.open(DialogExportComponent, {
-      width: 'fit-content',
-      data: {
-        filename: 'Danh sách đơn hàng',
-        title: 'Xuất bảng đơn hàng',
-        exportType: 'RANGE_DATETIME',
-        typeDate: 'RANGE_DATETIME',
-        params: Object.assign(_.omit(this.formGroup.value, ['take', 'skip']), { exportType: 'ORDER' }),
-        selectDatetime: true,
-        api: Api.SELL.ORDER.ORDER_EXPORT
-      }
-    });
+    this.modal.create({
+      nzTitle: 'Xuất danh sách đơn hàng',
+      nzWidth: 'fit-content',
+      nzContent: ModalExportExcelComponent,
+      nzComponentParams: <{ data: ModalExportExcelData }>{
+        data: {
+          filename: `Đơn hàng`
+            + ` từ ngày ${this.datePipe.transform(this.formGroup.value.startedAt_start, 'dd-MM-yyy')}`
+            + ` đến ngày ${this.datePipe.transform(this.formGroup.value.startedAt_start, 'dd-MM-yyy')}`,
+          params: Object.assign({},
+            _.omit(this.mapOrder(this.formGroup.value, false), ['take', 'skip']),
+            {exportType: 'ORDER'}),
+          api: Api.SELL.ORDER.ORDER_EXPORT,
+          selectDatetime: true,
+          typeDate: "RANGE_DATETIME"
+        }
+      },
+      nzFooter: []
+    })
   }
 }

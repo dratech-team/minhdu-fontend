@@ -5,7 +5,12 @@ import { Router } from '@angular/router';
 import { Api } from '@minhdu-fontend/constants';
 import { CustomerType, ItemContextMenu, SortCustomerEnum } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
-import {DialogDeleteComponent, DialogExportComponent, ModalAlertComponent} from '@minhdu-fontend/components';
+import {
+  DialogDeleteComponent,
+  DialogExportComponent,
+  ModalAlertComponent,
+  ModalExportExcelComponent, ModalExportExcelData
+} from '@minhdu-fontend/components';
 import { debounceTime, map, tap } from 'rxjs/operators';
 import { CustomerActions, CustomerQuery, CustomerStore } from '../../+state';
 import { CustomerDialogComponent, PaymentDialogComponent } from '../../component';
@@ -138,15 +143,21 @@ export class CustomerComponent implements OnInit {
   }
 
   printCustomer() {
-    this.dialog.open(DialogExportComponent, {
-      width: 'fit-content',
-      data: {
-        filename: 'danh sách khác hàng',
-        title: 'Xuât bảng khác hàng',
-        params: _.omit(this.mapCustomer(this.formGroup.value, false), ['take', 'skip']),
-        api: Api.SELL.CUSTOMER.CUSTOMER_EXPORT
-      }
-    });
+    this.modal.create({
+      nzTitle: 'Xuất danh sách khách hàng',
+      nzWidth: 'fit-content',
+      nzContent: ModalExportExcelComponent,
+      nzComponentParams: <{ data: ModalExportExcelData }>{
+        data: {
+          filename: 'Danh sách khách hàng',
+          params: Object.assign({},
+            _.omit(this.mapCustomer(this.formGroup.value, false), ['take', 'skip']),
+            {exportType: 'CUSTOMER'}),
+          api: Api.HR.EMPLOYEE.EMPLOYEE_EXPORT
+        }
+      },
+      nzFooter: []
+    })
   }
 
   onPagination(pageIndex: number) {
