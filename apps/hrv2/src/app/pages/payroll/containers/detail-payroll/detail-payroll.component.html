@@ -171,9 +171,9 @@
                   </div>
                 </td>
               </tr>
-              <tr>
+              <tr class='font-weight-bold'>
                 <td></td>
-                <td class='font-weight-bold'>Tổng cộng:</td>
+                <td>Tổng cộng:</td>
                 <td></td>
                 <td style='color: #05981C'>
                   {{ payroll.total.basic
@@ -233,9 +233,9 @@
                   </div>
                 </td>
               </tr>
-              <tr>
+              <tr class='font-weight-bold'>
                 <td></td>
-                <td class='font-weight-bold'>Tổng cộng :</td>
+                <td>Tổng cộng :</td>
                 <td style='color: #05981C'>
                   {{payroll.total.stay
                   | roundingnumber :1000
@@ -342,9 +342,9 @@
                 </div>
               </td>
             </tr>
-            <tr *ngIf='payroll.total.allowance'>
+            <tr *ngIf='payroll.total.allowance' class='font-weight-bold'>
               <td></td>
-              <td class='font-weight-bold'>Tổng cộng :</td>
+              <td>Tổng cộng :</td>
               <td></td>
               <td>{{payroll.total.allowance.duration.day}}</td>
               <td></td>
@@ -496,10 +496,10 @@
           </nz-table>
           </tr>
           </ng-template>
-          <tr *ngIf='payroll.overtimes?.length > 0'>
+          <tr *ngIf='payroll.overtimes?.length > 0' class='font-weight-bold'>
             <td></td>
             <td></td>
-            <td class='font-weight-bold'>Tổng cộng :</td>
+            <td>Tổng cộng :</td>
             <td></td>
             <td>
               {{payroll.total.overtime.duration.day}} ngày
@@ -610,21 +610,21 @@
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr class="font-weight-bold">
               <td></td>
-              <td class='font-weight-bold'>Tổng cộng :</td>
+              <td>Tổng cộng :</td>
               <td></td>
               <td>
                 {{payroll.total.absent.duration.day}} ngày
                 <br>{{payroll.total.absent.duration.hour}} Giờ
               </td>
-              <td style='color: #05981C'>
+              <td style='color: red'>
                 {{payroll.total.absent.price
                 | roundingnumber :1000
                 | number: '1.0-0'
                 | notEmpty: '0' }} đ
               </td>
-              <td style='color: #05981C'>
+              <td style='color: red'>
                 {{payroll.total.absent.total
                 | roundingnumber :1000
                 | number: '1.0-0'
@@ -701,9 +701,9 @@
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr class='font-weight-bold'>
               <td></td>
-              <td class='font-weight-bold'>Tổng cộng :</td>
+              <td >Tổng cộng :</td>
               <td></td>
               <td>
                 {{payroll.total?.dayOff?.duration}} ngày
@@ -777,10 +777,10 @@
                 </div>
               </td>
             </tr>
-            <tr *ngIf='payroll.total.remote'>
+            <tr *ngIf='payroll.total.remote' class='font-weight-bold'>
               <td></td>
-              <td class='font-weight-bold'>Tổng cộng :</td>
-              <td>
+              <td >Tổng cộng :</td>
+              <td style="color: red">
                 {{payroll.total.deduction
                 | roundingnumber :1000
                 |number:'1.0-0'
@@ -857,7 +857,7 @@
                 </td>
                 <td>
                   {{ salary.total
-                  | roundingnumber :1000
+                  | roundingnumber :100
                   | number:'1.0'}} đ
                 </td>
                 <td (click)='$event.stopPropagation()'>
@@ -912,16 +912,16 @@
           </nz-table>
           </tr>
           </ng-template>
-          <tr *ngIf='payroll.total.holiday?.duration'>
+          <tr *ngIf='payroll.total.holiday?.duration' class="font-weight-bold">
             <td></td>
             <td></td>
-            <td class="font-weight-bold"> Tổng cộng:</td>
+            <td> Tổng cộng:</td>
             <td> {{payroll.total.holiday.duration}} ngày</td>
             <td>
             </td>
             <td></td>
             <td></td>
-            <td> {{
+            <td style="color: #05981C"> {{
               payroll.total.holiday.total
                 |roundingnumber:100
                 |number: '1.0-0'
@@ -1018,13 +1018,12 @@
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr class='font-weight-bold'>
               <td></td>
-              <td class='font-weight-bold'>Tổng cộng :</td>
+              <td>Tổng cộng :</td>
               <td></td>
               <td>
                 {{payroll.total.remote.duration
-                | roundingnumber :1000
                 | number:'1.0-0'
                 }} ngày
               </td>
