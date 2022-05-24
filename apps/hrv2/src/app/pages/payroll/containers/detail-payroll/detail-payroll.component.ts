@@ -453,22 +453,19 @@ export class DetailPayrollComponent implements OnInit {
 
   prePayroll(payroll: PayrollEntity) {
     const indexPayrollCurrent = payroll.payrollIds.indexOf(payroll.id);
-    const payrollIds = payroll.payrollIds;
     if (indexPayrollCurrent > 0) {
-      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[indexPayrollCurrent - 1]]).then();
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds[indexPayrollCurrent - 1]]).then();
     } else {
-      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[payrollIds.length - 1]]).then();
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds.slice(-1)[0]]).then();
     }
   }
 
   nextPayroll(payroll: PayrollEntity) {
-    console.log(payroll)
     const indexPayrollCurrent = payroll.payrollIds.indexOf(payroll.id);
-    const payrollIds = payroll.payrollIds;
-    if (indexPayrollCurrent < payrollIds.length - 1) {
-      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[indexPayrollCurrent + 1]]).then();
+    if (indexPayrollCurrent < payroll.payrollIds.length - 1) {
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds[indexPayrollCurrent + 1]]).then();
     } else {
-      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[0]]).then();
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds[0]]).then();
     }
   }
 }
