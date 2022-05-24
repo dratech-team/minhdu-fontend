@@ -13,6 +13,6 @@ export class OvertimeService extends BaseService<PayrollSalary> {
   }
 
   getOvertime(params?: any): Observable<PayrollSalary> {
-    return this.http.get<PayrollSalary>(VersionEnum.V2 + Api.HR.PAYROLL.OVERTIME, {params});
+    return this.http.get<PayrollSalary>(VersionEnum.V1 + Api.HR.PAYROLL.OVERTIME, {params});
   }
 }
