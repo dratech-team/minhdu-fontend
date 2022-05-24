@@ -2,14 +2,7 @@ import {BasePayrollEntity} from '../bases';
 import {Employee} from '@minhdu-fontend/data-models';
 import {PayslipEntity} from './payslip.entity';
 import {RecipeType} from '@minhdu-fontend/enums';
-import {
-  AbsentSalaryEntity,
-  AllowanceSalaryEntity,
-  DayOffSalaryEntity,
-  DeductionSalaryEntity,
-  OvertimeSalaryEntity,
-  PermanentSalaryEntity, SalaryEntity, RemoteSalaryEntity
-} from "../../salary/entities";
+import {DayOffSalaryEntity, DeductionSalaryEntity, RemoteSalaryEntity, SalaryEntity} from "../../salary/entities";
 import {HolidaySalaryEntity} from "../../salary/entities/holiday-salary.entity";
 
 
@@ -63,7 +56,7 @@ export interface PayrollEntity extends BasePayrollEntity {
   allowances: SalaryEntity[],
   remotes: RemoteSalaryEntity[],
   holidays: HolidaySalaryEntity[]
-  dayOffs: DayOffSalaryEntity[],
+  dayoffs: DayOffSalaryEntity[],
   payrollIds: number[];
   total: {
     payroll: number;
