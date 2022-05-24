@@ -10,6 +10,6 @@ export class ItemExportService {
   }
 
   getItemExport(params?: any): Observable<any[]> {
-    return this.http.get<any>(VersionEnum.V2 + (params?.api || Api.HR.EXPORT), {params});
+    return this.http.get<any>(VersionEnum.V1 + (params?.api || Api.HR.EXPORT), {params});
   }
 }
