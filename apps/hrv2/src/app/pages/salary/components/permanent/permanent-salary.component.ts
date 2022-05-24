@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {EmployeeType, Role, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {SalaryPayroll} from '@minhdu-fontend/data-models';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {NzModalRef} from 'ng-zorro-antd/modal';
+import {NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
 import {SalaryPermanentService} from '../../service';
 import {SettingSalaryActions, SettingSalaryQuery} from '../../../setting/salary/state';
 import {Actions} from '@datorama/akita-ng-effects';
@@ -62,7 +62,7 @@ export class PermanentSalaryComponent implements OnInit {
         private readonly formBuilder: FormBuilder,
         private readonly modalRef: NzModalRef,
         private readonly service: SalaryPermanentService,
-        private readonly employeeService: EmployeeService
+        private readonly employeeService: EmployeeService,
     ) {
     }
 
@@ -104,7 +104,7 @@ export class PermanentSalaryComponent implements OnInit {
         }
         const value = this.formGroup.value;
         if (this.data.add?.multiple && value.payrollIds.length === 0) {
-            return this.message.warning('Chưa chọn nhân viên')
+          return  this.message.warning('Chưa chọn nhân viên')
         }
         const salary = this.mapSalary(value);
         this.submitting = true;

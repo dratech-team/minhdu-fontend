@@ -101,7 +101,7 @@ export class AllowanceSalaryComponent implements OnInit {
     }
     const value = this.formGroup.value;
     if(this.data.add?.multiple && value.payrollIds.length === 0){
-     return  this.message.error('Chưa chọn nhân viên')
+      return  this.message.warning('Chưa chọn nhân viên')
     }
     const salary = this.mapSalary(value);
     this.submitting = true;
