@@ -142,7 +142,8 @@ export class CustomerComponent implements OnInit {
     });
   }
 
-  printCustomer() {this.modal.create({
+  printCustomer() {
+    this.modal.create({
       nzTitle: 'Xuất danh sách khách hàng',
       nzWidth: 'fit-content',
       nzContent: ModalExportExcelComponent,
