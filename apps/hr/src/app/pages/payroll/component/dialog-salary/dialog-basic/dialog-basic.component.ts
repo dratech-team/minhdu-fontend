@@ -9,7 +9,7 @@ import {AppState} from '../../../../../reducers';
 import {selectedAddedPayroll, selectedAddingPayroll} from '../../../+state/payroll/payroll.selector';
 import {TemplateSalaryAction} from '../../../../template/+state/teamlate-salary/template-salary.action';
 import {selectorAllTemplate} from '../../../../template/+state/teamlate-salary/template-salary.selector';
-import {Role} from '../../../../../../../../../libs/enums/hr/role.enum';
+import {Role} from '@minhdu-fontend/enums';
 import {MatTabChangeEvent} from '@angular/material/tabs';
 import {SalaryService} from '../../../service/salary.service';
 import {Employee, SalaryPayroll} from '@minhdu-fontend/data-models';
