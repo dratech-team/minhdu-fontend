@@ -174,8 +174,9 @@
             </nz-select>
           </div>
           <div class='col'>
-            <label for='category'>Chọn danh mục </label>
+            <label for='category'>Chọn phòng ban </label>
             <nz-select
+              [compareWith]="compareFN"
               id='category' formControlName='category' style="width: 100%">
               <nz-option *ngFor='let item of categories$ | async' [nzValue]="item.id" [nzLabel]="item.name">
               </nz-option>
