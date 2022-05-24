@@ -12,6 +12,6 @@ export class AppService {
   }
 
   getAll(): Observable<AppInterface[]> {
-    return this.http.get<AppInterface[]>(VersionEnum.V2 + 'application')
+    return this.http.get<AppInterface[]>(VersionEnum.V1 + 'application')
   }
 }
