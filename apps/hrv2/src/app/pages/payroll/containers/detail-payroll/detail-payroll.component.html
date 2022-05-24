@@ -2,18 +2,16 @@
   <nz-spin nzSize='large' style='position: fixed; top:50%; left: 50% '>
   </nz-spin>
 </ng-template>
-<div class='animated fadeIn mt-2 mx-auto' *ngIf='(payroll$ | async) as payroll; else loadingPayroll'>
-  <div class="transform-payroll" style="left: 0" >
-    <button class="btn-move-page border rounded d-flex justify-content-center align-items-center"
-            (click)="prePayroll(payroll)">
-      <i nz-icon nzType="step-backward" nzTheme="outline"></i>
-    </button>
+<div class='animated fadeIn mt-2 mx-auto container' *ngIf='(payroll$ | async) as payroll; else loadingPayroll'>
+  <div class="transform-payroll"
+       style="left: 0"
+       (click)="prePayroll(payroll)">
+      <img width="30px" height="30px" style="opacity: 0.2"  src="assets/icons/chevron-compact-left.svg">
   </div>
- <div class="transform-payroll" style="right: 0">
-   <button class="btn-move-page d-flex justify-content-center align-items-center border rounded"
-           (click)="nextPayroll(payroll)">
-     <i nz-icon nzType="step-forward" nzTheme="outline"></i>
-   </button>
+ <div class="transform-payroll"
+      style="right: 0"
+      (click)="nextPayroll(payroll)">
+   <img width="30px" height="30px" style="opacity: 0.2"  src="assets/icons/chevron-compact-right.svg">
  </div>
   <div>
     <div style='max-width: 90vw ; margin: auto'>
@@ -244,6 +242,7 @@
             </table>
           </div>
         </div>
+
         <!--Phụ cấp -->
         <div #allowance class='mt-5 col-12'>
           <table style='width: 100%;'>
@@ -289,9 +288,16 @@
                 <span>{{salary.title}}</span>
               </td>
               <td>
-                Từ. {{ salary.startedAt | date:'dd-MM-yyyy' }}
-                <br/>
+                <span *ngIf="salary.unit === datetimeUnit.MONTH else day">
+                  1 tháng
+                </span>
+                <ng-template #day>
+                  <span>
+                    Từ. {{ salary.startedAt | date:'dd-MM-yyyy' }}
+                    <br/>
                 đến {{ salary.endedAt | date:'dd-MM-yyyy' }}
+                </span>
+                </ng-template>
               </td>
               <td>
                 {{ salary.duration }}

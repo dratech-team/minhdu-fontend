@@ -2,7 +2,7 @@ import {DatePipe} from '@angular/common';
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
-import {DatetimeUnitEnum, EmployeeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, EmployeeType} from '@minhdu-fontend/enums';
 import {getFirstDayInMonth, getLastDayInMonth, isEqualDatetime} from 'libs/utils/daytime.until';
 import {AllowanceSalaryService} from '../../service';
 import {NzMessageService} from 'ng-zorro-antd/message';
@@ -16,6 +16,8 @@ import {ModalAddOrUpdateAllowance} from '../../../payroll/data';
 import {validateDayInMonth} from '../../utils/validate-day-in-month.util';
 import * as moment from 'moment';
 import {PayrollQuery} from "../../../payroll/state";
+import {UnitDatetimeConstant} from "../../../setting/salary/constants/unit-datetime.constant";
+import {SalaryTypeEnum} from "../../../setting/salary/enums";
 
 @Component({
   templateUrl: 'allowance-salary.component.html'
@@ -31,6 +33,8 @@ export class AllowanceSalaryComponent implements OnInit {
   fistDateInMonth!: Date;
   salaryTypeEnum = SalaryTypeEnum;
   employeeType = EmployeeType
+  datetimeUnit = DatetimeUnitEnum
+  datetimeConstant = UnitDatetimeConstant.filter(item => item.salaryType.includes(SalaryTypeEnum.ALLOWANCE))
 
   disableApprenticeDate = (cur: Date): boolean => {
     return validateDayInMonth(cur, this.fistDateInMonth);
@@ -62,6 +66,7 @@ export class AllowanceSalaryComponent implements OnInit {
       title: [salary?.title, Validators.required],
       price: [salary?.price, Validators.required],
       note: [salary?.note],
+      unit: [salary?.unit || DatetimeUnitEnum.MONTH, Validators.required],
       month: [salary?.startedAt || payroll?.createdAt],
       rangeDay: [
         [salary?.startedAt || this.fistDateInMonth,
@@ -77,13 +82,11 @@ export class AllowanceSalaryComponent implements OnInit {
       salaryIds: [this.data.update?.multiple?.salaries.map(item => item.id)],
     });
     this.formGroup.get('unit')?.valueChanges.subscribe(unit => {
-      switch (unit) {
-        case DatetimeUnitEnum.DAY:
-          this.formGroup.get('datetime')?.setValue('');
-          break;
-        case DatetimeUnitEnum.MONTH:
-          this.formGroup.get('datetime')?.setValue(this.data.add?.payroll?.createdAt
-            || this.payrollQuery.getValue().search.startedAt);
+      if (unit === DatetimeUnitEnum.MONTH) {
+        this.formGroup.get('rangeDay')?.setValue([
+          this.fistDateInMonth,
+          getLastDayInMonth(this.fistDateInMonth)
+        ])
       }
     });
   }
@@ -139,7 +142,8 @@ export class AllowanceSalaryComponent implements OnInit {
         seconds: new Date().getSeconds()
       }).toDate(),
       inOffice: value.inOffice,
-      inWorkday: value.inWorkday
+      inWorkday: value.inWorkday,
+      unit: value.unit
     };
 
     return Object.assign(salary,
