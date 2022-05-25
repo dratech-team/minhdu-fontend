@@ -49,9 +49,7 @@ import {ModalAddOrUpdateHoliday} from '../../../salary/data/modal-holiday-salary
 import {SalaryHolidayService} from '../../../salary/service/salary-holiday.service';
 import {ModalAddOrUpdateRemoteOrDayOff} from '../../../salary/data';
 import {NzTableSortOrder} from "ng-zorro-antd/table";
-import {FilterOvertimeEnum} from "../../enums/filter-overtime.enum";
 import {SettingSalaryStore} from "../../../setting/salary/state";
-import {FilterRemoteEnum} from "../../enums/filter-remote.enum";
 import {CompareSortUtil} from "../../utils/compare-sort.util";
 import {FilterSalaryEnum} from "../../enums/filter-salary.enum";
 
@@ -248,11 +246,11 @@ export class DetailPayrollComponent implements OnInit {
     salary: SalaryEntity
   ) {
     this.modal.create({
-      nzTitle: `Xoá ${salary.title || salary?.setting?.title}`,
+      nzTitle: `Xoá ${salary.title || salary?.setting?.title || salary.setting.type}`,
       nzContent: ModalAlertComponent,
       nzComponentParams: <{ data: ModalAlertEntity }>{
         data: {
-          description: `Bạn có chắc chắn muốn xoá ${salary.title || salary?.setting?.title}`
+          description: `Bạn có chắc chắn muốn xoá ${salary.title || salary?.setting?.title || salary.setting.type}`
         }
       },
       nzFooter: ' '
