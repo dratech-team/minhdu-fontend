@@ -1,7 +1,7 @@
 import {BasePositionEntity} from "../bases";
-import {Branch} from "@minhdu-fontend/data-models";
+import {BranchEntity} from "../../branch/entities/branch.entity";
 
 export interface PositionEntity extends BasePositionEntity{
-  branches: Branch[]
+  branches: BranchEntity[]
   _count?: any
 }

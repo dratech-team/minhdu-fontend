@@ -29,6 +29,8 @@ import { RouteGuard } from './route.guard';
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {environment} from "../../../hr/src/environments/environment";
 import { WarehouseModule } from './pages/warehouse/warehosue.module';
+import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
+import {AccountEffects} from "../../../../libs/system/src/lib/state/account-management/account.effects";
 
 @NgModule({
   declarations: [WarehouseLayoutComponent, AppComponent],
@@ -41,6 +43,7 @@ import { WarehouseModule } from './pages/warehouse/warehosue.module';
     BrowserAnimationsModule,
     AppRoutingModule,
     BrowserModule,
+    AkitaNgEffectsModule.forRoot([AccountEffects]),
     AkitaNgDevtools.forRoot(),
     EffectsModule.forRoot(),
     StoreModule.forRoot({}, {}),

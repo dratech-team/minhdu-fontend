@@ -19,6 +19,6 @@ export const ResourcesConstant = [
   },
   {
     name: 'Tất cả',
-    value: ''
+    value: CustomerResource.ALL
   }
 ];

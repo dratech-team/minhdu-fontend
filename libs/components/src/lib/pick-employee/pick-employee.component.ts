@@ -37,6 +37,8 @@ export class PickEmployeeComponent implements OnInit {
   total!: number
   employeeId!: number;
   isSelectAll = false;
+  loading = true
+  loadMore = false
   employeesSelected: Employee[] = []
 
 
@@ -61,6 +63,7 @@ export class PickEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.employeeService.pagination(this.mapEmployee())
       .subscribe(val => {
+        this.loading = false
         this.employees = val.data;
         this.total = val.total
       })
@@ -71,9 +74,11 @@ export class PickEmployeeComponent implements OnInit {
       .pipe(
         debounceTime(1000),
         mergeMap(val => {
+          this.loading = true
           return this.employeeService.pagination(this.mapEmployee())
         })
       ).subscribe(res => {
+      this.loading = false
       this.employees = res.data
       this.total = res.total
     });
@@ -110,9 +115,11 @@ export class PickEmployeeComponent implements OnInit {
   }
 
   onScroll() {
+    this.loadMore = true
     this.employeeService.pagination(
-      Object.assign({}, this.mapEmployee(), {take: PaginationDto.take, skip: this.employees.length})
+      Object.assign({}, this.mapEmployee(), {skip: this.employees.length})
     ).subscribe(val => {
+      this.loadMore = false
       this.total = val.total
       if (val.data.length > 0) {
         val.data.forEach(emp => {
@@ -129,7 +136,7 @@ export class PickEmployeeComponent implements OnInit {
   mapEmployee() {
     const val = this.formGroupTable.value
     return {
-      take: PaginationDto.take,
+      take: PaginationDto.subTake,
       skip: PaginationDto.skip,
       name: val.name,
       branch: val?.branch ? val.branch : '',

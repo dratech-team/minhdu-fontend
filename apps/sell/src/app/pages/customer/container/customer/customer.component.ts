@@ -1,28 +1,22 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { Api } from '@minhdu-fontend/constants';
-import { CustomerType, ItemContextMenu, SortCustomerEnum } from '@minhdu-fontend/enums';
-import { ExportService } from '@minhdu-fontend/service';
-import {
-  DialogDeleteComponent,
-  DialogExportComponent,
-  ModalAlertComponent,
-  ModalExportExcelComponent, ModalExportExcelData
-} from '@minhdu-fontend/components';
-import { debounceTime, map, tap } from 'rxjs/operators';
-import { CustomerActions, CustomerQuery, CustomerStore } from '../../+state';
-import { CustomerDialogComponent, PaymentDialogComponent } from '../../component';
-import { Actions } from '@datorama/akita-ng-effects';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { RadiosStatusRouteConstant } from '../../enums/gender.constant';
-import { CustomerConstant, PotentialsConstant, ResourcesConstant } from '../../constants';
-import { Sort } from '@minhdu-fontend/data-models';
-import { OrderActions } from '../../../order/+state';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {Api, GenderTypeConstant} from '@minhdu-fontend/constants';
+import {CustomerType, ItemContextMenu, SortCustomerEnum} from '@minhdu-fontend/enums';
+import {ExportService} from '@minhdu-fontend/service';
+import {ModalExportExcelComponent, ModalExportExcelData} from '@minhdu-fontend/components';
+import {debounceTime, map, tap} from 'rxjs/operators';
+import {CustomerActions, CustomerQuery, CustomerStore} from '../../+state';
+import {CustomerModalComponent, PaymentDialogComponent} from '../../component';
+import {Actions} from '@datorama/akita-ng-effects';
+import {NzModalService} from 'ng-zorro-antd/modal';
+import {RadiosStatusRouteConstant} from '../../enums/gender.constant';
+import {CustomerConstant, PotentialsConstant, ResourcesConstant} from '../../constants';
+import {Sort} from '@minhdu-fontend/data-models';
+import {OrderActions} from '../../../order/+state';
 import * as _ from 'lodash';
-import { OrderEntity } from '../../../order/enitities/order.entity';
-import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
+import {OrderEntity} from '../../../order/enitities/order.entity';
 import {CustomerEntity} from "../../entities";
 
 @Component({
@@ -45,6 +39,7 @@ export class CustomerComponent implements OnInit {
   potentialsConstant = PotentialsConstant;
   resourcesConstant = ResourcesConstant;
   customerConstant = CustomerConstant;
+  genderConstant = GenderTypeConstant
   pageSizeTable = 10;
   valueSort?: Sort;
   visible = false;
@@ -95,7 +90,7 @@ export class CustomerComponent implements OnInit {
   add() {
     this.modal.create({
       nzTitle: 'Thêm khách hàng',
-      nzContent: CustomerDialogComponent,
+      nzContent: CustomerModalComponent,
       nzViewContainerRef: this.viewContentRef,
       nzFooter: [],
       nzWidth: '65vw',
