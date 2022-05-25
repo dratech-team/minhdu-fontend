@@ -3,7 +3,7 @@ import { BaseEntity } from '@minhdu-fontend/base-entity';
 
 export interface BaseCustomerEntity extends BaseEntity {
   readonly lastName: string;
-  readonly avt: string;
+  readonly avt?: string;
   readonly phone: string;
   readonly workPhone?: string;
   readonly address?: string;

@@ -2,26 +2,29 @@ import {Component, Inject, Input, LOCALE_ID, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {DatePipe} from '@angular/common';
 import {CustomerResource, CustomerType} from '@minhdu-fontend/enums';
-import {CustomerActions} from '../../+state';
+import {CustomerActions, CustomerQuery} from '../../+state';
 import {Actions} from '@datorama/akita-ng-effects';
-import {CustomerQuery} from '../../+state';
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {NzModalRef} from "ng-zorro-antd/modal";
+import {CustomerConstant, ResourcesConstant} from "../../constants";
+import {BaseAddCustomer, BaseUpdateCustomerDto} from "../../dto";
 
 @Component({
-  templateUrl: 'customer-dialog.component.html'
+  templateUrl: 'customer-modal.component.html'
 })
-export class CustomerDialogComponent implements OnInit {
+export class CustomerModalComponent implements OnInit {
   @Input() data: any
-  customerType = CustomerType;
-  resourceType = CustomerResource;
+
   added$ = this.customerQuery.select(state => state.added)
+
+  customerConstant = CustomerConstant.filter(item => item.value !== CustomerType.ALL)
+  resourceConstant = ResourcesConstant.filter(item => item.value !== CustomerResource.ALL)
+
   submitted = false;
   provinceId: number | undefined;
   districtId: number | undefined;
   wardId: number | undefined;
-  formGroup!: FormGroup
 
+  formGroup!: FormGroup
 
   constructor(
     @Inject(LOCALE_ID) private locale: string,
@@ -29,7 +32,6 @@ export class CustomerDialogComponent implements OnInit {
     public datePipe: DatePipe,
     private readonly actions$: Actions,
     private readonly customerQuery: CustomerQuery,
-    private readonly snackbar: MatSnackBar,
     private readonly modalRef: NzModalRef,
   ) {
   }
@@ -74,8 +76,25 @@ export class CustomerDialogComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    const value = this.formGroup.value;
-    const customer = {
+    const customer = this.mapCustomer(this.formGroup.value)
+    if (this.data) {
+      this.actions$.dispatch(CustomerActions.update({id: this.data.customer.id, updates: customer}));
+    } else {
+      this.actions$.dispatch(CustomerActions.addOne({body: customer}));
+    }
+    this.added$.subscribe(added => {
+      if (added) {
+        this.modalRef.close();
+      }
+    });
+  }
+
+  onSelectWard($event: number) {
+    this.wardId = $event;
+  }
+
+  private mapCustomer(value: any) : BaseAddCustomer| BaseUpdateCustomerDto{
+    return {
       lastName: value.lastName,
       identify: value?.identify,
       gender: value.gender,
@@ -94,22 +113,9 @@ export class CustomerDialogComponent implements OnInit {
       note: value?.note,
       ethnicity: value?.ethnicity,
       religion: value?.religion,
-      isPotential: value?.isPotential
+      isPotential: value?.isPotential,
+      type: value.type
     };
-    if (this.data) {
-      this.actions$.dispatch(CustomerActions.update({id: this.data.customer.id, updates: customer}));
-    } else {
-      this.actions$.dispatch(CustomerActions.addOne({body: customer}));
-    }
-    this.added$.subscribe(added => {
-      if (added) {
-        this.modalRef.close();
-      }
-    });
-  }
-
-  onSelectWard($event: number) {
-    this.wardId = $event;
   }
 }
 

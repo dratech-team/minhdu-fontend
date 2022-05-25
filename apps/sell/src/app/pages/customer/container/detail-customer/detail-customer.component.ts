@@ -5,7 +5,7 @@ import {DevelopmentComponent, DialogDeleteComponent} from '@minhdu-fontend/compo
 import {ConvertBoolean, PaidType} from '@minhdu-fontend/enums';
 import {CustomerActions} from '../../+state/customer.actions';
 import {CustomerEntity} from '../../entities/customer.entity';
-import {CustomerDialogComponent} from '../../component/customer-dialog/customer-dialog.component';
+import {CustomerModalComponent} from '../../component/customer-modal/customer-modal.component';
 import {PaymentDialogComponent} from '../../component/payment-dialog/payment-dialog.component';
 import {CustomerQuery} from '../../+state/customer.query';
 import {Actions} from '@datorama/akita-ng-effects';
@@ -62,7 +62,7 @@ export class DetailCustomerComponent implements OnInit {
   updateCustomer(customer: CustomerEntity) {
     this.modal.create({
       nzTitle: 'Sửa khách hàng',
-      nzContent: CustomerDialogComponent,
+      nzContent: CustomerModalComponent,
       nzViewContainerRef: this.viewContentRef,
       nzComponentParams: {
         data: {customer, isUpdate: true}
