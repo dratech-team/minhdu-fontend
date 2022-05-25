@@ -7,15 +7,17 @@ import { PositionService } from '@minhdu-fontend/orgchart';
 import { OrgchartActions } from '@minhdu-fontend/orgchart';
 import { Store } from '@ngrx/store';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import {PaginationDto} from "@minhdu-fontend/constants";
+import {Position, ResponsePaginate} from "@minhdu-fontend/data-models";
 
 @Injectable()
 export class PositionEffects {
   loadAllPosition$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PositionActions.loadPosition),
-      mergeMap((prams) => this.positionService.getAll(prams)),
-      map(position => {
-          return PositionActions.loadPositionSuccess({ position });
+      mergeMap(_ => this.positionService.pagination()),
+      map(res => {
+          return PositionActions.loadPositionSuccess({ position: res.data });
         }
       ),
       catchError(err => throwError(err))
