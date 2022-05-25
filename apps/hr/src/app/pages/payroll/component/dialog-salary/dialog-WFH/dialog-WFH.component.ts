@@ -3,15 +3,14 @@ import {Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild} 
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {PartialDayEnum, SalaryPayroll} from '@minhdu-fontend/data-models';
-import {ConvertBooleanFrontEnd, DatetimeUnitEnum, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {SalaryPayroll} from '@minhdu-fontend/data-models';
+import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {select, Store} from '@ngrx/store';
 import {PayrollAction} from '../../../+state/payroll/payroll.action';
 import {selectedAddedPayroll} from '../../../+state/payroll/payroll.selector';
 import {AppState} from '../../../../../reducers';
 import * as moment from 'moment';
 import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
-import {SalaryService} from '../../../service/salary.service';
 
 @Component({
   templateUrl: 'dialog-WFH.component.html'
