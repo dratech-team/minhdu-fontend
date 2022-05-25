@@ -3,15 +3,14 @@ import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute} from '@angular/router';
 import {DevelopmentComponent, DialogDeleteComponent} from '@minhdu-fontend/components';
 import {ConvertBoolean, PaidType} from '@minhdu-fontend/enums';
-import {CustomerActions} from '../../+state/customer.actions';
-import {CustomerEntity} from '../../entities/customer.entity';
-import {CustomerDialogComponent} from '../../component/customer-dialog/customer-dialog.component';
-import {PaymentDialogComponent} from '../../component/payment-dialog/payment-dialog.component';
-import {CustomerQuery} from '../../+state/customer.query';
+import {CustomerActions, CustomerQuery} from '../../+state';
+import {CustomerEntity} from '../../entities';
+import {CustomerModalComponent, PaymentDialogComponent} from '../../component';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from "ng-zorro-antd/modal";
 import {OrderDialogComponent} from "../../../order/component";
 import {OrderEntity} from "../../../order/enitities/order.entity";
+import {ModalCustomerData} from "../../data/modal-customer.data";
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -61,15 +60,17 @@ export class DetailCustomerComponent implements OnInit {
 
   updateCustomer(customer: CustomerEntity) {
     this.modal.create({
-      nzTitle: 'Sửa khách hàng',
-      nzContent: CustomerDialogComponent,
-      nzViewContainerRef: this.viewContentRef,
-      nzComponentParams: {
-        data: {customer, isUpdate: true}
-      },
-      nzFooter: null,
       nzWidth: '65vw',
-      nzMaskClosable: false
+      nzTitle: 'Sửa khách hàng',
+      nzContent: CustomerModalComponent,
+      nzComponentParams: <{ data?: ModalCustomerData }>{
+        data: {
+          update: {
+            customer
+          }
+        }
+      },
+      nzFooter: [],
     });
 
   }
@@ -91,13 +92,13 @@ export class DetailCustomerComponent implements OnInit {
 
   payment(id: number) {
     this.modal.create({
-      nzWidth:'70vw',
+      nzWidth: '70vw',
       nzTitle: 'Thanh toán',
       nzContent: PaymentDialogComponent,
       nzComponentParams: {
         data: {id: id}
       },
-      nzFooter: null,
+      nzFooter: [],
 
     })
   }
@@ -111,9 +112,9 @@ export class DetailCustomerComponent implements OnInit {
       nzTitle: 'Thêm đơn hàng',
       nzContent: OrderDialogComponent,
       nzWidth: '80vw',
-      nzFooter: null,
-      nzComponentParams:{
-        data:{
+      nzFooter: [],
+      nzComponentParams: {
+        data: {
           customerId: this.getId
         }
       }

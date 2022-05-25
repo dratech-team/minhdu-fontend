@@ -358,10 +358,7 @@
               </span>
             </th>
             <th class='text-center'>
-              <span *ngIf='salary.startedAt && salary.endedAt'>
-              Từ. {{salary.partial !== PartialDay.CUSTOM ? (salary.startedAt | date:'dd-MM-yyyy') : salary.startedAt | date:'dd-MM-yyyy HH:mm:ss'}} <br />
-                đến {{salary.partial !== PartialDay.CUSTOM ? (salary.endedAt | date:'dd-MM-yyyy') : salary.endedAt | date:'dd-MM-yyyy HH:mm:ss'}}
-                </span>
+              {{salary.datetime | date:'dd/MM/yyyy'}}
             </th>
             <th class=' text-center '>
               <span>{{salary.note}}</span>

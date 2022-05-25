@@ -3,7 +3,7 @@ import { ControlContainer, FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { CustomerEntity } from '../../../pages/customer/entities';
 import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
-import { CustomerDialogComponent } from '../../../pages/customer/component';
+import { CustomerModalComponent } from '../../../pages/customer/component';
 import { CustomerActions } from '../../../pages/customer/+state';
 import { CustomerQuery } from '../../../pages/customer/+state';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -132,7 +132,7 @@ export class PickCustomerComponent implements OnInit {
   addCustomer() {
     this.modal.create({
       nzTitle: 'Thêm khách hàng',
-      nzContent: CustomerDialogComponent,
+      nzContent: CustomerModalComponent,
       nzViewContainerRef: this.viewContentRef,
       nzFooter: null,
       nzWidth: '65vw',

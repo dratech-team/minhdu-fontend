@@ -60,22 +60,25 @@ import {ModalUpdateContractComponent} from "./components/modal-update-contract/m
         NzDatePickerModule,
     ],
 
-  declarations: [
-    EmployeeComponent,
-    DetailEmployeeComponent,
-    WorkHistoryPipe,
-    FlatSalaryTypePipe,
-    ExistPipe,
-    ModalEmployeeComponent,
-    ProfileComponent,
-    ModalRelativeComponent,
-    ModalDegreeComponent,
-    ModalUpdateContractComponent
-  ],
-  providers: [
-    DatePipe,
-    TransformConstantPipe
-  ]
+    declarations: [
+        EmployeeComponent,
+        DetailEmployeeComponent,
+        WorkHistoryPipe,
+        FlatSalaryTypePipe,
+        ExistPipe,
+        ModalEmployeeComponent,
+        ProfileComponent,
+        ModalRelativeComponent,
+        ModalDegreeComponent,
+        ModalUpdateContractComponent
+    ],
+    exports: [
+        ExistPipe
+    ],
+    providers: [
+        DatePipe,
+        TransformConstantPipe
+    ]
 })
 
 export class EmployeeModule {

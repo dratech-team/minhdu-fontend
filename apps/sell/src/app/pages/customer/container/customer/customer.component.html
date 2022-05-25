@@ -68,7 +68,7 @@
         #tableCustomer
         nzSize='middle'
         [nzData]='(customers$|async)'
-        [nzScroll]="{ x: '2500px',y: '60vh'}"
+        [nzScroll]="{ x: '2300px',y: '60vh'}"
         [nzShowPagination]='true'
         (nzPageIndexChange)='onPagination($event)'
         [nzPageSize]='pageSizeTable'
@@ -80,34 +80,36 @@
           <th *ngIf='ui.stt?.visible' [nzLeft]='ui.stt?.pinned||false' nzWidth='60px'>
             STT
           </th>
-          <th *ngIf='ui.name?.visible' [nzLeft]='ui.name?.pinned||false'
-            [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy: sortCustomerEnum.NAME, orderType:$event})'>
+          <th nzWidth="250px" *ngIf='ui.name?.visible' [nzLeft]='ui.name?.pinned||false'
+              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy: sortCustomerEnum.NAME, orderType:$event})'>
             Tên khách hàng
           </th>
-          <th *ngIf='ui.phone?.visible' [nzLeft]='ui.phone?.pinned||false'>
+          <th nzWidth="150px" *ngIf='ui.phone?.visible' [nzLeft]='ui.phone?.pinned||false'>
             Số điện thoại
           </th>
-          <th *ngIf='ui.birthday?.visible' [nzLeft]='ui.birthday?.pinned||false'>
+          <th nzWidth="150px" *ngIf='ui.birthday?.visible' [nzLeft]='ui.birthday?.pinned||false'>
             Ngày sinh
           </th>
-          <th *ngIf='ui.gender?.visible' [nzLeft]='ui.gender?.pinned||false'
-            [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy: sortCustomerEnum.GENDER, orderType:$event})'>
+          <th nzWidth="150px" *ngIf='ui.gender?.visible' [nzLeft]='ui.gender?.pinned||false'
+              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy: sortCustomerEnum.GENDER, orderType:$event})'>
             Giới tính
           </th>
-          <th *ngIf='ui.potential?.visible' [nzLeft]='ui.potential?.pinned||false'
-            [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy: sortCustomerEnum.IS_POTENTIAL, orderType:$event})'>
+          <th nzWidth="100px" *ngIf='ui.potential?.visible' [nzLeft]='ui.potential?.pinned||false'
+              [nzSortFn]='true'
+              (nzSortOrderChange)='onSort({orderBy: sortCustomerEnum.IS_POTENTIAL, orderType:$event})'>
             Tiềm năng
           </th>
           <!--        <th style='width: 200px'>-->
           <!--          <div class=''>Quốc gia</div>-->
           <!--          <input formControlName='nationId' class='form-control' type='text'>-->
           <!--        </th>-->
-          <th *ngIf='ui.resource?.visible' [nzLeft]='ui.resource?.pinned||false'
-            [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy: sortCustomerEnum.RESOURCE, orderType:$event})'>
+          <th nzWidth="150px" *ngIf='ui.resource?.visible' [nzLeft]='ui.resource?.pinned||false'
+              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy: sortCustomerEnum.RESOURCE, orderType:$event})'>
             Nguồn khách hàng
           </th>
-          <th *ngIf='ui.customerType?.visible' [nzLeft]='ui.customerType?.pinned||false'
-            [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy: sortCustomerEnum.CUSTOMER_TYPE, orderType:$event})'>
+          <th nzWidth="180px" *ngIf='ui.customerType?.visible' [nzLeft]='ui.customerType?.pinned||false'
+              [nzSortFn]='true'
+              (nzSortOrderChange)='onSort({orderBy: sortCustomerEnum.CUSTOMER_TYPE, orderType:$event})'>
             Loại khách hàng
           </th>
           <th *ngIf='ui.email?.visible' [nzLeft]='ui.email?.pinned||false'>
@@ -128,14 +130,17 @@
             (click)='readAndUpdate(customer, false)'
             (contextmenu)='child.onContextMenu($event, customer)'
           >
-            <td *ngIf='ui.stt?.visible' [nzLeft]='ui.stt?.pinned||false'>{{(i + 1) + ((tableCustomer.nzPageIndex - 1) * 10)}}</td>
+            <td *ngIf='ui.stt?.visible'
+                [nzLeft]='ui.stt?.pinned||false'>{{(i + 1) + ((tableCustomer.nzPageIndex - 1) * 10)}}</td>
             <td *ngIf='ui.name?.visible' [nzLeft]='ui.name?.pinned||false'>{{customer?.lastName}}</td>
-            <td *ngIf='ui.phone?.visible' [nzLeft]='ui.phone?.pinned||false'>{{customer?.phone || 'Chưa cập nhật'}}</td>
+            <td *ngIf='ui.phone?.visible' [nzLeft]='ui.phone?.pinned||false'>
+              {{customer?.phone | existpipe}}
+            </td>
             <td *ngIf='ui.birthday?.visible' [nzLeft]='ui.birthday?.pinned||false'>
-              {{customer?.birthday ? (customer.birthday | date:'dd/MM/yyyy') : 'Chưa cập nhật'}}
-             </td>
+              {{customer?.birthday | existpipe}}
+            </td>
             <td *ngIf='ui.gender?.visible' [nzLeft]='ui.gender?.pinned||false'>
-              {{customer?.gender === 'MALE' ? 'Nam' : customer?.gender === 'FEMALE' ? 'Nữ' : 'Chưa cập nhật'}}
+              {{customer?.gender|transformconstant: genderConstant}}
             </td>
             <td *ngIf='ui.potential?.visible' [nzLeft]='ui.potential?.pinned||false'>
               <input type='checkbox' disabled [checked]='customer.isPotential'>
@@ -148,13 +153,17 @@
               {{ customer?.resource | transformconstant: resourcesConstant}}
             </td>
             <td *ngIf='ui.customerType?.visible' [nzLeft]='ui.customerType?.pinned||false'>
-              {{customer?.type === customerType.AGENCY ? 'Đại lý' : customer?.type === customerType.RETAIL ? 'Khách lẻ' : 'Chưa cập nhật'}}
+              {{customer?.type | transformconstant: customerConstant}}
             </td>
-            <td *ngIf='ui.email?.visible' [nzLeft]='ui.email?.pinned||false'>{{customer?.email || 'Chưa cập nhật'}}</td>
+            <td *ngIf='ui.email?.visible' [nzLeft]='ui.email?.pinned||false'>
+              {{customer?.email | existpipe}}
+            </td>
             <td *ngIf='ui.address?.visible' [nzLeft]='ui.address?.pinned||false'>
               {{(customer?.address || '') + ' ' + (customer.ward?.name || '') + ' ' + (customer.district?.name || '') + ' ' + customer.province.name}}
             </td>
-            <td *ngIf='ui.note?.visible' [nzLeft]='ui.note?.pinned||false'> {{customer?.note || 'Chưa cập nhật'}}</td>
+            <td *ngIf='ui.note?.visible' [nzLeft]='ui.note?.pinned||false'>
+              {{customer?.note | existpipe}}
+            </td>
           </tr>
         </ng-template>
         </tbody>

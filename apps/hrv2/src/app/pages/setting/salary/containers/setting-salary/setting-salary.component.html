@@ -32,11 +32,8 @@
       <div>
         <div>
           <button nz-button nzType="primary" class="ml-2" (click)="onAdd()">Thêm</button>
-          <button class='ml-2' nz-button nz-popover nzPopoverTitle='Ghim'
-                  [(nzPopoverVisible)]='visible'
-                  nzPopoverPlacement='bottomRight'
-                  [nzPopoverContent]='pinned'
-                  nzPopoverTrigger='click'>Ghim
+          <button class='ml-2' nz-button nzPopoverTitle='Ghim'
+                  (click)="onDevelopment()">Ghim
           </button>
         </div>
       </div>
@@ -54,12 +51,12 @@
         <thead>
         <tr>
           <th nzLeft nzWidth="60px">STT</th>
-          <th>Mã bản mẫu</th>
+          <th nzWidth="100px">Mã bản mẫu</th>
           <th nzLeft>Tên bản mẫu</th>
           <th nzLeft>Đơn giá - Công thức lương</th>
-          <th>Hệ số</th>
-          <th>Thời gian</th>
-          <th>Loại bản mẫu</th>
+          <th nzWidth="100px">Hệ số</th>
+          <th nzWidth="200px">Thời gian</th>
+          <th nzWidth="200px">Loại bản mẫu</th>
           <th>Ghi chú</th>
         </tr>
         </thead>

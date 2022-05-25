@@ -11,6 +11,7 @@ export const StorageName = {
   SETTING_BONUS: 'setting-rank',
   EMPLOYEE_DRAFT: 'employee-draft',
   SETTING_SALARY: 'setting-salary',
+  CONTRACT: 'contract',
   //Sell
   COMMODITY_TEMPLATE:'commodity-template',
   COMMODITY: 'commodity',

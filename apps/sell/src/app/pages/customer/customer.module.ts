@@ -16,7 +16,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
-import { CustomerDialogComponent } from './component';
+import { CustomerModalComponent } from './component';
 import { PaymentDialogComponent } from './component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -43,50 +43,54 @@ import { PaymentService } from './service';
 import { OrderService } from '../order/service';
 import { OrderModule } from '../order/order.module';
 import {NzSpinModule} from "ng-zorro-antd/spin";
+import {EmployeeModule} from "../../../../../hrv2/src/app/pages/employee/employee.module";
+import {NzSelectModule} from "ng-zorro-antd/select";
 
 @NgModule({
-    imports: [
-        ComponentsModule,
-        MatSnackBarModule,
-        HttpClientModule,
-        CustomerRoutingModule,
-        MatInputModule,
-        InfiniteScrollModule,
-        CommonModule,
-        StoreModule.forFeature(FeatureName.PAYMENT, PaymentReducer),
-        AkitaNgEffectsModule.forFeature([
-            OrderEffect,
-            CustomerEffect,
-            CommodityEffect,
-            RouteEffect
-        ]),
-        MatCheckboxModule,
-        ReactiveFormsModule,
-        MatSelectModule,
-        MatRadioModule,
-        MatDialogModule,
-        FormsModule,
-        MatTabsModule,
-        MatStepperModule,
-        SharedModule,
-        NgxSkeletonLoaderModule.forRoot(),
-        NzMessageModule,
-        MatSortModule,
-        NzModalModule,
-        NzCollapseModule,
-        NzRadioModule,
-        NzTableModule,
-        NzInputModule,
-        NzButtonModule,
-        NzPopoverModule,
-        OrderModule,
-        NzSpinModule
-    ],
+  imports: [
+    ComponentsModule,
+    MatSnackBarModule,
+    HttpClientModule,
+    CustomerRoutingModule,
+    MatInputModule,
+    InfiniteScrollModule,
+    CommonModule,
+    StoreModule.forFeature(FeatureName.PAYMENT, PaymentReducer),
+    AkitaNgEffectsModule.forFeature([
+      OrderEffect,
+      CustomerEffect,
+      CommodityEffect,
+      RouteEffect
+    ]),
+    MatCheckboxModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatDialogModule,
+    FormsModule,
+    MatTabsModule,
+    MatStepperModule,
+    SharedModule,
+    NgxSkeletonLoaderModule.forRoot(),
+    NzMessageModule,
+    MatSortModule,
+    NzModalModule,
+    NzCollapseModule,
+    NzRadioModule,
+    NzTableModule,
+    NzInputModule,
+    NzButtonModule,
+    NzPopoverModule,
+    OrderModule,
+    NzSpinModule,
+    EmployeeModule,
+    NzSelectModule
+  ],
   declarations: [
     TablePaymentComponent,
     CustomerComponent,
     DetailCustomerComponent,
-    CustomerDialogComponent,
+    CustomerModalComponent,
     PaymentDialogComponent,
     VisibleCustomerComponent
   ],
