@@ -21,8 +21,7 @@ import { CustomerConstant, PotentialsConstant, ResourcesConstant } from '../../c
 import { Sort } from '@minhdu-fontend/data-models';
 import { OrderActions } from '../../../order/+state';
 import * as _ from 'lodash';
-import { OrderEntity } from '../../../order/enitities/order.entity';
-import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
+import {OrderEntity} from '../../../order/enitities/order.entity';
 import {CustomerEntity} from "../../entities";
 
 @Component({
