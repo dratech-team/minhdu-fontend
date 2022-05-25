@@ -12,6 +12,7 @@ import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from "ng-zorro-antd/modal";
 import {OrderDialogComponent} from "../../../order/component";
 import {OrderEntity} from "../../../order/enitities/order.entity";
+import {ModalCustomerData} from "../../data/modal-customer.data";
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -61,15 +62,17 @@ export class DetailCustomerComponent implements OnInit {
 
   updateCustomer(customer: CustomerEntity) {
     this.modal.create({
+      nzWidth: '65vw',
       nzTitle: 'Sửa khách hàng',
       nzContent: CustomerModalComponent,
-      nzViewContainerRef: this.viewContentRef,
-      nzComponentParams: {
-        data: {customer, isUpdate: true}
+      nzComponentParams: <{ data?: ModalCustomerData }>{
+        data: {
+          update: {
+            customer
+          }
+        }
       },
-      nzFooter: null,
-      nzWidth: '65vw',
-      nzMaskClosable: false
+      nzFooter: [],
     });
 
   }
@@ -91,13 +94,13 @@ export class DetailCustomerComponent implements OnInit {
 
   payment(id: number) {
     this.modal.create({
-      nzWidth:'70vw',
+      nzWidth: '70vw',
       nzTitle: 'Thanh toán',
       nzContent: PaymentDialogComponent,
       nzComponentParams: {
         data: {id: id}
       },
-      nzFooter: null,
+      nzFooter: [],
 
     })
   }
@@ -111,9 +114,9 @@ export class DetailCustomerComponent implements OnInit {
       nzTitle: 'Thêm đơn hàng',
       nzContent: OrderDialogComponent,
       nzWidth: '80vw',
-      nzFooter: null,
-      nzComponentParams:{
-        data:{
+      nzFooter: [],
+      nzComponentParams: {
+        data: {
           customerId: this.getId
         }
       }

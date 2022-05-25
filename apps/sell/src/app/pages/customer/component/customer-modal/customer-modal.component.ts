@@ -7,12 +7,13 @@ import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {CustomerConstant, ResourcesConstant} from "../../constants";
 import {BaseAddCustomer, BaseUpdateCustomerDto} from "../../dto";
+import {ModalCustomerData} from "../../data/modal-customer.data";
 
 @Component({
   templateUrl: 'customer-modal.component.html'
 })
 export class CustomerModalComponent implements OnInit {
-  @Input() data: any
+  @Input() data?: ModalCustomerData
 
   added$ = this.customerQuery.select(state => state.added)
 
@@ -37,33 +38,40 @@ export class CustomerModalComponent implements OnInit {
   }
 
   ngOnInit() {
+    const customer = this.data?.update?.customer
     this.formGroup = this.formBuilder.group({
-      firstName: [this.data?.customer?.firstName],
-      lastName: [this.data?.customer?.lastName, Validators.required],
-      identify: [this.data?.customer?.identify],
-      issuedBy: [this.data?.customer?.issuedBy],
-      birthplace: [this.data?.customer?.birthplace],
+      firstName: [''],
+      lastName: [customer?.lastName, Validators.required],
+      identify: [customer?.identify],
+      issuedBy: [customer?.issuedBy],
+      birthplace: [customer?.birthplace],
       idCardAt: [
-        this.datePipe.transform(
-          this.data?.customer?.idCardAt, 'yyyy-MM-dd'
-        )],
-      email: [this.data?.customer?.email],
-      phone: [this.data?.customer?.phone, Validators.required],
-      note: [this.data?.customer?.note],
-      address: [this.data?.customer?.address],
-      gender: [this.data?.customer?.gender],
+        customer?.idCardAt
+          ? this.datePipe.transform(
+            customer.idCardAt, 'yyyy-MM-dd'
+          )
+          : ''
+      ],
+      email: [customer?.email],
+      phone: [customer?.phone, Validators.required],
+      note: [customer?.note],
+      address: [customer?.address],
+      gender: [customer?.gender],
       birthday: [
-        this.datePipe.transform(
-          this.data?.customer?.birthday, 'yyyy-MM-dd'
-        )],
-      ethnicity: [this.data?.customer?.ethnicity],
-      religion: [this.data?.customer?.religion],
-      type: [this.data?.customer?.type],
-      resource: [this.data?.customer?.resource],
-      isPotential: [this.data?.customer?.isPotential],
-      province: [this.data?.customer?.province, Validators.required],
-      district: [this.data?.customer?.district],
-      ward: [this.data?.customer?.ward]
+        customer?.birthday
+          ? this.datePipe.transform(
+            customer.birthday, 'yyyy-MM-dd'
+          )
+          : ''
+      ],
+      ethnicity: [customer?.ethnicity],
+      religion: [customer?.religion],
+      type: [customer?.type],
+      resource: [customer?.resource],
+      isPotential: [customer?.isPotential],
+      province: [customer?.province, Validators.required],
+      district: [customer?.district],
+      ward: [customer?.ward]
     });
   }
 
@@ -77,11 +85,11 @@ export class CustomerModalComponent implements OnInit {
       return;
     }
     const customer = this.mapCustomer(this.formGroup.value)
-    if (this.data) {
-      this.actions$.dispatch(CustomerActions.update({id: this.data.customer.id, updates: customer}));
-    } else {
-      this.actions$.dispatch(CustomerActions.addOne({body: customer}));
-    }
+    this.actions$.dispatch(
+      this.data?.update
+        ? CustomerActions.update({id: this.data.update.customer.id, updates: customer})
+        : CustomerActions.addOne({body: customer})
+    )
     this.added$.subscribe(added => {
       if (added) {
         this.modalRef.close();
@@ -93,7 +101,7 @@ export class CustomerModalComponent implements OnInit {
     this.wardId = $event;
   }
 
-  private mapCustomer(value: any) : BaseAddCustomer| BaseUpdateCustomerDto{
+  private mapCustomer(value: any): BaseAddCustomer | BaseUpdateCustomerDto {
     return {
       lastName: value.lastName,
       identify: value?.identify,
