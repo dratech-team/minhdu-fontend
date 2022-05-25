@@ -7,7 +7,7 @@ import { RequireOnlyOne } from '../../../../shared/types';
 interface ModalAbsentOrOvertimeSalaryData {
   type: SalaryTypeEnum.ABSENT | SalaryTypeEnum.OVERTIME
   add: {
-    payroll: PayrollEntity,
+    payroll?: PayrollEntity,
     multiple?: boolean
   }
   update: {

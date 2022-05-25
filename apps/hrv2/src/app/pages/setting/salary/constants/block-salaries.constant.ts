@@ -106,7 +106,7 @@ export const blockSalariesConstant: BlockSalary[] = [
     }
   },
   {
-    title: 'Khấu trừ',
+    title: 'Loại vắng',
     type: SalaryTypeEnum.ABSENT,
     recipesConstant: recipesConstant,
     constraintHoliday: {

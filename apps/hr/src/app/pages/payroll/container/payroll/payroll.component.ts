@@ -4,7 +4,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {MatMenuTrigger} from '@angular/material/menu';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Api, EmployeeStatusConstant, PayrollConstant} from '@minhdu-fontend/constants';
+import {Api, EmployeeStatusConstant} from '@minhdu-fontend/constants';
 import {
   EmployeeType,
   FilterTypeEnum,
@@ -54,10 +54,11 @@ import {CategoryService} from '../../../../../../../../libs/employee/src/lib/+st
 import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {Branch, Category, Position, RangeDay} from "@minhdu-fontend/data-models";
-import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
+import {Role} from "@minhdu-fontend/enums";
 import {ExportService} from "@minhdu-fontend/service";
 import {ConfirmPayrollComponent} from "../../component/confirm-payroll/confirm-payroll.component";
-import {EmployeeStatusEnum} from '../../../../../../../../libs/enums/hr/employee-status.enum';
+import {EmployeeStatusEnum} from '@minhdu-fontend/enums';
+import {PayrollConstantV1} from "../../../../../../../../libs/constants/HR/payroll.constant-v1";
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -109,7 +110,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   absentTitle?: string;
   ItemContextMenu = ItemContextMenu;
   daysInMonth: any[] = [];
-  payrollConstant = PayrollConstant;
+  payrollConstant = PayrollConstantV1;
   filterTypeEnum = FilterTypeEnum;
   private stop$ = new Subject<void>();
   eventAddOvertime = new Subject<any>();

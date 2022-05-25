@@ -12,6 +12,6 @@ export class ChecklistService  {
   }
 
  timekeeping(body: any): Observable<any> {
-   return this.http.post<any>(VersionEnum.V2  + Api.CHECKLIST, body);
+   return this.http.post<any>(VersionEnum.V1  + Api.CHECKLIST, body);
  }
 }

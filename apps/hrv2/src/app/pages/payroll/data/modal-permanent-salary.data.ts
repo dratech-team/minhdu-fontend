@@ -7,7 +7,7 @@ import {RequireOnlyOne} from "../../../../shared/types";
 export interface ModalPermanentSalaryData {
   type: SalaryTypeEnum
   add?: {
-    payroll: PayrollEntity,
+    payroll?: PayrollEntity,
     multiple?: boolean
   }
   update?: {

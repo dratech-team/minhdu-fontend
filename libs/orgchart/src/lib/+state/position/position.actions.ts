@@ -1,6 +1,5 @@
 import {Position} from '@minhdu-fontend/data-models';
 import {createAction, props} from '@ngrx/store';
-import {UpdateNum} from "@ngrx/entity/src/models";
 
 export const loadPosition = createAction(
   '[Position/API] Load Position'

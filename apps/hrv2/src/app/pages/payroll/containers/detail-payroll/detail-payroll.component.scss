@@ -205,12 +205,13 @@ table tbody tr td {
 .highlight { background-color:#FFFF00; }
 
 .transform-payroll{
+  cursor: pointer;
   background: white;
   display: flex;
   align-items: center;
   justify-content: center;
   position: fixed;
-  width: 5%;
+  width: 3%;
   top: 120px;
   bottom: 20px;
   z-index: 200;

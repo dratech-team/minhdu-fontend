@@ -284,7 +284,7 @@ export class PayrollEffect {
         deduction: payroll.deductions?.reduce((a, b) => a + (b?.price || 0), 0),
         holiday: this.getTotalHoliday(payroll.holidays),
         remote: this.getTotalRemoteOrDayOff(payroll.remotes),
-        dayOff: this.getTotalRemoteOrDayOff(payroll.dayOffs)
+        dayOff: this.getTotalRemoteOrDayOff(payroll.dayoffs)
       },
       overtimes: payroll.overtimes?.map(overtime => Object.assign(overtime, {expand: false})),
       holidays: payroll.holidays?.map(holiday => Object.assign(holiday, {expand: false}))

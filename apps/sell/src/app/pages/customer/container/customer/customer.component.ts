@@ -1,20 +1,25 @@
-import {Component, OnInit, ViewContainerRef} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {Router} from '@angular/router';
-import {Api} from '@minhdu-fontend/constants';
-import {CustomerType, ItemContextMenu, SortCustomerEnum} from '@minhdu-fontend/enums';
-import {ExportService} from '@minhdu-fontend/service';
-import {DialogExportComponent, ModalExportExcelComponent} from '@minhdu-fontend/components';
-import {debounceTime, map, tap} from 'rxjs/operators';
-import {CustomerActions, CustomerQuery, CustomerStore} from '../../+state';
-import {CustomerDialogComponent, PaymentDialogComponent} from '../../component';
-import {Actions} from '@datorama/akita-ng-effects';
-import {NzModalService} from 'ng-zorro-antd/modal';
-import {RadiosStatusRouteConstant} from '../../enums/gender.constant';
-import {CustomerConstant, PotentialsConstant, ResourcesConstant} from '../../constants';
-import {Sort} from '@minhdu-fontend/data-models';
-import {OrderActions} from '../../../order/+state';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { Api } from '@minhdu-fontend/constants';
+import { CustomerType, ItemContextMenu, SortCustomerEnum } from '@minhdu-fontend/enums';
+import { ExportService } from '@minhdu-fontend/service';
+import {
+  DialogDeleteComponent,
+  DialogExportComponent,
+  ModalAlertComponent,
+  ModalExportExcelComponent, ModalExportExcelData
+} from '@minhdu-fontend/components';
+import { debounceTime, map, tap } from 'rxjs/operators';
+import { CustomerActions, CustomerQuery, CustomerStore } from '../../+state';
+import { CustomerDialogComponent, PaymentDialogComponent } from '../../component';
+import { Actions } from '@datorama/akita-ng-effects';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { RadiosStatusRouteConstant } from '../../enums/gender.constant';
+import { CustomerConstant, PotentialsConstant, ResourcesConstant } from '../../constants';
+import { Sort } from '@minhdu-fontend/data-models';
+import { OrderActions } from '../../../order/+state';
 import * as _ from 'lodash';
 import {OrderEntity} from '../../../order/enitities/order.entity';
 import {CustomerEntity} from "../../entities";
@@ -137,15 +142,21 @@ export class CustomerComponent implements OnInit {
   }
 
   printCustomer() {
-    this.dialog.open(DialogExportComponent, {
-      width: 'fit-content',
-      data: {
-        filename: 'danh sách khác hàng',
-        title: 'Xuât bảng khác hàng',
-        params: _.omit(this.mapCustomer(this.formGroup.value, false), ['take', 'skip']),
-        api: Api.SELL.CUSTOMER.CUSTOMER_EXPORT
-      }
-    });
+    this.modal.create({
+      nzTitle: 'Xuất danh sách khách hàng',
+      nzWidth: 'fit-content',
+      nzContent: ModalExportExcelComponent,
+      nzComponentParams: <{ data: ModalExportExcelData }>{
+        data: {
+          filename: 'Danh sách khách hàng',
+          params: Object.assign({},
+            _.omit(this.mapCustomer(this.formGroup.value, false), ['take', 'skip']),
+            {exportType: 'CUSTOMER'}),
+          api: Api.HR.EMPLOYEE.EMPLOYEE_EXPORT
+        }
+      },
+      nzFooter: []
+    })
   }
 
   onPagination(pageIndex: number) {

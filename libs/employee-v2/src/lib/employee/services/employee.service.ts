@@ -49,7 +49,7 @@ export class EmployeeService extends BaseService<EmployeeEntity> {
   }
 
   updateHistorySalary(id: number, body: any): Observable<ResponseMessageEntity> {
-    return this.http.patch<ResponseMessageEntity>(VersionEnum.V2 + Api.HR.EMPLOYEE.HISTORY_SALARY + `/${id}`, body);
+    return this.http.patch<ResponseMessageEntity>(VersionEnum.V1 + Api.HR.EMPLOYEE.HISTORY_SALARY + `/${id}`, body);
   }
 
   deleteHistorySalary(id: number): Observable<void> {

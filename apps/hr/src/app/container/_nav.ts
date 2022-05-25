@@ -67,7 +67,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Lịch sử hệ thống',
-    url: '/he-thong/lich-su-he-thong',
+    url: '/he-thong',
     icon: 'cil-lock-locked'
   },
   {

@@ -50,8 +50,10 @@ const positionReducer = createReducer(
     positionAdapter.updateOne({id: position.id, changes: position},
       {...state, added: true, error: null})
   )),
-  on(PositionActions.loadPositionSuccess, (state, {position}) =>
-    positionAdapter.setAll(position, {...state, loaded: true, added: true})
+  on(PositionActions.loadPositionSuccess, (state, {position}) =>{
+    return positionAdapter.setAll(position, {...state, loaded: true, added: true})
+  }
+
   ),
   on(PositionActions.addPositionSuccess, (state, {position}) =>
     positionAdapter.addOne(position, {...state, loaded: true, added: true})

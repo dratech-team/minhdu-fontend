@@ -112,7 +112,7 @@
       <div class='col' style='border-top: 2px dashed #9FA2B4; margin: 50px 0;'></div>
     </div>
     <div class='row d-flex flex-column'
-         *ngIf='payroll.recipeType !== recipeType.CT3; else seasonal'>
+         *ngIf='payroll.employee.type !== employeeTypeEnum.EMPLOYEE_SEASONAL; else seasonal'>
       <div #basic class='d-flex'>
         <!--Lương cơ bản-->
         <div class='col-6'>
@@ -358,10 +358,7 @@
               </span>
             </th>
             <th class='text-center'>
-              <span *ngIf='salary.startedAt && salary.endedAt'>
-              Từ. {{salary.partial !== PartialDay.CUSTOM ? (salary.startedAt | date:'dd-MM-yyyy') : salary.startedAt | date:'dd-MM-yyyy HH:mm:ss'}} <br />
-                đến {{salary.partial !== PartialDay.CUSTOM ? (salary.endedAt | date:'dd-MM-yyyy') : salary.endedAt | date:'dd-MM-yyyy HH:mm:ss'}}
-                </span>
+              {{salary.datetime | date:'dd/MM/yyyy'}}
             </th>
             <th class=' text-center '>
               <span>{{salary.note}}</span>
