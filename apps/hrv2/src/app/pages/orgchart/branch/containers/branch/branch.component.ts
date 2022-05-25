@@ -14,8 +14,6 @@ import {
   PositionQuery,
   PositionStore
 } from "@minhdu-fontend/orgchart-v2";
-import {ModalAlertComponent} from "@minhdu-fontend/components";
-import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 import {Router} from "@angular/router";
 import {PayrollStore} from "../../../../payroll/state";
 import {EmployeeStore} from "@minhdu-fontend/employee-v2";
@@ -88,7 +86,7 @@ export class BranchComponent implements OnInit {
       ...state, search: dataFG
     }))
     return Object.assign({}, dataFG, {
-      position: dataFG.position.name,
+      position: dataFG.position?.name || '',
     });
   }
 
