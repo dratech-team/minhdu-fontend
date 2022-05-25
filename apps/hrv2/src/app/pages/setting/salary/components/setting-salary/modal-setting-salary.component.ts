@@ -29,6 +29,8 @@ export class ModalSettingSalaryComponent implements OnInit {
   added$ = this.settingSalaryQuery.select(state => state.added);
   branches$ = this.branchQuery.selectAll();
   positions$ = this.positionQuery.selectAll();
+  loadingBranch$ = this.branchQuery.select(state => state.loading)
+  loadingPosition$ = this.positionQuery.select(state => state.loading)
 
   blockSalary = blockSalariesConstant;
   salaryTypeEnum = SalaryTypeEnum
@@ -44,6 +46,7 @@ export class ModalSettingSalaryComponent implements OnInit {
   formGroup!: FormGroup;
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type || o1.type === o2.type : o1 === o2);
+  compareFNId = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -61,6 +64,12 @@ export class ModalSettingSalaryComponent implements OnInit {
     const template = this.data?.update?.template
     if (template?.prices && template?.prices?.length > 1) {
       this.prices = [...template.prices]
+    }
+    if(template?.branches){
+      this.actions$.dispatch(BranchActions.loadAll({}))
+    }
+    if(template?.positions){
+      this.actions$.dispatch(PositionActions.loadAll({}))
     }
     this.formGroup = this.formBuilder.group({
       block: [template?.type === SalaryTypeEnum.BASIC_INSURANCE ? this.blockSalary.find(block => block.type === SalaryTypeEnum.BASIC) :
@@ -89,14 +98,18 @@ export class ModalSettingSalaryComponent implements OnInit {
     this.formGroup.get('block')?.valueChanges.subscribe(item => {
       this.formGroup.get('reference')?.setValue('')
       this.formGroup.get('insurance')?.setValue(false)
+      if (item.branch) {
+        this.actions$.dispatch(BranchActions.loadAll({}))
+      }
+      if (item.position) {
+        this.actions$.dispatch(PositionActions.loadAll({}))
+      }
       this.prices = []
       switch (item.type) {
         case SalaryTypeEnum.HOLIDAY:
           this.formGroup.get('unit')?.setValue(DatetimeUnitEnum.DAY)
           break
         case SalaryTypeEnum.OVERTIME:
-          this.actions$.dispatch(BranchActions.loadAll({}))
-          this.actions$.dispatch(PositionActions.loadAll({}))
           this.formGroup.get('unit')?.setValue(DatetimeUnitEnum.DAY)
           break
         default:
@@ -105,10 +118,10 @@ export class ModalSettingSalaryComponent implements OnInit {
       }
     })
 
-    this.formGroup.get('insurance')?.valueChanges.subscribe(_ =>{
+    this.formGroup.get('insurance')?.valueChanges.subscribe(_ => {
         this.prices = []
         this.formGroup.get('prices')?.setValue('')
-    }
+      }
     )
   }
 
@@ -185,12 +198,16 @@ export class ModalSettingSalaryComponent implements OnInit {
         Object.assign(template, {constraint: this.constraint})
       }
 
-      Object.assign(template, value.block.type === SalaryTypeEnum.OVERTIME
+      Object.assign(template, value.block.branch === SalaryTypeEnum.OVERTIME
           ? {
             hasConstraints: value.hasConstraints,
-            branchIds: value.branches.map((branch: BranchEntity) => branch.id),
-            positionIds: value.positions.map((position: PositionEntity) => position.id),
           }
+          : {},
+        value.block.branch ?
+          {branchIds: value.branches.map((branch: BranchEntity) => branch.id)}
+          : {},
+        value.block.position ?
+          {positionIds: value.positions.map((position: PositionEntity) => position.id)}
           : {},
         value.totalOf.value === PriceType.PRICE
           ? {

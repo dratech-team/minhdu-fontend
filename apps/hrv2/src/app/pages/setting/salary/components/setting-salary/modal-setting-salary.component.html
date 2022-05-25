@@ -17,6 +17,8 @@
       <div class="mt-2" *ngIf="formGroup.value.block?.branch?.show">
         <div class="font-weight-bold">Đơn vị</div>
         <nz-select style="width: 100%"
+                   [nzLoading]="(loadingBranch$ | async)"
+                   [compareWith]="compareFNId"
                    [nzDisabled]="formGroup.value.block.branch?.disabled"
                    [nzMaxTagCount]="3"
                    [nzMaxTagPlaceholder]="tagPlaceHolderBranch"
@@ -32,6 +34,8 @@
       <div class="mt-2" *ngIf="formGroup.value.block?.position?.show">
         <div class='font-weight-bold'>Chức vụ</div>
         <nz-select style="width: 100%"
+                   [nzLoading]="(loadingPosition$ | async)"
+                   [compareWith]="compareFNId"
                    [nzDisabled]="formGroup.value.block.position?.disabled"
                    [nzMaxTagCount]="3"
                    [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
