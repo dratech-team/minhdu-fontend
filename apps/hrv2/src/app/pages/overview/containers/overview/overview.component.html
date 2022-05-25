@@ -1,10 +1,10 @@
 <div class='mx-3 mb-5'>
   <div class='h3'>Tổng quan</div>
   <div class='mt-5 mx-3 '>
-    <div class='border overflow-auto  w-100'>
-      <div class='title-item font-lg mt-2 ml-2'>
+    <div class='border overflow-auto w-100'>
+      <div class='mt-2 ml-2'>
         <div class='w-100 d-flex justify-content-between'>
-          <span> Thống kê nhân sự theo độ tuổi</span>
+          <span class="font-weight-bold"> Thống kê nhân sự theo độ tuổi</span>
           <!--          <div>-->
           <!--            <img (click)='statisticalEmployee()' class='mr-2 pointer'-->
           <!--                 src='/assets/icon/gear.svg'-->
@@ -21,26 +21,21 @@
         </div>
       </div>
     </div>
-    <div class='border overflow-auto w-100 mt-3 '>
-      <div class='title-item font-lg mt-2 ml-2'>
-        <div class='w-100 d-flex justify-content-between'>
-          <span> Biến động nhân sự</span>
-          <!--          <div>-->
-          <!--            <img (click)='statisticalEmployee()' class='mr-2 pointer'-->
-          <!--                 src='/assets/icon/gear.svg'-->
-          <!--                 alt='setting'>-->
-          <!--          </div>-->
-        </div>
+    <div class='w-100 mt-5 d-flex flex-wrap border'>
+      <div class='mt-2'>
+        <span class='mt-2 ml-3 mb-1 font-weight-bold'>Biến động nhân sự</span>
       </div>
-      <div class='w-100'>
-        <div class='mx-auto' style='width: fit-content'>
-          <app-staked-vertical-chart class='mt-1'
-                                     [height]='450'
-                                     [labelX]='"Năm"'
-                                     [labelY]='"Nhân viên"'
-                                     [legend]='true'
-                                     [data]='(overviewTotalEmployee$|async) || []'
-          ></app-staked-vertical-chart>
+      <div class='d-flex flex-column mt-4 px-2 w-100'
+           style='height:470px ; margin-right: 1%; position: relative ; overflow-x: scroll'>
+        <div>
+          <app-swim-lane-chart
+            class="mt-1"
+            [labelX]='"Năm"'
+            [labelY]='"Nhân viên"'
+            [legend]='true'
+            [data]='(overviewTotalEmployee$|async) || []'
+          >
+          </app-swim-lane-chart>
         </div>
       </div>
     </div>
