@@ -58,7 +58,7 @@ export class TableSelectPayrollComponent implements OnInit {
   mapPayroll() {
     const value = this.formGroupTable.value
     return {
-      take: PaginationDto.take,
+      take: PaginationDto.subTake,
       skip: PaginationDto.skip,
       name: value.name,
       branch: value.branch || '',
