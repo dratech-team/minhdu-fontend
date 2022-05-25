@@ -117,7 +117,7 @@ export class PickEmployeeComponent implements OnInit {
   onScroll() {
     this.loadMore = true
     this.employeeService.pagination(
-      Object.assign({}, this.mapEmployee(), {take: PaginationDto.take, skip: this.employees.length})
+      Object.assign({}, this.mapEmployee(), {take: 40, skip: this.employees.length})
     ).subscribe(val => {
       this.loadMore = false
       this.total = val.total
