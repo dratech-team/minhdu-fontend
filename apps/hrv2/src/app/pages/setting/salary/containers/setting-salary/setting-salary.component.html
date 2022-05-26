@@ -25,6 +25,40 @@
         </div>
       </nz-collapse-panel>
     </nz-collapse>
+    <nz-collapse class="mt-2">
+      <nz-collapse-panel
+        [formGroup]="formGroup"
+        nzHeader='Đơn vị'
+        nzActive='true'>
+        <nz-select style="width: 100%"
+                   nzMode="multiple"
+                   nzAllowClear
+                   nzShowSearch
+                   [compareWith]="compareFN"
+                   nzPlaceHolder="Chọn đơn vị"
+                   formControlName="branches"
+        >
+          <nz-option *ngFor="let item of branches$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
+        </nz-select>
+      </nz-collapse-panel>
+    </nz-collapse>
+    <nz-collapse class="mt-2">
+      <nz-collapse-panel
+        [formGroup]="formGroup"
+        nzHeader='Chức vụ'
+        nzActive='true'>
+        <nz-select style="width: 100%"
+                   nzMode="multiple"
+                   nzAllowClear
+                   nzShowSearch
+                   [compareWith]="compareFN"
+                   nzPlaceHolder="Chọn chức vụ"
+                   formControlName="positions"
+        >
+          <nz-option *ngFor="let item of positions$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
+        </nz-select>
+      </nz-collapse-panel>
+    </nz-collapse>
   </div>
   <div class="d-flex flex-column ml-2" style="width: 80vw">
     <div class="ml-2 d-flex justify-content-between">

@@ -14,6 +14,15 @@ import {AddOrUpdateSettingSalary} from "../../data/modal-setting-salary.data";
 import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {
+  BranchActions,
+  BranchEntity,
+  BranchQuery,
+  PositionActions,
+  PositionEntity,
+  PositionQuery
+} from "@minhdu-fontend/orgchart-v2";
+import * as _ from 'lodash'
 
 @Component({
   selector: 'minhdu-fontend-setting-salary',
@@ -26,6 +35,8 @@ export class SettingSalaryComponent implements OnInit {
   total$ = this.settingSalaryQuery.select(state => state.total)
   remain$ = this.settingSalaryQuery.select(state => state.remain)
   count$ = this.settingSalaryQuery.selectCount()
+  positions$ = this.positionQuery.selectAll()
+  branches$ = this.branchQuery.selectAll()
 
   stateSearch = this.settingSalaryQuery.getValue().search;
   blockSalaries = blockSalariesConstant.concat([{
@@ -39,8 +50,10 @@ export class SettingSalaryComponent implements OnInit {
 
   formGroup = new FormGroup(
     {
-      search: new FormControl(this.stateSearch.search|| ''),
-      types: new FormControl(this.stateSearch.types || []),
+      search: new FormControl(this.stateSearch?.search || ''),
+      types: new FormControl(this.stateSearch?.types || []),
+      positions: new FormControl(this.stateSearch?.positions || []),
+      branches: new FormControl(this.stateSearch?.branches || []),
     }
   );
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
@@ -51,11 +64,16 @@ export class SettingSalaryComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
     private readonly settingSalaryStore: SettingSalaryStore,
-    private readonly message: NzMessageService
+    private readonly message: NzMessageService,
+    private readonly positionQuery: PositionQuery,
+    private readonly branchQuery: BranchQuery
   ) {
   }
 
   ngOnInit() {
+    this.actions$.dispatch(PositionActions.loadAll({}))
+    this.actions$.dispatch(BranchActions.loadAll({}))
+
     this.onLoad(false)
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
@@ -79,7 +97,9 @@ export class SettingSalaryComponent implements OnInit {
     this.settingSalaryStore.update(state => ({
       ...state, search: dataFG
     }));
-    return Object.assign({}, dataFG, {
+    return Object.assign({}, _.omit(dataFG, ['positions', 'branches']), {
+        positionIds: dataFG.positions ? dataFG.positions?.map((position: PositionEntity) => position.id) : '',
+        branchIds: dataFG.branches ? dataFG.branches?.map((branch: BranchEntity) => branch.id) : '',
         take: PaginationDto.take,
         skip: isPagination ? this.settingSalaryQuery.getCount() : PaginationDto.skip
       }
