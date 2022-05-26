@@ -14,6 +14,8 @@ import {DialogBranchComponent} from "./components/dialog-branch/dialog-branch.co
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatDialogModule} from "@angular/material/dialog";
+import {EmployeeModule} from "../../../../../hrv2/src/app/pages/employee/employee.module";
+import {NzButtonModule} from "ng-zorro-antd/button";
 
 
 @NgModule({
@@ -32,7 +34,9 @@ import {MatDialogModule} from "@angular/material/dialog";
     MatRadioModule,
     NgxSkeletonLoaderModule,
     MatCheckboxModule,
-    MatDialogModule
+    MatDialogModule,
+    EmployeeModule,
+    NzButtonModule
   ],
 
 })
