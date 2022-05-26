@@ -66,7 +66,7 @@ export class HolidayEffect {
     this.action$.pipe(
       ofType(HolidayAction.AddHoliday),
       switchMap((pram) => this.holidayService.addOne(pram.holiday).pipe(
-        map(_ => HolidayAction.LoadAllHoliday()),
+        map(_ => HolidayAction.LoadInit({holidayDTO:{take: 30 , skip: 0}})),
         catchError((err) => {
             this.store.dispatch(HolidayAction.handleHolidayError());
             return throwError(err);
