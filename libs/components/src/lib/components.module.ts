@@ -62,6 +62,7 @@ import {TotalPricePipe} from "./pipes/total-price.pipe";
 import {RoundingNumberPipe} from "./pipes/rounding-number.pipe";
 import {ModalExportExcelComponent} from "./modal-export/modal-export-excel.component";
 import {NzTableModule} from "ng-zorro-antd/table";
+import {ConvertMinutePipe} from "./pipes/convert-minute.pipe";
 
 @NgModule({
   imports: [
@@ -132,7 +133,8 @@ import {NzTableModule} from "ng-zorro-antd/table";
     ModalNoteComponent,
     TotalPricePipe,
     RoundingNumberPipe,
-    ModalExportExcelComponent
+    ModalExportExcelComponent,
+    ConvertMinutePipe
   ],
   exports: [
     SwimLaneChartComponent,
@@ -166,7 +168,8 @@ import {NzTableModule} from "ng-zorro-antd/table";
     ModalNoteComponent,
     TotalPricePipe,
     RoundingNumberPipe,
-    ModalExportExcelComponent
+    ModalExportExcelComponent,
+    ConvertMinutePipe
   ],
   providers: [
     DecimalPipe,

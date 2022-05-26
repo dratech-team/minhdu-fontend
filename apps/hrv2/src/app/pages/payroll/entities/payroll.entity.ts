@@ -17,7 +17,8 @@ interface Salary {
 export interface TotalSalary {
   duration: {
     day: number,
-    hour: number
+    hour: number,
+    minute?: number
   }
   total: number,
   price: number

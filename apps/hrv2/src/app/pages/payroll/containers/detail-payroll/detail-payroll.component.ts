@@ -449,6 +449,8 @@ export class DetailPayrollComponent implements OnInit {
           return CompareSortUtil(a.setting.startedAt, b.setting.startedAt, isAsc);
         case FilterSalaryEnum.RATE_SETTING:
           return CompareSortUtil(a.setting.rate, b.setting.rate, isAsc);
+        case FilterSalaryEnum.TITLE_SETTING_PARTIAL:
+          return CompareSortUtil(a.setting.title + a.partial, b.setting.title + b.partial, isAsc);
       }
     });
   }

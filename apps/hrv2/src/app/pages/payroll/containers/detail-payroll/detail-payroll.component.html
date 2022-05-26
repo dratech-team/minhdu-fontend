@@ -272,7 +272,7 @@
                 [nzSortFn]='true'
                 (nzSortOrderChange)='onSort(filterSalaryEnum.DURATION, $event, payroll.allowances)'
                 style="width: 100px">
-                <div>Tổng ngày</div>
+                <div>Tổng</div>
               </th>
               <th style="width: 100px">
                 <div>Làm tại cty</div>
@@ -540,7 +540,7 @@
               </th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE, $event, payroll.absents)'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE_SETTING_PARTIAL, $event, payroll.absents)'
                 width='20%'>
                 <div>Loại vắng</div>
               </th>
@@ -588,7 +588,7 @@
               </td>
               <td>
                 <div>
-                  <span>{{salary.title}}</span>
+                  <span>{{salary?.setting?.title}} {{salary.partial| transformconstant: sessionConstant}}</span>
                 </div>
               </td>
               <td>
@@ -599,7 +599,11 @@
                 </span>
               </td>
               <td>
-                {{salary.duration}} {{salary.partial | transformconstant:sessionConstant}}
+                <span *ngIf="salary.setting.unit === datetimeUnit.MINUTE else durationDay">
+                  {{(salary.duration | convertMinute).hour}} giờ {{(salary.duration | convertMinute).minute}} Phút</span>
+                <ng-template #durationDay>
+                  {{salary.duration}} {{salary.partial | transformconstant:sessionConstant}}
+                </ng-template>
               </td>
               <td>
                     <span style='color: red'>
@@ -637,7 +641,8 @@
               <td></td>
               <td>
                 {{payroll.total.absent.duration.day}} ngày
-                <br>{{payroll.total.absent.duration.hour}} Giờ
+                <br>{{payroll.total.absent.duration.hour + (payroll.total.absent.duration.minute | convertMinute).hour}} Giờ
+                <br>{{(payroll.total.absent.duration.minute | convertMinute).minute}} phút
               </td>
               <td style='color: red'>
                 {{payroll.total.absent.price

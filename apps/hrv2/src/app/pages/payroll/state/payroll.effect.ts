@@ -325,12 +325,15 @@ export class PayrollEffect {
                 : (b.duration / 2)
             )
             : 0),
-          hour: a.duration.hour + (unit === DatetimeUnitEnum.MINUTE || unit === DatetimeUnitEnum.HOUR
+          hour: a.duration.hour + (unit === DatetimeUnitEnum.HOUR
             ? b.duration
-            : 0)
+            : 0),
+          minute: a.duration.minute + (unit === DatetimeUnitEnum.MINUTE
+            ? b.duration
+            : 0),
         }
       };
-    }, {price: 0, total: 0, duration: {day: 0, hour: 0}});
+    }, {price: 0, total: 0, duration: {day: 0, hour: 0, minute: 0}});
   }
 
   private getTotalRemoteOrDayOff(salary: SalaryEntity []) {
