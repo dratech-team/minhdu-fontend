@@ -23,6 +23,7 @@ import {PaginationDto} from "@minhdu-fontend/constants";
 import {AddManyPayrollDto} from "../dto/add-many-payroll.dto";
 import {HolidaySalaryEntity} from "../../salary/entities/holiday-salary.entity";
 import * as moment from 'moment';
+import {CompareSortUtil} from "../utils/compare-sort.util";
 
 @Injectable({providedIn: 'root'})
 export class PayrollEffect {
@@ -271,9 +272,18 @@ export class PayrollEffect {
   private mapToPayroll(payroll: PayrollEntity): PayrollEntity {
     const basics = payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.BASIC || item.type === SalaryTypeEnum.BASIC_INSURANCE);
     const stays = payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.STAY);
-    return  Object.assign(payroll, {
+    return Object.assign(payroll, {
       basics: basics,
       stays: stays,
+      allowances: this.sortDatetime(payroll.allowances),
+      absents: this.sortDatetime(payroll.absents),
+      dayoffs: this.sortDatetime(payroll.dayoffs),
+      overtimes: this.sortDatetime(payroll.overtimes)?.map(overtime => Object.assign(overtime, {expand: false})),
+      holidays: payroll.holidays?.sort((a, b) => {
+          return CompareSortUtil(a.setting.startedAt, b.setting.startedAt, true)
+        }
+      ).map(holiday => Object.assign(holiday, {expand: false})),
+      remotes: this.sortDatetime(payroll.remotes),
       total: {
         payroll: payroll.total,
         basic: basics?.reduce((a, b) => a + (b?.price || 0), 0),
@@ -285,9 +295,7 @@ export class PayrollEffect {
         holiday: this.getTotalHoliday(payroll.holidays),
         remote: this.getTotalRemoteOrDayOff(payroll.remotes),
         dayOff: this.getTotalRemoteOrDayOff(payroll.dayoffs)
-      },
-      overtimes: payroll.overtimes?.map(overtime => Object.assign(overtime, {expand: false})),
-      holidays: payroll.holidays?.map(holiday => Object.assign(holiday, {expand: false}))
+      }
     });
   }
 
@@ -317,18 +325,21 @@ export class PayrollEffect {
                 : (b.duration / 2)
             )
             : 0),
-          hour: a.duration.hour + (unit === DatetimeUnitEnum.MINUTE || unit === DatetimeUnitEnum.HOUR
+          hour: a.duration.hour + (unit === DatetimeUnitEnum.HOUR
             ? b.duration
-            : 0)
+            : 0),
+          minute: a.duration.minute + (unit === DatetimeUnitEnum.MINUTE
+            ? b.duration
+            : 0),
         }
       };
-    }, {price: 0, total: 0, duration: {day: 0, hour: 0}});
+    }, {price: 0, total: 0, duration: {day: 0, hour: 0, minute: 0}});
   }
 
-  private getTotalRemoteOrDayOff(salary: RemoteSalaryEntity[] | DayOffSalaryEntity []) {
+  private getTotalRemoteOrDayOff(salary: SalaryEntity []) {
     return salary?.reduce((a, b) => {
       return {
-        duration: a.duration + b.partial === PartialDayEnum.ALL_DAY ? b.duration : (b.duration / 2)
+        duration: a.duration + ((b.partial && b.partial === PartialDayEnum.ALL_DAY) ? b.duration : (b.duration / 2))
       };
     }, {duration: 0});
   }
@@ -343,5 +354,16 @@ export class PayrollEffect {
         total: a.total + b.total
       };
     }, {duration: 0, total: 0});
+  }
+
+  private sortDatetime(salaries?: SalaryEntity[]) {
+    if (salaries) {
+      return salaries.sort((a, b) => {
+        return CompareSortUtil(a.startedAt, b.startedAt, true)
+      })
+    } else {
+      return []
+    }
+
   }
 }

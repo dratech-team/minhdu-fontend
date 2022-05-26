@@ -251,17 +251,27 @@
 
         <!--Phụ cấp -->
         <div #allowance class='mt-5 col-12'>
-          <table style='width: 100%;'>
+          <nz-table
+            class="table-detail-payroll"
+            [nzData]="payroll.allowances"
+            nzShowPagination="false"
+            nzSize="small">
             <thead>
             <tr>
               <th style="width: 40px">STT</th>
-              <th>
+              <th [nzSortFn]='true'
+                  (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE, $event, payroll.allowances)'>
                 <div>Phụ cấp</div>
               </th>
-              <th style='width: 155px'>
+              <th [nzSortFn]='true'
+                  (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME, $event, payroll.allowances)'
+                  style='width: 155px'>
                 <div>Thời gian</div>
               </th>
-              <th style="width: 100px">
+              <th
+                [nzSortFn]='true'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DURATION, $event, payroll.allowances)'
+                style="width: 100px">
                 <div>Tổng ngày</div>
               </th>
               <th style="width: 100px">
@@ -365,16 +375,13 @@
               <td></td>
             </tr>
             </tbody>
-          </table>
+          </nz-table>
         </div>
 
         <!--Tăng ca -->
         <div #overtime class='col-12 mt-5'>
           <nz-table
-            style='
-              border: solid 1px #EBEBEB !important;
-              border-radius: 10px !important;
-              box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06) !important;'
+            class="table-detail-payroll"
             #tableOvertime
             [nzData]='payroll.overtimes'
             nzShowPagination='false'
@@ -385,17 +392,17 @@
               <th nzWidth='40px'>STT</th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterOvertimeEnum.TITLE, $event, payroll.overtimes)'>
+                (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE_SETTING, $event, payroll.overtimes)'>
                 Tăng ca
               </th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterOvertimeEnum.DATETIME, $event, payroll.overtimes)'>
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME, $event, payroll.overtimes)'>
                 Thời gian
               </th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterOvertimeEnum.DURATION, $event, payroll.overtimes)'>
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DURATION, $event, payroll.overtimes)'>
                 Tổng thời gian
               </th>
               <th>Thành tiền</th>
@@ -520,19 +527,33 @@
 
         <!--Vắng-->
         <div #absent class='col-12 mt-5'>
-          <table>
+          <nz-table
+            [nzData]="payroll.absents"
+            nzShowPagination="false"
+            nzSize="small"
+            class="table-detail-payroll"
+          >
             <thead>
             <tr>
               <th width='40px'>
                 <div>STT</div>
               </th>
-              <th width='20%'>
+              <th
+                [nzSortFn]='true'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE_SETTING_PARTIAL, $event, payroll.absents)'
+                width='20%'>
                 <div>Loại vắng</div>
               </th>
-              <th width='13%'>
+              <th
+                [nzSortFn]='true'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME, $event, payroll.absents)'
+                width='13%'>
                 Thời gian
               </th>
-              <th>
+              <th
+                [nzSortFn]='true'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DURATION, $event, payroll.absents)'
+              >
                 Tổng ngày
               </th>
               <th>
@@ -567,7 +588,7 @@
               </td>
               <td>
                 <div>
-                  <span>{{salary.title}}</span>
+                  <span>{{salary?.setting?.title}} {{salary.partial| transformconstant: sessionConstant}}</span>
                 </div>
               </td>
               <td>
@@ -578,7 +599,11 @@
                 </span>
               </td>
               <td>
-                {{salary.duration}} {{salary.partial | transformconstant:sessionConstant}}
+                <span *ngIf="salary.setting.unit === datetimeUnit.MINUTE else durationDay">
+                  {{(salary.duration | convertMinute).hour}} giờ {{(salary.duration | convertMinute).minute}} Phút</span>
+                <ng-template #durationDay>
+                  {{salary.duration}} {{salary.partial | transformconstant:sessionConstant}}
+                </ng-template>
               </td>
               <td>
                     <span style='color: red'>
@@ -616,7 +641,8 @@
               <td></td>
               <td>
                 {{payroll.total.absent.duration.day}} ngày
-                <br>{{payroll.total.absent.duration.hour}} Giờ
+                <br>{{payroll.total.absent.duration.hour + (payroll.total.absent.duration.minute | convertMinute).hour}} Giờ
+                <br>{{(payroll.total.absent.duration.minute | convertMinute).minute}} phút
               </td>
               <td style='color: red'>
                 {{payroll.total.absent.price
@@ -634,24 +660,34 @@
               <td></td>
             </tr>
             </tbody>
-          </table>
+          </nz-table>
         </div>
 
         <!--dayOff-->
         <div #dayOff class='col-12 mt-5'>
-          <table style='width: 100%'>
+          <nz-table
+            [nzData]="payroll.dayoffs"
+            nzShowPagination="false"
+            nzSize="small"
+            class="table-detail-payroll">
             <thead>
             <tr>
               <th width='40px'>
                 STT
               </th>
-              <th>
+              <th
+                [nzSortFn]='true'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE, $event, payroll.dayoffs)'>
                 Không đi làm
               </th>
-              <th>
+              <th
+                [nzSortFn]='true'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME, $event, payroll.dayoffs)'>
                 Thời gian
               </th>
-              <th>
+              <th
+                [nzSortFn]='true'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DURATION, $event, payroll.dayoffs)'>
                 Tổng ngày
               </th>
               <th>
@@ -703,7 +739,7 @@
             </tr>
             <tr class='font-weight-bold'>
               <td></td>
-              <td >Tổng cộng :</td>
+              <td>Tổng cộng :</td>
               <td></td>
               <td>
                 {{payroll.total?.dayOff?.duration}} ngày
@@ -712,7 +748,7 @@
               <td></td>
             </tr>
             </tbody>
-          </table>
+          </nz-table>
         </div>
 
         <!--Khấu trừ-->
@@ -779,7 +815,7 @@
             </tr>
             <tr *ngIf='payroll.total.remote' class='font-weight-bold'>
               <td></td>
-              <td >Tổng cộng :</td>
+              <td>Tổng cộng :</td>
               <td style="color: red">
                 {{payroll.total.deduction
                 | roundingnumber :1000
@@ -796,11 +832,7 @@
         <!--ngày lễ-->
         <div #holiday class='col-12 mt-5'>
           <nz-table
-            style='
-              width: 100%;
-              border: solid 1px #EBEBEB !important;
-              border-radius: 10px !important;
-              box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06) !important;'
+            class="table-detail-payroll"
             [nzData]="payroll.holidays"
             nzSize="small"
             nzShowPagination="false">
@@ -808,10 +840,25 @@
             <tr>
               <th nzWidth='40px'></th>
               <th nzWidth='40px'>STT</th>
-              <th nzWidth='20%'>Ngày lễ</th>
-              <th nzWidth='20%'>ngày</th>
+              <th
+                [nzSortFn]='true'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE_SETTING, $event, payroll.holidays)'
+                nzWidth='20%'>
+                Ngày lễ
+              </th>
+              <th
+                [nzSortFn]='true'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME_SETTING, $event, payroll.holidays)'
+                nzWidth='20%'>
+                ngày
+              </th>
               <th nzWidth='10%'>Đơn vị</th>
-              <th nzWidth='60px'>Hệ số</th>
+              <th
+                [nzSortFn]='true'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME_SETTING, $event, payroll.holidays)'
+                nzWidth='60px'>
+                Hệ số
+              </th>
               <th> Đơn giá</th>
               <th nzWidth='150px'>Tổng tiền</th>
               <th style='color: #1b8eb7; width: 100px' (click)='onAdd(salaryTypeEnum.HOLIDAY, payroll)'>
@@ -952,18 +999,18 @@
               </th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterRemoteEnum.TYPE, $event, payroll.remotes)'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.TYPE, $event, payroll.remotes)'
               >
                 Remote/Onsite/WFH
               </th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterRemoteEnum.DATETIME, $event, payroll.remotes)'>
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME, $event, payroll.remotes)'>
                 Thời gian
               </th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterRemoteEnum.DURATION, $event, payroll.remotes)'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DURATION, $event, payroll.remotes)'
               >
                 Tổng ngày
               </th>
@@ -1018,7 +1065,7 @@
                 </div>
               </td>
             </tr>
-            <tr class='font-weight-bold'>
+            <tr class='font-weight-bold' *ngIf="payroll.total.remote.duration">
               <td></td>
               <td>Tổng cộng :</td>
               <td></td>

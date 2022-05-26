@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {of} from 'rxjs';
-import {catchError, map, switchMap} from 'rxjs/operators';
+import {catchError, concatMap, map, switchMap} from 'rxjs/operators';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
 import {EmployeeService} from '@minhdu-fontend/employee-v2';
@@ -33,7 +33,7 @@ export class EmployeeEffect {
   @Effect()
   addOne$ = this.actions$.pipe(
     ofType(EmployeeActions.addOne),
-    switchMap((props) => {
+    concatMap((props) => {
         this.employeeStore.update(state => ({
           ...state, added: false
         }));

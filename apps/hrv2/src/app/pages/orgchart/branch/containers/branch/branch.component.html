@@ -15,6 +15,7 @@
         nzHeader='Chức vụ'
         nzActive='true'>
         <nz-select style="width: 100%"
+                   nzAllowClear
                    nzShowSearch
                    [compareWith]="compareFN"
                    nzPlaceHolder="Chọn chức vụ"
@@ -65,7 +66,7 @@
                   (click)="$event.stopPropagation()"
                   [contextMenu]='childChip'
                   [contextMenuSubject]='{position: position, branch: branch}'
-                  [style]='{"background": formGroup.get("position")?.value.id === position.id ? "red" : "#00000040"}'
+                  [style]='{"background": formGroup.get("position")?.value?.id === position.id ? "red" : "#00000040"}'
                   *ngFor='let position of branch.positions'>
                   {{position.name}}
                 </mat-chip>

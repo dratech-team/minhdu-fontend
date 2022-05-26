@@ -17,7 +17,8 @@ interface Salary {
 export interface TotalSalary {
   duration: {
     day: number,
-    hour: number
+    hour: number,
+    minute?: number
   }
   total: number,
   price: number
@@ -54,9 +55,9 @@ export interface PayrollEntity extends BasePayrollEntity {
   deductions: DeductionSalaryEntity [],
   overtimes: SalaryEntity [],
   allowances: SalaryEntity[],
-  remotes: RemoteSalaryEntity[],
+  remotes: SalaryEntity[],
   holidays: HolidaySalaryEntity[]
-  dayoffs: DayOffSalaryEntity[],
+  dayoffs: SalaryEntity[],
   payrollIds: number[];
   total: {
     payroll: number;

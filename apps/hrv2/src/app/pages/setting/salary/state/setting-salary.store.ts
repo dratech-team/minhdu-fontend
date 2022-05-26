@@ -4,14 +4,21 @@ import {SalarySettingEntity, SettingSalaryVisibleEntity} from '../entities';
 import {BaseSearchSalarySettingDto} from "../dto";
 import {updateStateUiUtil} from "@minhdu-fontend/utils";
 import {StorageName} from "@minhdu-fontend/constants";
+import {BranchEntity, PositionEntity} from "@minhdu-fontend/orgchart-v2";
+import {SalaryTypeEnum} from "@minhdu-fontend/enums";
 
 export interface SettingSalaryState extends EntityState<SalarySettingEntity> {
   total: number;
   remain: number,
   loading: boolean;
   loadMore: boolean;
-  added: boolean|null;
-  search: Partial<BaseSearchSalarySettingDto>;
+  added: boolean | null;
+  search?: {
+    search: string,
+    branches: BranchEntity[],
+    positions: PositionEntity[],
+    types: SalaryTypeEnum[]
+  };
   ui: SettingSalaryVisibleEntity;
 }
 
@@ -22,7 +29,6 @@ export function createInitialState(): SettingSalaryState {
     loading: true,
     loadMore: false,
     added: null,
-    search: {},
     ui: {
       stt: {
         pinned: true,
@@ -44,11 +50,11 @@ export function createInitialState(): SettingSalaryState {
         pinned: false,
         visible: true
       },
-      note:{
+      note: {
         pinned: false,
         visible: true
       },
-      type:{
+      type: {
         pinned: false,
         visible: true
       }

@@ -49,10 +49,9 @@ import {ModalAddOrUpdateHoliday} from '../../../salary/data/modal-holiday-salary
 import {SalaryHolidayService} from '../../../salary/service/salary-holiday.service';
 import {ModalAddOrUpdateRemoteOrDayOff} from '../../../salary/data';
 import {NzTableSortOrder} from "ng-zorro-antd/table";
-import {FilterOvertimeEnum} from "../../enums/filter-overtime.enum";
 import {SettingSalaryStore} from "../../../setting/salary/state";
-import {Payroll} from "../../../../../../../hr/src/app/pages/payroll/+state/payroll/payroll.interface";
-import {FilterRemoteEnum} from "../../enums/filter-remote.enum";
+import {CompareSortUtil} from "../../utils/compare-sort.util";
+import {FilterSalaryEnum} from "../../enums/filter-salary.enum";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -94,8 +93,7 @@ export class DetailPayrollComponent implements OnInit {
   role = localStorage.getItem('role')
   ;
   roleEnum = Role;
-  filterOvertimeEnum = FilterOvertimeEnum
-  filterRemoteEnum = FilterRemoteEnum
+  filterSalaryEnum = FilterSalaryEnum
 
   constructor(
     private readonly payrollQuery: PayrollQuery,
@@ -248,11 +246,11 @@ export class DetailPayrollComponent implements OnInit {
     salary: SalaryEntity
   ) {
     this.modal.create({
-      nzTitle: `Xoá ${salary.title || salary?.setting?.title}`,
+      nzTitle: `Xoá ${salary.title || salary?.setting?.title || salary.setting.type}`,
       nzContent: ModalAlertComponent,
       nzComponentParams: <{ data: ModalAlertEntity }>{
         data: {
-          description: `Bạn có chắc chắn muốn xoá ${salary.title || salary?.setting?.title}`
+          description: `Bạn có chắc chắn muốn xoá ${salary.title || salary?.setting?.title || salary.setting.type}`
         }
       },
       nzFooter: ' '
@@ -433,28 +431,28 @@ export class DetailPayrollComponent implements OnInit {
     }
   }
 
-  onSort(column: FilterOvertimeEnum | FilterRemoteEnum, type: NzTableSortOrder, salary: SalaryEntity []) {
+  onSort(column: FilterSalaryEnum, type: NzTableSortOrder, salary: SalaryEntity []) {
     salary.sort((a, b) => {
-      const isAsc = type === 'ascend';
+      const isAsc = type === 'descend';
       switch (column) {
-        case FilterOvertimeEnum.TITLE:
-          return this.compare(a.setting.title, b.setting.title, isAsc);
-        case FilterRemoteEnum.DATETIME:
-        case FilterOvertimeEnum.DATETIME:
-          return this.compare(b.startedAt, a.startedAt, isAsc)
-        case FilterRemoteEnum.DURATION:
-        case FilterOvertimeEnum.DURATION:
-          return this.compare(a.duration, b.duration, isAsc);
-        case FilterRemoteEnum.TYPE:
-          return this.compare(a.type, b.type, isAsc)
+        case FilterSalaryEnum.TITLE:
+          return CompareSortUtil(a.title, b.title, isAsc);
+        case FilterSalaryEnum.DATETIME:
+          return CompareSortUtil(a.startedAt, b.startedAt, isAsc)
+        case FilterSalaryEnum.DURATION:
+          return CompareSortUtil(a.duration, b.duration, isAsc);
+        case FilterSalaryEnum.TYPE:
+          return CompareSortUtil(a.type, b.type, isAsc);
+        case FilterSalaryEnum.TITLE_SETTING:
+          return CompareSortUtil(a.setting.title, b.setting.title, isAsc);
+        case FilterSalaryEnum.DATETIME_SETTING:
+          return CompareSortUtil(a.setting.startedAt, b.setting.startedAt, isAsc);
+        case FilterSalaryEnum.RATE_SETTING:
+          return CompareSortUtil(a.setting.rate, b.setting.rate, isAsc);
+        case FilterSalaryEnum.TITLE_SETTING_PARTIAL:
+          return CompareSortUtil(a.setting.title + a.partial, b.setting.title + b.partial, isAsc);
       }
     });
-  }
-
-  compare(a: number | string | Date | undefined, b: number | string | Date | undefined, isAsc: boolean) {
-    return a && b
-      ? (a < b ? -1 : 1) * (isAsc ? 1 : -1)
-      : 0
   }
 
   prePayroll(payroll: PayrollEntity) {

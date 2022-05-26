@@ -166,7 +166,7 @@ export const blockSalariesConstant: BlockSalary[] = [
       units: UnitDatetimeConstant.filter(item => item.salaryType.includes(SalaryTypeEnum.HOLIDAY)),
       disabled: true
     },
-    rangeDay:{
+    rangeDay: {
       type: 'date',
       disabled: false,
       show: true
@@ -178,6 +178,14 @@ export const blockSalariesConstant: BlockSalary[] = [
     price: {
       disabled: false,
       show: true
-    }
+    },
+    branch: {
+      disabled: false,
+      show: true,
+    },
+    position: {
+      disabled: false,
+      show: true,
+    },
   },
 ];
