@@ -4,11 +4,8 @@ import {OrgchartActions} from '@minhdu-fontend/orgchart';
 import {debounceTime} from 'rxjs/operators';
 import {Actions} from "@datorama/akita-ng-effects";
 import {BranchActions, BranchEntity, BranchQuery} from "@minhdu-fontend/orgchart-v2";
-import {
-  ModalBranchComponent
-} from "../../../../../../../hrv2/src/app/pages/orgchart/branch/components/modal-branch/modal-branch.component";
-import {DataAddOrUpBranch} from "../../../../../../../hrv2/src/app/pages/orgchart/branch/data/modal-department.data";
 import {NzModalService} from "ng-zorro-antd/modal";
+import {ModalBranchComponent} from "../../components";
 
 @Component({
   templateUrl: 'branch.component.html'
@@ -32,11 +29,11 @@ export class BranchComponent implements OnInit {
   ngOnInit() {
     this.actions$.dispatch(BranchActions.loadAll({}))
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe(val => {
-      this.actions$.dispatch(OrgchartActions.searchBranch({ search: val?.search, status: val?.status }));
+      this.actions$.dispatch(OrgchartActions.searchBranch({search: val?.search, status: val?.status}));
     });
   }
 
-  mapBranch(value: any){
+  mapBranch(value: any) {
 
   }
 
@@ -54,7 +51,7 @@ export class BranchComponent implements OnInit {
       nzWidth: '30vw',
       nzTitle: 'Cập nhật đơn vị',
       nzContent: ModalBranchComponent,
-      nzComponentParams: <{ data?: DataAddOrUpBranch }>{
+      nzComponentParams: <{ data?: { update?: { branch: BranchEntity } } }>{
         data: {
           update: {
             branch: branch

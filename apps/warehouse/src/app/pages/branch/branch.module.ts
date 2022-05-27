@@ -10,7 +10,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {NzTableModule} from "ng-zorro-antd/table";
 import {MatRadioModule} from "@angular/material/radio";
 import {ComponentsModule} from "@minhdu-fontend/components";
-import {DialogBranchComponent} from "./components/dialog-branch/dialog-branch.component";
+import {ModalBranchComponent} from "./components/modal-branch/modal-branch.component";
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatDialogModule} from "@angular/material/dialog";
@@ -19,7 +19,7 @@ import {NzButtonModule} from "ng-zorro-antd/button";
 
 
 @NgModule({
-  declarations: [BranchComponent, DialogBranchComponent],
+  declarations: [BranchComponent, ModalBranchComponent],
   imports: [
     ComponentsModule,
     StoreModule,

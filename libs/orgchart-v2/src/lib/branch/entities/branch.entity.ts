@@ -13,7 +13,4 @@ export interface BranchEntity extends BaseBranchEntity {
   },
   allowances: AllowanceBranchEntity [],
   positions: PositionEntity[],
-  phone: string,
-  address: string,
-  status: boolean,
 }
