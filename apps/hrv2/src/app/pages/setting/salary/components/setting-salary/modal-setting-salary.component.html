@@ -158,12 +158,11 @@
                  'pointer-events':formGroup.value.block.price.disabled ? 'none': 'auto',
                  'background':formGroup.value.block.price.disabled ? '#dddddd':'white'
                   }">
-        <div class="mt-2" *ngIf="prices.length > 0" class="border p-1 mt-1 "
+        <div  *ngIf="prices.length > 0" class="border p-1 mt-2"
              style="height: 120px ; overflow-y: scroll">
           <mat-chip-list>
             <mat-chip
               *ngFor="let price of prices"
-              [removable]='true'
               (removed)='onRemovePrice(price)'
               [selectable]='true'
               [removable]='true'>
@@ -207,12 +206,11 @@
               ></nz-option>
             </nz-select>
           </div>
-          <div class="mt-2" *ngIf="prices.length > 0" class="border p-1 mt-1 "
+          <div *ngIf="prices.length > 0" class="border p-1 mt-2 "
                style="height: 120px ; overflow-y: scroll">
             <mat-chip-list>
               <mat-chip
                 *ngFor="let price of prices"
-                [removable]='true'
                 (removed)='onRemovePrice(price)'
                 [selectable]='true'
                 [removable]='true'>
