@@ -121,7 +121,7 @@
         <div *ngIf='formGroup.value?.template' class='form-control' style='background: #dddddd'>{{
           ((formGroup.value.template.prices && formGroup.value.template.prices.length > 0 ? (formGroup.value.template.prices|prices) : (formGroup.value.template.totalOf|salarytype:'transform'))
             + (formGroup.value.template.workday
-                ? +' / ' + formGroup.value.template.workday
+                ? +' / ' + formGroup.value.template.workday.toString()
                 : formGroup.value.template.type === salaryTypeEnum.OVERTIME && formGroup.value.template.totalOf.length === 0
                   ? ''
                   : '/ Ngày công chuẩn'
