@@ -1,88 +1,107 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {select, Store} from '@ngrx/store';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
-import {debounceTime, map, tap} from 'rxjs/operators';
-import {TablePaymentRouteService} from './table-payment-route.service';
-import {PaymentType} from '@minhdu-fontend/enums';
-import {PaymentHistory} from '@minhdu-fontend/data-models';
-import {selectorAllPayment} from '../../../payment/payment/payment.selector';
-import {PaymentAction} from '../../../payment/payment/payment.action';
-import {ItemContextMenu} from '../../../../../../../../libs/enums/sell/page-type.enum';
-import {MatDialog} from '@angular/material/dialog';
-import {
-  DialogDeleteComponent
-} from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
-import {PaymentDialogComponent} from '../payment-dialog/payment-dialog.component';
+import {debounceTime, tap} from 'rxjs/operators';
+import {ItemContextMenu, PaymentType} from '@minhdu-fontend/enums';
+import {PaymentModalComponent} from '../payment-modal/payment-modal.component';
+import {PaymentQuery} from "../../../payment/payment/payment.query";
+import {Actions} from "@datorama/akita-ng-effects";
+import {PaymentActions} from "../../../payment/payment";
+import {PaymentStore} from "../../../payment/payment/payment.store";
+import {PaymentEntity} from "../../../payment/entities/payment.entity";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {DatePipe} from "@angular/common";
 
 @Component({
-  selector: 'app-table-payment',
+  selector: 'minhdu-fontend-table-payment',
   templateUrl: 'table-payment.component.html'
 })
 
 export class TablePaymentComponent implements OnInit {
+  @Input() customerId!: number;
+
+  paymentHistories$ = this.paymentQuery.selectAll()
+
+  pageSizeTable = 10
   pageTypeEnum = ItemContextMenu;
+  payType = PaymentType;
+
   formGroup = new FormGroup(
     {
       name: new FormControl(''),
       paidAt: new FormControl(''),
       createdAt: new FormControl('')
     });
-  payType = PaymentType;
-  @Input() customerId!: number;
-  pageSize = 10;
-  pageIndex = 1;
-  pageIndexInit = 0;
-  paymentHistories$ = this.store.pipe(select(selectorAllPayment)).pipe(map(value => JSON.parse(JSON.stringify(value))));
+
 
   constructor(
-    private readonly store: Store,
-    private readonly dialog: MatDialog,
+    private readonly actions$: Actions,
+    private readonly modal: NzModalService,
+    private readonly datePipe: DatePipe,
     private readonly router: Router,
-    private readonly paymentService: TablePaymentRouteService
+    private readonly paymentQuery: PaymentQuery,
+    private readonly paymentStore: PaymentStore,
   ) {
   }
 
   ngOnInit() {
-    this.store.dispatch(PaymentAction.loadInit({take: 10, skip: 0, customerId: this.customerId}));
+    this.onLoad(false)
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
-      tap((value) => {
-        this.paymentService.searchPayments(this.paymentHistory(this.pageSize, this.pageIndexInit, value));
+      tap((_) => {
+        this.onLoad(false)
       })).subscribe();
   }
 
-  onScroll() {
-    const val = this.formGroup.value;
-    this.paymentService.scrollPayments(this.paymentHistory(this.pageSize, this.pageIndex, val));
+  onLoadMore(pageIndex: number) {
+    const count = this.paymentQuery.getCount();
+    if (pageIndex * this.pageSizeTable >= count) {
+      this.onLoad(true)
+    }
+    this.onLoad(true)
   }
 
-  paymentHistory(pageSize: number, pageIndex: number, val?: any): any {
-    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
-    return {
-      take: pageSize,
-      skip: pageSize * pageIndex,
-      customerId: this.customerId
-    };
+  onLoad(isPaginate: boolean) {
+    this.actions$.dispatch(PaymentActions.loadAll({
+      search: this.mapPayment(this.formGroup.value),
+      isPaginate
+    }))
   }
 
-  deletePayment(id: number) {
-    const ref = this.dialog.open(DialogDeleteComponent, {width: 'fit-content'});
-    ref.afterClosed().subscribe(val => {
-      if (val) {
-        this.store.dispatch(PaymentAction.deletePayment({id: id, customerId: this.customerId}));
+  mapPayment(value: any) {
+    this.paymentStore.update(state => ({
+      ...state, search: value
+    }))
+    return Object.assign({}, value, {customerId: this.customerId})
+  }
+
+  deletePayment(payment: PaymentEntity) {
+    this.modal.warning({
+      nzTitle: 'Xoá lịch sử thanh toán',
+      nzContent: `bạn có chắc chắn xoá lịch sử thanh toán ngày ${
+        this.datePipe.transform(payment.createdAt, 'dd/MM/yyyy')
+      } không`,
+      nzOkDanger: true,
+      nzOnOk: () => {
+        this.actions$.dispatch(PaymentActions.remove({
+          id: payment.id
+        }))
       }
-    });
+    })
   }
 
-  updatePayment(paymentHistory: PaymentHistory) {
-    this.dialog.open(PaymentDialogComponent, {
-      width: 'fit-content',
-      data: {
-        isUpdate: true,
-        paymentHistory,
-        id: this.customerId
-      }
-    });
+  updatePayment(payment: PaymentEntity) {
+    this.modal.create({
+      nzTitle: 'Cập nhật thanh toán',
+      nzContent: PaymentModalComponent,
+      nzComponentParams: <{ data: any }>{
+        data: {
+          isUpdate: true,
+          payment,
+          id: this.customerId
+        }
+      },
+      nzFooter: []
+    })
   }
 }

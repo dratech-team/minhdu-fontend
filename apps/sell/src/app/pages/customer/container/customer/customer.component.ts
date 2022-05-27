@@ -8,7 +8,7 @@ import {ExportService} from '@minhdu-fontend/service';
 import {ModalExportExcelComponent, ModalExportExcelData} from '@minhdu-fontend/components';
 import {debounceTime, map, tap} from 'rxjs/operators';
 import {CustomerActions, CustomerQuery, CustomerStore} from '../../+state';
-import {CustomerModalComponent, PaymentDialogComponent} from '../../component';
+import {CustomerModalComponent, PaymentModalComponent} from '../../component';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {RadiosStatusRouteConstant} from '../../enums/gender.constant';
@@ -131,7 +131,7 @@ export class CustomerComponent implements OnInit {
   }
 
   payment($event: any) {
-    this.dialog.open(PaymentDialogComponent, {
+    this.dialog.open(PaymentModalComponent, {
       width: '55%',
       data: { id: $event.id }
     });

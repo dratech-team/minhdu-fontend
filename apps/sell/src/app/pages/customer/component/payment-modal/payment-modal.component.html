@@ -1,0 +1,104 @@
+<nz-steps [nzCurrent]="indexStep">
+  <nz-step nzTitle="Thông tin thanh toán"></nz-step>
+  <nz-step nzTitle="Chọn đơn hàng"></nz-step>
+  <nz-step nzTitle="Hoàn thành"></nz-step>
+</nz-steps>
+<ng-template [ngIf]="indexStep  === 0">
+  <form [formGroup]="formGroup" class='px-5' style='height: 30vh'>
+      <div class='row mt-5'>
+        <div class='col-sm mt-2'>
+          <label class='title-detail'>Loại thanh toán</label>
+          <nz-select class='form-control' formControlName='payType'>
+            <nz-option>
+            </nz-option>
+          </nz-select>
+          <div>
+          </div>
+        </div>
+        <div class='col-sm title-detail'>
+          <label id='total'> Tổng thanh toán<span class='star'>*</span></label>
+          <input type="text" class="form-control" id='input-total' placeholder="Nhập mức giá"
+                 formControlName="paidTotal" required inputCurrency>
+        </div>
+      </div>
+      <div class='row mt-3'>
+        <div class='col-sm'>
+          <label class='title-detail'>Ngày Thanh toán</label>
+          <div style="width: 100%">
+            <nz-date-picker nzMode="date" nzFormat="dd/MM/yyyy" formControlName='paidAt'></nz-date-picker>
+          </div>
+        </div>
+        <div class='col-sm'>
+          <label>Chú thích</label>
+          <input type='text' class='form-control' formControlName='note' required>
+        </div>
+      </div>
+  </form>
+</ng-template>
+
+<ng-template [ngIf]="indexStep === 1">
+  <app-pick-order
+    [orderIdDefault]='data?.update?.payment?.order?.id'
+    [pickOne]='true'
+    [payment]='true'
+    [customerId]='data?.add?.customer?.id || data.update?.payment?.customer?.id'
+    (checkEventPickOne)='pickOrders($event)'
+  ></app-pick-order>
+</ng-template>
+
+<ng-template [ngIf]="indexStep === 2">
+  <div style='height: 30vh; overflow-y: auto; margin: 2%'>
+    <ng-template matStepLabel>Hoàn Thành</ng-template>
+    <div class="font-weight-bold font-lg">Xác nhận thanh toán</div>
+    <div>
+      <div><span class='font-weight-bold'>Loại thanh toán: </span>
+        <span *ngIf='formGroup.value.payType === payType.CASH'> Tiền mặt </span>
+        <span *ngIf='formGroup.value.payType === payType.TRANSFER'> Chuyển khoản</span>
+      </div>
+    </div>
+    <div>
+      <div class='mt-1'><span class='font-weight-bold'>Tổng thanh toán: </span>
+        <span> {{paidTotal|number:'1.0'|notEmpty:'0'}}</span>
+      </div>
+    </div>
+    <div>
+      <div class='mt-1'><span class=' font-weight-bold'>Ngày thanh toán: </span>
+        <span> {{formGroup.value.paidAt|date:'dd/MM/yyyy'}}</span>
+      </div>
+    </div>
+    <div>
+      <div class='mt-1'><span class=' font-weight-bold'>Chú thích: </span>
+        <span> {{formGroup.value.note}}</span>
+      </div>
+    </div>
+    <div class='h5 mt-2'>Đơn hàng</div>
+    <nz-table class='mt-2' style="width:100%"
+              [nzData]="[orderPicked]"
+              #tableOrder
+              nzSize="small"
+              nzShowPagination="false"
+    >
+      <thead>
+      <tr>
+        <th>Khách hàng</th>
+        <th>Ngày tạo</th>
+        <th>Tổng tiền hàng</th>
+        <th>Lần thanh toán</th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-template ngFor let-orderPicked [ngForOf]="tableOrder.data">
+        <tr>
+          <td>{{orderPicked?.customer?.lastName}}</td>
+          <td>{{orderPicked?.createdAt|date:'dd/MM/yyyy'}}</td>
+          <td>{{orderPicked?.commodityTotal|number:'0.0'}}</td>
+          <td>{{orderPicked?.paymentHistories?.length}}</td>
+        </tr>
+      </ng-template>
+      </tbody>
+    </nz-table>
+    <div>
+    </div>
+  </div>
+</ng-template>
+

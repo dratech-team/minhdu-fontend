@@ -5,12 +5,13 @@ import {DevelopmentComponent, DialogDeleteComponent} from '@minhdu-fontend/compo
 import {ConvertBoolean, PaidType} from '@minhdu-fontend/enums';
 import {CustomerActions, CustomerQuery} from '../../+state';
 import {CustomerEntity} from '../../entities';
-import {CustomerModalComponent, PaymentDialogComponent} from '../../component';
+import {CustomerModalComponent, PaymentModalComponent} from '../../component';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from "ng-zorro-antd/modal";
 import {OrderDialogComponent} from "../../../order/component";
 import {OrderEntity} from "../../../order/enitities/order.entity";
 import {ModalCustomerData} from "../../data/modal-customer.data";
+import {ModalAddOrUpdatePayment} from "../../data/modal-payment.data";
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -90,13 +91,17 @@ export class DetailCustomerComponent implements OnInit {
     });
   }
 
-  payment(id: number) {
+  payment(customer: CustomerEntity) {
     this.modal.create({
       nzWidth: '70vw',
       nzTitle: 'Thanh toán',
-      nzContent: PaymentDialogComponent,
-      nzComponentParams: {
-        data: {id: id}
+      nzContent: PaymentModalComponent,
+      nzComponentParams: <{ data: ModalAddOrUpdatePayment }>{
+        data: {
+          add: {
+            customer: customer
+          }
+        }
       },
       nzFooter: [],
 

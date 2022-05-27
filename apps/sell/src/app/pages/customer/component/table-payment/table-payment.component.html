@@ -1,8 +1,10 @@
 <div>
   <nz-table #tablePaymentHistory
-            [nzData]="paymentHistories$|async"
+            [nzData]="(paymentHistories$|async) || []"
             [nzScroll]="{ y: '300px'}"
             nzSize='middle'
+            [nzPageSize]="pageSizeTable"
+            (nzPageIndexChange)='onLoadMore($event)'
   >
     <thead [formGroup]='formGroup'>
     <tr>
@@ -57,5 +59,4 @@
 </div>
 <app-mouse-right (onDel)='deletePayment($event.id)' (onDetail)='updatePayment($event)' #child
                  [items]='[pageTypeEnum.PERMANENTLY]'>
-
 </app-mouse-right>
