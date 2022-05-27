@@ -29,6 +29,7 @@ import {DeductionSalaryComponent} from "./components/deduction/deduction-salary.
 import {SharedModule} from "../../../shared/shared.module";
 import {HolidaySalaryComponent} from "./components/holiday/holiday-salary.component";
 import {TableSalarySelectedComponent} from "./components/table-salaries-selected/table-salary-selected.component";
+import {PriceSettingSalaryPipe} from "../setting/salary/pipes/price-setting-salary.pipe";
 
 @NgModule({
   imports: [

@@ -66,7 +66,8 @@ import {PriceSettingSalaryPipe} from "./salary/pipes/price-setting-salary.pipe";
   ],
   exports: [
     SalaryTypePipe,
-    PricesPipe
+    PricesPipe,
+    PriceSettingSalaryPipe
   ],
   providers: [
     DatePipe,
