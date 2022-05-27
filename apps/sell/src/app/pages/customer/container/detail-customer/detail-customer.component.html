@@ -26,7 +26,7 @@
       </div>
       <div class='col-7 d-flex justify-content-end align-items-start'>
         <div class='align-items-center'>
-          <div class=' mr-2 p-2 ' style='border: solid 1px'
+          <div class=' mr-2 p-1 ' style='border: solid 1px'
                [ngStyle]="{ 'border-color': customer.debt && customer.debt < 0? 'red': 'green'}">
             <span class='title-detail ' style='padding: 8px'
                   [ngStyle]="{ 'color': customer.debt && customer.debt < 0? 'red': 'green'}">
@@ -34,7 +34,7 @@
             </span>
           </div>
         </div>
-        <button (click)='payment(customer.id)' class='btn btn-danger'><span class='h5'> Thanh toán</span></button>
+        <button (click)='payment(customer.id)' nz-button nzType="primary"><span class='h5'> Thanh toán</span></button>
       </div>
     </div>
   </div>
@@ -268,7 +268,7 @@
     <div class='col-12 mt-5 '>
       <div class='d-flex align-items-center justify-content-between mb-2 '>
         <div class='row align-items-center title-table ml-1'>Đơn hàng đang giao</div>
-        <div (click)="addOrder()" class=' mt-3 btn btn-primary font-lg'>Thêm đơn hàng</div>
+        <button (click)="addOrder()" nz-button nzType="primary">Thêm đơn hàng</button>
       </div>
       <app-table-order [delivered]='false' [loading$]="deliveringLoading$"
                        [customerId]="getId"
