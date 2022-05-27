@@ -107,6 +107,7 @@
         <tr *ngFor="let settingSalary of settingSalaries; let i = index"
             (contextmenu)='child.onContextMenu($event,settingSalary)'
             class="pointer"
+            (click)="onUpdate(settingSalary)"
         >
           <td nzLeft>{{i + 1}}</td>
           <td nzLeft>{{settingSalary.title}}</td>
