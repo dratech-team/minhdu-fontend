@@ -91,6 +91,10 @@
             nzWidth="200px"
           >Đơn giá - Công thức lương
           </th>
+          <th
+            nzWidth="100px"
+          >Đơn vị tính
+          </th>
           <th nzWidth="100px">Hệ số</th>
           <th nzWidth="200px">Loại bản mẫu</th>
           <th>Đơn vị</th>
@@ -117,6 +121,7 @@
                   ))
               )
               : (settingSalary.prices|prices)}}</td>
+          <td>{{settingSalary.unit | transformconstant:datetimeConstant}}</td>
           <td>{{settingSalary.rate}}</td>
           <td>{{settingSalary.type|blocksalary: blockSalaries }}</td>
           <td>

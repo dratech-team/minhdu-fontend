@@ -23,6 +23,7 @@ import {
   PositionQuery
 } from "@minhdu-fontend/orgchart-v2";
 import * as _ from 'lodash'
+import {UnitDatetimeConstant} from "../../constants/unit-datetime.constant";
 
 @Component({
   selector: 'minhdu-fontend-setting-salary',
@@ -43,6 +44,7 @@ export class SettingSalaryComponent implements OnInit {
     title: 'Lương trích bảo hiểm',
     type: SalaryTypeEnum.BASIC_INSURANCE
   }]);
+  datetimeConstant= UnitDatetimeConstant
   panelOpenState = false;
   visible = false;
   salaryTypeEnum = SalaryTypeEnum;
