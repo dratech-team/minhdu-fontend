@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {OrgchartActions} from '@minhdu-fontend/orgchart';
 import {debounceTime} from 'rxjs/operators';
 import {Actions} from "@datorama/akita-ng-effects";
-import {BranchActions, BranchEntity, BranchQuery} from "@minhdu-fontend/orgchart-v2";
+import {BranchActions, BranchEntity, BranchQuery, BranchStore} from "@minhdu-fontend/orgchart-v2";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {ModalBranchComponent} from "../../components";
+import {BranchStatusConstant} from "../../constants/branch-status.constant";
 
 @Component({
   templateUrl: 'branch.component.html'
@@ -14,33 +14,42 @@ export class BranchComponent implements OnInit {
   branches$ = this.branchQuery.selectAll()
   loading$ = this.branchQuery.select(state => state.loading)
 
+  branchStatusConstant = BranchStatusConstant
+  stateSearch = this.branchQuery.getValue().search
   formGroup = new FormGroup({
-    search: new FormControl(),
-    status: new FormControl(-1)
+    search: new FormControl(this.stateSearch?.search || ''),
+    status: new FormControl(this.stateSearch?.status || ''),
+    position: new FormControl(this.stateSearch?.position || ''),
   });
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
     private readonly branchQuery: BranchQuery,
+    private readonly branchStore: BranchStore,
     private readonly actions$: Actions,
-    private readonly modal: NzModalService
+    private readonly modal: NzModalService,
   ) {
   }
 
   ngOnInit() {
     this.actions$.dispatch(BranchActions.loadAll({}))
+
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe(val => {
-      this.actions$.dispatch(OrgchartActions.searchBranch({search: val?.search, status: val?.status}));
+      this.actions$.dispatch(BranchActions.loadAll(this.mapBranch(val)));
     });
   }
 
   mapBranch(value: any) {
-
+    this.branchStore.update(state => ({
+      ...state, search: value
+    }))
+    return value
   }
 
   onAdd() {
     this.modal.create({
       nzWidth: '30vw',
-      nzTitle: 'Thêm đơn vị',
+      nzTitle: 'Thêm chi nhánh',
       nzContent: ModalBranchComponent,
       nzFooter: []
     })
@@ -49,7 +58,7 @@ export class BranchComponent implements OnInit {
   onUpdate(branch: BranchEntity) {
     this.modal.create({
       nzWidth: '30vw',
-      nzTitle: 'Cập nhật đơn vị',
+      nzTitle: 'Cập nhật chi nhánh',
       nzContent: ModalBranchComponent,
       nzComponentParams: <{ data?: { update?: { branch: BranchEntity } } }>{
         data: {
@@ -64,8 +73,8 @@ export class BranchComponent implements OnInit {
 
   onDelete(branch: BranchEntity) {
     this.modal.warning({
-      nzTitle: `Xoá đơn vị ${branch.name}`,
-      nzContent: `Bạn có chắc chắn muốn xoá đơn vị ${branch.name} này không`,
+      nzTitle: `Xoá chi nhánh ${branch.name}`,
+      nzContent: `Bạn có chắc chắn muốn xoá chi nhánh ${branch.name} này không`,
       nzOkDanger: true,
       nzOnOk: () => this.actions$.dispatch(BranchActions.remove({id: branch.id})),
       nzFooter: []

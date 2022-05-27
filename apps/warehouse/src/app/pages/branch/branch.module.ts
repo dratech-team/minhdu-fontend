@@ -16,6 +16,8 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatDialogModule} from "@angular/material/dialog";
 import {EmployeeModule} from "../../../../../hrv2/src/app/pages/employee/employee.module";
 import {NzButtonModule} from "ng-zorro-antd/button";
+import {NzCollapseModule} from "ng-zorro-antd/collapse";
+import {NzSelectModule} from "ng-zorro-antd/select";
 
 
 @NgModule({
@@ -36,7 +38,9 @@ import {NzButtonModule} from "ng-zorro-antd/button";
     MatCheckboxModule,
     MatDialogModule,
     EmployeeModule,
-    NzButtonModule
+    NzButtonModule,
+    NzCollapseModule,
+    NzSelectModule
   ],
 
 })
