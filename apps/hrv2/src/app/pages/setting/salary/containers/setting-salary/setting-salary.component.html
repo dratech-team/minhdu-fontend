@@ -91,6 +91,10 @@
             nzWidth="200px"
           >Đơn giá - Công thức lương
           </th>
+          <th
+            nzWidth="100px"
+          >Đơn vị tính
+          </th>
           <th nzWidth="100px">Hệ số</th>
           <th nzWidth="200px">Loại bản mẫu</th>
           <th>Đơn vị</th>
@@ -101,22 +105,14 @@
         </thead>
         <tbody>
         <tr *ngFor="let settingSalary of settingSalaries; let i = index"
-            (contextmenu)='child.onContextMenu($event,settingSalary)'>
+            (contextmenu)='child.onContextMenu($event,settingSalary)'
+            class="pointer"
+            (click)="onUpdate(settingSalary)"
+        >
           <td nzLeft>{{i + 1}}</td>
           <td nzLeft>{{settingSalary.title}}</td>
-          <td nzLeft>{{
-            settingSalary.type === salaryTypeEnum.ABSENT
-            || settingSalary.type === salaryTypeEnum.OVERTIME
-            || settingSalary.type === salaryTypeEnum.HOLIDAY
-              ? ((settingSalary.prices && settingSalary.prices.length > 0 ? (settingSalary.prices|prices) : (settingSalary.totalOf|salarytype:'transform'))
-                + (settingSalary.workday
-                  ? +' / ' + settingSalary.workday
-                  : (settingSalary.type === salaryTypeEnum.OVERTIME && settingSalary.totalOf.length === 0
-                      ? ''
-                      : ' / Ngày công chuẩn'
-                  ))
-              )
-              : (settingSalary.prices|prices)}}</td>
+          <td nzLeft>{{ settingSalary | pricesettingsalary }}</td>
+          <td>{{settingSalary.unit | transformconstant:datetimeConstant}}</td>
           <td>{{settingSalary.rate}}</td>
           <td>{{settingSalary.type|blocksalary: blockSalaries }}</td>
           <td>

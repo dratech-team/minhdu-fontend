@@ -1,1 +1,1 @@
-export * from './dialog-branch/dialog-branch.component';
+export * from './modal-branch/modal-branch.component';

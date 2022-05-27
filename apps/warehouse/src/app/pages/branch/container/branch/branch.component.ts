@@ -1,65 +1,83 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { select, Store } from '@ngrx/store';
-import { getAllOrgchart, getOrgchartLoaded, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { Branch } from '@minhdu-fontend/data-models';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogBranchComponent } from '../../components';
-import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import { debounceTime } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {debounceTime} from 'rxjs/operators';
+import {Actions} from "@datorama/akita-ng-effects";
+import {BranchActions, BranchEntity, BranchQuery, BranchStore} from "@minhdu-fontend/orgchart-v2";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {ModalBranchComponent} from "../../components";
+import {BranchStatusConstant} from "../../constants/branch-status.constant";
 
 @Component({
   templateUrl: 'branch.component.html'
 })
 export class BranchComponent implements OnInit {
-  branches$ = this.store.pipe(select(getAllOrgchart));
+  branches$ = this.branchQuery.selectAll()
+  loading$ = this.branchQuery.select(state => state.loading)
+
+  branchStatusConstant = BranchStatusConstant
+  stateSearch = this.branchQuery.getValue().search
   formGroup = new FormGroup({
-    search: new FormControl(),
-    status: new FormControl(-1)
+    search: new FormControl(this.stateSearch?.search || ''),
+    status: new FormControl(this.stateSearch?.status || ''),
+    position: new FormControl(this.stateSearch?.position || ''),
   });
-  loaded$ = this.store.select(getOrgchartLoaded);
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
-    private readonly store: Store,
-    private readonly dialog: MatDialog
+    private readonly branchQuery: BranchQuery,
+    private readonly branchStore: BranchStore,
+    private readonly actions$: Actions,
+    private readonly modal: NzModalService,
   ) {
   }
 
   ngOnInit() {
-    this.store.dispatch(OrgchartActions.init());
+    this.actions$.dispatch(BranchActions.loadAll({}))
+
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe(val => {
-      this.store.dispatch(OrgchartActions.searchBranch({ search: val?.search, status: val?.status }));
+      this.actions$.dispatch(BranchActions.loadAll(this.mapBranch(val)));
     });
+  }
+
+  mapBranch(value: any) {
+    this.branchStore.update(state => ({
+      ...state, search: value
+    }))
+    return value
   }
 
   onAdd() {
-    this.dialog.open(DialogBranchComponent, {
-      width: 'fit-content'
-    });
+    this.modal.create({
+      nzWidth: '30vw',
+      nzTitle: 'Thêm chi nhánh',
+      nzContent: ModalBranchComponent,
+      nzFooter: []
+    })
   }
 
-  onUpdate(branch: Branch) {
-    this.dialog.open(DialogBranchComponent, {
-      width: 'fit-content',
-      data: {
-        branch: branch,
-        isUpdate: true
-      }
-    });
-  }
-
-  onRemove(branch: Branch) {
-    this.dialog.open(DialogSharedComponent, {
-      width: 'fit-content',
-      data: {
-        title: 'Xoá Chi nhánh',
-        description: `bạn có muốn xoá chi nhánh ${branch.name}`
-      }
-    }).afterClosed()
-      .subscribe(val => {
-        if (val) {
-          this.store.dispatch(OrgchartActions.deleteBranch({ id: branch.id }));
+  onUpdate(branch: BranchEntity) {
+    this.modal.create({
+      nzWidth: '30vw',
+      nzTitle: 'Cập nhật chi nhánh',
+      nzContent: ModalBranchComponent,
+      nzComponentParams: <{ data?: { update?: { branch: BranchEntity } } }>{
+        data: {
+          update: {
+            branch: branch
+          }
         }
-      });
+      },
+      nzFooter: []
+    })
+  }
+
+  onDelete(branch: BranchEntity) {
+    this.modal.warning({
+      nzTitle: `Xoá chi nhánh ${branch.name}`,
+      nzContent: `Bạn có chắc chắn muốn xoá chi nhánh ${branch.name} này không`,
+      nzOkDanger: true,
+      nzOnOk: () => this.actions$.dispatch(BranchActions.remove({id: branch.id})),
+      nzFooter: []
+    })
   }
 }

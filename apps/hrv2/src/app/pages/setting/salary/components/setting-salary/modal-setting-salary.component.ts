@@ -227,14 +227,14 @@ export class ModalSettingSalaryComponent implements OnInit {
                 minutes: new Date().getMinutes(),
                 seconds: new Date().getSeconds()
               }
-            ),
+            ).toDate(),
             endedAt: moment(value.rangeDay[1]).set(
               {
                 hours: new Date().getHours(),
                 minutes: new Date().getMinutes(),
                 seconds: new Date().getSeconds()
               }
-            ),
+            ).toDate(),
           }
           : {}
       )

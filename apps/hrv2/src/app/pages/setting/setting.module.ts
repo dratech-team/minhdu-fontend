@@ -28,6 +28,7 @@ import {PricesPipe} from "./salary/pipes/prices.pipe";
 import {SalaryTypePipe} from "./salary/pipes/salary-type.pipe";
 import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
 import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
+import {PriceSettingSalaryPipe} from "./salary/pipes/price-setting-salary.pipe";
 
 @NgModule({
     imports: [
@@ -60,15 +61,18 @@ import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
     ModalSettingSalaryComponent,
     VisibleSalarySettingComponent,
     PricesPipe,
-    SalaryTypePipe
+    SalaryTypePipe,
+    PriceSettingSalaryPipe
   ],
   exports: [
     SalaryTypePipe,
-    PricesPipe
+    PricesPipe,
+    PriceSettingSalaryPipe
   ],
   providers: [
     DatePipe,
-    SalaryTypePipe
+    SalaryTypePipe,
+    PricesPipe,
   ]
 })
 
