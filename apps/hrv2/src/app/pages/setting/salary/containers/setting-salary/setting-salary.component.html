@@ -88,12 +88,27 @@
         <thead>
         <tr>
           <th nzLeft nzWidth="60px">STT</th>
-          <th nzLeft>Tên bản mẫu</th>
-          <th nzLeft nzWidth="200px">Đơn giá - Công thức lương</th>
-          <th nzWidth="100px">Đơn vị tính</th>
-          <th nzWidth="200px">Ngày</th>
+          <th
+            [nzSortFn]='true'
+            (nzSortOrderChange)='onSort({orderBy: sortEnum.NAME, orderType:$event})'
+            nzLeft>Tên bản mẫu</th>
+          <th
+            [nzSortFn]='true'
+            (nzSortOrderChange)='onSort({orderBy: sortEnum.PRICE, orderType:$event})'
+            nzLeft nzWidth="200px">Đơn giá - Công thức lương</th>
+          <th
+            [nzSortFn]='true'
+            (nzSortOrderChange)='onSort({orderBy: sortEnum.UNIT, orderType:$event})'
+            nzWidth="100px">Đơn vị tính</th>
+          <th
+            [nzSortFn]='true'
+            (nzSortOrderChange)='onSort({orderBy: sortEnum.RANGE_DAY, orderType:$event})'
+            nzWidth="200px">Ngày</th>
           <th nzWidth="100px">Hệ số</th>
-          <th nzWidth="200px">Loại bản mẫu</th>
+          <th
+            [nzSortFn]='true'
+            (nzSortOrderChange)='onSort({orderBy: sortEnum.TYPE, orderType:$event})'
+            nzWidth="200px">Loại bản mẫu</th>
           <th>Đơn vị</th>
           <th>Chức vụ</th>
           <th>Ghi chú</th>
