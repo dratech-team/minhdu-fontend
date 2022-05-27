@@ -114,7 +114,9 @@
             || settingSalary.type === salaryTypeEnum.HOLIDAY
               ? ((settingSalary.prices && settingSalary.prices.length > 0 ? (settingSalary.prices|prices) : (settingSalary.totalOf|salarytype:'transform'))
                 + (settingSalary.workday
-                  ? +' / ' + settingSalary.workday
+                  ? (settingSalary.workday > 1
+                    ? ' / ' +  settingSalary.workday.toString()
+                    : '')
                   : (settingSalary.type === salaryTypeEnum.OVERTIME && settingSalary.totalOf.length === 0
                       ? ''
                       : ' / Ngày công chuẩn'
