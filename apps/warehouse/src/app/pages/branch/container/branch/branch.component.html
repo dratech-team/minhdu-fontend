@@ -1,25 +1,26 @@
 <div class="p-2 d-flex">
   <div class="d-flex flex-column mt-2" style="width: 18%">
-    <nz-collapse>
-      <nz-collapse-panel
-        nzHeader='Tìm kiếm'
-        nzActive='true'>
-        <div [formGroup]='formGroup'>
-          <input nz-input class='form-control' type='search' formControlName='search'>
-        </div>
-      </nz-collapse-panel>
-    </nz-collapse>
-    <nz-collapse class="mt-2">
-      <nz-collapse-panel
-        [formGroup]="formGroup"
-        nzHeader='Trạng thái'
-        nzActive='true'>
-        <nz-select style="width: 100%" formControlName="status">
-          <nz-option *ngFor="let item of branchStatusConstant" [nzLabel]="item.name" [nzValue]="item.value"></nz-option>
-        </nz-select>
-      </nz-collapse-panel>
-    </nz-collapse>
-    <div class="mt-2"><span class="font-weight-bold">Tổng chi nhánh : {{(branches$|async)?.length}}</span></div>
+    <div class="p-2 border" style="height: 75vh; background: white; overflow-y: scroll">
+      <nz-collapse>
+        <nz-collapse-panel
+          nzHeader='Tìm kiếm'
+          nzActive='true'>
+          <div [formGroup]='formGroup'>
+            <input nz-input class='form-control' type='search' formControlName='search'>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+      <nz-collapse class="mt-2">
+        <nz-collapse-panel
+          [formGroup]="formGroup"
+          nzHeader='Trạng thái'
+          nzActive='true'>
+          <nz-select style="width: 100%" formControlName="status">
+            <nz-option *ngFor="let item of branchStatusConstant" [nzLabel]="item.name" [nzValue]="item.value"></nz-option>
+          </nz-select>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
   </div>
   <div class="mt-4 px-2" style="width: 82%">
     <div class="d-flex justify-content-between">
@@ -28,7 +29,9 @@
     </div>
 
     <div class="ml-2 mt-2" style="width:100% ; overflow: auto ; height: 70vh;">
+      <div><span class="font-weight-bold">Tổng chi nhánh : {{(branches$|async)?.length}}</span></div>
       <nz-table
+        class="mt-1"
         [nzLoading]="loading$|async"
         [nzData]="(branches$|async) || []"
         nzShowPagination="false"
