@@ -16,5 +16,9 @@ export const UnitSalaryConstant: Array<{ name: string; value: DatetimeUnitEnum }
   {
     name: 'Phút',
     value: DatetimeUnitEnum.MINUTE
+  },
+  {
+    name: 'Lần',
+    value: DatetimeUnitEnum.TIMES
   }
 ];

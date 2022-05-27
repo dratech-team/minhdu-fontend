@@ -58,7 +58,7 @@
             <span class='font-weight-bold'>Từ giờ</span><span class='star'>*</span>
             <nz-time-picker
               class='mt-1'
-              [nzDisabled]='formGroup.value.unit === datetimeUnit.DAY'
+              [nzDisabled]='formGroup.value.unit === datetimeUnit.DAY || formGroup.value.unit === datetimeUnit.TIMES'
               formControlName='startTime'
               nzFormat='HH:mm'
               [nzDisabledHours]='disabledHoursStart'
@@ -72,7 +72,7 @@
             <span class='font-weight-bold'>Đến giờ</span><span class='star'>*</span>
             <nz-time-picker
               class='mt-1'
-              [nzDisabled]='formGroup.value.unit === datetimeUnit.DAY'
+              [nzDisabled]='formGroup.value.unit === datetimeUnit.DAY || formGroup.value.unit === datetimeUnit.TIMES'
               formControlName='endTime'
               nzFormat='HH:mm'
               [nzDisabledHours]='disabledHoursEnd'

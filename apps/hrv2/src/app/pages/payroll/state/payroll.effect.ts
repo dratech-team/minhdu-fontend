@@ -313,7 +313,10 @@ export class PayrollEffect {
         price: a.price + (b.price || 0),
         total: a.total + b.total,
         duration: {
-          day: a.duration.day + ((unit === DatetimeUnitEnum.DAY || unit === DatetimeUnitEnum.MONTH)
+          day: a.duration.day + ((
+            unit === DatetimeUnitEnum.DAY
+            || unit === DatetimeUnitEnum.MONTH
+            || unit === DatetimeUnitEnum.TIMES )
             ? (b.partial === PartialDayEnum.ALL_DAY ?
                 b.duration
                 : (b.duration / 2)
