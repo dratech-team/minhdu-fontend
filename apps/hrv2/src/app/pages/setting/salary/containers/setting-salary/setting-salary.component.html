@@ -73,33 +73,29 @@
       </div>
     </div>
     <div>
+      <div><span class="font-weight-bold">Tổng cộng: </span> <span>{{total$|async}}</span></div>
       <nz-table
         #tableSetting
         *ngIf=" (settingSalaries$|async) as settingSalaries"
         nzShowPagination="false"
-        [nzScroll]="{ x: '2000px',y: '67vh'}"
+        [nzScroll]="{ x: '2500px',y: '65vh'}"
         nzSize='middle'
         [nzLoading]="loading$|async"
         [nzData]="settingSalaries"
+        [nzBordered]="true"
+        [nzOuterBordered]="true"
       >
         <thead>
         <tr>
           <th nzLeft nzWidth="60px">STT</th>
           <th nzLeft>Tên bản mẫu</th>
-          <th
-            nzLeft
-            nzWidth="200px"
-          >Đơn giá - Công thức lương
-          </th>
-          <th
-            nzWidth="100px"
-          >Đơn vị tính
-          </th>
+          <th nzLeft nzWidth="200px">Đơn giá - Công thức lương</th>
+          <th nzWidth="100px">Đơn vị tính</th>
+          <th nzWidth="200px">Ngày</th>
           <th nzWidth="100px">Hệ số</th>
           <th nzWidth="200px">Loại bản mẫu</th>
           <th>Đơn vị</th>
           <th>Chức vụ</th>
-          <th nzWidth="200px">Thời gian</th>
           <th>Ghi chú</th>
         </tr>
         </thead>
@@ -113,6 +109,16 @@
           <td nzLeft>{{settingSalary.title}}</td>
           <td nzLeft>{{ settingSalary | pricesettingsalary }}</td>
           <td>{{settingSalary.unit | transformconstant:datetimeConstant}}</td>
+          <td>
+            <div *ngIf="settingSalary.startedAt else notDate">
+              Từ {{settingSalary.startedAt|date:'dd-MM-yyyy'}}
+              <br>
+              đến {{settingSalary.endedAt|date:'dd-MM-yyyy'}}
+            </div>
+            <ng-template #notDate>
+              -
+            </ng-template>
+          </td>
           <td>{{settingSalary.rate}}</td>
           <td>{{settingSalary.type|blocksalary: blockSalaries }}</td>
           <td>
@@ -134,16 +140,6 @@
                 {{position.name}}
               </mat-chip>
             </mat-chip-list>
-          </td>
-          <td>
-            <div *ngIf="settingSalary.startedAt else notDate">
-              Từ {{settingSalary.startedAt|date:'dd-MM-yyyy'}}
-              <br>
-              đến {{settingSalary.endedAt|date:'dd-MM-yyyy'}}
-            </div>
-            <ng-template #notDate>
-              -
-            </ng-template>
           </td>
           <td>{{settingSalary.note }}</td>
         </tr>

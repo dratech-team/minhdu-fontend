@@ -65,10 +65,10 @@ export class ModalSettingSalaryComponent implements OnInit {
     if (template?.prices && template?.prices?.length > 1) {
       this.prices = [...template.prices]
     }
-    if(template?.branches){
+    if (template?.branches) {
       this.actions$.dispatch(BranchActions.loadAll({}))
     }
-    if(template?.positions){
+    if (template?.positions) {
       this.actions$.dispatch(PositionActions.loadAll({}))
     }
     this.formGroup = this.formBuilder.group({
@@ -91,7 +91,12 @@ export class ModalSettingSalaryComponent implements OnInit {
       positions: [template?.positions || []],
       hasConstraints: [this.data?.update ? template?.hasConstraints : true],
       rangeDay: [
-        [template?.startedAt || '', template?.endedAt || '']
+        this.data?.update
+          ?
+          (template?.startedAt
+            ? [template?.startedAt, template?.endedAt]
+            : [])
+          : [new Date(), new Date()]
       ],
     });
 
