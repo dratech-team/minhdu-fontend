@@ -169,10 +169,10 @@ export class SettingSalaryEffect {
 
   private sortBranchAndPosition(settingSalary: SalarySettingEntity): SalarySettingEntity {
     settingSalary.branches?.sort((a, b) => {
-      return CompareSortUtil(a.name, b.name, true)
+      return a.name.localeCompare(b.name)
     })
     settingSalary.positions?.sort((a, b) => {
-      return CompareSortUtil(a.name, b.name, true)
+      return a.name.localeCompare(b.name)
     })
     return settingSalary
   }
