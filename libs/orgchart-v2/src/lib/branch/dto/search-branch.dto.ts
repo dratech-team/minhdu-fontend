@@ -5,7 +5,8 @@ import {PositionEntity} from "@minhdu-fontend/orgchart-v2";
 export interface BaseSearchBranchDto extends BaseBranchEntity {
   orderBy?: string,
   orderType?: string,
-  position?: PositionEntity
+  position?: PositionEntity,
+  search?: string
 }
 
 export type SearchBranchDto = BaseSearchDto<BaseSearchBranchDto>
