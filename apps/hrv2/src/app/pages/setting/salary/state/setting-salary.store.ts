@@ -1,7 +1,6 @@
 import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
 import {Injectable} from '@angular/core';
 import {SalarySettingEntity, SettingSalaryVisibleEntity} from '../entities';
-import {BaseSearchSalarySettingDto} from "../dto";
 import {updateStateUiUtil} from "@minhdu-fontend/utils";
 import {StorageName} from "@minhdu-fontend/constants";
 import {BranchEntity, PositionEntity} from "@minhdu-fontend/orgchart-v2";

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { QueryEntity } from '@datorama/akita';
+import {Order, QueryConfig, QueryEntity} from '@datorama/akita';
 import { SettingSalaryState, SettingSalaryStore } from './setting-salary.store';
 
 @Injectable({ providedIn: 'root' })

@@ -20,6 +20,7 @@ import {
   PositionQuery
 } from "@minhdu-fontend/orgchart-v2";
 import * as moment from "moment";
+import {EmployeeTypeConstant} from "../../constants/employee-type.constant";
 
 @Component({
   templateUrl: 'modal-setting-salary.component.html'
@@ -36,7 +37,7 @@ export class ModalSettingSalaryComponent implements OnInit {
   salaryTypeEnum = SalaryTypeEnum
   priceType = PriceType
   dateTimeUnit = DatetimeUnitEnum
-
+  employeeConstant = EmployeeTypeConstant
 
   branchesSelected: Branch[] = [];
   constraint: SalaryTypeEnum[] = []
@@ -76,7 +77,7 @@ export class ModalSettingSalaryComponent implements OnInit {
         this.blockSalary.find(block => block.type === template?.type)
         , Validators.required],
       salaries: [template?.totalOf || []],
-      totalOf: [template ? this.salaryType.transform(template.totalOf, 'filter') : ''],
+      totalOf: [template ? this.salaryType.transform(template.totalOf, 'filter', template.type) : ''],
       unit: [template?.unit || DatetimeUnitEnum.MONTH],
       title: [template?.title, Validators.required],
       diveFor: [template?.workday ? DiveEnum.OTHER : DiveEnum.STANDARD],
@@ -100,6 +101,7 @@ export class ModalSettingSalaryComponent implements OnInit {
       ],
     });
 
+    console.log(this.formGroup.value.totalOf)
     this.formGroup.get('block')?.valueChanges.subscribe(item => {
       this.formGroup.get('reference')?.setValue('')
       this.formGroup.get('insurance')?.setValue(false)
@@ -187,6 +189,7 @@ export class ModalSettingSalaryComponent implements OnInit {
         value.block.type,
       rate: value.rate,
       unit: value.unit,
+      employeeType: value.employeeType,
       prices: value.prices ? this.prices.concat([value.prices]) : this.prices
     };
     if (value.block.type === SalaryTypeEnum.ABSENT

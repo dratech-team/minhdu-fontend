@@ -65,6 +65,10 @@ interface BlockSalary {
   hasConstraints?: {
     disabled?: boolean,
     show: boolean
+  },
+  employeeType?: {
+    disabled?: boolean,
+    show: boolean
   }
 }
 
@@ -87,6 +91,10 @@ export const blockSalariesConstant: BlockSalary[] = [
     price: {
       disabled: false,
       show: true
+    },
+    employeeType: {
+      disabled: false,
+      show: true
     }
   },
   {
@@ -101,6 +109,10 @@ export const blockSalariesConstant: BlockSalary[] = [
       show: true
     },
     price: {
+      disabled: false,
+      show: true
+    },
+    employeeType: {
       disabled: false,
       show: true
     }
@@ -125,6 +137,10 @@ export const blockSalariesConstant: BlockSalary[] = [
       show: true
     },
     price: {
+      disabled: false,
+      show: true
+    },
+    employeeType: {
       disabled: false,
       show: true
     }
@@ -154,6 +170,10 @@ export const blockSalariesConstant: BlockSalary[] = [
       show: true,
     },
     hasConstraints: {
+      disabled: false,
+      show: true
+    },
+    employeeType: {
       disabled: false,
       show: true
     }
@@ -187,5 +207,9 @@ export const blockSalariesConstant: BlockSalary[] = [
       disabled: false,
       show: true,
     },
+    employeeType: {
+      disabled: false,
+      show: true
+    }
   },
 ];

@@ -231,7 +231,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       ).toDate(),
       startTime: value.startTime ? new Date(value.startTime) : null,
       endTime: value.endTime ? new Date(value.endTime) : null,
-      settingId: value.template?.id
+      settingId: value.template?.id,
     };
 
     return Object.assign(salary,
@@ -249,7 +249,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
             title: value.titleAllowance
           }
         }
-        : {}
+        : {},
     );
   }
 
