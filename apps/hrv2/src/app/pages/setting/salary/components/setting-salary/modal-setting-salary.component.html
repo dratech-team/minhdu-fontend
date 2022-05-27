@@ -14,6 +14,22 @@
           <div>Chưa nhập tiêu đề</div>
         </div>
       </div>
+      <div class='mt-2' *ngIf='formGroup.value.block?.insurance?.show'>
+        <span class='font-weight-bold'>Trích bảo hiểm</span>
+        <label class='ml-2' nz-checkbox formControlName='insurance'></label>
+      </div>
+      <div class=' main-popup mt-2' *ngIf="formGroup.value.block?.employeeType?.show">
+        <div><span class='font-weight-bold'>Loại nhân viên</span><span class='star'>*</span></div>
+        <div>
+          <nz-select style="width: 100%" formControlName="employeeType">
+            <nz-option *ngFor="let item of employeeConstant" [nzValue]="item.value" [nzLabel]="item.name">
+            </nz-option>
+          </nz-select>
+        </div>
+        <div *ngIf='checkValid.employeeType.errors ' class='invalid-feedback'>
+          <div>Chưa chọn loại nhân viên</div>
+        </div>
+      </div>
       <div class="mt-2" *ngIf="formGroup.value.block?.branch?.show">
         <div class="font-weight-bold">Đơn vị</div>
         <nz-select style="width: 100%"
@@ -47,10 +63,6 @@
         </nz-select>
         <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn
         </ng-template>
-      </div>
-      <div class='mt-2' *ngIf='formGroup.value.block?.insurance?.show'>
-        <span class='font-weight-bold'>Trích bảo hiểm</span>
-        <label class='ml-2' nz-checkbox formControlName='insurance'></label>
       </div>
       <div class='d-flex mt-2' *ngIf='formGroup.value?.block?.rate'>
         <div>
@@ -99,7 +111,7 @@
       </div>
       <div class='mt-2' *ngIf='formGroup.value?.block?.rangeDay?.show'>
         <div>
-          <span>Chọn từ {{formGroup.value.block.rangeDay.type|transformNzDateMode:'name'}} đên {{formGroup.value.block.rangeDay.type|transformNzDateMode:'name'}}
+          <span>Chọn từ ngày đến ngày
           </span>
           <span class="star">*</span>
         </div>
@@ -223,7 +235,7 @@
           </div>
         </div>
         <div class='mt-2'
-             *ngIf='formGroup.value.totalOf?.diveFor'>
+             *ngIf='formGroup.value?.totalOf?.diveFor'>
           <div><span class='font-weight-bold'>Chia cho</span><span class='star'>*</span></div>
           <div class='d-flex'>
             <nz-radio-group formControlName='diveFor'>

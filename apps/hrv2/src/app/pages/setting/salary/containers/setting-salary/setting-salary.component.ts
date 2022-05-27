@@ -24,6 +24,9 @@ import {
 } from "@minhdu-fontend/orgchart-v2";
 import * as _ from 'lodash'
 import {UnitDatetimeConstant} from "../../constants/unit-datetime.constant";
+import {Sort} from "@minhdu-fontend/data-models";
+import {EmployeeActions} from "@minhdu-fontend/employee-v2";
+import {SortSettingSalaryEnum} from "../../enums/sort-setting-salary.enum";
 
 @Component({
   selector: 'minhdu-fontend-setting-salary',
@@ -44,11 +47,15 @@ export class SettingSalaryComponent implements OnInit {
     title: 'Lương trích bảo hiểm',
     type: SalaryTypeEnum.BASIC_INSURANCE
   }]);
-  datetimeConstant= UnitDatetimeConstant
+  datetimeConstant = UnitDatetimeConstant
   panelOpenState = false;
   visible = false;
   salaryTypeEnum = SalaryTypeEnum;
-
+  valueSort = {
+    orderBy: this.stateSearch?.orderBy,
+    orderType: this.stateSearch?.orderType
+  };
+  sortEnum = SortSettingSalaryEnum;
 
   formGroup = new FormGroup(
     {
@@ -97,9 +104,11 @@ export class SettingSalaryComponent implements OnInit {
 
   mapSettingSalary(dataFG: any, isPagination: boolean) {
     this.settingSalaryStore.update(state => ({
-      ...state, search: dataFG
+      ...state, search: Object.assign({}, dataFG, this.valueSort)
     }));
     return Object.assign({}, _.omit(dataFG, ['positions', 'branches']), {
+        orderBy: this.valueSort?.orderBy || '',
+        orderType: this.valueSort?.orderType || '',
         positionIds: dataFG.positions ? dataFG.positions?.map((position: PositionEntity) => position.id) : '',
         branchIds: dataFG.branches ? dataFG.branches?.map((branch: BranchEntity) => branch.id) : '',
         take: PaginationDto.take,
@@ -150,5 +159,10 @@ export class SettingSalaryComponent implements OnInit {
 
   onDevelopment() {
     this.message.info('Tính năng đang phát triển')
+  }
+
+  onSort(sort: Sort) {
+    this.valueSort = sort;
+    this.onLoad(false)
   }
 }

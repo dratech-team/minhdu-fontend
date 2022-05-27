@@ -7,13 +7,7 @@ import {of} from 'rxjs';
 import {PayrollActions} from './payroll.action';
 import {AddPayrollDto} from '../dto';
 import {Injectable} from '@angular/core';
-import {
-  AbsentSalaryEntity,
-  DayOffSalaryEntity,
-  OvertimeSalaryEntity,
-  RemoteSalaryEntity,
-  SalaryEntity
-} from '../../salary/entities';
+import {AbsentSalaryEntity, OvertimeSalaryEntity, SalaryEntity} from '../../salary/entities';
 import {PayrollEntity, TotalSalary} from '../entities';
 import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {PartialDayEnum} from '@minhdu-fontend/data-models';
@@ -319,7 +313,10 @@ export class PayrollEffect {
         price: a.price + (b.price || 0),
         total: a.total + b.total,
         duration: {
-          day: a.duration.day + ((unit === DatetimeUnitEnum.DAY || unit === DatetimeUnitEnum.MONTH)
+          day: a.duration.day + ((
+            unit === DatetimeUnitEnum.DAY
+            || unit === DatetimeUnitEnum.MONTH
+            || unit === DatetimeUnitEnum.TIMES )
             ? (b.partial === PartialDayEnum.ALL_DAY ?
                 b.duration
                 : (b.duration / 2)

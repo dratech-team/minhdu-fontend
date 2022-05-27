@@ -1,11 +1,11 @@
 import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
 import {Injectable} from '@angular/core';
 import {SalarySettingEntity, SettingSalaryVisibleEntity} from '../entities';
-import {BaseSearchSalarySettingDto} from "../dto";
 import {updateStateUiUtil} from "@minhdu-fontend/utils";
 import {StorageName} from "@minhdu-fontend/constants";
 import {BranchEntity, PositionEntity} from "@minhdu-fontend/orgchart-v2";
 import {SalaryTypeEnum} from "@minhdu-fontend/enums";
+import {NzTableSortOrder} from "ng-zorro-antd/table";
 
 export interface SettingSalaryState extends EntityState<SalarySettingEntity> {
   total: number;
@@ -17,7 +17,9 @@ export interface SettingSalaryState extends EntityState<SalarySettingEntity> {
     search: string,
     branches: BranchEntity[],
     positions: PositionEntity[],
-    types: SalaryTypeEnum[]
+    types: SalaryTypeEnum[],
+    orderBy: string;
+    orderType: NzTableSortOrder;
   };
   ui: SettingSalaryVisibleEntity;
 }

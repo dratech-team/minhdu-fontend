@@ -14,7 +14,6 @@ import {blockSalariesConstant} from "../../constants";
 import {SalarySetting} from "../../+state/teamlate-salary/salary-setting";
 import {recipesConstant, referencesTypeConstant} from "../../constants/references-type.constant";
 import {UnitSalaryConstant} from "../../constants/unit-salary.constant";
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   templateUrl: 'template-salary.component.html'
@@ -38,7 +37,6 @@ export class TemplateSalaryComponent implements OnInit {
     private readonly store: Store,
     private readonly message: NzMessageService,
     private readonly dialogRef: MatDialogRef<TemplateSalaryComponent>,
-    private readonly activeRouter: ActivatedRoute,
   ) {
   }
 

@@ -21,7 +21,12 @@ export const UnitDatetimeConstant: { name: string, value: DatetimeUnitEnum, sala
     name: 'Phút',
     value: DatetimeUnitEnum.MINUTE,
     salaryType: [SalaryTypeEnum.ABSENT]
-  }
+  },
+  {
+    name:'Lần',
+    value: DatetimeUnitEnum.TIMES,
+    salaryType: [SalaryTypeEnum.OVERTIME]
+  },
 ];
 
 
