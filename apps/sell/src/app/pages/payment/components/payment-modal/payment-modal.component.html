@@ -6,44 +6,64 @@
 <ng-template [ngIf]="indexStep  === 0">
   <form [formGroup]="formGroup" class='px-5' style='height: 30vh'>
     <div class='row mt-5'>
-      <div class='col-sm mt-2'>
+      <div class='col-sm'>
         <label class='font-weight-bold'>Loại thanh toán</label>
         <nz-select style="width: 100%" formControlName='payType'>
           <nz-option *ngFor="let item of payTypeConstant" [nzValue]="item.value" [nzLabel]="item.name">
           </nz-option>
         </nz-select>
+        <div *ngIf='checkValid.payType.errors?.required' class='invalid-feedback'>
+          <div>Chưa chọn loại thanh toán</div>
+        </div>
         <div>
         </div>
       </div>
       <div class='col-sm title-detail'>
-        <label id='total'> Tổng thanh toán<span class='star'>*</span></label>
-        <input type="text" class="form-control" id='input-total' placeholder="Nhập mức giá"
-               formControlName="paidTotal" required inputCurrency>
+        <label id='total' class="font-weight-bold"> Tổng thanh toán<span class='star'>*</span></label>
+        <input type="text"
+               nz-input
+               id='input-total'
+               placeholder="Nhập mức giá"
+               formControlName="paidTotal"
+               currencyMask
+               [options]="{ suffix: ' đ' }">
+        <div *ngIf='checkValid.paidTotal.errors?.required' class='invalid-feedback'>
+          <div>Chưa nhập tổng thanh toán</div>
+        </div>
       </div>
     </div>
     <div class='row mt-3'>
       <div class='col-sm'>
-        <label class='title-detail'>Ngày Thanh toán</label>
+        <label class='font-weight-bold'>Ngày Thanh toán</label>
         <div style="width: 100%">
-          <nz-date-picker style="width: 100%" nzMode="date" nzFormat="dd/MM/yyyy" formControlName='paidAt'></nz-date-picker>
+          <nz-date-picker style="width: 100%" nzMode="date" nzFormat="dd/MM/yyyy"
+                          formControlName='paidAt'></nz-date-picker>
+        </div>
+        <div *ngIf='checkValid.paidAt.errors?.required' class='invalid-feedback'>
+          <div>Chưa chọn ngày thanh toán</div>
         </div>
       </div>
       <div class='col-sm'>
-        <label>Chú thích</label>
-        <input type='text' class='form-control' formControlName='note' required>
+        <label class="font-weight-bold">Chú thích</label>
+        <input type='text' nz-input formControlName='note' required>
       </div>
     </div>
   </form>
 </ng-template>
 
 <ng-template [ngIf]="indexStep === 1">
-  <app-pick-order
-    [orderIdDefault]='data?.update?.payment?.order?.id'
+  <minhdu-fontend-pick-order
+    [formGroup]="formGroup"
+    [columns]="[
+       orderEnum.CREATED_AT,
+       orderEnum.TOTAL_COMMODITIES,
+       orderEnum.TOTAL_AMOUNT_COMMODITY,
+       orderEnum.PAYMENT,
+       orderEnum.AMOUNT_PAYMENT,
+       orderEnum.EXPLAIN,
+    ]"
     [pickOne]='true'
-    [payment]='true'
-    [customerId]='data?.add?.customer?.id || data.update?.payment?.customer?.id'
-    (checkEventPickOne)='pickOrders($event)'
-  ></app-pick-order>
+  ></minhdu-fontend-pick-order>
 </ng-template>
 
 <ng-template [ngIf]="indexStep === 2">
@@ -56,7 +76,10 @@
     </div>
     <div>
       <div class='mt-1'><span class='font-weight-bold'>Tổng thanh toán: </span>
-        <span> {{paidTotal|number:'1.0' | notEmpty:'0'}}</span>
+        <span> {{formGroup.value.paidTotal
+          | roundingnumber:100
+          |number:'1.0'
+          | notEmpty:'0'}}</span>
       </div>
     </div>
     <div>
@@ -71,7 +94,7 @@
     </div>
     <div class='h5 mt-2'>Đơn hàng</div>
     <nz-table class='mt-2' style="width:100%"
-              [nzData]="[orderPicked]"
+              [nzData]="[formGroup.value.order]"
               #tableOrder
               nzSize="small"
               nzShowPagination="false"
@@ -100,3 +123,19 @@
   </div>
 </ng-template>
 
+<div class="steps-action">
+  <button class="mr-2" nz-button nzType="default" (click)="move('previous')" *ngIf="indexStep > 0">
+    <span>Trở lại</span>
+  </button>
+  <button class="mr-2" nz-button nzType="primary" (click)="move('next')" *ngIf="indexStep < 2">
+    <span>Tiếp theo</span>
+  </button>
+  <button
+    class="mr-2" nz-button
+    nzType="primary"
+    (click)="onSubmit()"
+    [nzLoading]="(added$ | async) === false"
+    *ngIf="indexStep === 2">
+    <span>Xác nhận</span>
+  </button>
+</div>

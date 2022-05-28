@@ -1,9 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {PaymentType} from '@minhdu-fontend/enums';
+import {OrderEnum, PaymentType} from '@minhdu-fontend/enums';
 import {DatePipe} from '@angular/common';
 import {NzModalRef} from "ng-zorro-antd/modal";
-import {OrderEntity} from "../../../order/enitities/order.entity";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PaymentActions} from "../../payment";
 import {PaymentQuery} from "../../payment/payment.query";
@@ -11,6 +10,10 @@ import {ModalAddOrUpdatePayment} from "../../../customer/data/modal-payment.data
 import {BaseAddPaymentDto} from "../../dto/add-payment.dto";
 import {BaseUpdatePaymentDto} from "../../dto/update-payment.dto";
 import {PayTypeConstant} from "../../constants/pay-type.constant";
+import {OrderActions, OrderQuery} from "../../../order/+state";
+import {PaginationDto} from "@minhdu-fontend/constants";
+import {NzMessageService} from "ng-zorro-antd/message";
+import {values} from "lodash";
 
 @Component({
   templateUrl: 'payment-modal.component.html'
@@ -18,36 +21,33 @@ import {PayTypeConstant} from "../../constants/pay-type.constant";
 
 export class PaymentModalComponent implements OnInit {
   @Input() data!: ModalAddOrUpdatePayment
+  added$ = this.paymentQuery.select(state => state.added)
 
   payTypeConstant = PayTypeConstant.filter(item => item.value !== PaymentType.ALL)
-  orderPicked!: OrderEntity;
   formGroup!: FormGroup;
-  paidTotal!: number;
   indexStep = 0;
-  added$ = this.paymentQuery.select(state => state.added)
+  orderEnum = OrderEnum
 
   constructor(
     public datePipe: DatePipe,
     public modalRef: NzModalRef,
     private readonly actions$: Actions,
     private readonly formBuilder: FormBuilder,
-    private readonly paymentQuery: PaymentQuery
-    ,
+    private readonly paymentQuery: PaymentQuery,
+    private readonly orderQuery: OrderQuery,
+    private readonly message: NzMessageService,
   ) {
   }
 
   ngOnInit() {
     const paymentHistory = this.data?.update?.payment
     this.formGroup = this.formBuilder.group({
-      payType: [paymentHistory?.payType, Validators.required],
+      payType: [paymentHistory?.payType || PaymentType.CASH, Validators.required],
       paidTotal: [paymentHistory?.total, Validators.required],
-      paidAt: [paymentHistory?.paidAt, Validators.required],
-      note: [paymentHistory?.note, Validators.required],
-      customerId: [this.data.add?.customer.id || paymentHistory?.customer.id, Validators.required]
+      paidAt: [paymentHistory?.paidAt || new Date(), Validators.required],
+      note: [paymentHistory?.note],
+      order:[paymentHistory?.order],
     });
-    if (paymentHistory) {
-      this.pickOrders(paymentHistory.order)
-    }
   }
 
   onSubmit() {
@@ -65,13 +65,20 @@ export class PaymentModalComponent implements OnInit {
 
     this.added$.subscribe(val => {
       if (val) {
-        this.modalRef.close()
+        this.modalRef.close(true)
       }
     })
   }
 
-  pickOrders($event: OrderEntity) {
-    this.orderPicked = $event;
+  get checkValid() {
+    return this.formGroup.controls;
+  }
+
+  move(type: 'next' | 'previous'): any {
+    if(type === "next" && this.indexStep === 1 && !this.formGroup.value.order){
+      return this.message.error('Chưa chọn đơn hàng')
+    }
+    type === "next" ? this.indexStep += 1 : this.indexStep -= 1
   }
 
   private mapPayment(val: any): BaseAddPaymentDto | BaseUpdatePaymentDto {
@@ -79,10 +86,11 @@ export class PaymentModalComponent implements OnInit {
       payType: val.payType ? val.payType : undefined,
       total: val.paidTotal,
       paidAt: val.paidAt,
-      orderId: this.orderPicked.id,
+      orderId: val.order.id,
       note: val.note,
-      customerId: val.customerId
+      customerId: this.data.update
+        ? this.data.update.payment.customerId
+        : this.data.add.customer.id
     }
   }
-
 }

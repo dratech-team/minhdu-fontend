@@ -7,10 +7,9 @@ import {CustomerService} from '../service';
 import {CustomerQuery} from './customer.query';
 import {CustomerStore} from './customer.store';
 import {OrderService} from '../../order/service';
-import {AddCustomerDto} from '../dto';
+import {AddCustomerDto, SearchCustomerDto} from '../dto';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {SearchCustomerDto} from '../dto';
 
 @Injectable()
 export class CustomerEffect {
@@ -21,7 +20,7 @@ export class CustomerEffect {
     private readonly customerService: CustomerService,
     private readonly message: NzMessageService,
     private readonly snackbar: MatSnackBar,
-    private readonly orderService: OrderService
+    private readonly orderService: OrderService,
   ) {
   }
 

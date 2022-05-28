@@ -3,22 +3,20 @@ import {RouteEntity} from '../../entities';
 import {MatDialog} from '@angular/material/dialog';
 import {RouteDialogComponent} from '../../component';
 import {ActivatedRoute, Router} from '@angular/router';
-import {RouteActions} from '../../+state';
+import {RouteActions, RouteQuery} from '../../+state';
 import {PaymentType} from '@minhdu-fontend/enums';
-import {
-  DialogDatePickerComponent
-} from '../../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import {
   DialogSharedComponent
 } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
 import {Actions} from '@datorama/akita-ng-effects';
-import {RouteQuery} from '../../+state';
 import {CancelEnum} from '../../enums';
 import {CommodityEntity} from '../../../commodity/entities';
 import {OrderActions} from '../../../order/+state';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {UpdateTypeEnum} from "../../enums/update-type.enum";
 import {OrderEntity} from "../../../order/enitities/order.entity";
+import {ModalDatePickerComponent} from "@minhdu-fontend/components";
+import {ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
 
 @Component({
   templateUrl: 'detail-route.component.html'
@@ -63,10 +61,10 @@ export class DetailRouteComponent implements OnInit {
       nzWidth: 'fit-content',
       nzTitle: 'Cập nhật tuyến đường',
       nzContent: RouteDialogComponent,
-      nzComponentParams: {
+      nzComponentParams: <{ data?: any }>{
         data: {route: route, updateType: updateType, isUpdate: true}
       },
-      nzFooter: null
+      nzFooter: []
     });
   }
 
@@ -79,91 +77,84 @@ export class DetailRouteComponent implements OnInit {
   }
 
   completeRoute(route: RouteEntity) {
-    this.dialog.open(DialogDatePickerComponent, {
-      width: 'fit-content',
-      data: {
-        titlePopup: 'Hoàn tất tuyến đường',
-        title: 'Ngày hoàn tất',
-        dayInit: route.endedAt
-      }
-    }).afterClosed()
-      .subscribe(val => {
-        if (val) {
-          this.actions$.dispatch(
-            RouteActions.update({updates: {endedAt: val.day}, id: route.id})
-          );
+    this.modal.create({
+      nzTitle: 'Hoàn tất tuyến đường',
+      nzContent: ModalDatePickerComponent,
+      nzComponentParams: <{ data: ModalDatePickerEntity }>{
+        data: {
+          type: 'date',
+          dateInit: route.endedAt
         }
-      });
+      },
+      nzFooter: []
+    }).afterClose.subscribe(val => {
+      if (val) {
+        this.actions$.dispatch(
+          RouteActions.update({updates: {endedAt: new Date(val)}, id: route.id})
+        );
+      }
+    })
   }
 
   cancelCommodity(commodity: CommodityEntity) {
-    this.dialog.open(DialogSharedComponent, {
-      width: 'fit-content',
-      data: {
-        title: 'Huỷ hàng hoá trong tuyến đường',
-        description: `Bạn có chắc chắn Huỷ ${commodity.name}`
+    this.modal.warning({
+      nzTitle: 'Huỷ hàng hoá trong tuyến đường',
+      nzContent: `Bạn có chắc chắn Huỷ ${commodity.name}`,
+      nzOkDanger: true,
+      nzOnOk: () => {
+        this.actions$.dispatch(RouteActions.cancel({
+          id: this.route.id,
+          cancelDTO: {desId: commodity.id, cancelType: CancelEnum.COMMODITY}
+        }));
       }
-    }).afterClosed()
-      .subscribe(val => {
-        if (val) {
-          this.actions$.dispatch(RouteActions.cancel({
-            id: this.route.id,
-            cancelDTO: {desId: commodity.id, cancelType: CancelEnum.COMMODITY}
-          }));
-        }
-      });
+    })
   }
 
   cancelOrder(order: OrderEntity) {
-    this.dialog.open(DialogSharedComponent, {
-      width: 'fit-content',
-      data: {
-        title: 'Huỷ đơn hàng trong tuyến đường',
-        description: 'Bạn có chắc chắn uỷ đơn hàng này'
+    this.modal.warning({
+      nzTitle: 'Huỷ đơn hàng trong tuyến đường',
+      nzContent: 'Bạn có chắc chắn uỷ đơn hàng này',
+      nzOkDanger: true,
+      nzOnOk: () => {
+        this.actions$.dispatch(RouteActions.cancel({
+          id: this.route.id,
+          cancelDTO: {desId: order.id, cancelType: CancelEnum.ORDER}
+        }));
       }
-    }).afterClosed()
-      .subscribe(val => {
-        if (val) {
-          this.actions$.dispatch(RouteActions.cancel({
-            id: this.route.id,
-            cancelDTO: {desId: order.id, cancelType: CancelEnum.ORDER}
-          }));
-        }
-      });
+    })
   }
 
   addCommodityInRoute(commodity: CommodityEntity) {
-    this.dialog.open(DialogSharedComponent, {
-      width: 'fit-content',
-      data: {
-        title: 'Thêm hàng hoá cho tuyến đương',
-        description: `Bạn có muốn thêm ${commodity.name} cho tuyến đường ${this.route.name} `
+    this.modal.info({
+      nzTitle: 'Thêm hàng hoá cho tuyến đường',
+      nzContent: `Bạn có muốn thêm ${commodity.name} cho tuyến đường ${this.route.name} `,
+      nzOnOk: () => {
+        this.actions$.dispatch(RouteActions.update({id: this.route.id, updates: {commodityIds: [commodity.id]}}));
       }
-    }).afterClosed()
-      .subscribe(val => {
-        if (val) {
-          this.actions$.dispatch(RouteActions.update({id: this.route.id, updates: {commodityIds: [commodity.id]}}));
-        }
-      });
+    })
   }
 
   updateOrder(order: OrderEntity) {
-    this.dialog.open(DialogDatePickerComponent, {
-      width: 'fit-content',
-      data: {
-        titlePopup: 'Xác nhận giao hàng',
-        title: 'Ngày giao hàng'
-      }
-    }).afterClosed().subscribe(val => {
+    this.modal.create({
+      nzTitle: 'Xác nhận giao hàng',
+      nzContent: ModalDatePickerComponent,
+      nzComponentParams: <{ data: ModalDatePickerEntity }>{
+        data: {
+          type: 'date',
+          dateInit: new Date()
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe(val => {
       if (val) {
         this.actions$.dispatch(OrderActions.update({
           id: order.id,
           updates: {
-            deliveredAt: val.day
+            deliveredAt: new Date(val)
           },
           inRoute: {routeId: this.routeId}
         }));
       }
-    });
+    })
   }
 }

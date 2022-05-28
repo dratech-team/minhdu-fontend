@@ -11,6 +11,7 @@ import {PaymentStore} from "../../payment/payment.store";
 import {PaymentEntity} from "../../entities/payment.entity";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {DatePipe} from "@angular/common";
+import {ModalAddOrUpdatePayment} from "../../../customer/data/modal-payment.data";
 
 @Component({
   selector: 'minhdu-fontend-table-payment',
@@ -21,6 +22,7 @@ export class TablePaymentComponent implements OnInit {
   @Input() customerId!: number;
 
   paymentHistories$ = this.paymentQuery.selectAll()
+  deleted$ = this.paymentQuery.select(state => state.deleted)
 
   pageSizeTable = 10
   pageTypeEnum = ItemContextMenu;
@@ -75,30 +77,38 @@ export class TablePaymentComponent implements OnInit {
     return Object.assign({}, value, {customerId: this.customerId})
   }
 
-  deletePayment(payment: PaymentEntity) {
+  onDelete(payment: PaymentEntity) {
     this.modal.warning({
       nzTitle: 'Xoá lịch sử thanh toán',
       nzContent: `bạn có chắc chắn xoá lịch sử thanh toán ngày ${
-        this.datePipe.transform(payment.createdAt, 'dd/MM/yyyy')
+        this.datePipe.transform(payment.paidAt, 'dd/MM/yyyy')
       } không`,
       nzOkDanger: true,
       nzOnOk: () => {
         this.actions$.dispatch(PaymentActions.remove({
-          id: payment.id
+          id: payment.id,
+          customerId:payment.customerId,
+          paidTotal: payment.total
         }))
+        this.deleted$.subscribe(val => {
+          if(val){
+            this.onLoad(false)
+          }
+        })
       }
     })
   }
 
-  updatePayment(payment: PaymentEntity) {
+  onUpdate(payment: PaymentEntity) {
     this.modal.create({
+      nzWidth:'70vw',
       nzTitle: 'Cập nhật thanh toán',
       nzContent: PaymentModalComponent,
-      nzComponentParams: <{ data: any }>{
+      nzComponentParams: <{ data: ModalAddOrUpdatePayment }>{
         data: {
-          isUpdate: true,
-          payment,
-          id: this.customerId
+          update: {
+            payment: payment
+          }
         }
       },
       nzFooter: []

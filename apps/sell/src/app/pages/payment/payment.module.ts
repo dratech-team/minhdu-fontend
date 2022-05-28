@@ -10,6 +10,9 @@ import {NzStepsModule} from "ng-zorro-antd/steps";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 import {SharedModule} from "../../shared/shared.module";
+import {NzButtonModule} from "ng-zorro-antd/button";
+import {NgxCurrencyModule} from "ngx-currency";
+import {AuthModule} from "@minhdu-fontend/auth";
 
 @NgModule({
   imports: [
@@ -21,7 +24,10 @@ import {SharedModule} from "../../shared/shared.module";
     NzSelectModule,
     NzDatePickerModule,
     SharedModule,
-    ComponentsModule
+    ComponentsModule,
+    NzButtonModule,
+    NgxCurrencyModule,
+    AuthModule,
   ],
   exports: [
     TablePaymentComponent

@@ -71,7 +71,6 @@ export class CommodityTemplateEffect {
           if (props.isPaginate) {
             this.store.add(res.data);
           } else {
-            console.log(res)
             this.store.set(res.data);
           }
         }),

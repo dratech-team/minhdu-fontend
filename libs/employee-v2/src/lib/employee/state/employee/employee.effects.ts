@@ -387,7 +387,6 @@ export class EmployeeEffect {
   removeWorkHistory$ = this.actions$.pipe(
     ofType(EmployeeActions.removeWorkHistory),
     switchMap((props) => {
-      console.log('ssss')
         return this.employeeService.deleteWorkHistory(props.id).pipe(
           map((res) => {
             this.message.info('Xoá lịch sử công tác thành công');

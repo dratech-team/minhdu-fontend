@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {RouteActions} from '../../../route/+state/routeActions';
+import {RouteActions} from '../../../route/+state/route.Actions';
 import {Actions} from '@datorama/akita-ng-effects';
 import {RouteQuery} from '../../../route/+state/route.query';
 

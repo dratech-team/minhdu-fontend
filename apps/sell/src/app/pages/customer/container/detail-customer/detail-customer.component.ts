@@ -104,7 +104,10 @@ export class DetailCustomerComponent implements OnInit {
         }
       },
       nzFooter: [],
-
+    }).afterClose.subscribe(val => {
+      if(val){
+        this.actions$.dispatch(CustomerActions.loadOne({id: this.getId}));
+      }
     })
   }
 

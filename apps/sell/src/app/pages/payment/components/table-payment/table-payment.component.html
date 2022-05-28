@@ -32,7 +32,7 @@
     </thead>
     <tbody>
     <ng-template ngFor let-paymentHistory [ngForOf]="tablePaymentHistory.data">
-      <tr class='pointer' (click)='updatePayment(paymentHistory)'
+      <tr class='pointer' (click)='onUpdate(paymentHistory)'
           (contextmenu)='child.onContextMenu($event,paymentHistory)'>
         <td>
           {{paymentHistory?.paidAt | date: 'dd/MM/yyyy'}}
@@ -57,6 +57,9 @@
     </tbody>
   </nz-table>
 </div>
-<app-mouse-right (onDel)='deletePayment($event.id)' (onDetail)='updatePayment($event)' #child
-                 [items]='[pageTypeEnum.PERMANENTLY]'>
+<app-mouse-right
+  #child
+  (onDelPerm)="onDelete($event)"
+  (onUpdate)='onUpdate($event)'
+  [items]='[pageTypeEnum.PERMANENTLY]'>
 </app-mouse-right>

@@ -31,10 +31,8 @@ export class TransformNzDateModePipe implements PipeTransform {
 
   transform(mode: NzDateMode, type: 'name' | 'format'): any {
     return this.nzDateModeConstant.find((item: any) => {
-      return type === 'name'
-        ? item.value === mode
-        : item.format === mode
-    })?.name;
+      return item.value === mode
+    })?.[type] ;
   }
 }
 

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {RouteActions} from '../../../pages/route/+state/routeActions';
+import {RouteActions} from '../../../pages/route/+state/route.Actions';
 import {Actions} from '@datorama/akita-ng-effects';
 import {RouteQuery} from '../../../pages/route/+state/route.query';
 

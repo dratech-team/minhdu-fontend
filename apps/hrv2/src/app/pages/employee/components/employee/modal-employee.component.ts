@@ -70,7 +70,6 @@ export class ModalEmployeeComponent implements OnInit {
     this.actions$.dispatch(DepartmentActions.loadAll({}))
     this.lstPosition = this.data?.update?.employee?.branch?.positions || [];
     const employeeInit = this.data?.add?.employee || this.data?.update?.employee;
-    console.log(employeeInit)
     this.formGroup = this.formBuilder.group({
       identify: [employeeInit?.identify],
       issuedBy: [employeeInit?.issuedBy],

@@ -1,29 +1,29 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {RouteActions} from '../../+state/routeActions';
+import {RouteActions, RouteQuery, RouteStore} from '../../+state';
 import {DatePipe} from '@angular/common';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
 import {Actions} from "@datorama/akita-ng-effects";
-import {RouteQuery} from "../../+state/route.query";
 import {NzModalRef} from "ng-zorro-antd/modal";
-import {RouteStore} from "../../+state/route.store";
 import {UpdateTypeEnum} from "../../enums/update-type.enum";
+import {OrderEnum} from "@minhdu-fontend/enums";
 import {OrderEntity} from "../../../order/enitities/order.entity";
+import {CommodityEntity} from "../../../commodity/entities";
 
 @Component({
   templateUrl: 'route-dialog.component.html',
 })
 export class RouteDialogComponent implements OnInit {
   @Input() data?: any
-  formGroup!: FormGroup;
+  added$ = this.routeQuery.select(state => state.added)
+
+  orderEnum = OrderEnum
   submitted = false;
-  orderIdsOfRoute: OrderEntity[] = [];
-  commoditySelected: CommodityEntity[] = []
   isSelectAll = false;
   stepIndex = 0;
-  added$ = this.routeQuery.select(state => state.added)
   updateTypeEnum = UpdateTypeEnum
+  formGroup!: FormGroup;
+
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly actions$: Actions,
@@ -31,7 +31,7 @@ export class RouteDialogComponent implements OnInit {
     private readonly routeStore: RouteStore,
     private readonly datePipe: DatePipe,
     private readonly modalRef: NzModalRef,
-    private readonly snackbar: MatSnackBar
+    private readonly snackbar: MatSnackBar,
   ) {
   }
 
@@ -40,11 +40,8 @@ export class RouteDialogComponent implements OnInit {
       ...state, added: null
     }))
 
-    if (this.data?.isUpdate) {
-      if(this.data?.updateType === UpdateTypeEnum.ORDER){
-        this.stepIndex = 1
-      }
-      this.orderIdsOfRoute = [...this.data.route.orders]
+    if (this.data?.updateType === UpdateTypeEnum.ORDER) {
+      this.stepIndex = 1
     }
 
     this.formGroup = this.formBuilder.group({
@@ -59,15 +56,9 @@ export class RouteDialogComponent implements OnInit {
       bsx: [this.data?.route?.bsx, Validators.required],
       driver: [this.data?.route?.driver, Validators.required],
       garage: [this.data?.route?.garage],
+      orders: [this.data?.route?.orders],
+      commodities: [[]],
     });
-  }
-
-  pickOrders(orders: OrderEntity[]) {
-    this.orderIdsOfRoute = [...orders];
-  }
-
-  pickCommodity(commodities: CommodityEntity[]) {
-    this.commoditySelected = [...commodities];
   }
 
   get f() {
@@ -75,7 +66,7 @@ export class RouteDialogComponent implements OnInit {
   }
 
   onSubmit(): any {
-    if (this.orderIdsOfRoute.length === 0) {
+    if (this.formGroup.value.orders.length === 0) {
       return this.snackbar.open('Chưa chọn đơn hàng', '', {duration: 1500});
     }
     const val = this.formGroup.value;
@@ -86,8 +77,8 @@ export class RouteDialogComponent implements OnInit {
       endedAt: val.endedAt,
       driver: val.driver,
       garage: val.garage,
-      orderIds: this.orderIdsOfRoute.map((item) => item.id),
-      commodityIds: this.commoditySelected.map((item) => item.id),
+      orderIds: val.orders.map((item: OrderEntity) => item.id),
+      commodityIds: val.commodities?.map((item: CommodityEntity) => item.id),
     };
     if (this.data) {
       this.actions$.dispatch(

@@ -101,7 +101,6 @@ export class ModalSettingSalaryComponent implements OnInit {
       ],
     });
 
-    console.log(this.formGroup.value.totalOf)
     this.formGroup.get('block')?.valueChanges.subscribe(item => {
       this.formGroup.get('reference')?.setValue('')
       this.formGroup.get('insurance')?.setValue(false)

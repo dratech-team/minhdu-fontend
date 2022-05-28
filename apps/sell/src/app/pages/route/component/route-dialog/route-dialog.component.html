@@ -96,10 +96,18 @@
     </ng-template>
     <ng-template [ngIf]="(stepIndex === 1 && data?.updateType !== updateTypeEnum.INFO)">
       <div class="pt-2" style="max-width: 80vw">
-        <app-pick-order [orderSelected]='orderIdsOfRoute'
-                        (checkCommodityEvent)="pickCommodity($event)"
-                        [commoditiesSelected]="commoditySelected"
-                        (checkEvent)='pickOrders($event)'></app-pick-order>
+        <minhdu-fontend-pick-order
+          [formGroup]="formGroup"
+          [columns]="[
+          orderEnum.CUSTOMER,
+          orderEnum.CREATED_AT,
+          orderEnum.TOTAL_COMMODITIES,
+          orderEnum.TOTAL_AMOUNT_COMMODITY,
+          orderEnum.PAYMENT,
+          orderEnum.AMOUNT_PAYMENT,
+          ]"
+          >
+        </minhdu-fontend-pick-order>
       </div>
     </ng-template>
   </form>

@@ -10,6 +10,9 @@ import {PaymentStore} from "./payment.store";
 import {SearchPaymentDto} from "../dto/search-payment.dto";
 import {RemovePaymentDto} from "../dto/remove-payment.dto";
 import {PaginationDto} from "@minhdu-fontend/constants";
+import {CustomerActions, CustomerStore} from "../../customer/+state";
+import {UpdatePaymentDto} from "../dto/update-payment.dto";
+import {PaymentEntity} from "../entities/payment.entity";
 
 @Injectable()
 export class PaymentEffect {
@@ -19,6 +22,7 @@ export class PaymentEffect {
     private readonly paymentService: PaymentService,
     private readonly paymentQuery: PaymentQuery,
     private readonly paymentStore: PaymentStore,
+    private readonly customerStore: CustomerStore,
   ) {
   }
 
@@ -88,7 +92,7 @@ export class PaymentEffect {
   @Effect()
   update$ = this.action$.pipe(
     ofType(PaymentActions.update),
-    switchMap((props) => {
+    switchMap((props: UpdatePaymentDto) => {
       this.paymentStore.update(state => ({
         ...state, added: false
       }));
@@ -99,6 +103,7 @@ export class PaymentEffect {
               ...state, added: true
             }));
             this.paymentStore.update(res.id, res);
+            this.action$.dispatch(CustomerActions.loadOne({id: res.customerId}))
           }
         ),
         catchError(err => {
@@ -122,6 +127,12 @@ export class PaymentEffect {
       return this.paymentService.delete(props.id).pipe(
         tap((_) => {
             this.message.success('Xoá lịch sử thành toán thành công')
+            this.customerStore.update(props.customerId, entity => {
+              return {
+                ...entity,
+                debt: entity.debt ? entity.debt - props.paidTotal : -props.paidTotal
+              }
+            });
             this.paymentStore.update(state => ({
               ...state, deleted: true
             }));

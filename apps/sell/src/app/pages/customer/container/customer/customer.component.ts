@@ -3,7 +3,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, GenderTypeConstant} from '@minhdu-fontend/constants';
-import {CustomerType, ItemContextMenu, SortCustomerEnum} from '@minhdu-fontend/enums';
+import {CustomerEnum, CustomerType, ItemContextMenu} from '@minhdu-fontend/enums';
 import {ExportService} from '@minhdu-fontend/service';
 import {ModalExportExcelComponent, ModalExportExcelData} from '@minhdu-fontend/components';
 import {debounceTime, map, tap} from 'rxjs/operators';
@@ -34,7 +34,7 @@ export class CustomerComponent implements OnInit {
   customerType = CustomerType;
   ItemContextMenu = ItemContextMenu;
   orders?: OrderEntity;
-  sortCustomerEnum = SortCustomerEnum;
+  sortCustomerEnum = CustomerEnum;
   radiosGender = RadiosStatusRouteConstant;
   potentialsConstant = PotentialsConstant;
   resourcesConstant = ResourcesConstant;

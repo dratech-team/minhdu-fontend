@@ -29,8 +29,8 @@ export * from './sell/overview.enum';
 export * from './sell/status-route';
 export * from './sell/page-type.enum';
 export * from './sell/sort-route.enum';
-export * from './sell/sort-order.enum';
-export * from './sell/sort-customer.enum';
+export * from './sell/order.enum';
+export * from './sell/customer.enum';
 
 // modal-department
 export * from './warehouse/medicine/medicine-unit.enum';
