@@ -4,11 +4,11 @@ import {Router} from '@angular/router';
 import {debounceTime, tap} from 'rxjs/operators';
 import {ItemContextMenu, PaymentType} from '@minhdu-fontend/enums';
 import {PaymentModalComponent} from '../payment-modal/payment-modal.component';
-import {PaymentQuery} from "../../../payment/payment/payment.query";
+import {PaymentQuery} from "../../payment/payment.query";
 import {Actions} from "@datorama/akita-ng-effects";
-import {PaymentActions} from "../../../payment/payment";
-import {PaymentStore} from "../../../payment/payment/payment.store";
-import {PaymentEntity} from "../../../payment/entities/payment.entity";
+import {PaymentActions} from "../../payment";
+import {PaymentStore} from "../../payment/payment.store";
+import {PaymentEntity} from "../../entities/payment.entity";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {DatePipe} from "@angular/common";
 

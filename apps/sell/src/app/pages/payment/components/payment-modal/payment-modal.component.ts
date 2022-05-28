@@ -5,11 +5,12 @@ import {DatePipe} from '@angular/common';
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {OrderEntity} from "../../../order/enitities/order.entity";
 import {Actions} from "@datorama/akita-ng-effects";
-import {PaymentActions} from "../../../payment/payment";
-import {PaymentQuery} from "../../../payment/payment/payment.query";
-import {ModalAddOrUpdatePayment} from "../../data/modal-payment.data";
-import {BaseAddPaymentDto} from "../../../payment/dto/add-payment.dto";
-import {BaseUpdatePaymentDto} from "../../../payment/dto/update-payment.dto";
+import {PaymentActions} from "../../payment";
+import {PaymentQuery} from "../../payment/payment.query";
+import {ModalAddOrUpdatePayment} from "../../../customer/data/modal-payment.data";
+import {BaseAddPaymentDto} from "../../dto/add-payment.dto";
+import {BaseUpdatePaymentDto} from "../../dto/update-payment.dto";
+import {PayTypeConstant} from "../../constants/pay-type.constant";
 
 @Component({
   templateUrl: 'payment-modal.component.html'
@@ -17,10 +18,10 @@ import {BaseUpdatePaymentDto} from "../../../payment/dto/update-payment.dto";
 
 export class PaymentModalComponent implements OnInit {
   @Input() data!: ModalAddOrUpdatePayment
+
+  payTypeConstant = PayTypeConstant.filter(item => item.value !== PaymentType.ALL)
   orderPicked!: OrderEntity;
-  payType = PaymentType;
   formGroup!: FormGroup;
-  secondFormGroup!: FormGroup;
   paidTotal!: number;
   indexStep = 0;
   added$ = this.paymentQuery.select(state => state.added)
@@ -71,15 +72,6 @@ export class PaymentModalComponent implements OnInit {
 
   pickOrders($event: OrderEntity) {
     this.orderPicked = $event;
-    if (this.orderPicked) {
-      this.secondFormGroup = this.formBuilder.group({
-        pick: [true, Validators.required]
-      });
-    } else {
-      this.secondFormGroup = this.formBuilder.group({
-        pick: ['', Validators.required]
-      });
-    }
   }
 
   private mapPayment(val: any): BaseAddPaymentDto | BaseUpdatePaymentDto {

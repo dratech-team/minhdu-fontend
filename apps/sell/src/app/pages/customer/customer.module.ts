@@ -13,12 +13,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {MatRadioModule} from '@angular/material/radio';
-import {
-  CustomerModalComponent,
-  PaymentModalComponent,
-  TablePaymentComponent,
-  VisibleCustomerComponent
-} from './component';
+import {CustomerModalComponent, VisibleCustomerComponent} from './component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatStepperModule} from '@angular/material/stepper';
 import {SharedModule} from '../../shared/shared.module';
@@ -45,6 +40,7 @@ import {NzSelectModule} from "ng-zorro-antd/select";
 import {NzStepsModule} from "ng-zorro-antd/steps";
 import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 import {PaymentEffect} from "../payment/payment";
+import {PaymentModule} from "../payment/payment.module";
 
 @NgModule({
   imports: [
@@ -86,14 +82,14 @@ import {PaymentEffect} from "../payment/payment";
     EmployeeModule,
     NzSelectModule,
     NzStepsModule,
-    NzDatePickerModule
+    NzDatePickerModule,
+    PaymentModule
+
   ],
   declarations: [
-    TablePaymentComponent,
     CustomerComponent,
     DetailCustomerComponent,
     CustomerModalComponent,
-    PaymentModalComponent,
     VisibleCustomerComponent
   ],
   providers: [
