@@ -169,7 +169,7 @@ export class OrderEffect {
     switchMap((props) =>
       this.orderService.updateHide(props.id, props.hide).pipe(
         map((res) => {
-          this.message.success('Ẩn đơn hàng thành công')
+          this.message.success('Cập nhật thành công')
           this.orderStore.update(res.id, res);
         }),
         catchError((err) => of(OrderActions.error(err)))
