@@ -10,12 +10,12 @@ import {ConvertBoolean} from '@minhdu-fontend/enums';
 import {
   DialogSharedComponent
 } from '../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import {
-  DialogDatePickerComponent
-} from '../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import {Actions} from "@datorama/akita-ng-effects";
-import {CustomerActions} from "../../../pages/customer/+state/customer.actions";
+import {CustomerActions} from "../../../pages/customer/+state";
 import {Observable} from "rxjs";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {ModalDatePickerComponent} from "@minhdu-fontend/components";
+import {ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
 
 @Component({
   selector: 'app-table-order',
@@ -44,6 +44,7 @@ export class TableOrdersComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly router: Router,
     private readonly dialog: MatDialog,
+    private readonly modal: NzModalService,
   ) {
   }
 
@@ -129,21 +130,25 @@ export class TableOrdersComponent implements OnInit {
   }
 
   confirmOrder(order: OrderEntity) {
-    this.dialog.open(DialogDatePickerComponent, {
-      width: 'fit-content',
-      data: {
-        titlePopup: 'Xác nhận giao hàng',
-        title: 'Ngày giao hàng'
-      }
-    }).afterClosed().subscribe(val => {
+    this.modal.create({
+      nzTitle: 'Xác nhận Giao hàng',
+      nzContent: ModalDatePickerComponent,
+      nzComponentParams: <{ data: ModalDatePickerEntity }>{
+        data: {
+          type: 'date',
+          dateInit: new Date()
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe(val => {
       if (val) {
         this.actions$.dispatch(OrderActions.update({
           id: order.id,
           updates: {
-            deliveredAt: val.day,
-          }
+            deliveredAt: new Date(val),
+          },
         }));
       }
-    });
+    })
   }
 }

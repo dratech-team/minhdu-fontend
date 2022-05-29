@@ -18,6 +18,7 @@ import {OrderActions} from '../../../order/+state';
 import * as _ from 'lodash';
 import {OrderEntity} from '../../../order/enitities/order.entity';
 import {CustomerEntity} from "../../entities";
+import {ModalAddOrUpdatePayment} from "../../data/modal-payment.data";
 
 @Component({
   templateUrl: 'customer.component.html'
@@ -130,11 +131,24 @@ export class CustomerComponent implements OnInit {
     })
   }
 
-  payment($event: any) {
-    this.dialog.open(PaymentModalComponent, {
-      width: '55%',
-      data: { id: $event.id }
-    });
+  onPayment(customer: CustomerEntity) {
+    this.modal.create({
+      nzWidth: '70vw',
+      nzTitle: 'Thanh toán',
+      nzContent: PaymentModalComponent,
+      nzComponentParams: <{ data: ModalAddOrUpdatePayment }>{
+        data: {
+          add: {
+            customer: customer
+          }
+        }
+      },
+      nzFooter: [],
+    }).afterClose.subscribe(val => {
+      if(val){
+        this.actions$.dispatch(CustomerActions.loadOne({id: customer.id}));
+      }
+    })
   }
 
   printCustomer() {
