@@ -4,7 +4,7 @@
   <nz-step nzTitle="Hoàn thành"></nz-step>
 </nz-steps>
 <ng-template [ngIf]="indexStep  === 0">
-  <form [formGroup]="formGroup" class='px-5' style='height: 30vh'>
+  <form [formGroup]="formGroup" class='px-5' autocomplete="off" style='height: 30vh'>
     <div class='row mt-5'>
       <div class='col-sm'>
         <label class='font-weight-bold'>Loại thanh toán</label>
@@ -45,7 +45,7 @@
       </div>
       <div class='col-sm'>
         <label class="font-weight-bold">Chú thích</label>
-        <input type='text' nz-input formControlName='note' required>
+        <input type='text' nz-input formControlName='note'>
       </div>
     </div>
   </form>

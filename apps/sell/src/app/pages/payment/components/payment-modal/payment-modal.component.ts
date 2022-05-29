@@ -75,6 +75,10 @@ export class PaymentModalComponent implements OnInit {
   }
 
   move(type: 'next' | 'previous'): any {
+    console.log(this.formGroup.value)
+    if(this.formGroup.invalid){
+      return
+    }
     if(type === "next" && this.indexStep === 1 && !this.formGroup.value.order){
       return this.message.error('Chưa chọn đơn hàng')
     }
