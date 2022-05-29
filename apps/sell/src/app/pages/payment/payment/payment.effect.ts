@@ -12,7 +12,6 @@ import {RemovePaymentDto} from "../dto/remove-payment.dto";
 import {PaginationDto} from "@minhdu-fontend/constants";
 import {CustomerActions, CustomerStore} from "../../customer/+state";
 import {UpdatePaymentDto} from "../dto/update-payment.dto";
-import {PaymentEntity} from "../entities/payment.entity";
 
 @Injectable()
 export class PaymentEffect {
