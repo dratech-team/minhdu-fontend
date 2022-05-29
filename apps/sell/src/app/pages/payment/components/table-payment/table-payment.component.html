@@ -59,7 +59,6 @@
 </div>
 <app-mouse-right
   #child
-  (onDelPerm)="onDelete($event)"
-  (onUpdate)='onUpdate($event)'
-  [items]='[pageTypeEnum.PERMANENTLY]'>
+  (onDel)="onDelete($event)"
+  (onUpdate)='onUpdate($event)'>
 </app-mouse-right>
