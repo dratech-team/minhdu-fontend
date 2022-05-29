@@ -12,7 +12,7 @@ import {OrderStore} from './order.store';
 import {RouteActions} from '../../route/+state';
 import {CommodityEntity, CommodityUniq} from '../../commodity/entities';
 import {NzMessageService} from "ng-zorro-antd/message";
-import {CustomerActions, CustomerQuery, CustomerStore} from "../../customer/+state";
+import {CustomerQuery, CustomerStore} from "../../customer/+state";
 import {OrderEntity} from "../enitities/order.entity";
 import {UpdateOrderDto} from "../dto";
 import {arrayAdd, arrayRemove, arrayUpdate} from "@datorama/akita";
@@ -147,12 +147,15 @@ export class OrderEffect {
                 ...state,
                 added: true
               }));
-            this.customerStore.update(response.customerId, entity =>{
-              return {
-                delivering : arrayRemove(entity.delivering, response.id),
-                delivered : arrayAdd(entity.delivering, response),
-              }
-            } )
+            if (response.deliveredAt) {
+              this.customerStore.update(response.customerId, entity => {
+                return {
+                  debt: entity.debt ? entity.debt - response.paymentTotal + response.commodityTotal : entity.debt,
+                  delivering: arrayRemove(entity.delivering, response.id),
+                  delivered: arrayAdd(entity.delivered, response),
+                }
+              })
+            }
             if (props.inRoute) {
               this.actions$.dispatch(RouteActions.loadOne({id: props.inRoute.routeId}));
             }
@@ -177,8 +180,14 @@ export class OrderEffect {
     switchMap((props) =>
       this.orderService.updateHide(props.id, props.hide).pipe(
         map((res) => {
-          this.message.success('Cập nhật thành công')
-          this.orderStore.update(res.id, res);
+          this.message.success('Cập nhật thành công'),
+            this.orderStore.update(res.id, res);
+          this.customerStore.update(res.customerId, entity => {
+            return {
+              debt: entity.debt ? entity.debt + res.paymentTotal - res.commodityTotal : entity.debt,
+              delivered: arrayUpdate(entity.delivered, res.id, res),
+            }
+          })
         }),
         catchError((err) => of(OrderActions.error(err)))
       )
@@ -200,9 +209,9 @@ export class OrderEffect {
   delete$ = this.actions$.pipe(
     ofType(OrderActions.remove),
     switchMap((props) => {
-      this.orderStore.update(state => ({
-        ...state, deleted: false
-      }))
+        this.orderStore.update(state => ({
+          ...state, deleted: false
+        }))
         return this.orderService.delete(props.id).pipe(
           map((_) => {
             this.message.success('Xoá đơn hàng thành công');
