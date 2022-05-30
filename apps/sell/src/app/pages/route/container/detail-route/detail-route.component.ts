@@ -113,7 +113,7 @@ export class DetailRouteComponent implements OnInit {
   cancelOrder(order: OrderEntity) {
     this.modal.warning({
       nzTitle: 'Huỷ đơn hàng trong tuyến đường',
-      nzContent: 'Bạn có chắc chắn uỷ đơn hàng này',
+      nzContent: 'Bạn có chắc chắn huỷ đơn hàng này',
       nzOkDanger: true,
       nzOnOk: () => {
         this.actions$.dispatch(RouteActions.cancel({
