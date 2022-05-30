@@ -6,7 +6,7 @@ import {OrderEntity} from '../../../pages/order/enitities/order.entity';
 import {OrderActions} from '../../../pages/order/+state/order.actions';
 import {MatDialog} from '@angular/material/dialog';
 import {debounceTime, tap} from 'rxjs/operators';
-import {ConvertBoolean} from '@minhdu-fontend/enums';
+import {ConvertBoolean, StatusOrder} from '@minhdu-fontend/enums';
 import {
   DialogSharedComponent
 } from '../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
@@ -54,13 +54,15 @@ export class TableOrdersComponent implements OnInit {
       tap((val) => {
           if (this.delivered) {
             this.actions$.dispatch(CustomerActions.loadOrder({
-              params: this.mapOrders(val),
+              params: Object.assign({},
+                this.mapOrders(val, true),
+                {hiddenDebt: StatusOrder.ALL}),
               typeOrder: 'delivered'
             }));
           } else {
             this.actions$.dispatch(CustomerActions.loadOrder({
               params: this.mapOrders(val),
-              typeOrder: 'delivering'
+              typeOrder: 'delivering',
             }));
           }
         }
@@ -73,7 +75,9 @@ export class TableOrdersComponent implements OnInit {
       const val = this.formGroup.value;
       if (this.delivered) {
         this.actions$.dispatch(CustomerActions.loadOrder({
-          params: this.mapOrders(val, true),
+          params: Object.assign({},
+            this.mapOrders(val, true),
+            {hiddenDebt: StatusOrder.ALL,}),
           typeOrder: 'delivered',
           isPagination: true
         }));
@@ -108,7 +112,7 @@ export class TableOrdersComponent implements OnInit {
   updateOrder(order: OrderEntity) {
     this.actions$.dispatch(OrderActions.hide({
       id: order.id,
-      hide: {hide: !order.hide}
+      hide: {hide: !order.hiddenDebt}
     }));
   }
 

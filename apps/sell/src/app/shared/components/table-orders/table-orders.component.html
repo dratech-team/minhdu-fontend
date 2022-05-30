@@ -101,7 +101,7 @@
           {{order?.explain}}
         </td>
         <td *ngIf='delivered'>
-          <mat-slide-toggle [checked]='order.hide' (click)='updateOrder(order)' class='m-auto'></mat-slide-toggle>
+          <mat-slide-toggle [checked]='order.hiddenDebt' (click)='updateOrder(order)' class='m-auto'></mat-slide-toggle>
         </td>
         <td *ngIf='!delivered'>
           <button nz-button nzType="primary" (click)='confirmOrder(order)'>Đã giao</button>
