@@ -245,10 +245,9 @@ export class OrderEffect {
     ofType(OrderActions.cancelOrder),
     switchMap((prop) => this.orderService.cancelOrder(prop.orderId).pipe(
       map(res => {
-          const customerUpdate = JSON.parse(JSON.stringify(this.customerQuery.getEntity(res.customerId)))
-          this.customerStore.update(customerUpdate.id, {
-            delivering: customerUpdate.delivering.filter((order: OrderEntity) => order.id !== res.id)
-          })
+          this.customerStore.update(res.customerId, ({delivering}) => ({
+            delivering: arrayRemove(delivering, res.id)
+          }))
           this.message.success('Huỷ đơn hàng thành công');
           this.orderStore.remove(res.id)
         }

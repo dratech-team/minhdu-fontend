@@ -139,7 +139,14 @@ export class OrderComponent implements OnInit {
   }
 
   onCancel($event: OrderEntity) {
-    this.actions$.dispatch(OrderActions.cancelOrder({orderId: $event.id}));
+    this.modal.warning({
+      nzTitle:'Huỷ đơn hàng',
+      nzContent: 'Bạn có chắc chắn muốn huỷ đơn hàng này không',
+      nzOkDanger: true,
+      nzOnOk: () => {
+        this.actions$.dispatch(OrderActions.cancelOrder({orderId: $event.id}));
+      }
+    })
   }
 
   onDelete($event: any) {
