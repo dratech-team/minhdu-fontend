@@ -20,7 +20,6 @@ import {OrderHistoryEntity} from '../../enitities';
 import {CommodityEntity} from '../../../commodity/entities';
 import {NzModalService} from "ng-zorro-antd/modal";
 import {OrderEntity} from "../../enitities/order.entity";
-import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 import {
   ModalUpdateClosedCommodityComponent
@@ -98,12 +97,12 @@ export class DetailOrderComponent implements OnInit {
         nzContent: PickCommodityComponent,
         nzComponentParams: {
           data: {type: 'DIALOG'},
-          formGroup: this.formBuilder.group({customerIds:[]})
+          formGroup: this.formBuilder.group({customerIds: []})
         },
         nzWidth: '70vw',
         nzFooter: []
       }).afterClose.subscribe(value => {
-        if(value){
+        if (value) {
           this.actions$.dispatch(OrderActions.update({
             id: order.id,
             updates: {
@@ -152,24 +151,24 @@ export class DetailOrderComponent implements OnInit {
 
   closingCommodity(commodity: CommodityEntity, orderId: number) {
     this.modal.create({
-      nzTitle:'Chốt hàng hoá',
+      nzTitle: 'Chốt hàng hoá',
       nzContent: ModalUpdateClosedCommodityComponent,
-      nzComponentParams: <{data: ModalAlertEntity}>{
+      nzComponentParams: <{ data: ModalAlertEntity }>{
         data: {
           description: `Bạn có chắc chắn muốn ${(commodity.closed ? 'bỏ chốt ' : 'chốt ') + commodity.name}`,
         }
       },
       nzFooter: []
     }).afterClose.subscribe(val => {
-      if(val){
-          this.actions$.dispatch(CommodityAction.update({
-            id: commodity.id,
-            updates:{
-              histored : val.save,
-              orderId: orderId,
-              closed: !commodity.closed
-            }
-          }))
+      if (val) {
+        this.actions$.dispatch(CommodityAction.update({
+          id: commodity.id,
+          updates: {
+            histored: val.save,
+            orderId: orderId,
+            closed: !commodity.closed
+          }
+        }))
       }
     })
   }
@@ -209,5 +208,20 @@ export class DetailOrderComponent implements OnInit {
         this.snackBar.open('Tải lịch sử chỉnh sửa đơn hàng thành công', '', {duration: 1500});
       }
     });
+  }
+
+  onDelete($event: any) {
+    this.modal.warning({
+      nzTitle: 'Xoá đơn hàng',
+      nzContent: `Bạn có chắc chắn muốn xoá đơn hàng này vĩnh viễn`,
+      nzOnOk: () => {
+        this.actions$.dispatch(OrderActions.remove({id: $event.id}))
+        this.orderQuery.select(state => state.deleted).subscribe(val =>{
+          if(val){
+            this.router.navigate(['don-hang']).then()
+          }
+        })
+      }
+    })
   }
 }

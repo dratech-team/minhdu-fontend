@@ -1,13 +1,16 @@
 <mat-spinner *ngIf='loading$|async' class='loading'></mat-spinner>
-<div class='animated fadeIn container mb-3 ' style='min-height: 80vh!important;'>
-  <div class='row' *ngIf='(order$ | async)  as commodity'>
-    <div class='row mt-5'>
+<div class='animated fadeIn container mb-3 ' style='min-height: 80vh!important;' *ngIf='(order$ | async)  as order'>
+  <div class='row' >
+    <div class='mt-5 d-flex justify-content-between w-100'>
       <div class=' main-title  mr-5' style='font-size: 20px'>
         Chi tiết đơn hàng
       </div>
+      <div>
+        <button nz-button nzDanger class="mr-5" (click)="onDelete(order)">Huỷ</button>
+      </div>
     </div>
   </div>
-  <div class='row mt-5' style='color:#80828B' *ngIf='(order$ | async)  as order'>
+  <div class='row mt-5' style='color:#80828B'>
     <div class='col-12'>
       <div class='row d-flex align-items-center'>
         <div class='col-2 align-items-center title-table'>Thông tin chung</div>
