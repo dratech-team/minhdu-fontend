@@ -5,9 +5,6 @@ import {RouteDialogComponent} from '../../component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RouteActions, RouteQuery} from '../../+state';
 import {PaymentType} from '@minhdu-fontend/enums';
-import {
-  DialogSharedComponent
-} from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
 import {Actions} from '@datorama/akita-ng-effects';
 import {CancelEnum} from '../../enums';
 import {CommodityEntity} from '../../../commodity/entities';
@@ -154,6 +151,22 @@ export class DetailRouteComponent implements OnInit {
           },
           inRoute: {routeId: this.routeId}
         }));
+      }
+    })
+  }
+
+  onRemove(route: RouteEntity) {
+    this.modal.warning({
+      nzTitle: 'Xoá tuyến đương',
+      nzContent: `Bạn có chắc chắn muốn huỷ tuyến đường ${route.name} này không`,
+      nzOkDanger: true,
+      nzOnOk: () =>{
+        this.actions$.dispatch(RouteActions.remove({idRoute: route.id}))
+        this.routeQuery.select(state => state.deleted).subscribe(val => {
+          if(val){
+            this.router.navigate(['tuyen-duong']).then()
+          }
+        })
       }
     })
   }
