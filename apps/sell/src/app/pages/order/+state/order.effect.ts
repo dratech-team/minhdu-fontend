@@ -12,10 +12,11 @@ import {OrderStore} from './order.store';
 import {RouteActions} from '../../route/+state';
 import {CommodityEntity, CommodityUniq} from '../../commodity/entities';
 import {NzMessageService} from "ng-zorro-antd/message";
-import {CustomerQuery, CustomerStore} from "../../customer/+state";
+import {CustomerStore} from "../../customer/+state";
 import {OrderEntity} from "../enitities/order.entity";
-import {UpdateOrderDto} from "../dto";
+import {AddOrderDto, UpdateOrderDto} from "../dto";
 import {arrayAdd, arrayRemove, arrayUpdate} from "@datorama/akita";
+import {CommodityStore} from "../../commodity/+state";
 
 @Injectable()
 export class OrderEffect {
@@ -29,19 +30,20 @@ export class OrderEffect {
     private readonly orderService: OrderService,
     private readonly router: Router,
     private readonly customerStore: CustomerStore,
-    private readonly customerQuery: CustomerQuery,
+    private readonly commodityStore: CommodityStore,
   ) {
   }
 
   @Effect()
   addOrder$ = this.actions$.pipe(
     ofType(OrderActions.addOne),
-    switchMap((props) => {
+    switchMap((props: AddOrderDto) => {
       this.orderStore.update(state => ({
         ...state, added: false
       }));
       return this.orderService.addOne(props).pipe(
         map((res) => {
+          this.commodityStore.remove(props.body.commodityIds)
           this.orderStore.update(state => ({
             ...state, added: true,
             total: state.total + 1,
