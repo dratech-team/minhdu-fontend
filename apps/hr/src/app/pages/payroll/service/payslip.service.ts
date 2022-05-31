@@ -13,6 +13,6 @@ export class PayslipService {
   }
 
   getOne(id: any): Observable<Payslip> {
-    return this.http.get<Payslip>(VersionEnum.V2 + Api.HR.PAYROLL.PAYROLL + `/${id}/` + Api.HR.PAYROLL.PAYSLIP);
+    return this.http.get<Payslip>(VersionEnum.V1 + Api.HR.PAYROLL.PAYROLL + `/${id}/` + Api.HR.PAYROLL.PAYSLIP);
   }
 }
