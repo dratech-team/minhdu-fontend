@@ -9,5 +9,5 @@ interface BaseUpdateOrderDto extends BaseOrderEntity {
 }
 
 export interface UpdateOrderDto extends BaseUpdateDto<BaseUpdateOrderDto>{
-  inRoute?: { routeId: number }
+  inRoute?: { routeId: number },
 }

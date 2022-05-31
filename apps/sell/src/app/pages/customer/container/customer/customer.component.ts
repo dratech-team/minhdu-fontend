@@ -3,12 +3,12 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, GenderTypeConstant} from '@minhdu-fontend/constants';
-import {CustomerType, ItemContextMenu, SortCustomerEnum} from '@minhdu-fontend/enums';
+import {CustomerEnum, CustomerType, ItemContextMenu} from '@minhdu-fontend/enums';
 import {ExportService} from '@minhdu-fontend/service';
 import {ModalExportExcelComponent, ModalExportExcelData} from '@minhdu-fontend/components';
 import {debounceTime, map, tap} from 'rxjs/operators';
 import {CustomerActions, CustomerQuery, CustomerStore} from '../../+state';
-import {CustomerModalComponent, PaymentDialogComponent} from '../../component';
+import {CustomerModalComponent, PaymentModalComponent} from '../../component';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {RadiosStatusRouteConstant} from '../../enums/gender.constant';
@@ -18,6 +18,7 @@ import {OrderActions} from '../../../order/+state';
 import * as _ from 'lodash';
 import {OrderEntity} from '../../../order/enitities/order.entity';
 import {CustomerEntity} from "../../entities";
+import {ModalAddOrUpdatePayment} from "../../data/modal-payment.data";
 
 @Component({
   templateUrl: 'customer.component.html'
@@ -34,7 +35,7 @@ export class CustomerComponent implements OnInit {
   customerType = CustomerType;
   ItemContextMenu = ItemContextMenu;
   orders?: OrderEntity;
-  sortCustomerEnum = SortCustomerEnum;
+  sortCustomerEnum = CustomerEnum;
   radiosGender = RadiosStatusRouteConstant;
   potentialsConstant = PotentialsConstant;
   resourcesConstant = ResourcesConstant;
@@ -130,11 +131,24 @@ export class CustomerComponent implements OnInit {
     })
   }
 
-  payment($event: any) {
-    this.dialog.open(PaymentDialogComponent, {
-      width: '55%',
-      data: { id: $event.id }
-    });
+  onPayment(customer: CustomerEntity) {
+    this.modal.create({
+      nzWidth: '70vw',
+      nzTitle: 'Thanh toán',
+      nzContent: PaymentModalComponent,
+      nzComponentParams: <{ data: ModalAddOrUpdatePayment }>{
+        data: {
+          add: {
+            customer: customer
+          }
+        }
+      },
+      nzFooter: [],
+    }).afterClose.subscribe(val => {
+      if(val){
+        this.actions$.dispatch(CustomerActions.loadOne({id: customer.id}));
+      }
+    })
   }
 
   printCustomer() {

@@ -19,4 +19,5 @@ export const StorageName = {
   BILL: 'bill',
   ROUTE: 'route',
   ORDER: 'order',
+  PAYMENT: 'payment',
 };

@@ -3,14 +3,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, CurrenciesConstant, PaginationDto} from '@minhdu-fontend/constants';
-import {
-  ConvertBoolean,
-  ItemContextMenu,
-  PaidType,
-  PaymentType,
-  SortOrderEnum,
-  StatusOrder
-} from '@minhdu-fontend/enums';
+import {ConvertBoolean, ItemContextMenu, OrderEnum, PaidType, PaymentType, StatusOrder} from '@minhdu-fontend/enums';
 import {ExportService} from '@minhdu-fontend/service';
 import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import {debounceTime, map, tap} from 'rxjs/operators';
@@ -53,7 +46,7 @@ export class OrderComponent implements OnInit {
   payType = PaymentType;
   pageSize = 25;
   pageIndexInit = 0;
-  sortOrderEnum = SortOrderEnum;
+  sortOrderEnum = OrderEnum;
   visible = false;
   pageSizeTable = 10;
   expanedAll$ = this.orderQuery.select(state => state.expandedAll);
@@ -96,7 +89,7 @@ export class OrderComponent implements OnInit {
         debounceTime(1000),
         tap((val: any) => {
           this.actions$.dispatch(
-            OrderActions.loadAll({ param: this.mapOrder(val) })
+            OrderActions.loadAll({param: this.mapOrder(val)})
           );
         })
       )
@@ -146,14 +139,21 @@ export class OrderComponent implements OnInit {
   }
 
   onCancel($event: OrderEntity) {
-    this.actions$.dispatch(OrderActions.cancelOrder({ orderId: $event.id }));
+    this.modal.warning({
+      nzTitle:'Huỷ đơn hàng',
+      nzContent: 'Bạn có chắc chắn muốn huỷ đơn hàng này không',
+      nzOkDanger: true,
+      nzOnOk: () => {
+        this.actions$.dispatch(OrderActions.cancelOrder({orderId: $event.id}));
+      }
+    })
   }
 
   onDelete($event: any) {
     this.modal.warning({
       nzTitle: 'Xoá đơn hàng',
       nzContent: `Bạn có chắc chắn muốn xoá đơn hàng này vĩnh viễn`,
-      nzOnOk: () =>  this.actions$.dispatch(OrderActions.remove({ id: $event.id }))
+      nzOnOk: () => this.actions$.dispatch(OrderActions.remove({id: $event.id}))
     })
   }
 
@@ -170,26 +170,26 @@ export class OrderComponent implements OnInit {
   }
 
   onPickDeliveryDay($event: any) {
-    this.formGroup.get('deliveredAt_start')?.setValue($event.start, { emitEvent: false });
+    this.formGroup.get('deliveredAt_start')?.setValue($event.start, {emitEvent: false});
     this.formGroup.get('deliveredAt_end')?.setValue($event.end);
   }
 
   onPickCreatedAt($event: any) {
-    this.formGroup.get('startedAt_start')?.setValue($event.start, { emitEvent: false });
+    this.formGroup.get('startedAt_start')?.setValue($event.start, {emitEvent: false});
     this.formGroup.get('startedAt_end')?.setValue($event.end);
   }
 
   onPickEndedAt($event: any) {
-    this.formGroup.get('endedAt_start')?.setValue($event.start), { emitEvent: false };
+    this.formGroup.get('endedAt_start')?.setValue($event.start), {emitEvent: false};
     this.formGroup.get('endedAt_end')?.setValue($event.end);
   }
 
   onExpandAll() {
     const expanedAll = this.orderQuery.getValue().expandedAll;
     this.orderQuery.getAll().forEach((order: OrderEntity) => {
-      this.orderStore.update(order.id, { expand: !expanedAll });
+      this.orderStore.update(order.id, {expand: !expanedAll});
     });
-    this.orderStore.update(state => ({ ...state, expandedAll: !expanedAll }));
+    this.orderStore.update(state => ({...state, expandedAll: !expanedAll}));
   }
 
   onSort(sort: Sort) {

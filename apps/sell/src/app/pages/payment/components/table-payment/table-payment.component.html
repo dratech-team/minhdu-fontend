@@ -1,8 +1,10 @@
 <div>
   <nz-table #tablePaymentHistory
-            [nzData]="paymentHistories$|async"
+            [nzData]="(paymentHistories$|async) || []"
             [nzScroll]="{ y: '300px'}"
             nzSize='middle'
+            [nzPageSize]="pageSizeTable"
+            (nzPageIndexChange)='onLoadMore($event)'
   >
     <thead [formGroup]='formGroup'>
     <tr>
@@ -30,7 +32,7 @@
     </thead>
     <tbody>
     <ng-template ngFor let-paymentHistory [ngForOf]="tablePaymentHistory.data">
-      <tr class='pointer' (click)='updatePayment(paymentHistory)'
+      <tr class='pointer' (click)='onUpdate(paymentHistory)'
           (contextmenu)='child.onContextMenu($event,paymentHistory)'>
         <td>
           {{paymentHistory?.paidAt | date: 'dd/MM/yyyy'}}
@@ -55,7 +57,8 @@
     </tbody>
   </nz-table>
 </div>
-<app-mouse-right (onDel)='deletePayment($event.id)' (onDetail)='updatePayment($event)' #child
-                 [items]='[pageTypeEnum.PERMANENTLY]'>
-
+<app-mouse-right
+  #child
+  (onDel)="onDelete($event)"
+  (onUpdate)='onUpdate($event)'>
 </app-mouse-right>

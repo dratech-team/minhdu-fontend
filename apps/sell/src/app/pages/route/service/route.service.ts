@@ -39,6 +39,6 @@ export class RouteService extends BaseService<RouteEntity> {
   }
 
   cancel(routeId: number, body: CancelDto): Observable<RouteEntity> {
-    return this.http.patch<RouteEntity>(VersionEnum.V2 + Api.SELL.ROUTE.ROUTE + `/${routeId}/cancel`, body)
+    return this.http.patch<RouteEntity>(this.url + `/${routeId}/cancel`, body)
   }
 }

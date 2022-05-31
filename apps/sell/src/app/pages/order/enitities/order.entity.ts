@@ -3,7 +3,7 @@ import {District, PaymentHistory, Ward} from "@minhdu-fontend/data-models";
 import {PaymentType} from "@minhdu-fontend/enums";
 
 export interface OrderEntity extends BaseOrderEntity{
-  hide: boolean;
+  hiddenDebt: boolean;
   totalCommodity: number,
   expand: boolean,
   paymentHistories: PaymentHistory[];

@@ -1,8 +1,11 @@
 <div class='animated fadeIn container mb-3 ' style='min-height: 80vh!important;'>
   <div class='row'>
-    <div class='row mt-5'>
+    <div class='mt-5 d-flex justify-content-between w-100'>
       <div class=' main-title  mr-5' style='font-size: 20px'>
         Chi tiết tuyến đường
+      </div>
+      <div class="mr-5">
+        <button nz-button nzDanger (click)="onRemove(route)">Huỷ</button>
       </div>
     </div>
   </div>

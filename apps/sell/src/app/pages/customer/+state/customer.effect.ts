@@ -1,16 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
 import {catchError, concatMap, map, switchMap, tap} from 'rxjs/operators';
-import {of, throwError} from 'rxjs';
+import {of} from 'rxjs';
 import {CustomerActions} from './customer.actions';
 import {CustomerService} from '../service';
 import {CustomerQuery} from './customer.query';
 import {CustomerStore} from './customer.store';
 import {OrderService} from '../../order/service';
-import {AddCustomerDto} from '../dto';
+import {AddCustomerDto, SearchCustomerDto} from '../dto';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {SearchCustomerDto} from '../dto/search-customer.dto';
 
 @Injectable()
 export class CustomerEffect {
@@ -21,7 +20,7 @@ export class CustomerEffect {
     private readonly customerService: CustomerService,
     private readonly message: NzMessageService,
     private readonly snackbar: MatSnackBar,
-    private readonly orderService: OrderService
+    private readonly orderService: OrderService,
   ) {
   }
 

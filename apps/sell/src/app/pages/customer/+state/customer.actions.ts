@@ -1,6 +1,7 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
 import { AddCustomerDto, LoadOneCustomerDto, RemoveCustomerDto, SearchCustomerDto, UpdateCustomerDto } from '../dto';
 import { SearchOrderDto } from '../../order/dto';
+import {StatusOrder} from "@minhdu-fontend/enums";
 
 const addOne = createAction(
   '[CUSTOMER] Add One',
@@ -29,7 +30,11 @@ const remove = createAction(
 
 const loadOrder = createAction(
   '[CUSTOMER] Load Order',
-  props<{ params: SearchOrderDto, typeOrder: 'delivered' | 'delivering', isPagination?: boolean }>()
+  props<{
+    params: SearchOrderDto,
+    typeOrder: 'delivered' | 'delivering',
+    isPagination?: boolean,
+  }>()
 );
 
 const error = createAction(

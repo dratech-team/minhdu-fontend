@@ -82,7 +82,6 @@ export class RemoteOrDayOffSalaryComponent implements OnInit {
   }
 
   onSubmit(): any {
-    console.log(this.formGroup)
     if (this.formGroup.invalid) {
       return;
     }

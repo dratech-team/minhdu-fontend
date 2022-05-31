@@ -1,78 +1,39 @@
-import { createAction, props } from '@ngrx/store';
-import { PaymentHistory } from '@minhdu-fontend/data-models';
+import {createAction, props} from "@datorama/akita-ng-effects";
+import {SearchPayrollDto} from "../../../../../../hrv2/src/app/pages/payroll/dto";
+import {AddPaymentDto} from "../dto/add-payment.dto";
+import {UpdatePaymentDto} from "../dto/update-payment.dto";
+import {RemovePaymentDto} from "../dto/remove-payment.dto";
 
 
-export const loadInit = createAction(
-  '[LOAD_PAYMENT] Load Init',
-  props<{
-    skip: number,
-    take: number,
-    customerId: number,
-  }>()
+export const loadAll = createAction(
+  '[PAYMENT] Load All',
+  props<SearchPayrollDto>()
 );
 
-export const loadMorePayment = createAction(
-  '[LOAD_PAYMENT] Load More Payment',
-  props<{
-    skip: number,
-    take: number,
-    customerId: number,
-  }>()
+export const addOne = createAction(
+  '[PAYMENT] Payment',
+  props<AddPaymentDto>()
 );
 
-export const loadInitSuccess = createAction(
-  '[LOAD_PAYMENT] Load Init Success',
-  props<{ payments: PaymentHistory[] }>()
+export const update = createAction(
+  '[PAYMENT] Update',
+  props<UpdatePaymentDto>()
 );
 
-export const loadMorePaymentSuccess = createAction(
-  '[LOAD_MORE_CUSTOMER] Load More Payment Success',
-  props<{ payments: PaymentHistory[] }>()
+export const remove = createAction(
+  '[PAYMENT] Remove',
+  props<RemovePaymentDto>()
 );
 
-export const payment = createAction(
-  '[PAYMENT] Customer Payment',
-  props<{ infoPayment: any }>()
+export const error = createAction(
+  '[PAYMENT]  Error',
+  props<{ err: string }>()
 );
-
-export const paymentSuccess = createAction(
-  '[PAYMENT_SUCCESS] Customer Payment Success',
-  props<{ payment: PaymentHistory }>()
-);
-
-export const updatePayment = createAction(
-  '[PAYMENT] Update Payment',
-  props<{ id: number, infoPayment: any }>()
-);
-
-export const updatePaymentSuccess = createAction(
-  '[PAYMENT] Update Payment Success',
-  props<{ payment: PaymentHistory }>()
-);
-
-export const deletePayment = createAction(
-  '[PAYMENT] Delete Payment',
-  props<{ id: number, customerId: number }>()
-);
-
-export const deletePaymentSuccess = createAction(
-  '[PAYMENT] Delete Payment Success',
-  props<{ id: number }>()
-);
-export const handlePaymentError = createAction(
-  '[PAYMENT] Handle Payment Error'
-);
-export const PaymentAction = {
-  loadMorePayment,
-  loadMorePaymentSuccess,
-  payment,
-  loadInit,
-  loadInitSuccess,
-  paymentSuccess,
-  updatePayment,
-  updatePaymentSuccess,
-  deletePayment,
-  deletePaymentSuccess,
-  handlePaymentError
+export const PaymentActions = {
+  loadAll,
+  addOne,
+  update,
+  remove,
+  error
 };
 

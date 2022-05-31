@@ -6,16 +6,16 @@ import {OrderEntity} from '../../../pages/order/enitities/order.entity';
 import {OrderActions} from '../../../pages/order/+state/order.actions';
 import {MatDialog} from '@angular/material/dialog';
 import {debounceTime, tap} from 'rxjs/operators';
-import {ConvertBoolean} from '@minhdu-fontend/enums';
+import {ConvertBoolean, StatusOrder} from '@minhdu-fontend/enums';
 import {
   DialogSharedComponent
 } from '../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import {
-  DialogDatePickerComponent
-} from '../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import {Actions} from "@datorama/akita-ng-effects";
-import {CustomerActions} from "../../../pages/customer/+state/customer.actions";
+import {CustomerActions} from "../../../pages/customer/+state";
 import {Observable} from "rxjs";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {ModalDatePickerComponent} from "@minhdu-fontend/components";
+import {ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
 
 @Component({
   selector: 'app-table-order',
@@ -44,6 +44,7 @@ export class TableOrdersComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly router: Router,
     private readonly dialog: MatDialog,
+    private readonly modal: NzModalService,
   ) {
   }
 
@@ -53,13 +54,15 @@ export class TableOrdersComponent implements OnInit {
       tap((val) => {
           if (this.delivered) {
             this.actions$.dispatch(CustomerActions.loadOrder({
-              params: this.mapOrders(val),
+              params: Object.assign({},
+                this.mapOrders(val, true),
+                {hiddenDebt: StatusOrder.ALL}),
               typeOrder: 'delivered'
             }));
           } else {
             this.actions$.dispatch(CustomerActions.loadOrder({
               params: this.mapOrders(val),
-              typeOrder: 'delivering'
+              typeOrder: 'delivering',
             }));
           }
         }
@@ -72,7 +75,9 @@ export class TableOrdersComponent implements OnInit {
       const val = this.formGroup.value;
       if (this.delivered) {
         this.actions$.dispatch(CustomerActions.loadOrder({
-          params: this.mapOrders(val, true),
+          params: Object.assign({},
+            this.mapOrders(val, true),
+            {hiddenDebt: StatusOrder.ALL,}),
           typeOrder: 'delivered',
           isPagination: true
         }));
@@ -107,7 +112,7 @@ export class TableOrdersComponent implements OnInit {
   updateOrder(order: OrderEntity) {
     this.actions$.dispatch(OrderActions.hide({
       id: order.id,
-      hide: {hide: !order.hide}
+      hide: {hide: !order.hiddenDebt}
     }));
   }
 
@@ -129,21 +134,25 @@ export class TableOrdersComponent implements OnInit {
   }
 
   confirmOrder(order: OrderEntity) {
-    this.dialog.open(DialogDatePickerComponent, {
-      width: 'fit-content',
-      data: {
-        titlePopup: 'Xác nhận giao hàng',
-        title: 'Ngày giao hàng'
-      }
-    }).afterClosed().subscribe(val => {
+    this.modal.create({
+      nzTitle: 'Xác nhận Giao hàng',
+      nzContent: ModalDatePickerComponent,
+      nzComponentParams: <{ data: ModalDatePickerEntity }>{
+        data: {
+          type: 'date',
+          dateInit: new Date()
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe(val => {
       if (val) {
         this.actions$.dispatch(OrderActions.update({
           id: order.id,
           updates: {
-            deliveredAt: val.day,
-          }
+            deliveredAt: new Date(val),
+          },
         }));
       }
-    });
+    })
   }
 }

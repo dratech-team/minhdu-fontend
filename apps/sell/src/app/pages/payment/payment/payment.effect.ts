@@ -1,138 +1,152 @@
-import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import { PaymentAction } from './payment.action';
-import { PaymentService } from '../../customer/service';
-import { CustomerActions } from '../../customer/+state';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Store } from '@ngrx/store';
-import { OrderActions } from '../../order/+state';
-import { ConvertBoolean } from '@minhdu-fontend/enums';
+import {Injectable} from '@angular/core';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {of} from 'rxjs';
+import {PaymentActions} from './payment.action';
+import {NzMessageService} from "ng-zorro-antd/message";
+import {Actions, Effect, ofType} from "@datorama/akita-ng-effects";
+import {PaymentService} from "../services/payment.Service";
+import {PaymentQuery} from "./payment.query";
+import {PaymentStore} from "./payment.store";
+import {SearchPaymentDto} from "../dto/search-payment.dto";
+import {RemovePaymentDto} from "../dto/remove-payment.dto";
+import {PaginationDto} from "@minhdu-fontend/constants";
+import {CustomerActions, CustomerStore} from "../../customer/+state";
+import {UpdatePaymentDto} from "../dto/update-payment.dto";
 
 @Injectable()
 export class PaymentEffect {
-
-  loadPayment$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(PaymentAction.loadInit),
-      switchMap((props) => {
-        return this.paymentService.pagination(props);
-      }),
-      map((ResponsePaginate) =>
-        PaymentAction.loadInitSuccess({
-          payments: ResponsePaginate.data
-        })),
-      catchError((err) => throwError(err))
-    )
-  );
-
-  loadMorePayment$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(PaymentAction.loadMorePayment),
-      switchMap((props) => this.paymentService.pagination(props)),
-      map((ResponsePaginate) => PaymentAction.loadMorePaymentSuccess({ payments: ResponsePaginate.data })),
-      catchError((err) => throwError(err))
-    )
-  );
-
-  payment$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(PaymentAction.payment),
-      switchMap((props) => this.paymentService.payment(props.infoPayment)),
-      map(res => {
-        this.store.dispatch(OrderActions.loadOrdersAssigned({
-          take: 30,
-          skip: 0,
-          customerId: res.customerId,
-          status: ConvertBoolean.TRUE
-        }));
-        this.store.dispatch(OrderActions.loadAll({
-          orderDTO: {
-            take: 30,
-            skip: 0,
-            customerId: res.customerId
-          }
-        }));
-        this.store.dispatch(CustomerActions.loadOne({ id: res.customerId }));
-        return res;
-      }),
-      map(res => {
-          this.snackbar.open('Thanh toán thành công', '', { duration: 1500 });
-          return PaymentAction.paymentSuccess({ payment: res });
-        }
-      ),
-      catchError((err) => throwError(err))
-    )
-  );
-
-  UpdatePayment$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(PaymentAction.updatePayment),
-      switchMap((props) => this.paymentService.updatePayment(props.id, props.infoPayment)),
-      map(res => {
-        this.store.dispatch(OrderActions.loadOrdersAssigned({
-          take: 30,
-          skip: 0,
-          customerId: res.customerId,
-          status: ConvertBoolean.TRUE
-        }));
-        this.store.dispatch(OrderActions.loadAll({
-          orderDTO: {
-            take: 30,
-            skip: 0,
-            customerId: res.customerId
-          }
-        }));
-        this.store.dispatch(CustomerActions.loadOne({ id: res.customerId }));
-        return res;
-      }),
-      map(res => {
-          this.snackbar.open('Cập nhật thành công', '', { duration: 1500 });
-          return PaymentAction.updatePaymentSuccess({ payment: res });
-        }
-      ),
-      catchError((err) => throwError(err))
-    )
-  );
-
-
-  deletePayment$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(PaymentAction.deletePayment),
-      switchMap((props) =>
-        this.paymentService.delete(props.id).pipe(
-          map(_ => {
-            this.snackbar.open('Xóa lịch sử thanh toán thành công', '', { duration: 1500 });
-            this.store.dispatch(PaymentAction.deletePaymentSuccess({ id: props.id }));
-          }),
-          map(_ => {
-            this.store.dispatch(OrderActions.loadOrdersAssigned({
-              take: 30,
-              skip: 0,
-              customerId: props.customerId,
-              status: ConvertBoolean.TRUE
-            }));
-            this.store.dispatch(OrderActions.loadAll({
-              orderDTO: {
-                take: 30,
-                skip: 0,
-                customerId: props.customerId
-              }
-            }));
-            return CustomerActions.loadOne({ id: props.customerId });
-          })
-        )
-      ),
-      catchError((err) => throwError(err))
-    )
-  );
-
   constructor(
     private readonly action$: Actions,
-    private readonly store: Store,
-    private readonly snackbar: MatSnackBar,
-    private readonly paymentService: PaymentService
+    private readonly message: NzMessageService,
+    private readonly paymentService: PaymentService,
+    private readonly paymentQuery: PaymentQuery,
+    private readonly paymentStore: PaymentStore,
+    private readonly customerStore: CustomerStore,
   ) {
   }
+
+  @Effect()
+  addOne$ = this.action$.pipe(
+    ofType(PaymentActions.addOne),
+    switchMap((props) => {
+      this.paymentStore.update(state => ({
+        ...state, added: false
+      }));
+      return this.paymentService.addOne(props).pipe(
+        tap((res) => {
+            this.message.success('Thanh toán thành công')
+            this.paymentStore.update(state => ({
+              ...state, added: true
+            }));
+            this.paymentStore.add(res);
+          }
+        ),
+        catchError(err => {
+          this.paymentStore.update(state => ({
+            ...state, added: null
+          }));
+          return of(PaymentActions.error(err))
+        }),
+      );
+    }),
+  );
+
+  @Effect()
+  loadAll$ = this.action$.pipe(
+    ofType(PaymentActions.loadAll),
+    switchMap((props: SearchPaymentDto) => {
+      this.paymentStore.update(state => (
+        Object.assign({
+            ...state,
+          }, props.isPaginate
+            ? {loadMore: true}
+            : {loading: true}
+        )
+      ));
+      Object.assign(props.search,
+        {
+          take: PaginationDto.take,
+          skip: props.isPaginate ? this.paymentQuery.getCount() : PaginationDto.skip
+        }
+      )
+      return this.paymentService.pagination(props).pipe(
+        map((response) => {
+          this.paymentStore.update(state => ({...state, loading: false, total: response.total}));
+          if (props.isPaginate) {
+            this.paymentStore.add(response.data);
+          } else {
+            this.paymentStore.set(response.data);
+          }
+        }),
+        catchError((err) => {
+          this.paymentStore.update(state => ({
+            ...state, loading: false
+          }));
+          return of(PaymentActions.error(err))
+        })
+      );
+    }),
+  );
+
+  @Effect()
+  update$ = this.action$.pipe(
+    ofType(PaymentActions.update),
+    switchMap((props: UpdatePaymentDto) => {
+      this.paymentStore.update(state => ({
+        ...state, added: false
+      }));
+      return this.paymentService.update(props).pipe(
+        tap((res) => {
+            this.message.success('Cập nhật thanh toán thành công')
+            this.paymentStore.update(state => ({
+              ...state, added: true
+            }));
+            this.paymentStore.update(res.id, res);
+            this.action$.dispatch(CustomerActions.loadOne({id: res.customerId}))
+          }
+        ),
+        catchError(err => {
+          this.paymentStore.update(state => ({
+            ...state, added: null
+          }));
+          return of(PaymentActions.error(err))
+        }),
+      );
+    }),
+  );
+
+
+  @Effect()
+  remove$ = this.action$.pipe(
+    ofType(PaymentActions.remove),
+    switchMap((props: RemovePaymentDto) => {
+      this.paymentStore.update(state => ({
+        ...state, deleted: false
+      }));
+      return this.paymentService.delete(props.id).pipe(
+        tap((_) => {
+            this.message.success('Xoá lịch sử thành toán thành công')
+            this.customerStore.update(props.customerId, entity => {
+              return {
+                ...entity,
+                debt: entity.debt ? entity.debt - props.paidTotal : -props.paidTotal
+              }
+            });
+            this.paymentStore.update(state => ({
+              ...state, deleted: true
+            }));
+            this.paymentStore.remove(props.id);
+          }
+        ),
+        catchError(err => {
+          this.paymentStore.update(state => ({
+            ...state, deleted: null
+          }));
+          return of(PaymentActions.error(err))
+        }),
+      );
+    }),
+  );
+
+
 }

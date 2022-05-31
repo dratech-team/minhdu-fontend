@@ -1,4 +1,4 @@
-import {PaidType} from "@minhdu-fontend/enums";
+import {PaidType, StatusOrder} from "@minhdu-fontend/enums";
 import {SearchRangeDto} from "../../../shared/dto";
 
 export interface SearchOrderDto extends SearchRangeDto {
@@ -15,5 +15,6 @@ export interface SearchOrderDto extends SearchRangeDto {
   commodityTotal?: number,
   province?: string,
   bsx?: string,
-  commodity?: string
+  commodity?: string,
+  hiddenDebt?: StatusOrder
 }

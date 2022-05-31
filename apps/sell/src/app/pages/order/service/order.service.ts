@@ -5,12 +5,9 @@ import {Api} from '@minhdu-fontend/constants';
 import {Observable} from 'rxjs';
 import {Update} from '@ngrx/entity';
 import {ResponsePaginate} from '@minhdu-fontend/data-models';
-import {AddOrderDto} from '../dto';
+import {AddOrderDto, SearchOrderDto, UpdateOrderDto} from '../dto';
 import {CommodityUniq} from '../../commodity/entities';
-import {SearchOrderDto} from '../dto';
-import {UpdateOrderDto} from '../dto';
 import {OrderEntity} from "../enitities/order.entity";
-import {VersionEnum} from "@minhdu-fontend/enums";
 
 @Injectable({providedIn: 'root'})
 export class OrderService extends BaseService<OrderEntity> {
@@ -29,7 +26,7 @@ export class OrderService extends BaseService<OrderEntity> {
   }
 
   payment(id: number, body: any): Observable<Update<OrderEntity>> {
-    return this.http.patch<Update<OrderEntity>>(VersionEnum.V2 + Api.SELL.ORDER.ORDER + `/${id}/paid`, body);
+    return this.http.patch<Update<OrderEntity>>(this.url + `/${id}/paid`, body);
   }
 
   getOne(id: OrderEntity['id']): Observable<OrderEntity> {
@@ -41,7 +38,7 @@ export class OrderService extends BaseService<OrderEntity> {
   }
 
   updateHide(id: any, body: any): Observable<OrderEntity> {
-    return this.http.patch<OrderEntity>(VersionEnum.V2 + Api.SELL.ORDER.ORDER + '/hide' + `/${id}`, body);
+    return this.http.patch<OrderEntity>(this.url + '/hide' + `/${id}`, body);
   }
 
   delete(id: OrderEntity['id']): Observable<void> {
@@ -49,7 +46,7 @@ export class OrderService extends BaseService<OrderEntity> {
   }
 
   cancelOrder(id: OrderEntity['id']): Observable<OrderEntity> {
-    return this.http.delete<OrderEntity>(VersionEnum.V2 + Api.SELL.ORDER.ORDER + `/${id}` + '/cancel');
+    return this.http.delete<OrderEntity>(this.url + `/${id}` + '/cancel');
   }
 
   orderhistory(): Observable<any> {

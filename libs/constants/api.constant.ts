@@ -45,7 +45,7 @@ export const Api = {
       SETTING_BONUS: 'setting-bonus',
     },
     TEMPLATE: {
-      BASIC_TEMPLATE: 'permanent-template',
+      BASIC_TEMPLATE: 'basic-template',
       OVERTIME_TEMPLATE: 'overtime-template'
     },
     SALARY_BRANCH: 'salary/branch',

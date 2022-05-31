@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
-import {RouteActions} from './routeActions';
+import {RouteActions} from './route.Actions';
 import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {RouteService} from '../service';
 import {of} from 'rxjs';

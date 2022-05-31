@@ -34,7 +34,7 @@
             </span>
           </div>
         </div>
-        <button (click)='payment(customer.id)' nz-button nzType="primary"><span class='h5'> Thanh toán</span></button>
+        <button (click)='payment(customer)' nz-button nzType="primary"><span class='h5'> Thanh toán</span></button>
       </div>
     </div>
   </div>
@@ -232,36 +232,36 @@
           <div class='row d-flex align-items-center'>
             <div class='align-items-center title-table mr-4'>Thông tin ngân hàng</div>
           </div>
-<!--          <div class='mt-3 row  align-items-center'>-->
-<!--            <div class='col-md-4 py-2  title-detail'>-->
-<!--              <span>Tk ngân hàng:</span>-->
-<!--            </div>-->
-<!--            <div class='col-md-8 py-2 border-bottom'>-->
-<!--              <span>-->
-<!--                {{customer?.bank?.stk || 'Chưa cập nhật'}}-->
-<!--              </span>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class=' row align-items-center'>-->
-<!--            <div class='col-md-4 py-2  title-detail'>-->
-<!--              <span>Chủ sở hữu:</span>-->
-<!--            </div>-->
-<!--            <div class='col-md-8 py-2 border-bottom'>-->
-<!--              <span class='contain-detail'>-->
-<!--                {{customer?.bank?.owner || 'Chưa cập nhật' }}-->
-<!--              </span>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class=' row align-items-center'>-->
-<!--            <div class='col-md-4 py-2  title-detail'>-->
-<!--              <span>Tên ngân hàng:</span>-->
-<!--            </div>-->
-<!--            <div class='col-md-8 py-2 border-bottom'>-->
-<!--              <span class='contain-detail'>-->
-<!--                {{customer?.bank?.name || 'Chưa cập nhật'}}-->
-<!--              </span>-->
-<!--            </div>-->
-<!--          </div>-->
+          <!--          <div class='mt-3 row  align-items-center'>-->
+          <!--            <div class='col-md-4 py-2  title-detail'>-->
+          <!--              <span>Tk ngân hàng:</span>-->
+          <!--            </div>-->
+          <!--            <div class='col-md-8 py-2 border-bottom'>-->
+          <!--              <span>-->
+          <!--                {{customer?.bank?.stk || 'Chưa cập nhật'}}-->
+          <!--              </span>-->
+          <!--            </div>-->
+          <!--          </div>-->
+          <!--          <div class=' row align-items-center'>-->
+          <!--            <div class='col-md-4 py-2  title-detail'>-->
+          <!--              <span>Chủ sở hữu:</span>-->
+          <!--            </div>-->
+          <!--            <div class='col-md-8 py-2 border-bottom'>-->
+          <!--              <span class='contain-detail'>-->
+          <!--                {{customer?.bank?.owner || 'Chưa cập nhật' }}-->
+          <!--              </span>-->
+          <!--            </div>-->
+          <!--          </div>-->
+          <!--          <div class=' row align-items-center'>-->
+          <!--            <div class='col-md-4 py-2  title-detail'>-->
+          <!--              <span>Tên ngân hàng:</span>-->
+          <!--            </div>-->
+          <!--            <div class='col-md-8 py-2 border-bottom'>-->
+          <!--              <span class='contain-detail'>-->
+          <!--                {{customer?.bank?.name || 'Chưa cập nhật'}}-->
+          <!--              </span>-->
+          <!--            </div>-->
+          <!--          </div>-->
         </div>
       </div>
     </div>
@@ -288,7 +288,9 @@
         <div class='align-items-center title-table '>Lịch sử thanh toán</div>
       </div>
       <div class='my-3 '>
-        <app-table-payment [customerId]='customer.id'></app-table-payment>
+        <minhdu-fontend-table-payment
+          [customerId]="customer.id">
+        </minhdu-fontend-table-payment>
       </div>
     </div>
   </div>

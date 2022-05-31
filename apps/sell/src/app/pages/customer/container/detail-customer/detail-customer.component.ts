@@ -2,15 +2,17 @@ import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute} from '@angular/router';
 import {DevelopmentComponent, DialogDeleteComponent} from '@minhdu-fontend/components';
-import {ConvertBoolean, PaidType} from '@minhdu-fontend/enums';
+import {ConvertBoolean, PaidType, StatusOrder} from '@minhdu-fontend/enums';
 import {CustomerActions, CustomerQuery} from '../../+state';
 import {CustomerEntity} from '../../entities';
-import {CustomerModalComponent, PaymentDialogComponent} from '../../component';
+import {CustomerModalComponent, PaymentModalComponent} from '../../component';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from "ng-zorro-antd/modal";
 import {OrderDialogComponent} from "../../../order/component";
 import {OrderEntity} from "../../../order/enitities/order.entity";
 import {ModalCustomerData} from "../../data/modal-customer.data";
+import {ModalAddOrUpdatePayment} from "../../data/modal-payment.data";
+import {StatusEnum} from "../../../../shared/enums/status.enum";
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -44,7 +46,7 @@ export class DetailCustomerComponent implements OnInit {
       typeOrder: 'delivering'
     }));
     this.actions$.dispatch(CustomerActions.loadOrder({
-      params: {take: 20, skip: 0, customerId: +this.getId},
+      params: {take: 20, skip: 0, customerId: +this.getId, hiddenDebt: StatusOrder.ALL },
       typeOrder: 'delivered'
     }));
 
@@ -90,16 +92,23 @@ export class DetailCustomerComponent implements OnInit {
     });
   }
 
-  payment(id: number) {
+  payment(customer: CustomerEntity) {
     this.modal.create({
       nzWidth: '70vw',
       nzTitle: 'Thanh toán',
-      nzContent: PaymentDialogComponent,
-      nzComponentParams: {
-        data: {id: id}
+      nzContent: PaymentModalComponent,
+      nzComponentParams: <{ data: ModalAddOrUpdatePayment }>{
+        data: {
+          add: {
+            customer: customer
+          }
+        }
       },
       nzFooter: [],
-
+    }).afterClose.subscribe(val => {
+      if(val){
+        this.actions$.dispatch(CustomerActions.loadOne({id: this.getId}));
+      }
     })
   }
 

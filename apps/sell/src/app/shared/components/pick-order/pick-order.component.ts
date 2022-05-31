@@ -1,58 +1,37 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {debounceTime, tap} from 'rxjs/operators';
-import {document} from 'ngx-bootstrap/utils';
 import {PaidType} from 'libs/enums/paidType.enum';
-import {OrderActions} from '../../../pages/order/+state/order.actions';
-import {
-  checkIsSelectAllInit,
-  getFirstDayInMonth,
-  getLastDayInMonth,
-  handleValSubPickItems,
-  pickAll,
-  pickOne,
-  someComplete
-} from '@minhdu-fontend/utils';
-import {RouteEntity} from '../../../pages/route/entities/route.entity';
+import {OrderActions, OrderQuery} from '../../../pages/order/+state';
+import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
 import {Actions} from '@datorama/akita-ng-effects';
-import {OrderQuery} from '../../../pages/order/+state/order.query';
-import {SearchOrderDto} from '../../../pages/order/dto/search-order.dto';
-import {CommodityEntity} from '../../../pages/commodity/entities/commodity.entity';
-import {NzModalRef} from 'ng-zorro-antd/modal';
+import {CommodityEntity} from '../../../pages/commodity/entities';
 import {OrderEntity} from "../../../pages/order/enitities/order.entity";
+import {PaginationDto} from "@minhdu-fontend/constants";
+import {OrderEnum} from "@minhdu-fontend/enums";
+import {SearchOrderDto} from "../../../pages/order/dto";
 
 
 @Component({
-  selector: 'app-pick-order',
+  selector: 'minhdu-fontend-pick-order',
   templateUrl: 'pick-order.component.html',
   styleUrls: ['pick-route.component.scss']
 })
-export class PickOrderComponent implements OnInit, OnChanges {
-  @Input() data: any;
-  @Input() orders: OrderEntity[] = [];
-  @Input() commoditiesSelected: CommodityEntity[] = [];
+export class PickOrderComponent implements OnInit {
+  @Input() columns!: OrderEnum[]
+  @Input() formGroup!: FormGroup;
   @Input() pickOne = false;
-  @Input() isCheckOrderSelected = false;
-  @Input() orderIdDefault?: number;
-  @Input() payment = false;
-  @Input() orderSelected: OrderEntity[] = [];
   @Input() customerId?: number;
-  @Output() checkEvent = new EventEmitter<OrderEntity[]>();
-  @Output() checkCommodityEvent = new EventEmitter<CommodityEntity[]>();
-  @Output() checkEventPickOne = new EventEmitter<OrderEntity>();
 
-  orders$ = this.orderQuery.selectAll();
   total$ = this.orderQuery.selectCount();
   loading$ = this.orderQuery.select(state => state.loading);
 
-  ordersFilter: OrderEntity[] = [];
-  pageSize = 30;
-  pageIndex = 0;
-  orderPickOne!: OrderEntity;
+  orders: OrderEntity [] = []
   paidType = PaidType;
-  isSelectAll = false;
   pageSizeTable = 7;
-  formGroup = new FormGroup(
+  orderEnum = OrderEnum
+  setOfCheckedOrder = new Set<OrderEntity>();
+  setOfCheckedCommodity = new Set<CommodityEntity>();
+  formGroupTable = new FormGroup(
     {
       filterRoute: new FormControl(false),
       customer: new FormControl(''),
@@ -63,179 +42,117 @@ export class PickOrderComponent implements OnInit, OnChanges {
       explain: new FormControl('')
     });
   eventSearch = true;
+  checked = false;
+  indeterminate = false;
 
   constructor(
     private readonly actions$: Actions,
     private readonly orderQuery: OrderQuery,
-    private readonly modalRef: NzModalRef
   ) {
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.orderSelected?.currentValue !== changes?.orderSelected?.previousValue) {
-      this.isSelectAll = this.ordersFilter.every(e => this.orderSelected.some(val => val.id === e.id));
-    }
+    this.orderQuery.selectAll().subscribe(val => {
+      this.orders = JSON.parse(JSON.stringify(val))
+    })
   }
 
   ngOnInit(): void {
-    this.isSelectAll = this.isCheckOrderSelected;
-    this.actions$.dispatch(OrderActions.loadAll({ param: this.mapOrder() }));
-    if (this.orderIdDefault) {
-      this.orderQuery.selectEntity(this.orderIdDefault).subscribe(val => {
-        this.orderPickOne = JSON.parse(JSON.stringify(val));
-      });
-    }
-    if (!this.isCheckOrderSelected) {
-      this.formGroup.valueChanges.pipe(
-        debounceTime(1000),
-        tap((_) => {
-          this.eventSearch = true;
-          const val = this.formGroup.value;
-          this.actions$.dispatch(OrderActions.loadAll({ param: this.mapOrder() }));
-        })
-      ).subscribe();
-      this.orders$.subscribe(orders => {
-        if (orders.length === 0) {
-          this.isSelectAll = false;
-        }
-        if (this.eventSearch) {
-          this.isSelectAll = checkIsSelectAllInit(orders, this.orderSelected);
-        }
-        this.orders = handleValSubPickItems(orders, this.orders, this.orderSelected, this.isSelectAll);
-        this.orders.map(val => {
-            if (this.checkCommodityRoute(val)) {
-              this.ordersFilter.push(val);
-            }
-          }
-        );
-      });
-    }
+    this.onLoad(false)
+    this.formGroup.value.orders?.map((item: OrderEntity) => this.setOfCheckedOrder.add(item))
+    this.formGroupTable.valueChanges.subscribe(_ => {
+      this.onLoad(false)
+    })
   }
 
   onPagination(pageIndex: number) {
-    if (!this.isCheckOrderSelected) {
-      this.eventSearch = false;
-      const count = this.orderQuery.getCount();
-      if (pageIndex * this.pageSizeTable >= count) {
-        this.actions$.dispatch(OrderActions.loadAll({ param: this.mapOrder(true), isPagination: true }));
-      }
+    const count = this.orderQuery.getCount();
+    if (pageIndex * this.pageSizeTable >= count) {
+      this.onLoad(true)
     }
   }
 
-  mapOrder(isPagination?: boolean): SearchOrderDto {
-    const val = this.formGroup.value;
-    const param = {
-      take: this.pageSize,
-      paidType: val.paidType,
-      skip: isPagination ? this.orderQuery.getCount() : this.pageIndex,
-      filterRoute: val.filterRoute,
-      customer: val.customer.trim(),
-      explain: val.explain.trim(),
-      startedAt_start :val.startedAt ? val.startedAt[0] : getFirstDayInMonth(new Date()),
-      startedAt_end: val.startedAt? val.startedAt[1]: getLastDayInMonth(new Date()),
-    };
-    return Object.assign(param, this.customerId ? { customerId: this.customerId } : {});
-  }
-
-  updateAllSelect(order: OrderEntity, checkBox?: any) {
-    this.isSelectAll = pickOne(order, this.orderSelected, this.ordersFilter).isSelectAll;
-    if (checkBox?.checked) {
-      order.commodities.forEach(val => {
-        const index = this.commoditiesSelected.findIndex(commodity => commodity.id === val.id);
-        if (index <= -1 && val.routeId === null) {
-          this.commoditiesSelected.push(val);
-        }
-      });
-    } else {
-      order.commodities.forEach(val => {
-        const index = this.commoditiesSelected.findIndex(commodity => commodity.id === val.id);
-        if (index > -1 && val.routeId === null) {
-          this.commoditiesSelected.splice(index, 1);
-        }
-      });
-    }
-
-    this.checkCommodityEvent.emit(this.commoditiesSelected);
-    this.checkEvent.emit(this.orderSelected);
-  }
-
-  someComplete(): boolean {
-    return someComplete(this.ordersFilter, this.orderSelected, this.isSelectAll);
-  }
-
-  setAll(select: boolean) {
-    if (this.isCheckOrderSelected) {
-      this.isSelectAll = false;
-      this.commoditiesSelected = [];
-      this.orderSelected = [];
-      this.checkCommodityEvent.emit(this.commoditiesSelected);
-    } else {
-      this.isSelectAll = select;
-      pickAll(select, this.ordersFilter, this.orderSelected);
-      if (select) {
-        this.commoditiesSelected = [];
-        this.ordersFilter.forEach(val => val.commodities.map(commodity => {
-            if (commodity.routeId === null) {
-              this.commoditiesSelected.push(commodity);
-            }
-          }
-        ));
-      } else {
-        this.commoditiesSelected = [];
-      }
-    }
-    this.checkCommodityEvent.emit(this.commoditiesSelected);
-    this.checkEvent.emit(this.orderSelected);
+  onLoad(pagination: boolean) {
+    this.actions$.dispatch(OrderActions.loadAll({
+      param: this.mapOrder(this.formGroupTable.value, pagination) as SearchOrderDto,
+      isPagination: pagination
+    }))
   }
 
   pickOneOrder(order: OrderEntity) {
-    this.orderPickOne = order;
-    this.checkEventPickOne.emit(this.orderPickOne);
+    this.formGroup.get('order')?.setValue(order)
   }
 
-  closeDialog() {
-    //case: pick one
-    const pickOrder = document.getElementsByName('pick-one');
-    for (let i = 0; i < pickOrder.length; i++) {
-      if (pickOrder[i].checked) {
-        this.orderPickOne = pickOrder[i].value;
-      }
-    }
-    this.modalRef.close(this.orderPickOne);
-  }
-
-  checkOrder(order: OrderEntity) {
-    return this.orderSelected.some((item) => item.id === order.id);
-  }
-
-  checkCommodity(commodity: CommodityEntity) {
-    return this.commoditiesSelected.some((item) => item.id === commodity.id);
-  }
-
-  pickCommodity(commodity: CommodityEntity, order: OrderEntity, checkbox: any) {
-    const indexOrder = this.orderSelected.findIndex(val => val.id === order.id);
-    if (indexOrder <= -1) {
-      this.orderSelected.push(order);
-    }
-    const index = this.commoditiesSelected.findIndex(val => val.id === commodity.id);
-    if (index > -1) {
-      this.commoditiesSelected.splice(index, 1);
-      if (this.commoditiesSelected.every(val => order.commodities.every(e => e.id !== val.id))) {
-        this.updateAllSelect(order);
+  updateCheckedSet(order: OrderEntity, checked: boolean): void {
+    if (checked) {
+      if (this.pickOne) {
+        this.setOfCheckedOrder.clear()
+        this.setOfCheckedOrder.add(order);
+      } else {
+        this.setOfCheckedOrder.add(order);
+        order.commodities.map(item => {
+          if (!item.route && !this.setOfCheckedCommodity.has(item)) {
+            this.setOfCheckedCommodity.add(item)
+          }
+        })
       }
     } else {
-      this.commoditiesSelected.push(commodity);
+      order.commodities.map(item => {
+        if (this.setOfCheckedCommodity.has(item)) {
+          this.setOfCheckedCommodity.delete(item)
+        }
+      })
+      this.setOfCheckedOrder.delete(order);
     }
-    this.checkEvent.emit(this.orderSelected);
-    this.checkCommodityEvent.emit(this.commoditiesSelected);
+    this.formGroup.get('orders')?.setValue(Array.from(this.setOfCheckedOrder))
+    this.formGroup.get('commodities')?.setValue(Array.from(this.setOfCheckedCommodity))
   }
 
-  checkCommodityRoute(order: OrderEntity): boolean {
-    return order.commodities.some(val => val.routeId === null);
+  onAllChecked(checked: boolean) {
+    this.orders
+      .forEach((order) => this.updateCheckedSet(order, checked));
+    this.refreshCheckedStatus();
   }
 
-  getFirstRoute(order: OrderEntity): RouteEntity {
-    return order?.routes[0];
+  onItemChecked(order: OrderEntity, checked: boolean): void {
+    this.updateCheckedSet(order, checked);
+    this.refreshCheckedStatus();
   }
 
+  private refreshCheckedStatus(): void {
+    this.checked = this.orders.every((order) => this.setOfCheckedOrder.has(order));
+    this.indeterminate = this.orders.some((order) => this.setOfCheckedOrder.has(order)) && !this.checked;
+  }
+
+  private mapOrder(val: any, isPagination: boolean) {
+    const param = {
+      take: PaginationDto.take,
+      skip: isPagination ? this.orderQuery.getCount() : PaginationDto.skip,
+      paidType: val.paidType || '',
+      filterRoute: val.filterRoute || '',
+      customer: val.customer || '',
+      explain: val.explain || '',
+      startedAt_start: val.startedAt ? val.startedAt[0] : getFirstDayInMonth(new Date()),
+      startedAt_end: val.startedAt ? val.startedAt[1] : getLastDayInMonth(new Date()),
+    };
+    return Object.assign({},
+      param,
+      this.customerId
+        ? {customerId: this.customerId}
+        : {});
+  }
+
+  onItemCheckedCommodity(commodity: any, order: OrderEntity, checked: boolean) {
+    if (checked) {
+      if (!this.setOfCheckedOrder.has(order)) {
+        this.setOfCheckedOrder.add(order);
+      }
+      this.setOfCheckedCommodity.add(commodity);
+    } else {
+      this.setOfCheckedCommodity.delete(commodity);
+      if (order.commodities.every(item => !this.setOfCheckedCommodity.has(item))) {
+        this.setOfCheckedOrder.delete(order);
+      }
+    }
+    this.refreshCheckedStatus()
+    this.formGroup.get('orders')?.setValue(Array.from(this.setOfCheckedOrder))
+    this.formGroup.get('commodities')?.setValue(Array.from(this.setOfCheckedCommodity))
+  }
 }

@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
-import {RouteActions} from '../../+state/routeActions';
+import {RouteActions} from '../../+state/route.Actions';
 import {DatePipe} from '@angular/common';
 
 @Component({

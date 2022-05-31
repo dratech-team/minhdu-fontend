@@ -1,2 +1,2 @@
 export * from './customer.service';
-export * from './payment.Service';
+export * from '../../payment/services/payment.Service';
