@@ -25,7 +25,6 @@ import {
 import * as _ from 'lodash'
 import {UnitDatetimeConstant} from "../../constants/unit-datetime.constant";
 import {Sort} from "@minhdu-fontend/data-models";
-import {EmployeeActions} from "@minhdu-fontend/employee-v2";
 import {SortSettingSalaryEnum} from "../../enums/sort-setting-salary.enum";
 
 @Component({

@@ -1,7 +1,8 @@
 export enum SortSettingSalaryEnum{
-  NAME = 'NAME',
+  TITLE = 'TITLE',
   PRICE = 'PRICE',
   UNIT = 'UNIT',
-  RANGE_DAY = 'RANGE_DAY',
+  DATETIME = 'DATE_TIME',
+  RATE = 'RATE',
   TYPE = 'TYPE',
 }

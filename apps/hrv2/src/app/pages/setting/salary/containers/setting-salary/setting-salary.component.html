@@ -90,7 +90,7 @@
           <th nzLeft nzWidth="60px">STT</th>
           <th
             [nzSortFn]='true'
-            (nzSortOrderChange)='onSort({orderBy: sortEnum.NAME, orderType:$event})'
+            (nzSortOrderChange)='onSort({orderBy: sortEnum.TITLE, orderType:$event})'
             nzLeft>Tên bản mẫu</th>
           <th
             [nzSortFn]='true'
@@ -102,9 +102,13 @@
             nzWidth="100px">Đơn vị tính</th>
           <th
             [nzSortFn]='true'
-            (nzSortOrderChange)='onSort({orderBy: sortEnum.RANGE_DAY, orderType:$event})'
+            (nzSortOrderChange)='onSort({orderBy: sortEnum.DATETIME, orderType:$event})'
             nzWidth="200px">Ngày</th>
-          <th nzWidth="100px">Hệ số</th>
+          <th
+            [nzSortFn]='true'
+            (nzSortOrderChange)='onSort({orderBy: sortEnum.RATE, orderType:$event})'
+            nzWidth="100px"
+          >Hệ số</th>
           <th
             [nzSortFn]='true'
             (nzSortOrderChange)='onSort({orderBy: sortEnum.TYPE, orderType:$event})'

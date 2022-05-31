@@ -9,7 +9,7 @@ import {SettingSalaryActions} from "./setting-salary.action";
 import {SearchSalarySettingDto} from "../dto";
 import {SettingSalaryQuery} from "./setting-salary.query";
 import {SalarySettingEntity} from "../entities";
-import {CompareSortUtil} from "../../../payroll/utils/compare-sort.util";
+import {PaginationDto} from "@minhdu-fontend/constants";
 
 @Injectable()
 export class SettingSalaryEffect {
@@ -63,6 +63,11 @@ export class SettingSalaryEffect {
             : {loading: true}
         )
       ));
+      Object.assign(props.search,
+        props.search?.orderType
+          ? {orderType: props.search?.orderType === 'ascend' ? 'asc' : 'desc'}
+          : {}
+      )
       return this.service.pagination(props).pipe(
         map(res => {
           res.data.map(val => this.sortBranchAndPosition(val))
