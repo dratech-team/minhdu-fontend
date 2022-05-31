@@ -150,9 +150,10 @@ export class OrderEffect {
                 added: true
               }));
             if (response.deliveredAt) {
+              console.log(response)
               this.customerStore.update(response.customerId, entity => {
                 return {
-                  debt: entity.debt ? entity.debt - response.paymentTotal + response.commodityTotal : entity.debt,
+                  debt: entity.debt ? entity.debt + response.paymentTotal - response.commodityTotal : entity.debt,
                   delivering: arrayRemove(entity.delivering, response.id),
                   delivered: arrayAdd(entity.delivered, response),
                 }
@@ -186,7 +187,7 @@ export class OrderEffect {
             this.orderStore.update(res.id, res);
           this.customerStore.update(res.customerId, entity => {
             return {
-              debt: entity.debt ? entity.debt + res.paymentTotal - res.commodityTotal : entity.debt,
+              debt: entity.debt ? entity.debt + (res.paymentTotal - res.commodityTotal) : entity.debt,
               delivered: arrayUpdate(entity.delivered, res.id, res),
             }
           })
