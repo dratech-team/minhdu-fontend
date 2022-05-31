@@ -1,0 +1,24 @@
+<div
+  class="p-3  pointer"
+  (click)="onClickItem()"
+>
+  <div class="border-bottom d-flex justify-content-between align-items-center">
+    <div class="d-flex">
+      <div class="p-2">
+        <img src="/" alt="img">
+      </div>
+      <div class="d-flex flex-column pl-2">
+        <div class="font-weight-bold font-lg" style="color: #0088ff">
+          <span>{{title}}</span>
+        </div>
+        <div class="text-center mt-1 font-weight-lighter">
+          <span>{{description}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <span class="font-weight-lighter">{{readingTime}} phút đọc</span>
+    </div>
+  </div>
+</div>
