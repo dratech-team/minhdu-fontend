@@ -2,7 +2,7 @@ import {BasePayrollEntity} from '../bases';
 import {Employee} from '@minhdu-fontend/data-models';
 import {PayslipEntity} from './payslip.entity';
 import {RecipeType} from '@minhdu-fontend/enums';
-import {DayOffSalaryEntity, DeductionSalaryEntity, RemoteSalaryEntity, SalaryEntity} from "../../salary/entities";
+import {DeductionSalaryEntity, SalaryEntity} from "../../salary/entities";
 import {HolidaySalaryEntity} from "../../salary/entities/holiday-salary.entity";
 
 

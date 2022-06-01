@@ -8,10 +8,10 @@ export interface SalaryEntity extends BaseSalaryEntity {
   readonly payroll: PayrollEntity,
   readonly setting: SalarySettingEntity
   readonly partial?: PartialDayEnum;
-  readonly allowance?: {
+  readonly allowances?: {
     title: string,
     price: number
-  }
+  } []
   readonly startedAt?: Date,
   readonly endedAt?: Date,
   readonly startTime?: Date,
