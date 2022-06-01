@@ -419,16 +419,19 @@
             </thead>
             <tbody>
             <ng-template ngFor let-salary [ngForOf]='payroll.overtimes' let-i='index'>
-              <tr (click)='onSalarySetting(salary.setting.title)'>
+              <tr>
                 <td style="padding: 10px !important;" (click)='$event.stopPropagation()'
                     [(nzExpand)]='salary.expand'></td>
                 <td>
                   <span>{{i + 1}}</span>
                 </td>
                 <td>
-                  <div>{{salary.setting.title}}</div>
+                  <div class="pointer"
+                       (click)='onSalarySetting(salary.setting.title)'>
+                    {{salary.setting.title}}
+                  </div>
                   <div *ngFor="let allowance of salary.allowances">
-                    {{allowance.title}}
+                    + {{allowance.title}}
                   </div>
                 </td>
                 <td class=' text-center '>
@@ -480,10 +483,10 @@
             <tr>
               <th nzWidth="40px">STT</th>
               <th>Ngày</th>
-              <th>Phụ cấp (nếu có)</th>
+              <th>Đơn giá</th>
               <th>Tổng ngày</th>
               <th>Hệ số</th>
-              <th>Đơn giá</th>
+              <th>Phụ cấp (nếu có)</th>
               <th>Thành tiên</th>
             </tr>
             </thead>
@@ -491,24 +494,27 @@
             <tr *ngFor='let item of salary.details; let i = index'>
               <td style='background: white'>{{i + 1}}</td>
               <td style='background: white'>{{item.datetime | date:'dd-MM-yyyy'}}</td>
-              <td style='background: white'>
-                <div *ngFor="let allowance of salary?.allowances">
-                  {{allowance.title}}
-                  <br>
-                  {{allowance.price || 0
-                  |roundingnumber: 100
-                  | number: '1.0-0'
-                  }} đ
-                </div>
-              </td>
-              <td style='background: white'>{{item.duration}}</td>
-              <td style='background: white'>{{item.rate}}</td>
-              <td style='background: white'>
+              <td style='background: white ;color: #05981C'>
                 {{item.price || 0
                 | roundingnumber :100
                 | number:'1.0-0'}} đ
               </td>
-              <td style='background: white'>{{item.total | number:'1.0-0'}}</td>
+              <td style='background: white'>{{item.duration}}</td>
+              <td style='background: white'>{{item.rate}}</td>
+              <td style='background: white'>
+                <div *ngFor="let allowance of salary?.allowances">
+                  <span class="font-weight-bold">
+                     {{allowance.title}} :
+                  </span>
+                  <span style='color: #05981C'>
+                    {{allowance.price || 0
+                    |roundingnumber: 100
+                    | number: '1.0-0'
+                    }} đ
+                 </span>
+                </div>
+              </td>
+              <td style='background: white;color: #05981C '>{{item.total | number:'1.0-0'}}</td>
             </tr>
             </tbody>
           </nz-table>
@@ -591,13 +597,12 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor='let salary of payroll.absents; let i = index'
-                class='pointer'
-                (click)='onSalarySetting(salary?.setting?.title)'>
+            <tr *ngFor='let salary of payroll.absents; let i = index'>
               <td>
                 {{i + 1}}
               </td>
-              <td>
+              <td class='pointer'
+                  (click)='onSalarySetting(salary?.setting?.title)'>
                 <div>
                   <span>{{salary?.setting?.title}} {{salary.partial| transformconstant: sessionConstant}}</span>
                 </div>

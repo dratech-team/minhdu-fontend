@@ -63,11 +63,13 @@ export class SettingSalaryEffect {
             : {loading: true}
         )
       ));
-      Object.assign(props.search,
-        props.search?.orderType
-          ? {orderType: props.search?.orderType === 'ascend' ? 'asc' : 'desc'}
-          : {}
-      )
+      if(props?.search){
+        Object.assign(props.search,
+          props.search?.orderType
+            ? {orderType: props.search?.orderType === 'ascend' ? 'asc' : 'desc'}
+            : {}
+        )
+      }
       return this.service.pagination(props).pipe(
         map(res => {
           res.data.map(val => this.sortBranchAndPosition(val))

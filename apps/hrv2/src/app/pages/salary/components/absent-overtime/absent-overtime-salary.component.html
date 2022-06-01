@@ -124,7 +124,7 @@
       </div>
       <div class=' d-flex align-items-center title-item mb-2' *ngIf='this.data.type === salaryTypeEnum.OVERTIME'>
         <span>Phụ cấp tăng ca:</span>
-        <input type='checkbox' class='ml-2' formControlName='isAllowance'>
+        <label nz-checkbox class="ml-2" formControlName="isAllowance"></label>
       </div>
       <div class='allowance-overtime p-2 border' *ngIf='this.formGroup.value.isAllowance'>
         <div class=' mb-2'>

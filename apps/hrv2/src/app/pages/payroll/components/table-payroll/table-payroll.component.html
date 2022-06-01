@@ -483,7 +483,11 @@
           <td>
             <div>
               <span>{{salary.setting?.title}}</span>
-              <span class='ml-2' *ngIf='salary.allowance'> + {{salary.allowance.title}}</span>
+              <span class='ml-2' *ngIf='salary?.allowances'>
+                <div *ngFor="let allowance of salary.allowances">
+                  + {{allowance.title}}
+                </div>
+              </span>
             </div>
           </td>
           <td class=' text-center '>
