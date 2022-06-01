@@ -116,8 +116,12 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       unit: [salary?.setting?.unit ? salary.setting.unit : DatetimeUnitEnum.MONTH],
       partialDay: [salary?.partial ? this.getPartialDay(salary.partial) : ''],
       isAllowance: [salary?.allowances && salary.allowances.length > 0],
-      priceAllowance: [salary?.allowances ? salary.allowances[0].price : ''],
-      titleAllowance: [salary?.allowances ? salary.allowances[0].title : ''],
+      priceAllowance: [salary?.allowances && salary.allowances.length > 0
+        ? salary.allowances[0].price
+        : ''],
+      titleAllowance: [salary?.allowances && salary.allowances.length > 0
+        ? salary.allowances[0].title
+        : ''],
       constraintHoliday: [],
       constraintOvertime: [],
       hasConstraints: [],
