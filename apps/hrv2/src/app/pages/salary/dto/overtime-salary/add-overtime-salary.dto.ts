@@ -6,7 +6,7 @@ export interface BaseAddOvertimeSalaryDto extends BaseSalaryEntity {
   readonly settingId: number;
   readonly startedAt: Date;
   readonly endedAt: Date,
-  readonly allowance?: {
+  readonly allowances?: {
     title: string,
     price: number
   }
