@@ -11,9 +11,9 @@ import {PayrollActions} from '../../../payroll/state/payroll.action';
 import {catchError, map} from 'rxjs/operators';
 import {throwError} from 'rxjs';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
-import {ModalAddOrUpdatePermanent} from '../../../payroll/data';
 import {EmployeeService} from '@minhdu-fontend/employee-v2';
 import {PayrollQuery} from "../../../payroll/state";
+import {ModalAddOrUpdatePermanent} from "../../data";
 
 @Component({
   templateUrl: 'permanent-salary.component.html'

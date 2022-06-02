@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {NzModalRef, NzModalService} from "ng-zorro-antd/modal";
 import {PermanentSalaryComponent} from "../../../salary/components/permanent/permanent-salary.component";
-import {ModalAddOrUpdatePermanent} from "../../data";
+import {ModalAddOrUpdatePermanent} from "../../../salary/data";
 
 @Component({
   templateUrl: 'modal-selct-add-Salary.html'

@@ -12,12 +12,12 @@ import {throwError} from 'rxjs';
 import {Actions} from '@datorama/akita-ng-effects';
 import {PayrollActions} from '../../../payroll/state/payroll.action';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
-import {ModalAddOrUpdateAllowance} from '../../../payroll/data';
 import {validateDayInMonth} from '../../utils/validate-day-in-month.util';
 import * as moment from 'moment';
 import {PayrollQuery} from "../../../payroll/state";
 import {UnitDatetimeConstant} from "../../../setting/salary/constants/unit-datetime.constant";
 import {SalaryTypeEnum} from "../../../setting/salary/enums";
+import {ModalAddOrUpdateAllowance} from "../../data";
 
 @Component({
   templateUrl: 'allowance-salary.component.html'

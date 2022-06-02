@@ -21,7 +21,6 @@ import {ScrollTablePayrollConstant} from "../../constants/scroll-table-payroll.c
 import {SalaryEntity} from "../../../salary/entities";
 import {ClassifySalaryComponent} from "../classify-salary/classify-salary.component";
 import {PermanentSalaryComponent} from "../../../salary/components/permanent/permanent-salary.component";
-import {ModalAddOrUpdateAbsentOrOvertime, ModalAddOrUpdateAllowance, ModalAddOrUpdatePermanent} from "../../data";
 import {catchError} from "rxjs/operators";
 import {throwError} from "rxjs";
 import {
@@ -39,6 +38,11 @@ import {
 import {PartialDayEnum} from "@minhdu-fontend/data-models";
 import {UpdatePayrollComponent} from "../update/update-payroll.component";
 import {ModalSelectAddSalaryComponent} from "../modal-select-add-salary/modal-select-add-salary.component";
+import {
+  ModalAddOrUpdateAbsentOrOvertime,
+  ModalAddOrUpdateAllowance,
+  ModalAddOrUpdatePermanent
+} from "../../../salary/data";
 
 @Component({
   selector: 'minhdu-fontend-table-payroll',

@@ -48,15 +48,15 @@ export class RemoteOrDayOffSalaryComponent implements OnInit {
     private readonly modalRef: NzModalRef,
     private readonly message: NzMessageService,
     private readonly remoteService: SalaryRemoteService,
-    private readonly dayOffSalaryService: DayOffSalaryService
+    private readonly dayOffSalaryService: DayOffSalaryService,
   ) {
   }
 
   ngOnInit(): void {
     this.fistDateInMonth = getFirstDayInMonth(new Date(
       this.data.add
-        ? this.data.add.payroll.createdAt
-        : this.data.update.salary.startedAt
+        ? this.data.add.payroll.createdAt || new Date()
+        : this.data.update.salary.startedAt || new Date()
     ))
     const payroll = this.data.add?.payroll;
     const salary = this.data.add?.salary || this.data.update?.salary;

@@ -1,7 +1,7 @@
 <div class='px-2'>
   <nz-steps [nzCurrent]='indexStep'>
     <nz-step nzTitle='Bảng {{this.data.type | transformSalaryType}}'></nz-step>
-    <nz-step *ngIf='data.add' nzTitle='Chọn nhân viên'></nz-step>
+    <nz-step *ngIf='data?.add' nzTitle='Chọn nhân viên'></nz-step>
     <nz-step *ngIf='data?.update?.multiple' nzTitle='Nhân viên đã chọn'></nz-step>
   </nz-steps>
   <ng-template [ngIf]='indexStep === 0'>

@@ -11,8 +11,8 @@ import {Actions} from '@datorama/akita-ng-effects';
 import {throwError} from 'rxjs';
 import {PayrollActions} from '../../../payroll/state/payroll.action';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
-import {ModalAddOrUpdateDeduction} from '../../../payroll/data';
 import {DeductionSalaryService} from '../../service';
+import {ModalAddOrUpdateDeduction} from "../../data/modal-deduction-salary.data";
 
 @Component({
   templateUrl: 'deduction-salary.component.html'
@@ -27,6 +27,7 @@ export class DeductionSalaryComponent implements OnInit {
   submitting = false;
   indexStep = 0;
   employeeType = EmployeeType
+  today = new Date()
 
   constructor(
     public readonly datePipe: DatePipe,

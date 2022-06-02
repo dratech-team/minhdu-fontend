@@ -31,14 +31,15 @@
       </div>
     </form>
   </ng-template>
-  <ng-template [ngIf]="indexStep === 1 && data.add">
-    <minhdu-fontend-select-payroll
-      [employeeType]="employeeType.EMPLOYEE_FULL_TIME"
-      [formGroup]="formGroup"
-      [createdAt]="data.add.payroll.createdAt"
-    >
-    </minhdu-fontend-select-payroll>
+  <ng-template [ngIf]="indexStep === 1 && data.add?.payroll">
+      <minhdu-fontend-select-payroll
+        [employeeType]="employeeType.EMPLOYEE_FULL_TIME"
+        [formGroup]="formGroup"
+        [createdAt]="data.add?.payroll?.createdAt || today"
+      >
+      </minhdu-fontend-select-payroll>
   </ng-template>
+
   <ng-template [ngIf]="indexStep === 1 && data.update">
     <div *ngIf="data.update.multiple else alert">
       <minhdu-fontend-table-salaries-selected

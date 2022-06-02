@@ -19,12 +19,6 @@ import {SalaryEntity, UnionSalary} from '../../../salary/entities';
 import {PayslipComponent} from '../../components/payslip/payslip.component';
 import {AllowanceSalaryComponent} from '../../../salary/components/allowance/allowance-salary.component';
 import {Actions} from '@datorama/akita-ng-effects';
-import {
-  ModalAddOrUpdateAbsentOrOvertime,
-  ModalAddOrUpdateAllowance,
-  ModalAddOrUpdateDeduction,
-  ModalPermanentSalaryData
-} from '../../data';
 import {ModalAlertComponent, ModalNoteComponent} from '@minhdu-fontend/components';
 import {ModalAlertEntity} from '@minhdu-fontend/base-entity';
 import {
@@ -47,12 +41,17 @@ import {SessionConstant} from '../../../../../shared/constants';
 import {HolidaySalaryComponent} from '../../../salary/components/holiday/holiday-salary.component';
 import {ModalAddOrUpdateHoliday} from '../../../salary/data/modal-holiday-salary.data';
 import {SalaryHolidayService} from '../../../salary/service/salary-holiday.service';
-import {ModalAddOrUpdateRemoteOrDayOff} from '../../../salary/data';
+import {
+  ModalAddOrUpdateAbsentOrOvertime, ModalAddOrUpdateAllowance,
+  ModalAddOrUpdateRemoteOrDayOff,
+  ModalPermanentSalaryData
+} from '../../../salary/data';
 import {NzTableSortOrder} from "ng-zorro-antd/table";
 import {SettingSalaryStore} from "../../../setting/salary/state";
 import {CompareSortUtil} from "../../utils/compare-sort.util";
 import {FilterSalaryEnum} from "../../enums/filter-salary.enum";
 import {DayOffSalaryService} from "../../../salary/service/day-off-salary.service";
+import {ModalAddOrUpdateDeduction} from "../../../salary/data/modal-deduction-salary.data";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',

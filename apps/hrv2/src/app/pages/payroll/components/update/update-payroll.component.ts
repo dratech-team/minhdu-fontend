@@ -51,8 +51,7 @@ export class UpdatePayrollComponent implements OnInit {
       branch: [payroll.branch],
       position: [payroll.position],
       workday: [payroll.workday],
-      // v2 không còn áp dụng công thức lương
-      // recipeType: [payroll.recipeType],
+      recipeType: [payroll.recipeType],
       isFlatSalary: [payroll.isFlatSalary],
       tax: [payroll.tax ? payroll.tax * 100 : ''],
     })
@@ -95,9 +94,9 @@ export class UpdatePayrollComponent implements OnInit {
       value.branch?.id
         ? {branchId: value.branch.id}
         : {},
-      // value.recipeType?.value
-      //   ? {recipeType: value.recipeType.value}
-      //   : {}
+      value.recipeType?.value
+        ? {recipeType: value.recipeType.value}
+        : {}
     )
   }
 }

@@ -17,12 +17,12 @@ import {SalarySettingEntity} from '../../../setting/salary/entities';
 import {getAfterTime, getBeforeTime, getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
 import {throwError} from 'rxjs';
 import {PayrollActions} from '../../../payroll/state/payroll.action';
-import {ModalAddOrUpdateAbsentOrOvertime} from '../../../payroll/data';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import * as moment from "moment";
 import {validateDayInMonth} from "../../utils/validate-day-in-month.util";
 import {PayrollQuery} from "../../../payroll/state";
 import {SessionEntity} from "../../../../../shared/entities";
+import {ModalAddOrUpdateAbsentOrOvertime} from "../../data";
 
 @Component({
   templateUrl: 'absent-overtime-salary.component.html'
