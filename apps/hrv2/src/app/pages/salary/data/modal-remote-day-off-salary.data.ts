@@ -9,6 +9,7 @@ export interface ModalRemoteOrDayOffSalaryData {
   type: SalaryTypeEnum.DAY_OFF | SalaryTypeEnum.WFH
   add?: {
     payroll: PayrollEntity,
+    salary?: SalaryEntity,
     multiple?: boolean
 
   },

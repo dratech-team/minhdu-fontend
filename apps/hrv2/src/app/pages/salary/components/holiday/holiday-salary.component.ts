@@ -25,9 +25,9 @@ export class HolidaySalaryComponent implements OnInit {
     filterBy: [(entity => entity.type === SalaryTypeEnum.HOLIDAY)]
   }).pipe(
     map(templates => {
-      if (this.data?.update) {
+      if (this.data?.update || this.data.add.salary) {
         this.formGroup.get('template')?.setValue(
-          this.getTemplateSalary(templates, this.data.update.salary.setting.id));
+          this.getTemplateSalary(templates, this.data.update?.salary.setting.id || this.data.add?.salary?.setting.id));
       }
       return templates;
     })
@@ -71,7 +71,7 @@ export class HolidaySalaryComponent implements OnInit {
     }));
 
     const payroll = this.data.add?.payroll;
-    const salary = this.data.update?.salary;
+    const salary = this.data.update?.salary || this.data.add?.salary;
     this.formGroup = this.formBuilder.group({
       type: [SalaryTypeEnum.HOLIDAY, Validators.required],
       template: ['', Validators.required],
@@ -80,8 +80,8 @@ export class HolidaySalaryComponent implements OnInit {
     });
   }
 
-  getTemplateSalary(template: SalarySettingEntity[], id: number) {
-    return template.find(item => item.id === id);
+  getTemplateSalary(template: SalarySettingEntity[], id: number | undefined) {
+    return id ? template.find(item => item.id === id) : '';
   }
 
   get checkValid() {
@@ -123,7 +123,7 @@ export class HolidaySalaryComponent implements OnInit {
       salary,
       this.data.add
         ? {payrollIds: value.payrollIds}
-        :this.data.update.multiple
+        : this.data.update.multiple
           ? {salaryIds: value.salaryIds}
           : {salaryIds: [this.data.update.salary.id]}
     );

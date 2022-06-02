@@ -59,7 +59,7 @@ export class RemoteOrDayOffSalaryComponent implements OnInit {
         : this.data.update.salary.startedAt
     ))
     const payroll = this.data.add?.payroll;
-    const salary = this.data.update?.salary;
+    const salary = this.data.add?.salary || this.data.update?.salary;
     this.formGroup = this.formBuilder.group({
       type: [salary?.type],
       partial: [salary?.partial, Validators.required],

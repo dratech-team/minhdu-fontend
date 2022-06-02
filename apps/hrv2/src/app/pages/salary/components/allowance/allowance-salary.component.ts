@@ -60,7 +60,7 @@ export class AllowanceSalaryComponent implements OnInit {
         ? this.data.add.payroll?.createdAt || this.payrollQuery.getValue().search.startedAt
         : this.data.update.salary.startedAt || this.payrollQuery.getValue().search.startedAt
     ));
-    const salary = this.data.update?.salary;
+    const salary = this.data.add?.salary || this.data.update?.salary;
     const payroll = this.data.add?.payroll;
     this.formGroup = this.formBuilder.group({
       title: [salary?.title, Validators.required],
@@ -100,8 +100,8 @@ export class AllowanceSalaryComponent implements OnInit {
       return;
     }
     const value = this.formGroup.value;
-    if(this.data.add?.multiple && value.payrollIds.length === 0){
-      return  this.message.warning('Chưa chọn nhân viên')
+    if (this.data.add?.multiple && value.payrollIds.length === 0) {
+      return this.message.warning('Chưa chọn nhân viên')
     }
     const salary = this.mapSalary(value);
     this.submitting = true;

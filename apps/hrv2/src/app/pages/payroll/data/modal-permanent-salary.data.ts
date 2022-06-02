@@ -8,6 +8,7 @@ export interface ModalPermanentSalaryData {
   type: SalaryTypeEnum
   add?: {
     payroll?: PayrollEntity,
+    salary?: SalaryEntity
     multiple?: boolean
   }
   update?: {

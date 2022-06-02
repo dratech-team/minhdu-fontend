@@ -40,7 +40,7 @@ export class DeductionSalaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const salary = this.data?.update?.salary;
+    const salary = this.data.add?.salary || this.data?.update?.salary;
     this.formGroup = this.formBuilder.group({
       title: [salary?.title, Validators.required],
       price: [salary?.price, Validators.required],

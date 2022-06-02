@@ -35,9 +35,9 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     filterBy: [(entity => entity.type === this.data.type)]
   }).pipe(
     map(templates => {
-      if (this.data.update?.salary?.setting) {
+      if (this.data.update?.salary?.setting || this.data.add?.salary?.setting) {
         this.formGroup.get('template')?.setValue(
-          this.getTemplateSalary(templates, this.data.update.salary.setting.id));
+          this.getTemplateSalary(templates, this.data.update?.salary.setting.id || this.data.add?.salary?.setting.id));
       }
       return templates;
     })
@@ -100,11 +100,11 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     this.actions$.dispatch(SettingSalaryActions.loadAll({
       search: {types: [this.data.type]}
     }));
-    const salary = this.data?.update?.salary;
+    const salary = this.data.add?.salary || this.data?.update?.salary;
     this.formGroup = this.formBuilder.group({
       template: ['', Validators.required],
       title: [salary?.title],
-      rangeDay: [salary
+      rangeDay: [salary && this.data.update
         ? [salary.startedAt, salary.endedAt]
         : [this.fistDateInMonth, getLastDayInMonth(this.fistDateInMonth)]
         , Validators.required],
@@ -118,8 +118,8 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       isAllowance: [salary?.allowances && salary.allowances.length > 0],
       priceAllowance: [
         salary?.allowances && salary.allowances.length > 0
-        ? salary.allowances[0].price
-        : ''],
+          ? salary.allowances[0].price
+          : ''],
       titleAllowance: [salary?.allowances && salary.allowances.length > 0
         ? salary.allowances[0].title
         : ''],
@@ -168,8 +168,9 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     return this.formGroup.controls;
   }
 
-  getTemplateSalary(template: SalarySettingEntity[], id: number) {
-    return template.find(item => item.id === id);
+  getTemplateSalary(template: SalarySettingEntity[], id: number | undefined) {
+    return id ? template.find(item => item.id === id) : '';
+
   }
 
   getPartialDay(partial: PartialDayEnum) {

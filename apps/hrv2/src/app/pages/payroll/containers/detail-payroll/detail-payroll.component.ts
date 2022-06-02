@@ -52,6 +52,7 @@ import {NzTableSortOrder} from "ng-zorro-antd/table";
 import {SettingSalaryStore} from "../../../setting/salary/state";
 import {CompareSortUtil} from "../../utils/compare-sort.util";
 import {FilterSalaryEnum} from "../../enums/filter-salary.enum";
+import {DayOffSalaryService} from "../../../salary/service/day-off-salary.service";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -111,6 +112,7 @@ export class DetailPayrollComponent implements OnInit {
     private readonly allowanceSalaryService: AllowanceSalaryService,
     private readonly salaryRemoteService: SalaryRemoteService,
     private readonly salaryHolidayService: SalaryHolidayService,
+    private readonly dayOffSalaryService: DayOffSalaryService,
     private readonly message: NzMessageService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
@@ -126,15 +128,15 @@ export class DetailPayrollComponent implements OnInit {
     return this.activatedRoute.snapshot.params.id;
   }
 
-  onAdd(type: SalaryTypeEnum, payroll: PayrollEntity) {
+  onAddSalary(type: SalaryTypeEnum, payroll: PayrollEntity, salary?: SalaryEntity) {
     const config = {
       nzFooter: [],
       nzWidth: '40vw',
     };
-    this.onOpenSalary(type, config, {payroll});
+    this.onOpenSalary(type, config, {payroll, salary});
   }
 
-  updateSalary(
+  onUpdateSalary(
     type: SalaryTypeEnum,
     salary: UnionSalary,
     payroll?: PayrollEntity
@@ -159,7 +161,10 @@ export class DetailPayrollComponent implements OnInit {
   onOpenSalary(
     type: SalaryTypeEnum,
     config: any,
-    add?: { payroll: PayrollEntity },
+    add?: {
+      payroll: PayrollEntity
+      salary?: SalaryEntity
+    },
     update?: { salary: UnionSalary }
   ) {
     if (type === SalaryTypeEnum.ALLOWANCE) {
@@ -240,16 +245,16 @@ export class DetailPayrollComponent implements OnInit {
     }
   }
 
-  removeSalary(
+  onRemoveSalary(
     type: SalaryTypeEnum,
     salary: SalaryEntity
   ) {
     this.modal.create({
-      nzTitle: `Xoá ${salary.title || salary?.setting?.title || salary.setting.type}`,
+      nzTitle: `Xoá ${salary?.title || salary?.setting?.title || salary.setting?.type || salary.type}`,
       nzContent: ModalAlertComponent,
       nzComponentParams: <{ data: ModalAlertEntity }>{
         data: {
-          description: `Bạn có chắc chắn muốn xoá ${salary.title || salary?.setting?.title || salary.setting.type}`
+          description: `Bạn có chắc chắn muốn xoá ${salary?.title || salary?.setting?.title || salary.setting?.type || salary?.type}`
         }
       },
       nzFooter: ' '
@@ -267,7 +272,9 @@ export class DetailPayrollComponent implements OnInit {
                     ? this.absentSalaryService
                     : type === SalaryTypeEnum.HOLIDAY
                       ? this.salaryHolidayService
-                      : this.deductionSalaryService
+                      : type === SalaryTypeEnum.DAY_OFF
+                        ? this.dayOffSalaryService
+                        : this.deductionSalaryService
         );
 
         service.deleteMany({salaryIds: [salary.id]}).pipe(
