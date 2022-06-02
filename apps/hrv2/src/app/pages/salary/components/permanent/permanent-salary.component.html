@@ -14,7 +14,7 @@
           <span>Loại lương</span>
           <span class='star'>*</span>
         </div>
-        <div class=' mb-3' style="width: 100%" [formGroup]='formGroup'>
+        <div class=' mb-3' [formGroup]='formGroup'>
           <nz-select style="width: 100%" formControlName='template'
                      [compareWith]="compareFn"
                      [nzLoading]="(loadingSettingSalary$|async)"
