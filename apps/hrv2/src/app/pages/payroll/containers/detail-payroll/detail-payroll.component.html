@@ -502,7 +502,7 @@
               <th nzWidth="40px">STT</th>
               <th>Ngày</th>
               <th>Đơn giá</th>
-              <th>Tổng ngày</th>
+              <th>Tổng thời gian</th>
               <th>Hệ số</th>
               <th>Phụ cấp (nếu có)</th>
               <th>Thành tiền</th>
@@ -517,7 +517,17 @@
                 | roundingnumber :100
                 | number:'1.0-0'}} đ
               </td>
-              <td style='background: white'>{{item.duration}}</td>
+              <td style='background: white'>
+                 <span *ngIf="item.setting.unit === datetimeUnit.HOUR else childTottalDay">
+                    {{((item.duration * 60) | convertMinute).hour }} giờ
+                   {{((item.duration * 60) | convertMinute).minute}} phút
+                  </span>
+                <ng-template #childTottalDay>
+                    <span>
+                       {{item.duration}} {{ item.partial | transformconstant: sessionConstant}}
+                    </span>
+                </ng-template>
+              </td>
               <td style='background: white'>{{item.rate}}</td>
               <td style='background: white'>
                 <div *ngFor="let allowance of salary?.allowances">
