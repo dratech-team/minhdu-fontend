@@ -160,17 +160,29 @@
       <div class='mt-2' *ngIf='formGroup.value?.block?.price?.show
        && !formGroup.value.block.recipesConstant'>
         <span class="font-weight-bold">Đơn giá</span>
-        <input
-          currencyMask
-          [options]="{ suffix: ' đ' }"
-          nz-input type='text' placeholder='Đơn giá'
-          formControlName="prices"
-          (keyup.enter)="validatePrices()"
-          [ngStyle]="{
+        <div class="d-flex justify-content-center align-items-center">
+          <nz-input-group [nzSuffix]="suffixTemplateInfo" [nzPrefix]="prefixTemplateUser">
+            <input
+              currencyMask
+              [options]="{ suffix: ' đ' }"
+              nz-input type='text' placeholder='Đơn giá'
+              formControlName="prices"
+              (keyup.enter)="validatePrices()"
+              [ngStyle]="{
                  'pointer-events':formGroup.value.block.price.disabled ? 'none': 'auto',
                  'background':formGroup.value.block.price.disabled ? '#dddddd':'white'
-                  }">
-        <div  *ngIf="prices.length > 0" class="border p-1 mt-2"
+                  }"/>
+          </nz-input-group>
+          <ng-template #prefixTemplateUser>
+            <i *ngIf="formGroup.value.insurance"
+              (click)="validatePrices()"
+              nz-icon nzType="plus" nzTheme="outline"></i>
+            </ng-template>
+          <ng-template #suffixTemplateInfo>
+            <i  *ngIf="formGroup.value.insurance" nz-icon nz-tooltip nzTooltipTitle="nhấn enter hoặc nút cộng để nhập list giá" nzType="info-circle"></i>
+          </ng-template>
+        </div>
+        <div *ngIf="prices.length > 0" class="border p-1 mt-2"
              style="height: 120px ; overflow-y: scroll">
           <mat-chip-list>
             <mat-chip
