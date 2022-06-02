@@ -457,7 +457,8 @@
                 </td>
                 <td>
                   <span *ngIf="salary.setting.unit === datetimeUnit.HOUR else totalDay">
-                    {{salary.duration}} giờ
+                    {{((salary.duration * 60) | convertMinute).hour }} giờ
+                    {{((salary.duration * 60) | convertMinute).minute}} phút
                   </span>
                   <ng-template #totalDay>
                     <span>
@@ -545,6 +546,7 @@
             <td>
               {{payroll.total.overtime.duration.day}} ngày
               <br>{{payroll.total.overtime.duration.hour}} Giờ
+              <br>{{payroll.total.overtime.duration.minute}} phút
             </td>
             <td style='color: #05981C'>
               {{payroll.total.overtime.total

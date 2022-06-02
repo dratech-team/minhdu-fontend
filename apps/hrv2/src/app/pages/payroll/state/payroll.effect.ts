@@ -18,12 +18,14 @@ import {AddManyPayrollDto} from "../dto/add-many-payroll.dto";
 import {HolidaySalaryEntity} from "../../salary/entities/holiday-salary.entity";
 import * as moment from 'moment';
 import {CompareSortUtil} from "../utils/compare-sort.util";
+import {ConvertMinutePipe} from "../../../../../../../libs/components/src/lib/pipes/convert-minute.pipe";
 
 @Injectable({providedIn: 'root'})
 export class PayrollEffect {
   private stateHistory: StateHistoryPlugin;
 
   constructor(
+    private readonly convertMinutePipe: ConvertMinutePipe,
     private readonly action$: Actions,
     private readonly service: PayrollService,
     private readonly message: NzMessageService,
@@ -316,18 +318,20 @@ export class PayrollEffect {
           day: a.duration.day + ((
             unit === DatetimeUnitEnum.DAY
             || unit === DatetimeUnitEnum.MONTH
-            || unit === DatetimeUnitEnum.TIMES )
+            || unit === DatetimeUnitEnum.TIMES)
             ? (b.partial === PartialDayEnum.ALL_DAY ?
                 b.duration
                 : (b.duration / 2)
             )
             : 0),
           hour: a.duration.hour + (unit === DatetimeUnitEnum.HOUR
-            ? b.duration
+            ? this.convertMinutePipe.transform(b.duration * 60).hour
             : 0),
           minute: a.duration.minute + (unit === DatetimeUnitEnum.MINUTE
             ? b.duration
-            : 0),
+            : unit === DatetimeUnitEnum.HOUR
+              ? this.convertMinutePipe.transform(b.duration * 60).minute
+              : 0),
         }
       };
     }, {price: 0, total: 0, duration: {day: 0, hour: 0, minute: 0}});

@@ -41,6 +41,7 @@ import {HistoryPayrollComponent} from "./containers/history-payroll/history-payr
 import {ClassifySalaryComponent} from "./components/classify-salary/classify-salary.component";
 import {NzIconModule} from "ng-zorro-antd/icon";
 import {ModalSelectAddSalaryComponent} from "./components/modal-select-add-salary/modal-select-add-salary.component";
+import {ConvertMinutePipe} from "../../../../../../libs/components/src/lib/pipes/convert-minute.pipe";
 
 @NgModule({
     imports: [
@@ -94,6 +95,7 @@ import {ModalSelectAddSalaryComponent} from "./components/modal-select-add-salar
   providers: [
     DatePipe,
     TransformConstantPipe,
+    ConvertMinutePipe
   ]
 })
 export class PayrollModule {
