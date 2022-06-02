@@ -1,12 +1,11 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {DatePipe} from "@angular/common";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Position} from "@minhdu-fontend/data-models";
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {map} from "rxjs/operators";
 import {RecipeTypesConstant} from "@minhdu-fontend/constants";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {Actions} from "@datorama/akita-ng-effects";
-import {BranchActions, BranchQuery} from "../../../../../../../../libs/orgchart-v2/src/lib/branch/state";
+import {BranchActions, BranchQuery} from "@minhdu-fontend/orgchart-v2";
 import {PayrollEntity} from "../../entities";
 import {PayrollActions} from "../../state/payroll.action";
 import {PayrollQuery} from "../../state";
@@ -52,7 +51,8 @@ export class UpdatePayrollComponent implements OnInit {
       branch: [payroll.branch],
       position: [payroll.position],
       workday: [payroll.workday],
-      recipeType: [payroll.recipeType],
+      // v2 không còn áp dụng công thức lương
+      // recipeType: [payroll.recipeType],
       isFlatSalary: [payroll.isFlatSalary],
       tax: [payroll.tax ? payroll.tax * 100 : ''],
     })
@@ -95,9 +95,9 @@ export class UpdatePayrollComponent implements OnInit {
       value.branch?.id
         ? {branchId: value.branch.id}
         : {},
-      value.recipeType?.value
-        ? {recipeType: value.recipeType.value}
-        : {}
+      // value.recipeType?.value
+      //   ? {recipeType: value.recipeType.value}
+      //   : {}
     )
   }
 }

@@ -1,5 +1,5 @@
 import {PartialDayEnum} from '@minhdu-fontend/data-models';
-import {DatetimeUnitEnum} from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {SessionEntity} from '../entities';
 
 export const workingTime = {
@@ -10,6 +10,10 @@ export const workingTime = {
   afternoon: {
     start: new Date(new Date().setHours(13, 30, 0)),
     end: new Date(new Date().setHours(17, 0, 0))
+  },
+  night: {
+    start: new Date(new Date().setHours(17, 0, 0)),
+    end: new Date(new Date().setHours(23, 59, 0))
   }
 };
 
@@ -20,7 +24,8 @@ export const SessionConstant: SessionEntity[] = [
     value: PartialDayEnum.MORNING,
     unit: DatetimeUnitEnum.DAY,
     startTime: workingTime.morning.start,
-    endTime: workingTime.morning.end
+    endTime: workingTime.morning.end,
+    types: [SalaryTypeEnum.OVERTIME, SalaryTypeEnum.ABSENT]
   },
   {
     name: 'Buổi chiều',
@@ -28,7 +33,17 @@ export const SessionConstant: SessionEntity[] = [
     value: PartialDayEnum.AFTERNOON,
     unit: DatetimeUnitEnum.DAY,
     startTime: workingTime.afternoon.start,
-    endTime: workingTime.afternoon.end
+    endTime: workingTime.afternoon.end,
+    types: [SalaryTypeEnum.OVERTIME, SalaryTypeEnum.ABSENT]
+  },
+  {
+    name: 'Buổi tối',
+    detail: 'Ngày buổi chiều',
+    value: PartialDayEnum.NIGHT,
+    unit: DatetimeUnitEnum.DAY,
+    startTime: workingTime.night.start,
+    endTime: workingTime.night.end,
+    types: [SalaryTypeEnum.OVERTIME]
   },
   {
     name: 'Nguyên ngày',
@@ -36,7 +51,8 @@ export const SessionConstant: SessionEntity[] = [
     value: PartialDayEnum.ALL_DAY,
     unit: DatetimeUnitEnum.DAY,
     startTime: workingTime.morning.start,
-    endTime: workingTime.afternoon.end
+    endTime: workingTime.afternoon.end,
+    types: [SalaryTypeEnum.OVERTIME, SalaryTypeEnum.ABSENT]
   },
   // {
   //   name: 'Tuỳ chọn',

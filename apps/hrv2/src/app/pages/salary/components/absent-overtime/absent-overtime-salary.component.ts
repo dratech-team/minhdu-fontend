@@ -22,6 +22,7 @@ import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import * as moment from "moment";
 import {validateDayInMonth} from "../../utils/validate-day-in-month.util";
 import {PayrollQuery} from "../../../payroll/state";
+import {SessionEntity} from "../../../../../shared/entities";
 
 @Component({
   templateUrl: 'absent-overtime-salary.component.html'
@@ -50,7 +51,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   indexStep = 0;
   submitting = false;
 
-  titleSession = SessionConstant;
+  titleSession: SessionEntity [] = []
   partialDayEnum = PartialDayEnum;
   recipesConstant = recipesConstant;
   unitConstant = UnitSalaryConstant;
@@ -92,6 +93,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.titleSession = SessionConstant.filter(item => item.types.includes(this.data.type))
     this.fistDateInMonth = getFirstDayInMonth(
       new Date(this.data.add
         ? (this.data.add.payroll?.createdAt || this.payrollQuery.getValue().search.startedAt)

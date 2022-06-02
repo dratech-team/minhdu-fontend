@@ -290,7 +290,7 @@
             </td>
             <td class=' text-center ' style='color: #29CC97'>
                 <span>
-                  {{ salary.price ? ((salary.price * salary.times * salary.rate)|number:'1.0') + 'đ' : 'Theo lương chuẩn'}}
+                  {{ salary.price ? ((salary.price * salary.times * (salary?.rate || 1))|number:'1.0') + 'đ' : 'Theo lương chuẩn'}}
                 </span>
               <span *ngIf='salary.allowance'>
                   + {{salary.allowance.price * salary.times}}
