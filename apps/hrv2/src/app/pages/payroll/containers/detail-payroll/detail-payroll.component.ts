@@ -123,7 +123,7 @@ export class DetailPayrollComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(val => {
-      if (val?.mode === ModeEnum.DEBUG) {
+      if (val?.mode === ModeEnum.DEV) {
         this.modeDebug = true
       }
     })
@@ -339,7 +339,8 @@ export class DetailPayrollComponent implements OnInit {
       {
         queryParams: {
           name: payroll.employee.lastName,
-          employeeType: payroll.employee.type
+          employeeType: payroll.employee.type,
+          mode: localStorage.getItem('evn')
         }
       }).then();
   }
@@ -349,9 +350,19 @@ export class DetailPayrollComponent implements OnInit {
       const indexPayrollCurrent = payroll.payrollIds.indexOf(payroll.id);
       const payrollIds = payroll.payrollIds;
       if (indexPayrollCurrent < payrollIds.length - 1) {
-        this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[indexPayrollCurrent + 1]]).then();
+        this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[indexPayrollCurrent + 1]],
+          {
+            queryParams: {
+              mode: localStorage.getItem('evn')
+            }
+          }).then();
       } else {
-        this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[0]]).then();
+        this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[0]],
+          {
+            queryParams: {
+              mode: localStorage.getItem('evn')
+            }
+          }).then();
       }
     }
   }
@@ -440,7 +451,12 @@ export class DetailPayrollComponent implements OnInit {
       this.settingSalaryStore.update(state => ({
         ...state, search: Object.assign(JSON.parse(JSON.stringify(state.search)), {search: title})
       }))
-      this.router.navigate(['cai-dat']).then();
+      this.router.navigate(['cai-dat'],
+        {
+          queryParams: {
+            mode: localStorage.getItem('evn')
+          }
+        }).then();
     }
   }
 
@@ -471,18 +487,38 @@ export class DetailPayrollComponent implements OnInit {
   prePayroll(payroll: PayrollEntity) {
     const indexPayrollCurrent = payroll.payrollIds.indexOf(payroll.id);
     if (indexPayrollCurrent > 0) {
-      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds[indexPayrollCurrent - 1]]).then();
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds[indexPayrollCurrent - 1]],
+        {
+          queryParams: {
+            mode: localStorage.getItem('evn')
+          }
+        }).then();
     } else {
-      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds.slice(-1)[0]]).then();
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds.slice(-1)[0]],
+        {
+          queryParams: {
+            mode: localStorage.getItem('evn')
+          }
+        }).then();
     }
   }
 
   nextPayroll(payroll: PayrollEntity) {
     const indexPayrollCurrent = payroll.payrollIds.indexOf(payroll.id);
     if (indexPayrollCurrent < payroll.payrollIds.length - 1) {
-      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds[indexPayrollCurrent + 1]]).then();
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds[indexPayrollCurrent + 1]],
+        {
+          queryParams: {
+            mode: localStorage.getItem('evn')
+          }
+        }).then();
     } else {
-      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds[0]]).then();
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds[0]],
+        {
+          queryParams: {
+            mode: localStorage.getItem('evn')
+          }
+        }).then();
     }
   }
 }

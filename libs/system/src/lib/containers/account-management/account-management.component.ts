@@ -59,7 +59,7 @@ export class AccountManagementComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeRouter.queryParams.subscribe(val => {
-      if (val?.mode === ModeEnum.DEBUG) {
+      if (val?.mode === ModeEnum.DEV) {
         this.modeDebug = true
       }
     })

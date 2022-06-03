@@ -11,7 +11,6 @@ import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 import {AllowanceBranchComponent} from "../../components/modal-allowance-branch/allowance-branch.component";
 import {DataAddOrUpAllowanceBranch} from "../../data/modal-allowance-branch.data";
-import {AllowanceSalaryEntity} from "../../../../salary/entities";
 import {AllowanceBranchEntity} from "../../entities/allowance-branch.entity";
 
 @Component({
@@ -37,7 +36,7 @@ export class DetailBranchComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeRouter.queryParams.subscribe(val => {
-      if (val?.mode === ModeEnum.DEBUG) {
+      if (val?.mode === ModeEnum.DEV) {
         this.modeDebug = true
       }
     })

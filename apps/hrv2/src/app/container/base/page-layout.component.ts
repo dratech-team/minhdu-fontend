@@ -11,6 +11,7 @@ import {
 } from "../../../../../../libs/auth/src/lib/components/modal-change-password/modal-change-password.component";
 import {TabEnum} from "../../state/app.entity";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {ModeEnum} from "@minhdu-fontend/enums";
 
 
 @Component({
@@ -36,7 +37,11 @@ export class PageLayoutComponent {
     if (href === TabEnum.RANK) {
       return this.message.info('Tính năng đang phát triển')
     }
-    this.router.navigate([href]).then()
+    this.router.navigate([href], {
+      queryParams: {
+        mode: localStorage.getItem('evn')
+      }
+    }).then()
     this.appStore.update(state => ({
       ...state, appName: appName
     }))

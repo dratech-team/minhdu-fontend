@@ -4,6 +4,7 @@ import {envDev, envProd} from '@minhdu-fontend/environment';
 import {Observable} from 'rxjs';
 import {Api} from '@minhdu-fontend/constants';
 import {catchError, retry} from 'rxjs/operators';
+import {ModeEnum} from "@minhdu-fontend/enums";
 
 @Injectable({providedIn: 'root'})
 export class JwtInterceptor implements HttpInterceptor {
@@ -15,6 +16,11 @@ export class JwtInterceptor implements HttpInterceptor {
 
     const token = localStorage.getItem('token');
     const environment = isDevMode() ? envDev : envProd;
+
+    if(environment === envDev){
+      localStorage.setItem('evn', (environment === envDev ? ModeEnum.DEV : ModeEnum.PROD))
+    }
+
     const url = !request.url.startsWith(Api.SLACK_WEBHOOK)
       ? environment.environment.apiUrl + request.url
       : request.url;

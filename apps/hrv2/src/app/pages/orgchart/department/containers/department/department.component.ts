@@ -48,7 +48,7 @@ export class DepartmentComponent implements OnInit {
 
   ngOnInit() {
     this.activeRouter.queryParams.subscribe(val => {
-      if (val?.mode === ModeEnum.DEBUG) {
+      if (val?.mode === ModeEnum.DEV) {
         this.modeDebug = true
       }
     })

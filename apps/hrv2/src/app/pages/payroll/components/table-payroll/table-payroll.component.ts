@@ -102,7 +102,7 @@ export class TablePayrollComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(val => {
-      if (val?.mode === ModeEnum.DEBUG) {
+      if (val?.mode === ModeEnum.DEV) {
         this.modeDebug = true
       }
     })
@@ -188,7 +188,8 @@ export class TablePayrollComponent implements OnInit {
   onHistory(payroll: PayrollEntity) {
     this.router.navigate(['phieu-luong/lich-su-luong/', payroll.id], {
       queryParams: {
-        name: payroll.employee.lastName
+        name: payroll.employee.lastName,
+        mode: localStorage.getItem('evn')
       }
     }).then()
   }
@@ -255,7 +256,11 @@ export class TablePayrollComponent implements OnInit {
   }
 
   async onDetail(payroll: PayrollEntity) {
-    return await this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.id]);
+    return await this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.id], {
+      queryParams: {
+        mode: localStorage.getItem('evn')
+      }
+    });
   }
 
   onUpdateSelectSalary(salary: any, checked: boolean) {

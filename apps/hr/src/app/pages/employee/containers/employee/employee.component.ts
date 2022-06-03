@@ -26,6 +26,7 @@ import {
   FlatSalary,
   Gender,
   ItemContextMenu,
+  ModeEnum,
   Role,
   SearchEmployeeType,
   sortEmployeeTypeEnum
@@ -40,7 +41,6 @@ import {Subject, throwError} from 'rxjs';
 import {District, Employee, Ward} from '@minhdu-fontend/data-models';
 import {checkInputNumber} from '@minhdu-fontend/utils';
 import {DialogExportComponent} from '@minhdu-fontend/components';
-import {DialogCategoryComponent} from '../../components/category/dialog-category.component';
 import {CategoryService} from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {EmployeeService} from '../../../../../../../../libs/employee/src/lib/+state/service/employee.service';
@@ -110,6 +110,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME),
     status: new FormControl(EmployeeStatusEnum.IS_ACTIVE)
   });
+  modeDev = false
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
@@ -148,6 +149,9 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       }
       if (val.position) {
         this.formGroup.get('position')?.setValue(JSON.parse(val.position), {emitEvent: false});
+      }
+      if (val.mode === ModeEnum.DEV) {
+        this.modeDev = true
       }
     });
     this.store.dispatch(

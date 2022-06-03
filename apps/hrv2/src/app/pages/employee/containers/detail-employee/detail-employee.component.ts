@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Salary, WorkHistory} from '@minhdu-fontend/data-models';
-import {DegreeLevelEnum, DegreeStatusEnum, RecipeType} from '@minhdu-fontend/enums';
+import {DegreeLevelEnum, DegreeStatusEnum, ModeEnum, RecipeType} from '@minhdu-fontend/enums';
 import {RecipeSalaryConstant} from "../../../../../../../../libs/constants/HR/recipe-salary.constant";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {EmployeeActions, EmployeeEntity, EmployeeQuery} from "@minhdu-fontend/employee-v2";
@@ -24,7 +24,6 @@ import {ModalDatePickerComponent, TransformConstantPipe} from "@minhdu-fontend/c
 import {ModalUpdateContractComponent} from "../../components/modal-update-contract/modal-update-contract.component";
 import {ContractEntity} from "../../../../../../../../libs/employee-v2/src/lib/employee/entities/contract.entity";
 import {ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
-import {tap} from "rxjs/operators";
 
 @Component({
   templateUrl: 'detail-employee.component.html',
@@ -46,6 +45,7 @@ export class DetailEmployeeComponent implements OnInit {
   status = DegreeStatusEnum;
   level = DegreeLevelEnum;
   recipeType = RecipeType;
+  modeDebug = false
 
   constructor(
     private readonly actions$: Actions,
@@ -63,6 +63,9 @@ export class DetailEmployeeComponent implements OnInit {
       const employee = this.employeeQuery.getEntity(this.employeeId)
       if (param.isUpdate && employee) {
         this.onUpdate(employee);
+      }
+      if (param?.mode === ModeEnum.DEV) {
+        this.modeDebug = true
       }
     });
   }

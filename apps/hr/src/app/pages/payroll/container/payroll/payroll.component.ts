@@ -8,7 +8,7 @@ import {Api, EmployeeStatusConstant} from '@minhdu-fontend/constants';
 import {
   EmployeeType,
   FilterTypeEnum,
-  ItemContextMenu,
+  ItemContextMenu, ModeEnum,
   SalaryTypeEnum,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
@@ -505,7 +505,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   updatePayroll($event: any) {
     this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', $event.id], {
       queryParams: {
-        isUpdate: true
+        isUpdate: true,
       }
     }).then();
   }

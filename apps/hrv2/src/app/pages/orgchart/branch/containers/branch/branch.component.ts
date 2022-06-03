@@ -61,7 +61,7 @@ export class BranchComponent implements OnInit {
 
   ngOnInit() {
     this.activeRouter.queryParams.subscribe(val => {
-      if (val?.mode === ModeEnum.DEBUG) {
+      if (val?.mode === ModeEnum.DEV) {
         this.modeDebug = true
       }
     })
@@ -135,7 +135,12 @@ export class BranchComponent implements OnInit {
 
 
   onDetail(branch: BranchEntity) {
-    this.router.navigate(['to-chuc/don-vi/chi-tiet-don-vi/', branch.id]).then();
+    this.router.navigate(['to-chuc/don-vi/chi-tiet-don-vi/', branch.id],
+      {
+        queryParams: {
+          mode: localStorage.getItem('evn')
+        }
+      }).then();
   }
 
   onEmployee(branch: BranchEntity, position?: PositionEntity,) {

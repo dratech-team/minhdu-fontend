@@ -84,7 +84,7 @@ export class SettingSalaryComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(val => {
-      if (val?.mode === ModeEnum.DEBUG) {
+      if (val?.mode === ModeEnum.DEV) {
         this.modeDebug = true
       }
     })

@@ -119,7 +119,7 @@ export class EmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeRouter.queryParams.subscribe(val => {
-      if (val?.mode === ModeEnum.DEBUG) {
+      if (val?.mode === ModeEnum.DEV) {
         this.modeDebug = true
       }
     })
@@ -238,7 +238,8 @@ export class EmployeeComponent implements OnInit {
   onUpdate($event: any, isUpdate?: boolean): void {
     this.router.navigate(['nhan-vien/chi-tiet-nhan-vien', $event.id], {
       queryParams: {
-        isUpdate
+        isUpdate,
+        mode: localStorage.getItem('evn')
       }
     }).then();
   }

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivityType, App, ModeEnum} from '@minhdu-fontend/enums';
+import {App, ModeEnum} from '@minhdu-fontend/enums';
 import {FormControl, FormGroup} from '@angular/forms';
 import {appConstant, MethodConstant} from '@minhdu-fontend/constants';
 import {Actions} from "@datorama/akita-ng-effects";
@@ -52,7 +52,7 @@ export class systemHistoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeRouter.queryParams.subscribe(val => {
-      if (val?.mode === ModeEnum.DEBUG) {
+      if (val?.mode === ModeEnum.DEV) {
         this.modeDebug = true
       }
     })

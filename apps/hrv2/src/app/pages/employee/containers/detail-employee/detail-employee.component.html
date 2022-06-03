@@ -482,6 +482,7 @@
           class='mt-3'>
           <thead>
           <tr>
+            <th nzWidth="50px" *ngIf="modeDebug">Id</th>
             <th>Họ và tên</th>
             <th>Quan hệ</th>
             <th>Ngày sinh</th>
@@ -497,6 +498,7 @@
             (click)='onRelative(employee.id, relative.id, relative)'
             class="pointer"
           >
+            <td *ngIf="modeDebug">{{relative.id}}</td>
             <td>{{relative.lastName}}</td>
             <td>{{relative.relationship|transformconstant: relationshipConstant}}</td>
             <td>{{relative.birthday |date:'dd/MM/yyyy'}}</td>
@@ -535,6 +537,7 @@
           class='mt-3'>
           <thead>
           <tr>
+            <th nzWidth="50px" *ngIf="modeDebug">Id</th>
             <th>Bằng cấp</th>
             <th>Bắt đầu</th>
             <th>Kết thúc</th>
@@ -552,6 +555,7 @@
             (click)='onDegree(employee.id,degree.id , degree)'
             class="pointer"
           >
+            <td *ngIf="modeDebug">{{degree.id}}</td>
             <td>
               {{degree.type|transformconstant:degreeConstant }}
             </td>
@@ -587,6 +591,7 @@
         >
           <thead>
           <tr>
+            <th nzWidth="50px" *ngIf="modeDebug">Id</th>
             <th>Loại lương</th>
             <th>Mức lương</th>
             <th>Ngày</th>
@@ -595,6 +600,7 @@
           </thead>
           <tbody>
           <tr *ngFor='let history of tableSalaryHistory.data|filterDay'>
+            <td *ngIf="modeDebug">{{history.id}}</td>
             <td>{{history.title}}</td>
             <td>{{history.price|number:'1.0'}}đ</td>
             <td>{{history.createdAt|date:'dd/MM/yyyy'}}</td>
@@ -623,6 +629,7 @@
           [nzData]="employee.workHistories|| []">
           <thead>
           <tr>
+            <th nzWidth="50px" *ngIf="modeDebug">Id</th>
             <th>Từ ngày</th>
             <th>Vị trí công việc</th>
             <th>Đơn vị công tác</th>
@@ -631,6 +638,7 @@
           </thead>
           <tbody>
           <tr *ngFor='let workHistory of tableWorkHistory.data|workhistorypipe'>
+            <td *ngIf="modeDebug">{{workHistory.id}}</td>
             <td>{{workHistory.createdAt|date:'dd/MM/yyyy'}}</td>
             <td>{{workHistory.position.name}}</td>
             <td>{{workHistory.branch.name}}</td>
