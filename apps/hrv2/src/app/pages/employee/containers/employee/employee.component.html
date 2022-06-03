@@ -76,9 +76,11 @@
           <!--              <div mat-sort-header='{{sortEnum.STT}}' class='border-top text-center'>Sort</div>-->
           <!--              <input class=' text-center' type='text' disabled>-->
           <!--            </th>-->
-          <th [nzSortFn]='true'
-              *ngIf="modeDev"
-              (nzSortOrderChange)='onSort({orderBy: sortEnum.CODE, orderType:$event})'>
+          <th
+            nzLeft
+            [nzSortFn]='true'
+            *ngIf="modeDev"
+            (nzSortOrderChange)='onSort({orderBy: sortEnum.CODE, orderType:$event})'>
             <div>Mã nhân viên</div>
             <input nz-input type='search' disabled>
           </th>
@@ -86,6 +88,37 @@
               (nzSortOrderChange)='onSort({orderBy: sortEnum.NAME, orderType:$event})'>
             <div>Tên nhân viên</div>
             <input nz-input type='search' formControlName='name' placeholder='Trần Gia Hiệu'>
+          </th>
+          <th
+            nzLeft
+            [nzSortFn]='true'
+            (nzSortOrderChange)='onSort({orderBy: sortEnum.BRANCH, orderType:$event})'
+          >
+            <div>Đơn vị</div>
+            <input nz-input type='search' disabled>
+          </th>
+          <th
+            nzLeft
+            [nzSortFn]='true'
+            (nzSortOrderChange)='onSort({orderBy: sortEnum.POSITION, orderType:$event})'
+          >
+            <div>Chức vụ</div>
+            <nz-select
+              (click)="$event.stopPropagation()"
+              nzShowSearch
+              nzAllowClear
+              style='width:100%'
+              formControlName='position'
+              nzPlaceHolder='Chọn chức vụ'
+              [compareWith]='compareFN'
+            >
+              <nz-option
+                *ngFor='let position of positions$|async'
+                [nzLabel]='position.name'
+                [nzValue]='position'
+              >
+              </nz-option>
+            </nz-select>
           </th>
           <th nzWidth="8%"
               [nzSortFn]='true'
@@ -150,38 +183,10 @@
               nz-input type='search'
               formControlName='phone'>
           </th>
-          <th nzLeft
-              [nzSortFn]='true'
-              (nzSortOrderChange)='onSort({orderBy: sortEnum.BRANCH, orderType:$event})'
-          >
-            <div>Đơn vị</div>
-            <input nz-input type='search' disabled>
-          </th>
-          <th nzLeft
-              [nzSortFn]='true'
-              (nzSortOrderChange)='onSort({orderBy: sortEnum.POSITION, orderType:$event})'
-          >
-            <div>Chức vụ</div>
-            <nz-select
-              (click)="$event.stopPropagation()"
-              nzShowSearch
-              nzAllowClear
-              style='width:100%'
-              formControlName='position'
-              nzPlaceHolder='Chọn chức vụ'
-              [compareWith]='compareFN'
-            >
-              <nz-option
-                *ngFor='let position of positions$|async'
-                [nzLabel]='position.name'
-                [nzValue]='position'
-              >
-              </nz-option>
-            </nz-select>
-          </th>
-          <th nzWidth='5%'
-              [nzSortFn]='true'
-              (nzSortOrderChange)='onSort({orderBy: sortEnum.IDENTITY, orderType:$event})'
+          <th
+            nzWidth='5%'
+            [nzSortFn]='true'
+            (nzSortOrderChange)='onSort({orderBy: sortEnum.IDENTITY, orderType:$event})'
           >
             <div>CMND / CCCD</div>
             <input
@@ -279,11 +284,20 @@
           <td nzLeft nzWidth="100px">
             <div>{{i + 1}}</div>
           </td>
-          <td *ngIf="modeDev">
+          <td
+            *ngIf="modeDev"
+            nzLeft
+          >
             <div>{{employee.id}}</div>
           </td>
           <td nzLeft>
             <div>{{employee.lastName}}</div>
+          </td>
+          <td nzLeft>
+            {{employee.branch.name}}
+          </td>
+          <td nzLeft>
+            {{employee.position.name}}
           </td>
           <td>
             <div>{{employee.type|transformconstant: employeeTypeConstant}}</div>
@@ -309,16 +323,6 @@
           <td>
             <div>
               {{employee?.phone|existpipe}}
-            </div>
-          </td>
-          <td nzLeft>
-            <div>
-              {{employee.branch.name}}
-            </div>
-          </td>
-          <td nzLeft>
-            <div>
-              {{employee.position.name}}
             </div>
           </td>
           <td>
