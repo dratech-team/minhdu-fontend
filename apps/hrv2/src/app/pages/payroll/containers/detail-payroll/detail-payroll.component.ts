@@ -340,7 +340,7 @@ export class DetailPayrollComponent implements OnInit {
         queryParams: {
           name: payroll.employee.lastName,
           employeeType: payroll.employee.type,
-          mode: localStorage.getItem('evn')
+          mode: localStorage.getItem('env')
         }
       }).then();
   }
@@ -353,14 +353,14 @@ export class DetailPayrollComponent implements OnInit {
         this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[indexPayrollCurrent + 1]],
           {
             queryParams: {
-              mode: localStorage.getItem('evn')
+              mode: localStorage.getItem('env')
             }
           }).then();
       } else {
         this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[0]],
           {
             queryParams: {
-              mode: localStorage.getItem('evn')
+              mode: localStorage.getItem('env')
             }
           }).then();
       }
@@ -454,7 +454,7 @@ export class DetailPayrollComponent implements OnInit {
       this.router.navigate(['cai-dat'],
         {
           queryParams: {
-            mode: localStorage.getItem('evn')
+            mode: localStorage.getItem('env')
           }
         }).then();
     }
@@ -490,14 +490,14 @@ export class DetailPayrollComponent implements OnInit {
       this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds[indexPayrollCurrent - 1]],
         {
           queryParams: {
-            mode: localStorage.getItem('evn')
+            mode: localStorage.getItem('env')
           }
         }).then();
     } else {
       this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds.slice(-1)[0]],
         {
           queryParams: {
-            mode: localStorage.getItem('evn')
+            mode: localStorage.getItem('env')
           }
         }).then();
     }
@@ -509,14 +509,14 @@ export class DetailPayrollComponent implements OnInit {
       this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds[indexPayrollCurrent + 1]],
         {
           queryParams: {
-            mode: localStorage.getItem('evn')
+            mode: localStorage.getItem('env')
           }
         }).then();
     } else {
       this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds[0]],
         {
           queryParams: {
-            mode: localStorage.getItem('evn')
+            mode: localStorage.getItem('env')
           }
         }).then();
     }

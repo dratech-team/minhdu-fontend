@@ -18,7 +18,7 @@ export class JwtInterceptor implements HttpInterceptor {
     const environment = isDevMode() ? envDev : envProd;
 
     if(environment === envDev){
-      localStorage.setItem('evn', (environment === envDev ? ModeEnum.DEV : ModeEnum.PROD))
+      localStorage.setItem('env', (environment === envDev ? ModeEnum.DEV : ModeEnum.PROD))
     }
 
     const url = !request.url.startsWith(Api.SLACK_WEBHOOK)

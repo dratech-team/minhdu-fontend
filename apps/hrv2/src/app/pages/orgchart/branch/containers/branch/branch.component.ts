@@ -138,7 +138,7 @@ export class BranchComponent implements OnInit {
     this.router.navigate(['to-chuc/don-vi/chi-tiet-don-vi/', branch.id],
       {
         queryParams: {
-          mode: localStorage.getItem('evn')
+          mode: localStorage.getItem('env')
         }
       }).then();
   }

@@ -7,6 +7,7 @@ const routes: Routes = [
   {
     path: '',
     component: EmployeeComponent,
+
   },
   {
     path: 'chi-tiet-nhan-vien/:id',

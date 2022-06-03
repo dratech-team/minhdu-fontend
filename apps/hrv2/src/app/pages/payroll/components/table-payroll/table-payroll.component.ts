@@ -189,7 +189,7 @@ export class TablePayrollComponent implements OnInit {
     this.router.navigate(['phieu-luong/lich-su-luong/', payroll.id], {
       queryParams: {
         name: payroll.employee.lastName,
-        mode: localStorage.getItem('evn')
+        mode: localStorage.getItem('env')
       }
     }).then()
   }
@@ -258,7 +258,7 @@ export class TablePayrollComponent implements OnInit {
   async onDetail(payroll: PayrollEntity) {
     return await this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.id], {
       queryParams: {
-        mode: localStorage.getItem('evn')
+        mode: localStorage.getItem('env')
       }
     });
   }

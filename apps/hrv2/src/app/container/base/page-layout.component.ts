@@ -39,7 +39,7 @@ export class PageLayoutComponent {
     }
     this.router.navigate([href], {
       queryParams: {
-        mode: localStorage.getItem('evn')
+        mode: localStorage.getItem('env')
       }
     }).then()
     this.appStore.update(state => ({
