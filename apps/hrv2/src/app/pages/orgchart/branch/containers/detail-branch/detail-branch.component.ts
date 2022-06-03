@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {OrgchartEnum} from '@minhdu-fontend/enums';
+import {ModeEnum, OrgchartEnum} from '@minhdu-fontend/enums';
 import {FormControl} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Actions} from "@datorama/akita-ng-effects";
@@ -23,6 +23,7 @@ export class DetailBranchComponent implements OnInit {
   pageSize = 30;
   pageIndexInit = 0;
   branch = new FormControl();
+  modeDebug = false
 
   constructor(
     private readonly actions$: Actions,
@@ -30,10 +31,17 @@ export class DetailBranchComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly modal: NzModalService,
+    private readonly activeRouter: ActivatedRoute,
   ) {
   }
 
   ngOnInit(): void {
+    this.activeRouter.queryParams.subscribe(val => {
+      if (val?.mode === ModeEnum.DEBUG) {
+        this.modeDebug = true
+      }
+    })
+
     this.actions$.dispatch(BranchActions.loadOne({id: this.branchId}));
   }
 

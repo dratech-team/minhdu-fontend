@@ -14,10 +14,10 @@ import {
   PositionQuery,
   PositionStore
 } from "@minhdu-fontend/orgchart-v2";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {PayrollStore} from "../../../../payroll/state";
 import {EmployeeStore} from "@minhdu-fontend/employee-v2";
-import {FilterTypeEnum, ItemContextMenu} from "@minhdu-fontend/enums";
+import {FilterTypeEnum, ItemContextMenu, ModeEnum} from "@minhdu-fontend/enums";
 import {ModalBranchComponent} from "../../components/modal-branch/modal-branch.component";
 import {DataAddOrUpBranch} from "../../data/modal-department.data";
 
@@ -33,6 +33,7 @@ export class BranchComponent implements OnInit {
   pageSizeTable = 10;
   filterType = FilterTypeEnum
   itemContextMenu = ItemContextMenu
+  modeDebug = false
   stateSearch = this.branchQuery.getValue().search
   formGroup = new FormGroup(
     {
@@ -54,10 +55,17 @@ export class BranchComponent implements OnInit {
     private readonly positionStore: PositionStore,
     private readonly positionQuery: PositionQuery,
     private readonly router: Router,
+    private readonly activeRouter: ActivatedRoute,
   ) {
   }
 
   ngOnInit() {
+    this.activeRouter.queryParams.subscribe(val => {
+      if (val?.mode === ModeEnum.DEBUG) {
+        this.modeDebug = true
+      }
+    })
+
     this.actions$.dispatch(PositionActions.loadAll({}))
     this.actions$.dispatch(BranchActions.loadAll({
       search: this.mapBranch(this.formGroup.value, false)

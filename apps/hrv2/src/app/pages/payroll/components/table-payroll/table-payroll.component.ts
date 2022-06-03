@@ -4,11 +4,11 @@ import {FormGroup} from "@angular/forms";
 import {BranchQuery, PositionActions, PositionQuery} from "@minhdu-fontend/orgchart-v2";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollQuery, PayrollStore} from "../../state";
-import {FilterTypeEnum, ItemContextMenu, Role, SalaryTypeEnum} from "@minhdu-fontend/enums";
+import {FilterTypeEnum, ItemContextMenu, ModeEnum, Role, SalaryTypeEnum} from "@minhdu-fontend/enums";
 import {filterSameSalary, rageDaysInMonth} from "@minhdu-fontend/utils";
 import {PaidConstant} from "../../constants/paid.constant";
 import {ConfirmConstant} from "../../constants/confirm.constant";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {ModalDatePickerComponent} from "@minhdu-fontend/components";
 import {ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
@@ -76,6 +76,8 @@ export class TablePayrollComponent implements OnInit {
   role = localStorage.getItem('role')
   sessionConstant = SessionConstant;
   partialDay = PartialDayEnum
+  modeDebug = false
+
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
 
   constructor(
@@ -94,10 +96,17 @@ export class TablePayrollComponent implements OnInit {
     private readonly permanentService: SalaryPermanentService,
     private readonly overtimeSalaryService: OvertimeSalaryService,
     private readonly allowanceSalaryService: AllowanceSalaryService,
+    private readonly activatedRoute: ActivatedRoute,
   ) {
   }
 
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(val => {
+      if (val?.mode === ModeEnum.DEBUG) {
+        this.modeDebug = true
+      }
+    })
+
     this.added$.subscribe(added => {
       if (added) {
         this.onloadPayroll.emit({isPagination: false})
@@ -246,12 +255,7 @@ export class TablePayrollComponent implements OnInit {
   }
 
   async onDetail(payroll: PayrollEntity) {
-    return await this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.id],
-      {
-        queryParams: {
-          isUpdate: true
-        }
-      });
+    return await this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.id]);
   }
 
   onUpdateSelectSalary(salary: any, checked: boolean) {
@@ -406,7 +410,7 @@ export class TablePayrollComponent implements OnInit {
     switch (this.formGroup.value.filterType) {
       case FilterTypeEnum.PERMANENT:
         this.modal.create({
-          nzWidth:'300px',
+          nzWidth: '300px',
           nzTitle: 'Chọn Loại lương',
           nzContent: ModalSelectAddSalaryComponent,
           nzFooter: []
@@ -419,7 +423,7 @@ export class TablePayrollComponent implements OnInit {
       case FilterTypeEnum.OVERTIME:
       case FilterTypeEnum.ABSENT:
         this.modal.create({
-          nzWidth:'fit-content',
+          nzWidth: 'fit-content',
           nzTitle: `Thêm ${this.formGroup.value.filterType === SalaryTypeEnum.OVERTIME ? 'tăng ca' : 'vắng'}`,
           nzContent: AbsentOvertimeSalaryComponent,
           nzComponentParams: <{ data: ModalAddOrUpdateAbsentOrOvertime }>{
@@ -439,12 +443,12 @@ export class TablePayrollComponent implements OnInit {
         break
       case FilterTypeEnum.ALLOWANCE:
         this.modal.create({
-          nzWidth:'fit-content',
+          nzWidth: 'fit-content',
           nzTitle: 'Thêm phụ cấp lương',
           nzContent: AllowanceSalaryComponent,
           nzComponentParams: <{ data: ModalAddOrUpdateAllowance }>{
             data: {
-              add:{
+              add: {
                 multiple: true
               }
             }

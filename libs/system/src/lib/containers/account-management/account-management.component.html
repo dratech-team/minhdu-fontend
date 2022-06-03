@@ -47,7 +47,7 @@
         <tr>
           <th nzLeft nzWidth="60px">stt
           </th>
-          <th>Mã tài khoản</th>
+          <th *ngIf="modeDebug">Mã tài khoản</th>
           <th nzLeft>Tên đăng nhập</th>
           <th>Đơn vị</th>
           <th>Phân quyền</th>
@@ -63,7 +63,7 @@
             class="pointer"
         >
           <td nzLeft>{{i + 1}}</td>
-          <td>{{account?.id}}</td>
+          <td *ngIf="modeDebug">{{account.id}}</td>
           <td nzLeft>{{account.username}}</td>
           <td>
             <mat-chip-list>

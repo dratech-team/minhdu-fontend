@@ -9,10 +9,10 @@ import {ModalDepartmentComponent} from "../../components/modal-department/modal-
 import {DataAddOrUpdateDepartment} from "../../data/modal-department.data";
 import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {EmployeeStore} from "@minhdu-fontend/employee-v2";
 import {PayrollStore} from "../../../../payroll/state";
-import {FilterTypeEnum, ItemContextMenu} from "@minhdu-fontend/enums";
+import {FilterTypeEnum, ItemContextMenu, ModeEnum} from "@minhdu-fontend/enums";
 
 @Component({
   templateUrl: 'department.component.html'
@@ -25,6 +25,7 @@ export class DepartmentComponent implements OnInit {
   pageSizeTable = 10;
   itemContext = ItemContextMenu
   filterTypeEnum = FilterTypeEnum
+  modeDebug = false
   formGroup = new FormGroup(
     {
       search: new FormControl(''),
@@ -41,10 +42,17 @@ export class DepartmentComponent implements OnInit {
     private readonly employeeStore: EmployeeStore,
     private readonly payrollStore: PayrollStore,
     private readonly router: Router,
+    private readonly activeRouter: ActivatedRoute,
   ) {
   }
 
   ngOnInit() {
+    this.activeRouter.queryParams.subscribe(val => {
+      if (val?.mode === ModeEnum.DEBUG) {
+        this.modeDebug = true
+      }
+    })
+
     this.actions$.dispatch(DepartmentActions.loadAll({
       search: this.formGroup.value
     }));

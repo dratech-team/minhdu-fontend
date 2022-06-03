@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {DatetimeUnitEnum, EmployeeType, RecipeType, Role, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, EmployeeType, ModeEnum, RecipeType, Role, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {PartialDayEnum} from '@minhdu-fontend/data-models';
 import {getDaysInMonth} from '@minhdu-fontend/utils';
 import {DatePipe} from '@angular/common';
@@ -39,13 +39,14 @@ import {RemoteConstant} from '../../../salary/constants/remote.constant';
 import {UnitSalaryConstant} from '../../../salary/constants';
 import {SessionConstant} from '../../../../../shared/constants';
 import {HolidaySalaryComponent} from '../../../salary/components/holiday/holiday-salary.component';
-import {ModalAddOrUpdateHoliday} from '../../../salary/data/modal-holiday-salary.data';
-import {SalaryHolidayService} from '../../../salary/service/salary-holiday.service';
 import {
-  ModalAddOrUpdateAbsentOrOvertime, ModalAddOrUpdateAllowance,
+  ModalAddOrUpdateAbsentOrOvertime,
+  ModalAddOrUpdateAllowance,
+  ModalAddOrUpdateHoliday,
   ModalAddOrUpdateRemoteOrDayOff,
   ModalPermanentSalaryData
 } from '../../../salary/data';
+import {SalaryHolidayService} from '../../../salary/service/salary-holiday.service';
 import {NzTableSortOrder} from "ng-zorro-antd/table";
 import {SettingSalaryStore} from "../../../setting/salary/state";
 import {CompareSortUtil} from "../../utils/compare-sort.util";
@@ -88,6 +89,7 @@ export class DetailPayrollComponent implements OnInit {
   employeeTypeEnum = EmployeeType;
   recipeType = RecipeType;
 
+  modeDebug = false
   daysInMonth!: number;
   isSticky = false;
   role = localStorage.getItem('role')
@@ -112,7 +114,7 @@ export class DetailPayrollComponent implements OnInit {
     private readonly salaryRemoteService: SalaryRemoteService,
     private readonly salaryHolidayService: SalaryHolidayService,
     private readonly dayOffSalaryService: DayOffSalaryService,
-    private readonly message: NzMessageService
+    private readonly message: NzMessageService,
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
@@ -120,6 +122,12 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(val => {
+      if (val?.mode === ModeEnum.DEBUG) {
+        this.modeDebug = true
+      }
+    })
+
     this.actions$.dispatch(PayrollActions.loadOne({id: this.getPayrollId}));
   }
 

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {EmployeeStatusEnum, Gender, ItemContextMenu, Role, sortEmployeeTypeEnum} from '@minhdu-fontend/enums';
+import {EmployeeStatusEnum, Gender, ItemContextMenu, ModeEnum, Role, sortEmployeeTypeEnum} from '@minhdu-fontend/enums';
 import {catchError, debounceTime} from 'rxjs/operators';
 import {Api, EmployeeStatusConstant, GenderTypeConstant} from '@minhdu-fontend/constants';
 import {throwError} from 'rxjs';
@@ -33,11 +33,13 @@ import {
 import {ModalEmployeeComponent} from "../../components/employee/modal-employee.component";
 import {ModalEmployeeData} from "../../data/modal-employee.data";
 import * as _ from "lodash";
-import {ModalExportExcelComponent} from "@minhdu-fontend/components";
-import {ModalExportExcelData} from "@minhdu-fontend/components";
+import {
+  ModalAlertComponent,
+  ModalDatePickerComponent,
+  ModalExportExcelComponent,
+  ModalExportExcelData
+} from "@minhdu-fontend/components";
 import {ModalAlertEntity, ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
-import {ModalDatePickerComponent} from "@minhdu-fontend/components";
-import {ModalAlertComponent} from "@minhdu-fontend/components";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -74,6 +76,7 @@ export class EmployeeComponent implements OnInit {
     orderBy: this.stateEmployee.orderBy,
     orderType: this.stateEmployee.orderType
   };
+  modeDebug = false
 
   departmentControl = new FormControl(this.stateEmployee.department || '');
   formGroup = new FormGroup({
@@ -115,6 +118,12 @@ export class EmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.activeRouter.queryParams.subscribe(val => {
+      if (val?.mode === ModeEnum.DEBUG) {
+        this.modeDebug = true
+      }
+    })
+
     this.actions$.dispatch(BranchActions.loadAll({}));
 
     this.actions$.dispatch(DepartmentActions.loadAll({}))
@@ -269,9 +278,9 @@ export class EmployeeComponent implements OnInit {
       if (val) {
         this.actions$.dispatch(
           EmployeeActions.leave({
-              id: employee.id,
-              body: {leftAt: ''}
-            })
+            id: employee.id,
+            body: {leftAt: ''}
+          })
         )
       }
     })

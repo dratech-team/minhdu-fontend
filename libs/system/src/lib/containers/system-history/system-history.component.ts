@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivityType, App} from '@minhdu-fontend/enums';
+import {ActivityType, App, ModeEnum} from '@minhdu-fontend/enums';
 import {FormControl, FormGroup} from '@angular/forms';
 import {appConstant, MethodConstant} from '@minhdu-fontend/constants';
 import {Actions} from "@datorama/akita-ng-effects";
@@ -7,6 +7,7 @@ import {SystemHistoryQuery} from "../../state/system-history/system-history.quer
 import {SystemHistoryActions} from "../../state/system-history/system-history.actions";
 import {SystemHistoryStore} from "../../state/system-history/system-history.store";
 import {debounceTime} from "rxjs/operators";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   templateUrl: 'system-history.component.html',
@@ -24,6 +25,7 @@ export class systemHistoryComponent implements OnInit {
   methods = MethodConstant;
   pageSize = 30;
   pageIndexInit = 0;
+  modeDebug = false
 
   stateSearch = this.systemHistoryQuery.getValue().search
   formGroup = new FormGroup({
@@ -43,11 +45,18 @@ export class systemHistoryComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly systemHistoryQuery: SystemHistoryQuery,
     private readonly systemHistoryStore: SystemHistoryStore,
+    private readonly activeRouter: ActivatedRoute,
   ) {
   }
 
 
   ngOnInit(): void {
+    this.activeRouter.queryParams.subscribe(val => {
+      if (val?.mode === ModeEnum.DEBUG) {
+        this.modeDebug = true
+      }
+    })
+
     this.onLoad(false)
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe(_ => {
       this.onLoad(false)

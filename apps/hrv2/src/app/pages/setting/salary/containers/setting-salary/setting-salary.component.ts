@@ -26,6 +26,8 @@ import * as _ from 'lodash'
 import {UnitDatetimeConstant} from "../../constants/unit-datetime.constant";
 import {Sort} from "@minhdu-fontend/data-models";
 import {SortSettingSalaryEnum} from "../../enums/sort-setting-salary.enum";
+import {ModeEnum} from "@minhdu-fontend/enums";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'minhdu-fontend-setting-salary',
@@ -55,6 +57,7 @@ export class SettingSalaryComponent implements OnInit {
     orderType: this.stateSearch?.orderType
   };
   sortEnum = SortSettingSalaryEnum;
+  modeDebug = false
 
   formGroup = new FormGroup(
     {
@@ -74,11 +77,18 @@ export class SettingSalaryComponent implements OnInit {
     private readonly settingSalaryStore: SettingSalaryStore,
     private readonly message: NzMessageService,
     private readonly positionQuery: PositionQuery,
-    private readonly branchQuery: BranchQuery
+    private readonly branchQuery: BranchQuery,
+    private readonly activatedRoute: ActivatedRoute,
   ) {
   }
 
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(val => {
+      if (val?.mode === ModeEnum.DEBUG) {
+        this.modeDebug = true
+      }
+    })
+
     this.actions$.dispatch(PositionActions.loadAll({}))
     this.actions$.dispatch(BranchActions.loadAll({}))
 

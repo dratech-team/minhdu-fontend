@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {App} from '@minhdu-fontend/enums';
+import {App, ModeEnum} from '@minhdu-fontend/enums';
 import {FormControl, FormGroup} from '@angular/forms';
 import {debounceTime} from 'rxjs/operators';
 import {AccountActions} from '../../state/account-management/account.actions';
@@ -16,6 +16,7 @@ import {AccountEntity} from "../../entities/account.entity";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 import {ModalRegisterData} from "../../data/modal-register.data";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   templateUrl: 'account-management.component.html'
@@ -30,6 +31,7 @@ export class AccountManagementComponent implements OnInit {
 
   app = App;
   roleHr = roleAppHR;
+  modeDebug = false
 
   stateSearch = this.accountQuery.getValue().search
   formGroup = new FormGroup({
@@ -51,10 +53,17 @@ export class AccountManagementComponent implements OnInit {
     private readonly branchQuery: BranchQuery,
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
+    private readonly activeRouter: ActivatedRoute,
   ) {
   }
 
   ngOnInit(): void {
+    this.activeRouter.queryParams.subscribe(val => {
+      if (val?.mode === ModeEnum.DEBUG) {
+        this.modeDebug = true
+      }
+    })
+
     this.onLoad(false)
     this.actions$.dispatch(BranchActions.loadAll({}))
     this.formGroup.valueChanges

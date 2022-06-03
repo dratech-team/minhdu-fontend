@@ -20,6 +20,7 @@ import {DatePipe} from "@angular/common";
 import * as _ from 'lodash'
 import {ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
 import {SalariesConstant} from "../../../salary/constants";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -84,11 +85,12 @@ export class PayrollComponent implements OnInit {
     private readonly departmentQuery: DepartmentQuery,
     private readonly actions$: Actions,
     private readonly modal: NzModalService,
-    private readonly settingSalaryQuery: SettingSalaryQuery
+    private readonly settingSalaryQuery: SettingSalaryQuery,
   ) {
   }
 
   ngOnInit() {
+
     this.actions$.dispatch(BranchActions.loadAll({}))
 
     this.actions$.dispatch(DepartmentActions.loadAll({}))

@@ -6,7 +6,7 @@ import {DetailEmployeeComponent} from "./containers/detail-employee/detail-emplo
 const routes: Routes = [
   {
     path: '',
-    component: EmployeeComponent
+    component: EmployeeComponent,
   },
   {
     path: 'chi-tiet-nhan-vien/:id',

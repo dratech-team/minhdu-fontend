@@ -11,12 +11,10 @@ import {
   PositionEntity,
   PositionQuery
 } from "@minhdu-fontend/orgchart-v2";
-import {ModalAlertComponent} from "@minhdu-fontend/components";
-import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ModalPositionComponent} from "../../components/modal-position/modal-position.component";
 import {DataAddOrUpdatePosition} from "../../data/modal-position.data";
-import {FilterTypeEnum, ItemContextMenu} from "@minhdu-fontend/enums";
+import {FilterTypeEnum, ItemContextMenu, ModeEnum} from "@minhdu-fontend/enums";
 import {EmployeeStore} from "@minhdu-fontend/employee-v2";
 import {PayrollStore} from "../../../../payroll/state";
 
@@ -31,7 +29,7 @@ export class PositionComponent implements OnInit {
   stateSearch = this.positionQuery.getValue().search
   itemContextMenu = ItemContextMenu
   filterType = FilterTypeEnum
-
+  modeDebug = false
   formGroup = new FormGroup(
     {
       search: new FormControl(this.stateSearch.search),
@@ -48,10 +46,17 @@ export class PositionComponent implements OnInit {
     private readonly employeeStore: EmployeeStore,
     private readonly payrollStore: PayrollStore,
     private readonly router: Router,
+    private readonly activeRouter: ActivatedRoute,
   ) {
   }
 
   ngOnInit() {
+    this.activeRouter.queryParams.subscribe(val => {
+      if (val?.mode === ModeEnum.DEBUG) {
+        this.modeDebug = true
+      }
+    })
+
     this.actions$.dispatch(PositionActions.loadAll({
       search: this.formGroup.value
     }));

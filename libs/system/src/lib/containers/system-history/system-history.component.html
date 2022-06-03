@@ -70,8 +70,8 @@
       >
         <thead>
         <tr>
-          <th nzLeft nzWidth="60px">stt
-          </th>
+          <th nzLeft nzWidth="60px">stt</th>
+          <th *ngIf="modeDebug" nzWidth="60px">Id</th>
           <th nzLeft nzWidth="200px">Ứng dụng
           </th>
           <th nzLeft nzWidth="200px">Tài khoản</th>
@@ -86,6 +86,7 @@
           <td nzLeft class="text-center">
             {{i + 1}}
           </td>
+          <td *ngIf="modeDebug">{{systemHistory.id}}</td>
           <td nzLeft class="text-center">
             {{systemHistory?.appName ? (systemHistory.appName |transformApp:apps) : 'Chưa xác định'}}
           </td>
