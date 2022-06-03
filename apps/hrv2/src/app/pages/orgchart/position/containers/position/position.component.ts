@@ -29,7 +29,7 @@ export class PositionComponent implements OnInit {
   stateSearch = this.positionQuery.getValue().search
   itemContextMenu = ItemContextMenu
   filterType = FilterTypeEnum
-  modeDebug = false
+  modeDev = false
   formGroup = new FormGroup(
     {
       search: new FormControl(this.stateSearch.search),
@@ -53,7 +53,7 @@ export class PositionComponent implements OnInit {
   ngOnInit() {
     this.activeRouter.queryParams.subscribe(val => {
       if (val?.mode === ModeEnum.DEV) {
-        this.modeDebug = true
+        this.modeDev = true
       }
     })
 

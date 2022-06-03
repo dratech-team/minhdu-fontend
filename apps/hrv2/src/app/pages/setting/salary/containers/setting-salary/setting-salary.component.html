@@ -88,7 +88,7 @@
         <thead>
         <tr>
           <th nzLeft nzWidth="60px">STT</th>
-          <th *ngIf="modeDebug" nzLeft nzWidth="60px">id</th>
+          <th *ngIf="modeDev" nzLeft nzWidth="60px">id</th>
           <th
             [nzSortFn]='true'
             (nzSortOrderChange)='onSort({orderBy: sortEnum.TITLE, orderType:$event})'
@@ -126,7 +126,7 @@
             (click)="onUpdate(settingSalary)"
         >
           <td nzLeft>{{i + 1}}</td>
-          <td *ngIf="modeDebug" nzLeft>{{settingSalary.id}}</td>
+          <td *ngIf="modeDev" nzLeft>{{settingSalary.id}}</td>
           <td nzLeft>{{settingSalary.title}}</td>
           <td nzLeft>{{ settingSalary | pricesettingsalary }}</td>
           <td>{{settingSalary.unit | transformconstant:datetimeConstant}}</td>

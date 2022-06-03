@@ -89,7 +89,7 @@ export class DetailPayrollComponent implements OnInit {
   employeeTypeEnum = EmployeeType;
   recipeType = RecipeType;
 
-  modeDebug = false
+  modeDev = false
   daysInMonth!: number;
   isSticky = false;
   role = localStorage.getItem('role')
@@ -124,7 +124,7 @@ export class DetailPayrollComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(val => {
       if (val?.mode === ModeEnum.DEV) {
-        this.modeDebug = true
+        this.modeDev = true
       }
     })
 

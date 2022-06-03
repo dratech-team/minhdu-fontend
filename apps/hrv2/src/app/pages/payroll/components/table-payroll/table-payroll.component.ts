@@ -76,7 +76,7 @@ export class TablePayrollComponent implements OnInit {
   role = localStorage.getItem('role')
   sessionConstant = SessionConstant;
   partialDay = PartialDayEnum
-  modeDebug = false
+  modeDev = false
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
 
@@ -103,7 +103,7 @@ export class TablePayrollComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(val => {
       if (val?.mode === ModeEnum.DEV) {
-        this.modeDebug = true
+        this.modeDev = true
       }
     })
 

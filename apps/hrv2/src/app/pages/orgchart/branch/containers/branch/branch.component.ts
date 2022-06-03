@@ -33,7 +33,7 @@ export class BranchComponent implements OnInit {
   pageSizeTable = 10;
   filterType = FilterTypeEnum
   itemContextMenu = ItemContextMenu
-  modeDebug = false
+  modeDev = false
   stateSearch = this.branchQuery.getValue().search
   formGroup = new FormGroup(
     {
@@ -62,7 +62,7 @@ export class BranchComponent implements OnInit {
   ngOnInit() {
     this.activeRouter.queryParams.subscribe(val => {
       if (val?.mode === ModeEnum.DEV) {
-        this.modeDebug = true
+        this.modeDev = true
       }
     })
 

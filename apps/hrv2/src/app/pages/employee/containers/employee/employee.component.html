@@ -77,7 +77,7 @@
           <!--              <input class=' text-center' type='text' disabled>-->
           <!--            </th>-->
           <th [nzSortFn]='true'
-              *ngIf="modeDebug"
+              *ngIf="modeDev"
               (nzSortOrderChange)='onSort({orderBy: sortEnum.CODE, orderType:$event})'>
             <div>Mã nhân viên</div>
             <input nz-input type='search' disabled>
@@ -279,7 +279,7 @@
           <td nzLeft nzWidth="100px">
             <div>{{i + 1}}</div>
           </td>
-          <td *ngIf="modeDebug">
+          <td *ngIf="modeDev">
             <div>{{employee.id}}</div>
           </td>
           <td nzLeft>

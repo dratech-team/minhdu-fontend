@@ -25,7 +25,7 @@ export class systemHistoryComponent implements OnInit {
   methods = MethodConstant;
   pageSize = 30;
   pageIndexInit = 0;
-  modeDebug = false
+  modeDev = false
 
   stateSearch = this.systemHistoryQuery.getValue().search
   formGroup = new FormGroup({
@@ -53,7 +53,7 @@ export class systemHistoryComponent implements OnInit {
   ngOnInit(): void {
     this.activeRouter.queryParams.subscribe(val => {
       if (val?.mode === ModeEnum.DEV) {
-        this.modeDebug = true
+        this.modeDev = true
       }
     })
 
