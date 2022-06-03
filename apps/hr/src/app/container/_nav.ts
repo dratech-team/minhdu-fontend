@@ -1,4 +1,4 @@
-import { INavData } from '@coreui/angular';
+import {INavData} from '@coreui/angular';
 
 export const navItems: INavData[] = [
   {
@@ -18,8 +18,8 @@ export const navItems: INavData[] = [
     name: 'Hồ sơ',
     url: '/ho-so',
     icon: 'cil-lock-locked',
-    linkProps:{
-      queryParams:{mode: localStorage.getItem('mode')}
+    linkProps: {
+      queryParams: {mode: localStorage.getItem('mode')}
     }
   },
   {
@@ -30,8 +30,8 @@ export const navItems: INavData[] = [
     name: 'Phiếu lương',
     url: '/phieu-luong',
     icon: 'cil-lock-locked',
-    linkProps:{
-      queryParams:{mode: localStorage.getItem('mode')}
+    linkProps: {
+      queryParams: {mode: localStorage.getItem('mode')}
     }
   },
   {
@@ -42,24 +42,24 @@ export const navItems: INavData[] = [
     name: 'Thiết lập lương',
     url: '/ban-mau',
     icon: 'cil-lock-locked',
-    linkProps:{
-      queryParams:{mode: localStorage.getItem('mode')}
+    linkProps: {
+      queryParams: {mode: localStorage.getItem('mode')}
     }
   },
   {
     name: 'Tăng ca',
     url: '/ban-mau/tang-ca',
     icon: 'cil-lock-locked',
-    linkProps:{
-      queryParams:{mode: localStorage.getItem('mode')}
+    linkProps: {
+      queryParams: {mode: localStorage.getItem('mode')}
     }
   },
   {
     name: 'Ngày lễ',
     url: '/ban-mau/ngay-le',
     icon: 'cil-lock-locked',
-    linkProps:{
-      queryParams:{mode: localStorage.getItem('mode')}
+    linkProps: {
+      queryParams: {mode: localStorage.getItem('mode')}
     }
   },
   {
@@ -70,16 +70,16 @@ export const navItems: INavData[] = [
     name: 'Đơn vị',
     url: '/to-chuc/don-vi',
     icon: 'cil-lock-locked',
-    linkProps:{
-      queryParams:{mode: localStorage.getItem('mode')}
+    linkProps: {
+      queryParams: {mode: localStorage.getItem('mode')}
     }
   },
   {
     name: 'Chức vụ',
     url: '/to-chuc/chuc-vu',
     icon: 'cil-lock-locked',
-    linkProps:{
-      queryParams:{mode: localStorage.getItem('mode')}
+    linkProps: {
+      queryParams: {mode: localStorage.getItem('mode')}
     }
   },
   {
@@ -90,16 +90,16 @@ export const navItems: INavData[] = [
     name: 'Lịch sử hệ thống',
     url: '/he-thong',
     icon: 'cil-lock-locked',
-    linkProps:{
-      queryParams:{mode: localStorage.getItem('mode')}
+    linkProps: {
+      queryParams: {mode: localStorage.getItem('mode')}
     }
   },
   {
     name: 'Quản lý tài khoản',
     url: '/he-thong/quan-ly-tai-khoan',
     icon: 'cil-lock-locked',
-    linkProps:{
-      queryParams:{mode: localStorage.getItem('mode')}
+    linkProps: {
+      queryParams: {mode: localStorage.getItem('mode')}
     }
   },
   {
@@ -110,8 +110,8 @@ export const navItems: INavData[] = [
     name: 'Xếp hạng cuối năm',
     url: '/xep-hang',
     icon: 'cil-lock-locked',
-    linkProps:{
-      queryParams:{mode: localStorage.getItem('mode')}
+    linkProps: {
+      queryParams: {mode: localStorage.getItem('mode')}
     }
   }
 ];
