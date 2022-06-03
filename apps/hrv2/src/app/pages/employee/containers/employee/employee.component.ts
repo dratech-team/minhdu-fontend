@@ -239,7 +239,7 @@ export class EmployeeComponent implements OnInit {
     this.router.navigate(['nhan-vien/chi-tiet-nhan-vien', $event.id], {
       queryParams: {
         isUpdate,
-        mode: localStorage.getItem('env')
+        mode: localStorage.getItem('mode')
       }
     }).then();
   }

@@ -19,7 +19,7 @@ export const navItems: INavData[] = [
     url: '/ho-so',
     icon: 'cil-lock-locked',
     linkProps:{
-      queryParams:{mode: localStorage.getItem('env')}
+      queryParams:{mode: localStorage.getItem('mode')}
     }
   },
   {
@@ -31,7 +31,7 @@ export const navItems: INavData[] = [
     url: '/phieu-luong',
     icon: 'cil-lock-locked',
     linkProps:{
-      queryParams:{mode: localStorage.getItem('env')}
+      queryParams:{mode: localStorage.getItem('mode')}
     }
   },
   {
@@ -43,7 +43,7 @@ export const navItems: INavData[] = [
     url: '/ban-mau',
     icon: 'cil-lock-locked',
     linkProps:{
-      queryParams:{mode: localStorage.getItem('env')}
+      queryParams:{mode: localStorage.getItem('mode')}
     }
   },
   {
@@ -51,7 +51,7 @@ export const navItems: INavData[] = [
     url: '/ban-mau/tang-ca',
     icon: 'cil-lock-locked',
     linkProps:{
-      queryParams:{mode: localStorage.getItem('env')}
+      queryParams:{mode: localStorage.getItem('mode')}
     }
   },
   {
@@ -59,7 +59,7 @@ export const navItems: INavData[] = [
     url: '/ban-mau/ngay-le',
     icon: 'cil-lock-locked',
     linkProps:{
-      queryParams:{mode: localStorage.getItem('env')}
+      queryParams:{mode: localStorage.getItem('mode')}
     }
   },
   {
@@ -71,7 +71,7 @@ export const navItems: INavData[] = [
     url: '/to-chuc/don-vi',
     icon: 'cil-lock-locked',
     linkProps:{
-      queryParams:{mode: localStorage.getItem('env')}
+      queryParams:{mode: localStorage.getItem('mode')}
     }
   },
   {
@@ -79,7 +79,7 @@ export const navItems: INavData[] = [
     url: '/to-chuc/chuc-vu',
     icon: 'cil-lock-locked',
     linkProps:{
-      queryParams:{mode: localStorage.getItem('env')}
+      queryParams:{mode: localStorage.getItem('mode')}
     }
   },
   {
@@ -91,7 +91,7 @@ export const navItems: INavData[] = [
     url: '/he-thong',
     icon: 'cil-lock-locked',
     linkProps:{
-      queryParams:{mode: localStorage.getItem('env')}
+      queryParams:{mode: localStorage.getItem('mode')}
     }
   },
   {
@@ -99,7 +99,7 @@ export const navItems: INavData[] = [
     url: '/he-thong/quan-ly-tai-khoan',
     icon: 'cil-lock-locked',
     linkProps:{
-      queryParams:{mode: localStorage.getItem('env')}
+      queryParams:{mode: localStorage.getItem('mode')}
     }
   },
   {
@@ -111,7 +111,7 @@ export const navItems: INavData[] = [
     url: '/xep-hang',
     icon: 'cil-lock-locked',
     linkProps:{
-      queryParams:{mode: localStorage.getItem('env')}
+      queryParams:{mode: localStorage.getItem('mode')}
     }
   }
 ];
