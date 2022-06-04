@@ -79,7 +79,7 @@
           <th
             nzLeft
             [nzSortFn]='true'
-            *ngIf="modeDebug"
+            *ngIf="modeApp === modeEnum.INFO"
             (nzSortOrderChange)='onSort({orderBy: sortEnum.CODE, orderType:$event})'>
             <div>Mã nhân viên</div>
             <input nz-input type='search' disabled>
@@ -285,7 +285,7 @@
             <div>{{i + 1}}</div>
           </td>
           <td
-            *ngIf="modeDebug"
+            *ngIf="modeApp === modeEnum.INFO"
             nzLeft
           >
             <div>{{employee.id}}</div>

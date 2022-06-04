@@ -57,7 +57,8 @@ export class SettingSalaryComponent implements OnInit {
     orderType: this.stateSearch?.orderType
   };
   sortEnum = SortSettingSalaryEnum;
-  modeDebug = false
+  modeEnum = ModeEnum
+  modeApp = ModeEnum.PROD
 
   formGroup = new FormGroup(
     {
@@ -84,8 +85,8 @@ export class SettingSalaryComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(val => {
-      if (val?.mode === ModeEnum.DEBUG) {
-        this.modeDebug = true
+      if (val?.mode) {
+        this.modeApp = val.mode
       }
     })
 

@@ -17,5 +17,4 @@ const storage = persistState({
 const providers = [{provide: 'persistStorage', useValue: storage}];
 platformBrowserDynamic(providers)
   .bootstrapModule(AppModule)
-  .then(_ => localStorage.setItem('mode', (environment.production ? ModeEnum.PROD : ModeEnum.DEBUG)))
   .catch((err) => console.error(err));

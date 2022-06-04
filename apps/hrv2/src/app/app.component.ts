@@ -1,5 +1,6 @@
-import { Component, isDevMode } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import {Component, isDevMode} from '@angular/core';
+import {NavigationEnd, Router} from '@angular/router';
+import {ModeEnum} from "@minhdu-fontend/enums";
 
 @Component({
   selector: 'minhdu-fontend-hrv2',
@@ -15,7 +16,7 @@ export class AppComponent {
       if (event instanceof NavigationEnd) {
         if (event.url.indexOf('mode=') === -1) {
           this.router.navigate([event.url.split('?')[0]], {
-            queryParams: { mode: isDevMode() ? 'info' : 'prod' },
+            queryParams: {mode: isDevMode() ? ModeEnum.INFO : ModeEnum.PROD},
             queryParamsHandling: 'merge'
           }).then();
         }

@@ -88,14 +88,15 @@ export class DetailPayrollComponent implements OnInit {
   PartialDay = PartialDayEnum;
   employeeTypeEnum = EmployeeType;
   recipeType = RecipeType;
+  modeEnum = ModeEnum
+  filterSalaryEnum = FilterSalaryEnum
 
-  modeDebug = false
+  modeApp = ModeEnum.PROD
   daysInMonth!: number;
   isSticky = false;
   role = localStorage.getItem('role')
   ;
   roleEnum = Role;
-  filterSalaryEnum = FilterSalaryEnum
 
   constructor(
     private readonly payrollQuery: PayrollQuery,
@@ -123,8 +124,8 @@ export class DetailPayrollComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(val => {
-      if (val?.mode === ModeEnum.DEBUG) {
-        this.modeDebug = true
+      if (val?.mode) {
+        this.modeApp = val.mode
       }
     })
 

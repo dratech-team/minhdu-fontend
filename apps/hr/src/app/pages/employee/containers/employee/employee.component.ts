@@ -110,7 +110,8 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME),
     status: new FormControl(EmployeeStatusEnum.IS_ACTIVE)
   });
-  modeDebug = false
+  modeEnum = ModeEnum
+  modeApp = ModeEnum.PROD
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
@@ -150,8 +151,8 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       if (val.position) {
         this.formGroup.get('position')?.setValue(JSON.parse(val.position), {emitEvent: false});
       }
-      if (val.mode === ModeEnum.DEBUG) {
-        this.modeDebug = true
+      if (val?.mode) {
+        this.modeApp = val.mode
       }
     });
     this.store.dispatch(

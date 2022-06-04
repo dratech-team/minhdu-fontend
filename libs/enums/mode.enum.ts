@@ -1,4 +1,6 @@
 export enum ModeEnum {
   PROD = 'prod',
-  DEBUG = 'debug'
+  DEBUG = 'debug',
+  INFO = 'info',
+  WARNING = 'warning',
 }
