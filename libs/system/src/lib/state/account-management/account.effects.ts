@@ -121,7 +121,7 @@ export class AccountEffects {
         return this.accountService.signIn(props).pipe(
           tap((user) => {
             this.accountStore.update(state => ({
-              ...state, loginLoading: false, accountLogged: user
+              ...state, loginLoading: false, currentUser: user
             }))
             this.accountStore.add(user)
             this.message.success('Đăng nhập thành công');
@@ -197,7 +197,7 @@ export class AccountEffects {
     ofType(AccountActions.logout),
     switchMap((props) => {
         this.accountStore.update(state => ({
-          ...state, accountLogged: undefined
+          ...state, currentUser: undefined
         }))
         this.accountStore.remove(props.id)
         return this.router.navigate(['auth/login']).then();

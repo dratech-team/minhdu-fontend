@@ -1,6 +1,5 @@
 import {AfterContentChecked, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {LogoutComponent} from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
 import {RegisterComponent} from 'libs/auth/src/lib/components/dialog-register.component/register.component';
 import {Role} from 'libs/enums/hr/role.enum';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -9,6 +8,8 @@ import {AppQuery} from "../../state/app.query";
 import {MenuWarehouseConstant} from "../../../shared/constant";
 import {Actions} from "@datorama/akita-ng-effects";
 import {AccountActions} from "../../../../../../libs/system/src/lib/state/account-management/account.actions";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {AccountQuery} from "../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   templateUrl: './warehouse-layout.component.html',
@@ -28,7 +29,9 @@ export class WarehouseLayoutComponent implements OnInit, AfterContentChecked {
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
     private readonly ref: ChangeDetectorRef,
-    private readonly actions$: Actions
+    private readonly actions$: Actions,
+    private readonly modal: NzModalService,
+    private readonly accountQuery: AccountQuery,
   ) {
   }
 
@@ -43,16 +46,24 @@ export class WarehouseLayoutComponent implements OnInit, AfterContentChecked {
   }
 
   logout() {
-    const ref = this.dialog.open(LogoutComponent, { width: '30%' });
-    ref.afterClosed().subscribe(val => {
-      if (val) {
-        this.actions$.dispatch(AccountActions.logout());
-      }
-    });
+    this.modal.warning({
+      nzTitle: 'Đăng xuất',
+      nzContent: 'Bạn có chắc chắn muốn đăng xuất',
+      nzOnOk: (_ => {
+        const currentUser = this.accountQuery.getValue().currentUser
+        if (currentUser) {
+          return this.actions$.dispatch(AccountActions.logout({
+            id: currentUser.id
+          }))
+        } else {
+          this.router.navigate(['auth/login']).then()
+        }
+      })
+    })
   }
 
   signUp() {
-    this.dialog.open(RegisterComponent, { width: '40%' });
+    this.dialog.open(RegisterComponent, {width: '40%'});
   }
 
   onUpdateStateAppName(appName: string, href: string) {

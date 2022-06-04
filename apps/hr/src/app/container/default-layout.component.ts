@@ -18,7 +18,7 @@ import {AccountQuery} from "../../../../../libs/system/src/lib/state/account-man
   styleUrls: ['./default-layout.component.scss'],
 })
 export class DefaultLayoutComponent implements OnInit {
-  accountLogged = this.accountQuery.getValue().accountLogged
+  currentUser = this.accountQuery.getValue().currentUser
   roleEnum = this.accountQuery.getValue();
 
   showFiller = false;
@@ -35,7 +35,7 @@ export class DefaultLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (!this.accountLogged) {
+    if (!this.currentUser) {
       this.router.navigate(['/']).then();
     }
   }
@@ -48,8 +48,8 @@ export class DefaultLayoutComponent implements OnInit {
   logout() {
     const ref = this.dialog.open(LogoutComponent, {width: '30%'});
     ref.afterClosed().subscribe((val) => {
-      if (val && this.accountLogged) {
-        return this.actions$.dispatch(AccountActions.logout({id: this.accountLogged.id}));
+      if (val && this.currentUser) {
+        return this.actions$.dispatch(AccountActions.logout({id: this.currentUser.id}));
       }
     });
   }

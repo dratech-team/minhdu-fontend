@@ -49,11 +49,13 @@ export class PageLayoutComponent {
       nzTitle: 'Đăng xuất',
       nzContent: 'Bạn có chắc chắn muốn đăng xuất',
       nzOnOk: (_ => {
-        const accountLogged = this.accountQuery.getValue().accountLogged
-        if (accountLogged) {
+        const currentUser = this.accountQuery.getValue().currentUser
+        if (currentUser) {
           return this.actions$.dispatch(AccountActions.logout({
-            id: accountLogged.id
+            id: currentUser.id
           }))
+        } else {
+          this.router.navigate(['auth/login']).then()
         }
       })
     })

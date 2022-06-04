@@ -5,18 +5,18 @@ import {Observable, throwError} from 'rxjs';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {Payslip} from '../../+state/payslip/payslip.interface';
 import {PayslipService} from '../../service/payslip.service';
-import {EmployeeType, RecipeType} from '@minhdu-fontend/enums';
+import {EmployeeType, RecipeType, Role} from '@minhdu-fontend/enums';
 import {FormControl} from '@angular/forms';
 import {DatePipe} from '@angular/common';
-import {getFirstDayInMonth, getLastDayInMonth} from '../../../../../../../../libs/utils/daytime.until';
+import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
 import {selectedConfirmedPayroll} from '../../+state/payroll/payroll.selector';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {
   DialogSharedComponent
 } from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
-import {catchError, subscribeOn} from "rxjs/operators";
-import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
+import {catchError} from "rxjs/operators";
 import {PayrollService} from "../../service/payroll.service";
+import {AccountQuery} from "../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   templateUrl: 'confirm-payroll.component.html',
@@ -37,7 +37,7 @@ export class ConfirmPayrollComponent implements OnInit {
     getFirstDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
   lastDayInMonth = this.datePipe.transform(
     getLastDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
-  role?: string | null
+  currentUser = this.accountQuery.getValue().currentUser
   adding = false;
 
   constructor(
@@ -48,12 +48,12 @@ export class ConfirmPayrollComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly message: NzMessageService,
     private readonly payrollService: PayrollService,
-    private readonly dialogRef: MatDialogRef<ConfirmPayrollComponent>
+    private readonly dialogRef: MatDialogRef<ConfirmPayrollComponent>,
+    private readonly accountQuery: AccountQuery
   ) {
   }
 
   ngOnInit() {
-    this.role = localStorage.getItem('role')
     this.payslip$ = this.payslipService.getOne(this.data.payroll.id);
     if (this.data?.payroll?.accConfirmedAt) {
       this.isConfirmed = true;
@@ -62,7 +62,7 @@ export class ConfirmPayrollComponent implements OnInit {
   }
 
   confirmPayroll(reconfirm: boolean): any {
-    if(this.role === Role.HUMAN_RESOURCE){
+    if(this.currentUser?.role?.role === Role.HUMAN_RESOURCE){
       this.dialogRef.close()
       return this.message.warning('Quản lý nhân sự không được phép xác nhận phiếu lương')
     }

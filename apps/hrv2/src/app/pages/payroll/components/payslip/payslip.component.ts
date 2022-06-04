@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Observable, throwError} from 'rxjs';
-import {EmployeeType, RecipeType} from '@minhdu-fontend/enums';
+import {EmployeeType, RecipeType, Role} from '@minhdu-fontend/enums';
 import {FormControl} from '@angular/forms';
 import {DatePipe} from '@angular/common';
 import {NzMessageService} from 'ng-zorro-antd/message';
@@ -9,7 +9,6 @@ import {
   DialogSharedComponent
 } from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
 import {catchError} from "rxjs/operators";
-import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 import {PayrollEntity, PayslipEntity} from "../../entities";
 import {PayslipService} from "../../services/payslip.service";
 import {PayrollService} from "../../services/payroll.service";
@@ -17,6 +16,7 @@ import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../state/payroll.action";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {getLastDayInMonth} from "@minhdu-fontend/utils";
+import {AccountQuery} from "../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   templateUrl: 'payslip.component.html',
@@ -31,7 +31,7 @@ export class PayslipComponent implements OnInit {
   recipeType = RecipeType;
   isConfirmed = false;
   typeEmployee = EmployeeType;
-  role = localStorage.getItem('role')
+  currentUser = this.accountQuery.getValue().currentUser
   adding = false;
 
   constructor(
@@ -41,7 +41,8 @@ export class PayslipComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly message: NzMessageService,
     private readonly payrollService: PayrollService,
-    private readonly modalRef: NzModalRef
+    private readonly modalRef: NzModalRef,
+    private readonly accountQuery: AccountQuery
   ) {
 
   }
@@ -57,7 +58,7 @@ export class PayslipComponent implements OnInit {
   }
 
   confirmPayroll(reconfirm: boolean): any {
-    if (this.role === Role.HUMAN_RESOURCE) {
+    if (this.currentUser?.role?.role === Role.HUMAN_RESOURCE) {
       this.modalRef.close()
       return this.message.warning('Quản lý nhân sự không được phép xác nhận phiếu lương')
     }

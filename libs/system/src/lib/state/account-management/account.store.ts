@@ -9,9 +9,9 @@ export interface AccountState extends EntityState<AccountEntity> {
   loadMore: boolean
   added: boolean | null;
   total: number
-  search?: Partial<AccountEntity & {search: string}>;
+  search?: Partial<AccountEntity & { search: string }>;
   deleted: boolean | null,
-  accountLogged?: AccountEntity,
+  currentUser?: AccountEntity,
 }
 
 function createInitState(): AccountState {

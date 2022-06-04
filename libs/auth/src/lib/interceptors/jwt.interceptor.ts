@@ -22,7 +22,7 @@ export class JwtInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     // add auth header with jwt if user is logged in and request is to api url
 
-    const token = this.accountQuery.getValue().accountLogged?.token
+    const token = this.accountQuery.getValue().currentUser?.token
     const environment = isDevMode() ? envDev : envProd;
     const url = !request.url.startsWith(Api.SLACK_WEBHOOK)
       ? environment.environment.apiUrl + request.url

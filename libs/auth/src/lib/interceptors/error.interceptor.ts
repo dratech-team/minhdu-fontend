@@ -24,9 +24,9 @@ export class ErrorInterceptor implements HttpInterceptor {
         if ([401].indexOf(err.status) !== -1) {
           // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
           /// FIXME: action not working
-          const accountLogged = this.accountQuery.getValue().accountLogged
-          if (accountLogged) {
-            this.actions$.dispatch(AccountActions.logout({id: accountLogged.id}));
+          const currentUser = this.accountQuery.getValue().currentUser
+          if (currentUser) {
+            this.actions$.dispatch(AccountActions.logout({id: currentUser.id}));
           }
         } else if ([403].indexOf(err.status) !== -1) {
           this.router.navigate(['/he-thong/han-che-truy-cap']).then();

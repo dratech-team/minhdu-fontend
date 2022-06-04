@@ -92,8 +92,7 @@ export class DetailPayrollComponent implements OnInit {
 
   daysInMonth!: number;
   isSticky = false;
-  accountLogged = this.accountQuery.getValue().accountLogged;
-;
+  currentUser = this.accountQuery.getValue().currentUser;
   roleEnum = Role
   filterSalaryEnum = FilterSalaryEnum
 
@@ -294,7 +293,7 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   confirmPayroll(payroll: PayrollEntity) {
-    if (this.accountLogged?.role !== Role.HUMAN_RESOURCE) {
+    if (this.currentUser?.role.role !== Role.HUMAN_RESOURCE) {
       this.modal.create({
         nzTitle: 'Xác nhận phiếu lương tháng ' + this.datePipe.transform(payroll.createdAt, 'yyyy-MM'),
         nzContent: PayslipComponent,

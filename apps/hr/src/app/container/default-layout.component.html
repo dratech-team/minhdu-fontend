@@ -23,7 +23,7 @@
     <app-sidebar-nav [navItems]='navItems' [perfectScrollbar] [disabled]='appSidebar.minimized'>
     </app-sidebar-nav>
     <app-sidebar-footer>
-      <a *ngIf='accountLogged?.role === roleEnum.ADMIN ' (click)='signUp()'
+      <a *ngIf='currentUser?.role === roleEnum.ADMIN ' (click)='signUp()'
          class=' pointer text-left dropdown-item settings'
          style='color: white'> Tạo tài khoản</a>
       <a (click)='logout()' class='pointer text-left dropdown-item' style='color: red'> Logout</a>

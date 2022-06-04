@@ -74,7 +74,7 @@ export class TablePayrollComponent implements OnInit {
   salaryType = SalaryTypeEnum
   deletingSalary = false
   salariesSelected: SalaryEntity[] = []
-  accountLogged = this.accountQuery.getValue().accountLogged
+  currentUser = this.accountQuery.getValue().currentUser
   sessionConstant = SessionConstant;
   partialDay = PartialDayEnum
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
@@ -187,7 +187,7 @@ export class TablePayrollComponent implements OnInit {
   }
 
   onConfirm(payroll: PayrollEntity) {
-    if (this.accountLogged?.role !== Role.HUMAN_RESOURCE) {
+    if (this.currentUser?.role?.role !== Role.HUMAN_RESOURCE) {
       this.modal.create({
         nzTitle: 'Xác nhận phiếu lương tháng ' + this.datePipe.transform(payroll.createdAt, 'yyyy-MM'),
         nzContent: PayslipComponent,
@@ -408,7 +408,7 @@ export class TablePayrollComponent implements OnInit {
     switch (this.formGroup.value.filterType) {
       case FilterTypeEnum.PERMANENT:
         this.modal.create({
-          nzWidth:'300px',
+          nzWidth: '300px',
           nzTitle: 'Chọn Loại lương',
           nzContent: ModalSelectAddSalaryComponent,
           nzFooter: []
@@ -421,7 +421,7 @@ export class TablePayrollComponent implements OnInit {
       case FilterTypeEnum.OVERTIME:
       case FilterTypeEnum.ABSENT:
         this.modal.create({
-          nzWidth:'fit-content',
+          nzWidth: 'fit-content',
           nzTitle: `Thêm ${this.formGroup.value.filterType === SalaryTypeEnum.OVERTIME ? 'tăng ca' : 'vắng'}`,
           nzContent: AbsentOvertimeSalaryComponent,
           nzComponentParams: <{ data: ModalAddOrUpdateAbsentOrOvertime }>{
@@ -441,12 +441,12 @@ export class TablePayrollComponent implements OnInit {
         break
       case FilterTypeEnum.ALLOWANCE:
         this.modal.create({
-          nzWidth:'fit-content',
+          nzWidth: 'fit-content',
           nzTitle: 'Thêm phụ cấp lương',
           nzContent: AllowanceSalaryComponent,
           nzComponentParams: <{ data: ModalAddOrUpdateAllowance }>{
             data: {
-              add:{
+              add: {
                 multiple: true
               }
             }
