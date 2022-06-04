@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, isDevMode } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
@@ -15,7 +15,7 @@ export class AppComponent {
       if (event instanceof NavigationEnd) {
         if (event.url.indexOf('mode=') === -1) {
           this.router.navigate([event.url.split('?')[0]], {
-            queryParams: { mode: 'info' },
+            queryParams: { mode: isDevMode() ? 'info' : 'prod' },
             queryParamsHandling: 'merge'
           }).then();
         }
