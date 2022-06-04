@@ -43,6 +43,7 @@ import {
   ModalAddOrUpdateAllowance,
   ModalAddOrUpdatePermanent
 } from "../../../salary/data";
+import {AccountQuery} from "../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   selector: 'minhdu-fontend-table-payroll',
@@ -64,6 +65,7 @@ export class TablePayrollComponent implements OnInit {
   expandAll$ = this.payrollQuery.select(state => state.expandAll)
   count$ = this.payrollQuery.selectCount()
   positions$ = this.positionQuery.selectAll()
+  currentUser$ = this.accountQuery.select(state => state.currentUser)
 
   ItemContextMenu = ItemContextMenu;
   confirmConstant = ConfirmConstant
@@ -76,7 +78,6 @@ export class TablePayrollComponent implements OnInit {
   role = localStorage.getItem('role')
   sessionConstant = SessionConstant;
   partialDay = PartialDayEnum
-  modeApp = ModeEnum.PROD
   modeEnum = ModeEnum
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
@@ -98,16 +99,11 @@ export class TablePayrollComponent implements OnInit {
     private readonly overtimeSalaryService: OvertimeSalaryService,
     private readonly allowanceSalaryService: AllowanceSalaryService,
     private readonly activatedRoute: ActivatedRoute,
+    private readonly accountQuery: AccountQuery,
   ) {
   }
 
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe(val => {
-      if (val?.mode) {
-        this.modeApp = val.mode
-      }
-    })
-
     this.added$.subscribe(added => {
       if (added) {
         this.onloadPayroll.emit({isPagination: false})

@@ -13,6 +13,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {EmployeeStore} from "@minhdu-fontend/employee-v2";
 import {PayrollStore} from "../../../../payroll/state";
 import {FilterTypeEnum, ItemContextMenu, ModeEnum} from "@minhdu-fontend/enums";
+import {AccountQuery} from "../../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   templateUrl: 'department.component.html'
@@ -21,12 +22,12 @@ export class DepartmentComponent implements OnInit {
   departments$ = this.departmentQuery.selectAll()
   loading$ = this.departmentQuery.select(state => state.loading)
   total$ = this.departmentQuery.select(state => state.total)
+  currentUser$ = this.accountQuery.select(state => state.currentUser)
 
   pageSizeTable = 10;
   itemContext = ItemContextMenu
   filterTypeEnum = FilterTypeEnum
   modeEnum = ModeEnum
-  modeApp = ModeEnum.PROD
   formGroup = new FormGroup(
     {
       search: new FormControl(''),
@@ -44,16 +45,11 @@ export class DepartmentComponent implements OnInit {
     private readonly payrollStore: PayrollStore,
     private readonly router: Router,
     private readonly activeRouter: ActivatedRoute,
+    private readonly accountQuery: AccountQuery,
   ) {
   }
 
   ngOnInit() {
-    this.activeRouter.queryParams.subscribe(val => {
-      if (val?.mode) {
-        this.modeApp = val.mode
-      }
-    })
-
     this.actions$.dispatch(DepartmentActions.loadAll({
       search: this.formGroup.value
     }));

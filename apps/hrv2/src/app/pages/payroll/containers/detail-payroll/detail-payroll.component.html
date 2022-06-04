@@ -136,7 +136,7 @@
               <thead>
               <tr>
                 <th style="width: 40px">STT</th>
-                <th *ngIf="modeApp === modeEnum.INFO" style="width: 50px">Id</th>
+                <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" style="width: 50px">Id</th>
                 <th>Lương cơ bản</th>
                 <th>Hệ số</th>
                 <th>Thành tiền</th>
@@ -157,7 +157,7 @@
                          salary})'
               >
                 <td> {{i + 1}}</td>
-                <td *ngIf="modeApp === modeEnum.INFO">{{salary.id}}</td>
+                <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">{{salary.id}}</td>
                 <td> {{salary.title}}</td>
                 <td> {{salary.rate}}</td>
                 <td class=' text-center ' style='color: #05981C'>
@@ -183,7 +183,7 @@
               </tr>
               <tr class='font-weight-bold'>
                 <td></td>
-                <td *ngIf="modeApp === modeEnum.INFO"></td>
+                <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"></td>
                 <td>Tổng cộng:</td>
                 <td></td>
                 <td style='color: #05981C'>
@@ -204,7 +204,7 @@
               <thead style='background-color: white;'>
               <tr>
                 <th style="width: 40px">STT</th>
-                <th *ngIf="modeApp === modeEnum.INFO" style="width: 50px">Id</th>
+                <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" style="width: 50px">Id</th>
                 <th>
                   <div> Phụ cấp lương</div>
                 </th>
@@ -228,7 +228,7 @@
                          salary})'
               >
                 <td>{{i + 1}}</td>
-                <td *ngIf="modeApp === modeEnum.INFO"> {{salary.id}}</td>
+                <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"> {{salary.id}}</td>
                 <td> {{salary.title}}</td>
                 <td style='color: #05981C'>
                   {{salary.price
@@ -253,7 +253,7 @@
               </tr>
               <tr class='font-weight-bold'>
                 <td></td>
-                <td *ngIf="modeApp === modeEnum.INFO"></td>
+                <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"></td>
                 <td>Tổng cộng :</td>
                 <td style='color: #05981C'>
                   {{payroll.total.stay
@@ -278,7 +278,7 @@
             <thead>
             <tr>
               <th style="width: 40px">STT</th>
-              <th *ngIf="modeApp === modeEnum.INFO" nzWidth="50px">Id</th>
+              <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" nzWidth="50px">Id</th>
               <th [nzSortFn]='true'
                   (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE, $event, payroll.allowances)'>
                 <div>Phụ cấp</div>
@@ -327,7 +327,7 @@
                          salary})'
             >
               <td>{{i + 1}}</td>
-              <td *ngIf="modeApp === modeEnum.INFO">{{salary.id}}</td>
+              <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">{{salary.id}}</td>
               <td>
                 <span>{{salary.title}}</span>
               </td>
@@ -380,7 +380,7 @@
             </tr>
             <tr *ngIf='payroll.total.allowance' class='font-weight-bold'>
               <td></td>
-              <td *ngIf="modeApp === modeEnum.INFO"></td>
+              <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"></td>
               <td>Tổng cộng :</td>
               <td></td>
               <td>{{payroll.total.allowance.duration.day}}</td>
@@ -417,7 +417,7 @@
             <tr>
               <th width="40px"></th>
               <th nzWidth='40px'>STT</th>
-              <th *ngIf="modeApp === modeEnum.INFO" nzWidth="50px">Id</th>
+              <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" nzWidth="50px">Id</th>
               <th
                 [nzSortFn]='true'
                 (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE_SETTING, $event, payroll.overtimes)'>
@@ -456,7 +456,7 @@
                 <td>
                   <span>{{i + 1}}</span>
                 </td>
-                <td *ngIf="modeApp === modeEnum.INFO">{{salary.id}}</td>
+                <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">{{salary.id}}</td>
                 <td>
                   <div class="pointer"
                        (click)='onSalarySetting(salary.setting.title)'>
@@ -515,7 +515,7 @@
             <thead>
             <tr>
               <th nzWidth="40px">STT</th>
-              <th *ngIf="modeApp === modeEnum.INFO" nzWidth="50px">Id</th>
+              <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" nzWidth="50px">Id</th>
               <th>Ngày</th>
               <th>Đơn giá</th>
               <th>Tổng thời gian</th>
@@ -527,7 +527,7 @@
             <tbody>
             <tr *ngFor='let item of salary.details; let i = index'>
               <td style='background: white'>{{i + 1}}</td>
-              <td *ngIf="modeApp === modeEnum.INFO" style='background: white'>{{item.id}}</td>
+              <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" style='background: white'>{{item.id}}</td>
               <td style='background: white'>{{item.datetime | date:'dd-MM-yyyy'}}</td>
               <td style='background: white ;color: #05981C'>
                 {{item.price || 0
@@ -567,7 +567,7 @@
           </ng-template>
           <tr *ngIf='payroll.overtimes?.length > 0' class='font-weight-bold'>
             <td></td>
-            <td *ngIf="modeApp === modeEnum.INFO"></td>
+            <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"></td>
             <td></td>
             <td>Tổng cộng :</td>
             <td></td>
@@ -602,7 +602,7 @@
               <th width='40px'>
                 <div>STT</div>
               </th>
-              <th *ngIf="modeApp === modeEnum.INFO" nzWidth="50px">Id</th>
+              <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" nzWidth="50px">Id</th>
               <th
                 [nzSortFn]='true'
                 (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE_SETTING_PARTIAL, $event, payroll.absents)'
@@ -654,7 +654,7 @@
               <td>
                 {{i + 1}}
               </td>
-              <td *ngIf="modeApp === modeEnum.INFO">{{salary.id}}</td>
+              <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">{{salary.id}}</td>
               <td class='pointer'
                   (click)='onSalarySetting(salary?.setting?.title)'>
                 <div>
@@ -708,7 +708,7 @@
             </tr>
             <tr class="font-weight-bold">
               <td></td>
-              <td *ngIf="modeApp === modeEnum.INFO"></td>
+              <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"></td>
               <td>Tổng cộng :</td>
               <td></td>
               <td>
@@ -748,7 +748,7 @@
               <th width='40px'>
                 STT
               </th>
-              <th *ngIf="modeApp === modeEnum.INFO" nzWidth="50px">Id</th>
+              <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" nzWidth="50px">Id</th>
               <th
                 [nzSortFn]='true'
                 (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE, $event, payroll.dayoffs)'>
@@ -787,7 +787,7 @@
               <td>
                 <span>{{i + 1}}</span>
               </td>
-              <td *ngIf="modeApp === modeEnum.INFO">{{salary.id}}</td>
+              <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">{{salary.id}}</td>
               <td>
                 <span>{{salary.title}}</span>
               </td>
@@ -819,7 +819,7 @@
             </tr>
             <tr class='font-weight-bold'>
               <td></td>
-              <td *ngIf="modeApp === modeEnum.INFO"></td>
+              <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"></td>
               <td>Tổng cộng :</td>
               <td></td>
               <td>
@@ -840,7 +840,7 @@
               <th width='40px'>
                 <div>STT</div>
               </th>
-              <th *ngIf="modeApp === modeEnum.INFO" style="width: 50px;">Id</th>
+              <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" style="width: 50px;">Id</th>
               <th>
                 <div>Khấu trừ</div>
               </th>
@@ -874,7 +874,7 @@
               <td>
                 {{i + 1}}
               </td>
-              <td *ngIf="modeApp === modeEnum.INFO">{{salary.id}}</td>
+              <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">{{salary.id}}</td>
               <td>
                 <div>
                   <span>{{salary.title}}</span>
@@ -903,7 +903,7 @@
             </tr>
             <tr *ngIf='payroll.total.remote' class='font-weight-bold'>
               <td></td>
-              <td *ngIf="modeApp === modeEnum.INFO"></td>
+              <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"></td>
               <td>Tổng cộng :</td>
               <td style="color: red">
                 {{payroll.total.deduction
@@ -929,7 +929,7 @@
             <tr>
               <th nzWidth='40px'></th>
               <th nzWidth='40px'>STT</th>
-              <th *ngIf="modeApp === modeEnum.INFO" nzWidth="50px">Id</th>
+              <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" nzWidth="50px">Id</th>
               <th
                 [nzSortFn]='true'
                 (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE_SETTING, $event, payroll.holidays)'
@@ -972,7 +972,7 @@
                 <td>
                   {{i + 1}}
                 </td>
-                <td *ngIf="modeApp === modeEnum.INFO">{{salary.id}}</td>
+                <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">{{salary.id}}</td>
                 <td> {{salary.setting.title}}</td>
                 <td class=' text-center'>
                   Từ. {{(salary.setting.startedAt | date:'dd-MM-yyyy')}}
@@ -1026,7 +1026,7 @@
             <thead>
             <tr>
               <th nzWidth="40px">STT</th>
-              <th *ngIf="modeApp === modeEnum.INFO" nzWidth="50px">Id</th>
+              <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" nzWidth="50px">Id</th>
               <th>Ngày</th>
               <th>Tổng ngày</th>
               <th>Hệ số</th>
@@ -1059,7 +1059,7 @@
           <tr *ngIf='payroll.total.holiday?.duration' class="font-weight-bold">
             <td></td>
             <td></td>
-            <td *ngIf="modeApp === modeEnum.INFO"></td>
+            <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"></td>
             <td> Tổng cộng:</td>
             <td> {{payroll.total.holiday.duration}} ngày</td>
             <td>
@@ -1095,7 +1095,7 @@
               <th width='3%'>
                 STT
               </th>
-              <th *ngIf="modeApp === modeEnum.INFO" nzWidth="50px">Id</th>
+              <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" nzWidth="50px">Id</th>
               <th
                 [nzSortFn]='true'
                 (nzSortOrderChange)='onSort(filterSalaryEnum.TYPE, $event, payroll.remotes)'
@@ -1139,7 +1139,7 @@
               <td style="background: white">
                 <span>{{i + 1}}</span>
               </td>
-              <td *ngIf="modeApp === modeEnum.INFO">{{salary.id}}</td>
+              <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">{{salary.id}}</td>
               <td style="background: white">
                 <span>{{salary.type | transformconstant: remoteConstant}}</span>
               </td>
@@ -1172,7 +1172,7 @@
             </tr>
             <tr class='font-weight-bold' *ngIf="payroll.total.remote.duration">
               <td></td>
-              <td *ngIf="modeApp === modeEnum.INFO"></td>
+              <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"></td>
               <td>Tổng cộng :</td>
               <td></td>
               <td>

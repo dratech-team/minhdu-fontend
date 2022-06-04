@@ -24,6 +24,7 @@ import {ModalDatePickerComponent, TransformConstantPipe} from "@minhdu-fontend/c
 import {ModalUpdateContractComponent} from "../../components/modal-update-contract/modal-update-contract.component";
 import {ContractEntity} from "../../../../../../../../libs/employee-v2/src/lib/employee/entities/contract.entity";
 import {ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
+import {AccountQuery} from "../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   templateUrl: 'detail-employee.component.html',
@@ -31,7 +32,7 @@ import {ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
 })
 export class DetailEmployeeComponent implements OnInit {
   employee$ = this.employeeQuery.selectEntity(this.employeeId)
-  added$ = this.employeeQuery.select(state => state.added);
+  added$ = this.employeeQuery.select(state => state.added);  currentUser$ = this.accountQuery.select(state => state.currentUser)
 
   formalityTypeConstant = FormalityTypeConstant;
   degreeConstant = DegreeTypeConstant
@@ -46,7 +47,6 @@ export class DetailEmployeeComponent implements OnInit {
   level = DegreeLevelEnum;
   recipeType = RecipeType;
   modeEnum = ModeEnum
-  modeApp = ModeEnum.PROD
 
 
   constructor(
@@ -55,21 +55,13 @@ export class DetailEmployeeComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly modal: NzModalService,
-    private readonly transformConstantPipe: TransformConstantPipe
+    private readonly transformConstantPipe: TransformConstantPipe,
+    private readonly accountQuery: AccountQuery
   ) {
   }
 
   ngOnInit(): void {
     this.actions$.dispatch(EmployeeActions.loadOne({id: this.employeeId}));
-    this.activatedRoute.queryParams.subscribe(param => {
-      const employee = this.employeeQuery.getEntity(this.employeeId)
-      if (param.isUpdate && employee) {
-        this.onUpdate(employee);
-      }
-      if (param?.mode) {
-        this.modeApp = param.mode
-      }
-    });
   }
 
   get employeeId(): number {

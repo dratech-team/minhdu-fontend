@@ -20,6 +20,7 @@ import {EmployeeStore} from "@minhdu-fontend/employee-v2";
 import {FilterTypeEnum, ItemContextMenu, ModeEnum} from "@minhdu-fontend/enums";
 import {ModalBranchComponent} from "../../components/modal-branch/modal-branch.component";
 import {DataAddOrUpBranch} from "../../data/modal-department.data";
+import {AccountQuery} from "../../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   templateUrl: 'branch.component.html'
@@ -29,12 +30,12 @@ export class BranchComponent implements OnInit {
   loading$ = this.branchQuery.select(state => state.loading)
   total$ = this.branchQuery.select(state => state.total)
   positions$ = this.positionQuery.selectAll()
+  currentUser$ = this.accountQuery.select(state => state.currentUser)
 
   pageSizeTable = 10;
   filterType = FilterTypeEnum
   itemContextMenu = ItemContextMenu
   modeEnum = ModeEnum
-  modeApp = ModeEnum.PROD
   stateSearch = this.branchQuery.getValue().search
   formGroup = new FormGroup(
     {
@@ -57,16 +58,11 @@ export class BranchComponent implements OnInit {
     private readonly positionQuery: PositionQuery,
     private readonly router: Router,
     private readonly activeRouter: ActivatedRoute,
+    private readonly accountQuery: AccountQuery,
   ) {
   }
 
   ngOnInit() {
-    this.activeRouter.queryParams.subscribe(val => {
-      if (val?.mode) {
-        this.modeApp = ModeEnum.INFO
-      }
-    })
-
     this.actions$.dispatch(PositionActions.loadAll({}))
     this.actions$.dispatch(BranchActions.loadAll({
       search: this.mapBranch(this.formGroup.value, false)

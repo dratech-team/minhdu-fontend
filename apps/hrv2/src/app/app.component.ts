@@ -1,6 +1,5 @@
-import {Component, isDevMode} from '@angular/core';
+import {Component} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
-import {ModeEnum} from "@minhdu-fontend/enums";
 
 @Component({
   selector: 'minhdu-fontend-hrv2',
@@ -8,4 +7,14 @@ import {ModeEnum} from "@minhdu-fontend/enums";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  constructor(private readonly router: Router) {
+  }
+
+  ngOnInit(): void {
+    this.router.events.subscribe((evt) => {
+      if (!(evt instanceof NavigationEnd)) {
+        return;
+      }
+    });
+  }
 }

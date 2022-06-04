@@ -55,6 +55,7 @@ export class EmployeeComponent implements OnInit {
   branches$ = this.branchQuery.selectAll()
   provinces$ = this.provinceService.getAll()
   departments$ = this.departmentQuery.selectAll();
+  currentUser$ = this.accountQuery.select(state => state.currentUser)
 
   stateEmployee = this.employeeQuery.getValue().search
 
@@ -76,7 +77,6 @@ export class EmployeeComponent implements OnInit {
     orderType: this.stateEmployee.orderType
   };
   modeEnum = ModeEnum
-  currentUser$ = this.accountQuery.select(state => state.currentUser)
 
   departmentControl = new FormControl(this.stateEmployee.department || '');
   formGroup = new FormGroup({

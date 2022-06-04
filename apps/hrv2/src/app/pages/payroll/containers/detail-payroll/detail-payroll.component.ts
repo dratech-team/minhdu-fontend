@@ -53,6 +53,7 @@ import {CompareSortUtil} from "../../utils/compare-sort.util";
 import {FilterSalaryEnum} from "../../enums/filter-salary.enum";
 import {DayOffSalaryService} from "../../../salary/service/day-off-salary.service";
 import {ModalAddOrUpdateDeduction} from "../../../salary/data/modal-deduction-salary.data";
+import {AccountQuery} from "../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -78,6 +79,7 @@ export class DetailPayrollComponent implements OnInit {
   loading$ = this.payrollQuery.select(state => state.loading);
   added$ = this.payrollQuery.select(state => state.added);
   scanned$ = this.payrollQuery.select(state => state.scanned);
+  currentUser$ = this.accountQuery.select(state => state.currentUser)
 
   remoteConstant = RemoteConstant;
   unitSalaryConstant = UnitSalaryConstant;
@@ -91,7 +93,6 @@ export class DetailPayrollComponent implements OnInit {
   modeEnum = ModeEnum
   filterSalaryEnum = FilterSalaryEnum
 
-  modeApp = ModeEnum.PROD
   daysInMonth!: number;
   isSticky = false;
   role = localStorage.getItem('role')
@@ -116,6 +117,7 @@ export class DetailPayrollComponent implements OnInit {
     private readonly salaryHolidayService: SalaryHolidayService,
     private readonly dayOffSalaryService: DayOffSalaryService,
     private readonly message: NzMessageService,
+    private readonly accountQuery: AccountQuery,
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
@@ -123,12 +125,6 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe(val => {
-      if (val?.mode) {
-        this.modeApp = val.mode
-      }
-    })
-
     this.actions$.dispatch(PayrollActions.loadOne({id: this.getPayrollId}));
   }
 

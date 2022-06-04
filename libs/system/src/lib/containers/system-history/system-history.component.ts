@@ -8,6 +8,7 @@ import {SystemHistoryActions} from "../../state/system-history/system-history.ac
 import {SystemHistoryStore} from "../../state/system-history/system-history.store";
 import {debounceTime} from "rxjs/operators";
 import {ActivatedRoute} from "@angular/router";
+import {AccountQuery} from "../../state/account-management/account.query";
 
 @Component({
   templateUrl: 'system-history.component.html',
@@ -19,6 +20,7 @@ export class systemHistoryComponent implements OnInit {
   total$ = this.systemHistoryQuery.select(state => state.total);
   remain$ = this.systemHistoryQuery.select(state => state.remain);
   count$ = this.systemHistoryQuery.selectCount()
+  currentUser$ = this.accountQuery.select(state => state.currentUser)
 
   app = App;
   apps = appConstant;
@@ -26,7 +28,6 @@ export class systemHistoryComponent implements OnInit {
   pageSize = 30;
   pageIndexInit = 0;
   modeEnum = ModeEnum
-  modeApp = ModeEnum.PROD
 
   stateSearch = this.systemHistoryQuery.getValue().search
   formGroup = new FormGroup({
@@ -47,17 +48,12 @@ export class systemHistoryComponent implements OnInit {
     private readonly systemHistoryQuery: SystemHistoryQuery,
     private readonly systemHistoryStore: SystemHistoryStore,
     private readonly activeRouter: ActivatedRoute,
+    private readonly accountQuery: AccountQuery,
   ) {
   }
 
 
   ngOnInit(): void {
-    this.activeRouter.queryParams.subscribe(val => {
-      if (val?.mode) {
-        this.modeApp = val.mode
-      }
-    })
-
     this.onLoad(false)
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe(_ => {
       this.onLoad(false)

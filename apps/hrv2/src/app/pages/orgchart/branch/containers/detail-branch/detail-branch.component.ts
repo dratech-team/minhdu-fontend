@@ -12,18 +12,20 @@ import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 import {AllowanceBranchComponent} from "../../components/modal-allowance-branch/allowance-branch.component";
 import {DataAddOrUpAllowanceBranch} from "../../data/modal-allowance-branch.data";
 import {AllowanceBranchEntity} from "../../entities/allowance-branch.entity";
+import {AccountQuery} from "../../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   templateUrl: 'detail-branch.component.html'
 })
 export class DetailBranchComponent implements OnInit {
   branch$ = this.branchQuery.selectEntity(this.branchId);
+  currentUser$ = this.accountQuery.select(state => state.currentUser)
+
   type = OrgchartEnum;
   pageSize = 30;
   pageIndexInit = 0;
   branch = new FormControl();
   modeEnum = ModeEnum
-  modeApp = ModeEnum.PROD
 
   constructor(
     private readonly actions$: Actions,
@@ -32,16 +34,11 @@ export class DetailBranchComponent implements OnInit {
     private readonly router: Router,
     private readonly modal: NzModalService,
     private readonly activeRouter: ActivatedRoute,
+    private readonly accountQuery: AccountQuery,
   ) {
   }
 
   ngOnInit(): void {
-    this.activeRouter.queryParams.subscribe(val => {
-      if (val?.mode) {
-        this.modeApp = val.mode
-      }
-    })
-
     this.actions$.dispatch(BranchActions.loadOne({id: this.branchId}));
   }
 

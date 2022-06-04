@@ -77,6 +77,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     return branches;
   }));
   provinces$ = this.provinceService.getAll()
+  currentUser$ = this.accountQuery.select(state => state.currentUser)
 
   roleEnum = Role;
   sortEnum = sortEmployeeTypeEnum;
@@ -112,7 +113,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     status: new FormControl(EmployeeStatusEnum.IS_ACTIVE)
   });
   modeEnum = ModeEnum
-  currentUser$ = this.accountQuery.select(state => state.currentUser)
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 

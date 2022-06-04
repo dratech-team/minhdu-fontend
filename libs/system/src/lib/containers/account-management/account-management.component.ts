@@ -28,11 +28,11 @@ export class AccountManagementComponent implements OnInit {
   total$ = this.accountQuery.select(state => state.total)
   count$ = this.accountQuery.selectCount()
   branches$ = this.branchQuery.selectAll()
+  currentUser$ = this.accountQuery.select(state => state.currentUser)
 
   app = App;
   roleHr = roleAppHR;
   modeEnum = ModeEnum
-  modeApp = ModeEnum.PROD
 
   stateSearch = this.accountQuery.getValue().search
   formGroup = new FormGroup({
@@ -59,11 +59,6 @@ export class AccountManagementComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activeRouter.queryParams.subscribe(val => {
-      if (val?.mode) {
-        this.modeApp = val.mode
-      }
-    })
 
     this.onLoad(false)
     this.actions$.dispatch(BranchActions.loadAll({}))
@@ -103,7 +98,7 @@ export class AccountManagementComponent implements OnInit {
     this.modal.create({
       nzTitle: 'Cập nhật tài khoản',
       nzContent: RegisterComponent,
-      nzComponentParams: <{data?:ModalRegisterData}>{
+      nzComponentParams: <{ data?: ModalRegisterData }>{
         data: {
           update: {
             account: account

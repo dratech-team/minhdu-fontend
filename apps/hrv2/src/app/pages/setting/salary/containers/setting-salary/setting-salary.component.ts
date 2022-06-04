@@ -28,6 +28,7 @@ import {Sort} from "@minhdu-fontend/data-models";
 import {SortSettingSalaryEnum} from "../../enums/sort-setting-salary.enum";
 import {ModeEnum} from "@minhdu-fontend/enums";
 import {ActivatedRoute} from "@angular/router";
+import {AccountQuery} from "../../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   selector: 'minhdu-fontend-setting-salary',
@@ -42,6 +43,8 @@ export class SettingSalaryComponent implements OnInit {
   count$ = this.settingSalaryQuery.selectCount()
   positions$ = this.positionQuery.selectAll()
   branches$ = this.branchQuery.selectAll()
+  currentUser$ = this.accountQuery.select(state => state.currentUser)
+
 
   stateSearch = this.settingSalaryQuery.getValue().search;
   blockSalaries = blockSalariesConstant.concat([{
@@ -58,7 +61,6 @@ export class SettingSalaryComponent implements OnInit {
   };
   sortEnum = SortSettingSalaryEnum;
   modeEnum = ModeEnum
-  modeApp = ModeEnum.PROD
 
   formGroup = new FormGroup(
     {
@@ -80,16 +82,11 @@ export class SettingSalaryComponent implements OnInit {
     private readonly positionQuery: PositionQuery,
     private readonly branchQuery: BranchQuery,
     private readonly activatedRoute: ActivatedRoute,
+    private readonly accountQuery: AccountQuery,
   ) {
   }
 
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe(val => {
-      if (val?.mode) {
-        this.modeApp = val.mode
-      }
-    })
-
     this.actions$.dispatch(PositionActions.loadAll({}))
     this.actions$.dispatch(BranchActions.loadAll({}))
 
