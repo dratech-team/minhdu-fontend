@@ -29,6 +29,7 @@ export class AccountManagementComponent implements OnInit {
   branches$ = this.branchQuery.selectAll()
 
   app = App;
+  roleHr = roleAppHR;
 
   stateSearch = this.accountQuery.getValue().search
   formGroup = new FormGroup({

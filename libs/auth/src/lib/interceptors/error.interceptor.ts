@@ -6,28 +6,26 @@ import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {Actions} from "@datorama/akita-ng-effects";
 import {AccountActions} from "../../../../system/src/lib/state/account-management/account.actions";
-import {AccountQuery} from "../../../../system/src/lib/state/account-management/account.query";
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(
     private readonly actions$: Actions,
     private readonly router: Router,
-    private readonly snackBar: MatSnackBar,
-    private readonly accountQuery: AccountQuery
-  ) {
-  }
+    private readonly snackBar: MatSnackBar
+  ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((err) => {
         if ([401].indexOf(err.status) !== -1) {
           // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
+          localStorage.removeItem('role');
+          localStorage.removeItem('token');
+          this.router.navigate(['auth/login']).then();
+
           /// FIXME: action not working
-          const accountLogged = this.accountQuery.getValue().accountLogged
-          if (accountLogged) {
-            this.actions$.dispatch(AccountActions.logout({id: accountLogged.id}));
-          }
+          this.actions$.dispatch(AccountActions.logout());
         } else if ([403].indexOf(err.status) !== -1) {
           this.router.navigate(['/he-thong/han-che-truy-cap']).then();
         }

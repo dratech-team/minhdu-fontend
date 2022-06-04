@@ -5,7 +5,6 @@ import {LoadOneAccountDto} from "../../dto/account/load-one-account.dto";
 import {UpdateAccountDto} from "../../dto/account/update-account.dto";
 import {RemoveAccountDto} from "../../dto/account/remove-account.dto";
 import {SignInDto} from "../../dto/account/sign-in.dto";
-import {AccountEntity} from "../../entities/account.entity";
 
 
 export const addOne = createAction(
@@ -45,7 +44,6 @@ export const remove = createAction(
 
 export const logout = createAction(
   '[ACCOUNT] Logout',
-  props<{id: AccountEntity['id']}>()
 );
 
 export const error = createAction(

@@ -10,7 +10,7 @@
           <span class='mr-1 font-weight-bold font-sm'>Đổi mật khẩu</span>
           <img src='assets/icon/padlock.png'
                style='width: 18px; height: 18px'
-               class='password' alt='contact@uranus-solutions.com'/>
+               class='password' alt='contact@uranus-solutions.com' />
         </div>
 
       </a>
@@ -23,8 +23,7 @@
     <app-sidebar-nav [navItems]='navItems' [perfectScrollbar] [disabled]='appSidebar.minimized'>
     </app-sidebar-nav>
     <app-sidebar-footer>
-      <a *ngIf='accountLogged?.role === roleEnum.ADMIN ' (click)='signUp()'
-         class=' pointer text-left dropdown-item settings'
+      <a *ngIf='role === roleEnum.ADMIN ' (click)='signUp()' class=' pointer text-left dropdown-item settings'
          style='color: white'> Tạo tài khoản</a>
       <a (click)='logout()' class='pointer text-left dropdown-item' style='color: red'> Logout</a>
     </app-sidebar-footer>

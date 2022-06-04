@@ -42,8 +42,7 @@ import {HolidaySalaryComponent} from '../../../salary/components/holiday/holiday
 import {ModalAddOrUpdateHoliday} from '../../../salary/data/modal-holiday-salary.data';
 import {SalaryHolidayService} from '../../../salary/service/salary-holiday.service';
 import {
-  ModalAddOrUpdateAbsentOrOvertime,
-  ModalAddOrUpdateAllowance,
+  ModalAddOrUpdateAbsentOrOvertime, ModalAddOrUpdateAllowance,
   ModalAddOrUpdateRemoteOrDayOff,
   ModalPermanentSalaryData
 } from '../../../salary/data';
@@ -53,7 +52,6 @@ import {CompareSortUtil} from "../../utils/compare-sort.util";
 import {FilterSalaryEnum} from "../../enums/filter-salary.enum";
 import {DayOffSalaryService} from "../../../salary/service/day-off-salary.service";
 import {ModalAddOrUpdateDeduction} from "../../../salary/data/modal-deduction-salary.data";
-import {AccountQuery} from "../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -92,9 +90,9 @@ export class DetailPayrollComponent implements OnInit {
 
   daysInMonth!: number;
   isSticky = false;
-  accountLogged = this.accountQuery.getValue().accountLogged;
-;
-  roleEnum = Role
+  role = localStorage.getItem('role')
+  ;
+  roleEnum = Role;
   filterSalaryEnum = FilterSalaryEnum
 
   constructor(
@@ -114,8 +112,7 @@ export class DetailPayrollComponent implements OnInit {
     private readonly salaryRemoteService: SalaryRemoteService,
     private readonly salaryHolidayService: SalaryHolidayService,
     private readonly dayOffSalaryService: DayOffSalaryService,
-    private readonly message: NzMessageService,
-    private readonly accountQuery: AccountQuery
+    private readonly message: NzMessageService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
@@ -294,7 +291,7 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   confirmPayroll(payroll: PayrollEntity) {
-    if (this.accountLogged?.role !== Role.HUMAN_RESOURCE) {
+    if (this.role !== Role.HUMAN_RESOURCE) {
       this.modal.create({
         nzTitle: 'Xác nhận phiếu lương tháng ' + this.datePipe.transform(payroll.createdAt, 'yyyy-MM'),
         nzContent: PayslipComponent,

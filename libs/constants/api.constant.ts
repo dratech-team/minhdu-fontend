@@ -116,7 +116,5 @@ export const Api = {
   LOGGER: 'logger',
   SLACK_WEBHOOK:
     'https://hooks.slack.com/services/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',
-  AUTH: 'auth',
-  SIGN_IN: 'auth/signin',
-  SIGN_UP: 'signup',
+  AUTH: 'auth'
 };

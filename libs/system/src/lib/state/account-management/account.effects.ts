@@ -115,16 +115,17 @@ export class AccountEffects {
     ofType(AccountActions.signIn),
     switchMap((props: SignInDto) => {
         this.accountStore.update(state => ({
-          ...state, loginLoading: true,
+          ...state, loginLoading: true
         }))
 
         return this.accountService.signIn(props).pipe(
           tap((user) => {
             this.accountStore.update(state => ({
-              ...state, loginLoading: false, accountLogged: user
+              ...state, loginLoading: false
             }))
-            this.accountStore.add(user)
             this.message.success('Đăng nhập thành công');
+            localStorage.setItem('role', user.role);
+            localStorage.setItem('token', user.token);
             this.router.navigate(['/']).then();
           }),
           catchError((err) => {
@@ -195,11 +196,9 @@ export class AccountEffects {
   @Effect()
   logOut$ = this.actions$.pipe(
     ofType(AccountActions.logout),
-    switchMap((props) => {
-        this.accountStore.update(state => ({
-          ...state, accountLogged: undefined
-        }))
-        this.accountStore.remove(props.id)
+    switchMap((_) => {
+        localStorage.removeItem('role');
+        localStorage.removeItem('token');
         return this.router.navigate(['auth/login']).then();
       }
     )
