@@ -31,7 +31,7 @@ export class AccountManagementComponent implements OnInit {
 
   app = App;
   roleHr = roleAppHR;
-  modeDev = false
+  modeDebug = false
 
   stateSearch = this.accountQuery.getValue().search
   formGroup = new FormGroup({
@@ -59,8 +59,8 @@ export class AccountManagementComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeRouter.queryParams.subscribe(val => {
-      if (val?.mode === ModeEnum.DEV) {
-        this.modeDev = true
+      if (val?.mode === ModeEnum.DEBUG) {
+        this.modeDebug = true
       }
     })
 

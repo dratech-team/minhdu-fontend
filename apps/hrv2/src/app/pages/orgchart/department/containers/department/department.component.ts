@@ -25,7 +25,7 @@ export class DepartmentComponent implements OnInit {
   pageSizeTable = 10;
   itemContext = ItemContextMenu
   filterTypeEnum = FilterTypeEnum
-  modeDev = false
+  modeDebug = false
   formGroup = new FormGroup(
     {
       search: new FormControl(''),
@@ -48,8 +48,8 @@ export class DepartmentComponent implements OnInit {
 
   ngOnInit() {
     this.activeRouter.queryParams.subscribe(val => {
-      if (val?.mode === ModeEnum.DEV) {
-        this.modeDev = true
+      if (val?.mode === ModeEnum.DEBUG) {
+        this.modeDebug = true
       }
     })
 

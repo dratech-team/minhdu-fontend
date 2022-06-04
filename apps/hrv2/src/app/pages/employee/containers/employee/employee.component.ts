@@ -76,7 +76,7 @@ export class EmployeeComponent implements OnInit {
     orderBy: this.stateEmployee.orderBy,
     orderType: this.stateEmployee.orderType
   };
-  modeDev = false
+  modeDebug = false
 
   departmentControl = new FormControl(this.stateEmployee.department || '');
   formGroup = new FormGroup({
@@ -119,8 +119,8 @@ export class EmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeRouter.queryParams.subscribe(val => {
-      if (val?.mode === ModeEnum.DEV) {
-        this.modeDev = true
+      if (val?.mode === ModeEnum.DEBUG) {
+        this.modeDebug = true
       }
     })
 

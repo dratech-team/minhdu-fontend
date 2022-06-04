@@ -45,7 +45,7 @@ export class DetailEmployeeComponent implements OnInit {
   status = DegreeStatusEnum;
   level = DegreeLevelEnum;
   recipeType = RecipeType;
-  modeDev = false
+  modeDebug = false
 
   constructor(
     private readonly actions$: Actions,
@@ -64,8 +64,8 @@ export class DetailEmployeeComponent implements OnInit {
       if (param.isUpdate && employee) {
         this.onUpdate(employee);
       }
-      if (param?.mode === ModeEnum.DEV) {
-        this.modeDev = true
+      if (param?.mode === ModeEnum.DEBUG) {
+        this.modeDebug = true
       }
     });
   }

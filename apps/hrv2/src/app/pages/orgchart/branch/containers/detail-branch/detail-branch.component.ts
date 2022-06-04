@@ -22,7 +22,7 @@ export class DetailBranchComponent implements OnInit {
   pageSize = 30;
   pageIndexInit = 0;
   branch = new FormControl();
-  modeDev = false
+  modeDebug = false
 
   constructor(
     private readonly actions$: Actions,
@@ -36,8 +36,8 @@ export class DetailBranchComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeRouter.queryParams.subscribe(val => {
-      if (val?.mode === ModeEnum.DEV) {
-        this.modeDev = true
+      if (val?.mode === ModeEnum.DEBUG) {
+        this.modeDebug = true
       }
     })
 

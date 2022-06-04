@@ -11,5 +11,5 @@ if (environment.production) {
 
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
-  .then(_ => localStorage.setItem('mode', (environment.production ? ModeEnum.PROD : ModeEnum.DEV)))
+  .then(_ => localStorage.setItem('mode', (environment.production ? ModeEnum.PROD : ModeEnum.DEBUG)))
   .catch((err) => console.error(err));
