@@ -7,3 +7,8 @@ export enum TabEnum {
   SYSTEM = 'he-thong',
   SETTING = 'cai-dat'
 }
+
+export interface RouterEnitty {
+  readonly title: string;
+  readonly path: string;
+}
