@@ -11,6 +11,7 @@ import {
 } from "../../../../../../libs/auth/src/lib/components/modal-change-password/modal-change-password.component";
 import {TabEnum} from "../../state/app.entity";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {AccountQuery} from "../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 
 @Component({
@@ -28,7 +29,8 @@ export class PageLayoutComponent {
     private readonly router: Router,
     private readonly modal: NzModalService,
     private readonly actions$: Actions,
-    private readonly message: NzMessageService
+    private readonly message: NzMessageService,
+    private readonly accountQuery: AccountQuery
   ) {
   }
 
@@ -47,7 +49,12 @@ export class PageLayoutComponent {
       nzTitle: 'Đăng xuất',
       nzContent: 'Bạn có chắc chắn muốn đăng xuất',
       nzOnOk: (_ => {
-        return this.actions$.dispatch(AccountActions.logout())
+        const accountLogged = this.accountQuery.getValue().accountLogged
+        if (accountLogged) {
+          return this.actions$.dispatch(AccountActions.logout({
+            id: accountLogged.id
+          }))
+        }
       })
     })
   }
