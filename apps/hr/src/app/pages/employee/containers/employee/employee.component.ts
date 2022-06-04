@@ -52,6 +52,7 @@ import {ProvinceService} from "@minhdu-fontend/location";
 import {ExportService} from "@minhdu-fontend/service";
 import {DepartmentActions, DepartmentQuery} from "@minhdu-fontend/orgchart-v2";
 import {Actions} from "@datorama/akita-ng-effects";
+import {AccountQuery} from "../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -111,7 +112,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     status: new FormControl(EmployeeStatusEnum.IS_ACTIVE)
   });
   modeEnum = ModeEnum
-  modeApp = ModeEnum.PROD
+  currentUser$ = this.accountQuery.select(state => state.currentUser)
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
@@ -129,7 +130,8 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     private readonly viewContentRef: ViewContainerRef,
     private readonly provinceService: ProvinceService,
     private readonly exportService: ExportService,
-    private readonly departmentQuery: DepartmentQuery
+    private readonly departmentQuery: DepartmentQuery,
+    private readonly accountQuery: AccountQuery
   ) {
     this.store.pipe(select(selectorAllEmployee))
       .pipe(tap(employees => this.employees = employees))
@@ -150,9 +152,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       }
       if (val.position) {
         this.formGroup.get('position')?.setValue(JSON.parse(val.position), {emitEvent: false});
-      }
-      if (val?.mode) {
-        this.modeApp = val.mode
       }
     });
     this.store.dispatch(

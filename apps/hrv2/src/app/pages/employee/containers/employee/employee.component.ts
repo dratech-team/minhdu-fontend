@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {EmployeeStatusEnum, Gender, ItemContextMenu, ModeEnum, Role, sortEmployeeTypeEnum} from '@minhdu-fontend/enums';
+import {EmployeeStatusEnum, Gender, ItemContextMenu, ModeEnum, sortEmployeeTypeEnum} from '@minhdu-fontend/enums';
 import {catchError, debounceTime} from 'rxjs/operators';
 import {Api, EmployeeStatusConstant, GenderTypeConstant} from '@minhdu-fontend/constants';
 import {throwError} from 'rxjs';
@@ -40,6 +40,7 @@ import {
   ModalExportExcelData
 } from "@minhdu-fontend/components";
 import {ModalAlertEntity, ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
+import {AccountQuery} from "../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -67,8 +68,6 @@ export class EmployeeComponent implements OnInit {
   wards: Ward[] = this.stateEmployee.district?.wards || []
   employees: EmployeeEntity[] = []
 
-  roleEnum = Role;
-  role = window.localStorage.getItem('role')
   genderType = Gender;
   ItemContextMenu = ItemContextMenu;
   empStatusEnum = EmployeeStatusEnum
@@ -77,7 +76,7 @@ export class EmployeeComponent implements OnInit {
     orderType: this.stateEmployee.orderType
   };
   modeEnum = ModeEnum
-  modeApp = ModeEnum.PROD
+  currentUser$ = this.accountQuery.select(state => state.currentUser)
 
   departmentControl = new FormControl(this.stateEmployee.department || '');
   formGroup = new FormGroup({
@@ -111,7 +110,8 @@ export class EmployeeComponent implements OnInit {
     private readonly positionQuery: PositionQuery,
     private readonly branchQuery: BranchQuery,
     private readonly provinceService: ProvinceService,
-    private readonly departmentQuery: DepartmentQuery
+    private readonly departmentQuery: DepartmentQuery,
+    private readonly accountQuery: AccountQuery,
   ) {
     this.employeeQuery.selectAll().subscribe(item => {
       this.employees = item
@@ -119,11 +119,6 @@ export class EmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activeRouter.queryParams.subscribe(val => {
-      if (val?.mode) {
-        this.modeApp = val.mode
-      }
-    })
 
     this.actions$.dispatch(BranchActions.loadAll({}));
 

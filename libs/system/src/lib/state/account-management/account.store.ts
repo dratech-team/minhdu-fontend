@@ -2,7 +2,6 @@ import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
 import {Injectable} from '@angular/core';
 import {StorageName} from '@minhdu-fontend/constants';
 import {AccountEntity} from "../../entities/account.entity";
-import {BaseSearchAccountDto} from "../../dto/account/search-account.dto";
 
 export interface AccountState extends EntityState<AccountEntity> {
   loading: boolean;
@@ -11,7 +10,8 @@ export interface AccountState extends EntityState<AccountEntity> {
   added: boolean | null;
   total: number
   search?: Partial<AccountEntity & {search: string}>;
-  deleted: boolean | null
+  deleted: boolean | null,
+  currentUser?: AccountEntity
 }
 
 function createInitState(): AccountState {
