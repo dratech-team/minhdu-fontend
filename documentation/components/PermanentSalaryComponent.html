@@ -1,0 +1,1545 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>minhdu-fontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">minhdu-fontend documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li
+  >
+  PermanentSalaryComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>permanent-salary.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#compareFn" >compareFn</a>
+                            </li>
+                            <li>
+                                <a href="#createdAt" >createdAt</a>
+                            </li>
+                            <li>
+                                <a href="#employeeType" >employeeType</a>
+                            </li>
+                            <li>
+                                <a href="#formGroup" >formGroup</a>
+                            </li>
+                            <li>
+                                <a href="#indexStep" >indexStep</a>
+                            </li>
+                            <li>
+                                <a href="#loadingSettingSalary$" >loadingSettingSalary$</a>
+                            </li>
+                            <li>
+                                <a href="#role" >role</a>
+                            </li>
+                            <li>
+                                <a href="#roleEnum" >roleEnum</a>
+                            </li>
+                            <li>
+                                <a href="#salariesSetting$" >salariesSetting$</a>
+                            </li>
+                            <li>
+                                <a href="#salaryTypeEnum" >salaryTypeEnum</a>
+                            </li>
+                            <li>
+                                <a href="#submitting" >submitting</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#mapSalary" >mapSalary</a>
+                            </li>
+                            <li>
+                                <a href="#move" >move</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onSubmit" >onSubmit</a>
+                            </li>
+                            <li>
+                                <a href="#onSubmitError" >onSubmitError</a>
+                            </li>
+                            <li>
+                                <a href="#onSubmitSuccess" >onSubmitSuccess</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#data" >data</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#EmitSalariesSelected" >EmitSalariesSelected</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#checkValid" >checkValid</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(actions$: Actions, settingSalaryQuery: <a href="../injectables/SettingSalaryQuery.html" target="_self">SettingSalaryQuery</a>, payrollQuery: <a href="../injectables/PayrollQuery.html" target="_self">PayrollQuery</a>, message: NzMessageService, formBuilder: <a href="https://angular.io/api/forms/FormBuilder" target="_blank">FormBuilder</a>, modalRef: NzModalRef, service: <a href="../injectables/SalaryPermanentService.html" target="_self">SalaryPermanentService</a>, employeeService: EmployeeService)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:58</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>actions$</td>
+                                                  
+                                                        <td>
+                                                                    <code>Actions</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>settingSalaryQuery</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/SettingSalaryQuery.html" target="_self" >SettingSalaryQuery</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>payrollQuery</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/PayrollQuery.html" target="_self" >PayrollQuery</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>message</td>
+                                                  
+                                                        <td>
+                                                                    <code>NzMessageService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>formBuilder</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/forms/FormBuilder" target="_blank" >FormBuilder</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>modalRef</td>
+                                                  
+                                                        <td>
+                                                                    <code>NzModalRef</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>service</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/SalaryPermanentService.html" target="_self" >SalaryPermanentService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>employeeService</td>
+                                                  
+                                                        <td>
+                                                                    <code>EmployeeService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="data"></a>
+                        <b>data</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#ModalAddOrUpdatePermanent" target="_self" >ModalAddOrUpdatePermanent</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:22</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+    <section>
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="EmitSalariesSelected"></a>
+                        <b>EmitSalariesSelected</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:23</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mapSalary"></a>
+                    <span class="name">
+                        <span ><b>mapSalary</b></span>
+                        <a href="#mapSalary"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>mapSalary(value: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="133"
+                            class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:133</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>value</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="move"></a>
+                    <span class="name">
+                        <span ><b>move</b></span>
+                        <a href="#move"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>move(type: "next" | "previous")</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="163"
+                            class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:163</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>type</td>
+                                    <td>
+                                            <code>&quot;next&quot; | &quot;previous&quot;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="72"
+                            class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:72</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmit"></a>
+                    <span class="name">
+                        <span ><b>onSubmit</b></span>
+                        <a href="#onSubmit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSubmit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="105"
+                            class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:105</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmitError"></a>
+                    <span class="name">
+                        <span ><b>onSubmitError</b></span>
+                        <a href="#onSubmitError"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSubmitError(err: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="158"
+                            class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:158</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>err</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmitSuccess"></a>
+                    <span class="name">
+                        <span ><b>onSubmitSuccess</b></span>
+                        <a href="#onSubmitSuccess"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSubmitSuccess(res: ResponseMessageEntity, payrollId?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="149"
+                            class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:149</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>res</td>
+                                    <td>
+                                            <code>ResponseMessageEntity</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>payrollId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="compareFn"></a>
+                    <span class="name">
+                        <span ><b>compareFn</b></span>
+                        <a href="#compareFn"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createdAt"></a>
+                    <span class="name">
+                        <span ><b>createdAt</b></span>
+                        <a href="#createdAt"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.payrollQuery.getValue().search.startedAt</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:57</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="employeeType"></a>
+                    <span class="name">
+                        <span ><b>employeeType</b></span>
+                        <a href="#employeeType"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>EmployeeType</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formGroup"></a>
+                    <span class="name">
+                        <span ><b>formGroup</b></span>
+                        <a href="#formGroup"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/forms/FormGroup" target="_blank" >FormGroup</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:25</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="indexStep"></a>
+                    <span class="name">
+                        <span ><b>indexStep</b></span>
+                        <a href="#indexStep"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:52</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadingSettingSalary$"></a>
+                    <span class="name">
+                        <span ><b>loadingSettingSalary$</b></span>
+                        <a href="#loadingSettingSalary$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.settingSalaryQuery.select(state &#x3D;&gt; state.loading)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="role"></a>
+                    <span class="name">
+                        <span ><b>role</b></span>
+                        <a href="#role"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>localStorage.getItem(&#x27;role&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:51</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="roleEnum"></a>
+                    <span class="name">
+                        <span ><b>roleEnum</b></span>
+                        <a href="#roleEnum"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>Role</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="salariesSetting$"></a>
+                    <span class="name">
+                        <span ><b>salariesSetting$</b></span>
+                        <a href="#salariesSetting$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.settingSalaryQuery.selectAll({
+    filterBy: [
+      (entity) &#x3D;&gt; {
+        return this.data.type &#x3D;&#x3D;&#x3D; SalaryTypeEnum.STAY
+          ? entity.type &#x3D;&#x3D;&#x3D; this.data.type
+          : entity.type &#x3D;&#x3D;&#x3D; SalaryTypeEnum.BASIC || entity.type &#x3D;&#x3D;&#x3D; SalaryTypeEnum.BASIC_INSURANCE
+      }
+    ]
+  }).pipe(
+    map(templates &#x3D;&gt; {
+      if (this.data.update || this.data.add.salary) {
+        const template &#x3D; templates.find(template &#x3D;&gt;
+          template.title &#x3D;&#x3D;&#x3D; this.data.update?.salary.title
+          || template.title &#x3D;&#x3D;&#x3D; this.data.add?.salary?.title
+        );
+        if (template) {
+          this.formGroup.get(&#x27;template&#x27;)?.setValue(template);
+        }
+      }
+      return templates;
+    })
+  )</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:27</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="salaryTypeEnum"></a>
+                    <span class="name">
+                        <span ><b>salaryTypeEnum</b></span>
+                        <a href="#salaryTypeEnum"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>SalaryTypeEnum</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="submitting"></a>
+                    <span class="name">
+                        <span ><b>submitting</b></span>
+                        <a href="#submitting"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="checkValid"></a>
+                        <span class="name"><b>checkValid</b><a href="#checkValid"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>checkValid()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="101" class="link-to-prism">apps/hrv2/src/app/pages/salary/components/permanent/permanent-salary.component.ts:101</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {Component, EventEmitter, Input, OnInit, Output} from &#x27;@angular/core&#x27;;
+import {FormBuilder, FormGroup, Validators} from &#x27;@angular/forms&#x27;;
+import {EmployeeType, Role, SalaryTypeEnum} from &#x27;@minhdu-fontend/enums&#x27;;
+import {SalaryPayroll} from &#x27;@minhdu-fontend/data-models&#x27;;
+import {NzMessageService} from &#x27;ng-zorro-antd/message&#x27;;
+import {NzModalRef} from &#x27;ng-zorro-antd/modal&#x27;;
+import {SalaryPermanentService} from &#x27;../../service&#x27;;
+import {SettingSalaryActions, SettingSalaryQuery} from &#x27;../../../setting/salary/state&#x27;;
+import {Actions} from &#x27;@datorama/akita-ng-effects&#x27;;
+import {PayrollActions} from &#x27;../../../payroll/state/payroll.action&#x27;;
+import {catchError, map} from &#x27;rxjs/operators&#x27;;
+import {throwError} from &#x27;rxjs&#x27;;
+import {ResponseMessageEntity} from &#x27;@minhdu-fontend/base-entity&#x27;;
+import {EmployeeService} from &#x27;@minhdu-fontend/employee-v2&#x27;;
+import {PayrollQuery} from &quot;../../../payroll/state&quot;;
+import {ModalAddOrUpdatePermanent} from &quot;../../data&quot;;
+
+@Component({
+  templateUrl: &#x27;permanent-salary.component.html&#x27;
+})
+export class PermanentSalaryComponent implements OnInit {
+  @Input() data!: ModalAddOrUpdatePermanent;
+  @Output() EmitSalariesSelected &#x3D; new EventEmitter&lt;SalaryPayroll[]&gt;();
+
+  formGroup!: FormGroup;
+
+  salariesSetting$ &#x3D; this.settingSalaryQuery.selectAll({
+    filterBy: [
+      (entity) &#x3D;&gt; {
+        return this.data.type &#x3D;&#x3D;&#x3D; SalaryTypeEnum.STAY
+          ? entity.type &#x3D;&#x3D;&#x3D; this.data.type
+          : entity.type &#x3D;&#x3D;&#x3D; SalaryTypeEnum.BASIC || entity.type &#x3D;&#x3D;&#x3D; SalaryTypeEnum.BASIC_INSURANCE
+      }
+    ]
+  }).pipe(
+    map(templates &#x3D;&gt; {
+      if (this.data.update || this.data.add.salary) {
+        const template &#x3D; templates.find(template &#x3D;&gt;
+          template.title &#x3D;&#x3D;&#x3D; this.data.update?.salary.title
+          || template.title &#x3D;&#x3D;&#x3D; this.data.add?.salary?.title
+        );
+        if (template) {
+          this.formGroup.get(&#x27;template&#x27;)?.setValue(template);
+        }
+      }
+      return templates;
+    })
+  );
+  loadingSettingSalary$ &#x3D; this.settingSalaryQuery.select(state &#x3D;&gt; state.loading);
+
+  role &#x3D; localStorage.getItem(&#x27;role&#x27;);
+  indexStep &#x3D; 0;
+  submitting &#x3D; false;
+  employeeType &#x3D; EmployeeType
+  salaryTypeEnum &#x3D; SalaryTypeEnum;
+  roleEnum &#x3D; Role;
+  createdAt &#x3D; this.payrollQuery.getValue().search.startedAt
+  compareFn &#x3D; (o1: any, o2: any) &#x3D;&gt; o1 &amp;&amp; o2 ? (o1.id &#x3D;&#x3D;&#x3D; o2.id || o1 &#x3D;&#x3D;&#x3D; o2.title) : o1 &#x3D;&#x3D;&#x3D; o2;
+
+  constructor(
+    private readonly actions$: Actions,
+    private readonly settingSalaryQuery: SettingSalaryQuery,
+    private readonly payrollQuery: PayrollQuery,
+    private readonly message: NzMessageService,
+    private readonly formBuilder: FormBuilder,
+    private readonly modalRef: NzModalRef,
+    private readonly service: SalaryPermanentService,
+    private readonly employeeService: EmployeeService,
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.actions$.dispatch(SettingSalaryActions.loadAll({
+      search: {
+        types: this.data.type &#x3D;&#x3D;&#x3D; SalaryTypeEnum.BASIC ?
+          [SalaryTypeEnum.BASIC_INSURANCE, SalaryTypeEnum.BASIC] :
+          [SalaryTypeEnum.STAY]
+      }
+    }));
+    console.log(this.data.add?.salary)
+    const salary &#x3D; this.data.add?.salary || this.data?.update?.salary;
+    this.formGroup &#x3D; this.formBuilder.group({
+      template: [&#x27;&#x27;, Validators.required],
+      price: [salary?.price, Validators.required],
+      rate: [salary?.rate, Validators.required],
+      unit: [salary?.unit],
+      payrollIds: [this.data.add?.payroll ? [this.data.add.payroll.id] : []],
+      salaryIds: [this.data.update?.multiple?.salaries.map(item &#x3D;&gt; item.id)],
+    });
+
+    this.formGroup.get(&#x27;template&#x27;)?.valueChanges.subscribe(template &#x3D;&gt; {
+      if (template.prices.length &#x3D;&#x3D;&#x3D; 1 &amp;&amp; this.data.add) {
+        this.formGroup.get(&#x27;price&#x27;)?.setValue(template.prices[0]);
+      }
+      this.formGroup.get(&#x27;unit&#x27;)?.setValue(template.unit);
+      this.formGroup.get(&#x27;rate&#x27;)?.setValue(template.rate);
+      this.formGroup.get(&#x27;type&#x27;)?.setValue(template.type);
+    });
+  }
+
+  get checkValid() {
+    return this.formGroup.controls;
+  }
+
+  onSubmit(): any {
+    if (this.formGroup.invalid) {
+      return;
+    }
+    const value &#x3D; this.formGroup.value;
+    if (this.data.add?.multiple &amp;&amp; value.payrollIds.length &#x3D;&#x3D;&#x3D; 0) {
+      return this.message.warning(&#x27;Chưa chọn nhân viên&#x27;)
+    }
+    const salary &#x3D; this.mapSalary(value);
+    this.submitting &#x3D; true;
+    (this.data.add ?
+      this.service.addMany(salary) :
+      (this.data.update.history
+        ? this.employeeService.updateHistorySalary(this.data.update.salary.id, salary)
+        : this.service.updateMany(salary)))
+      .pipe(catchError(err &#x3D;&gt; this.onSubmitError(err)))
+      .subscribe(res &#x3D;&gt; this.onSubmitSuccess(res,
+        this.data.add
+          ? (!this.data.add?.multiple
+              ? this.data.add.payroll?.id
+              : undefined
+          ) : (!this.data.update?.multiple
+              ? this.data.update.salary.payrollId
+              : undefined
+          )
+      ));
+  }
+
+  mapSalary(value: any) {
+    const salary &#x3D; {
+      type: value.template.type,
+      title: value.template.title,
+      price: value.price,
+      note: value.note,
+      settingId: value.template.id
+    };
+    return Object.assign(salary, this.data.add
+      ? {payrollIds: value.payrollIds}
+      : this.data.update.multiple
+        ? {salaryIds: value.salaryIds}
+        : {salaryIds: [this.data.update.salary.id]}
+    );
+  }
+
+  onSubmitSuccess(res: ResponseMessageEntity, payrollId?: number) {
+    this.submitting &#x3D; false;
+    this.message.success(res.message);
+    if (payrollId) {
+      this.actions$.dispatch(PayrollActions.loadOne({id: payrollId}));
+    }
+    this.modalRef.close(this.mapSalary(this.formGroup.value).title);
+  }
+
+  onSubmitError(err: string) {
+    this.submitting &#x3D; false;
+    return throwError(err);
+  }
+
+  move(type: &#x27;next&#x27; | &#x27;previous&#x27;): void {
+    if (this.formGroup.invalid) {
+      return
+    }
+    type &#x3D;&#x3D;&#x3D; &quot;next&quot; ? this.indexStep +&#x3D; 1 : this.indexStep -&#x3D; 1
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div&gt;
+  &lt;nz-steps [nzCurrent]&#x3D;&quot;indexStep&quot;&gt;
+    &lt;nz-step [nzTitle]&#x3D;&quot;this.data.type &#x3D;&#x3D;&#x3D; salaryTypeEnum.STAY?&#x27;Phụ cấp lương&#x27;:&#x27;Lương cơ bản&#x27;&quot;&gt;&lt;/nz-step&gt;
+    &lt;nz-step nzTitle&#x3D;&quot;Chọn nhân viên&quot; *ngIf&#x3D;&quot;this.data.add&quot;&gt;&lt;/nz-step&gt;
+    &lt;nz-step *ngIf&#x3D;&quot;data?.update?.multiple&quot; nzTitle&#x3D;&quot;Nhân viên đã chọn&quot;&gt;&lt;/nz-step&gt;
+  &lt;/nz-steps&gt;
+  &lt;ng-template [ngIf]&#x3D;&quot;indexStep &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+    &lt;form [formGroup]&#x3D;&quot;formGroup&quot;&gt;
+      &lt;div *ngIf&#x3D;&#x27;false&#x27; class&#x3D;&#x27; mb-5 title-popup&#x27;&gt;
+        &lt;span&gt; Lương cơ bản&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&#x27;contract-salary mt-1&#x27; *ngIf&#x3D;&quot;!data?.update?.history; else title&quot;&gt;
+        &lt;div class&#x3D;&#x27; title-item mb-1&#x27;&gt;
+          &lt;span&gt;Loại lương&lt;/span&gt;
+          &lt;span class&#x3D;&#x27;star&#x27;&gt;*&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&#x27; mb-3&#x27; [formGroup]&#x3D;&#x27;formGroup&#x27;&gt;
+          &lt;nz-select style&#x3D;&quot;width: 100%&quot; formControlName&#x3D;&#x27;template&#x27;
+                     [compareWith]&#x3D;&quot;compareFn&quot;
+                     [nzLoading]&#x3D;&quot;(loadingSettingSalary$|async)&quot;
+                     [ngClass]&#x3D;&quot;{ &#x27;is-invalid&#x27;: checkValid.template.errors }&quot;&gt;
+            &lt;nz-option *ngFor&#x3D;&#x27;let salary of (salariesSetting$|async)&#x27; [nzValue]&#x3D;&quot;salary&quot; [nzLabel]&#x3D;&quot;salary.title&quot;&gt;
+            &lt;/nz-option&gt;
+          &lt;/nz-select&gt;
+          &lt;div *ngIf&#x3D;&#x27;checkValid.template.errors?.required&#x27; class&#x3D;&#x27;invalid-feedback&#x27;&gt;
+            &lt;div&gt;Chưa chọn loại lương&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;ng-template #title&gt;
+        &lt;div class&#x3D;&quot;title-item mt-2&quot;&gt;
+          &lt;span&gt; Loại lương&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;form-control &quot;&gt;
+          {{this.data.update?.salary?.title}}
+        &lt;/div&gt;
+      &lt;/ng-template&gt;
+      &lt;div class&#x3D;&#x27;basic-salary&#x27;&gt;
+        &lt;div class&#x3D;&#x27; title-item my-1&#x27;&gt;
+          &lt;span&gt;Mức lương&lt;/span&gt;
+          &lt;span class&#x3D;&#x27;star&#x27;&gt;*&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&#x27; mb-3&#x27; [formGroup]&#x3D;&#x27;formGroup&#x27;
+             *ngIf&#x3D;&#x27;formGroup.value.template?.type &#x3D;&#x3D;&#x3D; salaryTypeEnum.BASIC_INSURANCE  else inputPrice&#x27;&gt;
+          &lt;nz-select style&#x3D;&quot;width: 100%&quot; formControlName&#x3D;&#x27;price&#x27;
+                     [ngClass]&#x3D;&quot;{ &#x27;is-invalid&#x27;: checkValid.price.errors }&quot;&gt;
+            &lt;nz-option *ngFor&#x3D;&#x27;let item of formGroup.value.template.prices&#x27; [nzValue]&#x3D;&#x27;item&#x27;
+                       [nzLabel]&#x3D;&quot;(item|number:&#x27;1.0-0&#x27;) + &#x27; đ&#x27;&quot;
+            &gt;
+            &lt;/nz-option&gt;
+          &lt;/nz-select&gt;
+        &lt;/div&gt;
+        &lt;ng-template #inputPrice&gt;
+          &lt;div class&#x3D;&#x27; mb-3&#x27; [formGroup]&#x3D;&#x27;formGroup&#x27;&gt;
+            &lt;input nz-input
+                   type&#x3D;&#x27;text&#x27;
+                   placeholder&#x3D;&#x27;Nhập mức lương&#x27;
+                   formControlName&#x3D;&#x27;price&#x27;
+                   currencyMask
+                   [options]&#x3D;&quot;{ suffix: &#x27; đ&#x27; }&quot;
+                   [ngClass]&#x3D;&quot;{ &#x27;is-invalid&#x27;: checkValid.price.errors }&quot;&gt;
+            &lt;div *ngIf&#x3D;&#x27;checkValid.price.errors?.required&#x27; class&#x3D;&#x27;invalid-feedback&#x27;&gt;
+              &lt;div&gt;Chưa nhập mức lương&lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/ng-template&gt;
+      &lt;/div&gt;
+      &lt;div *ngIf&#x3D;&quot;data?.update?.history&quot;&gt;
+        &lt;div class&#x3D;&#x27; title-item mt-2 mbt-2&#x27;&gt;
+          &lt;span&gt;Ngày tạo&lt;/span&gt;
+          &lt;span class&#x3D;&#x27;star&#x27;&gt;*&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&#x27; mb-3&#x27; [formGroup]&#x3D;&#x27;formGroup&#x27;&gt;
+          &lt;input class&#x3D;&quot;form-control&quot; type&#x3D;&#x27;date&#x27; formControlName&#x3D;&#x27;datetime&#x27;
+                 [ngClass]&#x3D;&quot;{ &#x27;is-invalid&#x27;: checkValid.datetime.errors }&quot;&gt;
+          &lt;div *ngIf&#x3D;&#x27; checkValid.datetime.errors?.required&#x27; class&#x3D;&#x27;invalid-feedback&#x27;&gt;
+            &lt;div&gt;Chưa chọn ngày&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/form&gt;
+  &lt;/ng-template&gt;
+  &lt;ng-template [ngIf]&#x3D;&quot;indexStep &#x3D;&#x3D;&#x3D; 1 &amp;&amp; this.data.add &quot;&gt;
+    &lt;div class&#x3D;&quot;py-2&quot;&gt;
+      &lt;minhdu-fontend-select-payroll
+        [employeeType]&#x3D;&quot;employeeType.EMPLOYEE_FULL_TIME&quot;
+        [formGroup]&#x3D;&quot;formGroup&quot;
+        [createdAt]&#x3D;&quot;data.add.payroll?.createdAt || createdAt &quot;&gt;
+      &lt;/minhdu-fontend-select-payroll&gt;
+    &lt;/div&gt;
+  &lt;/ng-template&gt;
+  &lt;ng-template [ngIf]&#x3D;&quot;indexStep &#x3D;&#x3D;&#x3D; 1 &amp;&amp; data.update&quot;&gt;
+    &lt;div *ngIf&#x3D;&quot;data.update.multiple else alert&quot;&gt;
+      &lt;minhdu-fontend-table-salaries-selected
+        [formGroup]&#x3D;&quot;formGroup&quot;
+        [salaries]&#x3D;&quot;data.update?.multiple?.salaries || []&quot;
+      &gt;
+      &lt;/minhdu-fontend-table-salaries-selected&gt;
+    &lt;/div&gt;
+    &lt;ng-template #alert&gt;
+      &lt;div
+        class&#x3D;&quot;font-weight-bold d-flex justify-content-center align-items-center&quot;
+        style&#x3D;&quot;height: 100px&quot;
+      &gt;
+        Chỉ được cật nhật lương cho nhân viên hiện tại
+      &lt;/div&gt;
+    &lt;/ng-template&gt;
+  &lt;/ng-template&gt;
+  &lt;div&gt;
+    &lt;button
+      *ngIf&#x3D;&quot;indexStep &gt; 0&quot;
+      (click)&#x3D;&quot;move(&#x27;previous&#x27;)&quot;
+      class&#x3D;&quot;mr-2&quot; nz-button nzType&#x3D;&quot;default&quot;&gt;
+      &lt;span&gt;Trở lại&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button
+      *ngIf&#x3D;&quot;indexStep &lt; 1&quot;
+      (click)&#x3D;&quot;move(&#x27;next&#x27;)&quot;
+      class&#x3D;&quot;mr-2&quot; nz-button nzType&#x3D;&quot;default&quot;&gt;
+      &lt;span&gt;Tiếp theo&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button nz-button nzType&#x3D;&quot;primary&quot;
+            [nzLoading]&#x3D;&quot;submitting&quot;
+            (click)&#x3D;&quot;onSubmit()&quot;&gt;
+      &lt;span&gt;Xác nhận&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div>  <nz-steps [nzCurrent]="indexStep">    <nz-step [nzTitle]="this.data.type === salaryTypeEnum.STAY?\'Phụ cấp lương\':\'Lương cơ bản\'"></nz-step>    <nz-step nzTitle="Chọn nhân viên" *ngIf="this.data.add"></nz-step>    <nz-step *ngIf="data?.update?.multiple" nzTitle="Nhân viên đã chọn"></nz-step>  </nz-steps>  <ng-template [ngIf]="indexStep === 0">    <form [formGroup]="formGroup">      <div *ngIf=\'false\' class=\' mb-5 title-popup\'>        <span> Lương cơ bản</span>      </div>      <div class=\'contract-salary mt-1\' *ngIf="!data?.update?.history; else title">        <div class=\' title-item mb-1\'>          <span>Loại lương</span>          <span class=\'star\'>*</span>        </div>        <div class=\' mb-3\' [formGroup]=\'formGroup\'>          <nz-select style="width: 100%" formControlName=\'template\'                     [compareWith]="compareFn"                     [nzLoading]="(loadingSettingSalary$|async)"                     [ngClass]="{ \'is-invalid\': checkValid.template.errors }">            <nz-option *ngFor=\'let salary of (salariesSetting$|async)\' [nzValue]="salary" [nzLabel]="salary.title">            </nz-option>          </nz-select>          <div *ngIf=\'checkValid.template.errors?.required\' class=\'invalid-feedback\'>            <div>Chưa chọn loại lương</div>          </div>        </div>      </div>      <ng-template #title>        <div class="title-item mt-2">          <span> Loại lương</span>        </div>        <div class="form-control ">          {{this.data.update?.salary?.title}}        </div>      </ng-template>      <div class=\'basic-salary\'>        <div class=\' title-item my-1\'>          <span>Mức lương</span>          <span class=\'star\'>*</span>        </div>        <div class=\' mb-3\' [formGroup]=\'formGroup\'             *ngIf=\'formGroup.value.template?.type === salaryTypeEnum.BASIC_INSURANCE  else inputPrice\'>          <nz-select style="width: 100%" formControlName=\'price\'                     [ngClass]="{ \'is-invalid\': checkValid.price.errors }">            <nz-option *ngFor=\'let item of formGroup.value.template.prices\' [nzValue]=\'item\'                       [nzLabel]="(item|number:\'1.0-0\') + \' đ\'"            >            </nz-option>          </nz-select>        </div>        <ng-template #inputPrice>          <div class=\' mb-3\' [formGroup]=\'formGroup\'>            <input nz-input                   type=\'text\'                   placeholder=\'Nhập mức lương\'                   formControlName=\'price\'                   currencyMask                   [options]="{ suffix: \' đ\' }"                   [ngClass]="{ \'is-invalid\': checkValid.price.errors }">            <div *ngIf=\'checkValid.price.errors?.required\' class=\'invalid-feedback\'>              <div>Chưa nhập mức lương</div>            </div>          </div>        </ng-template>      </div>      <div *ngIf="data?.update?.history">        <div class=\' title-item mt-2 mbt-2\'>          <span>Ngày tạo</span>          <span class=\'star\'>*</span>        </div>        <div class=\' mb-3\' [formGroup]=\'formGroup\'>          <input class="form-control" type=\'date\' formControlName=\'datetime\'                 [ngClass]="{ \'is-invalid\': checkValid.datetime.errors }">          <div *ngIf=\' checkValid.datetime.errors?.required\' class=\'invalid-feedback\'>            <div>Chưa chọn ngày</div>          </div>        </div>      </div>    </form>  </ng-template>  <ng-template [ngIf]="indexStep === 1 && this.data.add ">    <div class="py-2">      <minhdu-fontend-select-payroll        [employeeType]="employeeType.EMPLOYEE_FULL_TIME"        [formGroup]="formGroup"        [createdAt]="data.add.payroll?.createdAt || createdAt ">      </minhdu-fontend-select-payroll>    </div>  </ng-template>  <ng-template [ngIf]="indexStep === 1 && data.update">    <div *ngIf="data.update.multiple else alert">      <minhdu-fontend-table-salaries-selected        [formGroup]="formGroup"        [salaries]="data.update?.multiple?.salaries || []"      >      </minhdu-fontend-table-salaries-selected>    </div>    <ng-template #alert>      <div        class="font-weight-bold d-flex justify-content-center align-items-center"        style="height: 100px"      >        Chỉ được cật nhật lương cho nhân viên hiện tại      </div>    </ng-template>  </ng-template>  <div>    <button      *ngIf="indexStep > 0"      (click)="move(\'previous\')"      class="mr-2" nz-button nzType="default">      <span>Trở lại</span>    </button>    <button      *ngIf="indexStep < 1"      (click)="move(\'next\')"      class="mr-2" nz-button nzType="default">      <span>Tiếp theo</span>    </button>    <button nz-button nzType="primary"            [nzLoading]="submitting"            (click)="onSubmit()">      <span>Xác nhận</span>    </button>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AbsentOvertimeSalaryComponent', 'selector': ''},{'name': 'AllowanceBranchComponent', 'selector': ''},{'name': 'AllowanceSalaryComponent', 'selector': ''},{'name': 'AppComponent', 'selector': 'minhdu-fontend-hrv2'},{'name': 'BranchComponent', 'selector': ''},{'name': 'ClassifySalaryComponent', 'selector': ''},{'name': 'DeductionSalaryComponent', 'selector': ''},{'name': 'DepartmentComponent', 'selector': ''},{'name': 'DetailBranchComponent', 'selector': ''},{'name': 'DetailEmployeeComponent', 'selector': ''},{'name': 'DetailPayrollComponent', 'selector': ''},{'name': 'EmployeeComponent', 'selector': ''},{'name': 'HistoryPayrollComponent', 'selector': ''},{'name': 'HolidaySalaryComponent', 'selector': ''},{'name': 'ModalBranchComponent', 'selector': ''},{'name': 'ModalDegreeComponent', 'selector': ''},{'name': 'ModalDepartmentComponent', 'selector': ''},{'name': 'ModalEmployeeComponent', 'selector': ''},{'name': 'ModalPositionComponent', 'selector': ''},{'name': 'ModalRelativeComponent', 'selector': ''},{'name': 'ModalSelectAddSalaryComponent', 'selector': ''},{'name': 'ModalSettingSalaryComponent', 'selector': ''},{'name': 'ModalUpdateContractComponent', 'selector': ''},{'name': 'OverviewHrComponent', 'selector': ''},{'name': 'PageLayoutComponent', 'selector': ''},{'name': 'PayrollComponent', 'selector': ''},{'name': 'PayslipComponent', 'selector': ''},{'name': 'PermanentSalaryComponent', 'selector': ''},{'name': 'PositionComponent', 'selector': ''},{'name': 'ProfileComponent', 'selector': '@minhdu-fontend-profile'},{'name': 'RankComponent', 'selector': 'minhdu-fontend-rank'},{'name': 'RemoteOrDayOffSalaryComponent', 'selector': ''},{'name': 'SettingBonusComponent', 'selector': ''},{'name': 'SettingRankComponent', 'selector': ''},{'name': 'SettingSalaryComponent', 'selector': 'minhdu-fontend-setting-salary'},{'name': 'StatisticalEmployeeComponent', 'selector': ''},{'name': 'TablePayrollComponent', 'selector': 'minhdu-fontend-table-payroll'},{'name': 'TableSalarySelectedComponent', 'selector': 'minhdu-fontend-table-salaries-selected'},{'name': 'TableSelectPayrollComponent', 'selector': '@minhdu-fontend-select-payroll'},{'name': 'UpdatePayrollComponent', 'selector': ''},{'name': 'VisibleSalarySettingComponent', 'selector': 'minhdu-fontend-pinned-setting-salary'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'PermanentSalaryComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'PermanentSalaryComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

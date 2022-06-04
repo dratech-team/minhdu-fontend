@@ -1,0 +1,1315 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>minhdu-fontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">minhdu-fontend documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li
+  >
+  PositionComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>apps/hrv2/src/app/pages/orgchart/position/containers/position/position.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>position.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#compareFN" >compareFN</a>
+                            </li>
+                            <li>
+                                <a href="#filterType" >filterType</a>
+                            </li>
+                            <li>
+                                <a href="#formGroup" >formGroup</a>
+                            </li>
+                            <li>
+                                <a href="#itemContextMenu" >itemContextMenu</a>
+                            </li>
+                            <li>
+                                <a href="#loading$" >loading$</a>
+                            </li>
+                            <li>
+                                <a href="#positions$" >positions$</a>
+                            </li>
+                            <li>
+                                <a href="#stateSearch" >stateSearch</a>
+                            </li>
+                            <li>
+                                <a href="#total$" >total$</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onAdd" >onAdd</a>
+                            </li>
+                            <li>
+                                <a href="#onDelete" >onDelete</a>
+                            </li>
+                            <li>
+                                <a href="#onEmployee" >onEmployee</a>
+                            </li>
+                            <li>
+                                <a href="#onLoadMore" >onLoadMore</a>
+                            </li>
+                            <li>
+                                <a href="#onPayroll" >onPayroll</a>
+                            </li>
+                            <li>
+                                <a href="#onUpdate" >onUpdate</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(actions$: Actions, dialog: MatDialog, modal: NzModalService, positionQuery: PositionQuery, employeeStore: EmployeeStore, payrollStore: <a href="../injectables/PayrollStore.html" target="_self">PayrollStore</a>, router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">apps/hrv2/src/app/pages/orgchart/position/containers/position/position.component.ts:41</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>actions$</td>
+                                                  
+                                                        <td>
+                                                                    <code>Actions</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>dialog</td>
+                                                  
+                                                        <td>
+                                                                    <code>MatDialog</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>modal</td>
+                                                  
+                                                        <td>
+                                                                    <code>NzModalService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>positionQuery</td>
+                                                  
+                                                        <td>
+                                                                    <code>PositionQuery</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>employeeStore</td>
+                                                  
+                                                        <td>
+                                                                    <code>EmployeeStore</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>payrollStore</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/PayrollStore.html" target="_self" >PayrollStore</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="54"
+                            class="link-to-prism">apps/hrv2/src/app/pages/orgchart/position/containers/position/position.component.ts:54</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onAdd"></a>
+                    <span class="name">
+                        <span ><b>onAdd</b></span>
+                        <a href="#onAdd"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onAdd()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="77"
+                            class="link-to-prism">apps/hrv2/src/app/pages/orgchart/position/containers/position/position.component.ts:77</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onDelete"></a>
+                    <span class="name">
+                        <span ><b>onDelete</b></span>
+                        <a href="#onDelete"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onDelete(position: PositionEntity)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="102"
+                            class="link-to-prism">apps/hrv2/src/app/pages/orgchart/position/containers/position/position.component.ts:102</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>position</td>
+                                    <td>
+                                            <code>PositionEntity</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onEmployee"></a>
+                    <span class="name">
+                        <span ><b>onEmployee</b></span>
+                        <a href="#onEmployee"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onEmployee(position: PositionEntity, branch?: BranchEntity)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="112"
+                            class="link-to-prism">apps/hrv2/src/app/pages/orgchart/position/containers/position/position.component.ts:112</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>position</td>
+                                    <td>
+                                            <code>PositionEntity</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>branch</td>
+                                    <td>
+                                            <code>BranchEntity</code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onLoadMore"></a>
+                    <span class="name">
+                        <span ><b>onLoadMore</b></span>
+                        <a href="#onLoadMore"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onLoadMore()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="70"
+                            class="link-to-prism">apps/hrv2/src/app/pages/orgchart/position/containers/position/position.component.ts:70</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onPayroll"></a>
+                    <span class="name">
+                        <span ><b>onPayroll</b></span>
+                        <a href="#onPayroll"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onPayroll(position: PositionEntity, filterType: FilterTypeEnum, branch?: BranchEntity)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="126"
+                            class="link-to-prism">apps/hrv2/src/app/pages/orgchart/position/containers/position/position.component.ts:126</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>position</td>
+                                    <td>
+                                            <code>PositionEntity</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>filterType</td>
+                                    <td>
+                                            <code>FilterTypeEnum</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>branch</td>
+                                    <td>
+                                            <code>BranchEntity</code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onUpdate"></a>
+                    <span class="name">
+                        <span ><b>onUpdate</b></span>
+                        <a href="#onUpdate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onUpdate(position: PositionEntity)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="86"
+                            class="link-to-prism">apps/hrv2/src/app/pages/orgchart/position/containers/position/position.component.ts:86</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>position</td>
+                                    <td>
+                                            <code>PositionEntity</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="compareFN"></a>
+                    <span class="name">
+                        <span ><b>compareFN</b></span>
+                        <a href="#compareFN"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">apps/hrv2/src/app/pages/orgchart/position/containers/position/position.component.ts:41</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filterType"></a>
+                    <span class="name">
+                        <span ><b>filterType</b></span>
+                        <a href="#filterType"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>FilterTypeEnum</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">apps/hrv2/src/app/pages/orgchart/position/containers/position/position.component.ts:33</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formGroup"></a>
+                    <span class="name">
+                        <span ><b>formGroup</b></span>
+                        <a href="#formGroup"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new FormGroup(
+    {
+      search: new FormControl(this.stateSearch.search),
+    }
+  )</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">apps/hrv2/src/app/pages/orgchart/position/containers/position/position.component.ts:35</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="itemContextMenu"></a>
+                    <span class="name">
+                        <span ><b>itemContextMenu</b></span>
+                        <a href="#itemContextMenu"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>ItemContextMenu</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">apps/hrv2/src/app/pages/orgchart/position/containers/position/position.component.ts:32</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loading$"></a>
+                    <span class="name">
+                        <span ><b>loading$</b></span>
+                        <a href="#loading$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.positionQuery.select(state &#x3D;&gt; state.loading)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">apps/hrv2/src/app/pages/orgchart/position/containers/position/position.component.ts:28</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="positions$"></a>
+                    <span class="name">
+                        <span ><b>positions$</b></span>
+                        <a href="#positions$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.positionQuery.selectAll()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">apps/hrv2/src/app/pages/orgchart/position/containers/position/position.component.ts:27</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="stateSearch"></a>
+                    <span class="name">
+                        <span ><b>stateSearch</b></span>
+                        <a href="#stateSearch"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.positionQuery.getValue().search</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">apps/hrv2/src/app/pages/orgchart/position/containers/position/position.component.ts:31</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="total$"></a>
+                    <span class="name">
+                        <span ><b>total$</b></span>
+                        <a href="#total$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.positionQuery.select(state &#x3D;&gt; state.total)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">apps/hrv2/src/app/pages/orgchart/position/containers/position/position.component.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {Component, OnInit} from &#x27;@angular/core&#x27;;
+import {FormControl, FormGroup} from &#x27;@angular/forms&#x27;;
+import {MatDialog} from &#x27;@angular/material/dialog&#x27;;
+import {debounceTime, map} from &#x27;rxjs/operators&#x27;;
+import {Actions} from &#x27;@datorama/akita-ng-effects&#x27;;
+import {NzModalService} from &#x27;ng-zorro-antd/modal&#x27;;
+import {
+  BranchEntity,
+  DepartmentActions,
+  PositionActions,
+  PositionEntity,
+  PositionQuery
+} from &quot;@minhdu-fontend/orgchart-v2&quot;;
+import {ModalAlertComponent} from &quot;@minhdu-fontend/components&quot;;
+import {ModalAlertEntity} from &quot;@minhdu-fontend/base-entity&quot;;
+import {Router} from &quot;@angular/router&quot;;
+import {ModalPositionComponent} from &quot;../../components/modal-position/modal-position.component&quot;;
+import {DataAddOrUpdatePosition} from &quot;../../data/modal-position.data&quot;;
+import {FilterTypeEnum, ItemContextMenu} from &quot;@minhdu-fontend/enums&quot;;
+import {EmployeeStore} from &quot;@minhdu-fontend/employee-v2&quot;;
+import {PayrollStore} from &quot;../../../../payroll/state&quot;;
+
+@Component({
+  templateUrl: &#x27;position.component.html&#x27;
+})
+export class PositionComponent implements OnInit {
+  positions$ &#x3D; this.positionQuery.selectAll()
+  loading$ &#x3D; this.positionQuery.select(state &#x3D;&gt; state.loading)
+  total$ &#x3D; this.positionQuery.select(state &#x3D;&gt; state.total)
+
+  stateSearch &#x3D; this.positionQuery.getValue().search
+  itemContextMenu &#x3D; ItemContextMenu
+  filterType &#x3D; FilterTypeEnum
+
+  formGroup &#x3D; new FormGroup(
+    {
+      search: new FormControl(this.stateSearch.search),
+    }
+  );
+
+  compareFN &#x3D; (o1: any, o2: any) &#x3D;&gt; (o1 &amp;&amp; o2 ? o1.id &#x3D;&#x3D; o2.id : o1 &#x3D;&#x3D;&#x3D; o2);
+
+  constructor(
+    private readonly actions$: Actions,
+    private readonly dialog: MatDialog,
+    private readonly modal: NzModalService,
+    private readonly positionQuery: PositionQuery,
+    private readonly employeeStore: EmployeeStore,
+    private readonly payrollStore: PayrollStore,
+    private readonly router: Router,
+  ) {
+  }
+
+  ngOnInit() {
+    this.actions$.dispatch(PositionActions.loadAll({
+      search: this.formGroup.value
+    }));
+
+    this.formGroup.valueChanges.pipe(
+      debounceTime(1000),
+      map(value &#x3D;&gt; {
+          this.actions$.dispatch(DepartmentActions.loadAll({
+            search: this.formGroup.value
+          }));
+        }
+      )
+    ).subscribe();
+  }
+
+  onLoadMore() {
+    this.actions$.dispatch(DepartmentActions.loadAll({
+      search: this.formGroup.value,
+      isPaginate: true
+    }));
+  }
+
+  onAdd() {
+    this.modal.create({
+      nzWidth: &#x27;fit-content&#x27;,
+      nzTitle: &#x27;Tạo phòng ban&#x27;,
+      nzContent: ModalPositionComponent,
+      nzFooter: []
+    })
+  }
+
+  onUpdate(position: PositionEntity) {
+    this.modal.create({
+      nzWidth: &#x27;fit-content&#x27;,
+      nzTitle: &#x27;Cập nhật chức vụ&#x27;,
+      nzContent: ModalPositionComponent,
+      nzComponentParams: &lt;{ data?: DataAddOrUpdatePosition }&gt;{
+        data: {
+          update: {
+            position: position
+          }
+        }
+      },
+      nzFooter: []
+    })
+  }
+
+  onDelete(position: PositionEntity) {
+    this.modal.warning({
+      nzTitle: &#x60;Xoá chức vụ ${position.name}&#x60;,
+      nzContent: &#x60;Bạn có chắc chắn muốn xoá chức vụ ${position.name} này không&#x60;,
+      nzOkDanger: true,
+      nzOnOk: () &#x3D;&gt; this.actions$.dispatch(PositionActions.remove({id: position.id})),
+      nzFooter: []
+    })
+  }
+
+  onEmployee(position: PositionEntity, branch?: BranchEntity) {
+    this.employeeStore.update(state &#x3D;&gt; ({
+      ...state, search: Object.assign(JSON.parse(JSON.stringify(state.search)),
+        {
+          position: position
+        },
+        branch
+          ? {branch: branch}
+          : {}
+      )
+    }))
+    this.router.navigate([&#x27;nhan-vien&#x27;]).then();
+  }
+
+  onPayroll(position: PositionEntity, filterType: FilterTypeEnum, branch?: BranchEntity) {
+    this.payrollStore.update(state &#x3D;&gt; ({
+      ...state, search: Object.assign(JSON.parse(JSON.stringify(state.search)),
+        {
+          position: position,
+          filterType: filterType
+        },
+        branch
+          ? {branch: branch}
+          : {}
+      )
+    }))
+    this.router.navigate([&#x27;phieu-luong&#x27;]).then();
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;d-flex mt-3 ml-2&quot;&gt;
+  &lt;div class&#x3D;&#x27;d-flex flex-column ml-3 border p-2&#x27; style&#x3D;&#x27;height: 80vh; width:250px; overflow-y: scroll&#x27;&gt;
+    &lt;nz-collapse&gt;
+      &lt;nz-collapse-panel
+        nzHeader&#x3D;&#x27;Tìm kiếm&#x27;
+        nzActive&#x3D;&#x27;true&#x27;&gt;
+        &lt;div [formGroup]&#x3D;&#x27;formGroup&#x27;&gt;
+          &lt;input nz-input class&#x3D;&#x27;form-control&#x27; type&#x3D;&#x27;search&#x27; formControlName&#x3D;&#x27;search&#x27;&gt;
+        &lt;/div&gt;
+      &lt;/nz-collapse-panel&gt;
+    &lt;/nz-collapse&gt;
+  &lt;/div&gt;
+  &lt;div class&#x3D;&quot;d-flex flex-column ml-2&quot; style&#x3D;&quot;width: 80vw&quot;&gt;
+    &lt;div class&#x3D;&quot;mt-2 d-flex flex-column&quot;&gt;
+      &lt;div class&#x3D;&quot;d-flex mb-2 justify-content-between align-items-center&quot;&gt;
+        &lt;div&gt;
+          &lt;span class&#x3D;&quot;font-weight-bold&quot;&gt;Tổng: &lt;/span&gt; {{total$|async}}
+        &lt;/div&gt;
+        &lt;div&gt;
+          &lt;button nz-button nzType&#x3D;&quot;primary&quot; (click)&#x3D;&quot;onAdd()&quot;&gt;Thêm&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;nz-table #tablePosition
+                nzShowPagination&#x3D;&quot;false&quot;
+                [nzLoading]&#x3D;&quot;loading$|async&quot;
+                [nzScroll]&#x3D;&quot;{ x: &#x27;1500px&#x27;,y: &#x27;53vh&#x27;}&quot;
+                nzSize&#x3D;&#x27;small&#x27;
+                [nzData]&#x3D;&quot;(positions$|async)|| []&quot;
+      &gt;
+        &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th nzLeft nzWidth&#x3D;&quot;60px&quot;&gt;STT&lt;/th&gt;
+          &lt;th&gt;Mã chức vụ&lt;/th&gt;
+          &lt;th nzLeft&gt;Tên chức vụ&lt;/th&gt;
+          &lt;th&gt;Đơn vị&lt;/th&gt;
+          &lt;th&gt; Ngày công chuẩn &lt;br/&gt; (Mỗi nhân viên có thể sẽ khác nhau)&lt;/th&gt;
+          &lt;th&gt;Tổng nhân viên&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+        &lt;ng-template ngFor let-position [ngForOf]&#x3D;&quot;tablePosition.data&quot; let-i&#x3D;&#x27;index&#x27;&gt;
+          &lt;tr class&#x3D;&quot;pointer&quot;
+              (click)&#x3D;&quot;onUpdate(position)&quot;
+              (contextmenu)&#x3D;&#x27;child.onContextMenu($event,position)&#x27;&gt;
+            &lt;td nzLeft&gt;{{i + 1}}&lt;/td&gt;
+            &lt;td&gt;{{position.id}}&lt;/td&gt;
+            &lt;td nzLeft&gt;{{position.name}}&lt;/td&gt;
+            &lt;td&gt;
+              &lt;span class&#x3D;&quot;font-weight-bold&quot; *ngIf&#x3D;&quot;position.branches.length &#x3D;&#x3D;&#x3D; 0 else chip&quot;&gt;Thuộc tất cả đơn vị&lt;/span&gt;
+              &lt;ng-template #chip&gt;
+                &lt;mat-chip-list&gt;
+                  &lt;mat-chip
+                    (click)&#x3D;&quot;$event.stopPropagation()&quot;
+                    [contextMenu]&#x3D;&#x27;childChip&#x27;
+                    [contextMenuSubject]&#x3D;&#x27;{position: position, branch: branch}&#x27;
+                    [style]&#x3D;&#x27;{&quot;background&quot;: formGroup.get(&quot;branch&quot;)?.value.id &#x3D;&#x3D;&#x3D; branch.id ? &quot;red&quot; : &quot;#00000040&quot;}&#x27;
+                    *ngFor&#x3D;&#x27;let branch of position.branches&#x27;&gt;
+                    {{branch.name}}
+                  &lt;/mat-chip&gt;
+                &lt;/mat-chip-list&gt;
+              &lt;/ng-template&gt;
+            &lt;/td&gt;
+            &lt;td&gt;{{position.workday}}&lt;/td&gt;
+            &lt;td&gt;{{position._count.employees}}&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/ng-template&gt;
+        &lt;/tbody&gt;
+      &lt;/nz-table&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;app-mouse-right
+  [items]&#x3D;&#x27;[itemContextMenu.PAYROLL, itemContextMenu.PROFILE, itemContextMenu.OVERTIME]&#x27;
+  #child
+  (onAdd)&#x3D;&#x27;onAdd()&#x27;
+  (onUpdate)&#x3D;&#x27;onUpdate($event)&#x27;
+  (onDel)&#x3D;&#x27;onDelete($event)&#x27;
+  (onProfile)&#x3D;&quot;onEmployee($event)&quot;
+  (onPayroll)&#x3D;&quot;onPayroll($event, filterType.PAYROLL)&quot;
+  (onOvertime)&#x3D;&quot;onPayroll($event, filterType.OVERTIME)&quot;
+&gt;&lt;/app-mouse-right&gt;
+&lt;context-menu #childChip&gt;
+  &lt;ng-template
+    contextMenuItem
+    (execute)&#x3D;&#x27;onEmployee($event.item.branch, $event.item.position)&#x27;&gt;
+    Nhân viên
+  &lt;/ng-template&gt;
+  &lt;ng-template
+    contextMenuItem
+    (execute)&#x3D;&#x27;onPayroll( $event.item.branch, filterType.PAYROLL, $event.item.position)&#x27;&gt;
+    Bảng lương
+  &lt;/ng-template&gt;
+  &lt;ng-template
+    contextMenuItem
+    (execute)&#x3D;&#x27;onPayroll( $event.item.branch,  filterType.OVERTIME, $event.item.position)&#x27;&gt;
+    Tăng ca
+  &lt;/ng-template&gt;
+&lt;/context-menu&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="d-flex mt-3 ml-2">  <div class=\'d-flex flex-column ml-3 border p-2\' style=\'height: 80vh; width:250px; overflow-y: scroll\'>    <nz-collapse>      <nz-collapse-panel        nzHeader=\'Tìm kiếm\'        nzActive=\'true\'>        <div [formGroup]=\'formGroup\'>          <input nz-input class=\'form-control\' type=\'search\' formControlName=\'search\'>        </div>      </nz-collapse-panel>    </nz-collapse>  </div>  <div class="d-flex flex-column ml-2" style="width: 80vw">    <div class="mt-2 d-flex flex-column">      <div class="d-flex mb-2 justify-content-between align-items-center">        <div>          <span class="font-weight-bold">Tổng: </span> {{total$|async}}        </div>        <div>          <button nz-button nzType="primary" (click)="onAdd()">Thêm</button>        </div>      </div>      <nz-table #tablePosition                nzShowPagination="false"                [nzLoading]="loading$|async"                [nzScroll]="{ x: \'1500px\',y: \'53vh\'}"                nzSize=\'small\'                [nzData]="(positions$|async)|| []"      >        <thead>        <tr>          <th nzLeft nzWidth="60px">STT</th>          <th>Mã chức vụ</th>          <th nzLeft>Tên chức vụ</th>          <th>Đơn vị</th>          <th> Ngày công chuẩn <br/> (Mỗi nhân viên có thể sẽ khác nhau)</th>          <th>Tổng nhân viên</th>        </tr>        </thead>        <tbody>        <ng-template ngFor let-position [ngForOf]="tablePosition.data" let-i=\'index\'>          <tr class="pointer"              (click)="onUpdate(position)"              (contextmenu)=\'child.onContextMenu($event,position)\'>            <td nzLeft>{{i + 1}}</td>            <td>{{position.id}}</td>            <td nzLeft>{{position.name}}</td>            <td>              <span class="font-weight-bold" *ngIf="position.branches.length === 0 else chip">Thuộc tất cả đơn vị</span>              <ng-template #chip>                <mat-chip-list>                  <mat-chip                    (click)="$event.stopPropagation()"                    [contextMenu]=\'childChip\'                    [contextMenuSubject]=\'{position: position, branch: branch}\'                    [style]=\'{"background": formGroup.get("branch")?.value.id === branch.id ? "red" : "#00000040"}\'                    *ngFor=\'let branch of position.branches\'>                    {{branch.name}}                  </mat-chip>                </mat-chip-list>              </ng-template>            </td>            <td>{{position.workday}}</td>            <td>{{position._count.employees}}</td>          </tr>        </ng-template>        </tbody>      </nz-table>    </div>  </div></div><app-mouse-right  [items]=\'[itemContextMenu.PAYROLL, itemContextMenu.PROFILE, itemContextMenu.OVERTIME]\'  #child  (onAdd)=\'onAdd()\'  (onUpdate)=\'onUpdate($event)\'  (onDel)=\'onDelete($event)\'  (onProfile)="onEmployee($event)"  (onPayroll)="onPayroll($event, filterType.PAYROLL)"  (onOvertime)="onPayroll($event, filterType.OVERTIME)"></app-mouse-right><context-menu #childChip>  <ng-template    contextMenuItem    (execute)=\'onEmployee($event.item.branch, $event.item.position)\'>    Nhân viên  </ng-template>  <ng-template    contextMenuItem    (execute)=\'onPayroll( $event.item.branch, filterType.PAYROLL, $event.item.position)\'>    Bảng lương  </ng-template>  <ng-template    contextMenuItem    (execute)=\'onPayroll( $event.item.branch,  filterType.OVERTIME, $event.item.position)\'>    Tăng ca  </ng-template></context-menu></div>'
+    var COMPONENTS = [{'name': 'AbsentOvertimeSalaryComponent', 'selector': ''},{'name': 'AllowanceBranchComponent', 'selector': ''},{'name': 'AllowanceSalaryComponent', 'selector': ''},{'name': 'AppComponent', 'selector': 'minhdu-fontend-hrv2'},{'name': 'BranchComponent', 'selector': ''},{'name': 'ClassifySalaryComponent', 'selector': ''},{'name': 'DeductionSalaryComponent', 'selector': ''},{'name': 'DepartmentComponent', 'selector': ''},{'name': 'DetailBranchComponent', 'selector': ''},{'name': 'DetailEmployeeComponent', 'selector': ''},{'name': 'DetailPayrollComponent', 'selector': ''},{'name': 'EmployeeComponent', 'selector': ''},{'name': 'HistoryPayrollComponent', 'selector': ''},{'name': 'HolidaySalaryComponent', 'selector': ''},{'name': 'ModalBranchComponent', 'selector': ''},{'name': 'ModalDegreeComponent', 'selector': ''},{'name': 'ModalDepartmentComponent', 'selector': ''},{'name': 'ModalEmployeeComponent', 'selector': ''},{'name': 'ModalPositionComponent', 'selector': ''},{'name': 'ModalRelativeComponent', 'selector': ''},{'name': 'ModalSelectAddSalaryComponent', 'selector': ''},{'name': 'ModalSettingSalaryComponent', 'selector': ''},{'name': 'ModalUpdateContractComponent', 'selector': ''},{'name': 'OverviewHrComponent', 'selector': ''},{'name': 'PageLayoutComponent', 'selector': ''},{'name': 'PayrollComponent', 'selector': ''},{'name': 'PayslipComponent', 'selector': ''},{'name': 'PermanentSalaryComponent', 'selector': ''},{'name': 'PositionComponent', 'selector': ''},{'name': 'ProfileComponent', 'selector': '@minhdu-fontend-profile'},{'name': 'RankComponent', 'selector': 'minhdu-fontend-rank'},{'name': 'RemoteOrDayOffSalaryComponent', 'selector': ''},{'name': 'SettingBonusComponent', 'selector': ''},{'name': 'SettingRankComponent', 'selector': ''},{'name': 'SettingSalaryComponent', 'selector': 'minhdu-fontend-setting-salary'},{'name': 'StatisticalEmployeeComponent', 'selector': ''},{'name': 'TablePayrollComponent', 'selector': 'minhdu-fontend-table-payroll'},{'name': 'TableSalarySelectedComponent', 'selector': 'minhdu-fontend-table-salaries-selected'},{'name': 'TableSelectPayrollComponent', 'selector': '@minhdu-fontend-select-payroll'},{'name': 'UpdatePayrollComponent', 'selector': ''},{'name': 'VisibleSalarySettingComponent', 'selector': 'minhdu-fontend-pinned-setting-salary'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'PositionComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'PositionComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

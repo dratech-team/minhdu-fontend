@@ -1,0 +1,1691 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>minhdu-fontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">minhdu-fontend documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li >PayrollEffect</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/hrv2/src/app/pages/payroll/state/payroll.effect.ts</code>
+        </p>
+
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#addMany$" >addMany$</a>
+                            </li>
+                            <li>
+                                <a href="#addOne$" >addOne$</a>
+                            </li>
+                            <li>
+                                <a href="#confirmPayroll$" >confirmPayroll$</a>
+                            </li>
+                            <li>
+                                <a href="#getOne$" >getOne$</a>
+                            </li>
+                            <li>
+                                <a href="#loadAll$" >loadAll$</a>
+                            </li>
+                            <li>
+                                <a href="#remove$" >remove$</a>
+                            </li>
+                            <li>
+                                <a href="#restore$" >restore$</a>
+                            </li>
+                            <li>
+                                <a href="#scanHoliday$" >scanHoliday$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#stateHistory" >stateHistory</a>
+                            </li>
+                            <li>
+                                <a href="#update$" >update$</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getTotalAllowance" >getTotalAllowance</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getTotalHoliday" >getTotalHoliday</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getTotalOvertimeOrAbsent" >getTotalOvertimeOrAbsent</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getTotalRemoteOrDayOff" >getTotalRemoteOrDayOff</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#mapToPayroll" >mapToPayroll</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#sortDatetime" >sortDatetime</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(convertMinutePipe: ConvertMinutePipe, action$: Actions, service: <a href="../injectables/PayrollService.html" target="_self">PayrollService</a>, message: NzMessageService, payrollStore: <a href="../injectables/PayrollStore.html" target="_self">PayrollStore</a>, payrollQuery: <a href="../injectables/PayrollQuery.html" target="_self">PayrollQuery</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">apps/hrv2/src/app/pages/payroll/state/payroll.effect.ts:25</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>convertMinutePipe</td>
+                                                  
+                                                        <td>
+                                                                    <code>ConvertMinutePipe</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>action$</td>
+                                                  
+                                                        <td>
+                                                                    <code>Actions</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>service</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/PayrollService.html" target="_self" >PayrollService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>message</td>
+                                                  
+                                                        <td>
+                                                                    <code>NzMessageService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>payrollStore</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/PayrollStore.html" target="_self" >PayrollStore</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>payrollQuery</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/PayrollQuery.html" target="_self" >PayrollQuery</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTotalAllowance"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>getTotalAllowance</b></span>
+                        <a href="#getTotalAllowance"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getTotalAllowance(allowances: SalaryEntity[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="298"
+                            class="link-to-prism">apps/hrv2/src/app/pages/payroll/state/payroll.effect.ts:298</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>allowances</td>
+                                    <td>
+                                            <code>SalaryEntity[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>TotalSalary | undefined</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTotalHoliday"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>getTotalHoliday</b></span>
+                        <a href="#getTotalHoliday"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getTotalHoliday(salary: HolidaySalaryEntity[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="348"
+                            class="link-to-prism">apps/hrv2/src/app/pages/payroll/state/payroll.effect.ts:348</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>salary</td>
+                                    <td>
+                                            <code>HolidaySalaryEntity[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTotalOvertimeOrAbsent"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>getTotalOvertimeOrAbsent</b></span>
+                        <a href="#getTotalOvertimeOrAbsent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getTotalOvertimeOrAbsent(salary: (AbsentSalaryEntity | OvertimeSalaryEntity)[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="311"
+                            class="link-to-prism">apps/hrv2/src/app/pages/payroll/state/payroll.effect.ts:311</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>salary</td>
+                                    <td>
+                                            <code>(AbsentSalaryEntity | OvertimeSalaryEntity)[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/TotalSalary.html" target="_self" >TotalSalary</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTotalRemoteOrDayOff"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>getTotalRemoteOrDayOff</b></span>
+                        <a href="#getTotalRemoteOrDayOff"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getTotalRemoteOrDayOff(salary: SalaryEntity[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="340"
+                            class="link-to-prism">apps/hrv2/src/app/pages/payroll/state/payroll.effect.ts:340</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>salary</td>
+                                    <td>
+                                            <code>SalaryEntity[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mapToPayroll"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>mapToPayroll</b></span>
+                        <a href="#mapToPayroll"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>mapToPayroll(payroll: <a href="../interfaces/PayrollEntity.html" target="_self">PayrollEntity</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="268"
+                            class="link-to-prism">apps/hrv2/src/app/pages/payroll/state/payroll.effect.ts:268</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>payroll</td>
+                                    <td>
+                                                <code><a href="../interfaces/PayrollEntity.html" target="_self" >PayrollEntity</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/PayrollEntity.html" target="_self" >PayrollEntity</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sortDatetime"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>sortDatetime</b></span>
+                        <a href="#sortDatetime"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>sortDatetime(salaries?: SalaryEntity[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="360"
+                            class="link-to-prism">apps/hrv2/src/app/pages/payroll/state/payroll.effect.ts:360</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>salaries</td>
+                                    <td>
+                                            <code>SalaryEntity[]</code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addMany$"></a>
+                    <span class="name">
+                        <span ><b>addMany$</b></span>
+                        <a href="#addMany$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.action$.pipe(
+    ofType(PayrollActions.addMany),
+    switchMap((props: AddManyPayrollDto) &#x3D;&gt; {
+      this.payrollStore.update(state &#x3D;&gt; ({
+        ...state, added: false
+      }));
+      return this.service.addMany(props).pipe(
+        tap(res &#x3D;&gt; {
+          this.payrollStore.update(state &#x3D;&gt; ({
+            ...state, added: true
+          }));
+          this.message.success(res.message);
+        }),
+        catchError(err &#x3D;&gt; {
+          this.payrollStore.update(state &#x3D;&gt; ({
+            ...state, added: null
+          }));
+          return of(PayrollActions.error(err));
+        })
+      );
+    })
+  )</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @Effect()<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">apps/hrv2/src/app/pages/payroll/state/payroll.effect.ts:65</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addOne$"></a>
+                    <span class="name">
+                        <span ><b>addOne$</b></span>
+                        <a href="#addOne$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.action$.pipe(
+    ofType(PayrollActions.addOne),
+    switchMap((props: AddPayrollDto) &#x3D;&gt; {
+      this.payrollStore.update(state &#x3D;&gt; ({
+        ...state, added: false
+      }));
+      return this.service.addOne(props).pipe(
+        tap(res &#x3D;&gt; {
+          this.payrollStore.update(state &#x3D;&gt; ({
+            ...state, added: true, total: state.total + 1
+          }));
+          this.message.success(&#x27;Thêm phiếu lương thành công&#x27;)
+          this.payrollStore.add(res)
+        }),
+        catchError(err &#x3D;&gt; {
+          this.payrollStore.update(state &#x3D;&gt; ({
+            ...state, added: null
+          }));
+          return of(PayrollActions.error(err));
+        })
+      );
+    })
+  )</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @Effect()<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">apps/hrv2/src/app/pages/payroll/state/payroll.effect.ts:40</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmPayroll$"></a>
+                    <span class="name">
+                        <span ><b>confirmPayroll$</b></span>
+                        <a href="#confirmPayroll$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.action$.pipe(
+    ofType(PayrollActions.confirmPayroll),
+    switchMap((props) &#x3D;&gt; {
+      return this.service.confirm(props).pipe(
+        map(res &#x3D;&gt; this.mapToPayroll(res)),
+        tap(res &#x3D;&gt; {
+          this.payrollStore.update(res.id, res);
+        }),
+        catchError(err &#x3D;&gt; {
+          return of(PayrollActions.error(err));
+        })
+      );
+    })
+  )</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @Effect()<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="217" class="link-to-prism">apps/hrv2/src/app/pages/payroll/state/payroll.effect.ts:217</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getOne$"></a>
+                    <span class="name">
+                        <span ><b>getOne$</b></span>
+                        <a href="#getOne$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.action$.pipe(
+    ofType(PayrollActions.loadOne),
+    switchMap(props &#x3D;&gt; {
+      return this.service.getOne(props).pipe(
+        map(res &#x3D;&gt; {
+          return this.mapToPayroll(res);
+        }),
+        tap(res &#x3D;&gt; {
+          this.payrollStore.upsert(res.id, res);
+        }),
+        catchError(err &#x3D;&gt; {
+          return of(PayrollActions.error(err));
+        })
+      );
+    })
+  )</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @Effect()<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="149" class="link-to-prism">apps/hrv2/src/app/pages/payroll/state/payroll.effect.ts:149</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadAll$"></a>
+                    <span class="name">
+                        <span ><b>loadAll$</b></span>
+                        <a href="#loadAll$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.action$.pipe(
+    ofType(PayrollActions.loadAll),
+    switchMap((props) &#x3D;&gt; {
+      this.payrollStore.update(state &#x3D;&gt; (
+        Object.assign({...state}, props.isPaginate
+          ? {loadMore: true}
+          : {loading: true}
+        )
+      ));
+      Object.assign(props.search,
+        {
+          take: PaginationDto.take,
+          skip: props.isPaginate ? this.payrollQuery.getCount() : PaginationDto.skip
+        }
+      )
+      return this.service.paginationPayroll(props.search).pipe(
+        map(res &#x3D;&gt; {
+          return Object.assign(res, {
+            data: res.data.map(payroll &#x3D;&gt; Object.assign({}, this.mapToPayroll(payroll), {
+              expand: this.payrollStore.getValue().expandAll,
+              basics: payroll.salariesv2
+                ? payroll.salariesv2.filter(item &#x3D;&gt; item.type !&#x3D;&#x3D; SalaryTypeEnum.STAY)
+                : [],
+              stays: payroll.salariesv2
+                ? payroll.salariesv2.filter(item &#x3D;&gt; item.type &#x3D;&#x3D;&#x3D; SalaryTypeEnum.STAY)
+                : []
+            }))
+          });
+        }),
+        tap((res) &#x3D;&gt; {
+          if (res.data.length &#x3D;&#x3D;&#x3D; 0) {
+            this.message.warning(&#x27;Đã lấy hết phiếu lương&#x27;);
+          }
+          if (props.isPaginate) {
+            this.payrollStore.add(res.data);
+          } else {
+            this.payrollStore.set(res.data);
+          }
+          this.payrollStore.update(state &#x3D;&gt; (
+            Object.assign({
+                ...state,
+                total: res.total,
+                totalSalary: res.total2,
+                remain: res.total - this.payrollQuery.getCount()
+              },
+              props.isPaginate
+                ? {loadMore: false}
+                : {loading: false}
+            )
+          ));
+        }),
+        catchError((err) &#x3D;&gt; {
+          this.payrollStore.update(state &#x3D;&gt; ({...state, loading: false}));
+          return of(PayrollActions.error(err));
+        })
+      );
+    })
+  )</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @Effect()<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="89" class="link-to-prism">apps/hrv2/src/app/pages/payroll/state/payroll.effect.ts:89</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="remove$"></a>
+                    <span class="name">
+                        <span ><b>remove$</b></span>
+                        <a href="#remove$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.action$.pipe(
+    ofType(PayrollActions.remove),
+    switchMap((props) &#x3D;&gt; {
+      this.payrollStore.update(state &#x3D;&gt; ({
+        ...state, deleted: false
+      }))
+      return this.service.delete(props.id).pipe(
+        tap(_ &#x3D;&gt; {
+          this.payrollStore.update(state &#x3D;&gt; ({
+            ...state, deleted: true, total: state.total - 1
+          }))
+          this.payrollStore.remove(props.id);
+        }),
+        catchError(err &#x3D;&gt; {
+          this.payrollStore.update(state &#x3D;&gt; ({
+            ...state, deleted: null
+          }))
+          return of(PayrollActions.error(err));
+        })
+      );
+    })
+  )</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @Effect()<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="193" class="link-to-prism">apps/hrv2/src/app/pages/payroll/state/payroll.effect.ts:193</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="restore$"></a>
+                    <span class="name">
+                        <span ><b>restore$</b></span>
+                        <a href="#restore$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.action$.pipe(
+    ofType(PayrollActions.restore),
+    switchMap((props) &#x3D;&gt; {
+      return this.service.restore(props.id).pipe(
+        tap(res &#x3D;&gt; {
+          this.message.success(res.message)
+        }),
+        catchError(err &#x3D;&gt; {
+          return of(PayrollActions.error(err));
+        })
+      );
+    })
+  )</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @Effect()<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="254" class="link-to-prism">apps/hrv2/src/app/pages/payroll/state/payroll.effect.ts:254</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="scanHoliday$"></a>
+                    <span class="name">
+                        <span ><b>scanHoliday$</b></span>
+                        <a href="#scanHoliday$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.action$.pipe(
+    ofType(PayrollActions.scanHoliday),
+    switchMap((props) &#x3D;&gt; {
+      this.payrollStore.update(state &#x3D;&gt; ({
+        ...state, scanned: false
+      }));
+      return this.service.scanHoliday(props.payrollId).pipe(
+        tap(res &#x3D;&gt; {
+          this.payrollStore.update(state &#x3D;&gt; ({
+            ...state, scanned: true
+          }));
+          this.payrollStore.update(res.id, res);
+        }),
+        catchError(err &#x3D;&gt; {
+          return of(PayrollActions.error(err));
+        })
+      );
+    })
+  )</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @Effect()<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="233" class="link-to-prism">apps/hrv2/src/app/pages/payroll/state/payroll.effect.ts:233</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="stateHistory"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>stateHistory</b></span>
+                        <a href="#stateHistory"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>StateHistoryPlugin</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">apps/hrv2/src/app/pages/payroll/state/payroll.effect.ts:25</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="update$"></a>
+                    <span class="name">
+                        <span ><b>update$</b></span>
+                        <a href="#update$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.action$.pipe(
+    ofType(PayrollActions.update),
+    switchMap(props &#x3D;&gt; {
+      this.payrollStore.update(state &#x3D;&gt; ({
+        ...state, updated: false
+      }));
+      return this.service.update(props).pipe(
+        map(res &#x3D;&gt; this.mapToPayroll(res)),
+        tap(res &#x3D;&gt; {
+          this.payrollStore.update(state &#x3D;&gt; ({
+            ...state, updated: true
+          }));
+          this.message.success(&#x27;Cập nhật phiếu lương thành công&#x27;)
+          this.payrollStore.update(res.id, res);
+        }),
+        catchError(err &#x3D;&gt; {
+          this.payrollStore.update(state &#x3D;&gt; ({
+            ...state, updated: null
+          }));
+          return of(PayrollActions.error(err));
+        })
+      );
+    })
+  )</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @Effect()<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="167" class="link-to-prism">apps/hrv2/src/app/pages/payroll/state/payroll.effect.ts:167</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {NzMessageService} from &#x27;ng-zorro-antd/message&#x27;;
+import {PayrollStore} from &#x27;./payroll.store&#x27;;
+import {PayrollService} from &#x27;../services/payroll.service&#x27;;
+import {Actions, Effect, ofType} from &#x27;@datorama/akita-ng-effects&#x27;;
+import {catchError, map, switchMap, tap} from &#x27;rxjs/operators&#x27;;
+import {of} from &#x27;rxjs&#x27;;
+import {PayrollActions} from &#x27;./payroll.action&#x27;;
+import {AddPayrollDto} from &#x27;../dto&#x27;;
+import {Injectable} from &#x27;@angular/core&#x27;;
+import {AbsentSalaryEntity, OvertimeSalaryEntity, SalaryEntity} from &#x27;../../salary/entities&#x27;;
+import {PayrollEntity, TotalSalary} from &#x27;../entities&#x27;;
+import {DatetimeUnitEnum, SalaryTypeEnum} from &#x27;@minhdu-fontend/enums&#x27;;
+import {PartialDayEnum} from &#x27;@minhdu-fontend/data-models&#x27;;
+import {StateHistoryPlugin} from &#x27;@datorama/akita&#x27;;
+import {PayrollQuery} from &#x27;./payroll.query&#x27;;
+import {PaginationDto} from &quot;@minhdu-fontend/constants&quot;;
+import {AddManyPayrollDto} from &quot;../dto/add-many-payroll.dto&quot;;
+import {HolidaySalaryEntity} from &quot;../../salary/entities/holiday-salary.entity&quot;;
+import * as moment from &#x27;moment&#x27;;
+import {CompareSortUtil} from &quot;../utils/compare-sort.util&quot;;
+import {ConvertMinutePipe} from &quot;../../../../../../../libs/components/src/lib/pipes/convert-minute.pipe&quot;;
+
+@Injectable({providedIn: &#x27;root&#x27;})
+export class PayrollEffect {
+  private stateHistory: StateHistoryPlugin;
+
+  constructor(
+    private readonly convertMinutePipe: ConvertMinutePipe,
+    private readonly action$: Actions,
+    private readonly service: PayrollService,
+    private readonly message: NzMessageService,
+    private readonly payrollStore: PayrollStore,
+    private readonly payrollQuery: PayrollQuery
+  ) {
+    this.stateHistory &#x3D; new StateHistoryPlugin(this.payrollQuery);
+  }
+
+
+  @Effect()
+  addOne$ &#x3D; this.action$.pipe(
+    ofType(PayrollActions.addOne),
+    switchMap((props: AddPayrollDto) &#x3D;&gt; {
+      this.payrollStore.update(state &#x3D;&gt; ({
+        ...state, added: false
+      }));
+      return this.service.addOne(props).pipe(
+        tap(res &#x3D;&gt; {
+          this.payrollStore.update(state &#x3D;&gt; ({
+            ...state, added: true, total: state.total + 1
+          }));
+          this.message.success(&#x27;Thêm phiếu lương thành công&#x27;)
+          this.payrollStore.add(res)
+        }),
+        catchError(err &#x3D;&gt; {
+          this.payrollStore.update(state &#x3D;&gt; ({
+            ...state, added: null
+          }));
+          return of(PayrollActions.error(err));
+        })
+      );
+    })
+  );
+
+  @Effect()
+  addMany$ &#x3D; this.action$.pipe(
+    ofType(PayrollActions.addMany),
+    switchMap((props: AddManyPayrollDto) &#x3D;&gt; {
+      this.payrollStore.update(state &#x3D;&gt; ({
+        ...state, added: false
+      }));
+      return this.service.addMany(props).pipe(
+        tap(res &#x3D;&gt; {
+          this.payrollStore.update(state &#x3D;&gt; ({
+            ...state, added: true
+          }));
+          this.message.success(res.message);
+        }),
+        catchError(err &#x3D;&gt; {
+          this.payrollStore.update(state &#x3D;&gt; ({
+            ...state, added: null
+          }));
+          return of(PayrollActions.error(err));
+        })
+      );
+    })
+  );
+
+  @Effect()
+  loadAll$ &#x3D; this.action$.pipe(
+    ofType(PayrollActions.loadAll),
+    switchMap((props) &#x3D;&gt; {
+      this.payrollStore.update(state &#x3D;&gt; (
+        Object.assign({...state}, props.isPaginate
+          ? {loadMore: true}
+          : {loading: true}
+        )
+      ));
+      Object.assign(props.search,
+        {
+          take: PaginationDto.take,
+          skip: props.isPaginate ? this.payrollQuery.getCount() : PaginationDto.skip
+        }
+      )
+      return this.service.paginationPayroll(props.search).pipe(
+        map(res &#x3D;&gt; {
+          return Object.assign(res, {
+            data: res.data.map(payroll &#x3D;&gt; Object.assign({}, this.mapToPayroll(payroll), {
+              expand: this.payrollStore.getValue().expandAll,
+              basics: payroll.salariesv2
+                ? payroll.salariesv2.filter(item &#x3D;&gt; item.type !&#x3D;&#x3D; SalaryTypeEnum.STAY)
+                : [],
+              stays: payroll.salariesv2
+                ? payroll.salariesv2.filter(item &#x3D;&gt; item.type &#x3D;&#x3D;&#x3D; SalaryTypeEnum.STAY)
+                : []
+            }))
+          });
+        }),
+        tap((res) &#x3D;&gt; {
+          if (res.data.length &#x3D;&#x3D;&#x3D; 0) {
+            this.message.warning(&#x27;Đã lấy hết phiếu lương&#x27;);
+          }
+          if (props.isPaginate) {
+            this.payrollStore.add(res.data);
+          } else {
+            this.payrollStore.set(res.data);
+          }
+          this.payrollStore.update(state &#x3D;&gt; (
+            Object.assign({
+                ...state,
+                total: res.total,
+                totalSalary: res.total2,
+                remain: res.total - this.payrollQuery.getCount()
+              },
+              props.isPaginate
+                ? {loadMore: false}
+                : {loading: false}
+            )
+          ));
+        }),
+        catchError((err) &#x3D;&gt; {
+          this.payrollStore.update(state &#x3D;&gt; ({...state, loading: false}));
+          return of(PayrollActions.error(err));
+        })
+      );
+    })
+  );
+
+  @Effect()
+  getOne$ &#x3D; this.action$.pipe(
+    ofType(PayrollActions.loadOne),
+    switchMap(props &#x3D;&gt; {
+      return this.service.getOne(props).pipe(
+        map(res &#x3D;&gt; {
+          return this.mapToPayroll(res);
+        }),
+        tap(res &#x3D;&gt; {
+          this.payrollStore.upsert(res.id, res);
+        }),
+        catchError(err &#x3D;&gt; {
+          return of(PayrollActions.error(err));
+        })
+      );
+    })
+  );
+
+  @Effect()
+  update$ &#x3D; this.action$.pipe(
+    ofType(PayrollActions.update),
+    switchMap(props &#x3D;&gt; {
+      this.payrollStore.update(state &#x3D;&gt; ({
+        ...state, updated: false
+      }));
+      return this.service.update(props).pipe(
+        map(res &#x3D;&gt; this.mapToPayroll(res)),
+        tap(res &#x3D;&gt; {
+          this.payrollStore.update(state &#x3D;&gt; ({
+            ...state, updated: true
+          }));
+          this.message.success(&#x27;Cập nhật phiếu lương thành công&#x27;)
+          this.payrollStore.update(res.id, res);
+        }),
+        catchError(err &#x3D;&gt; {
+          this.payrollStore.update(state &#x3D;&gt; ({
+            ...state, updated: null
+          }));
+          return of(PayrollActions.error(err));
+        })
+      );
+    })
+  );
+
+  @Effect()
+  remove$ &#x3D; this.action$.pipe(
+    ofType(PayrollActions.remove),
+    switchMap((props) &#x3D;&gt; {
+      this.payrollStore.update(state &#x3D;&gt; ({
+        ...state, deleted: false
+      }))
+      return this.service.delete(props.id).pipe(
+        tap(_ &#x3D;&gt; {
+          this.payrollStore.update(state &#x3D;&gt; ({
+            ...state, deleted: true, total: state.total - 1
+          }))
+          this.payrollStore.remove(props.id);
+        }),
+        catchError(err &#x3D;&gt; {
+          this.payrollStore.update(state &#x3D;&gt; ({
+            ...state, deleted: null
+          }))
+          return of(PayrollActions.error(err));
+        })
+      );
+    })
+  );
+
+  @Effect()
+  confirmPayroll$ &#x3D; this.action$.pipe(
+    ofType(PayrollActions.confirmPayroll),
+    switchMap((props) &#x3D;&gt; {
+      return this.service.confirm(props).pipe(
+        map(res &#x3D;&gt; this.mapToPayroll(res)),
+        tap(res &#x3D;&gt; {
+          this.payrollStore.update(res.id, res);
+        }),
+        catchError(err &#x3D;&gt; {
+          return of(PayrollActions.error(err));
+        })
+      );
+    })
+  );
+
+  @Effect()
+  scanHoliday$ &#x3D; this.action$.pipe(
+    ofType(PayrollActions.scanHoliday),
+    switchMap((props) &#x3D;&gt; {
+      this.payrollStore.update(state &#x3D;&gt; ({
+        ...state, scanned: false
+      }));
+      return this.service.scanHoliday(props.payrollId).pipe(
+        tap(res &#x3D;&gt; {
+          this.payrollStore.update(state &#x3D;&gt; ({
+            ...state, scanned: true
+          }));
+          this.payrollStore.update(res.id, res);
+        }),
+        catchError(err &#x3D;&gt; {
+          return of(PayrollActions.error(err));
+        })
+      );
+    })
+  );
+
+  @Effect()
+  restore$ &#x3D; this.action$.pipe(
+    ofType(PayrollActions.restore),
+    switchMap((props) &#x3D;&gt; {
+      return this.service.restore(props.id).pipe(
+        tap(res &#x3D;&gt; {
+          this.message.success(res.message)
+        }),
+        catchError(err &#x3D;&gt; {
+          return of(PayrollActions.error(err));
+        })
+      );
+    })
+  );
+
+  private mapToPayroll(payroll: PayrollEntity): PayrollEntity {
+    const basics &#x3D; payroll.salariesv2.filter(item &#x3D;&gt; item.type &#x3D;&#x3D;&#x3D; SalaryTypeEnum.BASIC || item.type &#x3D;&#x3D;&#x3D; SalaryTypeEnum.BASIC_INSURANCE);
+    const stays &#x3D; payroll.salariesv2.filter(item &#x3D;&gt; item.type &#x3D;&#x3D;&#x3D; SalaryTypeEnum.STAY);
+    return Object.assign(payroll, {
+      basics: basics,
+      stays: stays,
+      allowances: this.sortDatetime(payroll.allowances),
+      absents: this.sortDatetime(payroll.absents),
+      dayoffs: this.sortDatetime(payroll.dayoffs),
+      overtimes: this.sortDatetime(payroll.overtimes)?.map(overtime &#x3D;&gt; Object.assign(overtime, {expand: false})),
+      holidays: payroll.holidays?.sort((a, b) &#x3D;&gt; {
+          return CompareSortUtil(a.setting.startedAt, b.setting.startedAt, true)
+        }
+      ).map(holiday &#x3D;&gt; Object.assign(holiday, {expand: false})),
+      remotes: this.sortDatetime(payroll.remotes),
+      total: {
+        payroll: payroll.total,
+        basic: basics?.reduce((a, b) &#x3D;&gt; a + (b?.price || 0), 0),
+        stay: stays?.reduce((a, b) &#x3D;&gt; a + (b?.price || 0), 0),
+        allowance: this.getTotalAllowance(payroll.allowances),
+        overtime: this.getTotalOvertimeOrAbsent(payroll.overtimes),
+        absent: this.getTotalOvertimeOrAbsent(payroll.absents),
+        deduction: payroll.deductions?.reduce((a, b) &#x3D;&gt; a + (b?.price || 0), 0),
+        holiday: this.getTotalHoliday(payroll.holidays),
+        remote: this.getTotalRemoteOrDayOff(payroll.remotes),
+        dayOff: this.getTotalRemoteOrDayOff(payroll.dayoffs)
+      }
+    });
+  }
+
+  private getTotalAllowance(allowances: SalaryEntity[]): TotalSalary | undefined {
+    return allowances?.reduce((a, b) &#x3D;&gt; {
+      return {
+        price: a.price + (b.price || 0),
+        total: a.total + b.total,
+        duration: {
+          day: a.duration.day + b.duration,
+          hour: 0
+        }
+      };
+    }, {price: 0, total: 0, duration: {day: 0, hour: 0}} as TotalSalary);
+  }
+
+  private getTotalOvertimeOrAbsent(salary: (AbsentSalaryEntity | OvertimeSalaryEntity)[]): TotalSalary {
+    return salary.reduce((a, b) &#x3D;&gt; {
+      const unit &#x3D; b.setting?.unit;
+      return {
+        price: a.price + (b.price || 0),
+        total: a.total + b.total,
+        duration: {
+          day: a.duration.day + ((
+            unit &#x3D;&#x3D;&#x3D; DatetimeUnitEnum.DAY
+            || unit &#x3D;&#x3D;&#x3D; DatetimeUnitEnum.MONTH
+            || unit &#x3D;&#x3D;&#x3D; DatetimeUnitEnum.TIMES)
+            ? (b.partial &#x3D;&#x3D;&#x3D; PartialDayEnum.ALL_DAY ?
+                b.duration
+                : (b.duration / 2)
+            )
+            : 0),
+          hour: a.duration.hour + (unit &#x3D;&#x3D;&#x3D; DatetimeUnitEnum.HOUR
+            ? this.convertMinutePipe.transform(b.duration * 60).hour
+            : 0),
+          minute: a.duration.minute + (unit &#x3D;&#x3D;&#x3D; DatetimeUnitEnum.MINUTE
+            ? b.duration
+            : unit &#x3D;&#x3D;&#x3D; DatetimeUnitEnum.HOUR
+              ? this.convertMinutePipe.transform(b.duration * 60).minute
+              : 0),
+        }
+      };
+    }, {price: 0, total: 0, duration: {day: 0, hour: 0, minute: 0}});
+  }
+
+  private getTotalRemoteOrDayOff(salary: SalaryEntity []) {
+    return salary?.reduce((a, b) &#x3D;&gt; {
+      return {
+        duration: a.duration + ((b.partial &amp;&amp; b.partial &#x3D;&#x3D;&#x3D; PartialDayEnum.ALL_DAY) ? b.duration : (b.duration / 2))
+      };
+    }, {duration: 0});
+  }
+
+  private getTotalHoliday(salary: HolidaySalaryEntity[]) {
+    return salary?.reduce((a, b) &#x3D;&gt; {
+      return {
+        duration: a.duration + (b.setting.startedAt &amp;&amp; b.setting.endedAt
+            ? moment(b.setting.endedAt).diff(b.setting.startedAt, &#x27;days&#x27;) + 1
+            : 0
+        ),
+        total: a.total + b.total
+      };
+    }, {duration: 0, total: 0});
+  }
+
+  private sortDatetime(salaries?: SalaryEntity[]) {
+    if (salaries) {
+      return salaries.sort((a, b) &#x3D;&gt; {
+        return CompareSortUtil(a.startedAt, b.startedAt, true)
+      })
+    } else {
+      return []
+    }
+
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'PayrollEffect.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
