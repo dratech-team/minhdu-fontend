@@ -43,6 +43,7 @@ import {
   ModalAddOrUpdateAllowance,
   ModalAddOrUpdatePermanent
 } from "../../../salary/data";
+import {AccountQuery} from "../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   selector: 'minhdu-fontend-table-payroll',
@@ -73,7 +74,7 @@ export class TablePayrollComponent implements OnInit {
   salaryType = SalaryTypeEnum
   deletingSalary = false
   salariesSelected: SalaryEntity[] = []
-  role = localStorage.getItem('role')
+  accountLogged = this.accountQuery.getValue().accountLogged
   sessionConstant = SessionConstant;
   partialDay = PartialDayEnum
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
@@ -94,6 +95,7 @@ export class TablePayrollComponent implements OnInit {
     private readonly permanentService: SalaryPermanentService,
     private readonly overtimeSalaryService: OvertimeSalaryService,
     private readonly allowanceSalaryService: AllowanceSalaryService,
+    private readonly accountQuery: AccountQuery
   ) {
   }
 
@@ -185,7 +187,7 @@ export class TablePayrollComponent implements OnInit {
   }
 
   onConfirm(payroll: PayrollEntity) {
-    if (this.role !== Role.HUMAN_RESOURCE) {
+    if (this.accountLogged?.role !== Role.HUMAN_RESOURCE) {
       this.modal.create({
         nzTitle: 'Xác nhận phiếu lương tháng ' + this.datePipe.transform(payroll.createdAt, 'yyyy-MM'),
         nzContent: PayslipComponent,
