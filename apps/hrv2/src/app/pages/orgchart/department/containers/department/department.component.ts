@@ -22,7 +22,7 @@ export class DepartmentComponent implements OnInit {
   departments$ = this.departmentQuery.selectAll()
   loading$ = this.departmentQuery.select(state => state.loading)
   total$ = this.departmentQuery.select(state => state.total)
-  currentUser$ = this.accountQuery.select(state => state.currentUser)
+  currentUser$ = this.accountQuery.selectCurrentUser$
 
   pageSizeTable = 10;
   itemContext = ItemContextMenu

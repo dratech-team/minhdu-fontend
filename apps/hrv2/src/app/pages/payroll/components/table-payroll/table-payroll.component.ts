@@ -65,7 +65,7 @@ export class TablePayrollComponent implements OnInit {
   expandAll$ = this.payrollQuery.select(state => state.expandAll)
   count$ = this.payrollQuery.selectCount()
   positions$ = this.positionQuery.selectAll()
-  currentUser$ = this.accountQuery.select(state => state.currentUser)
+  currentUser$ = this.accountQuery.selectCurrentUser$
 
   ItemContextMenu = ItemContextMenu;
   confirmConstant = ConfirmConstant

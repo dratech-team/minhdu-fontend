@@ -20,7 +20,7 @@ export class systemHistoryComponent implements OnInit {
   total$ = this.systemHistoryQuery.select(state => state.total);
   remain$ = this.systemHistoryQuery.select(state => state.remain);
   count$ = this.systemHistoryQuery.selectCount()
-  currentUser$ = this.accountQuery.select(state => state.currentUser)
+  currentUser$ = this.accountQuery.selectCurrentUser$
 
   app = App;
   apps = appConstant;

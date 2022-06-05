@@ -79,7 +79,7 @@ export class DetailPayrollComponent implements OnInit {
   loading$ = this.payrollQuery.select(state => state.loading);
   added$ = this.payrollQuery.select(state => state.added);
   scanned$ = this.payrollQuery.select(state => state.scanned);
-  currentUser$ = this.accountQuery.select(state => state.currentUser)
+  currentUser$ = this.accountQuery.selectCurrentUser$
 
   remoteConstant = RemoteConstant;
   unitSalaryConstant = UnitSalaryConstant;

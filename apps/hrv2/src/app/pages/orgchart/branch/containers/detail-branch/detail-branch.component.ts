@@ -19,7 +19,7 @@ import {AccountQuery} from "../../../../../../../../../libs/system/src/lib/state
 })
 export class DetailBranchComponent implements OnInit {
   branch$ = this.branchQuery.selectEntity(this.branchId);
-  currentUser$ = this.accountQuery.select(state => state.currentUser)
+  currentUser$ = this.accountQuery.selectCurrentUser$
 
   type = OrgchartEnum;
   pageSize = 30;

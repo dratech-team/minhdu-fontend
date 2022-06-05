@@ -30,7 +30,7 @@
         <thead>
         <tr>
           <th nzLeft nzWidth="60px">STT</th>
-          <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">Mã chức vụ</th>
+          <th *ngIf="(currentUser$() | async)?.mode === modeEnum.INFO">Mã chức vụ</th>
           <th nzLeft>Tên chức vụ</th>
           <th>Đơn vị</th>
           <th> Ngày công chuẩn <br/> (Mỗi nhân viên có thể sẽ khác nhau)</th>
@@ -43,7 +43,7 @@
               (click)="onUpdate(position)"
               (contextmenu)='child.onContextMenu($event,position)'>
             <td nzLeft>{{i + 1}}</td>
-            <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">{{position.id}}</td>
+            <td *ngIf="(currentUser$() | async)?.mode === modeEnum.INFO">{{position.id}}</td>
             <td nzLeft>{{position.name}}</td>
             <td>
               <span class="font-weight-bold" *ngIf="position.branches.length === 0 else chip">Thuộc tất cả đơn vị</span>

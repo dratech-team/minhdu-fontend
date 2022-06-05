@@ -32,7 +32,7 @@
         <thead>
         <tr>
           <th nzWidth="60px">STT</th>
-          <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">Mã phụ cấp</th>
+          <th *ngIf="(currentUser$() | async)?.mode === modeEnum.INFO">Mã phụ cấp</th>
           <th>Ngày</th>
           <th>Tên phụ cấp</th>
           <th>Mức phụ cấp</th>
@@ -47,7 +47,7 @@
           <td>
             {{i + 1}}
           </td>
-          <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">
+          <td *ngIf="(currentUser$() | async)?.mode === modeEnum.INFO">
             {{allowance.id}}
           </td>
           <td>

@@ -77,7 +77,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     return branches;
   }));
   provinces$ = this.provinceService.getAll()
-  currentUser$ = this.accountQuery.select(state => state.currentUser)
+  currentUser$ = this.accountQuery.selectCurrentUser$
 
   roleEnum = Role;
   sortEnum = sortEmployeeTypeEnum;
@@ -143,6 +143,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit(): void {
+
     this.actions$.dispatch(DepartmentActions.loadAll({}))
 
     this.role = window.localStorage.getItem('role');

@@ -28,7 +28,7 @@ export class AccountManagementComponent implements OnInit {
   total$ = this.accountQuery.select(state => state.total)
   count$ = this.accountQuery.selectCount()
   branches$ = this.branchQuery.selectAll()
-  currentUser$ = this.accountQuery.select(state => state.currentUser)
+  currentUser$ = this.accountQuery.selectCurrentUser$
 
   app = App;
   roleHr = roleAppHR;
