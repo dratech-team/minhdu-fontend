@@ -76,7 +76,7 @@ export class DetailPayrollComponent implements OnInit {
       }
     )
   );
-  currentUser$ = this.accountQuery.selectCurrentUser$;
+  currentUser$ = this.accountQuery.selectCurrentUser();
   loading$ = this.payrollQuery.select(state => state.loading);
   added$ = this.payrollQuery.select(state => state.added);
   scanned$ = this.payrollQuery.select(state => state.scanned);

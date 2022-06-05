@@ -62,7 +62,7 @@ export class EmployeeComponent implements OnInit {
   branches$ = this.branchQuery.selectAll();
   provinces$ = this.provinceService.getAll();
   departments$ = this.departmentQuery.selectAll();
-  currentUser$ = this.accountQuery.selectCurrentUser$;
+  currentUser$ = this.accountQuery.selectCurrentUser();
 
   stateEmployee = this.employeeQuery.getValue().search;
 

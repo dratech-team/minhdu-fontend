@@ -77,7 +77,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     return branches;
   }));
   provinces$ = this.provinceService.getAll()
-  currentUser$ = this.accountQuery.selectCurrentUser$
+  currentUser$ = this.accountQuery.selectCurrentUser()
 
   roleEnum = Role;
   sortEnum = sortEmployeeTypeEnum;

@@ -43,7 +43,7 @@ export class SettingSalaryComponent implements OnInit {
   count$ = this.settingSalaryQuery.selectCount()
   positions$ = this.positionQuery.selectAll()
   branches$ = this.branchQuery.selectAll()
-  currentUser$ = this.accountQuery.selectCurrentUser$
+  currentUser$ = this.accountQuery.selectCurrentUser()
 
 
   stateSearch = this.settingSalaryQuery.getValue().search;

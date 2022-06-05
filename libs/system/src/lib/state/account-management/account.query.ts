@@ -10,5 +10,5 @@ export class AccountQuery extends QueryEntity<AccountState> {
 
   getCurrentUser = () => this.getEntity(this.getValue().active);
 
-  selectCurrentUser$ = () => this.select(state => this.getEntity(state.active));
+  selectCurrentUser = () => this.select(state => this.getEntity(state.active));
 }

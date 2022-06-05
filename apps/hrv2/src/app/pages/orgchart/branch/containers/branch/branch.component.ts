@@ -30,7 +30,7 @@ export class BranchComponent implements OnInit {
   loading$ = this.branchQuery.select(state => state.loading)
   total$ = this.branchQuery.select(state => state.total)
   positions$ = this.positionQuery.selectAll()
-  currentUser$ = this.accountQuery.selectCurrentUser$
+  currentUser$ = this.accountQuery.selectCurrentUser()
 
   pageSizeTable = 10;
   filterType = FilterTypeEnum

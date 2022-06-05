@@ -79,7 +79,7 @@
           <th
             nzLeft
             [nzSortFn]='true'
-            *ngIf="(currentUser$() | async)?.mode === modeEnum.INFO"
+            *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"
             (nzSortOrderChange)='onSort({orderBy: sortEnum.CODE, orderType:$event})'>
             <div>Mã nhân viên</div>
             <input nz-input type='search' disabled>

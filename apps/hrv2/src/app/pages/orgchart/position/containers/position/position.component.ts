@@ -26,7 +26,7 @@ export class PositionComponent implements OnInit {
   positions$ = this.positionQuery.selectAll()
   loading$ = this.positionQuery.select(state => state.loading)
   total$ = this.positionQuery.select(state => state.total)
-  currentUser$ = this.accountQuery.selectCurrentUser$
+  currentUser$ = this.accountQuery.selectCurrentUser()
 
   stateSearch = this.positionQuery.getValue().search
   itemContextMenu = ItemContextMenu

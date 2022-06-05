@@ -32,7 +32,8 @@ import {AccountQuery} from "../../../../../../../../libs/system/src/lib/state/ac
 })
 export class DetailEmployeeComponent implements OnInit {
   employee$ = this.employeeQuery.selectEntity(this.employeeId)
-  added$ = this.employeeQuery.select(state => state.added);  currentUser$ = this.accountQuery.selectCurrentUser$
+  added$ = this.employeeQuery.select(state => state.added);
+  currentUser$ = this.accountQuery.selectCurrentUser()
 
   formalityTypeConstant = FormalityTypeConstant;
   degreeConstant = DegreeTypeConstant
