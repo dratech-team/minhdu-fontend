@@ -531,7 +531,7 @@
         <tr>
           <th nzWidth="100px">
           </th>
-          <th *ngIf="(currentUser$() | async)?.mode === modeEnum.INFO">Id</th>
+          <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">Id</th>
           <th nzWidth='60px'>STT</th>
           <th>Loại vắng</th>
           <th> Thời gian</th>
@@ -551,7 +551,7 @@
             >
             </label>
           </td>
-          <td *ngIf="(currentUser$() | async)?.mode === modeEnum.INFO">{{salary.id}}</td>
+          <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">{{salary.id}}</td>
           <td>
             {{i + 1}}
           </td>

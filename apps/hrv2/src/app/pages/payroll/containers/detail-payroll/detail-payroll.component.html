@@ -1172,7 +1172,7 @@
             </tr>
             <tr class='font-weight-bold' *ngIf="payroll.total.remote.duration">
               <td></td>
-              <td *ngIf="(currentUser$() | async)?.mode === modeEnum.INFO"></td>
+              <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"></td>
               <td>Tổng cộng :</td>
               <td></td>
               <td>
@@ -1315,7 +1315,7 @@
           <button (click)='confirmPayroll(payroll)' class='mb-5 create-salary'>
             <img class='mr-2' style='height: 12px;' src='../../../../../assets/img/share/pencil-fill.svg'
                  alt='edit icon'>
-            {{role === roleEnum.HUMAN_RESOURCE ? 'Khôi phục phiếu lương' : 'Xác nhận phiếu lương'}}
+            {{currentUser?.role?.role === roleEnum.HUMAN_RESOURCE ? 'Khôi phục phiếu lương' : 'Xác nhận phiếu lương'}}
           </button>
         </div>
       </div>

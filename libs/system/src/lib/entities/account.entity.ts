@@ -1,11 +1,12 @@
 import {BaseAccountEntity} from "../base/base-account.entity";
-import {App, ModeEnum} from "@minhdu-fontend/enums";
+import {App} from "@minhdu-fontend/enums";
 import {BranchEntity} from "@minhdu-fontend/orgchart-v2";
 
-export interface AccountEntity extends BaseAccountEntity {
+export interface AccountEntity extends BaseAccountEntity{
   branches: BranchEntity[],
   role: Role,
-  mode: ModeEnum
+  mode: string /* đã toạ ModeEnum ở nhánh config mode*/
+  token: string
 }
 
 interface Role {

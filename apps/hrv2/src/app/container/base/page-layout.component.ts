@@ -11,7 +11,7 @@ import {
 } from "../../../../../../libs/auth/src/lib/components/modal-change-password/modal-change-password.component";
 import {TabEnum} from "../../state/app.entity";
 import {NzMessageService} from "ng-zorro-antd/message";
-import {ModeEnum} from "@minhdu-fontend/enums";
+import {AccountQuery} from "../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 
 @Component({
@@ -29,7 +29,8 @@ export class PageLayoutComponent {
     private readonly router: Router,
     private readonly modal: NzModalService,
     private readonly actions$: Actions,
-    private readonly message: NzMessageService
+    private readonly message: NzMessageService,
+    private readonly accountQuery: AccountQuery
   ) {
   }
 
@@ -37,11 +38,7 @@ export class PageLayoutComponent {
     if (href === TabEnum.RANK) {
       return this.message.info('Tính năng đang phát triển')
     }
-    this.router.navigate([href], {
-      queryParams: {
-        mode: localStorage.getItem('mode')
-      }
-    }).then()
+    this.router.navigate([href]).then()
     this.appStore.update(state => ({
       ...state, appName: appName
     }))
@@ -52,7 +49,14 @@ export class PageLayoutComponent {
       nzTitle: 'Đăng xuất',
       nzContent: 'Bạn có chắc chắn muốn đăng xuất',
       nzOnOk: (_ => {
-        return this.actions$.dispatch(AccountActions.logout())
+        const currentUser = this.accountQuery.getCurrentUser();
+        if (currentUser) {
+          return this.actions$.dispatch(AccountActions.logout({
+            id: currentUser.id
+          }))
+        } else {
+          this.router.navigate(['auth/login']).then()
+        }
       })
     })
   }

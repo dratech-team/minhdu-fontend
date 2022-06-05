@@ -4,11 +4,11 @@ import {FormGroup} from "@angular/forms";
 import {BranchQuery, PositionActions, PositionQuery} from "@minhdu-fontend/orgchart-v2";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollQuery, PayrollStore} from "../../state";
-import {FilterTypeEnum, ItemContextMenu, ModeEnum, Role, SalaryTypeEnum} from "@minhdu-fontend/enums";
+import { FilterTypeEnum, ItemContextMenu, ModeEnum, Role, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import {filterSameSalary, rageDaysInMonth} from "@minhdu-fontend/utils";
 import {PaidConstant} from "../../constants/paid.constant";
 import {ConfirmConstant} from "../../constants/confirm.constant";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {ModalDatePickerComponent} from "@minhdu-fontend/components";
 import {ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
@@ -50,24 +50,25 @@ import {AccountQuery} from "../../../../../../../../libs/system/src/lib/state/ac
   templateUrl: 'table-payroll.component.html',
 })
 export class TablePayrollComponent implements OnInit {
-  @Input() payrolls!: PayrollEntity[]
-  @Input() formGroup!: FormGroup
-  @Input() isSalaryType: boolean = false
+  @Input() payrolls!: PayrollEntity[];
+  @Input() formGroup!: FormGroup;
+  @Input() isSalaryType: boolean = false;
   @Input() scroll?: { x: string, y: string } = ScrollTablePayrollConstant.find(item =>
-    item.type === this.payrollQuery.getValue().search.filterType)?.scroll
-  @Output() onloadPayroll = new EventEmitter<{ isPagination: boolean }>()
-  loading$ = this.payrollQuery.select(state => state.loading)
-  loadMore$ = this.payrollQuery.select(state => state.loadMore)
-  added$ = this.payrollQuery.select(state => state.added)
-  total$ = this.payrollQuery.select(state => state.total)
-  remain$ = this.payrollQuery.select(state => state.remain)
-  totalSalary$ = this.payrollQuery.select(state => state.totalSalary)
-  expandAll$ = this.payrollQuery.select(state => state.expandAll)
-  count$ = this.payrollQuery.selectCount()
-  positions$ = this.positionQuery.selectAll()
-  currentUser$ = this.accountQuery.selectCurrentUser$
+    item.type === this.payrollQuery.getValue().search.filterType)?.scroll;
+  @Output() onloadPayroll = new EventEmitter<{ isPagination: boolean }>();
+  loading$ = this.payrollQuery.select(state => state.loading);
+  loadMore$ = this.payrollQuery.select(state => state.loadMore);
+  added$ = this.payrollQuery.select(state => state.added);
+  total$ = this.payrollQuery.select(state => state.total);
+  remain$ = this.payrollQuery.select(state => state.remain);
+  totalSalary$ = this.payrollQuery.select(state => state.totalSalary);
+  expandAll$ = this.payrollQuery.select(state => state.expandAll);
+  count$ = this.payrollQuery.selectCount();
+  positions$ = this.positionQuery.selectAll();
+  currentUser$ = this.accountQuery.selectCurrentUser$;
 
   ItemContextMenu = ItemContextMenu;
+  modeEnum = ModeEnum;
   confirmConstant = ConfirmConstant
   paidConstant = PaidConstant
   daysInMonth = rageDaysInMonth(new Date(this.payrollQuery.getValue().search.startedAt))
@@ -75,11 +76,8 @@ export class TablePayrollComponent implements OnInit {
   salaryType = SalaryTypeEnum
   deletingSalary = false
   salariesSelected: SalaryEntity[] = []
-  role = localStorage.getItem('role')
   sessionConstant = SessionConstant;
   partialDay = PartialDayEnum
-  modeEnum = ModeEnum
-
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);
 
   constructor(
@@ -98,8 +96,7 @@ export class TablePayrollComponent implements OnInit {
     private readonly permanentService: SalaryPermanentService,
     private readonly overtimeSalaryService: OvertimeSalaryService,
     private readonly allowanceSalaryService: AllowanceSalaryService,
-    private readonly activatedRoute: ActivatedRoute,
-    private readonly accountQuery: AccountQuery,
+    private readonly accountQuery: AccountQuery
   ) {
   }
 
@@ -185,14 +182,13 @@ export class TablePayrollComponent implements OnInit {
   onHistory(payroll: PayrollEntity) {
     this.router.navigate(['phieu-luong/lich-su-luong/', payroll.id], {
       queryParams: {
-        name: payroll.employee.lastName,
-        mode: localStorage.getItem('mode')
+        name: payroll.employee.lastName
       }
     }).then()
   }
 
   onConfirm(payroll: PayrollEntity) {
-    if (this.role !== Role.HUMAN_RESOURCE) {
+    if (this.accountQuery.getCurrentUser()?.role?.role !== Role.HUMAN_RESOURCE) {
       this.modal.create({
         nzTitle: 'Xác nhận phiếu lương tháng ' + this.datePipe.transform(payroll.createdAt, 'yyyy-MM'),
         nzContent: PayslipComponent,
@@ -253,11 +249,12 @@ export class TablePayrollComponent implements OnInit {
   }
 
   async onDetail(payroll: PayrollEntity) {
-    return await this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.id], {
-      queryParams: {
-        mode: localStorage.getItem('mode')
-      }
-    });
+    return await this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.id],
+      {
+        queryParams: {
+          isUpdate: true
+        }
+      });
   }
 
   onUpdateSelectSalary(salary: any, checked: boolean) {

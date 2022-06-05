@@ -31,8 +31,6 @@ export class AccountManagementComponent implements OnInit {
   currentUser$ = this.accountQuery.selectCurrentUser$
 
   app = App;
-  roleHr = roleAppHR;
-  modeEnum = ModeEnum
 
   stateSearch = this.accountQuery.getValue().search
   formGroup = new FormGroup({
@@ -54,12 +52,10 @@ export class AccountManagementComponent implements OnInit {
     private readonly branchQuery: BranchQuery,
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
-    private readonly activeRouter: ActivatedRoute,
   ) {
   }
 
   ngOnInit(): void {
-
     this.onLoad(false)
     this.actions$.dispatch(BranchActions.loadAll({}))
     this.formGroup.valueChanges

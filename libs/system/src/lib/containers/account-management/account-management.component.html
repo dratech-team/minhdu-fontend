@@ -1,4 +1,4 @@
-<div class="d-flex mt-3 ml-2 px-2 ">
+<div class="d-flex mt-3 ml-2 px-2 " >
   <div class='d-flex flex-column ml-3 border p-2' style='height: 80vh; width:250px; overflow-y: scroll'>
     <nz-collapse>
       <nz-collapse-panel
@@ -47,7 +47,7 @@
       <tr>
         <th nzLeft nzWidth="60px">stt
         </th>
-        <th *ngIf="(currentUser$() | async)?.mode === modeEnum.INFO">Mã tài khoản</th>
+        <th>Mã tài khoản</th>
         <th nzLeft>Tên đăng nhập</th>
         <th>Đơn vị</th>
         <th>Phân quyền</th>
@@ -63,7 +63,7 @@
           class="pointer"
       >
         <td nzLeft>{{i + 1}}</td>
-        <td *ngIf="(currentUser$() | async)?.mode === modeEnum.INFO">{{account.id}}</td>
+        <td>{{account?.id}}</td>
         <td nzLeft>{{account.username}}</td>
         <td>
           <mat-chip-list>
@@ -74,12 +74,12 @@
             </mat-chip>
           </mat-chip-list>
         </td>
-        <td>{{account.role?.name}}</td>
+        <td>{{account.role.name}}</td>
         <td>{{account.loggedAt|date:'h:mm:ss a , dd-MM-yyyy'}}</td>
         <td>{{account.ip}}</td>
         <td>{{account.timestamp|date:'dd-MM-yyyy'}}</td>
       </tr>
-      <tr *ngIf="((count$ | async)|| 0) < ((total$ | async)|| 0)">
+      <tr  *ngIf="((count$ | async)|| 0) < ((total$ | async)|| 0)">
         <td [colSpan]="tableAccount.listOfAutoColWidth.length">
           <div class="w-100 d-flex justify-content-start" style="position: relative">
             <button

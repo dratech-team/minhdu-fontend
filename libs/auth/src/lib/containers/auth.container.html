@@ -33,8 +33,8 @@
                       <div *ngIf="f.password.errors.required">Chưa nhập mật khẩu</div>
                     </div>
                   </div>
-                  <button (click)='onSubmit()' [disabled]="loading$ | async" class="btn btn-primary">
-                    <span *ngIf="loading$ | async" class="spinner-border spinner-border-sm mr-1"></span>
+                  <button (click)='onSubmit()' [disabled]="loginning$ | async" class="btn btn-primary">
+                    <span *ngIf="loginning$ | async" class="spinner-border spinner-border-sm mr-1"></span>
                     Đăng nhập
                   </button>
                 </form>

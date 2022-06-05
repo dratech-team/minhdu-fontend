@@ -1,26 +1,26 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {DatetimeUnitEnum, EmployeeType, ModeEnum, RecipeType, Role, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {PartialDayEnum} from '@minhdu-fontend/data-models';
-import {getDaysInMonth} from '@minhdu-fontend/utils';
-import {DatePipe} from '@angular/common';
-import {NzMessageService} from 'ng-zorro-antd/message';
-import {catchError, map, tap} from 'rxjs/operators';
-import {PayrollQuery, PayrollStore} from '../../state';
-import {PayrollActions} from '../../state/payroll.action';
-import {PayrollEntity} from '../../entities';
-import {tranFormSalaryType} from '../../utils';
-import {PermanentSalaryComponent} from '../../../salary/components/permanent/permanent-salary.component';
-import {NzModalService} from 'ng-zorro-antd/modal';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DatetimeUnitEnum, EmployeeType, ModeEnum, RecipeType, Role, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { PartialDayEnum } from '@minhdu-fontend/data-models';
+import { getDaysInMonth } from '@minhdu-fontend/utils';
+import { DatePipe } from '@angular/common';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { catchError, map, tap } from 'rxjs/operators';
+import { PayrollQuery, PayrollStore } from '../../state';
+import { PayrollActions } from '../../state/payroll.action';
+import { PayrollEntity } from '../../entities';
+import { tranFormSalaryType } from '../../utils';
+import { PermanentSalaryComponent } from '../../../salary/components/permanent/permanent-salary.component';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import {
   AbsentOvertimeSalaryComponent
 } from '../../../salary/components/absent-overtime/absent-overtime-salary.component';
-import {SalaryEntity, UnionSalary} from '../../../salary/entities';
-import {PayslipComponent} from '../../components/payslip/payslip.component';
-import {AllowanceSalaryComponent} from '../../../salary/components/allowance/allowance-salary.component';
-import {Actions} from '@datorama/akita-ng-effects';
-import {ModalAlertComponent, ModalNoteComponent} from '@minhdu-fontend/components';
-import {ModalAlertEntity} from '@minhdu-fontend/base-entity';
+import { SalaryEntity, UnionSalary } from '../../../salary/entities';
+import { PayslipComponent } from '../../components/payslip/payslip.component';
+import { AllowanceSalaryComponent } from '../../../salary/components/allowance/allowance-salary.component';
+import { Actions } from '@datorama/akita-ng-effects';
+import { ModalAlertComponent, ModalNoteComponent } from '@minhdu-fontend/components';
+import { ModalAlertEntity } from '@minhdu-fontend/base-entity';
 import {
   AbsentSalaryService,
   AllowanceSalaryService,
@@ -29,16 +29,16 @@ import {
   SalaryPermanentService,
   SalaryRemoteService
 } from '../../../salary/service';
-import {throwError} from 'rxjs';
-import {UpdatePayrollComponent} from '../../components/update/update-payroll.component';
+import { throwError } from 'rxjs';
+import { UpdatePayrollComponent } from '../../components/update/update-payroll.component';
 import {
   RemoteOrDayOffSalaryComponent
 } from '../../../salary/components/remote-or-day-off/remote-or-day-off-salary.component';
-import {DeductionSalaryComponent} from '../../../salary/components/deduction/deduction-salary.component';
-import {RemoteConstant} from '../../../salary/constants/remote.constant';
-import {UnitSalaryConstant} from '../../../salary/constants';
-import {SessionConstant} from '../../../../../shared/constants';
-import {HolidaySalaryComponent} from '../../../salary/components/holiday/holiday-salary.component';
+import { DeductionSalaryComponent } from '../../../salary/components/deduction/deduction-salary.component';
+import { RemoteConstant } from '../../../salary/constants/remote.constant';
+import { UnitSalaryConstant } from '../../../salary/constants';
+import { SessionConstant } from '../../../../../shared/constants';
+import { HolidaySalaryComponent } from '../../../salary/components/holiday/holiday-salary.component';
 import {
   ModalAddOrUpdateAbsentOrOvertime,
   ModalAddOrUpdateAllowance,
@@ -46,14 +46,14 @@ import {
   ModalAddOrUpdateRemoteOrDayOff,
   ModalPermanentSalaryData
 } from '../../../salary/data';
-import {SalaryHolidayService} from '../../../salary/service/salary-holiday.service';
-import {NzTableSortOrder} from "ng-zorro-antd/table";
-import {SettingSalaryStore} from "../../../setting/salary/state";
-import {CompareSortUtil} from "../../utils/compare-sort.util";
-import {FilterSalaryEnum} from "../../enums/filter-salary.enum";
-import {DayOffSalaryService} from "../../../salary/service/day-off-salary.service";
-import {ModalAddOrUpdateDeduction} from "../../../salary/data/modal-deduction-salary.data";
-import {AccountQuery} from "../../../../../../../../libs/system/src/lib/state/account-management/account.query";
+import { NzTableSortOrder } from 'ng-zorro-antd/table';
+import { SettingSalaryStore } from '../../../setting/salary/state';
+import { CompareSortUtil } from '../../utils/compare-sort.util';
+import { FilterSalaryEnum } from '../../enums/filter-salary.enum';
+import { DayOffSalaryService } from '../../../salary/service/day-off-salary.service';
+import { ModalAddOrUpdateDeduction } from '../../../salary/data/modal-deduction-salary.data';
+import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
+import { SalaryHolidayService } from '../../../salary/service/salary-holiday.service';
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -65,7 +65,7 @@ export class DetailPayrollComponent implements OnInit {
       if (payroll) {
         return JSON.parse(JSON.stringify(payroll));
       }
-      return payroll
+      return payroll;
     }),
     tap(payroll => {
         if (payroll?.createdAt) {
@@ -76,10 +76,10 @@ export class DetailPayrollComponent implements OnInit {
       }
     )
   );
+  currentUser$ = this.accountQuery.selectCurrentUser$;
   loading$ = this.payrollQuery.select(state => state.loading);
   added$ = this.payrollQuery.select(state => state.added);
   scanned$ = this.payrollQuery.select(state => state.scanned);
-  currentUser$ = this.accountQuery.selectCurrentUser$
 
   remoteConstant = RemoteConstant;
   unitSalaryConstant = UnitSalaryConstant;
@@ -90,14 +90,13 @@ export class DetailPayrollComponent implements OnInit {
   PartialDay = PartialDayEnum;
   employeeTypeEnum = EmployeeType;
   recipeType = RecipeType;
-  modeEnum = ModeEnum
-  filterSalaryEnum = FilterSalaryEnum
 
   daysInMonth!: number;
   isSticky = false;
-  role = localStorage.getItem('role')
-  ;
+  currentUser = this.accountQuery.getCurrentUser();
   roleEnum = Role;
+  modeEnum = ModeEnum;
+  filterSalaryEnum = FilterSalaryEnum;
 
   constructor(
     private readonly payrollQuery: PayrollQuery,
@@ -117,15 +116,15 @@ export class DetailPayrollComponent implements OnInit {
     private readonly salaryHolidayService: SalaryHolidayService,
     private readonly dayOffSalaryService: DayOffSalaryService,
     private readonly message: NzMessageService,
-    private readonly accountQuery: AccountQuery,
+    private readonly accountQuery: AccountQuery
   ) {
-    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+    this.router.routeReuseStrategy.shouldReuseRoute = function() {
       return false;
     };
   }
 
   ngOnInit() {
-    this.actions$.dispatch(PayrollActions.loadOne({id: this.getPayrollId}));
+    this.actions$.dispatch(PayrollActions.loadOne({ id: this.getPayrollId }));
   }
 
   get getPayrollId(): number {
@@ -135,9 +134,9 @@ export class DetailPayrollComponent implements OnInit {
   onAddSalary(type: SalaryTypeEnum, payroll: PayrollEntity, salary?: SalaryEntity) {
     const config = {
       nzFooter: [],
-      nzWidth: '40vw',
+      nzWidth: '40vw'
     };
-    this.onOpenSalary(type, config, {payroll, salary});
+    this.onOpenSalary(type, config, { payroll, salary });
   }
 
   onUpdateSalary(
@@ -147,7 +146,7 @@ export class DetailPayrollComponent implements OnInit {
   ) {
     const config = {
       nzFooter: [],
-      nzWidth: '40vw',
+      nzWidth: '40vw'
     };
     this.onOpenSalary(
       type,
@@ -156,7 +155,7 @@ export class DetailPayrollComponent implements OnInit {
       {
         salary: Object.assign({}, salary,
           type === SalaryTypeEnum.ALLOWANCE
-            ? {workedAt: payroll?.employee.workedAt}
+            ? { workedAt: payroll?.employee.workedAt }
             : {}
         )
       });
@@ -281,14 +280,14 @@ export class DetailPayrollComponent implements OnInit {
                         : this.deductionSalaryService
         );
 
-        service.deleteMany({salaryIds: [salary.id]}).pipe(
+        service.deleteMany({ salaryIds: [salary.id] }).pipe(
           catchError(err => {
             this.message.warning(err);
             return throwError(err);
           })
         ).subscribe(res => {
           this.message.success(res.message);
-          this.actions$.dispatch(PayrollActions.loadOne({id: salary.payrollId}));
+          this.actions$.dispatch(PayrollActions.loadOne({ id: salary.payrollId }));
         });
       }
     });
@@ -296,7 +295,7 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   confirmPayroll(payroll: PayrollEntity) {
-    if (this.role !== Role.HUMAN_RESOURCE) {
+    if (this.currentUser?.role.role !== Role.HUMAN_RESOURCE) {
       this.modal.create({
         nzTitle: 'Xác nhận phiếu lương tháng ' + this.datePipe.transform(payroll.createdAt, 'yyyy-MM'),
         nzContent: PayslipComponent,
@@ -322,7 +321,7 @@ export class DetailPayrollComponent implements OnInit {
           nzFooter: []
         }).afterClose.subscribe(val => {
           if (val) {
-            this.actions$.dispatch(PayrollActions.restore({id: payroll.id}));
+            this.actions$.dispatch(PayrollActions.restore({ id: payroll.id }));
           }
         });
       } else {
@@ -336,8 +335,7 @@ export class DetailPayrollComponent implements OnInit {
       {
         queryParams: {
           name: payroll.employee.lastName,
-          employeeType: payroll.employee.type,
-          mode: localStorage.getItem('mode')
+          employeeType: payroll.employee.type
         }
       }).then();
   }
@@ -347,29 +345,19 @@ export class DetailPayrollComponent implements OnInit {
       const indexPayrollCurrent = payroll.payrollIds.indexOf(payroll.id);
       const payrollIds = payroll.payrollIds;
       if (indexPayrollCurrent < payrollIds.length - 1) {
-        this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[indexPayrollCurrent + 1]],
-          {
-            queryParams: {
-              mode: localStorage.getItem('mode')
-            }
-          }).then();
+        this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[indexPayrollCurrent + 1]]).then();
       } else {
-        this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[0]],
-          {
-            queryParams: {
-              mode: localStorage.getItem('mode')
-            }
-          }).then();
+        this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[0]]).then();
       }
     }
   }
 
   scanHoliday(payrollId: number) {
-    this.actions$.dispatch(PayrollActions.scanHoliday({payrollId}));
+    this.actions$.dispatch(PayrollActions.scanHoliday({ payrollId }));
   }
 
   scroll(target: HTMLElement, sticky: HTMLElement) {
-    target.scrollIntoView({behavior: 'smooth', block: 'center'});
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
     this.onSticky(sticky);
   }
 
@@ -405,7 +393,7 @@ export class DetailPayrollComponent implements OnInit {
       if (value) {
         this.actions$.dispatch(PayrollActions.update({
           id: payroll.id,
-          updates: {taxed: !payroll.taxed}
+          updates: { taxed: !payroll.taxed }
         }));
       }
     });
@@ -422,7 +410,7 @@ export class DetailPayrollComponent implements OnInit {
       },
       nzFooter: ' '
     }).afterClose.subscribe(val => {
-      this.actions$.dispatch(PayrollActions.update({id: payroll.id, updates: {note: val}}));
+      this.actions$.dispatch(PayrollActions.update({ id: payroll.id, updates: { note: val } }));
     });
   }
 
@@ -446,14 +434,9 @@ export class DetailPayrollComponent implements OnInit {
   onSalarySetting(title: string | undefined) {
     if (title) {
       this.settingSalaryStore.update(state => ({
-        ...state, search: Object.assign(JSON.parse(JSON.stringify(state.search)), {search: title})
-      }))
-      this.router.navigate(['cai-dat'],
-        {
-          queryParams: {
-            mode: localStorage.getItem('mode')
-          }
-        }).then();
+        ...state, search: Object.assign(JSON.parse(JSON.stringify(state.search)), { search: title })
+      }));
+      this.router.navigate(['cai-dat']).then();
     }
   }
 
@@ -464,7 +447,7 @@ export class DetailPayrollComponent implements OnInit {
         case FilterSalaryEnum.TITLE:
           return CompareSortUtil(a.title, b.title, isAsc);
         case FilterSalaryEnum.DATETIME:
-          return CompareSortUtil(a.startedAt, b.startedAt, isAsc)
+          return CompareSortUtil(a.startedAt, b.startedAt, isAsc);
         case FilterSalaryEnum.DURATION:
           return CompareSortUtil(a.duration, b.duration, isAsc);
         case FilterSalaryEnum.TYPE:
@@ -484,38 +467,18 @@ export class DetailPayrollComponent implements OnInit {
   prePayroll(payroll: PayrollEntity) {
     const indexPayrollCurrent = payroll.payrollIds.indexOf(payroll.id);
     if (indexPayrollCurrent > 0) {
-      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds[indexPayrollCurrent - 1]],
-        {
-          queryParams: {
-            mode: localStorage.getItem('mode')
-          }
-        }).then();
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds[indexPayrollCurrent - 1]]).then();
     } else {
-      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds.slice(-1)[0]],
-        {
-          queryParams: {
-            mode: localStorage.getItem('mode')
-          }
-        }).then();
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds.slice(-1)[0]]).then();
     }
   }
 
   nextPayroll(payroll: PayrollEntity) {
     const indexPayrollCurrent = payroll.payrollIds.indexOf(payroll.id);
     if (indexPayrollCurrent < payroll.payrollIds.length - 1) {
-      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds[indexPayrollCurrent + 1]],
-        {
-          queryParams: {
-            mode: localStorage.getItem('mode')
-          }
-        }).then();
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds[indexPayrollCurrent + 1]]).then();
     } else {
-      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds[0]],
-        {
-          queryParams: {
-            mode: localStorage.getItem('mode')
-          }
-        }).then();
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.payrollIds[0]]).then();
     }
   }
 }

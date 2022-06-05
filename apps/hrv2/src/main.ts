@@ -11,7 +11,7 @@ if (environment.production) {
 }
 
 const storage = persistState({
-  include: [StorageName.EMPLOYEE_DRAFT]
+  include: [StorageName.EMPLOYEE_DRAFT, StorageName.ACCOUNT]
 });
 
 const providers = [{provide: 'persistStorage', useValue: storage}];

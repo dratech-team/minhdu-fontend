@@ -285,7 +285,7 @@
             <div>{{i + 1}}</div>
           </td>
           <td
-            *ngIf="(currentUser$() | async)?.mode === modeEnum.INFO"
+            *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"
             nzLeft
           >
             <div>{{employee.id}}</div>

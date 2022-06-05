@@ -2,7 +2,8 @@ export const Api = {
   HR: {
     PAYROLL: {
       PAYROLL: 'payroll',
-      CONFIRM_PAYROLL: 'payroll/payslip',
+      CONFIRM_PAYROLL: 'payroll/confirm',
+      PAYROLL_PAYSLIP: 'payroll/payslip',
       RESTORE_PAYROLL: 'payroll/restore',
       EXPORT: 'payroll/export/payroll',
       PAYROLL_CREATE: 'payroll/create',
@@ -116,5 +117,7 @@ export const Api = {
   LOGGER: 'logger',
   SLACK_WEBHOOK:
     'https://hooks.slack.com/services/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',
-  AUTH: 'auth'
+  AUTH: 'auth',
+  SIGN_IN: 'auth/signin',
+  SIGN_UP: 'signup',
 };
