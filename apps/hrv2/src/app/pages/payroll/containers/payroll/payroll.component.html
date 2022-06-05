@@ -110,7 +110,8 @@
     </div>
     <div>
       <button class='mr-2' nz-button nzType='primary' (click)='onPrint()'>Xuất excel</button>
-      <button nz-button nzType='primary' [nzLoading]='(added$|async) === false' (click)='onAddMany()'>Tạo tự động
+      <button nz-button nzType='primary' [disabled]='(loading$ | async)' (click)='onAddMany()'>
+        Tạo tự động
       </button>
     </div>
   </div>
@@ -123,6 +124,5 @@
     >
     </minhdu-fontend-table-payroll>
   </div>
-  <nz-spin class='position-center' *ngIf='(deleted$|async) === false'></nz-spin>
 </div>
 

@@ -9,7 +9,7 @@ import { AddPayrollDto } from '../dto';
 import { Injectable } from '@angular/core';
 import { AbsentSalaryEntity, OvertimeSalaryEntity, SalaryEntity } from '../../salary/entities';
 import { PayrollEntity, TotalSalary } from '../entities';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, EmployeeStatusEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { PartialDayEnum } from '@minhdu-fontend/data-models';
 import { StateHistoryPlugin } from '@datorama/akita';
 import { PayrollQuery } from './payroll.query';
@@ -36,7 +36,7 @@ export class PayrollEffect {
   }
 
 
-  @Effect()
+  @Effect({ dispatch: false })
   addOne$ = this.action$.pipe(
     ofType(PayrollActions.addOne),
     switchMap((props: AddPayrollDto) => {
@@ -69,9 +69,17 @@ export class PayrollEffect {
         ...state, loading: true
       }));
       return this.service.addMany(props).pipe(
-        tap(res => {
+        map(res => {
           this.message.success(res.message);
-          return this.action$.dispatch(PayrollActions.loadAll({}));
+          this.payrollStore.update(state => ({
+            ...state, loading: false
+          }));
+          return PayrollActions.loadAll({
+            search: {
+              empStatus: EmployeeStatusEnum.IS_ACTIVE,
+              createdAt: props.body.createdAt
+            }, isPaginate: false
+          });
         }),
         catchError(err => {
           this.payrollStore.update(state => ({
@@ -83,7 +91,7 @@ export class PayrollEffect {
     })
   );
 
-  @Effect()
+  @Effect({ dispatch: false })
   loadAll$ = this.action$.pipe(
     ofType(PayrollActions.loadAll),
     switchMap((props) => {
@@ -130,7 +138,7 @@ export class PayrollEffect {
     })
   );
 
-  @Effect()
+  @Effect({ dispatch: false })
   getOne$ = this.action$.pipe(
     ofType(PayrollActions.loadOne),
     switchMap(props => {
@@ -148,7 +156,7 @@ export class PayrollEffect {
     })
   );
 
-  @Effect()
+  @Effect({ dispatch: false })
   update$ = this.action$.pipe(
     ofType(PayrollActions.update),
     switchMap(props => {
@@ -174,7 +182,7 @@ export class PayrollEffect {
     })
   );
 
-  @Effect()
+  @Effect({ dispatch: false })
   remove$ = this.action$.pipe(
     ofType(PayrollActions.remove),
     switchMap((props) => {
@@ -198,7 +206,7 @@ export class PayrollEffect {
     })
   );
 
-  @Effect()
+  @Effect({ dispatch: false })
   confirmPayroll$ = this.action$.pipe(
     ofType(PayrollActions.confirmPayroll),
     switchMap((props) => {
@@ -223,7 +231,7 @@ export class PayrollEffect {
     })
   );
 
-  @Effect()
+  @Effect({ dispatch: false })
   scanHoliday$ = this.action$.pipe(
     ofType(PayrollActions.scanHoliday),
     switchMap((props) => {
@@ -247,7 +255,7 @@ export class PayrollEffect {
     })
   );
 
-  @Effect()
+  @Effect({ dispatch: false })
   restore$ = this.action$.pipe(
     ofType(PayrollActions.restore),
     switchMap((props) => {

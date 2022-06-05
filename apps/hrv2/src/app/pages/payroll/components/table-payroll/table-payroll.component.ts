@@ -99,17 +99,11 @@ export class TablePayrollComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loading$.subscribe(added => {
-      if (added) {
-        this.onloadPayroll.emit({isPagination: false})
-      }
-    })
-
+    this.onloadPayroll.emit({isPagination: false})
     this.formGroup.get('filterType')?.valueChanges.subscribe(val => {
       this.scroll = ScrollTablePayrollConstant.find(item => item.type === val)?.scroll
     })
 
-    this.actions$.dispatch(PositionActions.loadAll({}))
     this.payrollQuery.select(state => state.search.startedAt).subscribe(val => {
       this.daysInMonth = rageDaysInMonth(new Date(val))
     })
