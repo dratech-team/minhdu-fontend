@@ -1,4 +1,4 @@
-import { ActiveState, EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import {ActiveState, EntityState, EntityStore, StoreConfig} from '@datorama/akita';
 import {Injectable} from '@angular/core';
 import {StorageName} from '@minhdu-fontend/constants';
 import {AccountEntity} from "../../entities/account.entity";
@@ -21,7 +21,7 @@ function createInitState(): AccountState {
     loadMore: false,
     added: null,
     total: 0,
-    deleted: null
+    deleted: null,
   };
 }
 
