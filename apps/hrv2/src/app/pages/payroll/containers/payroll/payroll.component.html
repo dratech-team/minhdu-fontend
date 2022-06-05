@@ -1,10 +1,11 @@
 <div style='min-height:80vh; padding:5px 20px 20px 20px; position: relative'>
   <div class='d-flex align-items-center'>
     <div class='font-weight-bold font-lg'>
-      {{formGroup.value.filterType|transformconstant:payrollConstant}}
+      {{formGroup.value.filterType | transformconstant:payrollConstant}}
     </div>
     <div class='d-flex justify-content-center align-items-center ml-2' [formGroup]='formGroup'>
       <nz-range-picker
+        [disabled]='(loading$ | async) || false'
         formControlName='rangeDay'
         style='width: 250px'
         *ngIf='formGroup.value.filterType === filterTypeEnum.OVERTIME || formGroup.value.filterType === filterTypeEnum.ABSENT else formCreated'
@@ -16,6 +17,7 @@
           <nz-date-picker
             class='ml-2'
             [nzAllowClear]='false'
+            [disabled]='(loading$ | async) || false'
             nzMode='month'
             nzFormat='MM-yyyy'
             formControlName='startedAt'
@@ -30,7 +32,8 @@
         <div class='font-weight-bold'>
           Loại phiếu lương
         </div>
-        <nz-select style='width: 200px' formControlName='filterType'>
+        <nz-select style='width: 200px' formControlName='filterType'
+                   [disabled]='(loading$ | async) != null && (loading$ | async) == true'>
           <nz-option *ngFor='let item of payrollConstant' [nzValue]='item.value' [nzLabel]='item.name'>
           </nz-option>
         </nz-select>
@@ -41,6 +44,7 @@
         </div>
         <div>
           <nz-select
+            [disabled]='(loading$ | async) || false'
             nzShowSearch
             nzAllowClear
             style='width:250px'
@@ -59,9 +63,12 @@
       </div>
       <div [formGroup]='formGroup' style='width: fit-content' class='ml-2'>
         <div class='font-weight-bold'>Phòng ban</div>
-        <nz-select style='width:200px'
-                   [compareWith]='compareFN'
-                   formControlName='department'>
+        <nz-select
+          [disabled]='(loading$ | async) || false'
+          style='width:200px'
+          [compareWith]='compareFN'
+          formControlName='department'
+        >
           <nz-option [nzValue]="''" nzLabel='Tất cả'>Tất cả</nz-option>
           <nz-option *ngFor='let item of categories$|async' [nzValue]='item' [nzLabel]='item.name'></nz-option>
         </nz-select>
@@ -109,7 +116,15 @@
       </div>
     </div>
     <div>
-      <button class='mr-2' nz-button nzType='primary' (click)='onPrint()'>Xuất excel</button>
+      <button
+        nz-button
+        [disabled]='(loading$ | async) || false'
+        class='mr-2'
+        nzType='primary'
+        (click)='onPrint()'
+      >
+        Xuất excel
+      </button>
       <button nz-button nzType='primary' [disabled]='(loading$ | async)' (click)='onAddMany()'>
         Tạo tự động
       </button>

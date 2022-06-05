@@ -5,7 +5,7 @@ import { Actions } from '@datorama/akita-ng-effects';
 import { PayrollActions } from '../../state/payroll.action';
 import { FilterTypeEnum, Role, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Api, EmployeeStatusConstant, PayrollConstant } from '@minhdu-fontend/constants';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { BranchActions, BranchQuery, DepartmentActions, DepartmentQuery } from '@minhdu-fontend/orgchart-v2';
 import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 import { SettingSalaryActions, SettingSalaryQuery } from '../../../setting/salary/state';
