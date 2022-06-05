@@ -50,8 +50,8 @@
         <th style="width: 200px !important;">
           <div class='border-top text-center'>Loại nhân viên</div>
           <mat-select class='form-control' style='width:100%' formControlName='employeeType'>
-            <mat-option value='{{EmployeeType.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</mat-option>
-            <mat-option value='{{EmployeeType.EMPLOYEE_SEASONAL}}'>Nhân viên thời vụ</mat-option>
+            <mat-option value='{{EmployeeType.FULL_TIME}}'>Nhân viên chính thức</mat-option>
+            <mat-option value='{{EmployeeType.SEASONAL}}'>Nhân viên thời vụ</mat-option>
             <mat-option value=''>Tất cả</mat-option>
           </mat-select>
         </th>
@@ -142,7 +142,7 @@
           <th
             class='pointer'
             (click)='templateOvertime(template,true)'>
-            {{template.employeeType === EmployeeType.EMPLOYEE_SEASONAL ? "Nhân viên thời vụ" : "Nhân viên chính thức"}}
+            {{template.employeeType === EmployeeType.SEASONAL ? "Nhân viên thời vụ" : "Nhân viên chính thức"}}
           </th>
           <th
             class='pointer'>

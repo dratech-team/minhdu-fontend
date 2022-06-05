@@ -111,7 +111,7 @@ export class AddEmployeeComponent implements OnInit {
       expiredAtContract: [''],
       recipeType: [this.employeeInit?.recipeType || this.recipeType.CT2],
       employeeType: [this.employeeInit ?
-        this.employeeInit.type : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
+        this.employeeInit.type : EmployeeType.FULL_TIME, Validators.required],
       category: [this.employeeInit?.category?.id],
       province: [this.employeeInit?.ward?.district?.province, Validators.required],
       district: [this.employeeInit?.ward?.district, Validators.required],
@@ -131,7 +131,7 @@ export class AddEmployeeComponent implements OnInit {
       this.formGroup.get('workday')?.patchValue(val.workday);
     });
     this.formGroup.get('employeeType')?.valueChanges.subscribe(val => {
-      if (val === EmployeeType.EMPLOYEE_SEASONAL) {
+      if (val === EmployeeType.SEASONAL) {
         this.formGroup.get('recipeType')?.setValue(RecipeType.CT3);
       }
     });
@@ -148,7 +148,7 @@ export class AddEmployeeComponent implements OnInit {
       return;
     }
 
-    if (value.typeEmployee === EmployeeType.EMPLOYEE_FULL_TIME && !value.workday) {
+    if (value.typeEmployee === EmployeeType.FULL_TIME && !value.workday) {
       return this.message.error('Chưa nhập ngày công chuẩn');
     }
 
@@ -182,7 +182,7 @@ export class AddEmployeeComponent implements OnInit {
   private mapEmployee(value: any) {
     return {
       id: this.employeeInit?.id,
-      isFlatSalary: value.employeeType === EmployeeType.EMPLOYEE_FULL_TIME ?
+      isFlatSalary: value.employeeType === EmployeeType.FULL_TIME ?
         value.isFlatSalary === this.flatSalary.FLAT_SALARY : false,
       positionId: value.position.id,
       branchId: value.branch.id,

@@ -86,7 +86,7 @@ export class ModalSettingSalaryComponent implements OnInit {
       constraintHoliday: [template?.constraints?.some(constraint => constraint.type === SalaryTypeEnum.HOLIDAY)],
       constraintOvertime: [template?.constraints?.some(constraint => constraint.type === SalaryTypeEnum.OVERTIME)],
       insurance: [template?.type === SalaryTypeEnum.BASIC_INSURANCE],
-      employeeType: [template?.employeeType || EmployeeType.EMPLOYEE_FULL_TIME],
+      employeeType: [template?.employeeType || EmployeeType.FULL_TIME],
       prices: [template?.prices && template.prices.length === 1 ? template.prices[0] : ''],
       branches: [template?.branches || []],
       positions: [template?.positions || []],

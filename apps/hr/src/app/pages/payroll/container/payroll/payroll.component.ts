@@ -375,8 +375,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       accConfirmed: val.accConfirmed,
       employeeType:
         this.selectedPayroll === FilterTypeEnum.SEASONAL
-          ? EmployeeType.EMPLOYEE_SEASONAL
-          : EmployeeType.EMPLOYEE_FULL_TIME
+          ? EmployeeType.SEASONAL
+          : EmployeeType.FULL_TIME
 
     };
     if (this.sort?.active) {
@@ -516,7 +516,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       data: {
         employeeType:
           this.selectedPayroll === FilterTypeEnum.SEASONAL
-            ? EmployeeType.EMPLOYEE_SEASONAL
+            ? EmployeeType.SEASONAL
             : ''
       }
     }).afterClosed().subscribe((val) => {
@@ -655,7 +655,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       isConfirm: value.accConfirmedAt,
       filterType: this.selectedPayroll,
       accConfirmed: value.accConfirmed,
-      employeeType: EmployeeType.EMPLOYEE_FULL_TIME
+      employeeType: EmployeeType.FULL_TIME
     };
     if (this.sort?.active) {
       Object.assign(payroll, {
@@ -709,7 +709,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       exportType: FilterTypeEnum.SEASONAL,
       paidAt: value.paidAt,
       accConfirmedAt: value.accConfirmedAt,
-      employeeType: EmployeeType.EMPLOYEE_SEASONAL,
+      employeeType: EmployeeType.SEASONAL,
       startedAt: this.formRangeDay.value[0],
       endedAt: this.formRangeDay.value[1]
     };

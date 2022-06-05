@@ -1,16 +1,16 @@
-import {PaidTypeEnums} from "../enums";
+import {PaidStatus} from "../enums";
 
 export const PaidConstant = [
   {
     name:'Đã Thanh toán',
-    value: PaidTypeEnums.PAID
+    value: PaidStatus.PAID
   },
   {
     name:'Chưa thanh toán',
-    value: PaidTypeEnums.NOT_PAID
+    value: PaidStatus.NOT_PAID
   },
   {
     name:'Tất cả',
-    value: PaidTypeEnums.ALL
+    value: PaidStatus.ALL
   },
 ]

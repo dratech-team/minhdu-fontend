@@ -62,7 +62,7 @@
   <ng-template [ngIf]='indexStep=== 1'>
     <div *ngIf="data.add else alert">
       <minhdu-fontend-select-payroll
-        [employeeType]="employeeType.EMPLOYEE_FULL_TIME"
+        [employeeType]="employeeType.FULL_TIME"
         [formGroup]="formGroup"
         [createdAt]="data.add.payroll.createdAt"
       >

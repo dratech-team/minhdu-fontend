@@ -25,8 +25,8 @@
           <div class='mt-1'>
             <mat-select class='form-control' formControlName='employeeType'
                         [ngClass]="{ 'is-invalid': submitted && f.employeeType.errors?.required }">
-              <mat-option value='{{employeeTypeEnum.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</mat-option>
-              <mat-option value='{{employeeTypeEnum.EMPLOYEE_SEASONAL}}'>Nhân viên thời vụ</mat-option>
+              <mat-option value='{{employeeTypeEnum.FULL_TIME}}'>Nhân viên chính thức</mat-option>
+              <mat-option value='{{employeeTypeEnum.SEASONAL}}'>Nhân viên thời vụ</mat-option>
             </mat-select>
             <div *ngIf='submitted && f.employeeType.errors?.required' class='invalid-feedback'>
               <div>Chưa chọn loại tăng ca</div>
@@ -40,8 +40,8 @@
           <div class=' mt-1'>
             <mat-select
               [ngStyle]='{
-              "background":formGroup.value.employeeType ===employeeTypeEnum.EMPLOYEE_SEASONAL?"#dddddd":"white",
-               "pointer-events":formGroup.value.employeeType ===employeeTypeEnum.EMPLOYEE_SEASONAL ?"none":"auto"
+              "background":formGroup.value.employeeType ===employeeTypeEnum.SEASONAL?"#dddddd":"white",
+               "pointer-events":formGroup.value.employeeType ===employeeTypeEnum.SEASONAL ?"none":"auto"
               }'
               class='form-control col'
               formControlName='unit'
@@ -130,8 +130,8 @@
           <div class=' mt-1'>
             <nz-radio-group
               [ngStyle]='{
-              "background":formGroup.value.employeeType ===employeeTypeEnum.EMPLOYEE_SEASONAL?"#dddddd":"white",
-               "pointer-events":formGroup.value.employeeType ===employeeTypeEnum.EMPLOYEE_SEASONAL ?"none":"auto"
+              "background":formGroup.value.employeeType ===employeeTypeEnum.SEASONAL?"#dddddd":"white",
+               "pointer-events":formGroup.value.employeeType ===employeeTypeEnum.SEASONAL ?"none":"auto"
               }'
               formControlName="priceType">
               <label nz-radio nzValue="{{priceTypeEnum.PRICE}}">Theo đơn giá</label>

@@ -1,16 +1,16 @@
-import {confirmTypeEnums} from "../enums";
+import {ConfirmStatus} from "../enums";
 
 export const ConfirmConstant = [
   {
     name:'Đã xác nhận',
-    value: confirmTypeEnums.CONFIRM
+    value: ConfirmStatus.CONFIRM
   },
   {
     name:'Chưa xác nhận',
-    value: confirmTypeEnums.NOT_CONFIRM
+    value: ConfirmStatus.NOT_CONFIRM
   },
   {
     name:'Tất cả',
-    value: confirmTypeEnums.ALL
+    value: ConfirmStatus.ALL
   },
 ]

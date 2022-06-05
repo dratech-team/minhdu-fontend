@@ -58,7 +58,7 @@
         </div>
       </div>
     </div>
-    <div class='border mt-2' *ngIf='data.payroll.employee.type === typeEmployee.EMPLOYEE_FULL_TIME; else seasonal'>
+    <div class='border mt-2' *ngIf='data.payroll.employee.type === typeEmployee.FULL_TIME; else seasonal'>
       <div *ngIf='( payslip$ | async) as payslip else loadingPayslip'>
         <div class='mat-typography ' style='
                             position: relative;

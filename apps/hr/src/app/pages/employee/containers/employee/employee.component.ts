@@ -109,7 +109,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     flatSalary: new FormControl('-1'),
     position: new FormControl(''),
     branch: new FormControl(''),
-    employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME),
+    employeeType: new FormControl(EmployeeType.FULL_TIME),
     status: new FormControl(EmployeeStatusEnum.IS_ACTIVE)
   });
   modeEnum = ModeEnum
@@ -163,7 +163,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
           status: this.formGroup.value.status,
           branch: this.formGroup.value.branch ? this.formGroup.value.branch.name : '',
           position: this.formGroup.value.position ? this.formGroup.value.position.name : '',
-          employeeType: EmployeeType.EMPLOYEE_FULL_TIME
+          employeeType: EmployeeType.FULL_TIME
         }
       })
     );
@@ -235,7 +235,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
             status: this.formGroup.value.status,
             branch: this.formGroup.value.branch ? this.formGroup.value.branch.name : '',
             position: this.formGroup.value.position ? this.formGroup.value.position.name : '',
-            employeeType: EmployeeType.EMPLOYEE_FULL_TIME
+            employeeType: EmployeeType.FULL_TIME
           }
         })
       );

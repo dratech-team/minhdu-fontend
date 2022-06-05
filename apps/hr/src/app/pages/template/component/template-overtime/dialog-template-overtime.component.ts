@@ -63,7 +63,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
         title: [this.data?.template?.title, Validators.required],
         employeeType: [this.data?.template?.employeeType ?
           this.data?.template?.employeeType
-          : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
+          : EmployeeType.FULL_TIME, Validators.required],
         price: [this.data?.template?.price],
         priceType: [this.data?.template?.price ? salaryReference.PRICE : salaryReference.STANDARD, Validators.required],
         unit: [this.data?.template?.unit, Validators.required],
@@ -73,7 +73,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     } else {
       this.formGroup = this.formBuilder.group({
         title: ['', Validators.required],
-        employeeType: [EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
+        employeeType: [EmployeeType.FULL_TIME, Validators.required],
         price: [''],
         priceType: [salaryReference.PRICE, Validators.required],
         unit: ['', Validators.required],
@@ -84,7 +84,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
 
 
     this.formGroup.get('employeeType')?.valueChanges.subscribe(val => {
-      if (val === EmployeeType.EMPLOYEE_SEASONAL) {
+      if (val === EmployeeType.SEASONAL) {
         this.formGroup.get('unit')?.patchValue(DatetimeUnitEnum.HOUR);
         this.formGroup.get('priceType')?.patchValue(salaryReference.PRICE)
       }

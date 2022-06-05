@@ -9,7 +9,7 @@ import { AddPayrollDto } from '../dto';
 import { Injectable } from '@angular/core';
 import { AbsentSalaryEntity, OvertimeSalaryEntity, SalaryEntity } from '../../salary/entities';
 import { PayrollEntity, TotalSalary } from '../entities';
-import { DatetimeUnitEnum, EmployeeStatusEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { PartialDayEnum } from '@minhdu-fontend/data-models';
 import { StateHistoryPlugin } from '@datorama/akita';
 import { PayrollQuery } from './payroll.query';
@@ -19,6 +19,7 @@ import { HolidaySalaryEntity } from '../../salary/entities/holiday-salary.entity
 import * as moment from 'moment';
 import { CompareSortUtil } from '../utils/compare-sort.util';
 import { ConvertMinutePipe } from '../../../../../../../libs/components/src/lib/pipes/convert-minute.pipe';
+import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 
 @Injectable({ providedIn: 'root' })
 export class PayrollEffect {
@@ -72,13 +73,14 @@ export class PayrollEffect {
         map(res => {
           this.message.success(res.message);
           this.payrollStore.update(state => ({
-            ...state, loading: false
+            ...state, loading: false, search: {
+              ...state.search,
+              startedAt: getFirstDayInMonth(props.body.createdAt || new Date()),
+              endedAt: getLastDayInMonth(props.body.createdAt || new Date())
+            }
           }));
           return PayrollActions.loadAll({
-            search: {
-              empStatus: EmployeeStatusEnum.IS_ACTIVE,
-              createdAt: props.body.createdAt
-            }, isPaginate: false
+            search: this.payrollQuery.getValue()?.search, isPaginate: false
           });
         }),
         catchError(err => {
@@ -96,7 +98,7 @@ export class PayrollEffect {
     ofType(PayrollActions.loadAll),
     switchMap((props) => {
       this.payrollStore.update(state => ({ ...state, loading: true }));
-      return this.service.paginationPayroll(Object.assign(props.search,
+      return this.service.paginationPayroll(Object.assign({}, props.search,
         {
           take: PaginationDto.take,
           skip: props.isPaginate ? this.payrollQuery.getCount() : PaginationDto.skip

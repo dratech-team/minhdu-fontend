@@ -112,7 +112,7 @@ export class ModalEmployeeComponent implements OnInit {
       expiredAtContract: [''],
       recipeType: [employeeInit?.recipeType || this.recipeType.CT2],
       type: [employeeInit ?
-        employeeInit.type : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
+        employeeInit.type : EmployeeType.FULL_TIME, Validators.required],
       category: [employeeInit?.category],
       province: [employeeInit?.ward?.district?.province, Validators.required],
       district: [employeeInit?.ward?.district, Validators.required],
@@ -134,7 +134,7 @@ export class ModalEmployeeComponent implements OnInit {
     });
 
     this.formGroup.get('type')?.valueChanges.subscribe(val => {
-      if (val === EmployeeType.EMPLOYEE_SEASONAL) {
+      if (val === EmployeeType.SEASONAL) {
         this.formGroup.get('recipeType')?.setValue(RecipeType.CT3);
       }
     });
@@ -152,7 +152,7 @@ export class ModalEmployeeComponent implements OnInit {
       return;
     }
 
-    if (value.type === EmployeeType.EMPLOYEE_FULL_TIME && !value.workday) {
+    if (value.type === EmployeeType.FULL_TIME && !value.workday) {
       return this.message.error('Chưa nhập ngày công chuẩn');
     }
 
@@ -199,7 +199,7 @@ export class ModalEmployeeComponent implements OnInit {
       issuedBy: value.issuedBy,
       birthday: value.birthday ? new Date(value.birthday) : undefined,
       email: value.email ? value.email : undefined,
-      isFlatSalary: value.type === EmployeeType.EMPLOYEE_FULL_TIME ?
+      isFlatSalary: value.type === EmployeeType.FULL_TIME ?
         value.isFlatSalary === FlatSalaryTypeEnum.FLAT_SALARY : false,
       positionId: value.position.id,
       branchId: value.branch.id,

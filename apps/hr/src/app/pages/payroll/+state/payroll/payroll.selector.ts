@@ -35,7 +35,7 @@ export const selectorAllPayrollSeasonal = createSelector(
   selectorAllPayroll,
   (payrolls) => {
     return payrolls.filter(payroll =>
-      payroll.employee.type === EmployeeType.EMPLOYEE_SEASONAL
+      payroll.employee.type === EmployeeType.SEASONAL
     );
   }
 );

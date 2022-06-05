@@ -1,10 +1,11 @@
-import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
-import {Injectable} from '@angular/core';
-import {PayrollEntity} from "../entities";
-import {EmployeeStatusEnum, EmployeeType, FilterTypeEnum} from "@minhdu-fontend/enums";
-import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
-import {BranchEntity, DepartmentEntity, PositionEntity} from "@minhdu-fontend/orgchart-v2";
-import {confirmTypeEnums, PaidTypeEnums} from "../enums";
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { Injectable } from '@angular/core';
+import { PayrollEntity } from '../entities';
+import { EmployeeStatusEnum, EmployeeType, FilterTypeEnum } from '@minhdu-fontend/enums';
+import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
+import { BranchEntity, PositionEntity } from '@minhdu-fontend/orgchart-v2';
+import { ConfirmStatus, PaidStatus } from '../enums';
+import { BaseSearchPayrollDto } from '../dto';
 
 export interface PayrollEntityState extends EntityState<PayrollEntity> {
   total: number;
@@ -13,30 +14,16 @@ export interface PayrollEntityState extends EntityState<PayrollEntity> {
   totalSalary: number;
   expandAll: boolean;
 
-  search: {
-    code?: string,
-    name?: string
-    branch?: BranchEntity;
-    position?: PositionEntity
-    employeeType: EmployeeType,
-    empStatus: EmployeeStatusEnum,
-    filterType: FilterTypeEnum,
-    startedAt: Date,
-    endedAt: Date,
-    accConfirmed: confirmTypeEnums,
-    manConfirmedAt: confirmTypeEnums,
-    paidAt: PaidTypeEnums,
-    department?: DepartmentEntity
-  }
+  search: BaseSearchPayrollDto,
   searchHistory: {
     code?: string,
     name?: string,
     branch?: BranchEntity,
     position?: PositionEntity,
     rangeDay: Date []
-    accConfirmed?: confirmTypeEnums,
-    manConfirmedAt?: confirmTypeEnums,
-    paidAt?: PaidTypeEnums,
+    accConfirmed?: ConfirmStatus,
+    manConfirmedAt?: ConfirmStatus,
+    paidAt?: PaidStatus,
   }
 }
 
@@ -48,30 +35,30 @@ export function createInitialState(): PayrollEntityState {
     loading: true,
     expandAll: true,
     search: {
-      employeeType: EmployeeType.EMPLOYEE_FULL_TIME,
+      employeeType: EmployeeType.FULL_TIME,
       empStatus: EmployeeStatusEnum.IS_ACTIVE,
       filterType: FilterTypeEnum.TIME_SHEET,
       startedAt: new Date(getFirstDayInMonth(new Date()) + '-00'),
       endedAt: new Date(getLastDayInMonth(new Date()) + '-00'),
-      accConfirmed: confirmTypeEnums.ALL,
-      manConfirmedAt: confirmTypeEnums.ALL,
-      paidAt: PaidTypeEnums.ALL
+      accConfirmed: ConfirmStatus.ALL,
+      manConfirmedAt: ConfirmStatus.ALL,
+      paidAt: PaidStatus.ALL,
     },
     searchHistory: {
       rangeDay: [
         new Date(new Date().getFullYear(), 0, 1),
         new Date()
       ],
-      accConfirmed: confirmTypeEnums.ALL,
-      manConfirmedAt: confirmTypeEnums.ALL,
-      paidAt: PaidTypeEnums.ALL
+      accConfirmed: ConfirmStatus.ALL,
+      manConfirmedAt: ConfirmStatus.ALL,
+      paidAt: PaidStatus.ALL
     },
     scanned: null
   };
 }
 
-@Injectable({providedIn: 'root'})
-@StoreConfig({name: 'payroll'})
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: 'payroll' })
 export class PayrollStore extends EntityStore<PayrollEntityState> {
   constructor() {
     super(createInitialState());

@@ -91,8 +91,8 @@
             <th>
               <div class='border-top text-center'>Loại nhân viên</div>
               <mat-select class='select border-top' style='width: 100%;' formControlName='employeeType'>
-                <mat-option value='{{employeeType.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</mat-option>
-                <mat-option value='{{employeeType.EMPLOYEE_SEASONAL}}'>Nhân viên thời vụ</mat-option>
+                <mat-option value='{{employeeType.FULL_TIME}}'>Nhân viên chính thức</mat-option>
+                <mat-option value='{{employeeType.SEASONAL}}'>Nhân viên thời vụ</mat-option>
               </mat-select>
             </th>
             <th width='5%'>
@@ -242,7 +242,7 @@
                 <div>{{employee?.lastName}}</div>
               </th>
               <th class='pointer'>
-                <div>{{employee?.type === employeeType.EMPLOYEE_FULL_TIME ? 'Nhân viên chính thức' : 'Nhân viên thời vụ' }}
+                <div>{{employee?.type === employeeType.FULL_TIME ? 'Nhân viên chính thức' : 'Nhân viên thời vụ' }}
                 </div>
               </th>
               <th class='pointer'>
