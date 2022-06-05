@@ -11,6 +11,7 @@ import {
 import {Actions} from "@datorama/akita-ng-effects";
 import {AccountActions} from "../../../../../libs/system/src/lib/state/account-management/account.actions";
 import {AccountQuery} from "../../../../../libs/system/src/lib/state/account-management/account.query";
+import {Role} from "@minhdu-fontend/enums";
 
 @Component({
   selector: 'app-dashboard',
@@ -19,7 +20,7 @@ import {AccountQuery} from "../../../../../libs/system/src/lib/state/account-man
 })
 export class DefaultLayoutComponent implements OnInit {
   currentUser = this.accountQuery.getValue().currentUser
-  roleEnum = this.accountQuery.getValue();
+  roleEnum = Role
 
   showFiller = false;
   public sidebarMinimized = false;
