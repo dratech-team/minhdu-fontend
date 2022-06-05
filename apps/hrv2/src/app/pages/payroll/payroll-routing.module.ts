@@ -7,7 +7,7 @@ import {HistoryPayrollComponent} from "./containers/history-payroll/history-payr
 const routes: Routes = [
   {
     path: '',
-    component: PayrollComponent
+    component: PayrollComponent,
   },
   {
     path: 'chi-tiet-phieu-luong/:id',

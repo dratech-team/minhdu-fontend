@@ -79,7 +79,7 @@
             <!--              <div mat-sort-header='{{sortEnum.STT}}' class='border-top text-center'>Sort</div>-->
             <!--              <input class=' text-center' type='text' disabled>-->
             <!--            </th>-->
-            <th style='background:white'>
+            <th *ngIf="(currentUser$() | async)?.mode === modeEnum.INFO" style='background:white'>
               <div class='border-top text-center'>Mã nhân viên</div>
               <input class='form-control text-center' type='search'>
 
@@ -234,7 +234,8 @@
               <!--              <th class='pointer ' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>-->
               <!--                <div>{{employee.stt || 'Not sorted'}}</div>-->
               <!--              </th>-->
-              <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+              <th *ngIf="(currentUser$() | async)?.mode === modeEnum.INFO" class='pointer'
+                  [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
                 <div>{{employee?.id}}</div>
               </th>
               <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>

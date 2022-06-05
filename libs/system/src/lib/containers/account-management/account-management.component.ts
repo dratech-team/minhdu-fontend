@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {App} from '@minhdu-fontend/enums';
+import {App, ModeEnum} from '@minhdu-fontend/enums';
 import {FormControl, FormGroup} from '@angular/forms';
 import {debounceTime} from 'rxjs/operators';
 import {AccountActions} from '../../state/account-management/account.actions';
@@ -16,6 +16,7 @@ import {AccountEntity} from "../../entities/account.entity";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 import {ModalRegisterData} from "../../data/modal-register.data";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   templateUrl: 'account-management.component.html'
@@ -27,6 +28,7 @@ export class AccountManagementComponent implements OnInit {
   total$ = this.accountQuery.select(state => state.total)
   count$ = this.accountQuery.selectCount()
   branches$ = this.branchQuery.selectAll()
+  currentUser$ = this.accountQuery.selectCurrentUser()
 
   app = App;
 
@@ -92,7 +94,7 @@ export class AccountManagementComponent implements OnInit {
     this.modal.create({
       nzTitle: 'Cập nhật tài khoản',
       nzContent: RegisterComponent,
-      nzComponentParams: <{data?:ModalRegisterData}>{
+      nzComponentParams: <{ data?: ModalRegisterData }>{
         data: {
           update: {
             account: account

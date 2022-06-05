@@ -16,11 +16,18 @@
        [scrollWindow]='false'
        [alwaysCallback]='false'
        (scrolled)='onScroll()'>
-    <table [formGroup]='formGroup' style='width: 2100px'>
+    <table [formGroup]='formGroup' style='width: 2150px'>
       <thead style="z-index: 5">
       <tr>
         <th style='width: 50px'>
           <div class='border-top text-center'>stt</div>
+          <input
+            type='text'
+            disabled
+          >
+        </th>
+        <th style='width: 50px'>
+          <div class='border-top text-center'>Id</div>
           <input
             type='text'
             disabled
@@ -119,6 +126,12 @@
             class='pointer'
             (click)='templateOvertime(template,true)'
             [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+            {{template.id}}
+          </th>
+          <th
+            class='pointer'
+            (click)='templateOvertime(template,true)'
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
             {{template.title}}
           </th>
           <th
@@ -199,7 +212,15 @@
     z-index: 2;
   }
 
-  .table-scroll thead th:nth-child(2) {
+  .table-scroll thead th:nth-child(2),
+  .table-scroll thead th:nth-child(3)
+  {
     z-index: 5;
+  }
+  .table-scroll th:nth-child(3) {
+    position: -webkit-sticky;
+    position: sticky;
+    left: 100px;
+    z-index: 2;
   }
 </style>

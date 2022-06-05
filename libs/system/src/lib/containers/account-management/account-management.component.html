@@ -27,75 +27,75 @@
     </nz-collapse>
   </div>
   <div class="px-2" style='width: 80vw'>
-      <div class="w-100 d-flex justify-content-end">
-          <button
-            nz-button
-            nzType="primary"
-            (click)='onAdd()'
-            class='ml-3'>
-            Tạo tài khoản
-          </button>
-      </div>
-      <nz-table
-        #tableAccount
-        nzShowPagination="false"
-        [nzLoading]="loading$|async"
-        [nzScroll]="{x: '1500px', y: '53vh'}"
-        [nzData]="(accounts$ | async) || []"
-        class='mt-3'>
-        <thead>
-        <tr>
-          <th nzLeft nzWidth="60px">stt
-          </th>
-          <th>Mã tài khoản</th>
-          <th nzLeft>Tên đăng nhập</th>
-          <th>Đơn vị</th>
-          <th>Phân quyền</th>
-          <th>Đăng nhập gần nhất</th>
-          <th>Địa chỉ ip</th>
-          <th>Ngày tạo</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor='let account of tableAccount.data; let i = index'
-            (contextmenu)='child.onContextMenu($event,account)'
-            (click)="onUpdate(account)"
-            class="pointer"
-        >
-          <td nzLeft>{{i + 1}}</td>
-          <td>{{account?.id}}</td>
-          <td nzLeft>{{account.username}}</td>
-          <td>
-            <mat-chip-list>
-              <mat-chip
-                [style]='{"background": formGroup.get("branch")?.value.id === branch.id ? "red" : "#00000040"}'
-                *ngFor='let branch of account.branches'>
-                {{branch.name}}
-              </mat-chip>
-            </mat-chip-list>
-          </td>
-          <td>{{account.role.name}}</td>
-          <td>{{account.loggedAt|date:'h:mm:ss a , dd-MM-yyyy'}}</td>
-          <td>{{account.ip}}</td>
-          <td>{{account.timestamp|date:'dd-MM-yyyy'}}</td>
-        </tr>
-        <tr  *ngIf="((count$ | async)|| 0) < ((total$ | async)|| 0)">
-          <td [colSpan]="tableAccount.listOfAutoColWidth.length">
-            <div class="w-100 d-flex justify-content-start" style="position: relative">
-              <button
-                [nzLoading]="(loadMore$|async)"
-                (click)="onLoadMore()"
-                style="position:sticky; left: 45vw"
-                nz-button
-                nzType="primary"
-              >
-                Tải thêm
-              </button>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </nz-table>
+    <div class="w-100 d-flex justify-content-end">
+      <button
+        nz-button
+        nzType="primary"
+        (click)='onAdd()'
+        class='ml-3'>
+        Tạo tài khoản
+      </button>
+    </div>
+    <nz-table
+      #tableAccount
+      nzShowPagination="false"
+      [nzLoading]="loading$|async"
+      [nzScroll]="{x: '1500px', y: '53vh'}"
+      [nzData]="(accounts$ | async) || []"
+      class='mt-3'>
+      <thead>
+      <tr>
+        <th nzLeft nzWidth="60px">stt
+        </th>
+        <th>Mã tài khoản</th>
+        <th nzLeft>Tên đăng nhập</th>
+        <th>Đơn vị</th>
+        <th>Phân quyền</th>
+        <th>Đăng nhập gần nhất</th>
+        <th>Địa chỉ ip</th>
+        <th>Ngày tạo</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor='let account of tableAccount.data; let i = index'
+          (contextmenu)='child.onContextMenu($event,account)'
+          (click)="onUpdate(account)"
+          class="pointer"
+      >
+        <td nzLeft>{{i + 1}}</td>
+        <td>{{account?.id}}</td>
+        <td nzLeft>{{account.username}}</td>
+        <td>
+          <mat-chip-list>
+            <mat-chip
+              [style]='{"background": formGroup.get("branch")?.value.id === branch.id ? "red" : "#00000040"}'
+              *ngFor='let branch of account.branches'>
+              {{branch.name}}
+            </mat-chip>
+          </mat-chip-list>
+        </td>
+        <td>{{account.role.name}}</td>
+        <td>{{account.loggedAt|date:'h:mm:ss a , dd-MM-yyyy'}}</td>
+        <td>{{account.ip}}</td>
+        <td>{{account.timestamp|date:'dd-MM-yyyy'}}</td>
+      </tr>
+      <tr  *ngIf="((count$ | async)|| 0) < ((total$ | async)|| 0)">
+        <td [colSpan]="tableAccount.listOfAutoColWidth.length">
+          <div class="w-100 d-flex justify-content-start" style="position: relative">
+            <button
+              [nzLoading]="(loadMore$|async)"
+              (click)="onLoadMore()"
+              style="position:sticky; left: 45vw"
+              nz-button
+              nzType="primary"
+            >
+              Tải thêm
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
   </div>
 </div>
 

@@ -39,7 +39,7 @@
         <div>STT</div>
         <input nz-input disabled type='text'>
       </th>
-      <th nzWidth="150px">
+      <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" nzLeft nzWidth="150px">
         <div>Mã phiếu lương</div>
         <input nz-input type='search' formControlName='code'>
       </th>
@@ -211,7 +211,7 @@
         <td nzLeft>
           {{i + 1}}
         </td>
-        <td>
+        <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" nzLeft>
           {{payroll.id}}
         </td>
         <td nzLeft>
@@ -351,6 +351,7 @@
     <tr>
       <th nzWidth="100px">
       </th>
+      <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">Id</th>
       <th>Loại lương cố định</th>
       <th>Hệ số</th>
       <th>Thành tiền</th>
@@ -366,6 +367,7 @@
         >
         </label>
       </td>
+      <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">{{salary.id}}</td>
       <td> {{salary.title}}</td>
       <td> {{salary.rate}}</td>
       <td class=' text-center ' style='color: #05981C'>
@@ -392,6 +394,7 @@
         <tr>
           <th nzWidth="100px">
           </th>
+          <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">Id</th>
           <th>Phụ cấp</th>
           <th>Thời gian</th>
           <th>Tổng ngày</th>
@@ -411,6 +414,7 @@
             >
             </label>
           </td>
+          <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">{{salary.id}}</td>
           <td>
             <span>{{salary.title}}</span>
           </td>
@@ -460,6 +464,7 @@
           <th nzWidth="100px">
           </th>
           <th nzWidth="60px">STT</th>
+          <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">Id</th>
           <th>Tăng ca</th>
           <th>Thời gian</th>
           <th>Tổng ngày</th>
@@ -477,6 +482,7 @@
             >
             </label>
           </td>
+          <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">{{salary.id}}</td>
           <td>
             <span>{{i + 1}}</span>
           </td>
@@ -525,6 +531,7 @@
         <tr>
           <th nzWidth="100px">
           </th>
+          <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">Id</th>
           <th nzWidth='60px'>STT</th>
           <th>Loại vắng</th>
           <th> Thời gian</th>
@@ -544,6 +551,7 @@
             >
             </label>
           </td>
+          <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">{{salary.id}}</td>
           <td>
             {{i + 1}}
           </td>

@@ -30,7 +30,7 @@
         <thead>
         <tr>
           <th nzLeft nzWidth="60px">STT</th>
-          <th>Mã Phòng ban</th>
+          <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">Mã Phòng ban</th>
           <th nzLeft>Tên phòng ban</th>
           <th nzLeft>Đơn vị</th>
           <th nzLeft>Tổng nhân viên</th>
@@ -40,7 +40,7 @@
         <ng-template ngFor let-department [ngForOf]="tableDepartment.data" let-i='index'>
           <tr class="pointer" (click)="onEmployee(department)" (contextmenu)='child.onContextMenu($event,department)'>
             <td nzLeft>{{i + 1}}</td>
-            <td>{{department.id}}</td>
+            <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">{{department.id}}</td>
             <td nzLeft>{{department.name}}</td>
             <td>{{department.branch.name}}</td>
             <td>{{department._count.employees}}</td>

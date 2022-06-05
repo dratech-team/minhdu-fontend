@@ -119,7 +119,8 @@
           <table>
             <thead>
             <tr style='background-color: #dddddd66;'>
-              <th width='50%' class=' text-center '>Lương cơ bản</th>
+              <th width="7%" class=' text-center '>Id</th>
+              <th width='43%' class=' text-center '>Lương cơ bản</th>
               <th width='28%' class=' text-center '>Thành tiền</th>
               <th width='22%' class=' text-center ' (click)='addSalary(type.BASIC,payroll)'>
                 <span class='mr-1 pointer' style='color: #1b8eb7'>Thêm mục</span>
@@ -131,7 +132,8 @@
             <tbody>
             <tr style='background: white'
                 *ngFor="let salary of payroll.salaries | filterTypeSalary:['BASIC_INSURANCE','BASIC' ] ">
-              <th width='50%'> {{salary.title}}</th>
+              <th width='7%'> {{salary.id}}</th>
+              <th width='43%'> {{salary.title}}</th>
               <th width='28%' class=' text-center ' style='color: #4B3880'>
                 {{salary.price|number:'1.0'|notEmpty:'0'}} đ
               </th>
@@ -156,7 +158,8 @@
           <table>
             <thead>
             <tr style='background-color: #dddddd66;'>
-              <th width='50%' class=' text-center '>Phụ cấp lương</th>
+              <th width="7%" class=' text-center '>Id</th>
+              <th width='43%' class=' text-center '>Phụ cấp lương</th>
               <th width='28%' class=' text-center '>Thành tiền</th>
               <th width='22%' class=' text-center ' (click)='addSalary(type.STAY,payroll)'>
                 <span class='mr-1 pointer' style='color: #1b8eb7'>Thêm mục</span>
@@ -167,7 +170,8 @@
             </thead>
             <tbody>
             <tr style='background: white' *ngFor="let salary of payroll.salaries | filterTypeSalary:['STAY' ] ">
-              <th width='50%'> {{salary.title}}</th>
+              <th width='7%'> {{salary.id}}</th>
+              <th width='43%'> {{salary.title}}</th>
               <th width='28%' class=' text-center ' style='color: #4B3880'>
                 {{salary.price|number:'1.0'|notEmpty:'0'}} đ
               </th>
@@ -195,11 +199,12 @@
         <table>
           <thead>
           <tr style='background-color: #dddddd66;'>
-            <th width='25%' class=' title text-center '>Phụ cấp</th>
+            <th width='4%' class=' title text-center '>Id</th>
+            <th width='24%' class=' title text-center '>Phụ cấp</th>
             <th width='15%' class=' title text-center '>Thời gian</th>
             <th width='10%' class=' title text-center '>Đơn vị</th>
             <th width='15%' class=' title text-center '>Thành tiền</th>
-            <th width='25%' class=' title text-center '>Chú thích</th>
+            <th width='22%' class=' title text-center '>Chú thích</th>
             <th width='10%' class='text-center' style='padding: 0; color: #1b8eb7'
                 (click)='addSalary(type.ALLOWANCE, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
               <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
@@ -210,7 +215,8 @@
           <tbody>
           <tr *ngFor="let salary of payroll.salaries | filterTypeSalary:['ALLOWANCE'] "
               style='background: white !important;'>
-            <th width='25%'>
+            <th width="4%">{{salary.id}}</th>
+            <th width='24%'>
               <span>{{salary.title}}</span>
             </th>
             <th width='15%' class=' text-center '>
@@ -222,7 +228,7 @@
             </th>
             <th width='15%' class=' text-center ' style='color: #29CC97'>{{salary.price|number:'1.0'| notEmpty:'0'}}đ
             </th>
-            <th width='25%' class=' text-center '>
+            <th width='22%' class=' text-center '>
               <span>{{salary.note}}</span>
             </th>
             <th width='10%'>
@@ -246,8 +252,10 @@
         <table matSort (matSortChange)='sortData($event)'>
           <thead>
           <tr style='background-color: #dddddd66;'>
+            <th width='4%' class=' title text-center '>Id
+            </th>
             <th mat-sort-header='title'
-                width='25%' class=' title text-center '>Tăng ca
+                width='24%' class=' title text-center '>Tăng ca
             </th>
             <th mat-sort-header='datetime'
                 width='15%' class=' title text-center '>Thời gian
@@ -258,7 +266,7 @@
                 width='8%' class=' title text-center '>Đơn vị
             </th>
             <th width='13%' class=' title text-center '>Thành tiền</th>
-            <th width='21%' class=' title text-center '>Chú thích</th>
+            <th width='18%' class=' title text-center '>Chú thích</th>
             <th width='10%' class='text-center' style='padding: 0; color: #1b8eb7'
                 (click)='addSalary(type.OVERTIME, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
               <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
@@ -269,6 +277,11 @@
           <tbody>
           <tr *ngFor='let salary of sortedSalaryOver'
               style='background: white !important;'>
+            <td>
+              <div>
+                <span>{{salary.id}}</span>
+              </div>
+            </td>
             <td>
               <div>
                 <span>{{salary.title}}</span>
@@ -321,11 +334,12 @@
           <thead>
           <tr style='background-color: #dddddd66;'>
             <th width='3%' class=' title text-center '>STT</th>
-            <th width='15%' class=' title text-center '>Khấu trừ</th>
-            <th width='15%' class=' title text-center '>Thời gian</th>
+            <th width='4%' class=' title text-center '>Id</th>
+            <th width='14%' class=' title text-center '>Khấu trừ</th>
+            <th width='14%' class=' title text-center '>Thời gian</th>
             <th width='10%' class=' title text-center '>Thành tiền</th>
             <th width='21%' class=' title text-center '>Chi tiết</th>
-            <th width='12%' class=' title text-center '>Chú thích</th>
+            <th width='10%' class=' title text-center '>Chú thích</th>
             <th width='10%' class='text-center' style='padding: 0; color: #1b8eb7'
                 (click)='addSalary(type.ABSENT, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
               <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
@@ -338,6 +352,9 @@
               style='background: white !important;' class='pointer' (click)='onSalarySetting(salary?.setting?.title)'>
             <th>
               {{i + 1}}
+            </th>
+            <th>
+              {{salary.id}}
             </th>
             <th >
               <div>
@@ -385,11 +402,12 @@
           <thead>
           <tr style='background-color: #dddddd66;'>
             <th width='3%' class='title text-center'>STT</th>
-            <th width='22%' class='title text-center'>Đi làm ngày lễ</th>
-            <th width='15%' class='title text-center'>Ngày</th>
+            <th width='4%' class='title text-center'>Id</th>
+            <th width='21%' class='title text-center'>Đi làm ngày lễ</th>
+            <th width='14%' class='title text-center'>Ngày</th>
             <th width='9%' class='title text-center'>Hệ số</th>
-            <th width='15%' class='title text-center'>Đơn giá</th>
-            <th width='15%' class='title text-center'>Tổng tiền</th>
+            <th width='14%' class='title text-center'>Đơn giá</th>
+            <th width='14%' class='title text-center'>Tổng tiền</th>
             <th width='10%' style='color: #1b8eb7' (click)='scanHoliday(payroll.id)'><span
               class='mx-2 pointer'>Quét</span>
               <img class='pointer' style='margin-left: 2px;width: 13px;' src='./assets/icon/search.svg'
@@ -402,6 +420,9 @@
               style='background: white !important;'>
             <th>
               {{i + 1}}
+            </th>
+            <th>
+              {{salary.id}}
             </th>
             <th class=' text-center'>
               {{salary.datetime | date: "dd/MM/yyyy"}}
@@ -441,10 +462,11 @@
           <thead>
           <tr style='background-color: #dddddd66;'>
             <th width='3%' class=' title text-center '>STT</th>
+            <th width='3%' class=' title text-center '>Id</th>
             <th width='22%' class=' title text-center '>Chú thích ngày</th>
-            <th width='10%' class=' title text-center '>Thời gian</th>
-            <th width='8%' class=' title text-center '>Đơn vị</th>
-            <th width='21%' class=' title text-center '>Diễn giải</th>
+            <th width='9%' class=' title text-center '>Thời gian</th>
+            <th width='7%' class=' title text-center '>Đơn vị</th>
+            <th width='20%' class=' title text-center '>Diễn giải</th>
             <th width='10%' class='text-center' style='padding: 0; color: #1b8eb7'
                 (click)='addSalary(type.WFH, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
               <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
@@ -458,6 +480,11 @@
             <th>
               <div>
                 <span>{{i + 1}}</span>
+              </div>
+            </th>
+            <th>
+              <div>
+                <span>{{salary.id}}</span>
               </div>
             </th>
             <th>

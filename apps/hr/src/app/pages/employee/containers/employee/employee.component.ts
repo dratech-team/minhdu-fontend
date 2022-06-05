@@ -26,6 +26,7 @@ import {
   FlatSalary,
   Gender,
   ItemContextMenu,
+  ModeEnum,
   Role,
   SearchEmployeeType,
   sortEmployeeTypeEnum
@@ -40,7 +41,6 @@ import {Subject, throwError} from 'rxjs';
 import {District, Employee, Ward} from '@minhdu-fontend/data-models';
 import {checkInputNumber} from '@minhdu-fontend/utils';
 import {DialogExportComponent} from '@minhdu-fontend/components';
-import {DialogCategoryComponent} from '../../components/category/dialog-category.component';
 import {CategoryService} from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {EmployeeService} from '../../../../../../../../libs/employee/src/lib/+state/service/employee.service';
@@ -52,6 +52,7 @@ import {ProvinceService} from "@minhdu-fontend/location";
 import {ExportService} from "@minhdu-fontend/service";
 import {DepartmentActions, DepartmentQuery} from "@minhdu-fontend/orgchart-v2";
 import {Actions} from "@datorama/akita-ng-effects";
+import {AccountQuery} from "../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -76,6 +77,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     return branches;
   }));
   provinces$ = this.provinceService.getAll()
+  currentUser$ = this.accountQuery.selectCurrentUser()
 
   roleEnum = Role;
   sortEnum = sortEmployeeTypeEnum;
@@ -110,6 +112,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME),
     status: new FormControl(EmployeeStatusEnum.IS_ACTIVE)
   });
+  modeEnum = ModeEnum
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
@@ -127,7 +130,8 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     private readonly viewContentRef: ViewContainerRef,
     private readonly provinceService: ProvinceService,
     private readonly exportService: ExportService,
-    private readonly departmentQuery: DepartmentQuery
+    private readonly departmentQuery: DepartmentQuery,
+    private readonly accountQuery: AccountQuery
   ) {
     this.store.pipe(select(selectorAllEmployee))
       .pipe(tap(employees => this.employees = employees))
@@ -139,6 +143,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit(): void {
+
     this.actions$.dispatch(DepartmentActions.loadAll({}))
 
     this.role = window.localStorage.getItem('role');

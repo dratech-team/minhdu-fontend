@@ -1,5 +1,5 @@
-import { Component, isDevMode } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import {Component} from '@angular/core';
+import {NavigationEnd, Router} from '@angular/router';
 
 @Component({
   selector: 'minhdu-fontend-hrv2',
@@ -11,14 +11,9 @@ export class AppComponent {
   }
 
   ngOnInit(): void {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        if (event.url.indexOf('mode=') === -1) {
-          this.router.navigate([event.url.split('?')[0]], {
-            queryParams: { mode: isDevMode() ? 'info' : 'prod' },
-            queryParamsHandling: 'merge'
-          }).then();
-        }
+    this.router.events.subscribe((evt) => {
+      if (!(evt instanceof NavigationEnd)) {
+        return;
       }
     });
   }

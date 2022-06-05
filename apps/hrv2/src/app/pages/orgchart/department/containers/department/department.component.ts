@@ -9,10 +9,11 @@ import {ModalDepartmentComponent} from "../../components/modal-department/modal-
 import {DataAddOrUpdateDepartment} from "../../data/modal-department.data";
 import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {EmployeeStore} from "@minhdu-fontend/employee-v2";
 import {PayrollStore} from "../../../../payroll/state";
-import {FilterTypeEnum, ItemContextMenu} from "@minhdu-fontend/enums";
+import {FilterTypeEnum, ItemContextMenu, ModeEnum} from "@minhdu-fontend/enums";
+import {AccountQuery} from "../../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   templateUrl: 'department.component.html'
@@ -21,10 +22,12 @@ export class DepartmentComponent implements OnInit {
   departments$ = this.departmentQuery.selectAll()
   loading$ = this.departmentQuery.select(state => state.loading)
   total$ = this.departmentQuery.select(state => state.total)
+  currentUser$ = this.accountQuery.selectCurrentUser()
 
   pageSizeTable = 10;
   itemContext = ItemContextMenu
   filterTypeEnum = FilterTypeEnum
+  modeEnum = ModeEnum
   formGroup = new FormGroup(
     {
       search: new FormControl(''),
@@ -41,6 +44,8 @@ export class DepartmentComponent implements OnInit {
     private readonly employeeStore: EmployeeStore,
     private readonly payrollStore: PayrollStore,
     private readonly router: Router,
+    private readonly activeRouter: ActivatedRoute,
+    private readonly accountQuery: AccountQuery,
   ) {
   }
 
