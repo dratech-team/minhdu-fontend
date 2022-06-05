@@ -2,7 +2,8 @@ export const Api = {
   HR: {
     PAYROLL: {
       PAYROLL: 'payroll',
-      CONFIRM_PAYROLL: 'payroll/payslip',
+      CONFIRM_PAYROLL: 'payroll/confirm',
+      PAYROLL_PAYSLIP: 'payroll/payslip',
       RESTORE_PAYROLL: 'payroll/restore',
       EXPORT: 'payroll/export/payroll',
       PAYROLL_CREATE: 'payroll/create',
