@@ -7,17 +7,11 @@ import {BranchEntity, DepartmentEntity, PositionEntity} from "@minhdu-fontend/or
 import {confirmTypeEnums, PaidTypeEnums} from "../enums";
 
 export interface PayrollEntityState extends EntityState<PayrollEntity> {
-  total: number,
-  remain: number,
+  total: number;
+  remain: number;
   loading: boolean;
-  loadMore: boolean;
-  totalSalary: number
-  updated: boolean | null;
-  added: boolean | null;
-  scanned: boolean | null
-  deleted: boolean | null;
+  totalSalary: number;
   expandAll: boolean;
-  confirmed: boolean | null
 
   search: {
     code?: string,
@@ -52,12 +46,7 @@ export function createInitialState(): PayrollEntityState {
     remain: 0,
     totalSalary: 0,
     loading: true,
-    loadMore: false,
-    added: null,
-    updated: null,
-    deleted: null,
     expandAll: true,
-    confirmed: null,
     search: {
       employeeType: EmployeeType.EMPLOYEE_FULL_TIME,
       empStatus: EmployeeStatusEnum.IS_ACTIVE,

@@ -40,7 +40,7 @@ export class PayrollComponent implements OnInit {
   }));
   loadingSettingSalary$ = this.settingSalaryQuery.select(state => state.loading)
   categories$ = this.departmentQuery.selectAll();
-  settingSalaries$ = this.settingSalaryQuery.selectAll()
+  setting$ = this.settingSalaryQuery.selectAll()
 
   stateSearch = this.payrollQuery.getValue().search
   empStatusContain = EmployeeStatusConstant;
@@ -90,14 +90,10 @@ export class PayrollComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.actions$.dispatch(BranchActions.loadAll({}))
-
     this.actions$.dispatch(DepartmentActions.loadAll({}))
-
     this.actions$.dispatch(SettingSalaryActions.loadAll({}))
 
-    this.onLoadPayroll(false)
     this.payrollQuery.select(state => state.search).subscribe(
       val => {
         this.formGroup.get('rangeDay')?.setValue([val.startedAt, val.endedAt], {emitEvent: false})
@@ -105,7 +101,7 @@ export class PayrollComponent implements OnInit {
       }
     )
 
-    this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe(val => {
+    this.formGroup.valueChanges.subscribe(val => {
       this.onLoadPayroll(false)
     })
 
@@ -122,11 +118,10 @@ export class PayrollComponent implements OnInit {
     })
   }
 
-
   onLoadPayroll(isPagination: boolean) {
     this.actions$.dispatch(PayrollActions.loadAll({
-      search: this.mapPayroll(this.formGroup.value,),
-      isPaginate: isPagination
+      search: this.mapPayroll(this.formGroup.value),
+      isPaginate: isPagination,
     }))
   }
 
@@ -195,11 +190,6 @@ export class PayrollComponent implements OnInit {
     }).afterClose.subscribe(val => {
       if (val) {
         this.actions$.dispatch(PayrollActions.addMany({body: {createdAt: new Date(val)}}))
-        this.added$.subscribe(val => {
-          if (val) {
-            this.onLoadPayroll(false)
-          }
-        })
       }
     })
   }

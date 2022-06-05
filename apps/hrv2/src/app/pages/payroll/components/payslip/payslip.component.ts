@@ -28,7 +28,7 @@ export class PayslipComponent implements OnInit {
   @Input() data!: {
     payroll: PayrollEntity
   }
-  payslip$ = new Observable<PayslipEntity>()
+  payslip$ = this.payslipService.getOne(this.data.payroll.id);
   confirmed$ = this.payrollQuery.select(state => state.confirmed)
 
   accConfirmedAt = new FormControl('');
@@ -53,7 +53,6 @@ export class PayslipComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.payslip$ = this.payslipService.getOne(this.data.payroll.id);
     if (this.data?.payroll?.accConfirmedAt) {
       this.isConfirmed = true;
       this.accConfirmedAt.setValue(this.datePipe.transform(this.data.payroll.accConfirmedAt, 'yyyy-MM-dd'));

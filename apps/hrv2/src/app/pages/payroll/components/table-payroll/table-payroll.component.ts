@@ -57,8 +57,6 @@ export class TablePayrollComponent implements OnInit {
     item.type === this.payrollQuery.getValue().search.filterType)?.scroll;
   @Output() onloadPayroll = new EventEmitter<{ isPagination: boolean }>();
   loading$ = this.payrollQuery.select(state => state.loading);
-  loadMore$ = this.payrollQuery.select(state => state.loadMore);
-  added$ = this.payrollQuery.select(state => state.added);
   total$ = this.payrollQuery.select(state => state.total);
   remain$ = this.payrollQuery.select(state => state.remain);
   totalSalary$ = this.payrollQuery.select(state => state.totalSalary);
@@ -101,7 +99,7 @@ export class TablePayrollComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.added$.subscribe(added => {
+    this.loading$.subscribe(added => {
       if (added) {
         this.onloadPayroll.emit({isPagination: false})
       }
@@ -117,7 +115,7 @@ export class TablePayrollComponent implements OnInit {
     })
   }
 
-  onPagination() {
+  onLoadMore() {
     this.onloadPayroll.emit({isPagination: true})
   }
 
