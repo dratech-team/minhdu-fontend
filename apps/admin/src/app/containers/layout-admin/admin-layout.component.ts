@@ -35,7 +35,7 @@ export class AdminLayoutComponent implements OnInit {
       nzTitle: 'Đăng xuất',
       nzContent: 'Bạn có chắc chắn muốn đăng xuất',
       nzOnOk: (_ => {
-        const currentUser = this.accountQuery.getValue().currentUser
+        const currentUser = this.accountQuery.getCurrentUser();
         if (currentUser) {
           return this.actions$.dispatch(AccountActions.logout({
             id: currentUser.id

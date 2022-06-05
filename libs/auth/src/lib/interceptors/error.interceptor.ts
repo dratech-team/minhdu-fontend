@@ -24,7 +24,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         if ([401].indexOf(err.status) !== -1) {
           // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
           /// FIXME: action not working
-          const currentUser = this.accountQuery.getValue().currentUser
+          const currentUser = this.accountQuery.getCurrentUser();
           if (currentUser) {
             this.actions$.dispatch(AccountActions.logout({id: currentUser.id}));
           }

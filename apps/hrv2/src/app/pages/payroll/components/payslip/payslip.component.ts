@@ -31,7 +31,7 @@ export class PayslipComponent implements OnInit {
   recipeType = RecipeType;
   isConfirmed = false;
   typeEmployee = EmployeeType;
-  currentUser = this.accountQuery.getValue().currentUser
+  currentUser = this.accountQuery.getCurrentUser();
   adding = false;
 
   constructor(
