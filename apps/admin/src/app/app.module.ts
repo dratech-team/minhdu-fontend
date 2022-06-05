@@ -20,6 +20,8 @@ import {AppContainer} from './containers/app/app.container';
 import {AdminLayoutComponent} from './containers/layout-admin/admin-layout.component';
 import {AdminReducer} from './states/admin.reducer';
 import {AuthModule} from "@minhdu-fontend/auth";
+import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
+import {AccountEffects} from "../../../../libs/system/src/lib/state/account-management/account.effects";
 
 @NgModule({
   imports: [
@@ -32,6 +34,7 @@ import {AuthModule} from "@minhdu-fontend/auth";
     BrowserAnimationsModule,
     BrowserModule,
     EffectsModule.forRoot(),
+    AkitaNgEffectsModule.forRoot([AccountEffects]),
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
