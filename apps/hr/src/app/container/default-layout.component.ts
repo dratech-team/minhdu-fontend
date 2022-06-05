@@ -18,7 +18,7 @@ import {AccountQuery} from "../../../../../libs/system/src/lib/state/account-man
   styleUrls: ['./default-layout.component.scss'],
 })
 export class DefaultLayoutComponent implements OnInit {
-  currentUser = this.accountQuery.getValue().currentUser
+  currentUser = this.accountQuery.getCurrentUser();
   roleEnum = this.accountQuery.getValue();
 
   showFiller = false;

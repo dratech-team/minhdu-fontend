@@ -92,7 +92,7 @@ export class DetailPayrollComponent implements OnInit {
 
   daysInMonth!: number;
   isSticky = false;
-  currentUser = this.accountQuery.getValue().currentUser;
+  currentUser = this.accountQuery.getCurrentUser();
   roleEnum = Role
   filterSalaryEnum = FilterSalaryEnum
 

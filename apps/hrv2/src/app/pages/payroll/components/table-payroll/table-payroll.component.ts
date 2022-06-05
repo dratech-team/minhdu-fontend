@@ -74,7 +74,7 @@ export class TablePayrollComponent implements OnInit {
   salaryType = SalaryTypeEnum
   deletingSalary = false
   salariesSelected: SalaryEntity[] = []
-  currentUser = this.accountQuery.getValue().currentUser
+  currentUser = this.accountQuery.getCurrentUser();
   sessionConstant = SessionConstant;
   partialDay = PartialDayEnum
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);

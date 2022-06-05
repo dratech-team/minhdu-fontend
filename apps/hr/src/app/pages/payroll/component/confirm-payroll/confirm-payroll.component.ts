@@ -37,7 +37,7 @@ export class ConfirmPayrollComponent implements OnInit {
     getFirstDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
   lastDayInMonth = this.datePipe.transform(
     getLastDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
-  currentUser = this.accountQuery.getValue().currentUser
+  currentUser = this.accountQuery.getCurrentUser();
   adding = false;
 
   constructor(
