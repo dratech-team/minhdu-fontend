@@ -1,18 +1,19 @@
-import {Injectable} from '@angular/core';
-import {AccountService} from '../../services/account.service';
-import {Actions, Effect, ofType} from "@datorama/akita-ng-effects";
-import {NzMessageService} from "ng-zorro-antd/message";
-import {catchError, map, switchMap, tap} from "rxjs/operators";
-import {of} from "rxjs";
-import {AccountActions} from "./account.actions";
-import {AccountStore} from "./account.store";
-import {SearchAccountDto} from "../../dto/account/search-account.dto";
-import {AddAccountDto} from "../../dto/account/add-account.dto";
-import {RemoveAccountDto} from "../../dto/account/remove-account.dto";
-import {PaginationDto} from "@minhdu-fontend/constants";
-import {AccountQuery} from "./account.query";
-import {Router} from "@angular/router";
-import {SignInDto} from "../../dto/account/sign-in.dto";
+import { Injectable } from '@angular/core';
+import { AccountService } from '../../services/account.service';
+import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { AccountActions } from './account.actions';
+import { AccountStore } from './account.store';
+import { SearchAccountDto } from '../../dto/account/search-account.dto';
+import { AddAccountDto } from '../../dto/account/add-account.dto';
+import { RemoveAccountDto } from '../../dto/account/remove-account.dto';
+import { PaginationDto } from '@minhdu-fontend/constants';
+import { AccountQuery } from './account.query';
+import { Router } from '@angular/router';
+import { SignInDto } from '../../dto/account/sign-in.dto';
+import { AccountEntity } from '../../entities/account.entity';
 
 @Injectable()
 export class AccountEffects {
@@ -39,7 +40,7 @@ export class AccountEffects {
           this.accountStore.update(state => ({
             ...state, added: true
           }));
-          this.accountStore.add(res)
+          this.accountStore.add(res);
         }),
         catchError(err => {
           this.accountStore.update(state => ({
@@ -56,40 +57,40 @@ export class AccountEffects {
     ofType(AccountActions.loadAll),
     switchMap((props: SearchAccountDto) => {
       this.accountStore.update(state => (
-        Object.assign({...state}, props.isPaginate
-          ? {loadMore: true}
-          : {loading: true}
+        Object.assign({ ...state }, props.isPaginate
+          ? { loadMore: true }
+          : { loading: true }
         )
       ));
       Object.assign(props.search, {
         take: PaginationDto.take,
-        skip: props.isPaginate ? this.accountQuery.getCount() : PaginationDto.skip,
-      })
+        skip: props.isPaginate ? this.accountQuery.getCount() : PaginationDto.skip
+      });
       return this.accountService.pagination(props).pipe(
         map((res) => {
           this.accountStore.update(state => (
-            Object.assign({...state, total: res.total}, props.isPaginate
-              ? {loadMore: false}
-              : {loading: false}
+            Object.assign({ ...state, total: res.total }, props.isPaginate
+              ? { loadMore: false }
+              : { loading: false }
             )
           ));
           if (props.isPaginate) {
             this.accountStore.add(res.data);
           } else {
-            this.accountStore.set(res.data);
+            this.accountStore.upsertMany(res.data);
           }
         }),
         catchError((err) => {
           this.accountStore.update(state => (
-            Object.assign({...state}, props.isPaginate
-              ? {loadMore: false}
-              : {loading: false}
+            Object.assign({ ...state }, props.isPaginate
+              ? { loadMore: false }
+              : { loading: false }
             )
           ));
-          return of(AccountActions.error(err))
+          return of(AccountActions.error(err));
         })
       );
-    }),
+    })
   );
 
 
@@ -115,23 +116,20 @@ export class AccountEffects {
     ofType(AccountActions.signIn),
     switchMap((props: SignInDto) => {
         this.accountStore.update(state => ({
-          ...state, loginLoading: true
-        }))
+          ...state, loginning: true
+        }));
 
         return this.accountService.signIn(props).pipe(
-          tap((user) => {
-            this.accountStore.update(state => ({
-              ...state, loginLoading: false
-            }))
+          tap((user: AccountEntity) => {
+            this.accountStore.update(state => ({ ...state, loginning: false, active: user.id }));
+            this.accountStore.add(user);
             this.message.success('Đăng nhập thành công');
-            localStorage.setItem('role', user.role);
-            localStorage.setItem('token', user.token);
             this.router.navigate(['/']).then();
           }),
           catchError((err) => {
             this.accountStore.update(state => ({
-              ...state, loginLoading: false
-            }))
+              ...state, loginning: false
+            }));
             return of(AccountActions.error(err));
           })
         );
@@ -173,19 +171,19 @@ export class AccountEffects {
     switchMap((props: RemoveAccountDto) => {
         this.accountStore.update(state => ({
           ...state, deleted: false
-        }))
+        }));
         return this.accountService.delete(props.id).pipe(
           map((_) => {
             this.accountStore.update(state => ({
               ...state, deleted: true
-            }))
+            }));
             this.message.success('Xoá tài khoản thành công');
             this.accountStore.remove(props.id);
           }),
           catchError((err) => {
             this.accountStore.update(state => ({
               ...state, deleted: null
-            }))
+            }));
             return of(AccountActions.error(err));
           })
         );
@@ -196,9 +194,9 @@ export class AccountEffects {
   @Effect()
   logOut$ = this.actions$.pipe(
     ofType(AccountActions.logout),
-    switchMap((_) => {
-        localStorage.removeItem('role');
-        localStorage.removeItem('token');
+    switchMap((props) => {
+        this.accountStore.update(state => ({ ...state, active: null }));
+        this.accountStore.remove(props.id);
         return this.router.navigate(['auth/login']).then();
       }
     )

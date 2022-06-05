@@ -21,7 +21,7 @@ export class AccountService extends BaseService<AccountEntity> {
   }
 
   signUp(props: AddAccountDto): Observable<AccountEntity> {
-    return this.http.post<any>(this.url + '/signup', props.body);
+    return this.http.post<any>(VersionEnum.V1 + Api.SIGN_UP, props.body);
   }
 
   pagination(props: SearchAccountDto): Observable<any> {
@@ -45,7 +45,7 @@ export class AccountService extends BaseService<AccountEntity> {
   }
 
   signIn(body: SignInDto): Observable<any> {
-    return this.http.post<any>(this.url + '/signin', body);
+    return this.http.post<any>(VersionEnum.V1 + Api.SIGN_IN, body);
   }
 
   updatePassword(id: number, body: any): Observable<any> {

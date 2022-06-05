@@ -1,27 +1,27 @@
-import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
+import {ActiveState, EntityState, EntityStore, StoreConfig} from '@datorama/akita';
 import {Injectable} from '@angular/core';
 import {StorageName} from '@minhdu-fontend/constants';
 import {AccountEntity} from "../../entities/account.entity";
-import {BaseSearchAccountDto} from "../../dto/account/search-account.dto";
 
-export interface AccountState extends EntityState<AccountEntity> {
+export interface AccountState extends EntityState<AccountEntity>, ActiveState<AccountEntity["id"]> {
   loading: boolean;
-  loginLoading: boolean,
+  loginning: boolean,
   loadMore: boolean
   added: boolean | null;
   total: number
-  search?: Partial<AccountEntity & {search: string}>;
-  deleted: boolean | null
+  search?: Partial<AccountEntity & { search: string }>;
+  deleted: boolean | null,
 }
 
 function createInitState(): AccountState {
   return {
+    active: null,
     loading: true,
-    loginLoading: false,
+    loginning: false,
     loadMore: false,
     added: null,
     total: 0,
-    deleted: null
+    deleted: null,
   };
 }
 

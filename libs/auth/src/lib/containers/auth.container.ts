@@ -13,7 +13,7 @@ import {appConstant} from "@minhdu-fontend/constants";
 })
 export class AuthComponent implements OnInit {
   loginForm!: FormGroup;
-  loading$ = this.accountQuery.select(state => state.loginLoading)
+  loginning$ = this.accountQuery.select(state => state.loginning)
   localhost = Localhost;
   constructor(
     private formBuilder: FormBuilder,

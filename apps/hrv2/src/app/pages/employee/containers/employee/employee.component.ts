@@ -33,11 +33,14 @@ import {
 import {ModalEmployeeComponent} from "../../components/employee/modal-employee.component";
 import {ModalEmployeeData} from "../../data/modal-employee.data";
 import * as _ from "lodash";
-import {ModalExportExcelComponent} from "@minhdu-fontend/components";
-import {ModalExportExcelData} from "@minhdu-fontend/components";
+import {
+  ModalAlertComponent,
+  ModalDatePickerComponent,
+  ModalExportExcelComponent,
+  ModalExportExcelData
+} from "@minhdu-fontend/components";
 import {ModalAlertEntity, ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
-import {ModalDatePickerComponent} from "@minhdu-fontend/components";
-import {ModalAlertComponent} from "@minhdu-fontend/components";
+import {AccountQuery} from "../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -65,8 +68,6 @@ export class EmployeeComponent implements OnInit {
   wards: Ward[] = this.stateEmployee.district?.wards || []
   employees: EmployeeEntity[] = []
 
-  roleEnum = Role;
-  role = window.localStorage.getItem('role')
   genderType = Gender;
   ItemContextMenu = ItemContextMenu;
   empStatusEnum = EmployeeStatusEnum
@@ -107,7 +108,8 @@ export class EmployeeComponent implements OnInit {
     private readonly positionQuery: PositionQuery,
     private readonly branchQuery: BranchQuery,
     private readonly provinceService: ProvinceService,
-    private readonly departmentQuery: DepartmentQuery
+    private readonly departmentQuery: DepartmentQuery,
+    private readonly accountQuery: AccountQuery
   ) {
     this.employeeQuery.selectAll().subscribe(item => {
       this.employees = item
@@ -269,9 +271,9 @@ export class EmployeeComponent implements OnInit {
       if (val) {
         this.actions$.dispatch(
           EmployeeActions.leave({
-              id: employee.id,
-              body: {leftAt: ''}
-            })
+            id: employee.id,
+            body: {leftAt: ''}
+          })
         )
       }
     })
