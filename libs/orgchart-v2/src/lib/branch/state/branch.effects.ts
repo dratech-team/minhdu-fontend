@@ -31,7 +31,11 @@ export class BranchEffects {
       }));
       return this.branchService.pagination(props as SearchBranchDto).pipe(
         map((response) => {
-          this.branchStore.update(state => ({...state, loading: false, total: response.total}));
+          this.branchStore.update(state => ({
+            ...state,
+            loading: false,
+            total: response.total
+          }));
           if (response.data.length === 1 && response.data[0].positions) {
             this.positionStore.set(response.data[0].positions)
           }
@@ -43,7 +47,8 @@ export class BranchEffects {
         }),
         catchError((err) => {
           this.branchStore.update(state => ({
-            ...state, loading: false
+            ...state,
+            loading: undefined
           }));
           return of(BranchActions.error(err))
         })
@@ -56,20 +61,20 @@ export class BranchEffects {
     ofType(BranchActions.addOne),
     switchMap((props) => {
       this.branchStore.update(state => ({
-        ...state, added: false
+        ...state, loading: true
       }));
       return this.branchService.addOne(props).pipe(
         tap((res) => {
             this.message.success('Thêm đơn vị thành công')
             this.branchStore.update(state => ({
-              ...state, added: true
+              ...state, loading: false
             }));
             this.branchStore.add(res);
           }
         ),
         catchError(err => {
           this.branchStore.update(state => ({
-            ...state, added: null
+            ...state, loading: undefined
           }));
           return of(BranchActions.error(err))
         }),
@@ -91,18 +96,21 @@ export class BranchEffects {
     ofType(BranchActions.update),
     switchMap((props) => {
         this.branchStore.update(state => ({
-          ...state, added: false
+          ...state,
+          loading: true
         }));
         return this.branchService.update(props).pipe(
           tap(response => {
             this.branchStore.update(state => ({
-              ...state, added: true
+              ...state,
+              loading: false
             }));
             this.branchStore.update(response.id, response);
           }),
           catchError(err => {
               this.branchStore.update(state => ({
-                ...state, added: null
+                ...state,
+                loading: undefined
               }));
               return of(BranchActions.error(err))
             }
@@ -117,12 +125,12 @@ export class BranchEffects {
     ofType(BranchActions.remove),
     switchMap((props) => {
         this.branchStore.update(state => ({
-          ...state, deleted: false
+          ...state, loading: true
         }))
         return this.branchService.delete(props.id).pipe(
           map(() => {
               this.branchStore.update(state => ({
-                ...state, deleted: true
+                ...state, loading: false
               }))
               this.message.success('Xoá đơn vị thành công')
               return this.branchStore.remove(props.id)
@@ -130,7 +138,7 @@ export class BranchEffects {
           ),
           catchError((err) => {
               this.branchStore.update(state => ({
-                ...state, deleted: null
+                ...state, loading: undefined
               }))
               return of(BranchActions.error(err))
             }

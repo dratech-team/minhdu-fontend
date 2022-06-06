@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {Observable, throwError} from 'rxjs';
+import {throwError} from 'rxjs';
 import {EmployeeType, RecipeType} from '@minhdu-fontend/enums';
 import {FormControl} from '@angular/forms';
 import {DatePipe} from '@angular/common';
@@ -9,16 +9,16 @@ import {
   DialogSharedComponent
 } from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
 import {catchError} from "rxjs/operators";
-import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
-import {PayrollEntity, PayslipEntity} from "../../entities";
+import {Role} from "@minhdu-fontend/enums";
+import {PayrollEntity} from "../../entities";
 import {PayslipService} from "../../services/payslip.service";
 import {PayrollService} from "../../services/payroll.service";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../state/payroll.action";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {getLastDayInMonth} from "@minhdu-fontend/utils";
-import { PayrollQuery } from '../../state';
-import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
+import {PayrollQuery} from '../../state';
+import {AccountQuery} from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 
 @Component({
   templateUrl: 'payslip.component.html',
@@ -29,7 +29,7 @@ export class PayslipComponent implements OnInit {
     payroll: PayrollEntity
   }
   payslip$ = this.payslipService.getOne(this.data.payroll.id);
-  confirmed$ = this.payrollQuery.select(state => state.confirmed)
+  loading$ = this.payrollQuery.select(state => state.loading)
 
   accConfirmedAt = new FormControl('');
   recipeType = RecipeType;

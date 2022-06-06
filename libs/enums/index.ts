@@ -51,4 +51,4 @@ export * from './input-search.enum';
 export * from './paidType.enum';
 export * from './hr/employee-status.enum';
 export * from './version.enum';
-export * from './mode.enum'
+export * from './mode.enum';

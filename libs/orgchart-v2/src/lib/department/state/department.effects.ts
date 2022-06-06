@@ -24,11 +24,16 @@ export class DepartmentEffects {
     ofType(DepartmentActions.loadAll),
     switchMap((props) => {
       this.departmentStore.update(state => ({
-        ...state, loading: true
+        ...state,
+        loading: true
       }));
       return this.departmentService.pagination(props).pipe(
         map((response) => {
-          this.departmentStore.update(state => ({...state, loading: false, total: response.total}));
+          this.departmentStore.update(state => ({
+            ...state,
+            loading: false,
+            total: response.total
+          }));
           if (props.isPaginate) {
             this.departmentStore.add(response.data);
           } else {
@@ -50,20 +55,23 @@ export class DepartmentEffects {
     ofType(DepartmentActions.addOne),
     switchMap((props) => {
       this.departmentStore.update(state => ({
-        ...state, addeds: false
+        ...state,
+        loading: true
       }));
       return this.departmentService.addOne(props).pipe(
         tap((res) => {
             this.message.success('Thêm đơn vị thành công')
             this.departmentStore.update(state => ({
-              ...state, addeds: true
+              ...state,
+              loading: false
             }));
             this.departmentStore.add(res);
           }
         ),
         catchError(err => {
           this.departmentStore.update(state => ({
-            ...state, addeds: null
+            ...state,
+            loading: undefined
           }));
           return of(DepartmentActions.error(err))
         }),
@@ -85,18 +93,21 @@ export class DepartmentEffects {
     ofType(DepartmentActions.update),
     switchMap((props) => {
         this.departmentStore.update(state => ({
-          ...state, added: false
+          ...state,
+          loading: true
         }));
         return this.departmentService.update(props).pipe(
           tap(response => {
             this.departmentStore.update(state => ({
-              ...state, added: true
+              ...state,
+              loading: false
             }));
             this.departmentStore.update(response.id, response);
           }),
           catchError(err => {
               this.departmentStore.update(state => ({
-                ...state, added: null
+                ...state,
+                loading: undefined
               }));
               return of(DepartmentActions.error(err))
             }
@@ -123,18 +134,27 @@ export class DepartmentEffects {
   removeEmployee$ = this.action$.pipe(
     ofType(DepartmentActions.removeEmployee),
     switchMap((props) => {
-      this.departmentStore.update(state => ({
-        ...state, removeEmp: false
-      }))
+        this.departmentStore.update(state => ({
+          ...state,
+          loading: true
+        }))
         return this.departmentService.removeEmployee(props.id, props.body).pipe(
           map(_ => {
               this.departmentStore.update(state => ({
-                ...state, removeEmp: true
+                ...state,
+                loading: false
               }))
               this.message.success('Xoá nhân viên khỏi phòng ban thành công')
             }
           ),
-          catchError((err) => of(DepartmentActions.error(err)))
+          catchError((err) => {
+              this.departmentStore.update(state => ({
+                ...state,
+                loading: undefined
+              }))
+              return of(DepartmentActions.error(err))
+            }
+          )
         )
       }
     )

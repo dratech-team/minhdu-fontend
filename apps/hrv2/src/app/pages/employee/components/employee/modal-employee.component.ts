@@ -41,7 +41,7 @@ export class ModalEmployeeComponent implements OnInit {
     return branches;
   }));
   categories$ = this.departmentQuery.selectAll();
-  added$ = this.employeeQuery.select('added');
+  loading$ = this.employeeQuery.select(state => state.loading);
 
   lstPosition: PositionEntity [] = [];
   flatSalaryTypeConstant = FlatSalaryTypeConstant.filter(item => item.value !== FlatSalaryTypeEnum.ALL);
@@ -165,8 +165,8 @@ export class ModalEmployeeComponent implements OnInit {
       : EmployeeActions.addOne({body: employee as BaseAddEmployeeDto})
     );
 
-    this.added$.subscribe(added => {
-      if (added) {
+    this.loading$.subscribe(loading => {
+      if (loading === false) {
         this.modalRef.close();
       }
     });

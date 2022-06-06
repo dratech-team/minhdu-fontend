@@ -35,6 +35,9 @@ export const confirmPayroll = createAction(
   props<ConfirmPayrollDto>()
 );
 
+/**
+ * @deprecated
+ * */
 export const scanHoliday = createAction(
   '[PAYROLL] Scan Holiday',
   props<{ payrollId: number }>()

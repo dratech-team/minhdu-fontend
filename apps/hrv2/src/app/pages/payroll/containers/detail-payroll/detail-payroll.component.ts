@@ -78,8 +78,6 @@ export class DetailPayrollComponent implements OnInit {
   );
   currentUser$ = this.accountQuery.selectCurrentUser();
   loading$ = this.payrollQuery.select(state => state.loading);
-  added$ = this.payrollQuery.select(state => state.added);
-  scanned$ = this.payrollQuery.select(state => state.scanned);
 
   remoteConstant = RemoteConstant;
   unitSalaryConstant = UnitSalaryConstant;
@@ -350,10 +348,6 @@ export class DetailPayrollComponent implements OnInit {
         this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[0]]).then();
       }
     }
-  }
-
-  scanHoliday(payrollId: number) {
-    this.actions$.dispatch(PayrollActions.scanHoliday({ payrollId }));
   }
 
   scroll(target: HTMLElement, sticky: HTMLElement) {

@@ -4,25 +4,18 @@ import {StorageName} from '@minhdu-fontend/constants';
 import {AccountEntity} from "../../entities/account.entity";
 
 export interface AccountState extends EntityState<AccountEntity>, ActiveState<AccountEntity["id"]> {
-  loading: boolean;
-  loginning: boolean,
-  loadMore: boolean
-  added: boolean | null;
+  loading?: boolean;
   total: number
+  remain: number
   search?: Partial<AccountEntity & { search: string }>;
-  deleted: boolean | null,
 }
 
 function createInitState(): AccountState {
   return {
-    active: null,
-    loading: true,
-    loginning: false,
-    loadMore: false,
-    added: null,
     total: 0,
-    deleted: null,
-  };
+    remain: 0,
+    active: null
+  }
 }
 
 @Injectable({providedIn: 'root'})

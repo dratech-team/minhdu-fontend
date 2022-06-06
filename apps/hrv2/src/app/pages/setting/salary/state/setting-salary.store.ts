@@ -10,8 +10,7 @@ import {NzTableSortOrder} from "ng-zorro-antd/table";
 export interface SettingSalaryState extends EntityState<SalarySettingEntity> {
   total: number;
   remain: number,
-  loading: boolean;
-  loadMore: boolean;
+  loading?: boolean;
   added: boolean | null;
   search?: {
     search: string,
@@ -28,8 +27,6 @@ export function createInitialState(): SettingSalaryState {
   return {
     total: 0,
     remain: 0,
-    loading: true,
-    loadMore: false,
     added: null,
     ui: {
       stt: {

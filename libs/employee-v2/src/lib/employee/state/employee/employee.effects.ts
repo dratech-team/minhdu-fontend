@@ -35,19 +35,19 @@ export class EmployeeEffect {
     ofType(EmployeeActions.addOne),
     concatMap((props) => {
         this.employeeStore.update(state => ({
-          ...state, added: false
+          ...state, loading: true
         }));
         return this.employeeService.addOne(props).pipe(
           map((res) => {
             this.employeeStore.update(state => ({
-              ...state, added: true, total: state.total + 1
+              ...state, loading: false, total: state.total + 1
             }));
             this.message.info('Thêm nhân viên thành công');
             this.employeeStore.add(res);
           }),
           catchError((err) => {
             this.employeeStore.update(state => ({
-              ...state, added: null
+              ...state, loading: undefined
             }));
             return of(EmployeeActions.error(err));
           })
@@ -61,12 +61,12 @@ export class EmployeeEffect {
     ofType(EmployeeActions.addOneRelative),
     switchMap((props: AddRelativeDto) => {
         this.employeeStore.update(state => ({
-          ...state, added: false
+          ...state, loading: true
         }));
         return this.relativeService.addOneRelative(props).pipe(
           map((res) => {
             this.employeeStore.update(state => ({
-              ...state, added: true
+              ...state, loading: false
             }));
             this.message.info('Thêm người thân thành công');
             this.employeeStore.update(props.body.employeeId, ({relatives}) => ({
@@ -75,7 +75,7 @@ export class EmployeeEffect {
           }),
           catchError((err) => {
             this.employeeStore.update(state => ({
-              ...state, added: null
+              ...state, loading: undefined
             }));
             return of(EmployeeActions.error(err));
           })
@@ -89,12 +89,12 @@ export class EmployeeEffect {
     ofType(EmployeeActions.addOneDegree),
     switchMap((props) => {
         this.employeeStore.update(state => ({
-          ...state, added: false
+          ...state, loading: true
         }));
         return this.degreeService.addOneDegree(props).pipe(
           map((res) => {
             this.employeeStore.update(state => ({
-              ...state, added: true
+              ...state, loading: false
             }));
             this.message.info('Thêm bằng cấp thành công');
             this.employeeStore.update(props.body.employeeId, ({degrees}) => ({
@@ -103,7 +103,7 @@ export class EmployeeEffect {
           }),
           catchError((err) => {
             this.employeeStore.update(state => ({
-              ...state, added: true
+              ...state, loading: undefined
             }));
             return of(EmployeeActions.error(err));
           })
@@ -118,11 +118,8 @@ export class EmployeeEffect {
     switchMap((props) => {
         this.employeeStore.update(state => (
           Object.assign({
-              ...state,
-            }, props.isPaginate
-              ? {loadMore: true}
-              : {loading: true}
-          )
+            ...state, loading: true
+          })
         ));
         Object.assign(props.search,
           {
@@ -148,14 +145,22 @@ export class EmployeeEffect {
               }
             }
             this.employeeStore.update(state => (Object.assign({
-                  ...state, total: res.total, remain: res.total - this.employeeQuery.getCount()
-                }, props.isPaginate
-                  ? {loadMore: false}
-                  : {loading: false}
+                  ...state,
+                  loading: false,
+                  total: res.total,
+                  remain: res.total - this.employeeQuery.getCount()
+                }
               )
             ));
           }),
-          catchError((err) => of(EmployeeActions.error(err)))
+          catchError((err) => {
+            this.employeeStore.update(state => (Object.assign({
+                ...state,
+                loading: undefined,
+              })
+            ));
+            return of(EmployeeActions.error(err))
+          })
         );
       }
     )
@@ -183,19 +188,19 @@ export class EmployeeEffect {
     ofType(EmployeeActions.update),
     switchMap((props) => {
         this.employeeStore.update(state => ({
-          ...state, added: false
+          ...state, loading: true
         }));
         return this.employeeService.update(props).pipe(
           map((res) => {
             this.employeeStore.update(state => ({
-              ...state, added: true
+              ...state, loading: false
             }));
             this.message.info('Cập nhật nhân viên thành công');
             this.employeeStore.update(res.id, res);
           }),
           catchError((err) => {
             this.employeeStore.update(state => ({
-              ...state, added: null
+              ...state, loading: undefined
             }));
             return of(EmployeeActions.error(err));
           })
@@ -209,12 +214,12 @@ export class EmployeeEffect {
     ofType(EmployeeActions.updateRelative),
     switchMap((props: UpdateRelativeDto) => {
         this.employeeStore.update(state => ({
-          ...state, added: false
+          ...state, loading: true
         }));
         return this.relativeService.update(props).pipe(
           map((res) => {
             this.employeeStore.update(state => ({
-              ...state, added: true
+              ...state, loading: false
             }));
             this.employeeStore.update(props.updates.employeeId, ({relatives}) => ({
               relatives: arrayUpdate(relatives, res.id, res)
@@ -224,7 +229,7 @@ export class EmployeeEffect {
           }),
           catchError((err) => {
             this.employeeStore.update(state => ({
-              ...state, added: null
+              ...state, loading: undefined
             }));
             return of(EmployeeActions.error(err));
           })
@@ -238,12 +243,12 @@ export class EmployeeEffect {
     ofType(EmployeeActions.updateDegree),
     switchMap((props) => {
         this.employeeStore.update(state => ({
-          ...state, added: false
+          ...state, loading: true
         }));
         return this.degreeService.update(props).pipe(
           map((res) => {
             this.employeeStore.update(state => ({
-              ...state, added: true
+              ...state, loading: false
             }));
             this.message.info('Cập nhật bằng cấp thành công');
             this.employeeStore.update(props.updates.employeeId, ({degrees}) => ({
@@ -252,7 +257,7 @@ export class EmployeeEffect {
           }),
           catchError((err) => {
             this.employeeStore.update(state => ({
-              ...state, added: null
+              ...state, loading: undefined
             }));
             return of(EmployeeActions.error(err));
           })
@@ -303,12 +308,12 @@ export class EmployeeEffect {
     ofType(EmployeeActions.leave),
     switchMap((props) => {
         this.employeeStore.update(state => ({
-          ...state, deleted: false
+          ...state, loading: true
         }));
         return this.employeeService.leaveEmployee(props.id, props.body).pipe(
           map((_) => {
             this.employeeStore.update(state => ({
-              ...state, total: state.total - 1, deleted: true
+              ...state, total: state.total - 1, loading: false
             }));
             this.message.info(props.body?.leftAt ?
               'Nhân viên đã nghỉ tạm thời' :
@@ -317,7 +322,7 @@ export class EmployeeEffect {
           }),
           catchError((err) => {
             this.employeeStore.update(state => ({
-              ...state, deleted: null
+              ...state, loading: undefined
             }));
             return of(EmployeeActions.error(err));
           })

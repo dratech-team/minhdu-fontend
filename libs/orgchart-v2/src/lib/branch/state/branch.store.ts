@@ -6,24 +6,20 @@ import { StorageName } from '@minhdu-fontend/constants';
 import {BranchStatusEnum} from "../../../../../../apps/warehouse/src/app/pages/branch/enums/branch-status.enum";
 
 export interface BranchState extends EntityState<BranchEntity> {
-  loading: boolean;
-  added: boolean | null;
+  loading?: boolean;
   total: number
   search: Partial<BaseSearchBranchDto>;
-  deleted: boolean | null
 }
 
 function createInitState(): BranchState {
   return {
     loading: true,
-    added: null,
     total: 0,
     search: {
       name: '',
       code: '',
       status: BranchStatusEnum.ALL
     },
-    deleted: null
   };
 }
 

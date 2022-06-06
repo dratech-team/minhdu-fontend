@@ -21,7 +21,7 @@ export class ModalDepartmentComponent implements OnInit {
           this.formGroup.get('branch')?.setValue(branches[0])
         }
       }))
-  added$ = this.departmentQuery.select(state => state.added)
+  loading$ = this.departmentQuery.select(state => state.loading)
 
   stepIndex = 0;
   formGroup!: FormGroup;
@@ -65,8 +65,8 @@ export class ModalDepartmentComponent implements OnInit {
         ? DepartmentActions.update({id: this.data.update.department.id, updates: department})
         : DepartmentActions.addOne({body: department})
     )
-    this.added$.subscribe(added => {
-      if (added) {
+    this.loading$.subscribe(loading => {
+      if (loading === false) {
         this.modalRef.close()
       }
     })

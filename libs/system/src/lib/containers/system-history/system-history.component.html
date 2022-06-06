@@ -64,7 +64,7 @@
         #tableSystemHistory
         nzShowPagination="false"
         [nzData]="(systemHistory$|async)||[]"
-        [nzLoading]="(loading$|async)"
+        [nzLoading]="(loading$|async) && (total$ | async) === 0"
         nzSize="small"
         [nzScroll]="{x:'1500px',y:'53vh'}"
       >
@@ -111,7 +111,7 @@
             <div class="w-100 d-flex justify-content-start" style="position: relative">
               <button
 
-                [nzLoading]="(loadMore$|async)"
+                [nzLoading]="(loading$ | async)"
                 (click)="onLoadMore()"
                 style="position:sticky; left: 45vw"
                 nz-button

@@ -22,7 +22,7 @@ import {DegreeLevelTypeConstant} from "../../constants/degree-level-type.constan
 export class ModalDegreeComponent implements OnInit {
   @Input() data!: ModalDegreeData
 
-  added$ = this.employeeQuery.select(state => state.added)
+  loading$ = this.employeeQuery.select(state => state.loading)
 
   degreeTypeConstant = DegreeTypeConstant
   formalityTypeConstant = FormalityTypeConstant
@@ -80,8 +80,8 @@ export class ModalDegreeComponent implements OnInit {
         })
     )
 
-    this.added$.subscribe(val => {
-      if (val) {
+    this.loading$.subscribe(val => {
+      if (val === false) {
         this.modalRef.close()
       }
     })

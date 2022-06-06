@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {App, ModeEnum} from '@minhdu-fontend/enums';
+import {App} from '@minhdu-fontend/enums';
 import {FormControl, FormGroup} from '@angular/forms';
 import {debounceTime} from 'rxjs/operators';
 import {AccountActions} from '../../state/account-management/account.actions';
 import {MatDialog} from '@angular/material/dialog';
 import {RegisterComponent} from '../../../../../auth/src/lib/components/dialog-register.component/register.component';
-import {roleAppHR} from '@minhdu-fontend/constants';
 import {ModalAlertComponent} from '@minhdu-fontend/components';
 import {Actions} from "@datorama/akita-ng-effects";
 import {AccountQuery} from "../../state/account-management/account.query";
@@ -16,7 +15,6 @@ import {AccountEntity} from "../../entities/account.entity";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 import {ModalRegisterData} from "../../data/modal-register.data";
-import {ActivatedRoute} from "@angular/router";
 
 @Component({
   templateUrl: 'account-management.component.html'
@@ -24,8 +22,8 @@ import {ActivatedRoute} from "@angular/router";
 export class AccountManagementComponent implements OnInit {
   accounts$ = this.accountQuery.selectAll()
   loading$ = this.accountQuery.select(state => state.loading)
-  loadMore$ = this.accountQuery.select(state => state.loadMore)
   total$ = this.accountQuery.select(state => state.total)
+  remain$ = this.accountQuery.select(state => state.remain)
   count$ = this.accountQuery.selectCount()
   branches$ = this.branchQuery.selectAll()
   currentUser$ = this.accountQuery.selectCurrentUser()

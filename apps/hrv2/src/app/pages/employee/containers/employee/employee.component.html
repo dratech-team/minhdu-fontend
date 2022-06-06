@@ -62,7 +62,7 @@
       <nz-table
         nzShowPagination="false"
         [formGroup]='formGroup'
-        [nzLoading]="loading$|async"
+        [nzLoading]=" (loading$ | async) && (total$ | async)  === 0"
         [nzScroll]="{x:'3400px',y:'51vh'}"
         [nzData]="this.employees"
       >
@@ -363,8 +363,8 @@
                 (click)="onLoadMore()"
                 style="position: sticky; left: 45vw"
                 nz-button nzType="primary"
-                [nzLoading]="loadMore$|async">
-                Tải thêm {{(remain$|async)}} nhân viên
+                [nzLoading]="loading$ | async">
+                Tải thêm {{(remain$ | async)}} nhân viên
               </button>
             </div>
           </td>

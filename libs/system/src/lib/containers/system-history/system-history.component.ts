@@ -16,7 +16,6 @@ import {AccountQuery} from "../../state/account-management/account.query";
 export class systemHistoryComponent implements OnInit {
   systemHistory$ = this.systemHistoryQuery.selectAll()
   loading$ = this.systemHistoryQuery.select(state => state.loading)
-  loadMore$ = this.systemHistoryQuery.select(state => state.loadMore)
   total$ = this.systemHistoryQuery.select(state => state.total);
   remain$ = this.systemHistoryQuery.select(state => state.remain);
   count$ = this.systemHistoryQuery.selectCount()

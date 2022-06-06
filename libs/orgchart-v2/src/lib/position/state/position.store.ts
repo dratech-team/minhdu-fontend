@@ -5,16 +5,13 @@ import {PositionEntity} from "../entities/position.entity";
 import { StorageName } from '@minhdu-fontend/constants';
 
 export interface PositionState extends EntityState<PositionEntity> {
-  loading: boolean;
-  added: boolean | null;
+  loading?: boolean;
   total: number
   search: Partial<BaseSearchPositionDto>;
 }
 
 function createInitState(): PositionState {
   return {
-    loading: true,
-    added: null,
     total: 0,
     search: {
       name: '',

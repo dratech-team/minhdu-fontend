@@ -1,10 +1,5 @@
-import { createAction, props } from '@datorama/akita-ng-effects';
-import {AddBranchDto} from "../dto";
-import {SearchBranchDto} from "../dto";
-import {LoadOneBranchDto} from "../dto";
-import {UpdateBranchDto} from "../dto";
-import {RemoveBranchDto} from "../dto";
-import {Salary} from "@minhdu-fontend/data-models";
+import {createAction, props} from '@datorama/akita-ng-effects';
+import {AddBranchDto, LoadOneBranchDto, RemoveBranchDto, SearchBranchDto, UpdateBranchDto} from "../dto";
 import {AllowanceSalaryEntity} from "../../../../../../apps/hrv2/src/app/pages/salary/entities";
 
 const addOne = createAction(
@@ -39,7 +34,7 @@ const error = createAction(
 
 const deleteAllowance = createAction(
   '[BRANCH] Delete Allowance',
-  props<{salaryId: AllowanceSalaryEntity['id']}>()
+  props<{ salaryId: AllowanceSalaryEntity['id'] }>()
 );
 
 export const BranchActions = {

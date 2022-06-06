@@ -5,23 +5,18 @@ import {DepartmentEntity} from "../entities/department.entity";
 import { StorageName } from '@minhdu-fontend/constants';
 
 export interface DepartmentState extends EntityState<DepartmentEntity> {
-  loading: boolean;
-  added: boolean | null;
+  loading?: boolean;
   total: number
   search: Partial<BaseSearchDepartmenthDto>;
-  removeEmp: boolean | null
 }
 
 function createInitState(): DepartmentState {
   return {
-    loading: true,
-    added: null,
     total: 0,
     search: {
       name: '',
       code: ''
     },
-    removeEmp: null
   };
 }
 

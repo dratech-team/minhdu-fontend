@@ -22,7 +22,7 @@
       </div>
       <nz-table #tablePosition
                 nzShowPagination="false"
-                [nzLoading]="loading$|async"
+                [nzLoading]="(loading$ | async) && (total$ | async) === 0"
                 [nzScroll]="{ x: '1500px',y: '53vh'}"
                 nzSize='small'
                 [nzData]="(positions$|async)|| []"

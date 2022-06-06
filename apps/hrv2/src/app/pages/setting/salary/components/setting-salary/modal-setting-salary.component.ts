@@ -27,7 +27,7 @@ import {EmployeeTypeConstant} from "../../constants/employee-type.constant";
 })
 export class ModalSettingSalaryComponent implements OnInit {
   @Input() data?: AddOrUpdateSettingSalary
-  added$ = this.settingSalaryQuery.select(state => state.added);
+  loading$ = this.settingSalaryQuery.select(state => state.loading);
   branches$ = this.branchQuery.selectAll();
   positions$ = this.positionQuery.selectAll();
   loadingBranch$ = this.branchQuery.select(state => state.loading)
@@ -173,8 +173,8 @@ export class ModalSettingSalaryComponent implements OnInit {
         body: template
       }))
     }
-    this.added$.subscribe(added => {
-      if (added) {
+    this.loading$.subscribe(loading => {
+      if (loading === false) {
         this.modalRef.close(template);
       }
     })

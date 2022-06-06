@@ -13,7 +13,7 @@ export class ModalBranchComponent implements OnInit {
   @Input() data?: DataAddOrUpBranch
 
   positions$ = this.positionQuery.selectAll()
-  added$ = this.branchQuery.select(state => state.added)
+  loading$ = this.branchQuery.select(state => state.loading)
 
   formGroup!: FormGroup;
   compareFn = (o1: any, o2: any) => (o1 && o2 ? o1.id === o2.id : o1 === o2);
@@ -50,8 +50,8 @@ export class ModalBranchComponent implements OnInit {
         ? BranchActions.update({id: this.data.update.branch.id, updates: branch})
         : BranchActions.addOne({body: branch})
     )
-    this.added$.subscribe(val => {
-      if (val) {
+    this.loading$.subscribe(loading => {
+      if (loading === false) {
         this.modalRef.close()
       }
     })

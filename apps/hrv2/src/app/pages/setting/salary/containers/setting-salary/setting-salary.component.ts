@@ -37,7 +37,6 @@ import {AccountQuery} from "../../../../../../../../../libs/system/src/lib/state
 export class SettingSalaryComponent implements OnInit {
   settingSalaries$ = this.settingSalaryQuery.selectAll();
   loading$ = this.settingSalaryQuery.select(state => state.loading);
-  loadMore$ = this.settingSalaryQuery.select(state => state.loadMore);
   total$ = this.settingSalaryQuery.select(state => state.total)
   remain$ = this.settingSalaryQuery.select(state => state.remain)
   count$ = this.settingSalaryQuery.selectCount()
