@@ -24,6 +24,7 @@ export class AuthComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading$.subscribe(val => console.log(val))
 
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],

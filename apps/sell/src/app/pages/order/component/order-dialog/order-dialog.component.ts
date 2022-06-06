@@ -24,7 +24,7 @@ export class OrderDialogComponent implements OnInit {
   districtId!: number;
   provinceId!: number;
   stepIndex = 0;
-  added$ = this.orderQuery.select(state => state.added);
+  loading$ = this.orderQuery.select(state => state.loading);
 
   constructor(
     private readonly actions$: Actions,
@@ -110,8 +110,8 @@ export class OrderDialogComponent implements OnInit {
     } else {
       this.actions$.dispatch(OrderActions.addOne({body: order}));
     }
-    this.added$.subscribe(added => {
-      if (added) {
+    this.loading$.subscribe(loading => {
+      if (loading === false) {
         this.modalRef.close();
       }
     });

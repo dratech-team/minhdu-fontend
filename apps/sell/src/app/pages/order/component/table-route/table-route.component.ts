@@ -1,10 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { FormControl, FormGroup } from '@angular/forms';
-import { PaidType } from 'libs/enums/paidType.enum';
-import { Router } from '@angular/router';
-import { TableRouteService } from './table-route.service';
-import { RouteQuery } from '../../../route/+state/route.query';
+import {Component, Input, OnInit} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {FormControl, FormGroup} from '@angular/forms';
+import {PaidType} from 'libs/enums/paidType.enum';
+import {Router} from '@angular/router';
+import {TableRouteService} from './table-route.service';
+import {RouteQuery} from '../../../route/+state';
 
 @Component({
   selector: 'app-route-order',

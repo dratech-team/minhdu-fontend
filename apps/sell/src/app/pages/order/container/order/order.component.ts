@@ -28,7 +28,6 @@ export class OrderComponent implements OnInit {
   orders$ = this.orderQuery.selectAll().pipe(map(value => JSON.parse(JSON.stringify(value))));
   loading$ = this.orderQuery.selectLoading();
   totalOrder$ = this.orderQuery.select(state => state.total);
-  deleted$ = this.orderQuery.select(state => state.deleted);
   commodityUniq$ = this.orderQuery.select(state => state.commodityUniq);
   totalCommodity$ = this.orderQuery.select(state => state.totalCommodity);
   commodities$ = this.orderQuery.selectAll().pipe(

@@ -12,6 +12,7 @@ export interface AccountState extends EntityState<AccountEntity>, ActiveState<Ac
 
 function createInitState(): AccountState {
   return {
+    loading: false,
     total: 0,
     remain: 0,
     active: null

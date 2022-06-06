@@ -1,4 +1,3 @@
-<nz-spin *ngIf="(deleted$| async) === false" class="position-center"></nz-spin>
 <div class='d-flex'>
   <div class='d-flex flex-column ml-3 border p-2' style='height: 80vh; width:280px; overflow-y: scroll'>
     <nz-collapse>
@@ -86,7 +85,7 @@
         [nzScroll]="{ x: '2000px',y: '58vh'}"
         nzSize='middle'
         [nzPageSize]='pageSizeTable'
-        [nzLoading]='loading$ | async'
+        [nzLoading]='(loading$ | async)'
         [nzData]='(orders$ | async) || []'
         nzShowPagination='true'
         [formGroup]='formGroup'

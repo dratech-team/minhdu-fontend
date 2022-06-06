@@ -27,7 +27,7 @@ export class RouteEffect {
     switchMap((props) => {
       this.routeStore.update(state => ({
         ...state,
-        added: false
+        loading: true
       }));
       return this.routeService.addOne(props).pipe(
         tap((res) => {
@@ -36,7 +36,7 @@ export class RouteEffect {
             const orders = this.handelOrder(res.orders);
             this.routeStore.update(state => ({
               ...state,
-              added: true,
+              loading: false,
               total: state.total + 1
             }));
             this.routeStore.add(Object.assign(res, {orders, expand: expanedAll}));
@@ -45,7 +45,7 @@ export class RouteEffect {
         catchError((err) => {
           this.routeStore.update(state => ({
             ...state,
-            added: null,
+            loading: undefined,
           }));
           return of(RouteActions.error(err))
         })
@@ -58,7 +58,8 @@ export class RouteEffect {
     ofType(RouteActions.loadAll),
     switchMap((props) => {
         this.routeStore.update(state => ({
-          ...state, loading: true
+          ...state,
+          loading: true
         }));
         if (props.params.orderType) {
           props.params.orderType = props.params.orderType === 'ascend' ? 'asc' : 'des';
@@ -70,7 +71,8 @@ export class RouteEffect {
             const expanedAll = this.routeQuery.getValue().expandedAll;
 
             this.routeStore.update(state => ({
-              ...state, loading: false,
+              ...state,
+              loading: false,
               total: response.total
             }));
             if (response.data.length === 0) {
@@ -93,7 +95,8 @@ export class RouteEffect {
           }),
           catchError((err) => {
             this.routeStore.update(state => ({
-              ...state, loading: false,
+              ...state,
+              loading: undefined,
             }));
             return of(RouteActions.error(err))
           })
@@ -123,14 +126,14 @@ export class RouteEffect {
     switchMap((props) => {
       this.routeStore.update(state => ({
         ...state,
-        added: false,
+        loading: true,
       }));
       return this.routeService.update(props).pipe(
         map((route) => {
           const expanedAll = this.routeQuery.getValue().expandedAll;
           this.routeStore.update(state => ({
             ...state,
-            added: true,
+            loading: false,
           }));
           this.message.success('Cập nhật thành công');
           return this.routeStore.update(route.id, Object.assign(route, {
@@ -142,7 +145,7 @@ export class RouteEffect {
         catchError((err) => {
           this.routeStore.update(state => ({
             ...state,
-            added: null,
+            loading: undefined,
           }));
           return of(RouteActions.error(err))
         })
@@ -155,19 +158,22 @@ export class RouteEffect {
     ofType(RouteActions.remove),
     switchMap((props) => {
         this.routeStore.update(state => ({
-          ...state, deleted: false
+          ...state, loading: true
         }))
         return this.routeService.delete(props.idRoute).pipe(
           map((_) => {
             this.routeStore.update(state => ({
-              ...state, deleted: true, total: state.total - 1
+              ...state,
+              loading: false,
+              total: state.total - 1
             }))
             this.message.success('Xoá tuyến đường thành công')
             return this.routeStore.remove(props.idRoute)
           }),
           catchError((err) => {
             this.routeStore.update(state => ({
-              ...state, deleted: null
+              ...state,
+              loading: undefined
             }))
             return of(RouteActions.error(err))
           })

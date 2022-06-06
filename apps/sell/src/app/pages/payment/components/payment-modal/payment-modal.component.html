@@ -134,7 +134,7 @@
     class="mr-2" nz-button
     nzType="primary"
     (click)="onSubmit()"
-    [nzLoading]="(added$ | async) === false"
+    [nzLoading]="(loading$ | async)"
     *ngIf="indexStep === 2">
     <span>Xác nhận</span>
   </button>

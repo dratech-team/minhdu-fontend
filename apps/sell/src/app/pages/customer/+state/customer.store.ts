@@ -6,10 +6,8 @@ import {updateStateUiUtil} from '../../../utils/update-state-ui.util';
 import {StorageName} from "@minhdu-fontend/constants";
 
 export interface CustomerState extends EntityState<CustomerEntity> {
-  loading: boolean;
-  added: boolean | null;
+  loading?: boolean;
   total: number
-  deleted: boolean | null
   deliveredLoading: boolean;
   deliveringLoading: boolean;
   search: Partial<BaseSearchCustomerDto>;
@@ -18,12 +16,9 @@ export interface CustomerState extends EntityState<CustomerEntity> {
 
 function createInitState(): CustomerState {
   return {
-    loading: true,
-    added: null,
     total: 0,
     deliveredLoading: true,
     deliveringLoading: true,
-    deleted: null,
     search: {
       resource: CustomerResource.ALL,
       isPotential: -1,

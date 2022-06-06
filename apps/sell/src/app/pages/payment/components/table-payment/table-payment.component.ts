@@ -22,7 +22,7 @@ export class TablePaymentComponent implements OnInit {
   @Input() customerId!: number;
 
   paymentHistories$ = this.paymentQuery.selectAll()
-  deleted$ = this.paymentQuery.select(state => state.deleted)
+  loading$ = this.paymentQuery.select(state => state.loading)
 
   pageSizeTable = 10
   pageTypeEnum = ItemContextMenu;
@@ -87,11 +87,11 @@ export class TablePaymentComponent implements OnInit {
       nzOnOk: () => {
         this.actions$.dispatch(PaymentActions.remove({
           id: payment.id,
-          customerId:payment.customerId,
+          customerId: payment.customerId,
           paidTotal: payment.total
         }))
-        this.deleted$.subscribe(val => {
-          if(val){
+        this.loading$.subscribe(loading => {
+          if (loading === false) {
             this.onLoad(false)
           }
         })
@@ -101,7 +101,7 @@ export class TablePaymentComponent implements OnInit {
 
   onUpdate(payment: PaymentEntity) {
     this.modal.create({
-      nzWidth:'70vw',
+      nzWidth: '70vw',
       nzTitle: 'Cập nhật thanh toán',
       nzContent: PaymentModalComponent,
       nzComponentParams: <{ data: ModalAddOrUpdatePayment }>{

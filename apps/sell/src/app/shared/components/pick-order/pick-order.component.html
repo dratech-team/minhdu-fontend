@@ -70,7 +70,7 @@
       </th>
     </tr>
     </thead>
-    <tbody [formGroup]="formGroup" >
+    <tbody [formGroup]="formGroup">
     <ng-template ngFor let-order [ngForOf]="orders">
       <tr>
         <td *ngIf="pickOne else pickMore">
@@ -83,7 +83,8 @@
         </td>
         <ng-template #pickMore>
           <td
-            [nzChecked]="setOfCheckedOrder.has(order)"
+            [nzDisabled]="(checkOrderSelect(order) && disableReselect)"
+            [nzChecked]="checkOrderSelect(order)"
             (nzCheckedChange)="onItemChecked(order, $event)"
           ></td>
           <td [(nzExpand)]="order.expand"></td>
