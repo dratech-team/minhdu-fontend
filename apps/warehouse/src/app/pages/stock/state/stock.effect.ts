@@ -1,10 +1,10 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
 import {catchError, switchMap, tap} from 'rxjs/operators';
-import {of, throwError} from 'rxjs';
+import {of} from 'rxjs';
 import {StockActions} from './stock.actions';
 import {StockStore} from './stock.store';
-import {StockService} from '../services/stock.service';
+import {StockService} from '../services';
 import {NzMessageService} from "ng-zorro-antd/message";
 
 @Injectable()
@@ -22,34 +22,39 @@ export class StockEffect {
     ofType(StockActions.addOne),
     switchMap(props => {
       this.stockStore.update(state => ({
-        ...state, added: false
+        ...state, loading: true
       }))
       return this.service.addOne(props).pipe(
         tap(res => {
           this.stockStore.update(state => ({
-            ...state, added: true
+            ...state, loading: false
           }))
           this.stockStore.upsert(res.id, res);
         }),
         catchError(err => {
           this.stockStore.update(state => ({
-            ...state, added: null
+            ...state, loading: undefined
           }))
           return of(StockActions.error(err))
         })
       );
     }),
-
   );
 
   @Effect()
   loadAll$ = this.action$.pipe(
     ofType(StockActions.loadAll),
     switchMap((props) => {
-      this.stockStore.update(state => ({...state, loading: true}))
+      this.stockStore.update(state => ({
+        ...state,
+        loading: true
+      }))
       return this.service.pagination(props).pipe(
         tap((res) => {
-          this.stockStore.update(state => ({...state, loading: false}))
+          this.stockStore.update(state => ({
+            ...state,
+            loading: false
+          }))
           if (res.data.length === 0) {
             this.message.warning('Đã lấy hết hàng hoá')
           }
@@ -60,7 +65,10 @@ export class StockEffect {
           }
         }),
         catchError((err) => {
-          this.stockStore.update(state => ({...state, loading: false}))
+          this.stockStore.update(state => ({
+            ...state,
+            loading: undefined
+          }))
           return of(StockActions.error(err))
         })
       );
@@ -87,18 +95,21 @@ export class StockEffect {
     ofType(StockActions.update),
     switchMap(props => {
       this.stockStore.update(state => ({
-        ...state, added: false
+        ...state,
+        loading: true
       }))
       return this.service.update(props).pipe(
         tap(res => {
           this.stockStore.update(state => ({
-            ...state, added: true
+            ...state,
+            loading: false
           }))
           this.stockStore.update(res?.id, res);
         }),
         catchError(err => {
           this.stockStore.update(state => ({
-            ...state, added: null
+            ...state,
+            loading: undefined
           }))
           return of(StockActions.error(err))
         })
@@ -110,11 +121,23 @@ export class StockEffect {
   delete$ = this.action$.pipe(
     ofType(StockActions.remove),
     switchMap(props => {
+      this.stockStore.update(state => ({
+        ...state,
+        loading: true
+      }))
       return this.service.delete(props.id).pipe(
         tap(_ => {
+          this.stockStore.update(state => ({
+            ...state,
+            loading: false
+          }))
           this.stockStore.remove(props?.id);
         }),
         catchError(err => {
+          this.stockStore.update(state => ({
+            ...state,
+            loading: undefined
+          }))
           return of(StockActions.error(err))
         })
       );

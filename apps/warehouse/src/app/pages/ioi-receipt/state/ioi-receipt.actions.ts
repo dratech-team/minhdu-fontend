@@ -27,4 +27,8 @@ const remove = createAction(
   props<{ id: IoiReceiptEntity['id'] }>()
 );
 
-export const IoiReceiptActions = { addOne, loadAll, getOne, update, remove };
+const error = createAction(
+  '[IOI_RECEIPT] Error',
+  props<{ err: string }>()
+);
+export const IoiReceiptActions = { addOne, loadAll, getOne, update, remove , error};

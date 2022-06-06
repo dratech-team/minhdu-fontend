@@ -2,20 +2,16 @@ import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
 import {Injectable} from '@angular/core';
 import {ProductEntity, ProductVisibleEntity} from '../entities';
 import {updateStateUiUtil} from '../../../../../../sell/src/app/utils/update-state-ui.util';
-import {SupplierEntity} from '../../supplier/entities';
-import {BaseSearchProductDto, SearchProductDto} from "../dto";
+import {BaseSearchProductDto} from "../dto";
 
 export interface ProductState extends EntityState<ProductEntity> {
-  loading: boolean;
-  added: boolean|null;
+  loading?: boolean;
   search: Partial<BaseSearchProductDto>;
   ui: ProductVisibleEntity;
 }
 
 export function createInitialState(): ProductState {
   return {
-    loading: true,
-    added: null,
     search: {},
     ui: {
       stt: {

@@ -7,9 +7,9 @@ import {
 import {debounceTime} from 'rxjs/operators';
 import {SupplierEntity} from '../../entities';
 import {SupplierActions, SupplierQuery} from '../../state';
-import {DialogSupplierComponent} from '../../components/dialog-provider/dialog-supplier.component';
+import {DialogSupplierComponent} from '../../components';
 import {Actions} from '@datorama/akita-ng-effects';
-import {BaseSearchSupplierDto, SearchSupplierDto} from '../../dto/search-supplier.dto';
+import {BaseSearchSupplierDto} from '../../dto';
 import {PaginationDto} from "@minhdu-fontend/constants";
 import {NzModalService} from "ng-zorro-antd/modal";
 

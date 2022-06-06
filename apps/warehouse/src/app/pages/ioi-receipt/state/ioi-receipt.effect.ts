@@ -1,10 +1,10 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
 import {catchError, switchMap, tap} from 'rxjs/operators';
-import {throwError} from 'rxjs';
+import {of, throwError} from 'rxjs';
 import {IoiReceiptActions} from './ioi-receipt.actions';
 import {IoiReceiptStore} from './ioi-receipt.store';
-import {IoiReceiptService} from '../services/ioi-receipt.service';
+import {IoiReceiptService} from '../services';
 import {NzMessageService} from "ng-zorro-antd/message";
 
 @Injectable()
@@ -22,7 +22,7 @@ export class IoiReceiptEffect {
     ofType(IoiReceiptActions.addOne),
     switchMap(props => {
       this.ioiReceiptStore.update(state => ({
-        ...state, added: true
+        ...state, loading: true
       }))
       if (!props.body?.branchId) {
         return this.service.addOne(Object.assign(props, {branch: null}));
@@ -31,9 +31,15 @@ export class IoiReceiptEffect {
     }),
     tap(res => {
       this.ioiReceiptStore.update(state => ({
-        ...state, added: false
+        ...state, loading: false
       }))
       this.ioiReceiptStore.upsert(res.id, res);
+    }),
+    catchError((err) => {
+      this.ioiReceiptStore.update(state => ({
+        ...state, loading: undefined
+      }))
+      return of(IoiReceiptActions.error(err))
     })
   );
 
@@ -41,10 +47,16 @@ export class IoiReceiptEffect {
   loadAll$ = this.action$.pipe(
     ofType(IoiReceiptActions.loadAll),
     switchMap((props) => {
-      this.ioiReceiptStore.update(state => ({...state, loading: true}))
+      this.ioiReceiptStore.update(state => ({
+        ...state,
+        loading: true
+      }))
       return this.service.pagination(props.params).pipe(
         tap((res) => {
-          this.ioiReceiptStore.update(state => ({...state, loading: false}))
+          this.ioiReceiptStore.update(state => ({
+            ...state,
+            loading: false
+          }))
           if (res.data.length === 0) {
             this.message.warning('Đã lấy hết hàng hoá')
           }
@@ -56,7 +68,12 @@ export class IoiReceiptEffect {
         }),
       );
     }),
-    catchError((err) => throwError(err))
+    catchError((err) => {
+      this.ioiReceiptStore.update(state => ({
+        ...state, loading: undefined
+      }))
+      return of(IoiReceiptActions.error(err))
+    })
   );
 
   @Effect()
@@ -68,8 +85,8 @@ export class IoiReceiptEffect {
     tap(res => {
       this.ioiReceiptStore.update(res?.id, res);
     }),
-    catchError(err => {
-      return throwError(err)
+    catchError((err) => {
+      return of(IoiReceiptActions.error(err))
     })
   );
 
@@ -78,18 +95,21 @@ export class IoiReceiptEffect {
     ofType(IoiReceiptActions.update),
     switchMap(props => {
       this.ioiReceiptStore.update(state => ({
-        ...state, added: false
+        ...state, loading: true
       }))
       return this.service.update(props);
     }),
     tap(res => {
       this.ioiReceiptStore.update(state => ({
-        ...state, added: true
+        ...state, loading: false
       }))
       this.ioiReceiptStore.update(res?.id, res);
     }),
-    catchError(err => {
-      return throwError(err)
+    catchError((err) => {
+      this.ioiReceiptStore.update(state => ({
+        ...state, loading: undefined
+      }))
+      return of(IoiReceiptActions.error(err))
     })
   );
 
@@ -97,14 +117,23 @@ export class IoiReceiptEffect {
   delete$ = this.action$.pipe(
     ofType(IoiReceiptActions.remove),
     switchMap(props => {
+      this.ioiReceiptStore.update(state => ({
+        ...state, loading: true
+      }))
       return this.service.delete(props.id).pipe(
         tap(_ => {
+          this.ioiReceiptStore.update(state => ({
+            ...state, loading: false
+          }))
           this.ioiReceiptStore.remove(props?.id);
         }),
       );
     }),
     catchError(err => {
-      return throwError(err)
+      this.ioiReceiptStore.update(state => ({
+        ...state, loading: undefined
+      }))
+      return of(IoiReceiptActions.error(err))
     })
   );
 }

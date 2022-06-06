@@ -3,14 +3,12 @@ import {Injectable} from '@angular/core';
 import {ConsignmentEntity} from '../entities';
 
 export interface ConsignmentState extends EntityState<ConsignmentEntity> {
-  loading: boolean;
-  added: boolean|null;
+  loading?: boolean;
 }
 
 export function createInitialState(): ConsignmentState {
   return {
     loading: true,
-    added: null,
   };
 }
 

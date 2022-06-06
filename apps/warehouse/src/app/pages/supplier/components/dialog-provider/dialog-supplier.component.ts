@@ -11,7 +11,7 @@ import {NzModalRef} from "ng-zorro-antd/modal";
 })
 export class DialogSupplierComponent implements OnInit {
   @Input() data?: { supplier?: SupplierEntity, isUpdate?: boolean }
-  added$ = this.supplierQuery.select(state => state.added)
+  loading$ = this.supplierQuery.select(state => state.loading)
   formGroup!: FormGroup;
   submitted = false;
 
@@ -57,8 +57,8 @@ export class DialogSupplierComponent implements OnInit {
       this.actions$.dispatch(SupplierActions.addOne({body: provider}));
     }
 
-    this.added$.subscribe(added => {
-      if (added) {
+    this.loading$.subscribe(loading => {
+      if (loading === false) {
         this.modalRef.close();
       }
     });

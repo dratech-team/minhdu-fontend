@@ -5,16 +5,13 @@ import {updateStateUiUtil} from '../../../../../../sell/src/app/utils/update-sta
 import {SupplierEntity} from '../../supplier/entities';
 
 export interface IoiReceiptState extends EntityState<IoiReceiptEntity> {
-  loading: boolean;
-  added: boolean;
+  loading?: boolean;
   search: Partial<SupplierEntity>;
   ui: IoiReceiptVisibleEntity;
 }
 
 export function createInitialState(): IoiReceiptState {
   return {
-    loading: true,
-    added: false,
     search: {
       /// FIXME:
       // search: '',
