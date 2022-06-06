@@ -1,3 +1,0 @@
-{
-  "include": ["apps/hrv2/**/*.ts", "libs/**/*.ts"]
-}
