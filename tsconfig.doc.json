@@ -1,3 +1,3 @@
 {
-  "include": ["apps/hrv2/**/*.ts", "lips/**/*.ts"]
+  "include": ["apps/hrv2/**/*.ts", "libs/**/*.ts"]
 }
