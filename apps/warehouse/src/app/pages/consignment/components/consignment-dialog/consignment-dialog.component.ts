@@ -13,7 +13,7 @@ import {ConsignmentActions} from "../../state/consignment.actions";
 })
 export class ConsignmentDialogComponent implements OnInit {
   @Input() data?: { consignment?: ConsignmentEntity, isUpdate?: boolean }
-  added$ = this.consignmentQuery.select(state => state.added)
+  loading$ = this.consignmentQuery.select(state => state.loading)
   formGroup!: FormGroup
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -62,8 +62,8 @@ export class ConsignmentDialogComponent implements OnInit {
     } else {
       this.action$.dispatch(ConsignmentActions.addOne({body: consignment}));
     }
-    this.added$.subscribe(added => {
-      if (added) {
+    this.loading$.subscribe(loading => {
+      if (loading === false) {
         this.modelRef.close()
       }
     })

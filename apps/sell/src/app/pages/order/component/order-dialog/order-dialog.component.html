@@ -63,7 +63,7 @@
   </div>
 </ng-template>
 <div class='footer-popup mt-3 d-flex' *ngIf="data?.isUpdate else footer">
-  <button nz-button nzType="primary" (click)='onSubmit()' [nzLoading]="(added$|async) === false">Xác nhận</button>
+  <button nz-button nzType="primary" (click)='onSubmit()' [nzLoading]="(loading$ | async)">Xác nhận</button>
   <button nz-button nzType="default" data-toggle='tooltip'
           data-placement='left'
           title='xóa'>
@@ -77,7 +77,7 @@
     <button class="mr-2" nz-button nzType="primary" (click)="next()" *ngIf="stepIndex < 2">
       <span>Tiếp theo</span>
     </button>
-    <button nz-button nzType="primary" [nzLoading]="(added$|async) === false" (click)="onSubmit()"
+    <button nz-button nzType="primary" [nzLoading]="(loading$ | async)" (click)="onSubmit()"
             *ngIf="stepIndex === 2">
       <span>Xác nhận</span>
     </button>

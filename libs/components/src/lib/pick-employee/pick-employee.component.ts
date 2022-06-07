@@ -11,14 +11,14 @@ import {EmployeeService} from "../../../../employee/src/lib/+state/service/emplo
 import {
   BranchActions,
   BranchQuery,
-  DepartmentActions, DepartmentQuery,
+  DepartmentActions,
+  DepartmentQuery,
   PositionActions,
   PositionQuery
 } from "@minhdu-fontend/orgchart-v2";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {PaginationDto} from "@minhdu-fontend/constants";
 import {Actions} from "@datorama/akita-ng-effects";
-import {StatusEnum} from "../../../../../apps/sell/src/app/shared/enums/status.enum";
 import {FlatSalaryTypeEnum} from "../../../../../apps/hrv2/src/app/pages/employee/enums/flat-salary-type.enum";
 
 @Component({
@@ -30,7 +30,7 @@ export class PickEmployeeComponent implements OnInit {
   @Output() EventSelectEmployee = new EventEmitter<Employee[]>();
   positions$ = this.positionQuery.selectAll()
   branches$ = this.branchQuery.selectAll()
-  removeEmp$ = this.departmentQuery.select('removeEmp')
+  removeEmp$ = this.departmentQuery.select(state => state.loading)
 
   type = SalaryTypeEnum;
   employees: Employee[] = [];
@@ -165,7 +165,7 @@ export class PickEmployeeComponent implements OnInit {
             id: employee.category.id, body: {employeeId: employee.id}
           }))
           this.removeEmp$.subscribe(val => {
-            if (val) {
+            if (val === false) {
               delete employee.category
             }
           })

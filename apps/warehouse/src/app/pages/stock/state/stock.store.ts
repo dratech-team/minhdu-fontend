@@ -5,16 +5,13 @@ import {updateStateUiUtil} from '../../../../../../sell/src/app/utils/update-sta
 import {BaseSearchStockDto} from "../dto";
 
 export interface StockState extends EntityState<StockEntity> {
-  loading: boolean;
-  added: boolean|null;
+  loading?: boolean;
   search: Partial<BaseSearchStockDto>;
   ui: StockVisibleEntity;
 }
 
 export function createInitialState(): StockState {
   return {
-    loading: true,
-    added: null,
     search: {},
     ui: {
       stt: {

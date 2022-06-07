@@ -21,6 +21,7 @@ export class PickOrderComponent implements OnInit {
   @Input() formGroup!: FormGroup;
   @Input() pickOne = false;
   @Input() customerId?: number;
+  @Input() disableReselect = false;
 
   total$ = this.orderQuery.selectCount();
   loading$ = this.orderQuery.select(state => state.loading);
@@ -56,7 +57,9 @@ export class PickOrderComponent implements OnInit {
 
   ngOnInit(): void {
     this.onLoad(false)
-    this.formGroup.value.orders?.map((item: OrderEntity) => this.setOfCheckedOrder.add(item))
+    this.formGroup.value.orders?.map((item: OrderEntity) => {
+      this.setOfCheckedOrder.add(item)
+    })
     this.formGroupTable.valueChanges.subscribe(_ => {
       this.onLoad(false)
     })
@@ -154,5 +157,9 @@ export class PickOrderComponent implements OnInit {
     this.refreshCheckedStatus()
     this.formGroup.get('orders')?.setValue(Array.from(this.setOfCheckedOrder))
     this.formGroup.get('commodities')?.setValue(Array.from(this.setOfCheckedCommodity))
+  }
+
+  checkOrderSelect(order: OrderEntity): boolean {
+   return Array.from(this.setOfCheckedOrder).some(e => e.id === order.id)
   }
 }

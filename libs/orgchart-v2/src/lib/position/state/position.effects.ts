@@ -6,7 +6,6 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 import {PositionStore} from "./position.store";
 import {PositionQuery} from "./position.query";
 import {PositionActions} from "./position.actions";
-import {SearchPositionDto} from "../dto";
 import {PositionService} from "../services/position.service";
 
 @Injectable()
@@ -25,12 +24,16 @@ export class PositionEffects {
     ofType(PositionActions.loadAll),
     switchMap((props) => {
       this.positionStore.update(state => ({
-        ...state, loading: true
+        ...state,
+        loading: true
       }));
       return this.branchService.pagination(props).pipe(
         map((response) => {
-          this.positionStore.update(state => (
-            {...state, loading: false, total: response.total}));
+          this.positionStore.update(state => ({
+            ...state,
+            loading: false,
+            total: response.total
+          }));
           // if (response.data.length === 0) {
           //   this.message.warning('Đã lấy hết chức vụ');
           // } else {
@@ -44,7 +47,7 @@ export class PositionEffects {
         }),
         catchError((err) => {
           this.positionStore.update(state => ({
-            ...state, loading: false
+            ...state, loading: undefined
           }));
           return of(PositionActions.error(err))
         })
@@ -57,20 +60,23 @@ export class PositionEffects {
     ofType(PositionActions.addOne),
     switchMap((props) => {
       this.positionStore.update(state => ({
-        ...state, added: false
+        ...state,
+        loading: true
       }));
       return this.branchService.addOne(props).pipe(
         tap((res) => {
             this.message.success('Thêm đơn vị thành công')
             this.positionStore.update(state => ({
-              ...state, added: true
+              ...state,
+              loading: false
             }));
             this.positionStore.upsert(res.id, res);
           }
         ),
         catchError(err => {
           this.positionStore.update(state => ({
-            ...state, added: null
+            ...state,
+            loading: undefined
           }));
           return of(PositionActions.error(err))
         }),
@@ -92,18 +98,21 @@ export class PositionEffects {
     ofType(PositionActions.update),
     switchMap((props) => {
         this.positionStore.update(state => ({
-          ...state, added: false
+          ...state,
+          loading: true
         }));
         return this.branchService.update(props).pipe(
           tap(response => {
             this.positionStore.update(state => ({
-              ...state, added: true
+              ...state,
+              loading: false
             }));
             this.positionStore.update(response.id, response);
           }),
           catchError(err => {
               this.positionStore.update(state => ({
-                ...state, added: null
+                ...state,
+                loading: undefined
               }));
               return of(PositionActions.error(err))
             }

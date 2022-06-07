@@ -18,7 +18,7 @@ import {DatePipe} from "@angular/common";
 })
 export class ModalRelativeComponent implements OnInit {
   @Input() data!: ModalRelative
-  added$ = this.employeeQuery.select(state => state.added)
+  loading$ = this.employeeQuery.select(state => state.loading)
 
   relationshipConstant = RelationshipConstant
 
@@ -89,8 +89,8 @@ export class ModalRelativeComponent implements OnInit {
         })
     )
 
-    this.added$.subscribe(val => {
-      if (val) {
+    this.loading$.subscribe(loading => {
+      if (loading == false) {
         this.modalRef.close()
       }
     })

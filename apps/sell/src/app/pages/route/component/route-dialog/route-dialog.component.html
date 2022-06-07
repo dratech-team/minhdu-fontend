@@ -106,6 +106,7 @@
           orderEnum.PAYMENT,
           orderEnum.AMOUNT_PAYMENT,
           ]"
+          [disableReselect]="true"
           >
         </minhdu-fontend-pick-order>
       </div>
@@ -119,7 +120,7 @@
             *ngIf="(stepIndex < 1 && (data?.updateType !== updateTypeEnum.INFO))">
       <span>Tiếp theo</span>
     </button>
-    <button nz-button nzType="primary" [nzLoading]="(added$|async) === false" (click)="onSubmit()"
+    <button nz-button nzType="primary" [nzLoading]="(loading$ | async)" (click)="onSubmit()"
             *ngIf="stepIndex === 1 || data?.isUpdate">
       <span>Xác nhận</span>
     </button>

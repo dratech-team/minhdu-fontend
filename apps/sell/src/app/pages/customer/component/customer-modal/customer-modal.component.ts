@@ -15,7 +15,7 @@ import {ModalCustomerData} from "../../data/modal-customer.data";
 export class CustomerModalComponent implements OnInit {
   @Input() data?: ModalCustomerData
 
-  added$ = this.customerQuery.select(state => state.added)
+  loading$ = this.customerQuery.select(state => state.loading)
 
   customerConstant = CustomerConstant.filter(item => item.value !== CustomerType.ALL)
   resourceConstant = ResourcesConstant.filter(item => item.value !== CustomerResource.ALL)
@@ -90,8 +90,8 @@ export class CustomerModalComponent implements OnInit {
         ? CustomerActions.update({id: this.data.update.customer.id, updates: customer})
         : CustomerActions.addOne({body: customer})
     )
-    this.added$.subscribe(added => {
-      if (added) {
+    this.loading$.subscribe(loading => {
+      if (loading === false) {
         this.modalRef.close();
       }
     });

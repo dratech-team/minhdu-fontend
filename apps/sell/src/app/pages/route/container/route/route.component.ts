@@ -30,6 +30,7 @@ export class RouteComponent implements OnInit {
   total$ = this.routeQuery.select(state => state.total);
   deleted$ = this.routeQuery.select(state => state.deleted);
   ui$ = this.routeQuery.select(state => state.ui);
+
   pageSize = 30;
   pageIndexInit = 0;
   pageSizeTable = 10;

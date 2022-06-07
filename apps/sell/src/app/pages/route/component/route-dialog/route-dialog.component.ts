@@ -15,7 +15,7 @@ import {CommodityEntity} from "../../../commodity/entities";
 })
 export class RouteDialogComponent implements OnInit {
   @Input() data?: any
-  added$ = this.routeQuery.select(state => state.added)
+  loading$ = this.routeQuery.select(state => state.loading)
 
   orderEnum = OrderEnum
   submitted = false;
@@ -87,8 +87,8 @@ export class RouteDialogComponent implements OnInit {
     } else {
       this.actions$.dispatch(RouteActions.addOne({body: route}));
     }
-    this.added$.subscribe(added => {
-      if (added) {
+    this.loading$.subscribe(loading => {
+      if (loading === false) {
         this.modalRef.close();
       }
     })

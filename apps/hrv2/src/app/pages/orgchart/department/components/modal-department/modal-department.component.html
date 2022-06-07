@@ -44,7 +44,7 @@
   <button class="ml-2"
           nz-button
           nzType="primary"
-          [nzLoading]="(added$|async) === false"
+          [nzLoading]="loading$ | async"
           (click)="onSubmit()"
           *ngIf="stepIndex === 1 || data?.update">
     <span>Xác nhận</span>

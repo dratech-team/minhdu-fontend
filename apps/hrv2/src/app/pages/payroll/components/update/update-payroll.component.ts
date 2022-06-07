@@ -5,11 +5,10 @@ import {map} from "rxjs/operators";
 import {RecipeTypesConstant} from "@minhdu-fontend/constants";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {Actions} from "@datorama/akita-ng-effects";
-import {BranchActions, BranchQuery} from "@minhdu-fontend/orgchart-v2";
+import {BranchActions, BranchQuery, PositionEntity} from "@minhdu-fontend/orgchart-v2";
 import {PayrollEntity} from "../../entities";
 import {PayrollActions} from "../../state/payroll.action";
 import {PayrollQuery} from "../../state";
-import {PositionEntity} from "@minhdu-fontend/orgchart-v2";
 
 @Component({
   templateUrl: 'update-payroll.component.html'
@@ -29,7 +28,8 @@ export class UpdatePayrollComponent implements OnInit {
     }
     return branches
   }));
-  updated$ = this.payrollQuery.select(state => state.updated)
+  loading$ = this.payrollQuery.select(state => state.loading)
+
   compareFN = (o1: any, o2: any) => (typeof o1 === 'string' && o2 ? o1 === o2.name : o1.id === o2.id);
   compareRecipe = (o1: any, o2: any) => (o1 && o2 ? (o1 === o2.value || o1.value === o2.value) : o1 === o2);
 
@@ -70,8 +70,8 @@ export class UpdatePayrollComponent implements OnInit {
     this.actions$.dispatch(PayrollActions.update({
       id: this.data.payroll.id, updates: payroll
     }))
-    this.updated$.subscribe(updated => {
-      if (updated) {
+    this.loading$.subscribe(loading => {
+      if (loading === false) {
         this.modalRef.close()
       }
     })

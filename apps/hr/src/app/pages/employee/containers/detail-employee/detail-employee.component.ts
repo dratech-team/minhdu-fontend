@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Degree, Employee, Relative, Salary, SalaryHistory, WorkHistory} from '@minhdu-fontend/data-models';
+import {Degree, Employee, Relative, Salary, WorkHistory} from '@minhdu-fontend/data-models';
 import {EmployeeAction, selectCurrentEmployee, selectEmployeeAdding} from '@minhdu-fontend/employee';
 import {
   DegreeLevelEnum,

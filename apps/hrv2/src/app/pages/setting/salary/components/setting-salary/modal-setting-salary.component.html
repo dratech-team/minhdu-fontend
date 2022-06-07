@@ -264,7 +264,7 @@
     </div>
   </form>
   <div class='row ml-2 mt-2'>
-    <button nz-button nzType="primary" [nzLoading]="(added$|async) === false" (click)='onSubmit()' class='ml-2'>Lưu
+    <button nz-button nzType="primary" [nzLoading]="loading$ | async" (click)='onSubmit()' class='ml-2'>Lưu
     </button>
   </div>
 </div>

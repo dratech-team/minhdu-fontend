@@ -1,13 +1,13 @@
 import {createAction, props} from "@datorama/akita-ng-effects";
-import {SearchPayrollDto} from "../../../../../../hrv2/src/app/pages/payroll/dto";
 import {AddPaymentDto} from "../dto/add-payment.dto";
 import {UpdatePaymentDto} from "../dto/update-payment.dto";
 import {RemovePaymentDto} from "../dto/remove-payment.dto";
+import {SearchPaymentDto} from "../dto/search-payment.dto";
 
 
 export const loadAll = createAction(
   '[PAYMENT] Load All',
-  props<SearchPayrollDto>()
+  props<SearchPaymentDto>()
 );
 
 export const addOne = createAction(

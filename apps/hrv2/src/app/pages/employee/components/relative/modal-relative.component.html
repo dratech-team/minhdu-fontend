@@ -52,7 +52,7 @@
   </div>
 </form>
 <div class='row d-flex mt-2 justify-content-center'>
-  <button nz-button nzType="primary" [nzLoading]="(added$|async) === false" (click)="onSubmit()" class='ml-2'>
+  <button nz-button nzType="primary" [nzLoading]="(loading$ | async)" (click)="onSubmit()" class='ml-2'>
     Xác nhận
   </button>
 </div>

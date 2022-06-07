@@ -39,13 +39,15 @@ export class OrderEffect {
     ofType(OrderActions.addOne),
     switchMap((props: AddOrderDto) => {
       this.orderStore.update(state => ({
-        ...state, added: false
+        ...state,
+        loading: true
       }));
       return this.orderService.addOne(props).pipe(
         map((res) => {
           this.commodityStore.remove(props.body.commodityIds)
           this.orderStore.update(state => ({
-            ...state, added: true,
+            ...state,
+            loading: false,
             total: state.total + 1,
             totalCommodity: res.commodities.length > 0 ?
               state.totalCommodity + res.commodities.reduce((a, b) => a + b.amount, 0) : state.totalCommodity,
@@ -60,7 +62,8 @@ export class OrderEffect {
         }),
         catchError((err) => {
           this.orderStore.update(state => ({
-            ...state, added: null
+            ...state,
+            loading: undefined
           }));
           return of(OrderActions.error(err));
         })
@@ -73,7 +76,8 @@ export class OrderEffect {
     ofType(OrderActions.loadAll),
     switchMap((props) => {
         this.orderStore.update(state => ({
-          ...state, loading: true
+          ...state,
+          loading: true
         }));
         if (props.param?.orderType) {
           Object.assign(props.param, {orderType: props.param?.orderType === 'ascend' ? 'asc' : 'des'});
@@ -111,7 +115,8 @@ export class OrderEffect {
           ),
           catchError((err) => {
             this.orderStore.update(state => ({
-              ...state, loading: false
+              ...state,
+              loading: undefined
             }));
             return of(OrderActions.error(err))
           })
@@ -139,7 +144,7 @@ export class OrderEffect {
     switchMap((props: UpdateOrderDto) => {
         this.orderStore.update(state => ({
           ...state,
-          added: false
+          loading: true
         }));
         return this.orderService.update(props).pipe(
           map((response) => {
@@ -147,7 +152,7 @@ export class OrderEffect {
             if (orderBefore)
               this.orderStore.update(state => ({
                 ...state,
-                added: true
+                loading: false
               }));
             if (response.deliveredAt) {
               console.log(response)
@@ -168,7 +173,7 @@ export class OrderEffect {
           catchError((err) => {
             this.orderStore.update(state => ({
               ...state,
-              added: null
+              loading: undefined
             }));
             return of(OrderActions.error(err))
           })
@@ -213,7 +218,7 @@ export class OrderEffect {
     ofType(OrderActions.remove),
     switchMap((props) => {
         this.orderStore.update(state => ({
-          ...state, deleted: false
+          ...state, loading: true
         }))
         return this.orderService.delete(props.id).pipe(
           map((_) => {
@@ -222,7 +227,7 @@ export class OrderEffect {
             if (orderDelete)
               this.orderStore.update(state => ({
                 ...state,
-                deleted: true,
+                loading: false,
                 total: state.total - 1,
                 totalCommodity: orderDelete.commodities?.length > 0 ?
                   state.totalCommodity - orderDelete.commodities.reduce((a, b) => a + b.amount, 0) : state.commodityUniq,
@@ -234,7 +239,8 @@ export class OrderEffect {
           }),
           catchError((err) => {
             this.orderStore.update(state => ({
-              ...state, deleted: null
+              ...state,
+              loading: undefined
             }))
             return of(OrderActions.error(err))
           })

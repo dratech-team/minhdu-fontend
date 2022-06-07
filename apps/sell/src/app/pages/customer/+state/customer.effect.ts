@@ -29,7 +29,8 @@ export class CustomerEffect {
     ofType(CustomerActions.loadAll),
     switchMap((props) => {
       this.customerStore.update(state => ({
-        ...state, loading: true
+        ...state,
+        loading: true
       }));
       const params = Object.assign(props.search, props.search?.orderType
         ? {orderType: props.search.orderType === 'ascend' ? 'asc' : 'desc'}
@@ -37,7 +38,11 @@ export class CustomerEffect {
       /// FIXME:
       return this.customerService.pagination(params as SearchCustomerDto).pipe(
         map((response) => {
-          this.customerStore.update(state => ({...state, loading: false, total: response.total}));
+          this.customerStore.update(state => ({
+            ...state,
+            loading: false,
+            total: response.total
+          }));
           if (response.data.length === 0) {
             this.message.warning('Đã lấy hết khách hàng');
           } else {
@@ -51,7 +56,8 @@ export class CustomerEffect {
         }),
         catchError((err) => {
           this.customerStore.update(state => ({
-            ...state, loading: false
+            ...state,
+            loading: undefined
           }));
           return of(CustomerActions.error(err))
         })
@@ -64,20 +70,24 @@ export class CustomerEffect {
     ofType(CustomerActions.addOne),
     switchMap((props: AddCustomerDto) => {
       this.customerStore.update(state => ({
-        ...state, added: false, total: state.total + 1
+        ...state,
+        loading: true,
+        total: state.total + 1
       }));
       return this.customerService.addOne(props).pipe(
         tap((res) => {
             this.message.success('Thêm khác hành thành công')
             this.customerStore.update(state => ({
-              ...state, added: true
+              ...state,
+              loading: false
             }));
             this.customerStore.add(res);
           }
         ),
         catchError(err => {
           this.customerStore.update(state => ({
-            ...state, added: null
+            ...state,
+            loading: undefined
           }));
           return of(CustomerActions.error(err))
         }),
@@ -99,18 +109,21 @@ export class CustomerEffect {
     ofType(CustomerActions.update),
     switchMap((props) => {
         this.customerStore.update(state => ({
-          ...state, added: false
+          ...state,
+          loading: true
         }));
         return this.customerService.update(props).pipe(
           tap(response => {
             this.customerStore.update(state => ({
-              ...state, added: true
+              ...state,
+              loading: false
             }));
             this.customerStore.update(response.id, response);
           }),
           catchError(err => {
               this.customerStore.update(state => ({
-                ...state, added: null
+                ...state,
+                loading: undefined
               }));
               return of(CustomerActions.error(err))
             }
@@ -124,25 +137,25 @@ export class CustomerEffect {
   deleteCustomer$ = this.action$.pipe(
     ofType(CustomerActions.remove),
     switchMap((props) => {
-      this.customerStore.update(state => ({
-        ...state, deleted: false
-      }));
-      return this.customerService.delete(props.id).pipe(
-        map(() => {
+        this.customerStore.update(state => ({
+          ...state, loading: true
+        }));
+        return this.customerService.delete(props.id).pipe(
+          map(() => {
+              this.customerStore.update(state => ({
+                ...state, total: state.total - 1, loading: false
+              }));
+              this.message.success('Xoá khách hàng thành công')
+              return this.customerStore.remove(props.id)
+            }
+          ),
+          catchError((err) => {
             this.customerStore.update(state => ({
-              ...state, total: state.total - 1, deleted: true
+              ...state, loading: undefined
             }));
-            this.message.success('Xoá khách hàng thành công')
-            return this.customerStore.remove(props.id)
-          }
-        ),
-        catchError((err) => {
-          this.customerStore.update(state => ({
-            ...state, deleted: null
-          }));
-          return of(CustomerActions.error(err))
-        })
-      )
+            return of(CustomerActions.error(err))
+          })
+        )
       }
     )
   );

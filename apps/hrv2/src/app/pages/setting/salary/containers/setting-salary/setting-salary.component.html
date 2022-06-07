@@ -80,7 +80,7 @@
         nzShowPagination="false"
         [nzScroll]="{ x: '2500px',y: '65vh'}"
         nzSize='middle'
-        [nzLoading]="loading$|async"
+        [nzLoading]=" (loading$ | async ) && ( total$ | async) === 0"
         [nzData]="settingSalaries"
         [nzBordered]="true"
         [nzOuterBordered]="true"
@@ -92,28 +92,34 @@
           <th
             [nzSortFn]='true'
             (nzSortOrderChange)='onSort({orderBy: sortEnum.TITLE, orderType:$event})'
-            nzLeft>Tên bản mẫu</th>
+            nzLeft>Tên bản mẫu
+          </th>
           <th
             [nzSortFn]='true'
             (nzSortOrderChange)='onSort({orderBy: sortEnum.PRICE, orderType:$event})'
-            nzLeft nzWidth="200px">Đơn giá - Công thức lương</th>
+            nzLeft nzWidth="200px">Đơn giá - Công thức lương
+          </th>
           <th
             [nzSortFn]='true'
             (nzSortOrderChange)='onSort({orderBy: sortEnum.UNIT, orderType:$event})'
-            nzWidth="100px">Đơn vị tính</th>
+            nzWidth="100px">Đơn vị tính
+          </th>
           <th
             [nzSortFn]='true'
             (nzSortOrderChange)='onSort({orderBy: sortEnum.DATETIME, orderType:$event})'
-            nzWidth="200px">Ngày</th>
+            nzWidth="200px">Ngày
+          </th>
           <th
             [nzSortFn]='true'
             (nzSortOrderChange)='onSort({orderBy: sortEnum.RATE, orderType:$event})'
             nzWidth="100px"
-          >Hệ số</th>
+          >Hệ số
+          </th>
           <th
             [nzSortFn]='true'
             (nzSortOrderChange)='onSort({orderBy: sortEnum.TYPE, orderType:$event})'
-            nzWidth="200px">Loại bản mẫu</th>
+            nzWidth="200px">Loại bản mẫu
+          </th>
           <th>Đơn vị</th>
           <th>Chức vụ</th>
           <th>Ghi chú</th>
@@ -171,8 +177,8 @@
                 (click)="onLoadMore()"
                 style="position: sticky; left: 35vw"
                 nz-button nzType="primary"
-                [nzLoading]="loadMore$|async">
-                Tải thêm {{((remain$|async) || 0)}}
+                [nzLoading]="loading$ | async">
+                Tải thêm {{((remain$ | async) || 0)}}
               </button>
             </div>
           </td>

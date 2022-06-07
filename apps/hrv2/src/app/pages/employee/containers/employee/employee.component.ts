@@ -57,7 +57,6 @@ export class EmployeeComponent implements OnInit {
   remain$ = this.employeeQuery.select(state => state.remain);
   count$ = this.employeeQuery.selectCount();
   loading$ = this.employeeQuery.select(state => state.loading);
-  loadMore$ = this.employeeQuery.select(state => state.loadMore);
   positions$ = this.positionQuery.selectAll();
   branches$ = this.branchQuery.selectAll();
   provinces$ = this.provinceService.getAll();

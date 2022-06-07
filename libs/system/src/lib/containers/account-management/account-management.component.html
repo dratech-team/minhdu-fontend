@@ -1,4 +1,4 @@
-<div class="d-flex mt-3 ml-2 px-2 " >
+<div class="d-flex mt-3 ml-2 px-2 ">
   <div class='d-flex flex-column ml-3 border p-2' style='height: 80vh; width:250px; overflow-y: scroll'>
     <nz-collapse>
       <nz-collapse-panel
@@ -39,7 +39,7 @@
     <nz-table
       #tableAccount
       nzShowPagination="false"
-      [nzLoading]="loading$|async"
+      [nzLoading]="(loading$ | async) && (total$ | async) === 0"
       [nzScroll]="{x: '1500px', y: '53vh'}"
       [nzData]="(accounts$ | async) || []"
       class='mt-3'>
@@ -79,17 +79,17 @@
         <td>{{account.ip}}</td>
         <td>{{account.timestamp|date:'dd-MM-yyyy'}}</td>
       </tr>
-      <tr  *ngIf="((count$ | async)|| 0) < ((total$ | async)|| 0)">
+      <tr *ngIf="((count$ | async)|| 0) < ((total$ | async)|| 0)">
         <td [colSpan]="tableAccount.listOfAutoColWidth.length">
           <div class="w-100 d-flex justify-content-start" style="position: relative">
             <button
-              [nzLoading]="(loadMore$|async)"
+              [nzLoading]="(loading$ | async)"
               (click)="onLoadMore()"
               style="position:sticky; left: 45vw"
               nz-button
               nzType="primary"
             >
-              Tải thêm
+              Tải thêm {{remain$ | async}} tài khoản
             </button>
           </div>
         </td>

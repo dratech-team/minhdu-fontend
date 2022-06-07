@@ -28,19 +28,19 @@ export class SystemHistoryEffects {
     ofType(SystemHistoryActions.addOne),
     switchMap((props: AddSystemHistoryDto) => {
       this.systemHistoryStore.update(state => ({
-        ...state, added: false
+        ...state, loading: true
       }));
       return this.accountService.addOne(props).pipe(
         tap(res => {
           this.message.success('Thêm lịch sử hệ thống thành công')
           this.systemHistoryStore.update(state => ({
-            ...state, added: true
+            ...state, loading: false
           }));
           this.systemHistoryStore.add(res)
         }),
         catchError(err => {
           this.systemHistoryStore.update(state => ({
-            ...state, added: null
+            ...state, loading: undefined
           }));
           return of(SystemHistoryActions.error(err));
         })
@@ -52,11 +52,10 @@ export class SystemHistoryEffects {
   loadAll$ = this.actions$.pipe(
     ofType(SystemHistoryActions.loadAll),
     switchMap((props: SearchSystemHistoryDto) => {
-      this.systemHistoryStore.update(state => (
-        Object.assign({...state}, props.isPaginate
-          ? {loadMore: true}
-          : {loading: true}
-        )
+      this.systemHistoryStore.update(state => ({
+          ...state,
+          loading: true
+        }
       ));
       Object.assign(props.search, {
         take: PaginationDto.take,
@@ -69,19 +68,19 @@ export class SystemHistoryEffects {
           } else {
             this.systemHistoryStore.set(res.data);
           }
-          this.systemHistoryStore.update(state => (
-            Object.assign({...state, total: res.total , remain: res.total - this.systemHistoryQuery.getCount()}, props.isPaginate
-              ? {loadMore: false}
-              : {loading: false}
-            )
+          this.systemHistoryStore.update(state => ({
+              ...state,
+              loading: false,
+              total: res.total,
+              remain: res.total - this.systemHistoryQuery.getCount()
+            }
           ));
         }),
         catchError((err) => {
-          this.systemHistoryStore.update(state => (
-            Object.assign({...state}, props.isPaginate
-              ? {loadMore: false}
-              : {loading: false}
-            )
+          this.systemHistoryStore.update(state => ({
+              ...state,
+              loading: undefined
+            }
           ));
           return of(SystemHistoryActions.error(err))
         })
@@ -112,19 +111,19 @@ export class SystemHistoryEffects {
     ofType(SystemHistoryActions.update),
     switchMap((props) => {
         this.systemHistoryStore.update(state => ({
-          ...state, added: false
+          ...state, loading: true
         }));
         return this.accountService.update(props).pipe(
           map((res) => {
             this.systemHistoryStore.update(state => ({
-              ...state, added: true
+              ...state, loading: false
             }));
             this.message.success('Cập nhật lịch sử hệ thống thành công');
             this.systemHistoryStore.update(res.id, res);
           }),
           catchError((err) => {
             this.systemHistoryStore.update(state => ({
-              ...state, added: true
+              ...state, loading: undefined
             }));
             return of(SystemHistoryActions.error(err));
           })

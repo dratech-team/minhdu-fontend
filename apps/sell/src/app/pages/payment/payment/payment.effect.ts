@@ -30,20 +30,23 @@ export class PaymentEffect {
     ofType(PaymentActions.addOne),
     switchMap((props) => {
       this.paymentStore.update(state => ({
-        ...state, added: false
+        ...state,
+        loading: true
       }));
       return this.paymentService.addOne(props).pipe(
         tap((res) => {
             this.message.success('Thanh toán thành công')
             this.paymentStore.update(state => ({
-              ...state, added: true
+              ...state,
+              loading: false
             }));
             this.paymentStore.add(res);
           }
         ),
         catchError(err => {
           this.paymentStore.update(state => ({
-            ...state, added: null
+            ...state,
+            loading: undefined
           }));
           return of(PaymentActions.error(err))
         }),
@@ -55,13 +58,10 @@ export class PaymentEffect {
   loadAll$ = this.action$.pipe(
     ofType(PaymentActions.loadAll),
     switchMap((props: SearchPaymentDto) => {
-      this.paymentStore.update(state => (
-        Object.assign({
-            ...state,
-          }, props.isPaginate
-            ? {loadMore: true}
-            : {loading: true}
-        )
+      this.paymentStore.update(state => ({
+          ...state,
+          loading: true
+        }
       ));
       Object.assign(props.search,
         {
@@ -71,7 +71,11 @@ export class PaymentEffect {
       )
       return this.paymentService.pagination(props).pipe(
         map((response) => {
-          this.paymentStore.update(state => ({...state, loading: false, total: response.total}));
+          this.paymentStore.update(state => ({
+            ...state,
+            loading: false,
+            total: response.total
+          }));
           if (props.isPaginate) {
             this.paymentStore.add(response.data);
           } else {
@@ -80,7 +84,8 @@ export class PaymentEffect {
         }),
         catchError((err) => {
           this.paymentStore.update(state => ({
-            ...state, loading: false
+            ...state,
+            loading: false
           }));
           return of(PaymentActions.error(err))
         })
@@ -93,13 +98,13 @@ export class PaymentEffect {
     ofType(PaymentActions.update),
     switchMap((props: UpdatePaymentDto) => {
       this.paymentStore.update(state => ({
-        ...state, added: false
+        ...state, loading: true
       }));
       return this.paymentService.update(props).pipe(
         tap((res) => {
             this.message.success('Cập nhật thanh toán thành công')
             this.paymentStore.update(state => ({
-              ...state, added: true
+              ...state, loading: false
             }));
             this.paymentStore.update(res.id, res);
             this.action$.dispatch(CustomerActions.loadOne({id: res.customerId}))
@@ -107,7 +112,7 @@ export class PaymentEffect {
         ),
         catchError(err => {
           this.paymentStore.update(state => ({
-            ...state, added: null
+            ...state, loading: undefined
           }));
           return of(PaymentActions.error(err))
         }),
@@ -121,7 +126,7 @@ export class PaymentEffect {
     ofType(PaymentActions.remove),
     switchMap((props: RemovePaymentDto) => {
       this.paymentStore.update(state => ({
-        ...state, deleted: false
+        ...state, loading: true
       }));
       return this.paymentService.delete(props.id).pipe(
         tap((_) => {
@@ -133,14 +138,14 @@ export class PaymentEffect {
               }
             });
             this.paymentStore.update(state => ({
-              ...state, deleted: true
+              ...state, loading: false
             }));
             this.paymentStore.remove(props.id);
           }
         ),
         catchError(err => {
           this.paymentStore.update(state => ({
-            ...state, deleted: null
+            ...state, loading: undefined
           }));
           return of(PaymentActions.error(err))
         }),

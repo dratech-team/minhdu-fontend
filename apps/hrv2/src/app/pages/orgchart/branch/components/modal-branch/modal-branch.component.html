@@ -25,6 +25,6 @@
     </div>
   </div>
   <div class='mt-4'>
-    <button nz-button nzType="primary" [nzLoading]="(added$| async) === false" (click)='onsubmit()'>Lưu</button>
+    <button nz-button nzType="primary" [nzLoading]="loading$ | async" (click)='onsubmit()'>Lưu</button>
   </div>
 </form>

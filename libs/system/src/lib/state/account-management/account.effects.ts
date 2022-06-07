@@ -1,19 +1,19 @@
-import { Injectable } from '@angular/core';
-import { AccountService } from '../../services/account.service';
-import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { AccountActions } from './account.actions';
-import { AccountStore } from './account.store';
-import { SearchAccountDto } from '../../dto/account/search-account.dto';
-import { AddAccountDto } from '../../dto/account/add-account.dto';
-import { RemoveAccountDto } from '../../dto/account/remove-account.dto';
-import { PaginationDto } from '@minhdu-fontend/constants';
-import { AccountQuery } from './account.query';
-import { Router } from '@angular/router';
-import { SignInDto } from '../../dto/account/sign-in.dto';
-import { AccountEntity } from '../../entities/account.entity';
+import {Injectable} from '@angular/core';
+import {AccountService} from '../../services/account.service';
+import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {of} from 'rxjs';
+import {AccountActions} from './account.actions';
+import {AccountStore} from './account.store';
+import {SearchAccountDto} from '../../dto/account/search-account.dto';
+import {AddAccountDto} from '../../dto/account/add-account.dto';
+import {RemoveAccountDto} from '../../dto/account/remove-account.dto';
+import {PaginationDto} from '@minhdu-fontend/constants';
+import {AccountQuery} from './account.query';
+import {Router} from '@angular/router';
+import {SignInDto} from '../../dto/account/sign-in.dto';
+import {AccountEntity} from '../../entities/account.entity';
 
 @Injectable()
 export class AccountEffects {
@@ -32,19 +32,22 @@ export class AccountEffects {
     ofType(AccountActions.addOne),
     switchMap((props: AddAccountDto) => {
       this.accountStore.update(state => ({
-        ...state, added: false
+        ...state,
+        loading: true
       }));
       return this.accountService.signUp(props).pipe(
         tap(res => {
           this.message.success('Thêm tài khoản thành công');
           this.accountStore.update(state => ({
-            ...state, added: true
+            ...state,
+            loading: false
           }));
           this.accountStore.add(res);
         }),
         catchError(err => {
           this.accountStore.update(state => ({
-            ...state, added: null
+            ...state,
+            loading: undefined
           }));
           return of(AccountActions.error(err));
         })
@@ -56,11 +59,10 @@ export class AccountEffects {
   loadAll$ = this.actions$.pipe(
     ofType(AccountActions.loadAll),
     switchMap((props: SearchAccountDto) => {
-      this.accountStore.update(state => (
-        Object.assign({ ...state }, props.isPaginate
-          ? { loadMore: true }
-          : { loading: true }
-        )
+      this.accountStore.update(state => ({
+          ...state,
+          loading: true
+        }
       ));
       Object.assign(props.search, {
         take: PaginationDto.take,
@@ -68,11 +70,12 @@ export class AccountEffects {
       });
       return this.accountService.pagination(props).pipe(
         map((res) => {
-          this.accountStore.update(state => (
-            Object.assign({ ...state, total: res.total }, props.isPaginate
-              ? { loadMore: false }
-              : { loading: false }
-            )
+          this.accountStore.update(state => ({
+              ...state,
+              total: res.total,
+              remain: res.total - this.accountQuery.getCount(),
+              loading: false
+            }
           ));
           if (props.isPaginate) {
             this.accountStore.add(res.data);
@@ -81,11 +84,10 @@ export class AccountEffects {
           }
         }),
         catchError((err) => {
-          this.accountStore.update(state => (
-            Object.assign({ ...state }, props.isPaginate
-              ? { loadMore: false }
-              : { loading: false }
-            )
+          this.accountStore.update(state => ({
+              ...state,
+              loading: false
+            }
           ));
           return of(AccountActions.error(err));
         })
@@ -116,19 +118,25 @@ export class AccountEffects {
     ofType(AccountActions.signIn),
     switchMap((props: SignInDto) => {
         this.accountStore.update(state => ({
-          ...state, loginning: true
+          ...state,
+          loading: true
         }));
 
         return this.accountService.signIn(props).pipe(
           tap((user: AccountEntity) => {
-            this.accountStore.update(state => ({ ...state, loginning: false, active: user.id }));
+            this.accountStore.update(state => ({
+              ...state,
+              loading: false,
+              active: user.id
+            }));
             this.accountStore.add(user);
             this.message.success('Đăng nhập thành công');
             this.router.navigate(['/']).then();
           }),
           catchError((err) => {
             this.accountStore.update(state => ({
-              ...state, loginning: false
+              ...state,
+              loading: undefined
             }));
             return of(AccountActions.error(err));
           })
@@ -143,19 +151,22 @@ export class AccountEffects {
     ofType(AccountActions.update),
     switchMap((props) => {
         this.accountStore.update(state => ({
-          ...state, added: false
+          ...state,
+          loading: true
         }));
         return this.accountService.update(props).pipe(
           map((res) => {
             this.accountStore.update(state => ({
-              ...state, added: true
+              ...state,
+              loading: false
             }));
             this.message.success('Cập nhật tài khoản thành công');
             this.accountStore.update(res.id, res);
           }),
           catchError((err) => {
             this.accountStore.update(state => ({
-              ...state, added: true
+              ...state,
+              loading: undefined
             }));
             return of(AccountActions.error(err));
           })
@@ -170,19 +181,22 @@ export class AccountEffects {
     ofType(AccountActions.remove),
     switchMap((props: RemoveAccountDto) => {
         this.accountStore.update(state => ({
-          ...state, deleted: false
+          ...state,
+          loading: true
         }));
         return this.accountService.delete(props.id).pipe(
           map((_) => {
             this.accountStore.update(state => ({
-              ...state, deleted: true
+              ...state,
+              loading: false
             }));
             this.message.success('Xoá tài khoản thành công');
             this.accountStore.remove(props.id);
           }),
           catchError((err) => {
             this.accountStore.update(state => ({
-              ...state, deleted: null
+              ...state,
+              loading: undefined
             }));
             return of(AccountActions.error(err));
           })
@@ -195,7 +209,10 @@ export class AccountEffects {
   logOut$ = this.actions$.pipe(
     ofType(AccountActions.logout),
     switchMap((props) => {
-        this.accountStore.update(state => ({ ...state, active: null }));
+        this.accountStore.update(state => ({
+          ...state,
+          active: null
+        }));
         this.accountStore.remove(props.id);
         return this.router.navigate(['auth/login']).then();
       }

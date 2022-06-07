@@ -44,7 +44,7 @@
     </div>
   </div>
   <div class='row d-flex mt-3 justify-content-center'>
-    <button (click)="onSubmit()" nz-button nzType="primary" [nzLoading]="(added$|async) == false">Xác nhận</button>
+    <button (click)="onSubmit()" nz-button nzType="primary" [nzLoading]="(loading$ | async)">Xác nhận</button>
   </div>
 </form>
 

@@ -9,9 +9,7 @@ import {OrderEntity} from "../enitities/order.entity";
 import {StorageName} from "@minhdu-fontend/constants";
 
 export interface OrderState extends EntityState<OrderEntity> {
-  readonly loading: boolean
-  readonly added: boolean | null
-  readonly deleted: boolean | null
+  readonly loading?: boolean
   readonly expandedAll?: boolean
   readonly total: number;
   readonly commodityUniq: CommodityUniq[];
@@ -22,9 +20,6 @@ export interface OrderState extends EntityState<OrderEntity> {
 
 function createInitState(): OrderState {
   return {
-    loading: true,
-    added: null,
-    deleted: null,
     expandedAll: false,
     total: 0,
     commodityUniq: [],

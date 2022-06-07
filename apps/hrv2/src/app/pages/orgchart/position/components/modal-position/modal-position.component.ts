@@ -16,7 +16,7 @@ export class ModalPositionComponent implements OnInit {
   @Input() data?: DataAddOrUpdatePosition
 
   branches$ = this.branchQuery.selectAll()
-  added$ = this.positionQuery.select(state => state.added)
+  loading$ = this.positionQuery.select(state => state.loading)
   formGroup!: FormGroup;
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id === o2.id : o1 === o2)
@@ -54,8 +54,8 @@ export class ModalPositionComponent implements OnInit {
         ? PositionActions.update({id: this.data.update.position.id, updates: position})
         : PositionActions.addOne({body: position})
     )
-    this.added$.subscribe(val => {
-      if (val) {
+    this.loading$.subscribe(loading => {
+      if (loading === false) {
         this.modalRef.close()
       }
     })

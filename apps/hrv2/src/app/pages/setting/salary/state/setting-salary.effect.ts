@@ -9,7 +9,6 @@ import {SettingSalaryActions} from "./setting-salary.action";
 import {SearchSalarySettingDto} from "../dto";
 import {SettingSalaryQuery} from "./setting-salary.query";
 import {SalarySettingEntity} from "../entities";
-import {PaginationDto} from "@minhdu-fontend/constants";
 
 @Injectable()
 export class SettingSalaryEffect {
@@ -27,7 +26,7 @@ export class SettingSalaryEffect {
     ofType(SettingSalaryActions.addOne),
     switchMap(props => {
       this.settingSalaryStore.update(state => ({
-        ...state, added: false
+        ...state, loading: true
       }))
       return this.service.addOne(props).pipe(
         map(res => {
@@ -36,13 +35,13 @@ export class SettingSalaryEffect {
         }),
         tap(res => {
           this.settingSalaryStore.update(state => ({
-            ...state, added: true, total: state.total + 1
+            ...state, loading: false, total: state.total + 1
           }))
           this.settingSalaryStore.upsert(res.id, res);
         }),
         catchError(err => {
           this.settingSalaryStore.update(state => ({
-            ...state, added: true
+            ...state, loading: undefined
           }))
           return of(SettingSalaryActions.error(err))
         })
@@ -55,15 +54,12 @@ export class SettingSalaryEffect {
   loadAll$ = this.action$.pipe(
     ofType(SettingSalaryActions.loadAll),
     switchMap((props: SearchSalarySettingDto) => {
-      this.settingSalaryStore.update(state => (
-        Object.assign({
-            ...state,
-          }, props.isPaginate
-            ? {loadMore: true}
-            : {loading: true}
-        )
+      this.settingSalaryStore.update(state => ({
+          ...state,
+          loading: true
+        }
       ));
-      if(props?.search){
+      if (props?.search) {
         Object.assign(props.search,
           props.search?.orderType
             ? {orderType: props.search?.orderType === 'ascend' ? 'asc' : 'desc'}
@@ -84,23 +80,19 @@ export class SettingSalaryEffect {
           } else {
             this.settingSalaryStore.set(res.data);
           }
-          this.settingSalaryStore.update(state => (
-            Object.assign({
-                ...state, total: res.total, remain: res.total - this.settingSalaryQuery.getCount()
-              }, props.isPaginate
-                ? {loadMore: false}
-                : {loading: false}
-            )
+          this.settingSalaryStore.update(state => ({
+              ...state,
+              total: res.total,
+              loading: false,
+              remain: res.total - this.settingSalaryQuery.getCount()
+            }
           ));
         }),
         catchError((err) => {
-          this.settingSalaryStore.update(state => (
-            Object.assign({
-                ...state,
-              }, props.isPaginate
-                ? {loadMore: false}
-                : {loading: false}
-            )
+          this.settingSalaryStore.update(state => ({
+              ...state,
+              loading: undefined
+            }
           ));
           return of(SettingSalaryActions.error(err))
         })
@@ -132,7 +124,7 @@ export class SettingSalaryEffect {
     ofType(SettingSalaryActions.update),
     switchMap(props => {
       this.settingSalaryStore.update(state => ({
-        ...state, added: false
+        ...state, loading: true
       }))
       return this.service.update(props).pipe(
         map(res => {
@@ -141,13 +133,13 @@ export class SettingSalaryEffect {
         }),
         tap(res => {
           this.settingSalaryStore.update(state => ({
-            ...state, added: true
+            ...state, loading: false
           }))
           this.settingSalaryStore.update(res?.id, res);
         }),
         catchError(err => {
           this.settingSalaryStore.update(state => ({
-            ...state, added: null
+            ...state, loading: undefined
           }))
           return of(SettingSalaryActions.error(err))
         })
@@ -159,15 +151,25 @@ export class SettingSalaryEffect {
   delete$ = this.action$.pipe(
     ofType(SettingSalaryActions.remove),
     switchMap(props => {
+      this.settingSalaryStore.update(state => ({
+        ...state,
+        loading: true,
+      }))
       return this.service.delete(props.id).pipe(
         tap(_ => {
           this.settingSalaryStore.update(state => ({
-            ...state, added: true, total: state.total - 1
+            ...state,
+            loading: false,
+            total: state.total - 1
           }))
           this.message.success('Xoá bản mẫu thành công')
           this.settingSalaryStore.remove(props?.id);
         }),
         catchError(err => {
+          this.settingSalaryStore.update(state => ({
+            ...state,
+            loading: undefined,
+          }))
           return of(SettingSalaryActions.error(err))
         })
       );

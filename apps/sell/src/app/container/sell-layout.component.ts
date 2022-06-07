@@ -11,13 +11,14 @@ import {AppQuery} from '../state/app.query';
 import {map} from 'rxjs/operators';
 import {AccountActions} from "../../../../../libs/system/src/lib/state/account-management/account.actions";
 import {Actions} from "@datorama/akita-ng-effects";
+import {AccountQuery} from "../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './sell-layout.component.html',
   styleUrls: ['./sell-layout.component.scss']
 })
-export class SellLayoutComponent implements OnInit, AfterContentChecked {
+export class SellLayoutComponent implements OnInit {
   role = localStorage.getItem('role');
   roleEnum = Role;
   menuSell = menuSell;
@@ -28,7 +29,7 @@ export class SellLayoutComponent implements OnInit, AfterContentChecked {
     private readonly actions$: Actions,
     private readonly router: Router,
     private readonly appQuery: AppQuery,
-    private readonly ref: ChangeDetectorRef
+    private readonly accountQuery: AccountQuery
   ) {
   }
 
@@ -37,10 +38,6 @@ export class SellLayoutComponent implements OnInit, AfterContentChecked {
     // if (!this.role) {
     //   this.router.navigate(['/']).then();
     // }
-  }
-
-  ngAfterContentChecked() {
-    this.ref.detectChanges();
   }
 
   pickMenuMobile() {
@@ -68,7 +65,15 @@ export class SellLayoutComponent implements OnInit, AfterContentChecked {
     const ref = this.dialog.open(LogoutComponent, { width: '30%' });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.actions$.dispatch(AccountActions.logout());
+        const currentUser = this.accountQuery.getCurrentUser()
+        if(currentUser){
+          this.actions$.dispatch(AccountActions.logout( {
+            id: currentUser.id
+          }));
+        }else{
+          this.router.navigate(['auth/login']).then()
+        }
+
       }
     });
   }

@@ -10,10 +10,8 @@ import {ModalAddOrUpdatePayment} from "../../../customer/data/modal-payment.data
 import {BaseAddPaymentDto} from "../../dto/add-payment.dto";
 import {BaseUpdatePaymentDto} from "../../dto/update-payment.dto";
 import {PayTypeConstant} from "../../constants/pay-type.constant";
-import {OrderActions, OrderQuery} from "../../../order/+state";
-import {PaginationDto} from "@minhdu-fontend/constants";
+import {OrderQuery} from "../../../order/+state";
 import {NzMessageService} from "ng-zorro-antd/message";
-import {values} from "lodash";
 
 @Component({
   templateUrl: 'payment-modal.component.html'
@@ -21,7 +19,7 @@ import {values} from "lodash";
 
 export class PaymentModalComponent implements OnInit {
   @Input() data!: ModalAddOrUpdatePayment
-  added$ = this.paymentQuery.select(state => state.added)
+  loading$ = this.paymentQuery.select(state => state.loading)
 
   payTypeConstant = PayTypeConstant.filter(item => item.value !== PaymentType.ALL)
   formGroup!: FormGroup;
@@ -46,7 +44,7 @@ export class PaymentModalComponent implements OnInit {
       paidTotal: [paymentHistory?.total, Validators.required],
       paidAt: [paymentHistory?.paidAt || new Date(), Validators.required],
       note: [paymentHistory?.note],
-      order:[paymentHistory?.order],
+      order: [paymentHistory?.order],
     });
   }
 
@@ -63,8 +61,8 @@ export class PaymentModalComponent implements OnInit {
         })
     )
 
-    this.added$.subscribe(val => {
-      if (val) {
+    this.loading$.subscribe(loading => {
+      if (loading === false) {
         this.modalRef.close(true)
       }
     })
@@ -76,10 +74,10 @@ export class PaymentModalComponent implements OnInit {
 
   move(type: 'next' | 'previous'): any {
     console.log(this.formGroup.value)
-    if(this.formGroup.invalid){
+    if (this.formGroup.invalid) {
       return
     }
-    if(type === "next" && this.indexStep === 1 && !this.formGroup.value.order){
+    if (type === "next" && this.indexStep === 1 && !this.formGroup.value.order) {
       return this.message.error('Chưa chọn đơn hàng')
     }
     type === "next" ? this.indexStep += 1 : this.indexStep -= 1

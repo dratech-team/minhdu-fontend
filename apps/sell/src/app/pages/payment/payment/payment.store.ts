@@ -5,21 +5,14 @@ import {PaymentEntity} from "../entities/payment.entity";
 import {SearchPaymentDto} from "../dto/search-payment.dto";
 
 export interface PaymentState extends EntityState<PaymentEntity> {
-  loading: boolean;
-  loadMore: boolean;
-  added: boolean | null;
+  loading?: boolean;
   total: number
   search?: Partial<SearchPaymentDto>;
-  deleted: boolean | null
 }
 
 function createInitState(): PaymentState {
   return {
-    loading: true,
-    loadMore: false,
-    added: null,
     total: 0,
-    deleted: null
   };
 }
 

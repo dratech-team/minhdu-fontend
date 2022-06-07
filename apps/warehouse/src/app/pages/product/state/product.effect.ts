@@ -1,10 +1,10 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
 import {catchError, switchMap, tap} from 'rxjs/operators';
-import {of, throwError} from 'rxjs';
+import {of} from 'rxjs';
 import {ProductActions} from './product.actions';
 import {ProductStore} from './product.store';
-import {ProductService} from '../services/product.service';
+import {ProductService} from '../services';
 import {NzMessageService} from "ng-zorro-antd/message";
 
 @Injectable()
@@ -22,34 +22,42 @@ export class ProductEffect {
     ofType(ProductActions.addOne),
     switchMap(props => {
       this.productStore.update(state => ({
-        ...state, added: false
+        ...state,
+        loading: true
       }))
       return this.service.addOne(props).pipe(
         tap(res => {
           this.productStore.update(state => ({
-            ...state, added: true
+            ...state,
+            loading: false
           }))
           this.productStore.upsert(res.id, res);
         }),
         catchError(err => {
           this.productStore.update(state => ({
-            ...state, added: null
+            ...state,
+            loading: undefined
           }))
           return of(ProductActions.error(err))
         })
       );
     }),
-
   );
 
   @Effect()
   loadAll$ = this.action$.pipe(
     ofType(ProductActions.loadAll),
     switchMap((props) => {
-      this.productStore.update(state => ({...state, loading: true}))
+      this.productStore.update(state => ({
+        ...state,
+        loading: true
+      }))
       return this.service.pagination(props).pipe(
         tap((res) => {
-          this.productStore.update(state => ({...state, loading: false}))
+          this.productStore.update(state => ({
+            ...state,
+            loading: false
+          }))
           if (res.data.length === 0) {
             this.message.warning('Đã lấy hết hàng hoá')
           }
@@ -60,7 +68,10 @@ export class ProductEffect {
           }
         }),
         catchError((err) => {
-          this.productStore.update(state => ({...state, loading: false}))
+          this.productStore.update(state => ({
+            ...state,
+            loading: undefined
+          }))
           return of(ProductActions.error(err))
         })
       );
@@ -87,18 +98,21 @@ export class ProductEffect {
     ofType(ProductActions.update),
     switchMap(props => {
       this.productStore.update(state => ({
-        ...state, added: false
+        ...state,
+        loading: true
       }))
       return this.service.update(props).pipe(
         tap(res => {
           this.productStore.update(state => ({
-            ...state, added: true
+            ...state,
+            loading: false
           }))
           this.productStore.update(res?.id, res);
         }),
         catchError(err => {
           this.productStore.update(state => ({
-            ...state, added: null
+            ...state,
+            loading: undefined
           }))
           return of(ProductActions.error(err))
         })
@@ -110,14 +124,27 @@ export class ProductEffect {
   delete$ = this.action$.pipe(
     ofType(ProductActions.remove),
     switchMap(props => {
+      this.productStore.update(state => ({
+        ...state,
+        loading: true
+      }))
       return this.service.delete(props.id).pipe(
         tap(_ => {
+          this.productStore.update(state => ({
+            ...state,
+            loading: false
+          }))
           this.productStore.remove(props?.id);
         }),
         catchError(err => {
+          this.productStore.update(state => ({
+            ...state,
+            loading: undefined
+          }))
           return of(ProductActions.error(err))
         })
       );
     }),
   );
 }
+

@@ -11,7 +11,7 @@ import {NzModalRef} from "ng-zorro-antd/modal";
 export class ModalBranchComponent implements OnInit {
   @Input() data?: { update?: { branch: BranchEntity } }
 
-  added$ = this.branchQuery.select(state => state.added)
+  loading$ = this.branchQuery.select(state => state.loading)
 
   formGroup!: FormGroup
   submitted = false
@@ -47,8 +47,8 @@ export class ModalBranchComponent implements OnInit {
         : BranchActions.addOne({body: branch})
     )
 
-    this.added$.subscribe(val => {
-      if (val) {
+    this.loading$.subscribe(loading => {
+      if (loading === false) {
         this.modalRef.close()
       }
     })

@@ -1,10 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {PayrollEntity} from "../../entities";
 import {FormGroup} from "@angular/forms";
-import {BranchQuery, PositionActions, PositionQuery} from "@minhdu-fontend/orgchart-v2";
+import {BranchQuery, PositionQuery} from "@minhdu-fontend/orgchart-v2";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollQuery, PayrollStore} from "../../state";
-import { FilterTypeEnum, ItemContextMenu, ModeEnum, Role, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import {FilterTypeEnum, ItemContextMenu, ModeEnum, Role, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {filterSameSalary, rageDaysInMonth} from "@minhdu-fontend/utils";
 import {PaidConstant} from "../../constants/paid.constant";
 import {ConfirmConstant} from "../../constants/confirm.constant";
