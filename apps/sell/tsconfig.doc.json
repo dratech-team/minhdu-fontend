@@ -1,0 +1,10 @@
+{
+  "include": ["../../libs/**/*.ts", "src/**/*.ts"],
+  "exclude": [
+    "../../libs/orgchart",
+    "../../libs/employee",
+    "../../libs/employee-v2",
+    "src/test-setup.ts",
+    "polyfills.ts",
+  ]
+}
