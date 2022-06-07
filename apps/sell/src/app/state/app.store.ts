@@ -1,6 +1,5 @@
 import { HrefEnum } from '../enums/href.enum';
-import { ActiveState } from '@datorama/akita/lib/types';
-import { EntityStore, StoreConfig } from '@datorama/akita';
+import { ActiveState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
 
 export interface AppState extends ActiveState<HrefEnum | string> {
