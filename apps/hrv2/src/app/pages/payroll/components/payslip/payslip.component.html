@@ -5,7 +5,9 @@
   </div>
   <div class='mt-2 text-danger'>(Vui lòng kiểm tra kỹ ngày trước khi xác nhận phiếu lương)</div>
   <div class='footer-popup row mt-3 ml-2'>
-    <button (click)='confirmPayroll(false)' class='btn btn-primary '>Tạm tính</button>
+    <button nz-button nzType="primary" [nzLoading]="(confirmed$ | async) === false" (click)='confirmPayroll(false)'>Tạm
+      tính
+    </button>
   </div>
 </div>
 
@@ -56,7 +58,7 @@
         </div>
       </div>
     </div>
-    <div class='border mt-2' *ngIf='data.payroll.employee.type === typeEmployee.EMPLOYEE_FULL_TIME; else seasonal'>
+    <div class='border mt-2' *ngIf='data.payroll.employee.type === typeEmployee.FULL_TIME; else seasonal'>
       <div *ngIf='( payslip$ | async) as payslip else loadingPayslip'>
         <div class='mat-typography ' style='
                             position: relative;

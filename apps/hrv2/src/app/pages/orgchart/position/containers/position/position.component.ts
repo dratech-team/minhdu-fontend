@@ -11,14 +11,13 @@ import {
   PositionEntity,
   PositionQuery
 } from "@minhdu-fontend/orgchart-v2";
-import {ModalAlertComponent} from "@minhdu-fontend/components";
-import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ModalPositionComponent} from "../../components/modal-position/modal-position.component";
 import {DataAddOrUpdatePosition} from "../../data/modal-position.data";
-import {FilterTypeEnum, ItemContextMenu} from "@minhdu-fontend/enums";
+import {FilterTypeEnum, ItemContextMenu, ModeEnum} from "@minhdu-fontend/enums";
 import {EmployeeStore} from "@minhdu-fontend/employee-v2";
 import {PayrollStore} from "../../../../payroll/state";
+import {AccountQuery} from "../../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   templateUrl: 'position.component.html'
@@ -27,11 +26,12 @@ export class PositionComponent implements OnInit {
   positions$ = this.positionQuery.selectAll()
   loading$ = this.positionQuery.select(state => state.loading)
   total$ = this.positionQuery.select(state => state.total)
+  currentUser$ = this.accountQuery.selectCurrentUser()
 
   stateSearch = this.positionQuery.getValue().search
   itemContextMenu = ItemContextMenu
   filterType = FilterTypeEnum
-
+  modeEnum = ModeEnum
   formGroup = new FormGroup(
     {
       search: new FormControl(this.stateSearch.search),
@@ -48,6 +48,8 @@ export class PositionComponent implements OnInit {
     private readonly employeeStore: EmployeeStore,
     private readonly payrollStore: PayrollStore,
     private readonly router: Router,
+    private readonly activeRouter: ActivatedRoute,
+    private readonly accountQuery: AccountQuery,
   ) {
   }
 

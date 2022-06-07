@@ -5,6 +5,8 @@ import {BranchEntity} from "@minhdu-fontend/orgchart-v2";
 export interface AccountEntity extends BaseAccountEntity{
   branches: BranchEntity[],
   role: Role,
+  mode: string /* đã toạ ModeEnum ở nhánh config mode*/
+  token: string
 }
 
 interface Role {

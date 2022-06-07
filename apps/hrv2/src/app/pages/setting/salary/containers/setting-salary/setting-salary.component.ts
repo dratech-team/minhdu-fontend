@@ -26,6 +26,9 @@ import * as _ from 'lodash'
 import {UnitDatetimeConstant} from "../../constants/unit-datetime.constant";
 import {Sort} from "@minhdu-fontend/data-models";
 import {SortSettingSalaryEnum} from "../../enums/sort-setting-salary.enum";
+import {ModeEnum} from "@minhdu-fontend/enums";
+import {ActivatedRoute} from "@angular/router";
+import {AccountQuery} from "../../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   selector: 'minhdu-fontend-setting-salary',
@@ -40,6 +43,8 @@ export class SettingSalaryComponent implements OnInit {
   count$ = this.settingSalaryQuery.selectCount()
   positions$ = this.positionQuery.selectAll()
   branches$ = this.branchQuery.selectAll()
+  currentUser$ = this.accountQuery.selectCurrentUser()
+
 
   stateSearch = this.settingSalaryQuery.getValue().search;
   blockSalaries = blockSalariesConstant.concat([{
@@ -55,6 +60,7 @@ export class SettingSalaryComponent implements OnInit {
     orderType: this.stateSearch?.orderType
   };
   sortEnum = SortSettingSalaryEnum;
+  modeEnum = ModeEnum
 
   formGroup = new FormGroup(
     {
@@ -74,7 +80,9 @@ export class SettingSalaryComponent implements OnInit {
     private readonly settingSalaryStore: SettingSalaryStore,
     private readonly message: NzMessageService,
     private readonly positionQuery: PositionQuery,
-    private readonly branchQuery: BranchQuery
+    private readonly branchQuery: BranchQuery,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly accountQuery: AccountQuery,
   ) {
   }
 

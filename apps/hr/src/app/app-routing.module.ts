@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { DefaultLayoutComponent } from './container/default-layout.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {DefaultLayoutComponent} from './container/default-layout.component';
 
 
 const routes: Routes = [
@@ -64,13 +64,13 @@ const routes: Routes = [
           title: 'to-chuc'
         },
       },
-      { path: '**', redirectTo: '' }
+      {path: '**', redirectTo: ''}
     ]
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true, initialNavigation: 'enabled' })],
+  imports: [RouterModule.forRoot(routes, {useHash: true, initialNavigation: 'enabled'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

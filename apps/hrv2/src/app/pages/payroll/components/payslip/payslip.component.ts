@@ -17,6 +17,8 @@ import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../state/payroll.action";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {getLastDayInMonth} from "@minhdu-fontend/utils";
+import { PayrollQuery } from '../../state';
+import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 
 @Component({
   templateUrl: 'payslip.component.html',
@@ -26,12 +28,14 @@ export class PayslipComponent implements OnInit {
   @Input() data!: {
     payroll: PayrollEntity
   }
-  payslip$ = new Observable<PayslipEntity>()
+  payslip$ = this.payslipService.getOne(this.data.payroll.id);
+  confirmed$ = this.payrollQuery.select(state => state.confirmed)
+
   accConfirmedAt = new FormControl('');
   recipeType = RecipeType;
   isConfirmed = false;
   typeEmployee = EmployeeType;
-  role = localStorage.getItem('role')
+  currentUser = this.accountQuery.getCurrentUser();
   adding = false;
 
   constructor(
@@ -41,13 +45,14 @@ export class PayslipComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly message: NzMessageService,
     private readonly payrollService: PayrollService,
-    private readonly modalRef: NzModalRef
+    private readonly modalRef: NzModalRef,
+    private readonly payrollQuery: PayrollQuery,
+    private readonly accountQuery: AccountQuery
   ) {
 
   }
 
   ngOnInit() {
-    this.payslip$ = this.payslipService.getOne(this.data.payroll.id);
     if (this.data?.payroll?.accConfirmedAt) {
       this.isConfirmed = true;
       this.accConfirmedAt.setValue(this.datePipe.transform(this.data.payroll.accConfirmedAt, 'yyyy-MM-dd'));
@@ -57,7 +62,7 @@ export class PayslipComponent implements OnInit {
   }
 
   confirmPayroll(reconfirm: boolean): any {
-    if (this.role === Role.HUMAN_RESOURCE) {
+    if (this.currentUser?.role?.role === Role.HUMAN_RESOURCE) {
       this.modalRef.close()
       return this.message.warning('Quản lý nhân sự không được phép xác nhận phiếu lương')
     }

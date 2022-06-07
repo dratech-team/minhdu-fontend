@@ -516,6 +516,7 @@
       <div class='mt-3 '>
         <table class='mt-3'>
           <tr>
+            <th style="width: 50px">Id</th>
             <th class='text-center'>Họ và tên</th>
             <th class='text-center'>Quan hệ</th>
             <th class='text-center'>Ngày sinh</th>
@@ -525,6 +526,8 @@
             <th class='text-center not-print'>Xóa</th>
           </tr>
           <tr *ngFor='let relative of employee.relatives'>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)'
+                class='text-center pointer'>{{relative.id}}</td>
             <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)'
                 class='text-center pointer'>{{relative.lastName}}</td>
             <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center pointer'
@@ -582,6 +585,7 @@
       <div class='mt-3 '>
         <table class='mt-3'>
           <tr>
+            <th style="width: 50px" class='text-center'>Id</th>
             <th class='text-center'>Bằng cấp</th>
             <th class='text-center'>Bắt đầu</th>
             <th class='text-center'>Kết thúc</th>
@@ -594,6 +598,10 @@
 
           </tr>
           <tr *ngFor='let degree of employee.degrees'>
+            <td class='text-center pointer'
+                (click)='addAndUpdateDegree(employee.id,degree.id , degree)'
+                > {{degree.id}}
+            </td>
             <td class='text-center pointer'
                 (click)='addAndUpdateDegree(employee.id,degree.id , degree)'
                 *ngIf='degree.type === degreeType.UNIVERSITY'> Đại học
@@ -701,12 +709,14 @@
       <div class="border show-table-print" style="max-height: 300px; overflow: auto">
         <table>
           <tr style="position: sticky ; top: 0px ;">
+            <th style="background: white; width: 50px" class='text-center border'>Id</th>
             <th style="background: white" class='text-center border'>Loại lương</th>
             <th style="background: white" class='text-center border'>Mức lương</th>
             <th style="background: white" class='text-center border'>Ngày</th>
             <th style="background: white; width: 150px" class='text-center border'>Hành động</th>
           </tr>
           <tr *ngFor='let history of employee.salaryHistories|filterDay'>
+            <td class='text-center'>{{history?.Id}}</td>
             <td class='text-center'>{{history?.title}}</td>
             <td class='text-center'>{{history?.price ? (history.price|number:'1.0') : ''}}đ</td>
             <td class='text-center'>{{history?.createdAt|date:'dd/MM/yyyy'}}</td>
@@ -726,12 +736,14 @@
       <div class="border show-table-print" style="max-height: 300px; overflow: auto">
         <table>
           <tr style="position: sticky ; top: 0px ;">
+            <th style="background: white; width: 50px" class='text-center border'>Id</th>
             <th style="background: white" class='text-center border'>Từ ngày</th>
             <th style="background: white" class='text-center border'>Vị trí công việc</th>
             <th style="background: white" class='text-center border'>Đơn vị công tác</th>
             <th style="background: white" class='text-center border not-print'>Xoá</th>
           </tr>
           <tr *ngFor='let workHistory of employee.workHistories|filterDayWorkHistory'>
+            <td class='text-center'>{{workHistory?.id}}</td>
             <td class='text-center'>{{workHistory?.createdAt|date:'dd/MM/yyyy'}}</td>
             <td class='text-center'>{{workHistory?.position?.name}}</td>
             <td class='text-center'>{{workHistory?.branch?.name}}</td>

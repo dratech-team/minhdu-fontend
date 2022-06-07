@@ -45,7 +45,7 @@
         <thead>
         <tr>
           <th nzLeft nzWidth="60px">STT</th>
-          <th nzWidth="120px">Mã đơn vị</th>
+          <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" nzWidth="120px">Mã đơn vị</th>
           <th nzLeft>Tên Đơn vị</th>
           <th>Chức vụ</th>
           <th>Tổng nhân viên</th>
@@ -58,7 +58,7 @@
               (click)='onDetail(branch)'
               (contextmenu)='child.onContextMenu($event,branch)'>
             <td nzLeft>{{i + 1}}</td>
-            <td>{{branch.id}}</td>
+            <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">{{branch.id}}</td>
             <td nzLeft>{{branch.name}}</td>
             <td>
               <mat-chip-list>

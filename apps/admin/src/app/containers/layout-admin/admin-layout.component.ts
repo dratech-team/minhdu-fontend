@@ -1,10 +1,11 @@
-import {AfterContentChecked, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {MenuAdminConstant} from '../../../constant/menu-admin.constant';
 import {Actions} from "@datorama/akita-ng-effects";
 import {AccountActions} from "../../../../../../libs/system/src/lib/state/account-management/account.actions";
 import {NzModalService} from "ng-zorro-antd/modal";
+import {AccountQuery} from "../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 
 @Component({
@@ -22,6 +23,7 @@ export class AdminLayoutComponent implements OnInit {
     private readonly router: Router,
     private ref: ChangeDetectorRef,
     private modal: NzModalService,
+    private accountQuery: AccountQuery
   ) {
   }
 
@@ -33,7 +35,14 @@ export class AdminLayoutComponent implements OnInit {
       nzTitle: 'Đăng xuất',
       nzContent: 'Bạn có chắc chắn muốn đăng xuất',
       nzOnOk: (_ => {
-        return this.actions$.dispatch(AccountActions.logout())
+        const currentUser = this.accountQuery.getCurrentUser();
+        if (currentUser) {
+          return this.actions$.dispatch(AccountActions.logout({
+            id: currentUser.id
+          }))
+        } else {
+          this.router.navigate(['auth/login']).then()
+        }
       })
     })
   }

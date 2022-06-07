@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivityType, App} from '@minhdu-fontend/enums';
+import {App, ModeEnum} from '@minhdu-fontend/enums';
 import {FormControl, FormGroup} from '@angular/forms';
 import {appConstant, MethodConstant} from '@minhdu-fontend/constants';
 import {Actions} from "@datorama/akita-ng-effects";
@@ -7,6 +7,8 @@ import {SystemHistoryQuery} from "../../state/system-history/system-history.quer
 import {SystemHistoryActions} from "../../state/system-history/system-history.actions";
 import {SystemHistoryStore} from "../../state/system-history/system-history.store";
 import {debounceTime} from "rxjs/operators";
+import {ActivatedRoute} from "@angular/router";
+import {AccountQuery} from "../../state/account-management/account.query";
 
 @Component({
   templateUrl: 'system-history.component.html',
@@ -18,12 +20,14 @@ export class systemHistoryComponent implements OnInit {
   total$ = this.systemHistoryQuery.select(state => state.total);
   remain$ = this.systemHistoryQuery.select(state => state.remain);
   count$ = this.systemHistoryQuery.selectCount()
+  currentUser$ = this.accountQuery.selectCurrentUser()
 
   app = App;
   apps = appConstant;
   methods = MethodConstant;
   pageSize = 30;
   pageIndexInit = 0;
+  modeEnum = ModeEnum
 
   stateSearch = this.systemHistoryQuery.getValue().search
   formGroup = new FormGroup({
@@ -43,6 +47,8 @@ export class systemHistoryComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly systemHistoryQuery: SystemHistoryQuery,
     private readonly systemHistoryStore: SystemHistoryStore,
+    private readonly activeRouter: ActivatedRoute,
+    private readonly accountQuery: AccountQuery,
   ) {
   }
 

@@ -14,12 +14,13 @@ import {
   PositionQuery,
   PositionStore
 } from "@minhdu-fontend/orgchart-v2";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {PayrollStore} from "../../../../payroll/state";
 import {EmployeeStore} from "@minhdu-fontend/employee-v2";
-import {FilterTypeEnum, ItemContextMenu} from "@minhdu-fontend/enums";
+import {FilterTypeEnum, ItemContextMenu, ModeEnum} from "@minhdu-fontend/enums";
 import {ModalBranchComponent} from "../../components/modal-branch/modal-branch.component";
 import {DataAddOrUpBranch} from "../../data/modal-department.data";
+import {AccountQuery} from "../../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   templateUrl: 'branch.component.html'
@@ -29,10 +30,12 @@ export class BranchComponent implements OnInit {
   loading$ = this.branchQuery.select(state => state.loading)
   total$ = this.branchQuery.select(state => state.total)
   positions$ = this.positionQuery.selectAll()
+  currentUser$ = this.accountQuery.selectCurrentUser()
 
   pageSizeTable = 10;
   filterType = FilterTypeEnum
   itemContextMenu = ItemContextMenu
+  modeEnum = ModeEnum
   stateSearch = this.branchQuery.getValue().search
   formGroup = new FormGroup(
     {
@@ -54,6 +57,8 @@ export class BranchComponent implements OnInit {
     private readonly positionStore: PositionStore,
     private readonly positionQuery: PositionQuery,
     private readonly router: Router,
+    private readonly activeRouter: ActivatedRoute,
+    private readonly accountQuery: AccountQuery,
   ) {
   }
 
@@ -127,7 +132,12 @@ export class BranchComponent implements OnInit {
 
 
   onDetail(branch: BranchEntity) {
-    this.router.navigate(['to-chuc/don-vi/chi-tiet-don-vi/', branch.id]).then();
+    this.router.navigate(['to-chuc/don-vi/chi-tiet-don-vi/', branch.id],
+      {
+        queryParams: {
+          mode: localStorage.getItem('mode')
+        }
+      }).then();
   }
 
   onEmployee(branch: BranchEntity, position?: PositionEntity,) {

@@ -6,6 +6,7 @@ import {BaseService} from 'libs/service/base.service';
 import {Observable} from 'rxjs';
 import {Payroll} from '../+state/payroll/payroll.interface';
 import {VersionEnum} from "@minhdu-fontend/enums";
+import {PayslipEntity} from "../../../../../../hrv2/src/app/pages/payroll/entities";
 
 type Params =
   | HttpParams
@@ -54,7 +55,7 @@ export class PayrollService extends BaseService<Payroll> {
 
   scanHoliday(PayrollId: number): Observable<any> {
     return this.http.get<any>(
-      this.url+ `/${PayrollId}/` + Api.HR.PAYROLL.GENERATE_HOLIDAY
+      this.url + `/${PayrollId}/` + Api.HR.PAYROLL.GENERATE_HOLIDAY
     );
   }
 

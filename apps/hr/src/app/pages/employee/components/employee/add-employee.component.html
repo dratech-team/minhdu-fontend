@@ -80,7 +80,7 @@
             </div>
           </div>
           <div class='col-sm' [formGroup]='formGroup'
-               [hidden]='this.formGroup.value.employeeType === typeEmployee.EMPLOYEE_SEASONAL'>
+               [hidden]='this.formGroup.value.employeeType === typeEmployee.SEASONAL'>
             <label>Ngày công chuẩn </label><span class='star'>*</span>
             <input class='form-control' type='number' formControlName='workday' min='0'
                    (keypress)='checkNumberInput($event)'
@@ -92,7 +92,7 @@
           </div>
         </div>
         <div class='row mt-3'
-             *ngIf='this.formGroup.value.employeeType === typeEmployee.EMPLOYEE_FULL_TIME'>
+             *ngIf='this.formGroup.value.employeeType === typeEmployee.FULL_TIME'>
           <div class='col-sm' [formGroup]='formGroup'>
             <label for='isFlatSalary'>Loại lương </label><span class='star'>*</span>
             <mat-select id='isFlatSalary' class='form-control' formControlName='isFlatSalary'
@@ -153,8 +153,8 @@
             <label for='recipeType'>Chọn loại công thức <span class='star'>*</span></label>
             <mat-select
               [ngStyle]='{
-                "background": this.formGroup.value.employeeType === typeEmployee.EMPLOYEE_SEASONAL ? "#dddddd":"white" ,
-                "pointer-events": this.formGroup.value.employeeType === typeEmployee.EMPLOYEE_SEASONAL ? "none":"auto"
+                "background": this.formGroup.value.employeeType === typeEmployee.SEASONAL ? "#dddddd":"white" ,
+                "pointer-events": this.formGroup.value.employeeType === typeEmployee.SEASONAL ? "none":"auto"
                 }'
               id='recipeType' class='form-control' formControlName='recipeType'>
               <mat-option *ngFor='let item of recipeTypesConstant' [value]='item.value'>

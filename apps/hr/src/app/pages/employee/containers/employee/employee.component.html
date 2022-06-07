@@ -79,7 +79,7 @@
             <!--              <div mat-sort-header='{{sortEnum.STT}}' class='border-top text-center'>Sort</div>-->
             <!--              <input class=' text-center' type='text' disabled>-->
             <!--            </th>-->
-            <th style='background:white'>
+            <th *ngIf="(currentUser$() | async)?.mode === modeEnum.INFO" style='background:white'>
               <div class='border-top text-center'>Mã nhân viên</div>
               <input class='form-control text-center' type='search'>
 
@@ -91,8 +91,8 @@
             <th>
               <div class='border-top text-center'>Loại nhân viên</div>
               <mat-select class='select border-top' style='width: 100%;' formControlName='employeeType'>
-                <mat-option value='{{employeeType.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</mat-option>
-                <mat-option value='{{employeeType.EMPLOYEE_SEASONAL}}'>Nhân viên thời vụ</mat-option>
+                <mat-option value='{{employeeType.FULL_TIME}}'>Nhân viên chính thức</mat-option>
+                <mat-option value='{{employeeType.SEASONAL}}'>Nhân viên thời vụ</mat-option>
               </mat-select>
             </th>
             <th width='5%'>
@@ -234,14 +234,15 @@
               <!--              <th class='pointer ' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>-->
               <!--                <div>{{employee.stt || 'Not sorted'}}</div>-->
               <!--              </th>-->
-              <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+              <th *ngIf="(currentUser$() | async)?.mode === modeEnum.INFO" class='pointer'
+                  [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
                 <div>{{employee?.id}}</div>
               </th>
               <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
                 <div>{{employee?.lastName}}</div>
               </th>
               <th class='pointer'>
-                <div>{{employee?.type === employeeType.EMPLOYEE_FULL_TIME ? 'Nhân viên chính thức' : 'Nhân viên thời vụ' }}
+                <div>{{employee?.type === employeeType.FULL_TIME ? 'Nhân viên chính thức' : 'Nhân viên thời vụ' }}
                 </div>
               </th>
               <th class='pointer'>

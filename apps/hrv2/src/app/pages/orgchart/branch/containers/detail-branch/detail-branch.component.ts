@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {OrgchartEnum} from '@minhdu-fontend/enums';
+import {ModeEnum, OrgchartEnum} from '@minhdu-fontend/enums';
 import {FormControl} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Actions} from "@datorama/akita-ng-effects";
@@ -11,18 +11,21 @@ import {ModalAlertComponent} from "@minhdu-fontend/components";
 import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
 import {AllowanceBranchComponent} from "../../components/modal-allowance-branch/allowance-branch.component";
 import {DataAddOrUpAllowanceBranch} from "../../data/modal-allowance-branch.data";
-import {AllowanceSalaryEntity} from "../../../../salary/entities";
 import {AllowanceBranchEntity} from "../../entities/allowance-branch.entity";
+import {AccountQuery} from "../../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   templateUrl: 'detail-branch.component.html'
 })
 export class DetailBranchComponent implements OnInit {
   branch$ = this.branchQuery.selectEntity(this.branchId);
+  currentUser$ = this.accountQuery.selectCurrentUser()
+
   type = OrgchartEnum;
   pageSize = 30;
   pageIndexInit = 0;
   branch = new FormControl();
+  modeEnum = ModeEnum
 
   constructor(
     private readonly actions$: Actions,
@@ -30,6 +33,8 @@ export class DetailBranchComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly modal: NzModalService,
+    private readonly activeRouter: ActivatedRoute,
+    private readonly accountQuery: AccountQuery,
   ) {
   }
 

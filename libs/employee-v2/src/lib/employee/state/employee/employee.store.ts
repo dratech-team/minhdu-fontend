@@ -31,7 +31,7 @@ export function createInitialState(): EmployeeState {
       status: EmployeeStatusEnum.IS_ACTIVE,
       gender: Gender.ALL,
       flatSalary: FlatSalaryTypeEnum.ALL,
-      type: EmployeeType.EMPLOYEE_FULL_TIME,
+      type: EmployeeType.FULL_TIME,
     }
   }
 }
