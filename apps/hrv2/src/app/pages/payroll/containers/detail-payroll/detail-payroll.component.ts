@@ -168,81 +168,92 @@ export class DetailPayrollComponent implements OnInit {
     },
     update?: { salary: UnionSalary }
   ) {
-    if (type === SalaryTypeEnum.ALLOWANCE) {
-      this.modal.create(Object.assign({}, config, {
-        nzTitle: add ? 'Thêm phụ cấp' : 'Cập nhật phụ cấp',
-        nzContent: AllowanceSalaryComponent,
-        nzComponentParams: <{ data: ModalAddOrUpdateAllowance }>{
-          data: {
-            type: type,
-            add: add,
-            update: update
+    switch (type) {
+      case SalaryTypeEnum.ALLOWANCE: {
+        this.modal.create(Object.assign({}, config, {
+          nzTitle: add ? 'Thêm phụ cấp' : 'Cập nhật phụ cấp',
+          nzContent: AllowanceSalaryComponent,
+          nzComponentParams: <{ data: ModalAddOrUpdateAllowance }>{
+            data: {
+              type: type,
+              add: add,
+              update: update
+            }
           }
-        }
-      }));
-    }
-    if (type === SalaryTypeEnum.OVERTIME || type === SalaryTypeEnum.ABSENT) {
-      this.modal.create(Object.assign({}, config, {
-        nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.ABSENT ? ' Vắng' : ' tăng ca'),
-        nzContent: AbsentOvertimeSalaryComponent,
-        nzComponentParams: <{ data: ModalAddOrUpdateAbsentOrOvertime }>{
-          data: {
-            type: type,
-            add: add,
-            update: update
+        }));
+        break;
+      }
+      case SalaryTypeEnum.OVERTIME:
+      case SalaryTypeEnum.ABSENT: {
+        this.modal.create(Object.assign({}, config, {
+          nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.ABSENT ? ' Vắng' : ' tăng ca'),
+          nzContent: AbsentOvertimeSalaryComponent,
+          nzComponentParams: <{ data: ModalAddOrUpdateAbsentOrOvertime }>{
+            data: {
+              type: type,
+              add: add,
+              update: update
+            }
           }
-        }
-      }));
-    }
-    if (type === SalaryTypeEnum.BASIC || type === SalaryTypeEnum.STAY) {
-      this.modal.create(Object.assign({}, config, {
-        nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.BASIC ? ' lương cơ bản' : ' phụ cấp lương'),
-        nzContent: PermanentSalaryComponent,
-        nzComponentParams: <{ data: ModalPermanentSalaryData }>{
-          data: {
-            type: type,
-            add: add,
-            update: update
+        }));
+        break;
+      }
+      case SalaryTypeEnum.BASIC:
+      case SalaryTypeEnum.STAY: {
+        this.modal.create(Object.assign({}, config, {
+          nzTitle: (add ? 'Thêm' : 'Cập nhật') + (type === SalaryTypeEnum.BASIC ? ' lương cơ bản' : ' phụ cấp lương'),
+          nzContent: PermanentSalaryComponent,
+          nzComponentParams: <{ data: ModalPermanentSalaryData }>{
+            data: {
+              type: type,
+              add: add,
+              update: update
+            }
           }
-        }
-      }));
-    }
-    if (type === SalaryTypeEnum.WFH || type === SalaryTypeEnum.DAY_OFF) {
-      this.modal.create(Object.assign({}, config, {
-        nzTitle: (add ? 'Thêm ' : 'Cập nhật ') + (type === SalaryTypeEnum.WFH ? 'Remote/Onsite/WFH' : 'ngày không đi làm'),
-        nzContent: RemoteOrDayOffSalaryComponent,
-        nzComponentParams: <{ data: ModalAddOrUpdateRemoteOrDayOff }>{
-          data: {
-            type: type,
-            add: add,
-            update: update
+        }));
+        break;
+      }
+      case SalaryTypeEnum.WFH:
+      case SalaryTypeEnum.DAY_OFF: {
+        this.modal.create(Object.assign({}, config, {
+          nzTitle: (add ? 'Thêm ' : 'Cập nhật ') + (type === SalaryTypeEnum.WFH ? 'Remote/Onsite/WFH' : 'ngày không đi làm'),
+          nzContent: RemoteOrDayOffSalaryComponent,
+          nzComponentParams: <{ data: ModalAddOrUpdateRemoteOrDayOff }>{
+            data: {
+              type: type,
+              add: add,
+              update: update
+            }
           }
-        }
-      }));
-    }
-    if (type === SalaryTypeEnum.DEDUCTION) {
-      this.modal.create(Object.assign(config, {
-        nzTitle: add ? 'Thêm khấu trừ' : 'Cập nhật khấu trừ',
-        nzContent: DeductionSalaryComponent,
-        nzComponentParams: <{ data: ModalAddOrUpdateDeduction }>{
-          data: {
-            add: add,
-            update: update
+        }));
+        break;
+      }
+      case SalaryTypeEnum.DEDUCTION: {
+        this.modal.create(Object.assign(config, {
+          nzTitle: add ? 'Thêm khấu trừ' : 'Cập nhật khấu trừ',
+          nzContent: DeductionSalaryComponent,
+          nzComponentParams: <{ data: ModalAddOrUpdateDeduction }>{
+            data: {
+              add: add,
+              update: update
+            }
           }
-        }
-      }));
-    }
-    if (type === SalaryTypeEnum.HOLIDAY) {
-      this.modal.create(Object.assign(config, {
-        nzTitle: add ? 'Thêm ngày lễ' : 'Cập nhật ngày lễ',
-        nzContent: HolidaySalaryComponent,
-        nzComponentParams: <{ data: ModalAddOrUpdateHoliday }>{
-          data: {
-            add: add,
-            update: update
+        }));
+        break;
+      }
+      case SalaryTypeEnum.HOLIDAY: {
+        this.modal.create(Object.assign(config, {
+          nzTitle: add ? 'Thêm ngày lễ' : 'Cập nhật ngày lễ',
+          nzContent: HolidaySalaryComponent,
+          nzComponentParams: <{ data: ModalAddOrUpdateHoliday }>{
+            data: {
+              add: add,
+              update: update
+            }
           }
-        }
-      }));
+        }));
+        break;
+      }
     }
   }
 
