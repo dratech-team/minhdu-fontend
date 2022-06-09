@@ -128,7 +128,7 @@ export class TablePayrollComponent implements OnInit {
       if (date) {
         this.actions$.dispatch(PayrollActions.addOne({
           body: {
-            createdAt: this.payrollQuery.getValue().search.startedAt,
+            createdAt: new Date(date),
             employeeId: payroll.employee.id
           }
         }))

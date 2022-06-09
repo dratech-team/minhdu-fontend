@@ -14,7 +14,7 @@ import {UnitSalaryConstant} from '../../constants';
 import {SessionConstant, workingTime} from '../../../../../shared/constants';
 import {recipesConstant} from '../../../setting/salary/constants';
 import {SalarySettingEntity} from '../../../setting/salary/entities';
-import {getAfterTime, getBeforeTime, getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
+import {getAfterTime, getBeforeTime, getFirstDayInMonth} from '@minhdu-fontend/utils';
 import {throwError} from 'rxjs';
 import {PayrollActions} from '../../../payroll/state/payroll.action';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
@@ -108,7 +108,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       title: [salary?.title],
       rangeDay: [salary && this.data.update
         ? [salary.startedAt, salary.endedAt]
-        : [this.fistDateInMonth, getLastDayInMonth(this.fistDateInMonth)]
+        : []
         , Validators.required],
       price: [salary?.price],
       startTime: [salary?.startTime ? new Date(salary.startTime) : undefined],

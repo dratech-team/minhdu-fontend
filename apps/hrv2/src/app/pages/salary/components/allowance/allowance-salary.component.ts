@@ -69,9 +69,11 @@ export class AllowanceSalaryComponent implements OnInit {
       unit: [salary?.unit || DatetimeUnitEnum.MONTH, Validators.required],
       month: [salary?.startedAt || payroll?.createdAt],
       rangeDay: [
-        [salary?.startedAt || this.fistDateInMonth,
-          salary?.endedAt || getLastDayInMonth(this.fistDateInMonth)
-        ],
+        (payroll && !salary) || (payroll && salary?.unit === DatetimeUnitEnum.MONTH)
+          ? [this.fistDateInMonth, getLastDayInMonth(this.fistDateInMonth)]
+          : salary && this.data.update
+            ? [salary.startedAt, salary.endedAt]
+            : [],
         Validators.required
       ],
       inOffice: [this.data.update ? salary?.inOffice : true],
