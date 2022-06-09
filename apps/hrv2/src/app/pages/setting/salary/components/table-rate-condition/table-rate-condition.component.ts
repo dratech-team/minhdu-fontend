@@ -14,14 +14,14 @@ import {RateConditionConstant} from "../../constants/rate-condition.constant";
   templateUrl: 'table-rate-condition.component.html'
 })
 export class TableRateConditionComponent implements OnInit {
-  @Input() total!: number;
-  @Input() loading!: boolean
   @Input() rateConditionIdInit?: number
 
   rateConditions: RateConditionEntity[] = [];
   conditionConstant = ConditionConstant;
   rateConditionConstant = RateConditionConstant;
   rateConditionControl = new FormControl('')
+  total =  0;
+  loading = false
 
   formGroupTable = new FormGroup({
     condition: new FormControl(''),
