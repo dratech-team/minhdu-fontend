@@ -2,7 +2,7 @@ import {RateConditionEnum} from "../enums/rate-condition.enum";
 
 export const RateConditionConstant = [
   {
-    name: 'Theo khấu trừ',
+    name: 'Theo ngày vắng',
     value: RateConditionEnum.ABSENT,
   },
   {
