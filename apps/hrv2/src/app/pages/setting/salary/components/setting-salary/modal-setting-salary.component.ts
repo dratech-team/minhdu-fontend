@@ -224,7 +224,7 @@ export class ModalSettingSalaryComponent implements OnInit {
             totalOf: null,
           }
           : {
-            workday: value.workday ? value.workday : null,
+            workday: value.workday ? value.workday : 0,
             prices: [],
             totalOf: value.salaries.map((recipe: any) => recipe),
           },
