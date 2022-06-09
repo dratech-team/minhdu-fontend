@@ -259,9 +259,11 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
         }
         : value.isAllowance && value.priceAllowance && value.titleAllowance && this.data.update?.salary.allowances
           ? {
-            id: this.data.update.salary?.allowances[0].id,
-            price: value.priceAllowance,
-            title: value.titleAllowance
+            allowances: {
+              id: this.data.update.salary?.allowances[0].id,
+              price: value.priceAllowance,
+              title: value.titleAllowance
+            }
           }
           : {},
     );
