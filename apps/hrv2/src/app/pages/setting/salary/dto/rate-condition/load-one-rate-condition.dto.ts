@@ -1,6 +1,6 @@
 import {BaseLoadOneDto} from "@minhdu-fontend/base-dto";
 
 /**
- * @deprecated
+ * @notUsed
  * */
 export type LoadOneRateConditionDto = BaseLoadOneDto

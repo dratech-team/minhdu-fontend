@@ -6,7 +6,7 @@ export const RateConditionConstant = [
     value: RateConditionEnum.ABSENT,
   },
   {
-    name: 'Theo ngày vắng',
+    name: 'Theo ngày công chuẩn',
     value: RateConditionEnum.WORKDAY,
   },
 ]

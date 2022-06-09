@@ -22,7 +22,7 @@ import {
 import * as moment from "moment";
 import {EmployeeTypeConstant} from "../../constants/employee-type.constant";
 import {RateConditionComponent} from "../rate-condition/rate-condition.component";
-import {TableRateConditionData} from "../../data/table-rate-condition.data";
+import {RateConditionData} from "../../data/rate-condition.data";
 
 @Component({
   templateUrl: 'modal-setting-salary.component.html'
@@ -273,7 +273,7 @@ export class ModalSettingSalaryComponent implements OnInit {
       nzWidth: '70vw',
       nzTitle: 'Chọn điều kiện',
       nzContent: RateConditionComponent,
-      nzComponentParams: <TableRateConditionData>{
+      nzComponentParams: <RateConditionData>{
         rateConditions: [],
         loading: false,
         total: 0,
