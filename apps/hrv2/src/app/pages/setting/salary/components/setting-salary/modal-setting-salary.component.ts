@@ -21,7 +21,7 @@ import {
 } from "@minhdu-fontend/orgchart-v2";
 import * as moment from "moment";
 import {EmployeeTypeConstant} from "../../constants/employee-type.constant";
-import {TableRateConditionComponent} from "../table-rate-condition/table-rate-condition.component";
+import {RateConditionComponent} from "../rate-condition/rate-condition.component";
 import {TableRateConditionData} from "../../data/table-rate-condition.data";
 
 @Component({
@@ -272,7 +272,7 @@ export class ModalSettingSalaryComponent implements OnInit {
     this.modal.create({
       nzWidth: '70vw',
       nzTitle: 'Chọn điều kiện',
-      nzContent: TableRateConditionComponent,
+      nzContent: RateConditionComponent,
       nzComponentParams: <TableRateConditionData>{
         rateConditions: [],
         loading: false,

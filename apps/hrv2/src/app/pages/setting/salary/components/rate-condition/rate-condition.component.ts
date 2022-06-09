@@ -5,15 +5,15 @@ import {RateConditionEntity} from "../../entities/rate-condition.entity";
 import {RateConditionService} from "../../services/rate-condition.service";
 import {PaginationDto} from "@minhdu-fontend/constants";
 import {NzModalRef, NzModalService} from "ng-zorro-antd/modal";
-import {ModalRateConditionComponent} from "../rate-condition/modal-rate-condition.component";
+import {ModalRateConditionComponent} from "../modal-rate-condition/modal-rate-condition.component";
 import {ModalRateConditionData} from "../../data/modal-rate-condition.data";
 import {RateConditionConstant} from "../../constants/rate-condition.constant";
 
 @Component({
   selector: 'minhdu-fontend-table-rate-condition',
-  templateUrl: 'table-rate-condition.component.html'
+  templateUrl: 'rate-condition.component.html'
 })
-export class TableRateConditionComponent implements OnInit {
+export class RateConditionComponent implements OnInit {
   @Input() rateConditionIdInit?: number
 
   rateConditions: RateConditionEntity[] = [];
