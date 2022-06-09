@@ -238,12 +238,20 @@ export class EmployeeComponent implements OnInit {
     this.actions$.dispatch(EmployeeActions.loadAll(this.mapEmployeeDto(this.formGroup.value, true)));
   }
 
-  onUpdate($event: any, isUpdate?: boolean): void {
-    this.router.navigate(['nhan-vien/chi-tiet-nhan-vien', $event.id], {
-      queryParams: {
-        isUpdate
-      }
-    }).then();
+  onUpdate(employee: EmployeeEntity): void {
+    this.modal.create({
+      nzWidth: '700px',
+      nzTitle: 'Cập nhật nhân viên',
+      nzContent: ModalEmployeeComponent,
+      nzComponentParams: <{ data: ModalEmployeeData }>{
+        data: {
+          update: {
+            employee
+          }
+        }
+      },
+      nzFooter: []
+    })
   }
 
   onPermanentlyDeleted($event: any) {
