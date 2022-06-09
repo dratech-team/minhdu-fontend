@@ -3,6 +3,7 @@ import {BaseSalarySettingEntity} from "../bases";
 import {SalaryConstraintEntity} from "./salary-constraint.entity";
 import {PriceType} from "../enums";
 import {BranchEntity, PositionEntity} from "@minhdu-fontend/orgchart-v2";
+import {RateConditionEntity} from "./rate-condition.entity";
 
 export interface SalarySettingEntity extends BaseSalarySettingEntity {
   type: SalaryTypeEnum,
@@ -17,5 +18,4 @@ export interface SalarySettingEntity extends BaseSalarySettingEntity {
   workday?: number,
   employeeType?: EmployeeType
   positions?: PositionEntity[]
-  hasConstraints?: boolean
 }

@@ -1,5 +1,4 @@
 import {BaseEntity} from "@minhdu-fontend/base-entity";
-import {Employee} from "@minhdu-fontend/data-models";
 
 export interface BaseSalarySettingEntity extends BaseEntity {
   dayOff?: number,
@@ -7,5 +6,7 @@ export interface BaseSalarySettingEntity extends BaseEntity {
   note?: string,
   rate: number
   startedAt?:Date
-  endedAt?:Date
+  endedAt?:Date,
+  rateConditionId?: number
+
 }

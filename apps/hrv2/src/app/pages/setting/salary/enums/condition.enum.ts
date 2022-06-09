@@ -1,0 +1,9 @@
+export enum ConditionEnum {
+  LESS = 'LESS',
+  LESS_EQUAL = 'LESS_EQUAL',
+  GREATER = 'GREATER',
+  GREATER_EQUAL = 'GREATER_EQUAL',
+  EQUAL = 'EQUAL',
+  NOT_EQUAL = 'NOT_EQUAL',
+  NO_CONDITION = 'NO_CONDITION'
+}

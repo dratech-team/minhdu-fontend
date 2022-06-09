@@ -5,7 +5,7 @@ import {Branch} from '@minhdu-fontend/data-models';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {PriceType} from "../../enums";
 import {blockSalariesConstant} from "../../constants";
-import {NzModalRef} from "ng-zorro-antd/modal";
+import {NzModalRef, NzModalService} from "ng-zorro-antd/modal";
 import {Actions} from "@datorama/akita-ng-effects";
 import {SettingSalaryActions, SettingSalaryQuery} from "../../state";
 import {DiveEnum} from "../../enums/dive.enum";
@@ -21,6 +21,8 @@ import {
 } from "@minhdu-fontend/orgchart-v2";
 import * as moment from "moment";
 import {EmployeeTypeConstant} from "../../constants/employee-type.constant";
+import {RateConditionComponent} from "../rate-condition/rate-condition.component";
+import {RateConditionData} from "../../data/rate-condition.data";
 
 @Component({
   templateUrl: 'modal-setting-salary.component.html'
@@ -57,7 +59,8 @@ export class ModalSettingSalaryComponent implements OnInit {
     private readonly positionQuery: PositionQuery,
     private readonly message: NzMessageService,
     private readonly modalRef: NzModalRef,
-    private readonly salaryType: SalaryTypePipe
+    private readonly salaryType: SalaryTypePipe,
+    private readonly modal: NzModalService,
   ) {
   }
 
@@ -90,7 +93,7 @@ export class ModalSettingSalaryComponent implements OnInit {
       prices: [template?.prices && template.prices.length === 1 ? template.prices[0] : ''],
       branches: [template?.branches || []],
       positions: [template?.positions || []],
-      hasConstraints: [this.data?.update ? template?.hasConstraints : true],
+      rateConditionId: [this.data?.update ? template?.rateConditionId : ''],
       rangeDay: [
         this.data?.update
           ?
@@ -205,11 +208,10 @@ export class ModalSettingSalaryComponent implements OnInit {
         Object.assign(template, {constraint: this.constraint})
       }
 
-      Object.assign(template, value.block.branch === SalaryTypeEnum.OVERTIME
-          ? {
-            hasConstraints: value.hasConstraints,
-          }
-          : {},
+      Object.assign(template,
+        {
+          rateConditionId: value.rateConditionId || null,
+        },
         value.block.branch ?
           {branchIds: value.branches.map((branch: BranchEntity) => branch.id)}
           : {},
@@ -264,5 +266,22 @@ export class ModalSettingSalaryComponent implements OnInit {
 
   onRemovePrice(price: number) {
     this.prices = this.prices.filter(val => val !== price)
+  }
+
+  selectRateCondition() {
+    this.modal.create({
+      nzWidth: '70vw',
+      nzTitle: 'Chọn điều kiện',
+      nzContent: RateConditionComponent,
+      nzComponentParams: <RateConditionData>{
+        rateConditions: [],
+        loading: false,
+        total: 0,
+        rateConditionIdInit: this.formGroup.value.rateConditionId
+      },
+      nzFooter: []
+    }).afterClose.subscribe(rateConditionId => {
+      this.formGroup.get('rateConditionId')?.setValue(rateConditionId)
+    })
   }
 }
