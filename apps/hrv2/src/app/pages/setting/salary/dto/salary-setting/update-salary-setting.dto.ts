@@ -1,6 +1,6 @@
-import {BaseSalarySettingEntity} from "../bases";
+import {BaseSalarySettingEntity} from "../../bases";
 import {BaseUpdateDto} from "@minhdu-fontend/base-dto";
-import {SalaryTypeEnum} from "../enums";
+import {SalaryTypeEnum} from "../../enums";
 
 interface BaseUpdateSalarySettingDto extends BaseSalarySettingEntity {
   readonly price?: number

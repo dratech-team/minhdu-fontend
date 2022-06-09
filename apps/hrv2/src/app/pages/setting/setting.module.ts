@@ -30,6 +30,8 @@ import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
 import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 import {PriceSettingSalaryPipe} from "./salary/pipes/price-setting-salary.pipe";
 import {NzToolTipModule} from "ng-zorro-antd/tooltip";
+import {ModalRateConditionComponent} from "./salary/components/rate-condition/modal-rate-condition.component";
+import {TableRateConditionComponent} from "./salary/components/table-rate-condition/table-rate-condition.component";
 
 @NgModule({
   imports: [
@@ -64,7 +66,9 @@ import {NzToolTipModule} from "ng-zorro-antd/tooltip";
     VisibleSalarySettingComponent,
     PricesPipe,
     SalaryTypePipe,
-    PriceSettingSalaryPipe
+    PriceSettingSalaryPipe,
+    ModalRateConditionComponent,
+    TableRateConditionComponent
   ],
   exports: [
     SalaryTypePipe,

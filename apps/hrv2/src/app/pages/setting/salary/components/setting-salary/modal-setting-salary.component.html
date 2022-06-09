@@ -79,12 +79,15 @@
               >
             </div>
             <div *ngIf="formGroup.value.block?.hasConstraints?.show" class="col-7 mt-3 mr-2 align-items-center">
-              <div class="font-weight-bold">Ràng buộc hệ số bởi ngày công chuẩn :
+              <div
+                (click)="selectRateCondition()"
+                class="font-weight-bold">Áp dụng điều kiện :
                 <label
-                  [nzDisabled]="formGroup.value.block?.hasConstraints?.disable"
+                  style="pointer-events: none"
                   class=" ml-2"
                   nz-checkbox
-                  formControlName="hasConstraints"></label>
+                  [nzChecked]="!!formGroup.value.rateConditionId"
+                  ></label>
               </div>
             </div>
           </div>
@@ -175,11 +178,12 @@
           </nz-input-group>
           <ng-template #prefixTemplateUser>
             <i *ngIf="formGroup.value.insurance"
-              (click)="validatePrices()"
-              nz-icon nzType="plus" nzTheme="outline"></i>
-            </ng-template>
+               (click)="validatePrices()"
+               nz-icon nzType="plus" nzTheme="outline"></i>
+          </ng-template>
           <ng-template #suffixTemplateInfo>
-            <i  *ngIf="formGroup.value.insurance" nz-icon nz-tooltip nzTooltipTitle="Nhấn enter hoặc nút cộng để thêm vào list giá" nzType="info-circle"></i>
+            <i *ngIf="formGroup.value.insurance" nz-icon nz-tooltip
+               nzTooltipTitle="Nhấn enter hoặc nút cộng để thêm vào list giá" nzType="info-circle"></i>
           </ng-template>
         </div>
         <div *ngIf="prices.length > 0" class="border p-1 mt-2"

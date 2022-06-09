@@ -143,7 +143,11 @@ export const blockSalariesConstant: BlockSalary[] = [
     employeeType: {
       disabled: false,
       show: true
-    }
+    },
+    hasConstraints: {
+      disabled: true,
+      show: true
+    },
   },
   {
     title: 'Tăng ca',
@@ -170,7 +174,7 @@ export const blockSalariesConstant: BlockSalary[] = [
       show: true,
     },
     hasConstraints: {
-      disabled: false,
+      disabled: true,
       show: true
     },
     employeeType: {
@@ -210,6 +214,10 @@ export const blockSalariesConstant: BlockSalary[] = [
     employeeType: {
       disabled: false,
       show: true
-    }
+    },
+    hasConstraints: {
+      disabled: true,
+      show: true
+    },
   },
 ];
