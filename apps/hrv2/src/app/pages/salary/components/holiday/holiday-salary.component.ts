@@ -13,8 +13,10 @@ import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {RemoteConstant} from "../../constants/remote.constant";
 import {SalaryHolidayService} from "../../service/salary-holiday.service";
 import {SettingSalaryActions, SettingSalaryQuery} from "../../../setting/salary/state";
-import {ModalAddOrUpdateHoliday} from "../../data/modal-holiday-salary.data";
+import {ModalAddOrUpdateHoliday} from "../../data";
 import {SalarySettingEntity} from "../../../setting/salary/entities";
+import {RateConditionConstant} from "../../../setting/salary/constants/rate-condition.constant";
+import {ConditionConstant} from "../../../setting/salary/constants/condition.constant";
 
 @Component({
   templateUrl: 'holiday-salary.component.html'
@@ -34,6 +36,8 @@ export class HolidaySalaryComponent implements OnInit {
   );
   settingsLoading$ = this.settingSalaryQuery.select(state => state.loading);
   remoteConstant = RemoteConstant
+  rateConditionConstant = RateConditionConstant
+  conditionConstant = ConditionConstant
   formGroup!: FormGroup;
 
   indexStep = 0;

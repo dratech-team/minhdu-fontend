@@ -14,7 +14,7 @@ import {UnitSalaryConstant} from '../../constants';
 import {SessionConstant, workingTime} from '../../../../../shared/constants';
 import {recipesConstant} from '../../../setting/salary/constants';
 import {SalarySettingEntity} from '../../../setting/salary/entities';
-import {getAfterTime, getBeforeTime, getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
+import {getAfterTime, getBeforeTime, getFirstDayInMonth} from '@minhdu-fontend/utils';
 import {throwError} from 'rxjs';
 import {PayrollActions} from '../../../payroll/state/payroll.action';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
@@ -23,6 +23,8 @@ import {validateDayInMonth} from "../../utils/validate-day-in-month.util";
 import {PayrollQuery} from "../../../payroll/state";
 import {SessionEntity} from "../../../../../shared/entities";
 import {ModalAddOrUpdateAbsentOrOvertime} from "../../data";
+import {RateConditionConstant} from "../../../setting/salary/constants/rate-condition.constant";
+import {ConditionConstant} from "../../../setting/salary/constants/condition.constant";
 
 @Component({
   templateUrl: 'absent-overtime-salary.component.html'
@@ -52,6 +54,8 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   submitting = false;
 
   titleSession: SessionEntity [] = []
+  conditionConstant = ConditionConstant
+  rateConditionConstant = RateConditionConstant
   partialDayEnum = PartialDayEnum;
   recipesConstant = recipesConstant;
   unitConstant = UnitSalaryConstant;
@@ -108,7 +112,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       title: [salary?.title],
       rangeDay: [salary && this.data.update
         ? [salary.startedAt, salary.endedAt]
-        : [this.fistDateInMonth, getLastDayInMonth(this.fistDateInMonth)]
+        : []
         , Validators.required],
       price: [salary?.price],
       startTime: [salary?.startTime ? new Date(salary.startTime) : undefined],
@@ -127,7 +131,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
         : ''],
       constraintHoliday: [],
       constraintOvertime: [],
-      hasConstraints: [],
+      rateCondition: [],
       reference: [],
       payrollIds: [this.data.add?.payroll ? [this.data.add.payroll?.id] : []],
       salaryIds: [this.data.update?.multiple?.salaries.map(item => item.id)],
@@ -140,9 +144,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
         this.formGroup.get('rate')?.setValue(template?.rate);
         this.formGroup.get('unit')?.setValue(template?.unit);
         this.formGroup.get('reference')?.setValue(template?.totalOf.length > 0 ? PriceType.BLOCK : PriceType.PRICE);
-        if (template.type === SalaryTypeEnum.OVERTIME) {
-          this.formGroup.get('hasConstraints')?.setValue(template?.hasConstraints);
-        }
+        this.formGroup.get('rateCondition')?.setValue(template?.rateCondition);
       }
     });
 
@@ -250,14 +252,22 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
             ? {salaryIds: value.salaryIds}
             : {salaryIds: [this.data.update.salary.id]}
         : {payrollIds: value.payrollIds},
-      value.isAllowance && value.priceAllowance && value.titleAllowance
+      value.isAllowance && value.priceAllowance && value.titleAllowance && this.data.add
         ? {
-          allowances: {
+          allowances:{
             price: value.priceAllowance,
             title: value.titleAllowance
           }
         }
-        : {},
+        : value.isAllowance && value.priceAllowance && value.titleAllowance && this.data.update?.salary.allowances
+          ?{
+            allowances: {
+              id: this.data.update.salary?.allowances[0].id,
+              price: value.priceAllowance,
+              title: value.titleAllowance
+            }
+          }
+          : {},
     );
   }
 

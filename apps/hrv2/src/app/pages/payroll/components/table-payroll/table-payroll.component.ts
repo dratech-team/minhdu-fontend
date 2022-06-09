@@ -128,7 +128,7 @@ export class TablePayrollComponent implements OnInit {
       if (date) {
         this.actions$.dispatch(PayrollActions.addOne({
           body: {
-            createdAt: this.payrollQuery.getValue().search.startedAt,
+            createdAt: new Date(date),
             employeeId: payroll.employee.id
           }
         }))
@@ -241,12 +241,7 @@ export class TablePayrollComponent implements OnInit {
   }
 
   async onDetail(payroll: PayrollEntity) {
-    return await this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.id],
-      {
-        queryParams: {
-          isUpdate: true
-        }
-      });
+    return await this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.id]);
   }
 
   onUpdateSelectSalary(salary: any, checked: boolean) {

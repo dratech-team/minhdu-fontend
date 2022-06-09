@@ -9,7 +9,7 @@ import {throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {Actions} from '@datorama/akita-ng-effects';
 import {PayrollActions} from '../../../payroll/state/payroll.action';
-import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
+import {getFirstDayInMonth} from '@minhdu-fontend/utils';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {RemoteConstant} from "../../constants/remote.constant";
 import {validateDayInMonth} from "../../utils/validate-day-in-month.util";
@@ -64,10 +64,10 @@ export class RemoteOrDayOffSalaryComponent implements OnInit {
       type: [salary?.type],
       partial: [salary?.partial, Validators.required],
       rangeDay: [
-        [payroll ? getFirstDayInMonth(new Date(payroll.createdAt)) : salary?.startedAt,
-          payroll ? getLastDayInMonth(new Date(payroll.createdAt)) : salary?.endedAt
-        ],
-        Validators.required
+        salary && this.data.update
+          ? [salary?.startedAt, salary?.endedAt]
+          : []
+        , Validators.required
       ],
       unit: [DatetimeUnitEnum.DAY],
       note: [salary?.note],

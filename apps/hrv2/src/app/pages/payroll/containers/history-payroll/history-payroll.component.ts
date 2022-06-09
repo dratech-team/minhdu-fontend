@@ -9,6 +9,9 @@ import {ActivatedRoute} from "@angular/router";
 import {Observable} from "rxjs";
 import {debounceTime, map} from "rxjs/operators";
 import * as _ from "lodash";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {ModalDatePickerComponent} from "@minhdu-fontend/components";
+import {ModalDatePickerEntity} from "@minhdu-fontend/base-entity";
 
 @Component({
   templateUrl: 'history-payroll.component.html'
@@ -16,6 +19,7 @@ import * as _ from "lodash";
 export class HistoryPayrollComponent implements OnInit {
   payrolls$ = this.payrollQuery.selectAll()
   name$: Observable<string> = this.activatedRoute.queryParams.pipe(map(param => param.name));
+  loading$ = this.payrollQuery.select(state => state.loading)
 
   stateSearch = this.payrollQuery.getValue().searchHistory
   formGroup = new FormGroup({
@@ -36,7 +40,8 @@ export class HistoryPayrollComponent implements OnInit {
     private readonly payrollQuery: PayrollQuery,
     private readonly payrollStore: PayrollStore,
     private readonly actions$: Actions,
-    private readonly activatedRoute: ActivatedRoute
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly modal: NzModalService,
   ) {
   }
 
@@ -71,6 +76,29 @@ export class HistoryPayrollComponent implements OnInit {
       branch: formData.branch?.name || '',
       take: PaginationDto.take,
       skip: isPagination ? this.payrollQuery.getCount() : PaginationDto.skip,
+    })
+  }
+
+  onAdd() {
+    this.modal.create({
+      nzTitle: 'Tạo phiếu lương',
+      nzContent: ModalDatePickerComponent,
+      nzComponentParams: <{ data: ModalDatePickerEntity }>{
+        data: {
+          type: "month",
+          dateInit: this.payrollQuery.getValue().search.startedAt
+        }
+      },
+      nzFooter: ' '
+    }).afterClose.subscribe(date => {
+      if (date) {
+        this.actions$.dispatch(PayrollActions.addOne({
+          body: {
+            createdAt: new Date(date),
+            employeeId: this.getEmployeeId
+          }
+        }))
+      }
     })
   }
 }
