@@ -22,14 +22,14 @@ import {AbsentOvertimeSalaryComponent} from "./components/absent-overtime/absent
 import {NzTimePickerModule} from "ng-zorro-antd/time-picker";
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
 import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
-import { PartialdayPipe, TransformSalaryTypePipe } from './pipes';
+import {PartialdayPipe, TransformSalaryTypePipe} from './pipes';
 import {SettingModule} from "../setting/setting.module";
 import {RemoteOrDayOffSalaryComponent} from "./components/remote-or-day-off/remote-or-day-off-salary.component";
 import {DeductionSalaryComponent} from "./components/deduction/deduction-salary.component";
 import {SharedModule} from "../../../shared/shared.module";
 import {HolidaySalaryComponent} from "./components/holiday/holiday-salary.component";
 import {TableSalarySelectedComponent} from "./components/table-salaries-selected/table-salary-selected.component";
-import {PriceSettingSalaryPipe} from "../setting/salary/pipes/price-setting-salary.pipe";
+import {ComponentsModule} from "@minhdu-fontend/components";
 
 @NgModule({
   imports: [
@@ -55,6 +55,7 @@ import {PriceSettingSalaryPipe} from "../setting/salary/pipes/price-setting-sala
     NzCheckboxModule,
     SettingModule,
     SharedModule,
+    ComponentsModule
   ],
   declarations: [
     PermanentSalaryComponent,

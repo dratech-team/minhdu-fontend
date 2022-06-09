@@ -17,5 +17,6 @@ export interface SalarySettingEntity extends BaseSalarySettingEntity {
   totalOf: SalaryTypeEnum [],
   workday?: number,
   employeeType?: EmployeeType
-  positions?: PositionEntity[]
+  positions?: PositionEntity[],
+  rateCondition?:RateConditionEntity
 }

@@ -8,5 +8,4 @@ export interface BaseSalarySettingEntity extends BaseEntity {
   startedAt?:Date
   endedAt?:Date,
   rateConditionId?: number
-
 }
