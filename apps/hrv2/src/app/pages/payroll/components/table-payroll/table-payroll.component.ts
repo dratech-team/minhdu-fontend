@@ -241,12 +241,7 @@ export class TablePayrollComponent implements OnInit {
   }
 
   async onDetail(payroll: PayrollEntity) {
-    return await this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.id],
-      {
-        queryParams: {
-          isUpdate: true
-        }
-      });
+    return await this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payroll.id]);
   }
 
   onUpdateSelectSalary(salary: any, checked: boolean) {

@@ -548,6 +548,9 @@
               <td style='background: white'>{{item.rate}}</td>
               <td style='background: white'>
                 <div *ngFor="let allowance of salary?.allowances">
+                  <span class="mr-2 font-weight-bold" *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">
+                    {{allowance.id}}
+                  </span>
                   <span class="font-weight-bold">
                      {{allowance.title}} :
                   </span>
