@@ -3,8 +3,8 @@ import {ConditionEnum} from "../enums/condition.enum";
 import {RateConditionEnum} from "../enums/rate-condition.enum";
 
 export interface BaseRateConditionEntity extends BaseEntity {
-  condition?: ConditionEnum,
-  with?: number
+  condition: ConditionEnum,
+  with: number
   default: number,
   type: RateConditionEnum,
 }
