@@ -155,6 +155,7 @@
                   {type: salaryTypeEnum.BASIC ,
                          payroll,
                          salary})'
+                  class="pointer"
               >
                 <td> {{i + 1}}</td>
                 <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">{{salary.id}}</td>
@@ -226,6 +227,7 @@
                   {type: salaryTypeEnum.STAY ,
                          payroll,
                          salary})'
+                  class="pointer"
               >
                 <td>{{i + 1}}</td>
                 <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"> {{salary.id}}</td>
@@ -325,6 +327,7 @@
                   {type: salaryTypeEnum.ALLOWANCE ,
                          payroll,
                          salary})'
+                class="pointer"
             >
               <td>{{i + 1}}</td>
               <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">{{salary.id}}</td>
@@ -450,7 +453,9 @@
               <tr (contextmenu)='child.onContextMenu($event,
                   {type: salaryTypeEnum.OVERTIME ,
                          payroll,
-                         salary})'>
+                         salary})'
+                  class="pointer"
+              >
                 <td style="padding: 10px !important;" (click)='$event.stopPropagation()'
                     [(nzExpand)]='salary.expand'></td>
                 <td>
@@ -653,6 +658,7 @@
                   {type: salaryTypeEnum.ABSENT ,
                          payroll,
                          salary})'
+                class="pointer"
             >
               <td>
                 {{i + 1}}
@@ -786,6 +792,7 @@
                   {type: salaryTypeEnum.DAY_OFF ,
                          payroll,
                          salary})'
+                class="pointer"
             >
               <td>
                 <span>{{i + 1}}</span>
@@ -873,6 +880,7 @@
                   {type: salaryTypeEnum.DEDUCTION ,
                          payroll,
                          salary})'
+                class="pointer"
             >
               <td>
                 {{i + 1}}
@@ -970,6 +978,7 @@
                   {type: salaryTypeEnum.HOLIDAY ,
                          payroll,
                          salary})'
+                  class="pointer"
                   style='background: white !important;'>
                 <td (click)='$event.stopPropagation()' [(nzExpand)]='salary.expand'></td>
                 <td>
@@ -1138,6 +1147,7 @@
                   {type: salaryTypeEnum.WFH ,
                          payroll,
                          salary})'
+                class="pointer"
             >
               <td style="background: white">
                 <span>{{i + 1}}</span>
