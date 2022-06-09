@@ -51,6 +51,7 @@ export const Api = {
     },
     SALARY_BRANCH: 'salary/branch',
     SETTING_SALARY:'settings/salary',
+    SETTING_RATE_CONDITION:'settings/rate-condition',
     BLOCK_SETTING_SALARY:'settings/salary-block',
     EXPORT:'export',
     BRANCH_EXPORT: 'payroll/export/branch',
