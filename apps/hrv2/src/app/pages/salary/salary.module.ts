@@ -30,7 +30,6 @@ import { SharedModule } from '../../../shared/shared.module';
 import { HolidaySalaryComponent } from './components/holiday/holiday-salary.component';
 import { TableSalarySelectedComponent } from './components/table-salaries-selected/table-salary-selected.component';
 import { ComponentsModule } from '@minhdu-fontend/components';
-import { ConditionSettingsSalaryPipe } from './pipes/condition-settings-salary.pipe';
 
 const COMMON_MODULE = [
   HttpClientModule,
@@ -60,7 +59,6 @@ const NZ_MODULES = [
 const PIPES = [
   TransformSalaryTypePipe,
   PartialdayPipe,
-  ConditionSettingsSalaryPipe
 ];
 const COMPONENTS = [
   PermanentSalaryComponent,
