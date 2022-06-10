@@ -9,19 +9,27 @@
     </div>
   </div>
   <div class="mt-2">
-    <div><span class="font-weight-bold">Số ngày</span><span class="star">*</span></div>
-    <input nz-input type="number" formControlName="with" [max]="31">
-  </div>
-  <div class="mt-2">
-    <div><span class="font-weight-bold">Hệ số mặc định</span><span class="star">*</span></div>
-    <input nz-input type="number" formControlName="default">
-  </div>
-  <div class="mt-2">
     <div><span class="font-weight-bold">Loại</span><span class="star">*</span></div>
     <nz-select style="width: 100%" formControlName="type">
       <nz-option *ngFor="let item of rateConditionConstant" [nzValue]="item.value" [nzLabel]="item.name">
       </nz-option>
     </nz-select>
+  </div>
+  <div class="mt-2">
+    <div><span class="font-weight-bold">Số ngày</span><span class="star">*</span></div>
+    <nz-input-group [nzSuffix]="suffixTemplateInfo">
+      <input type="number" formControlName="with" [max]="31" nz-input/>
+    </nz-input-group>
+    <ng-template #suffixTemplateInfo>
+      <i nz-icon
+         nz-tooltip
+         [nzTooltipTitle]="alertRateConditionAbsent + '.' + alertRateConditionWorkday"
+         nzType="info-circle"></i>
+    </ng-template>
+  </div>
+  <div class="mt-2">
+    <div><span class="font-weight-bold">Hệ số mặc định</span><span class="star">*</span></div>
+    <input nz-input type="number" formControlName="default">
   </div>
 </form>
 <button class="mt-2" nz-button nzType="primary" [nzLoading]="submitting" (click)="onSubmit()">Xác nhận</button>
