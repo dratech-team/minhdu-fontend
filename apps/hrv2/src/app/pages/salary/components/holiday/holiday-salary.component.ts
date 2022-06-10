@@ -1,7 +1,7 @@
 import {DatePipe} from '@angular/common';
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {DatetimeUnitEnum, EmployeeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, EmployeeType, ModeEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {NzModalRef} from 'ng-zorro-antd/modal';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {throwError} from 'rxjs';
@@ -17,12 +17,14 @@ import {ModalAddOrUpdateHoliday} from "../../data";
 import {SalarySettingEntity} from "../../../setting/salary/entities";
 import {RateConditionConstant} from "../../../setting/salary/constants/rate-condition.constant";
 import {ConditionConstant} from "../../../setting/salary/constants/condition.constant";
+import {AccountQuery} from "../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   templateUrl: 'holiday-salary.component.html'
 })
 export class HolidaySalaryComponent implements OnInit {
   @Input() data!: ModalAddOrUpdateHoliday;
+  currentUser$ = this.accountQuery.selectCurrentUser()
   templateSalaries$ = this.settingSalaryQuery.selectAll({
     filterBy: [(entity => entity.type === SalaryTypeEnum.HOLIDAY)]
   }).pipe(
@@ -35,19 +37,20 @@ export class HolidaySalaryComponent implements OnInit {
     })
   );
   settingsLoading$ = this.settingSalaryQuery.select(state => state.loading);
+
   remoteConstant = RemoteConstant
   rateConditionConstant = RateConditionConstant
   conditionConstant = ConditionConstant
-  formGroup!: FormGroup;
-
   indexStep = 0;
   submitting = false;
   fistDateInMonth!: Date
+  modeEnum = ModeEnum
 
   salaryTypeEnum = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
   employeeType = EmployeeType;
 
+  formGroup!: FormGroup;
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
 
@@ -58,7 +61,8 @@ export class HolidaySalaryComponent implements OnInit {
     private readonly modalRef: NzModalRef,
     private readonly message: NzMessageService,
     private readonly settingSalaryQuery: SettingSalaryQuery,
-    private readonly holidayService: SalaryHolidayService
+    private readonly holidayService: SalaryHolidayService,
+    private readonly accountQuery: AccountQuery,
   ) {
   }
 

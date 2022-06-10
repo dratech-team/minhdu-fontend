@@ -20,6 +20,9 @@
           <div>Chưa chọn loại lương</div>
         </div>
       </div>
+      <div class="mb-2" *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO && formGroup.value?.template">
+          <div><span class="font-weight-bold">Id :</span> {{formGroup.value.template.id}}</div>
+      </div>
       <div class='mb-3'>
         <span class='font-weight-bold'>Đơn vị</span><span class='star'>*</span>
         <nz-select formControlName='unit' style='width: 100%' nzDisabled>

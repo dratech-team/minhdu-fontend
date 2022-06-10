@@ -2,7 +2,7 @@ import {DatePipe} from '@angular/common';
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PartialDayEnum} from '@minhdu-fontend/data-models';
-import {DatetimeUnitEnum, EmployeeType, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, EmployeeType, ModeEnum, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {catchError, map} from 'rxjs/operators';
 import {SettingSalaryActions, SettingSalaryQuery} from '../../../setting/salary/state';
 import {PriceType} from '../../../setting/salary/enums';
@@ -25,15 +25,15 @@ import {SessionEntity} from "../../../../../shared/entities";
 import {ModalAddOrUpdateAbsentOrOvertime} from "../../data";
 import {RateConditionConstant} from "../../../setting/salary/constants/rate-condition.constant";
 import {ConditionConstant} from "../../../setting/salary/constants/condition.constant";
+import {AccountQuery} from "../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   templateUrl: 'absent-overtime-salary.component.html'
 })
 export class AbsentOvertimeSalaryComponent implements OnInit {
   @Input() data!: ModalAddOrUpdateAbsentOrOvertime;
-
-  formGroup!: FormGroup;
-
+  currentUser$ = this.accountQuery.selectCurrentUser()
+  settingsLoading$ = this.settingSalaryQuery.select(state => state.loading);
   templateSalaries$ = this.settingSalaryQuery.selectAll({
     filterBy: [(entity => entity.type === this.data.type)]
   }).pipe(
@@ -45,7 +45,6 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
       return templates;
     })
   );
-  settingsLoading$ = this.settingSalaryQuery.select(state => state.loading);
 
   limitStartHour: number [] = [];
   limitEndTime: number [] = [];
@@ -63,6 +62,10 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   datetimeUnit = DatetimeUnitEnum;
   fistDateInMonth!: Date
   employeeType = EmployeeType
+  modeEnum = ModeEnum
+
+  formGroup!: FormGroup;
+
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
   disabledHoursStart = (): number[] => {
@@ -92,7 +95,8 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     private readonly absentSalaryService: AbsentSalaryService,
     private readonly overtimeSalaryService: OvertimeSalaryService,
     private readonly actions$: Actions,
-    private readonly payrollQuery: PayrollQuery
+    private readonly payrollQuery: PayrollQuery,
+    private readonly accountQuery: AccountQuery
   ) {
   }
 
@@ -110,9 +114,10 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       template: ['', Validators.required],
       title: [salary?.title],
+      // FIXME : khi thêm salary, init ngày bắt đầu để  khi chọn ngày lịch sẽ nằm trong tháng của phiếu lương ( vì đang chặn chọn ngày khác tháng phiếu lương)
       rangeDay: [salary && this.data.update
         ? [salary.startedAt, salary.endedAt]
-        : []
+        : [this.fistDateInMonth]
         , Validators.required],
       price: [salary?.price],
       startTime: [salary?.startTime ? new Date(salary.startTime) : undefined],

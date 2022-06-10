@@ -66,7 +66,7 @@ export class RemoteOrDayOffSalaryComponent implements OnInit {
       rangeDay: [
         salary && this.data.update
           ? [salary?.startedAt, salary?.endedAt]
-          : []
+          : [this.fistDateInMonth]
         , Validators.required
       ],
       unit: [DatetimeUnitEnum.DAY],
