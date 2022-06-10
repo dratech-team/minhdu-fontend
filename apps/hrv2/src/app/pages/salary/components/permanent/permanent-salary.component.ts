@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {EmployeeType, Role, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {EmployeeType, ModeEnum, Role, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {SalaryPayroll} from '@minhdu-fontend/data-models';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalRef} from 'ng-zorro-antd/modal';
@@ -14,6 +14,7 @@ import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {EmployeeService} from '@minhdu-fontend/employee-v2';
 import {PayrollQuery} from "../../../payroll/state";
 import {ModalAddOrUpdatePermanent} from "../../data";
+import {AccountQuery} from "../../../../../../../../libs/system/src/lib/state/account-management/account.query";
 
 @Component({
   templateUrl: 'permanent-salary.component.html'
@@ -21,9 +22,7 @@ import {ModalAddOrUpdatePermanent} from "../../data";
 export class PermanentSalaryComponent implements OnInit {
   @Input() data!: ModalAddOrUpdatePermanent;
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
-
-  formGroup!: FormGroup;
-
+  currentUser$ = this.accountQuery.selectCurrentUser()
   salariesSetting$ = this.settingSalaryQuery.selectAll({
     filterBy: [
       (entity) => {
@@ -53,8 +52,10 @@ export class PermanentSalaryComponent implements OnInit {
   submitting = false;
   employeeType = EmployeeType
   salaryTypeEnum = SalaryTypeEnum;
-  roleEnum = Role;
+  modeEnum = ModeEnum;
   createdAt = this.payrollQuery.getValue().search.startedAt
+  formGroup!: FormGroup;
+
   compareFn = (o1: any, o2: any) => o1 && o2 ? (o1.id === o2.id || o1 === o2.title) : o1 === o2;
 
   constructor(
@@ -66,6 +67,7 @@ export class PermanentSalaryComponent implements OnInit {
     private readonly modalRef: NzModalRef,
     private readonly service: SalaryPermanentService,
     private readonly employeeService: EmployeeService,
+    private readonly accountQuery: AccountQuery,
   ) {
   }
 
@@ -77,7 +79,6 @@ export class PermanentSalaryComponent implements OnInit {
           [SalaryTypeEnum.STAY]
       }
     }));
-    console.log(this.data.add?.salary)
     const salary = this.data.add?.salary || this.data?.update?.salary;
     this.formGroup = this.formBuilder.group({
       template: ['', Validators.required],
