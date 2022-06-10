@@ -261,48 +261,41 @@ export class DetailPayrollComponent implements OnInit {
     type: SalaryTypeEnum,
     salary: SalaryEntity
   ) {
-    this.modal.create({
+    this.modal.warning({
       nzTitle: `Xoá ${salary?.title || salary?.setting?.title || salary.setting?.type || salary.type}`,
-      nzContent: ModalAlertComponent,
-      nzComponentParams: <{ data: ModalAlertEntity }>{
-        data: {
-          description: `Bạn có chắc chắn muốn xoá ${salary?.title || salary?.setting?.title || salary.setting?.type || salary?.type}`
-        }
-      },
-      nzFooter: ' '
-    }).afterClose.subscribe(value => {
-      if (value) {
-        const service = ((type === SalaryTypeEnum.BASIC || type === SalaryTypeEnum.STAY)
-            ? this.permanentService
-            : type === SalaryTypeEnum.ALLOWANCE
-              ? this.allowanceSalaryService
-              : type === SalaryTypeEnum.OVERTIME
-                ? this.overtimeSalaryService
-                : type === SalaryTypeEnum.WFH
-                  ? this.salaryRemoteService
-                  : type === SalaryTypeEnum.ABSENT
-                    ? this.absentSalaryService
-                    : type === SalaryTypeEnum.HOLIDAY
-                      ? this.salaryHolidayService
-                      : type === SalaryTypeEnum.DAY_OFF
-                        ? this.dayOffSalaryService
-                        : this.deductionSalaryService
-        );
+      nzContent: `Bạn có chắc chắn muốn xoá ${salary?.title || salary?.setting?.title || salary.setting?.type || salary?.type}`,
+      nzOkDanger: true,
+      nzOnOk:() =>{
+          const service = ((type === SalaryTypeEnum.BASIC || type === SalaryTypeEnum.STAY)
+              ? this.permanentService
+              : type === SalaryTypeEnum.ALLOWANCE
+                ? this.allowanceSalaryService
+                : type === SalaryTypeEnum.OVERTIME
+                  ? this.overtimeSalaryService
+                  : type === SalaryTypeEnum.WFH
+                    ? this.salaryRemoteService
+                    : type === SalaryTypeEnum.ABSENT
+                      ? this.absentSalaryService
+                      : type === SalaryTypeEnum.HOLIDAY
+                        ? this.salaryHolidayService
+                        : type === SalaryTypeEnum.DAY_OFF
+                          ? this.dayOffSalaryService
+                          : this.deductionSalaryService
+          );
 
-        service.deleteMany({ salaryIds: [salary.id] }).pipe(
-          catchError(err => {
-            this.message.warning(err);
-            return throwError(err);
-          })
-        ).subscribe(res => {
-          this.message.success(res.message);
-          this.actions$.dispatch(PayrollActions.loadOne({ id: salary.payrollId }));
-        });
+          service.deleteMany({ salaryIds: [salary.id] }).pipe(
+            catchError(err => {
+              this.message.warning(err);
+              return throwError(err);
+            })
+          ).subscribe(res => {
+            this.message.success(res.message);
+            this.actions$.dispatch(PayrollActions.loadOne({ id: salary.payrollId }));
+          });
       }
-    });
+    })
 
   }
-
   confirmPayroll(payroll: PayrollEntity) {
     if (this.currentUser?.role.role !== Role.HUMAN_RESOURCE) {
       this.modal.create({
