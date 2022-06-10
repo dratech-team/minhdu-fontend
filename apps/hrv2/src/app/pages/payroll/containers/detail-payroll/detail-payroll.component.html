@@ -426,6 +426,9 @@
                 (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE_SETTING, $event, payroll.overtimes)'>
                 Tăng ca
               </th>
+              <th nzWidth="80px">
+                Hệ số
+              </th>
               <th
                 [nzSortFn]='true'
                 (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME, $event, payroll.overtimes)'>
@@ -470,6 +473,9 @@
                   <div *ngFor="let allowance of salary.allowances">
                     + {{allowance.title}}
                   </div>
+                </td>
+                <td>
+                  {{salary.setting.rate}}
                 </td>
                 <td class=' text-center '>
                   Từ  {{salary.startedAt | date:'dd-MM-yyyy'}}
