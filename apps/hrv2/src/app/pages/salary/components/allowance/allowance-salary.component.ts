@@ -68,12 +68,13 @@ export class AllowanceSalaryComponent implements OnInit {
       note: [salary?.note],
       unit: [salary?.unit || DatetimeUnitEnum.MONTH, Validators.required],
       month: [salary?.startedAt || payroll?.createdAt],
+      // FIXME : khi thêm salary, init ngày bắt đầu để  khi chọn ngày lịch sẽ nằm trong tháng của phiếu lương ( vì đang chặn chọn ngày khác tháng phiếu lương)
       rangeDay: [
         (payroll && !salary) || (payroll && salary?.unit === DatetimeUnitEnum.MONTH)
           ? [this.fistDateInMonth, getLastDayInMonth(this.fistDateInMonth)]
           : salary && this.data.update
             ? [salary.startedAt, salary.endedAt]
-            : [],
+            : [this.fistDateInMonth],
         Validators.required
       ],
       inOffice: [this.data.update ? salary?.inOffice : true],

@@ -110,9 +110,10 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       template: ['', Validators.required],
       title: [salary?.title],
+      // FIXME : khi thêm salary, init ngày bắt đầu để  khi chọn ngày lịch sẽ nằm trong tháng của phiếu lương ( vì đang chặn chọn ngày khác tháng phiếu lương)
       rangeDay: [salary && this.data.update
         ? [salary.startedAt, salary.endedAt]
-        : []
+        : [this.fistDateInMonth]
         , Validators.required],
       price: [salary?.price],
       startTime: [salary?.startTime ? new Date(salary.startTime) : undefined],
