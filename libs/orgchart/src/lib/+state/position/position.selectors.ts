@@ -31,25 +31,16 @@ export const selectPositionAdded = createSelector(
   getPositionState,
   (state: positionState) => state.added
 );
-/**
- * @deprecated
- * */
-export const getPositionEntities = createSelector(
-  getPositionState,
-  (state: positionState) => selectEntities(state)
-);
-/**
- * @deprecated
- * */
-export const getSelectedId = createSelector(
+
+
+ const getSelectedId = createSelector(
   getPositionState,
   (state: positionState) => state.selectedId
 );
-/**
- * @deprecated
- * */
+
+ //chưa sử dụng
 export const getSelected = createSelector(
-  getPositionEntities,
+  getAllPosition,
   getSelectedId,
   (entities, selectedId) => (selectedId ? entities[selectedId] : undefined)
 );

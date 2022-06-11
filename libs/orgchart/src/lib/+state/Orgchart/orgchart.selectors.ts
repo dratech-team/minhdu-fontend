@@ -11,9 +11,7 @@ const { selectAll, selectEntities } = orgchartAdapter.getSelectors();
 
 export const getSelectedBranchId = (state: Branch) => state.id;
 
-/**
- * @deprecated
- * */
+// chưa sử dụng
 export const getOrgchartError = createSelector(
   getOrgchartState,
   (state: State) => state.error

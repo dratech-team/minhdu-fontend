@@ -7,6 +7,7 @@ import {RemoveRankDto} from "../../dto/rank/remove-rank.dto";
 
 /**
  * @deprecated
+ * thứ hạng xếp loại người dùng không đươc thêm, để addone  phòng trường hợp thay đổi logic
  * */
 const addOne = createAction(
   '[RANK] Add One',
@@ -26,6 +27,7 @@ const loadOne = createAction(
 
 /**
  * @deprecated
+ * thứ hạng xếp loại người dung không được cập nhật , để uopdate  phòng trường hợp thay đổi logic
  * */
 const update = createAction(
   '[RANK] Update',
@@ -35,6 +37,7 @@ const update = createAction(
 
 /**
  * @deprecated
+ * thứ hạng xếp loại người dung không được xoá , để remove  phòng trường hợp thay đổi logic
  * */
 const remove = createAction(
   '[RANK] Remove',
