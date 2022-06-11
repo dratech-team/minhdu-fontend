@@ -18,11 +18,11 @@
   <div class="mt-2">
     <div><span class="font-weight-bold">Số ngày</span><span class="star">*</span></div>
     <div>
-      <nz-select [nzDisabled]="!formGroup.value?.type"
-                 [nzDropdownRender]="renderTemplate"
-                 style="width: 100%"
-                 formControlName="with">
-        <nz-option [nzValue]="0" [nzLabel]="
+      <nz-select
+        [nzDropdownRender]="renderTemplate"
+        style="width: 100%"
+        formControlName="with">
+        <nz-option *ngIf="formGroup.value?.type" [nzValue]="0" [nzLabel]="
         formGroup.value.type === rateConditionEnum.ABSENT
         ? 'Ngày công chuẩn'
         : 'Ngày trong tháng trừ cho ngày công chuẩn'">
@@ -35,9 +35,9 @@
       <nz-divider></nz-divider>
       <div class="container d-flex justify-content-center align-items-center">
         <div class="font-weight-bold" style="width: 150px;">
-         Nhập số ngày :
+          Nhập số ngày :
         </div>
-        <input type="number" nz-input  formControlName="inputWith"/>
+        <input type="number" nz-input formControlName="inputWith"/>
       </div>
     </ng-template>
   </div>
