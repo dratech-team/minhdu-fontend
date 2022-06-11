@@ -278,7 +278,8 @@ export class DialogAbsentComponent implements OnInit {
       this.store.dispatch(
         PayrollAction.addSalary({
           payrollId: this.data.payroll.id,
-          salary: salary
+          salary: salary,
+          isDetailPayroll: true
         })
       );
     }
