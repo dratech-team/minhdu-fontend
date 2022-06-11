@@ -252,7 +252,7 @@ export class PayrollEffect {
 
   /**
    * @deprecated
-   * thay đổi logic ngày lê ko còn quét
+   * thay đổi logic ngày lễ ko còn quét
    * */
   @Effect({dispatch: false})
   scanHoliday$ = this.action$.pipe(
