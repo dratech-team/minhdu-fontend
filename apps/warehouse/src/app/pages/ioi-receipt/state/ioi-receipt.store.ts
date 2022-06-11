@@ -13,6 +13,7 @@ export interface IoiReceiptState extends EntityState<IoiReceiptEntity> {
 export function createInitialState(): IoiReceiptState {
   return {
     search: {
+      // check annonate ng đặt fixme là Long nhưng ko chú thích nên không biết vấn đề cần fix là gì
       /// FIXME:
       // search: '',
       // inventoryType: -1,
