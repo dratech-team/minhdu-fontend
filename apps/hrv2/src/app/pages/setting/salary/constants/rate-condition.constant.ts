@@ -2,11 +2,11 @@ import {RateConditionEnum} from "../enums/rate-condition.enum";
 
 export const RateConditionConstant = [
   {
-    name: 'theo ngày vắng',
+    name: 'Theo ngày vắng',
     value: RateConditionEnum.ABSENT,
   },
   {
-    name: 'theo ngày công chuẩn',
+    name: 'Theo ngày công chuẩn',
     value: RateConditionEnum.WORKDAY,
   },
 ]
