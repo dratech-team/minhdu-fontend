@@ -337,8 +337,7 @@
             <th width='4%' class=' title text-center '>Id</th>
             <th width='14%' class=' title text-center '>Khấu trừ</th>
             <th width='14%' class=' title text-center '>Thời gian</th>
-            <th width='10%' class=' title text-center '>Thành tiền</th>
-            <th width='21%' class=' title text-center '>Chi tiết</th>
+            <th width='21%' class=' title text-center '>Ngày</th>
             <th width='10%' class=' title text-center '>Chú thích</th>
             <th width='10%' class='text-center' style='padding: 0; color: #1b8eb7'
                 (click)='addSalary(type.ABSENT, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
@@ -359,7 +358,6 @@
             <th >
               <div>
                 <span>{{salary.title}}</span>
-                <span class='ml-2' *ngIf='salary.allowance'></span>
               </div>
             </th>
             <th class=' text-center'>
@@ -368,10 +366,14 @@
                 *ngIf='salary.unit === datetimeUnit.DAY'>
                 {{salary.partial | rangedatetimepipe: salary.startedAt : salary.endedAt}}
               </span>
-            </th>
-            <th class=' text-center '>
-              <span style='color: red'>
-                {{salary.price | number:'1.0-0'}} đ
+              <span
+                *ngIf='salary.unit === datetimeUnit.MINUTE'>
+                {{(salary.times|convertMinute).hour}} Giờ,
+                {{(salary.times|convertMinute).minute}} phút
+              </span>
+              <span
+                *ngIf='salary.unit === datetimeUnit.TIMES'>
+                {{salary.times}} lần,
               </span>
             </th>
             <th class='text-center'>
