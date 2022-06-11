@@ -362,15 +362,15 @@ export class PayrollEffect {
             unit === DatetimeUnitEnum.DAY
             || unit === DatetimeUnitEnum.MONTH
             || unit === DatetimeUnitEnum.TIMES)
-            ? (b.partial === PartialDayEnum.ALL_DAY ?
+            ? (b.partial === PartialDayEnum.ALL_DAY || b.partial === PartialDayEnum.NIGHT ?
                 b.duration
                 : (b.duration / 2)
             )
             : 0),
-          hour: a.duration.hour + (unit === DatetimeUnitEnum.HOUR
+          hour: a.duration.hour + this.convertMinutePipe.transform(a.duration.minute).hour + (unit === DatetimeUnitEnum.HOUR
             ? this.convertMinutePipe.transform(b.duration * 60).hour
             : 0),
-          minute: a.duration.minute + (unit === DatetimeUnitEnum.MINUTE
+          minute: this.convertMinutePipe.transform(a.duration.minute).minute + (unit === DatetimeUnitEnum.MINUTE
             ? b.duration
             : unit === DatetimeUnitEnum.HOUR
               ? this.convertMinutePipe.transform(b.duration * 60).minute

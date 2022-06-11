@@ -483,8 +483,8 @@
                 </td>
                 <td>
                   <span *ngIf="salary.setting.unit === datetimeUnit.HOUR else totalDay">
-                    {{((salary.duration * 60) | convertMinute).hour }} giờ
-                    {{((salary.duration * 60) | convertMinute).minute}} phút
+                    {{((salary.duration * 60) | minute).hour }} giờ
+                    {{((salary.duration * 60) | minute).minute}} phút
                   </span>
                   <ng-template #totalDay>
                     <span>
@@ -547,8 +547,8 @@
               </td>
               <td style='background: white'>
                  <span *ngIf="item.setting.unit === datetimeUnit.HOUR else childTottalDay">
-                    {{((item.duration * 60) | convertMinute).hour }} giờ
-                   {{((item.duration * 60) | convertMinute).minute}} phút
+                    {{((item.duration * 60) | minute).hour }} giờ
+                   {{((item.duration * 60) | minute).minute}} phút
                   </span>
                 <ng-template #childTottalDay>
                     <span>
@@ -685,7 +685,7 @@
               </td>
               <td>
                 <span *ngIf="salary.setting.unit === datetimeUnit.MINUTE else durationDay">
-                  {{(salary.duration | convertMinute).hour}} giờ {{(salary.duration | convertMinute).minute}}
+                  {{(salary.duration | minute).hour}} giờ {{(salary.duration | minute).minute}}
                   Phút</span>
                 <ng-template #durationDay>
                   {{salary.duration}} {{salary.partial | transformconstant:sessionConstant}}
@@ -728,9 +728,8 @@
               <td></td>
               <td>
                 {{payroll.total.absent.duration.day}} ngày
-                <br>{{payroll.total.absent.duration.hour + (payroll.total.absent.duration.minute | convertMinute).hour}}
-                giờ
-                <br>{{(payroll.total.absent.duration.minute | convertMinute).minute}} phút
+                <br>{{payroll.total.absent.duration.hour }}
+                <br>{{payroll.total.absent.duration.minute}} phút
               </td>
               <td style='color: red'>
                 {{payroll.total.absent.price

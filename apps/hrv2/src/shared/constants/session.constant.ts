@@ -38,7 +38,7 @@ export const SessionConstant: SessionEntity[] = [
   },
   {
     name: 'Buổi tối',
-    detail: 'Ngày buổi chiều',
+    detail: 'Ngày buổi tối',
     value: PartialDayEnum.NIGHT,
     unit: DatetimeUnitEnum.DAY,
     startTime: workingTime.night.start,
