@@ -16,24 +16,18 @@ export class SalaryService extends BaseService<SalaryEntity> {
     super(url, http)
   }
 
-  /**
-   * @deprecated
-   * */
+  //chưa sử dụng, sử dụng cho trường hợp khi tạo store cho salary
+
   addMany(body: any): Observable<ResponseMessageEntity> {
     return super.addMany(body);
   }
 
-  /**
-   * @deprecated
-   * */
+
  updateMany(body: any, method?: "put" | "patch" | "post"): Observable<ResponseMessageEntity> {
    return super.updateMany(body, method);
  }
 
 
-  /**
-   * @deprecated
-   * */
   deleteMany(body: number[]): Observable<ResponseMessageEntity> {
     return super.deleteMany(body);
   }

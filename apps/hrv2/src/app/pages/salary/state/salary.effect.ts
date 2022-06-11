@@ -19,9 +19,7 @@ export class SalaryEffect {
   ) {
   }
 
-  /**
-   * @deprecated
-   * */
+  // salary effect chưu sử dụng vì đang gọi trực tiếp service
   @Effect()
   addOne$ = this.action$.pipe(
     ofType(SalaryActions.addOne),
@@ -48,9 +46,6 @@ export class SalaryEffect {
     })
   );
 
-  /**
-   * @deprecated
-   * */
   @Effect()
   addMany$ = this.action$.pipe(
     ofType(SalaryActions.addMany),
@@ -78,9 +73,6 @@ export class SalaryEffect {
   );
 
 
-  /**
-   * @deprecated
-   * */
   @Effect()
   update$ = this.action$.pipe(
     ofType(SalaryActions.update),
@@ -106,9 +98,6 @@ export class SalaryEffect {
     )
   );
 
-  /**
-   * @deprecated
-   * */
   @Effect()
   updateMany$ = this.action$.pipe(
     ofType(SalaryActions.updateMany),
@@ -134,9 +123,6 @@ export class SalaryEffect {
     )
   );
 
-  /**
-   * @deprecated
-   * */
   @Effect()
   deleteSalary = this.action$.pipe(
     ofType(SalaryActions.remove),

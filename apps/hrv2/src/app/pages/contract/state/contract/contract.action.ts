@@ -11,17 +11,13 @@ const addOne = createAction(
   props<AddContractDto>()
 );
 
-/**
- * @deprecated
- * */
+//Chưa sử dụng, sử dụng khi tạo module quản lý hợp đồng nhân viên
 const loadAll = createAction(
   '[CONTRACT] Load All',
   props<SearchContractDto>()
 );
 
-/**
- * @deprecated
- * */
+//Chưa sử dụng, sử dụng khi tạo module quản lý hợp đồng nhân viên
 const loadOne = createAction(
   '[CONTRACT] Load One',
   props<LoadOneContractDto>()
