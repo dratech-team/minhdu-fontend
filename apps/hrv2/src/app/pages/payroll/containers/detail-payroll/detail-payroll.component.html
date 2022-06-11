@@ -585,9 +585,10 @@
             <td></td>
             <td>Tổng cộng :</td>
             <td></td>
+            <td></td>
             <td>
               {{payroll.total.overtime.duration.day}} ngày
-              <br>{{payroll.total.overtime.duration.hour}} Giờ
+              <br>{{payroll.total.overtime.duration.hour}} giờ
               <br>{{payroll.total.overtime.duration.minute}} phút
             </td>
             <td style='color: #05981C'>
@@ -596,7 +597,6 @@
               | number: '1.0'
               | notEmpty: '0' }} đ
             </td>
-            <td></td>
             <td></td>
           </tr>
           </tbody>
@@ -729,7 +729,7 @@
               <td>
                 {{payroll.total.absent.duration.day}} ngày
                 <br>{{payroll.total.absent.duration.hour + (payroll.total.absent.duration.minute | convertMinute).hour}}
-                Giờ
+                giờ
                 <br>{{(payroll.total.absent.duration.minute | convertMinute).minute}} phút
               </td>
               <td style='color: red'>

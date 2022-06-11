@@ -52,7 +52,7 @@
     </td>
     <td>{{i + 1}}</td>
     <td>{{rateCondition.condition | transformconstant :conditionConstant}}</td>
-    <td>{{rateCondition.with}}</td>
+    <td>{{rateCondition.with | withratecondition : rateCondition.type}}</td>
     <td>{{rateCondition.default}}</td>
     <td>{{rateCondition.type | transformconstant: rateConditionConstant}}</td>
   </tr>
