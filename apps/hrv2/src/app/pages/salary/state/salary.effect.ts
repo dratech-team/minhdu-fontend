@@ -9,6 +9,7 @@ import {SalaryStore} from './salary.store';
 import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Injectable()
+// salary effect chưu sử dụng vì đang gọi trực tiếp service
 export class SalaryEffect {
   constructor(
     private readonly action$: Actions,
@@ -19,7 +20,6 @@ export class SalaryEffect {
   ) {
   }
 
-  // salary effect chưu sử dụng vì đang gọi trực tiếp service
   @Effect()
   addOne$ = this.action$.pipe(
     ofType(SalaryActions.addOne),

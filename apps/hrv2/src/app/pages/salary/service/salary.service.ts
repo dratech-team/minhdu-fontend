@@ -6,6 +6,7 @@ import {NzMessageService} from "ng-zorro-antd/message";
 import {Actions} from "@datorama/akita-ng-effects";
 import {SalaryEntity} from "../entities";
 
+//chưa sử dụng, sử dụng cho trường hợp khi tạo store cho salary
 export class SalaryService extends BaseService<SalaryEntity> {
   constructor(
     public readonly message: NzMessageService,
@@ -15,8 +16,6 @@ export class SalaryService extends BaseService<SalaryEntity> {
   ) {
     super(url, http)
   }
-
-  //chưa sử dụng, sử dụng cho trường hợp khi tạo store cho salary
 
   addMany(body: any): Observable<ResponseMessageEntity> {
     return super.addMany(body);
