@@ -20,7 +20,7 @@ export const workingTime = {
 export const SessionConstant: SessionEntity[] = [
   {
     name: 'Buổi sáng',
-    detail: 'Buổi sáng',
+    detail: 'Ngày Buổi sáng',
     value: PartialDayEnum.MORNING,
     unit: DatetimeUnitEnum.DAY,
     startTime: workingTime.morning.start,
@@ -29,7 +29,7 @@ export const SessionConstant: SessionEntity[] = [
   },
   {
     name: 'Buổi chiều',
-    detail: 'Buổi chiều',
+    detail: 'Ngày Buổi chiều',
     value: PartialDayEnum.AFTERNOON,
     unit: DatetimeUnitEnum.DAY,
     startTime: workingTime.afternoon.start,
@@ -47,7 +47,7 @@ export const SessionConstant: SessionEntity[] = [
   },
   {
     name: 'Nguyên ngày',
-    detail: 'Nguyên ngày',
+    detail: 'Ngày',
     value: PartialDayEnum.ALL_DAY,
     unit: DatetimeUnitEnum.DAY,
     startTime: workingTime.morning.start,
