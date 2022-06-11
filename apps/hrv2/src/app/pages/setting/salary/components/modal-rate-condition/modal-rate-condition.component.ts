@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ConditionConstant} from "../../constants/condition.constant";
 import {ModalRateConditionData} from "../../data/modal-rate-condition.data";
-import {NzModalRef} from "ng-zorro-antd/modal";
+import {NzModalRef, NzModalService} from "ng-zorro-antd/modal";
 import {RateConditionService} from "../../services/rate-condition.service";
 import {RateConditionEntity} from "../../entities/rate-condition.entity";
 import {NzMessageService} from "ng-zorro-antd/message";
@@ -10,7 +10,6 @@ import {catchError, debounceTime} from "rxjs/operators";
 import {throwError} from "rxjs";
 import {RateConditionConstant} from "../../constants/rate-condition.constant";
 import {RateConditionEnum} from "../../enums/rate-condition.enum";
-import * as _ from "lodash";
 
 @Component({
   templateUrl: 'modal-rate-condition.component.html'
@@ -20,14 +19,15 @@ export class ModalRateConditionComponent implements OnInit {
 
   conditionConstant = ConditionConstant
   rateConditionConstant = RateConditionConstant
-  rateConditionEnum = RateConditionEnum
   submitting = false
+  alertRateConditionWorkday = 'Nếu nhập số ngày là 0 với loại là theo ngày công chuẩn thì số ngày sẽ bằng ngày công chuẩn'
+  alertRateConditionAbsent = 'nếu nhập số ngày là 0 với loại là theo ngày vắng, thì số ngày sẽ bằng ngày trong tháng trừ cho ngày công chuẩn'
   formGroup!: FormGroup
-  with?: number
 
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly modalRef: NzModalRef,
+    private readonly modal: NzModalService,
     private readonly service: RateConditionService,
     private readonly message: NzMessageService,
   ) {
@@ -35,19 +35,29 @@ export class ModalRateConditionComponent implements OnInit {
 
   ngOnInit() {
     const rateCondition = this.data?.update?.rateCondition
-    this.with = rateCondition?.with
     this.formGroup = this.formBuilder.group({
       condition: [rateCondition?.condition, Validators.required],
       with: [rateCondition?.with, Validators.required],
       default: [rateCondition?.default, Validators.required],
       type: [rateCondition?.type, Validators.required],
-      inputWith: [rateCondition?.with]
     })
 
-    this.formGroup.get('inputWith')?.valueChanges
+    this.formGroup.get('type')?.valueChanges.subscribe(val => {
+      if (this.formGroup.value?.with === 0) {
+        val === RateConditionEnum.WORKDAY
+          ? this.showAlert(this.alertRateConditionWorkday)
+          : this.showAlert(this.alertRateConditionAbsent)
+      }
+    })
+
+    this.formGroup.get('with')?.valueChanges
       .pipe(debounceTime(1000))
       .subscribe(val => {
-        this.with = val
+        if (val === 0 && this.formGroup.value.type) {
+          this.formGroup.value.type === RateConditionEnum.WORKDAY
+            ? this.showAlert(this.alertRateConditionWorkday)
+            : this.showAlert(this.alertRateConditionAbsent)
+        }
       })
   }
 
@@ -57,8 +67,8 @@ export class ModalRateConditionComponent implements OnInit {
     }
     this.submitting = true;
     (this.data?.update
-        ? this.service.update({id: this.data.update.rateCondition.id, updates: _.omit(this.formGroup.value,['inputWith'])})
-        : this.service.addOne({body: _.omit(this.formGroup.value,['inputWith'])})
+        ? this.service.update({id: this.data.update.rateCondition.id, updates: this.formGroup.value})
+        : this.service.addOne({body: this.formGroup.value})
     ).pipe(
       catchError(err => this.onSubmitErr(err))
     ).subscribe(val => {
@@ -69,14 +79,17 @@ export class ModalRateConditionComponent implements OnInit {
   private onSubmitSuccess(rateCondition: RateConditionEntity) {
     this.submitting = false
     this.message.success(this.data?.update ? 'Cập nhật thành công' : 'Tạo thành công')
-    this.modalRef.close(
-      this.data?.update ?
-        Object.assign(this.data.update.rateCondition , _.omit(this.formGroup.value,['inputWith']))
-      : rateCondition)
+    this.modalRef.close(rateCondition)
   }
 
   private onSubmitErr(err: string) {
     this.submitting = false
     return throwError(err)
+  }
+
+  private showAlert(message: string) {
+    this.modal.info({
+      nzContent: message,
+    })
   }
 }

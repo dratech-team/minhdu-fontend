@@ -54,7 +54,6 @@ export class CommodityEffect {
         this.commodityStore.update(state => ({
           ...state, loading: true
         }));
-        /// FIXME:
         return this.commodityService.pagination(props.search as SearchCommodityDto).pipe(
           map((ResponsePaginate) => {
             this.commodityStore.update(state => ({

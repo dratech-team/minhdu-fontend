@@ -23,7 +23,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       catchError((err) => {
         if ([401].indexOf(err.status) !== -1) {
           // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-          /// FIXME: action not working
+          // chuyển sang dùng store đã logout được khi chưa đăng nhập
           const currentUser = this.accountQuery.getCurrentUser();
           if (currentUser) {
             this.actions$.dispatch(AccountActions.logout({id: currentUser.id}));
