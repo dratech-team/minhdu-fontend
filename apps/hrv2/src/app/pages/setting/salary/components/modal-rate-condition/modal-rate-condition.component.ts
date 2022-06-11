@@ -22,8 +22,6 @@ export class ModalRateConditionComponent implements OnInit {
   rateConditionConstant = RateConditionConstant
   rateConditionEnum = RateConditionEnum
   submitting = false
-  alertRateConditionWorkday = 'Nếu nhập số ngày là 0 với loại là theo ngày công chuẩn thì số ngày sẽ bằng ngày công chuẩn'
-  alertRateConditionAbsent = 'nếu nhập số ngày là 0 với loại là theo ngày vắng, thì số ngày sẽ bằng ngày trong tháng trừ cho ngày công chuẩn'
   formGroup!: FormGroup
   with?: number
 
@@ -81,11 +79,5 @@ export class ModalRateConditionComponent implements OnInit {
   private onSubmitErr(err: string) {
     this.submitting = false
     return throwError(err)
-  }
-
-  private showAlert(message: string) {
-    this.modal.info({
-      nzContent: message,
-    })
   }
 }
