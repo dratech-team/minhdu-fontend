@@ -163,6 +163,10 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
+  onDetail(employee: EmployeeEntity) {
+    this.router.navigate(['nhan-vien/chi-tiet-nhan-vien', employee.id]).then()
+  }
+
   onAdd(employeeInit?: EmployeeEntity): void {
     this.modal.create({
       nzTitle: 'Thêm nhân viên',
