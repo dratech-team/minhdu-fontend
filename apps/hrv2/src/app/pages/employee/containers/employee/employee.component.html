@@ -280,7 +280,7 @@
         <tr *ngFor="let employee of this.employees; let i = index"
             class="pointer"
             (contextmenu)='child.onContextMenu($event,employee)'
-            (click)='onUpdate(employee)' cdkDrag>
+            (click)='onDetail(employee)' cdkDrag>
           <td nzLeft nzWidth="100px">
             <div>{{i + 1}}</div>
           </td>

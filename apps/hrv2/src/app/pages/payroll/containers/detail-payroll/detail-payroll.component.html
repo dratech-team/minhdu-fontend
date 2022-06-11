@@ -488,7 +488,7 @@
                   </span>
                   <ng-template #totalDay>
                     <span>
-                       {{salary.duration}} {{ salary.partial | transformconstant: sessionConstant}}
+                       {{salary.duration}} {{ salary.partial | transformconstant: sessionConstant : 'detail'}}
                     </span>
                   </ng-template>
                 </td>
@@ -552,7 +552,7 @@
                   </span>
                 <ng-template #childTottalDay>
                     <span>
-                       {{item.duration}} {{ item.partial | transformconstant: sessionConstant}}
+                       {{item.duration}} {{ item.partial | transformconstant: sessionConstant : 'detail'}}
                     </span>
                 </ng-template>
               </td>
@@ -673,7 +673,7 @@
               <td class='pointer'
                   (click)='onSalarySetting(salary?.setting?.title)'>
                 <div>
-                  <span>{{salary?.setting?.title}} {{salary.partial| transformconstant: sessionConstant}}</span>
+                  <span>{{salary?.setting?.title}} {{salary.partial| transformconstant: sessionConstant : 'detail'}}</span>
                 </div>
               </td>
               <td>
@@ -688,7 +688,7 @@
                   {{(salary.duration | minute).hour}} giờ {{(salary.duration | minute).minute}}
                   Phút</span>
                 <ng-template #durationDay>
-                  {{salary.duration}} {{salary.partial | transformconstant:sessionConstant}}
+                  {{salary.duration}} {{salary.partial | transformconstant:sessionConstant : 'detail'}}
                 </ng-template>
               </td>
               <td>
@@ -814,7 +814,7 @@
                   </span>
               </td>
               <td>
-                {{salary.duration}} {{salary.partial | transformconstant: sessionConstant}}
+                {{salary.duration}} {{salary.partial | transformconstant: sessionConstant: 'detail'}}
               </td>
               <td>
                 <span>{{salary.note}}</span>
@@ -1169,7 +1169,7 @@
                 </span>
               </td>
               <td style="background: white">
-                {{salary.duration}} {{salary.partial | transformconstant: sessionConstant}}
+                {{salary.duration}} {{salary.partial | transformconstant: sessionConstant : 'detail' }}
               </td>
               <td style="background: white"></td>
               <td style="background: white">
