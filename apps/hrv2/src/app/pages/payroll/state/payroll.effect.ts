@@ -362,7 +362,7 @@ export class PayrollEffect {
             unit === DatetimeUnitEnum.DAY
             || unit === DatetimeUnitEnum.MONTH
             || unit === DatetimeUnitEnum.TIMES)
-            ? (b.partial === PartialDayEnum.ALL_DAY ?
+            ? (b.partial === PartialDayEnum.ALL_DAY || b.partial === PartialDayEnum.NIGHT ?
                 b.duration
                 : (b.duration / 2)
             )

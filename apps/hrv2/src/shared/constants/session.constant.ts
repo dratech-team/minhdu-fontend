@@ -37,7 +37,7 @@ export const SessionConstant: SessionEntity[] = [
     types: [SalaryTypeEnum.OVERTIME, SalaryTypeEnum.ABSENT]
   },
   {
-    name: 'Buổi tối',
+    name: 'Ngày buổi tối',
     detail: 'Ngày buổi chiều',
     value: PartialDayEnum.NIGHT,
     unit: DatetimeUnitEnum.DAY,
