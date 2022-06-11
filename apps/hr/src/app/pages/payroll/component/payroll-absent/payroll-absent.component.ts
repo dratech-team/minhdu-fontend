@@ -252,10 +252,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
           type: SalaryTypeEnum.ABSENT
         }
       });
-      ref.componentInstance.EmitSalariesSelected.subscribe((val) => {
-        this.salariesSelected = val;
-        this.ref.detectChanges();
-      });
+
       ref.afterClosed().subscribe((val) => {
         if (val) {
           this.salariesSelected = [];
