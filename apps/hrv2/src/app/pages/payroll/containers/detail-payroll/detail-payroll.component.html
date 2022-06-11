@@ -588,10 +588,8 @@
             <td></td>
             <td>
               {{payroll.total.overtime.duration.day}} ngày
-              <br>{{
-              payroll.total.overtime.duration.hour
-              + (payroll.total.overtime.duration.minute | minute).hour }} giờ
-              <br>{{(payroll.total.overtime.duration.minute | minute).minute }} phút
+              <br>{{payroll.total.overtime.duration.hour}} giờ
+              <br>{{payroll.total.overtime.duration.minute}} phút
             </td>
             <td style='color: #05981C'>
               {{payroll.total.overtime.total
@@ -730,9 +728,8 @@
               <td></td>
               <td>
                 {{payroll.total.absent.duration.day}} ngày
-                <br>{{payroll.total.absent.duration.hour + (payroll.total.absent.duration.minute | minute).hour}}
-                Giờ
-                <br>{{(payroll.total.absent.duration.minute | minute).minute}} phút
+                <br>{{payroll.total.absent.duration.hour }}
+                <br>{{payroll.total.absent.duration.minute}} phút
               </td>
               <td style='color: red'>
                 {{payroll.total.absent.price
