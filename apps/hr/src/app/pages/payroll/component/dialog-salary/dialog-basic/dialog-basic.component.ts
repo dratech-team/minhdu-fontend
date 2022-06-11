@@ -35,7 +35,7 @@ export class DialogBasicComponent implements OnInit {
   payrollSelected: Payroll[] = [];
   salariesSelected: SalaryPayroll[] = [];
   tabindex = 0;
-  /// FIXME: Dummy data
+  // đã giải quuyết ở v2
   salaries = [
     {title: 'Lương cơ bản trích BH', type: SalaryTypeEnum.BASIC_INSURANCE},
     {title: 'Lương theo PL.HD', type: SalaryTypeEnum.BASIC},

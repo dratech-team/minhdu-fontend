@@ -28,7 +28,8 @@ export class UpdateContractComponent implements OnInit {
   }
 
   ngOnInit() {
-    //FIXME m?i l�m tru?ng h?p h?p d?ng m?i nh?t
+    //FIXME contracts hiện là một mảng đề xuất nên hiện một table constacts
+    // trong detail, khi sửa hoặc thêm contract sẽ xử lý tương tự như degree (tương tự ở v2)
     if (this.data?.contracts) {
       this.lastContract = this.data?.contracts.length - 1;
     }

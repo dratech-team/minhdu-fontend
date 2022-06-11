@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ConditionConstant} from "../../constants/condition.constant";
 import {ModalRateConditionData} from "../../data/modal-rate-condition.data";
-import {NzModalRef} from "ng-zorro-antd/modal";
+import {NzModalRef, NzModalService} from "ng-zorro-antd/modal";
 import {RateConditionService} from "../../services/rate-condition.service";
 import {RateConditionEntity} from "../../entities/rate-condition.entity";
 import {NzMessageService} from "ng-zorro-antd/message";
@@ -22,12 +22,15 @@ export class ModalRateConditionComponent implements OnInit {
   rateConditionConstant = RateConditionConstant
   rateConditionEnum = RateConditionEnum
   submitting = false
+  alertRateConditionWorkday = 'Nếu nhập số ngày là 0 với loại là theo ngày công chuẩn thì số ngày sẽ bằng ngày công chuẩn'
+  alertRateConditionAbsent = 'nếu nhập số ngày là 0 với loại là theo ngày vắng, thì số ngày sẽ bằng ngày trong tháng trừ cho ngày công chuẩn'
   formGroup!: FormGroup
   with?: number
 
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly modalRef: NzModalRef,
+    private readonly modal: NzModalService,
     private readonly service: RateConditionService,
     private readonly message: NzMessageService,
   ) {
@@ -78,5 +81,11 @@ export class ModalRateConditionComponent implements OnInit {
   private onSubmitErr(err: string) {
     this.submitting = false
     return throwError(err)
+  }
+
+  private showAlert(message: string) {
+    this.modal.info({
+      nzContent: message,
+    })
   }
 }

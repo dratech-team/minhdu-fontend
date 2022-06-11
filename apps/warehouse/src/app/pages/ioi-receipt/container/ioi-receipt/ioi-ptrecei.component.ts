@@ -35,6 +35,7 @@ export class IoiPtreceiComponent implements OnInit {
   warehouseIdSelected = this.ioiReceiptQuery.getValue().warehouseIdSelected;
   stockType = IoiReceiptEnum
   formGroup = new FormGroup(
+    // check annonate ng đặt fixme là Long nhưng ko chú thích nên không biết vấn đề cần fix là gì
     /// FIXME:
     {
       // inventoryType: new FormControl(this.stateSearch.inventoryType),

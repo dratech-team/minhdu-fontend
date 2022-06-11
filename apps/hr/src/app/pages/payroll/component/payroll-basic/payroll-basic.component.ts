@@ -206,8 +206,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        /*fixme*/
-        // this.formGroup.get('titles')?.patchValue([val.title], {emitEvent: false});
+        // hiện ở v2 thì lương cơ bản ko cho search theo title
         this.store.dispatch(
           PayrollAction.loadInit({
             payrollDTO: this.mapPayrollBasic()
