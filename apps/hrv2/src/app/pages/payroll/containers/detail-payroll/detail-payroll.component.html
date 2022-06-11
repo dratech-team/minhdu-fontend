@@ -588,11 +588,8 @@
             <td></td>
             <td>
               {{payroll.total.overtime.duration.day}} ngày
-              <br>{{
-              payroll.total.overtime.duration.hour
-              + (payroll.total.overtime.duration.minute | convertMinute).hour }} giờ
-              <br>{{(payroll.total.overtime.duration.minute | convertMinute).minute }} phút
-            </td>
+              <br>{{payroll.total.overtime.duration.hour}} Giờ
+              <br>{{payroll.total.overtime.duration.minute}} phút
             <td style='color: #05981C'>
               {{payroll.total.overtime.total
               | roundingnumber :100
