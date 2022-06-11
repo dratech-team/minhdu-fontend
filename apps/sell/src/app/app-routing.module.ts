@@ -38,6 +38,7 @@ const routes: Routes = [
       },
       /**
        * @deprecated
+       * hàng hoá không cần page riêng để hiển thiị
        * */
       {
         path: 'hang-hoa',
@@ -68,6 +69,7 @@ const routes: Routes = [
 
       /**
        * @deprecated
+       * không sử dụng nữa vì ko có quản lý hoá đơn
        * */
       {
         path: 'bill',

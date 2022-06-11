@@ -35,6 +35,7 @@ export class CustomerEffect {
       const params = Object.assign(props.search, props.search?.orderType
         ? {orderType: props.search.orderType === 'ascend' ? 'asc' : 'desc'}
         : {});
+      // check annonate ng đặt fixme là Long nhưng ko chú thích nên không biết vấn đề cần fix là gì
       /// FIXME:
       return this.customerService.pagination(params as SearchCustomerDto).pipe(
         map((response) => {

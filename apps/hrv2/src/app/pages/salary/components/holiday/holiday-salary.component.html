@@ -29,11 +29,11 @@
               <span class='font-weight-bold'>Hệ số</span><span class='star'>*</span>
               <div class='form-control mt-1' style='background: #dddddd'>{{this.formGroup.value.template.rate}}</div>
             </div>
-            <div *ngIf="formGroup.value.template?.rateCondition" class="col mx-3 align-items-center">
+            <div *ngIf="formGroup.value.template?.rateCondition" class="col mt-3 align-items-center">
               <div class="font-weight-bold">
                 {{formGroup.value.template.rateCondition.condition | transformconstant: conditionConstant}}
-                {{formGroup.value.template.rateCondition.with}}
-                ({{formGroup.value.template.rateCondition.type | transformconstant: rateConditionConstant}})
+                {{formGroup.value.template.rateCondition.with | withratecondition : formGroup.value.template.rateCondition.type }}
+                ({{(formGroup.value.template.rateCondition.type | transformconstant: rateConditionConstant)}})
               </div>
             </div>
           </div>

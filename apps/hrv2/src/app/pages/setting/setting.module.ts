@@ -32,33 +32,36 @@ import {PriceSettingSalaryPipe} from "./salary/pipes/price-setting-salary.pipe";
 import {NzToolTipModule} from "ng-zorro-antd/tooltip";
 import {ModalRateConditionComponent} from "./salary/components/modal-rate-condition/modal-rate-condition.component";
 import {RateConditionComponent} from "./salary/components/rate-condition/rate-condition.component";
+import {NzDividerModule} from "ng-zorro-antd/divider";
+import {WithRateConditionPipe} from "./salary/pipes/with-rate-condition.pipe";
 
 @NgModule({
-  imports: [
-    SharedModule,
-    CommonModule,
-    HttpClientModule,
-    SettingRoutingModule,
-    NzTableModule,
-    NzCollapseModule,
-    ReactiveFormsModule,
-    AkitaNgEffectsModule.forFeature([SettingSalaryEffect]),
-    ComponentsModule,
-    NzDropDownModule,
-    NzIconModule,
-    NzSelectModule,
-    NzPopoverModule,
-    NzRadioModule,
-    NzCheckboxModule,
-    NgxCurrencyModule,
-    NzButtonModule,
-    NzInputModule,
-    MatChipsModule,
-    MatIconModule,
-    OrgchartV2Module,
-    NzDatePickerModule,
-    NzToolTipModule,
-  ],
+    imports: [
+        SharedModule,
+        CommonModule,
+        HttpClientModule,
+        SettingRoutingModule,
+        NzTableModule,
+        NzCollapseModule,
+        ReactiveFormsModule,
+        AkitaNgEffectsModule.forFeature([SettingSalaryEffect]),
+        ComponentsModule,
+        NzDropDownModule,
+        NzIconModule,
+        NzSelectModule,
+        NzPopoverModule,
+        NzRadioModule,
+        NzCheckboxModule,
+        NgxCurrencyModule,
+        NzButtonModule,
+        NzInputModule,
+        MatChipsModule,
+        MatIconModule,
+        OrgchartV2Module,
+        NzDatePickerModule,
+        NzToolTipModule,
+        NzDividerModule,
+    ],
   declarations: [
     SettingSalaryComponent,
     BlockSalaryPipe,
@@ -68,12 +71,14 @@ import {RateConditionComponent} from "./salary/components/rate-condition/rate-co
     SalaryTypePipe,
     PriceSettingSalaryPipe,
     ModalRateConditionComponent,
-    RateConditionComponent
+    RateConditionComponent,
+    WithRateConditionPipe
   ],
   exports: [
     SalaryTypePipe,
     PricesPipe,
-    PriceSettingSalaryPipe
+    PriceSettingSalaryPipe,
+    WithRateConditionPipe
   ],
   providers: [
     DatePipe,

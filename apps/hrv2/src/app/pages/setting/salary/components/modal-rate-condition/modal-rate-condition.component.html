@@ -9,19 +9,41 @@
     </div>
   </div>
   <div class="mt-2">
-    <div><span class="font-weight-bold">Số ngày</span><span class="star">*</span></div>
-    <input nz-input type="number" formControlName="with" [max]="31">
-  </div>
-  <div class="mt-2">
-    <div><span class="font-weight-bold">Hệ số mặc định</span><span class="star">*</span></div>
-    <input nz-input type="number" formControlName="default">
-  </div>
-  <div class="mt-2">
     <div><span class="font-weight-bold">Loại</span><span class="star">*</span></div>
     <nz-select style="width: 100%" formControlName="type">
       <nz-option *ngFor="let item of rateConditionConstant" [nzValue]="item.value" [nzLabel]="item.name">
       </nz-option>
     </nz-select>
+  </div>
+  <div class="mt-2">
+    <div><span class="font-weight-bold">Số ngày</span><span class="star">*</span></div>
+    <div>
+      <nz-select
+        [nzDropdownRender]="renderTemplate"
+        style="width: 100%"
+        formControlName="with">
+        <nz-option *ngIf="formGroup.value?.type" [nzValue]="0" [nzLabel]="
+        formGroup.value.type === rateConditionEnum.ABSENT
+        ? 'Ngày công chuẩn'
+        : 'Ngày trong tháng trừ cho ngày công chuẩn'">
+        </nz-option>
+        <nz-option *ngIf="with" [nzValue]="with" [nzLabel]="with">
+        </nz-option>
+      </nz-select>
+    </div>
+    <ng-template #renderTemplate>
+      <nz-divider></nz-divider>
+      <div class="container d-flex justify-content-center align-items-center">
+        <div class="font-weight-bold" style="width: 150px;">
+          Nhập số ngày :
+        </div>
+        <input type="number" max="30" min="1" nz-input formControlName="inputWith"/>
+      </div>
+    </ng-template>
+  </div>
+  <div class="mt-2">
+    <div><span class="font-weight-bold">Hệ số mặc định</span><span class="star">*</span></div>
+    <input nz-input type="number" formControlName="default">
   </div>
 </form>
 <button class="mt-2" nz-button nzType="primary" [nzLoading]="submitting" (click)="onSubmit()">Xác nhận</button>

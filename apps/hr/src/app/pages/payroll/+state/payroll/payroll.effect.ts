@@ -127,31 +127,6 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.addSalary),
       switchMap((props) => {
-          if(props.salary.type === SalaryTypeEnum.ABSENT){
-            if (props.salary?.settingId !== 0) {
-              if (!props.salary.partial) {
-                this.message.warning('chưa chọn buổi')
-                this.store.dispatch(PayrollAction.handleSalaryError());
-                return throwError('chưa chọn buổi')
-              }
-              if (!props.salary.statedAt && !props.salary.endedAt) {
-                this.message.warning('chưa chọn từ ngày đến ngày')
-                this.store.dispatch(PayrollAction.handleSalaryError());
-                return throwError('chưa chọn từ ngày đến ngày')
-              }
-            } else {
-              if (!props.salary?.price) {
-                this.message.warning('Chưa nhập đơn giá')
-                this.store.dispatch(PayrollAction.handleSalaryError());
-                return throwError('Chưa nhập đơn giá')
-              }
-            }
-            if (!props.salary.title) {
-              this.message.warning('Chưa nhập tiêu đề vắng')
-              this.store.dispatch(PayrollAction.handleSalaryError());
-              return throwError('Chưa nhập tiêu đề vắng')
-            }
-          }
           return this.salaryService.addOne(props.salary).pipe(
             map((res) => {
               if (props.branchId) {

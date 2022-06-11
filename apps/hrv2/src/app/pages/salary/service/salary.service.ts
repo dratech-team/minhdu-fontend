@@ -6,6 +6,7 @@ import {NzMessageService} from "ng-zorro-antd/message";
 import {Actions} from "@datorama/akita-ng-effects";
 import {SalaryEntity} from "../entities";
 
+//chưa sử dụng, sử dụng cho trường hợp khi tạo store cho salary
 export class SalaryService extends BaseService<SalaryEntity> {
   constructor(
     public readonly message: NzMessageService,
@@ -16,24 +17,16 @@ export class SalaryService extends BaseService<SalaryEntity> {
     super(url, http)
   }
 
-  /**
-   * @deprecated
-   * */
   addMany(body: any): Observable<ResponseMessageEntity> {
     return super.addMany(body);
   }
 
-  /**
-   * @deprecated
-   * */
+
  updateMany(body: any, method?: "put" | "patch" | "post"): Observable<ResponseMessageEntity> {
    return super.updateMany(body, method);
  }
 
 
-  /**
-   * @deprecated
-   * */
   deleteMany(body: number[]): Observable<ResponseMessageEntity> {
     return super.deleteMany(body);
   }

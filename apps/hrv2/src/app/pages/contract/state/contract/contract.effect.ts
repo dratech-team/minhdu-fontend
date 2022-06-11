@@ -21,9 +21,7 @@ export class ContractEffect {
   ) {
   }
 
-  /**
-   * @deprecated
-   * */
+  //Chưa sử dụng, sử dụng khi tạo module quản lý hợp đồng nhân viên và cần get all
   @Effect()
   loadAll$ = this.action$.pipe(
     ofType(ContractActions.loadAll),
@@ -100,9 +98,7 @@ export class ContractEffect {
     }),
   );
 
-  /**
-   * @deprecated
-   * */
+  //Chưa sử dụng, sử dụng khi tạo module quản lý hợp đồng nhân viên  cần get one
   @Effect()
   loadOne$ = this.action$.pipe(
     ofType(ContractActions.loadOne),
