@@ -727,9 +727,9 @@
               <td></td>
               <td>
                 {{payroll.total.absent.duration.day}} ngày
-                <br>{{payroll.total.absent.duration.hour + (payroll.total.absent.duration.minute | convertMinute).hour}}
+                <br>{{payroll.total.absent.duration.hour}}
                 Giờ
-                <br>{{(payroll.total.absent.duration.minute | convertMinute).minute}} phút
+                <br>{{payroll.total.absent.duration.minute}} phút
               </td>
               <td style='color: red'>
                 {{payroll.total.absent.price
