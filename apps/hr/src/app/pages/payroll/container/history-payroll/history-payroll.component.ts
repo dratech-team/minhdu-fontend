@@ -154,7 +154,7 @@ export class HistoryPayrollComponent implements OnInit {
 
   exportTimekeeping() {
     // this.exportService.print(Api.TIMEKEEPING_EXPORT);
-    /// FIXME: Hard code to release
+    // đã giải quyết ở v2
     this.snackbar.open(
       'Tính năng sẽ được phát triển. Xin lỗi vì sự bất tiện',
       '',

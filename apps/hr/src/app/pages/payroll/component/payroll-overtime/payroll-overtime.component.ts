@@ -328,7 +328,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       const uniqPrice = [...new Set(uniq.map(({price}) => price))];
       const uniqUnit = [...new Set(uniq.map(({unit}) => unit))];
 
-      /// FIXME: Can validate allowance isEqual
+      /// v2 đã giải quyết
       // const uniqAllowance = [
       //   ...new Set(uniq.map(({ allowance }) => allowance)),
       // ];
@@ -360,7 +360,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     }
   }
 
-  /// FIXME: Can validate allowance isEqual
+  // v2 đã giải quyết
   mapSalary = (salaries: any[]) =>
     salaries.map(({salary}) => ({
       title: salary.title,

@@ -205,8 +205,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        //Fixme
-        // this.formGroup.get('titles')?.setValue([val.title], {emitEvent: false});
+        //ở v2 khi thêm thành công sẽ search theo title của salary stay vừa tạo nhưng back end chưa xử lý nên frontend  đang tạm ẩn
         this.store.dispatch(
           PayrollAction.loadInit({
             payrollDTO: this.mapPayrollStay()
