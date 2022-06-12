@@ -24,6 +24,7 @@
       <nz-table
         #tableTemplate
         *ngIf=" (templates$|async) as templates"
+        [nzScroll]="{ x: '',y: '58vh'}"
         nzSize='middle'
         (nzPageIndexChange)='onPagination($event)'
         [nzPageSize]="pageSizeTable"
