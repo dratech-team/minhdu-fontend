@@ -165,7 +165,6 @@ export class OrderComponent implements OnInit {
         isPagination: true
       }));
     }
-
   }
 
   onPickDeliveryDay($event: any) {

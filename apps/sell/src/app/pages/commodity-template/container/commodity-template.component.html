@@ -20,12 +20,14 @@
       </div>
     </div>
     <div>
-      <div class="mb-1"> <span class="font-weight-bold">Tổng :</span> {{total$|async}}</div>
+      <div class="mb-1"><span class="font-weight-bold">Tổng :</span> {{total$|async}}</div>
       <nz-table
         #tableTemplate
         *ngIf=" (templates$|async) as templates"
-        nzShowPagination="false"
+        [nzScroll]="{ x: '',y: '58vh'}"
         nzSize='middle'
+        (nzPageIndexChange)='onPagination($event)'
+        [nzPageSize]="pageSizeTable"
         [nzLoading]="loading$|async"
         [nzData]="templates"
       >
@@ -37,25 +39,12 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let template of templates; let i = index"
+        <tr *ngFor="let template of tableTemplate.data; let i = index"
             (click)="onUpdate(template)"
             (contextmenu)='child.onContextMenu($event,template)'>
-          <td nzLeft>{{i + 1}}</td>
+          <td nzLeft>{{(i + 1) + ((tableTemplate.nzPageIndex - 1) * 10)}}</td>
           <td>{{template.code}}</td>
           <td>{{template.name}}</td>
-        </tr>
-        <tr *ngIf="((count$|async) || 0) <= ((total$|async) || 0) && (total$|async) !== 0">
-          <td [colSpan]="tableTemplate.listOfAutoColWidth.length">
-            <div class="w-100 d-flex justify-content-start" style="position: relative">
-              <button
-                (click)="onLoadMore()"
-                style="position: sticky; left: 55vw"
-                nz-button nzType="primary"
-                [nzLoading]="loadMore$|async">
-                Tải thêm
-              </button>
-            </div>
-          </td>
         </tr>
         </tbody>
       </nz-table>
