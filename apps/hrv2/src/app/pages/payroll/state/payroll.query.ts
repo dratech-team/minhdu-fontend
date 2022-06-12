@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
-import {PayrollEntityState, PayrollStore} from "./payroll.store";
+import { PayrollEntityState, PayrollStore } from './payroll.store';
 
 @Injectable({ providedIn: 'root' })
 export class PayrollQuery extends QueryEntity<PayrollEntityState> {

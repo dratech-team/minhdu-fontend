@@ -1,35 +1,34 @@
-import {Component, OnInit, ViewContainerRef} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {CommodityUnit, PaymentType} from '@minhdu-fontend/enums';
-import {OrderActions, OrderQuery} from '../../+state';
-import {OrderDialogComponent} from '../../component';
-import {MatDialog} from '@angular/material/dialog';
-import {CommodityAction, CommodityQuery} from '../../../commodity/+state';
-import {CommodityDialogComponent} from '../../../commodity/component';
-import {PickCommodityComponent} from '../../../../shared/components/pick-commodity/pick-commodity.component';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommodityUnit, PaymentType } from '@minhdu-fontend/enums';
+import { OrderActions, OrderQuery } from '../../+state';
+import { OrderDialogComponent } from '../../component';
+import { MatDialog } from '@angular/material/dialog';
+import { CommodityAction, CommodityQuery } from '../../../commodity/+state';
+import { CommodityDialogComponent } from '../../../commodity/component';
+import { PickCommodityComponent } from '../../../../shared/components/pick-commodity/pick-commodity.component';
 import {
   DialogSharedComponent
 } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import {OrderHistoryService} from '../../service';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {debounceTime} from 'rxjs/operators';
-import {BehaviorSubject} from 'rxjs';
-import {Actions} from '@datorama/akita-ng-effects';
-import {OrderHistoryEntity} from '../../enitities';
-import {CommodityEntity} from '../../../commodity/entities';
-import {NzModalService} from "ng-zorro-antd/modal";
-import {OrderEntity} from "../../enitities/order.entity";
-import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
+import { OrderHistoryService } from '../../service';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
+import { Actions } from '@datorama/akita-ng-effects';
+import { OrderHistoryEntity } from '../../enitities';
+import { CommodityEntity } from '../../../commodity/entities';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { OrderEntity } from '../../enitities/order.entity';
+import { ModalAlertEntity } from '@minhdu-fontend/base-entity';
 import {
   ModalUpdateClosedCommodityComponent
-} from "../../../commodity/component/modal-update-closed-commodity/modal-update-closed-commodity.component";
+} from '../../../commodity/component/modal-update-closed-commodity/modal-update-closed-commodity.component';
 
 @Component({
   templateUrl: 'detail-order.component.html'
 })
 export class DetailOrderComponent implements OnInit {
-  order$ = this.orderQuery.selectEntity(this.getOrderId)
+  order$ = this.orderQuery.selectEntity(this.getOrderId);
   payType = PaymentType;
   commodityUnit = CommodityUnit;
   orderHistories: OrderHistoryEntity[] = [];
@@ -47,16 +46,15 @@ export class DetailOrderComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly dialog: MatDialog,
     private readonly router: Router,
-    private readonly snackBar: MatSnackBar,
     private readonly orderHistoryService: OrderHistoryService,
     private readonly modal: NzModalService,
     private readonly viewContentRef: ViewContainerRef,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: FormBuilder
   ) {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(OrderActions.loadOne({id: this.getOrderId}));
+    this.actions$.dispatch(OrderActions.loadOne({ id: this.getOrderId }));
 
     this.loadInitOrderHistory();
 
@@ -64,7 +62,7 @@ export class DetailOrderComponent implements OnInit {
       if (param.isUpdate === 'true') {
         const order = this.orderQuery.getEntity(this.getOrderId);
         if (order) {
-          this.updateOrder(order, "GENERAL");
+          this.updateOrder(order, 'GENERAL');
         }
       }
     });
@@ -85,7 +83,7 @@ export class DetailOrderComponent implements OnInit {
         nzContent: OrderDialogComponent,
         nzViewContainerRef: this.viewContentRef,
         nzComponentParams: {
-          data: {order: order, tab: 0, isUpdate: true}
+          data: { order: order, tab: 0, isUpdate: true }
         },
         nzFooter: [],
         nzWidth: '65vw',
@@ -96,8 +94,8 @@ export class DetailOrderComponent implements OnInit {
         nzTitle: 'Chọn hàng hoá',
         nzContent: PickCommodityComponent,
         nzComponentParams: {
-          data: {type: 'DIALOG'},
-          formGroup: this.formBuilder.group({customerIds: []})
+          data: { type: 'DIALOG' },
+          formGroup: this.formBuilder.group({ customerIds: [] })
         },
         nzWidth: '70vw',
         nzFooter: []
@@ -107,10 +105,10 @@ export class DetailOrderComponent implements OnInit {
             id: order.id,
             updates: {
               commodityIds: Array.from(value)
-            },
+            }
           }));
         }
-      })
+      });
     }
   }
 
@@ -123,10 +121,10 @@ export class DetailOrderComponent implements OnInit {
       nzTitle: 'Cập nhật hàng hoá',
       nzContent: CommodityDialogComponent,
       nzComponentParams: {
-        data: {commodity, isUpdate: true,}
+        data: { commodity, isUpdate: true }
       },
-      nzFooter: [],
-    })
+      nzFooter: []
+    });
   }
 
   deleteCommodity(commodity: CommodityEntity) {
@@ -140,7 +138,7 @@ export class DetailOrderComponent implements OnInit {
     ).afterClosed().subscribe(val => {
       if (val) {
         if (commodity.orderId)
-          this.actions$.dispatch(CommodityAction.remove({id: commodity.id, inOrder: {orderId: commodity.orderId}}));
+          this.actions$.dispatch(CommodityAction.remove({ id: commodity.id, inOrder: { orderId: commodity.orderId } }));
       }
     });
   }
@@ -155,7 +153,7 @@ export class DetailOrderComponent implements OnInit {
       nzContent: ModalUpdateClosedCommodityComponent,
       nzComponentParams: <{ data: ModalAlertEntity }>{
         data: {
-          description: `Bạn có chắc chắn muốn ${(commodity.closed ? 'bỏ chốt ' : 'chốt ') + commodity.name}`,
+          description: `Bạn có chắc chắn muốn ${(commodity.closed ? 'bỏ chốt ' : 'chốt ') + commodity.name}`
         }
       },
       nzFooter: []
@@ -168,9 +166,9 @@ export class DetailOrderComponent implements OnInit {
             orderId: orderId,
             closed: !commodity.closed
           }
-        }))
+        }));
       }
-    })
+    });
   }
 
   loadMoreOrderHistory() {
@@ -183,8 +181,6 @@ export class DetailOrderComponent implements OnInit {
     }).subscribe(val => {
       if (val.data.length > 0) {
         this.orderHistories = this.orderHistories.concat(val.data);
-      } else {
-        this.snackBar.open('Đã lấy hết lịch sử chỉnh sửa đơn hàng', '', {duration: 1500});
       }
     });
   }
@@ -205,7 +201,6 @@ export class DetailOrderComponent implements OnInit {
       if (val) {
         this.orderHistories = val.data;
         this.loading$.next(false);
-        this.snackBar.open('Tải lịch sử chỉnh sửa đơn hàng thành công', '', {duration: 1500});
       }
     });
   }
@@ -215,13 +210,13 @@ export class DetailOrderComponent implements OnInit {
       nzTitle: 'Xoá đơn hàng',
       nzContent: `Bạn có chắc chắn muốn xoá đơn hàng này vĩnh viễn`,
       nzOnOk: () => {
-        this.actions$.dispatch(OrderActions.remove({id: $event.id}))
-        this.orderQuery.select(state => state.deleted).subscribe(val =>{
-          if(val){
-            this.router.navigate(['don-hang']).then()
+        this.actions$.dispatch(OrderActions.remove({ id: $event.id }));
+        this.orderQuery.select(state => state.deleted).subscribe(val => {
+          if (val) {
+            this.router.navigate(['don-hang']).then();
           }
-        })
+        });
       }
-    })
+    });
   }
 }
