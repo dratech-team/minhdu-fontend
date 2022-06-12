@@ -24,7 +24,6 @@ import {FlatSalaryTypePipe} from "./pipes/flat-salary-type.pipe";
 import {OrgchartV2Module} from "@minhdu-fontend/orgchart-v2";
 import {DetailEmployeeComponent} from "./containers/detail-employee/detail-employee.component";
 import {WorkHistoryPipe} from "./pipes/work-history.pipe";
-import {ExistPipe} from "./pipes/exist.pipe";
 import {NzStepsModule} from "ng-zorro-antd/steps";
 import {ModalEmployeeComponent} from "./components/employee/modal-employee.component";
 import {ProfileComponent} from "./components/profile/profile.component";
@@ -65,15 +64,11 @@ import {ModalUpdateContractComponent} from "./components/modal-update-contract/m
         DetailEmployeeComponent,
         WorkHistoryPipe,
         FlatSalaryTypePipe,
-        ExistPipe,
         ModalEmployeeComponent,
         ProfileComponent,
         ModalRelativeComponent,
         ModalDegreeComponent,
         ModalUpdateContractComponent
-    ],
-    exports: [
-        ExistPipe
     ],
     providers: [
         DatePipe,
