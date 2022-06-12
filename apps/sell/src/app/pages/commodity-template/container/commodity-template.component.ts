@@ -22,12 +22,12 @@ import {DataModalCommodityTemplateData} from "../data/data-modal-commodity-templ
 export class CommodityTemplateComponent implements OnInit {
   templates$ = this.query.selectAll();
   loading$ = this.query.select(state => state.loading);
-  loadMore$ = this.query.select(state => state.loadMore);
   total$ = this.query.select(state => state.total)
   count$ = this.query.selectCount()
 
   stateSearch = this.query.getValue().search;
 
+  pageSizeTable = 10
   panelOpenState = false;
   visible = false;
 
@@ -57,8 +57,10 @@ export class CommodityTemplateComponent implements OnInit {
     });
   }
 
-  onLoadMore() {
-    this.onLoad(true)
+  onPagination(pageIndex: number) {
+    if (pageIndex * this.pageSizeTable >= this.query.getCount()) {
+      this.onLoad(true)
+    }
   }
 
   onLoad(isPaginate: boolean) {
