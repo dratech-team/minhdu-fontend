@@ -142,6 +142,10 @@
           <input nz-input type='number' disabled>
         </th>
         <th>
+          <div>Vắng</div>
+          <input nz-input type='number' disabled>
+        </th>
+        <th>
           <div>Thuế</div>
           <input nz-input type='number' disabled>
         </th>
@@ -280,6 +284,9 @@
           </td>
           <td>
             {{payroll.payslip?.deductionSalary | number: '1.0-0'}} VND
+          </td>
+          <td>
+            {{payroll.payslip?.absent?.total | number: '1.0-0'}} VND
           </td>
           <td>
             {{payroll.payslip?.tax | number: '1.0-0'}} VND
