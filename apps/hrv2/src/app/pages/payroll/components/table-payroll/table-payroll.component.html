@@ -304,7 +304,7 @@
           </td>
           <td>
             {{payroll.payslip.overtimeSalary.duration ?
-            payroll.payslip.overtimeSalary.duration | dayhourminute
+            (payroll.payslip.overtimeSalary.duration | dayhourminute)
             || 'Đang cập nhật'}}
           </td>
           <td>
