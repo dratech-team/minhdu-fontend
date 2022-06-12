@@ -5,7 +5,7 @@ import {DatePipe} from "@angular/common";
   name: 'dayhourminute'
 })
 export class DayHourMinutePipe implements PipeTransform {
-  transform(duration : {day: number, hour: number , minute: number}): any {
-    return `${duration.day} ngày ${duration.hour} giờ ${duration.minute} phút`
+  transform(duration?: {day: number, hour: number , minute: number}): any {
+    return duration ? `${duration.day} ngày ${duration.hour} giờ ${duration.minute} phút` : 'Chưa cập nhật'
   }
 }

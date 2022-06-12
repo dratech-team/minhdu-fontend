@@ -124,6 +124,18 @@
             <div class=' col-3 py-1 text-center'> -</div>
           </div>
           <div class='border-bottom d-flex '>
+            <div class='col-3 font-weight-bold py-1 border-right'>Vắng</div>
+            <div class=' col-3 py-1 border-right text-center'>
+              {{payslip.absent.duration.paidLeave}} có phép <br>
+              {{payslip.absent.duration.paidLeave}} không phép
+            </div>
+            <div class=' col-1 py-1 border-right text-center'> -</div>
+            <div class='text-danger col-2 py-1 border-right text-center '>
+              {{payslip.absent.total |number: '1.0-0'}}
+            </div>
+            <div class=' col-3 py-1 text-center'> -</div>
+          </div>
+          <div class='border-bottom d-flex '>
             <div class='col-3 font-weight-bold py-1 border-right'>Ngày lễ đi làm</div>
             <div class=' col-3 border-right text-center py-1'>
               {{payslip.holiday.working.duration}}
@@ -198,9 +210,9 @@
               <div class=' col-3 py-1 text-center'> -</div>
             </div>
             <div class=' border-bottom d-flex'>
-              <div class='col-3 font-weight-bold py-1 border-right'>Tổng giờ tăng ca</div>
-              <div class=' col-3 py-1  border-right text-center'> {{payslip.overtimeSalary.duration}}</div>
-              <div class='col-1  py-1 border-right text-center'> Giờ</div>
+              <div class='col-3 font-weight-bold py-1 border-right'>Tổng thời gian tăng ca</div>
+              <div class=' col-3 py-1  border-right text-center'> {{payslip.overtimeSalary.duration | dayhourminute}}</div>
+              <div class='col-1  py-1 border-right text-center'> - </div>
               <div class=' col-2 py-1 text-center border-right'>
                 {{payslip.overtimeSalary.total
                 |roundingnumber:100

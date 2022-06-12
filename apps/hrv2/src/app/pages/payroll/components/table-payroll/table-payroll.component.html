@@ -255,28 +255,28 @@
         <!--      payroll-->
         <ng-template [ngIf]='formGroup.value.filterType === filterTypeEnum.PAYROLL'>
           <td>
-            {{payroll.payslip.workDay.total |existpipe }}
+            {{payroll.payslip?.workDay?.total | existpipe }}
           </td>
           <td>
-            {{payroll?.accConfirmedAt ? (payroll.accConfirmedAt|date:'dd-MM-yyyy') : 'Chưa xác nhận'}}
+            {{payroll.accConfirmedAt ? (payroll.accConfirmedAt|date:'dd-MM-yyyy') : 'Chưa xác nhận'}}
           </td>
           <td>
-            {{payroll.payslip?.basicSalary|number:'1.0-0'}} VND
+            {{payroll.payslip?.basicSalary | number:'1.0-0'}} VND
           </td>
           <td>
-            {{payroll.payslip?.staySalary |number:'1.0-0'}} VND
+            {{payroll.payslip?.staySalary | number:'1.0-0'}} VND
           </td>
           <td>
-            {{payroll.payslip?.allowanceSalary |number:'1.0-0'}} VND
+            {{payroll.payslip?.allowanceSalary | number:'1.0-0'}} VND
           </td>
           <td>
-            {{payroll.payslip?.overtimeSalary?.total |number:'1.0-0'}} VND
+            {{payroll.payslip?.overtimeSalary?.total | number:'1.0-0'}} VND
           </td>
           <td>
-            {{payroll.payslip?.payslipInHoliday || 0}} VND
+            {{payroll.payslip?.holiday?.working?.total | number:'1.0-0'}} VND
           </td>
           <td>
-            {{payroll.payslip?.payslipNotInHoliday || 0}} VND
+            {{payroll.payslip?.holiday?.unWorking?.total | number: '1.0-0'}} VND
           </td>
           <td>
             {{payroll.payslip?.deductionSalary | number: '1.0-0'}} VND
@@ -297,23 +297,19 @@
         <!--      seasonal-->
         <ng-template [ngIf]='formGroup.value.filterType === filterTypeEnum.SEASONAL'>
           <td>
-            {{payroll.payslip?.workDay.duration | existpipe}}
+            {{payroll.payslip?.workDay?.duration | existpipe}}
           </td>
           <td>
-            {{(payroll?.payslip?.workDay.total | number:'1.0-0') + 'đ'}}
+            {{(payroll.payslip?.workDay?.total | number:'1.0-0') + 'đ'}}
           </td>
           <td>
-            {{payroll.payslip.overtimeSalary.duration ?
-            (payroll.payslip.overtimeSalary.duration | dayhourminute)
-            || 'Đang cập nhật'}}
+            {{payroll.payslip?.overtimeSalary?.duration | dayhourminute}}
           </td>
           <td>
-            {{payroll?.payslip.totalSalaryTimes ?
-            (payroll.payslip.totalSalaryTimes | number:'1.0-0') + 'đ'
-            : 'Đang cập nhật'}}
+            {{payroll.payslip?.overtimeSalary?.total | number:'1.0-0'}} đ
           </td>
           <td>
-            {{payroll?.payslip?.total ? (payroll?.payslip?.total | number:'1.0-0') + 'đ' : 'Đang cập nhật'}}
+            {{payroll.payslip?.total | number:'1.0-0'}}
           </td>
           <td>
             <div (click)=' $event.stopPropagation(); onConfirmPaidAtOrAccConfirm(payroll, "accConfirmedAt")'>

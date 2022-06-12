@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {throwError} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {EmployeeType, RecipeType} from '@minhdu-fontend/enums';
 import {FormControl} from '@angular/forms';
 import {DatePipe} from '@angular/common';
@@ -10,7 +10,7 @@ import {
 } from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
 import {catchError} from "rxjs/operators";
 import {Role} from "@minhdu-fontend/enums";
-import {PayrollEntity} from "../../entities";
+import {PayrollEntity, PayslipEntity} from "../../entities";
 import {PayslipService} from "../../services/payslip.service";
 import {PayrollService} from "../../services/payroll.service";
 import {Actions} from "@datorama/akita-ng-effects";
@@ -28,7 +28,7 @@ export class PayslipComponent implements OnInit {
   @Input() data!: {
     payroll: PayrollEntity
   }
-  payslip$ = this.payslipService.getOne(this.data.payroll.id);
+  payslip$ = new Observable<PayslipEntity>()
   loading$ = this.payrollQuery.select(state => state.loading)
 
   accConfirmedAt = new FormControl('');
@@ -53,6 +53,7 @@ export class PayslipComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.payslip$ = this.payslipService.getOne(this.data.payroll.id);
     if (this.data?.payroll?.accConfirmedAt) {
       this.isConfirmed = true;
       this.accConfirmedAt.setValue(this.datePipe.transform(this.data.payroll.accConfirmedAt, 'yyyy-MM-dd'));
