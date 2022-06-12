@@ -66,25 +66,11 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
 
   formGroup!: FormGroup;
 
-
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
-  disabledHoursStart = (): number[] => {
-    return this.limitStartHour;
-  };
-  disabledMinute = (hour: number): number[] => {
-    if (hour === workingTime.afternoon.end.getHours()) {
-      return getAfterTime(0, 'MINUTE');
-    } else {
-      return [];
-    }
-  };
-  disabledHoursEnd = (): number[] => {
-    return this.limitEndTime;
-  };
-
-  disableApprenticeDate = (cur: Date): boolean => {
-    return validateDayInMonth(cur, this.fistDateInMonth);
-  };
+  disabledHoursStart = (): number[] => this.limitStartHour;
+  disabledMinute = (hour: number): number[] => hour === workingTime.afternoon.end.getHours() ? getAfterTime(0, 'MINUTE') : [];
+  disabledHoursEnd = (): number[] => this.limitEndTime;
+  disableApprenticeDate = (cur: Date): boolean => validateDayInMonth(cur, this.fistDateInMonth);
 
   constructor(
     public readonly datePipe: DatePipe,
