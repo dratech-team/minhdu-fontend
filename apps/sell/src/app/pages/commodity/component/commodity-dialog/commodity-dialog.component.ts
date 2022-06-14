@@ -39,7 +39,7 @@ export class CommodityDialogComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       name: [this.data?.commodity?.name, Validators.required],
       code: [this.data?.commodity?.code, Validators.required],
-      price: [this.data?.commodity?.price, Validators.required],
+      price: [this.data?.commodity?.price],
       unit: [this.data?.commodity?.unit || CommodityUnit.CON, Validators.required],
       amount: [this.data?.commodity?.amount, Validators.required],
       gift: [this.data?.commodity?.gift, Validators.required],
