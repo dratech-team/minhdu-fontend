@@ -5,13 +5,13 @@ import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { PayrollActions } from './payroll.action';
-import { AddPayrollDto } from '../dto';
+import {AddPayrollDto, LoadOnePayrollDto} from '../dto';
 import { Injectable } from '@angular/core';
 import { AbsentSalaryEntity, OvertimeSalaryEntity, SalaryEntity } from '../../salary/entities';
 import { PayrollEntity, TotalSalary } from '../entities';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { PartialDayEnum } from '@minhdu-fontend/data-models';
-import { StateHistoryPlugin } from '@datorama/akita';
+import {arrayUpdate, StateHistoryPlugin} from '@datorama/akita';
 import { PayrollQuery } from './payroll.query';
 import { PaginationDto } from '@minhdu-fontend/constants';
 import { AddManyPayrollDto } from '../dto/add-many-payroll.dto';
@@ -155,9 +155,15 @@ export class PayrollEffect {
   @Effect({ dispatch: false })
   getOne$ = this.action$.pipe(
     ofType(PayrollActions.loadOne),
-    switchMap(props => {
+    switchMap((props: LoadOnePayrollDto) => {
       return this.service.getOne(props).pipe(
         map(res => {
+          const currentUser = this.payrollQuery.getEntity(props.id)
+          if(currentUser){
+            this.payrollStore.update(props.id , entity => ({
+              overtimes: arrayUpdate()
+            }))
+          }
           return this.mapToPayroll(res);
         }),
         tap(res => {
