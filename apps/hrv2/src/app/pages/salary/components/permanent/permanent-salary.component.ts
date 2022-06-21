@@ -1,13 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {EmployeeType, ModeEnum, Role, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {EmployeeType, ModeEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {SalaryPayroll} from '@minhdu-fontend/data-models';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalRef} from 'ng-zorro-antd/modal';
 import {SalaryPermanentService} from '../../service';
 import {SettingSalaryActions, SettingSalaryQuery} from '../../../setting/salary/state';
 import {Actions} from '@datorama/akita-ng-effects';
-import {PayrollActions} from '../../../payroll/state/payroll.action';
 import {catchError, map} from 'rxjs/operators';
 import {throwError} from 'rxjs';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
@@ -15,6 +14,7 @@ import {EmployeeService} from '@minhdu-fontend/employee-v2';
 import {PayrollQuery} from "../../../payroll/state";
 import {ModalAddOrUpdatePermanent} from "../../data";
 import {AccountQuery} from "../../../../../../../../libs/system/src/lib/state/account-management/account.query";
+import {resultModalSalaryData} from "../../data/result-modal-salary.data";
 
 @Component({
   templateUrl: 'permanent-salary.component.html'
@@ -119,16 +119,7 @@ export class PermanentSalaryComponent implements OnInit {
         ? this.employeeService.updateHistorySalary(this.data.update.salary.id, salary)
         : this.service.updateMany(salary)))
       .pipe(catchError(err => this.onSubmitError(err)))
-      .subscribe(res => this.onSubmitSuccess(res,
-        this.data.add
-          ? (!this.data.add?.multiple
-              ? this.data.add.payroll?.id
-              : undefined
-          ) : (!this.data.update?.multiple
-              ? this.data.update.salary.payrollId
-              : undefined
-          )
-      ));
+      .subscribe(res => this.onSubmitSuccess(res));
   }
 
   mapSalary(value: any) {
@@ -147,13 +138,14 @@ export class PermanentSalaryComponent implements OnInit {
     );
   }
 
-  onSubmitSuccess(res: ResponseMessageEntity, payrollId?: number) {
+  onSubmitSuccess(res: ResponseMessageEntity) {
     this.submitting = false;
     this.message.success(res.message);
-    if (payrollId) {
-      this.actions$.dispatch(PayrollActions.loadOne({id: payrollId}));
-    }
-    this.modalRef.close(this.mapSalary(this.formGroup.value).title);
+    const result: resultModalSalaryData =
+      this.data.update && !this.data.update.multiple
+        ? {salaryId: this.data.update.salary.id}
+        : {title: this.formGroup.value.template.title}
+    this.modalRef.close(result)
   }
 
   onSubmitError(err: string) {

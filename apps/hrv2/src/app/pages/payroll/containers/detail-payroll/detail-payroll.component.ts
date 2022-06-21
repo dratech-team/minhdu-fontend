@@ -54,6 +54,7 @@ import {DayOffSalaryService} from '../../../salary/service/day-off-salary.servic
 import {ModalAddOrUpdateDeduction} from '../../../salary/data/modal-deduction-salary.data';
 import {AccountQuery} from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import {SalaryHolidayService} from '../../../salary/service/salary-holiday.service';
+import {resultModalSalaryData} from "../../../salary/data/result-modal-salary.data";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -252,9 +253,20 @@ export class DetailPayrollComponent implements OnInit {
       }
     }
 
-    ref().afterClose.subscribe(val => {
-      if (val) {
-        this.actions$.dispatch(PayrollActions.loadOne({id: this.getPayrollId}))
+    ref().afterClose.subscribe((result: resultModalSalaryData) => {
+      if (result) {
+        this.actions$.dispatch(PayrollActions.loadOne(
+          Object.assign({id: this.getPayrollId},
+            result.salaryId
+              ? {
+                updateOneSalary: {
+                  salaryId: result.salaryId,
+                  salaryType: type
+                }
+              }
+              : {}
+          )
+        ))
       }
     })
   }

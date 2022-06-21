@@ -1,3 +1,9 @@
 import {BaseLoadOneDto} from "@minhdu-fontend/base-dto";
+import {SalaryTypeEnum} from "@minhdu-fontend/enums";
 
-export type LoadOnePayrollDto = BaseLoadOneDto
+export interface LoadOnePayrollDto extends BaseLoadOneDto {
+  updateOneSalary?: {
+    salaryType: SalaryTypeEnum
+    salaryId: number
+  }
+}

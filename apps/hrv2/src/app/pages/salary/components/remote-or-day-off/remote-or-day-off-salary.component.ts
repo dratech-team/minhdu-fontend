@@ -8,7 +8,6 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 import {throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {Actions} from '@datorama/akita-ng-effects';
-import {PayrollActions} from '../../../payroll/state/payroll.action';
 import {getFirstDayInMonth} from '@minhdu-fontend/utils';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {RemoteConstant} from "../../constants/remote.constant";
@@ -18,6 +17,7 @@ import {SessionConstant} from "../../../../../shared/constants";
 import {ModalAddOrUpdateRemoteOrDayOff} from "../../data";
 import {DayOffSalaryService} from "../../service/day-off-salary.service";
 import {UnitSalaryConstant} from "../../constants";
+import {resultModalSalaryData} from "../../data/result-modal-salary.data";
 
 @Component({
   templateUrl: 'remote-or-day-off-salary.component.html'
@@ -94,16 +94,7 @@ export class RemoteOrDayOffSalaryComponent implements OnInit {
         return this.onSubmitError(err);
       }))
       .subscribe(res => {
-        this.onSubmitSuccess(res, this.data.add
-          ? (
-            !this.data.add?.multiple
-              ? this.data.add.payroll.id
-              : undefined
-          )
-          : (!this.data.update.multiple
-            ? this.data.update.salary.payrollId
-            : undefined)
-        );
+        this.onSubmitSuccess(res);
       });
   }
 
@@ -146,12 +137,13 @@ export class RemoteOrDayOffSalaryComponent implements OnInit {
     return throwError(err);
   }
 
-  onSubmitSuccess(res: ResponseMessageEntity, payrollId?: number) {
-    if (payrollId) {
-      this.actions$.dispatch(PayrollActions.loadOne({id: payrollId}));
-    }
+  onSubmitSuccess(res: ResponseMessageEntity) {
     this.message.success(res.message);
-    this.modalRef.close();
+    const result: resultModalSalaryData =
+      this.data.update && !this.data.update.multiple
+        ? {salaryId: this.data.update.salary.id}
+        : {title: this.formGroup.value.type}
+    this.modalRef.close(result)
   }
 
   move(type: 'next' | 'previous'): void {
