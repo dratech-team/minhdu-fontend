@@ -390,6 +390,8 @@ export class PayrollEffect {
   private mapToPayroll(payroll: PayrollEntity): PayrollEntity {
     const basics = payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.BASIC || item.type === SalaryTypeEnum.BASIC_INSURANCE);
     const stays = payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.STAY);
+    const overtimes = this.payrollQuery.getEntity(payroll.id)?.overtimes;
+
     return Object.assign(payroll, {
       basics: basics,
       stays: stays,
