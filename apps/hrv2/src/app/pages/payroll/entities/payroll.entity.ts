@@ -54,8 +54,8 @@ export interface PayrollEntity extends BasePayrollEntity {
   stays: SalaryEntity[],
   salaries: SalaryEntity[],
   absents: SalaryEntity [],
-  deductions: DeductionSalaryEntity [],
-  overtimes: SalaryEntity [],
+  deductions: DeductionSalaryEntity[],
+  overtimes: SalaryEntity[],
   allowances: SalaryEntity[],
   remotes: SalaryEntity[],
   holidays: HolidaySalaryEntity[]
@@ -73,9 +73,12 @@ export interface PayrollEntity extends BasePayrollEntity {
     holiday: { duration: number, total: number }
     dayOff: { duration: number }
   }
-  searchOvertime?: {
-    column: FilterSalaryEnum;
-    type: NzTableSortOrder
+  sort?: {
+    overtime?: {
+      column: FilterSalaryEnum;
+      type: NzTableSortOrder
+    }
   }
+
   expand: boolean
 }

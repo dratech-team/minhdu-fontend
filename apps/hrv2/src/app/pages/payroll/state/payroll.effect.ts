@@ -20,7 +20,6 @@ import * as moment from 'moment';
 import {CompareSortUtil} from '../utils/compare-sort.util';
 import {ConvertMinutePipe} from '../../../../../../../libs/components/src/lib/pipes/convert-minute.pipe';
 import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
-import {SortSalaryUtil} from "../utils/sort-salary.util";
 
 @Injectable({providedIn: 'root'})
 export class PayrollEffect {
@@ -159,16 +158,7 @@ export class PayrollEffect {
     switchMap((props: LoadOnePayrollDto) => {
       return this.service.getOne(props).pipe(
         map(res => {
-          const currentPayroll = this.payrollQuery.getEntity(props.id)
-          if (currentPayroll && currentPayroll.searchOvertime) {
-            this.payrollStore.update(props.id, {
-              overtimes: SortSalaryUtil(currentPayroll.searchOvertime.column,
-                currentPayroll.searchOvertime.type,
-                res.overtimes)
-            });
-          } else {
-            this.payrollStore.upsert(res.id, this.mapToPayroll(res));
-          }
+          this.payrollStore.upsert(res.id, this.mapToPayroll(res));
         }),
         catchError(err => {
           return of(PayrollActions.error(err));
@@ -318,7 +308,6 @@ export class PayrollEffect {
   private mapToPayroll(payroll: PayrollEntity): PayrollEntity {
     const basics = payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.BASIC || item.type === SalaryTypeEnum.BASIC_INSURANCE);
     const stays = payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.STAY);
-    const overtimes = this.payrollQuery.getEntity(payroll.id)?.overtimes;
 
     return Object.assign(payroll, {
       basics: basics,

@@ -3,8 +3,8 @@ import {NzTableSortOrder} from "ng-zorro-antd/table";
 import {SalaryEntity} from "../../salary/entities";
 import {CompareSortUtil} from "./compare-sort.util";
 
-export const SortSalaryUtil = (column: FilterSalaryEnum, type: NzTableSortOrder, salaries: SalaryEntity []): SalaryEntity [] => {
-  return salaries.sort((a, b) => {
+export const SortSalaryUtil = (column: FilterSalaryEnum, type: NzTableSortOrder, salaries: SalaryEntity []) => {
+  salaries.sort((a, b) => {
     const isAsc = type === 'descend';
     switch (column) {
       case FilterSalaryEnum.TITLE:

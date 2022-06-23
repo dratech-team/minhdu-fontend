@@ -60,7 +60,7 @@ import {SortSalaryUtil} from "../../utils/sort-salary.util";
   styleUrls: ['detail-payroll.component.scss']
 })
 export class DetailPayrollComponent implements OnInit {
-  payroll$ = this.payrollQuery.selectEntity(this.getPayrollId).pipe(
+  payroll$ = this.payrollQuery.selectOneSort(this.getPayrollId).pipe(
     map(payroll => {
       if (payroll) {
         return JSON.parse(JSON.stringify(payroll));
@@ -444,10 +444,12 @@ export class DetailPayrollComponent implements OnInit {
   onSort(column: FilterSalaryEnum, type: NzTableSortOrder, salaries: SalaryEntity [], salaryType?: SalaryTypeEnum) {
     if (salaryType === SalaryTypeEnum.OVERTIME) {
       this.payrollStore.update(this.getPayrollId, {
-        searchOvertime: {column, type},
-        overtimes: SortSalaryUtil(column, type, salaries)
+        sort: {
+          overtime: {column, type}
+        },
       });
     }
+    SortSalaryUtil(column, type, salaries)
   }
 
   prePayroll(payroll: PayrollEntity) {
