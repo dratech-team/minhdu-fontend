@@ -162,7 +162,7 @@
                 <td> {{salary.title}}</td>
                 <td> {{salary.rate}}</td>
                 <td class=' text-center ' style='color: #05981C'>
-                  {{salary.price
+                  {{salary.price || 0
                   | roundingnumber :1000
                   | number:'1.0'
                   | notEmpty:'0'}} đ
@@ -233,7 +233,7 @@
                 <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"> {{salary.id}}</td>
                 <td> {{salary.title}}</td>
                 <td style='color: #05981C'>
-                  {{salary.price
+                  {{salary.price || 0
                   | roundingnumber :1000
                   |number:'1.0'
                   |notEmpty:'0'}} đ
@@ -355,7 +355,7 @@
               <td>
                 <label nz-checkbox nzDisabled [nzChecked]='salary.inWorkday'></label>
               </td>
-              <td style='color: #05981C'>{{salary.price
+              <td style='color: #05981C'>{{salary.price || 0
                 | roundingnumber :1000
                 |number:'1.0'
                 | notEmpty:'0'}} đ
@@ -579,7 +579,7 @@
           </nz-table>
           </tr>
           </ng-template>
-          <tr *ngIf='payroll.overtimes?.length > 0' class='font-weight-bold'>
+          <tr *ngIf='payroll.overtimes && payroll.overtimes.length > 0' class='font-weight-bold'>
             <td></td>
             <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"></td>
             <td></td>
@@ -965,7 +965,7 @@
               </td>
               <td>
                     <span style='color: red'>
-                      {{salary.price
+                      {{salary.price || 0
                       | roundingnumber :100
                       | number:'1.0-0'}} đ
                     </span>

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {getEntityType, QueryEntity} from '@datorama/akita';
+import {QueryEntity} from '@datorama/akita';
 import {PayrollEntityState, PayrollStore} from './payroll.store';
 import {Observable} from "rxjs";
 import {PayrollEntity} from "../entities";
@@ -12,10 +12,10 @@ export class PayrollQuery extends QueryEntity<PayrollEntityState> {
     super(store);
   }
 
-  selectOneSort(id: PayrollEntity["id"]): Observable<getEntityType<PayrollEntityState> | undefined> {
+  selectOneSort(id: PayrollEntity["id"]): Observable<PayrollEntity | undefined> {
     return super.selectEntity(id).pipe(map(payroll => {
       const clonePayroll = payroll ? JSON.parse(JSON.stringify(payroll)) : undefined
-      if (payroll && clonePayroll.sort?.overtime) {
+      if (clonePayroll && clonePayroll.sort?.overtime) {
         SortSalaryUtil(
           clonePayroll.sort.overtime.column,
           clonePayroll.sort.overtime.type,

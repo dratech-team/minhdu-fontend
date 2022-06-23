@@ -5,7 +5,7 @@ import {PartialDayEnum} from '@minhdu-fontend/data-models';
 import {getDaysInMonth} from '@minhdu-fontend/utils';
 import {DatePipe} from '@angular/common';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {catchError, map, tap} from 'rxjs/operators';
+import {catchError, tap} from 'rxjs/operators';
 import {PayrollQuery, PayrollStore} from '../../state';
 import {PayrollActions} from '../../state/payroll.action';
 import {PayrollEntity} from '../../entities';
@@ -61,12 +61,6 @@ import {SortSalaryUtil} from "../../utils/sort-salary.util";
 })
 export class DetailPayrollComponent implements OnInit {
   payroll$ = this.payrollQuery.selectOneSort(this.getPayrollId).pipe(
-    map(payroll => {
-      if (payroll) {
-        return JSON.parse(JSON.stringify(payroll));
-      }
-      return payroll;
-    }),
     tap(payroll => {
         if (payroll?.createdAt) {
           this.daysInMonth = getDaysInMonth(payroll.createdAt);
@@ -139,7 +133,7 @@ export class DetailPayrollComponent implements OnInit {
 
   onUpdateSalary(
     type: SalaryTypeEnum,
-    salary: UnionSalary,
+    salary: SalaryEntity,
     payroll?: PayrollEntity
   ) {
     const config = {
