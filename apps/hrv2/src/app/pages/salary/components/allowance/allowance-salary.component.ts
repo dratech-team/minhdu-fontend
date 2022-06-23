@@ -17,7 +17,6 @@ import {PayrollQuery} from "../../../payroll/state";
 import {UnitDatetimeConstant} from "../../../setting/salary/constants/unit-datetime.constant";
 import {SalaryTypeEnum} from "../../../setting/salary/enums";
 import {ModalAddOrUpdateAllowance} from "../../data";
-import {resultModalSalaryData} from "../../data/result-modal-salary.data";
 
 @Component({
   templateUrl: 'allowance-salary.component.html'
@@ -157,11 +156,7 @@ export class AllowanceSalaryComponent implements OnInit {
   onSubmitSuccess(res: ResponseMessageEntity) {
     this.message.success(res.message);
     this.submitting = false;
-    const result: resultModalSalaryData =
-      this.data.update && !this.data.update.multiple
-        ? {salaryId: this.data.update.salary.id}
-        : {title: this.formGroup.value.title}
-    this.modalRef.close(result)
+    this.modalRef.close(this.formGroup.value.title)
   }
 
   move(type: 'next' | 'previous'): void {

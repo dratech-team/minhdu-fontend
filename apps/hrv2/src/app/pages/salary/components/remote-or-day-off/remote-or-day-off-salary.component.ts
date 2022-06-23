@@ -17,7 +17,6 @@ import {SessionConstant} from "../../../../../shared/constants";
 import {ModalAddOrUpdateRemoteOrDayOff} from "../../data";
 import {DayOffSalaryService} from "../../service/day-off-salary.service";
 import {UnitSalaryConstant} from "../../constants";
-import {resultModalSalaryData} from "../../data/result-modal-salary.data";
 
 @Component({
   templateUrl: 'remote-or-day-off-salary.component.html'
@@ -139,11 +138,7 @@ export class RemoteOrDayOffSalaryComponent implements OnInit {
 
   onSubmitSuccess(res: ResponseMessageEntity) {
     this.message.success(res.message);
-    const result: resultModalSalaryData =
-      this.data.update && !this.data.update.multiple
-        ? {salaryId: this.data.update.salary.id}
-        : {title: this.formGroup.value.type}
-    this.modalRef.close(result)
+    this.modalRef.close(this.mapSalary(this.formGroup.value).type)
   }
 
   move(type: 'next' | 'previous'): void {

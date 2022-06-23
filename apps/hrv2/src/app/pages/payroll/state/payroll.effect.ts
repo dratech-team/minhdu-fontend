@@ -11,7 +11,7 @@ import {AbsentSalaryEntity, OvertimeSalaryEntity, SalaryEntity} from '../../sala
 import {PayrollEntity, TotalSalary} from '../entities';
 import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {PartialDayEnum} from '@minhdu-fontend/data-models';
-import {arrayUpdate, StateHistoryPlugin} from '@datorama/akita';
+import {StateHistoryPlugin} from '@datorama/akita';
 import {PayrollQuery} from './payroll.query';
 import {PaginationDto} from '@minhdu-fontend/constants';
 import {AddManyPayrollDto} from '../dto/add-many-payroll.dto';
@@ -20,6 +20,7 @@ import * as moment from 'moment';
 import {CompareSortUtil} from '../utils/compare-sort.util';
 import {ConvertMinutePipe} from '../../../../../../../libs/components/src/lib/pipes/convert-minute.pipe';
 import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
+import {SortSalaryUtil} from "../utils/sort-salary.util";
 
 @Injectable({providedIn: 'root'})
 export class PayrollEffect {
@@ -158,86 +159,13 @@ export class PayrollEffect {
     switchMap((props: LoadOnePayrollDto) => {
       return this.service.getOne(props).pipe(
         map(res => {
-          if (props.updateOneSalary) {
-            const salaryId = props.updateOneSalary.salaryId
-            switch (props.updateOneSalary.salaryType) {
-              case SalaryTypeEnum.BASIC:
-                this.payrollStore.update(props.id, entity =>
-                  ({
-                    basics: arrayUpdate(entity.basics, salaryId, (res.salariesv2.find(e => e.id === salaryId) || {})),
-                    total: Object.assign({}, entity.total, {
-                      basic: res.salariesv2?.filter(item => item.type !== SalaryTypeEnum.STAY)
-                        .reduce((a, b) => a + (b?.price || 0), 0)
-                    })
-                  })
-                )
-                break
-              case SalaryTypeEnum.STAY:
-                this.payrollStore.update(props.id, entity => ({
-                  basics: arrayUpdate(entity.stays, salaryId, (res.salariesv2.find(e => e.id === salaryId) || {})),
-                  total: Object.assign({}, entity.total, {
-                    stay: res.salariesv2?.filter(item => item.type === SalaryTypeEnum.STAY)
-                      .reduce((a, b) => a + (b?.price || 0), 0)
-                  })
-                }))
-                break
-              case SalaryTypeEnum.ALLOWANCE:
-                this.payrollStore.update(props.id, entity => ({
-                  allowances: arrayUpdate(entity.allowances, salaryId, (res.allowances.find(e => e.id === salaryId) || {})),
-                  total: Object.assign({}, entity.total, {
-                    allowance: this.getTotalAllowance(res.allowances),
-                  })
-                }))
-                break
-              case SalaryTypeEnum.OVERTIME:
-                this.payrollStore.update(props.id, entity => ({
-                  overtimes: arrayUpdate(entity.overtimes, salaryId, (res.overtimes.find(e => e.id === salaryId) || {})),
-                  total: Object.assign({}, entity.total, {
-                    overtime: this.getTotalOvertimeOrAbsent(res.overtimes),
-                  })
-                }))
-                break
-              case SalaryTypeEnum.ABSENT:
-                this.payrollStore.update(props.id, entity => ({
-                  absents: arrayUpdate(entity.absents, salaryId, (res.absents.find(e => e.id === salaryId) || {})),
-                  total: Object.assign({}, entity.total, {
-                    absent: this.getTotalOvertimeOrAbsent(res.absents),
-                  })
-                }))
-                break
-              case SalaryTypeEnum.DEDUCTION:
-                this.payrollStore.update(props.id, entity => ({
-                  deductions: arrayUpdate(entity.deductions, salaryId, (res.deductions.find(e => e.id === salaryId) || {})),
-                  total: Object.assign({}, entity.total, {
-                    deduction: res.deductions?.reduce((a, b) => a + (b?.price || 0), 0),
-                  })
-                }))
-                break
-              case SalaryTypeEnum.HOLIDAY:
-                this.payrollStore.update(props.id, entity => ({
-                  holidays: arrayUpdate(entity.holidays, salaryId, (res.holidays.find(e => e.id === salaryId) || {})),
-                  total: Object.assign({}, entity.total, {
-                    holiday: this.getTotalHoliday(res.holidays),
-                  })
-                }))
-                break
-              case SalaryTypeEnum.WFH:
-                this.payrollStore.update(props.id, entity => ({
-                  remotes: arrayUpdate(entity.remotes, salaryId, (res.remotes.find(e => e.id === salaryId) || {})),
-                  total: Object.assign({}, entity.total, {
-                    remote: this.getTotalRemoteOrDayOff(res.remotes),
-                  })
-                }))
-                break
-              case SalaryTypeEnum.DAY_OFF:
-                this.payrollStore.update(props.id, entity => ({
-                  dayoffs: arrayUpdate(entity.dayoffs, salaryId, (res.dayoffs.find(e => e.id === salaryId) || {})),
-                  total: Object.assign({}, entity.total, {
-                    dayOff: this.getTotalRemoteOrDayOff(res.dayoffs),
-                  })
-                }))
-                break
-            }
+          const currentPayroll = this.payrollQuery.getEntity(props.id)
+          if (currentPayroll && currentPayroll.searchOvertime) {
+            this.payrollStore.update(props.id, {
+              overtimes: SortSalaryUtil(currentPayroll.searchOvertime.column,
+                currentPayroll.searchOvertime.type,
+                res.overtimes)
+            });
           } else {
             this.payrollStore.upsert(res.id, this.mapToPayroll(res));
           }

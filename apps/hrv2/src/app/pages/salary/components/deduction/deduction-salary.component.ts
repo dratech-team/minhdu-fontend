@@ -12,7 +12,6 @@ import {throwError} from 'rxjs';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {DeductionSalaryService} from '../../service';
 import {ModalAddOrUpdateDeduction} from "../../data/modal-deduction-salary.data";
-import {resultModalSalaryData} from "../../data/result-modal-salary.data";
 
 @Component({
   templateUrl: 'deduction-salary.component.html'
@@ -108,10 +107,6 @@ export class DeductionSalaryComponent implements OnInit {
   private onSubmitSuccess(res: ResponseMessageEntity) {
     this.submitting = false;
     this.message.success(res.message);
-    const result: resultModalSalaryData =
-      this.data.update && !this.data.update.multiple
-        ? {salaryId: this.data.update.salary.id}
-        : {title: this.formGroup.value.title}
-    this.modalRef.close(result)
+    this.modalRef.close(this.formGroup.value.title)
   }
 }

@@ -4,6 +4,8 @@ import {PayslipEntity} from './payslip.entity';
 import {RecipeType} from '@minhdu-fontend/enums';
 import {DeductionSalaryEntity, SalaryEntity} from "../../salary/entities";
 import {HolidaySalaryEntity} from "../../salary/entities/holiday-salary.entity";
+import {FilterSalaryEnum} from "../enums/filter-salary.enum";
+import {NzTableSortOrder} from "ng-zorro-antd/table";
 
 
 interface Salary {
@@ -70,6 +72,10 @@ export interface PayrollEntity extends BasePayrollEntity {
     remote: { duration: number };
     holiday: { duration: number, total: number }
     dayOff: { duration: number }
+  }
+  searchOvertime?: {
+    column: FilterSalaryEnum;
+    type: NzTableSortOrder
   }
   expand: boolean
 }

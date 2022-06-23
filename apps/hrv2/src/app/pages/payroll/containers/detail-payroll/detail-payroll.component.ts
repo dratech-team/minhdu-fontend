@@ -48,13 +48,12 @@ import {
 } from '../../../salary/data';
 import {NzTableSortOrder} from 'ng-zorro-antd/table';
 import {SettingSalaryStore} from '../../../setting/salary/state';
-import {CompareSortUtil} from '../../utils/compare-sort.util';
 import {FilterSalaryEnum} from '../../enums/filter-salary.enum';
 import {DayOffSalaryService} from '../../../salary/service/day-off-salary.service';
 import {ModalAddOrUpdateDeduction} from '../../../salary/data/modal-deduction-salary.data';
 import {AccountQuery} from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import {SalaryHolidayService} from '../../../salary/service/salary-holiday.service';
-import {resultModalSalaryData} from "../../../salary/data/result-modal-salary.data";
+import {SortSalaryUtil} from "../../utils/sort-salary.util";
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -253,20 +252,9 @@ export class DetailPayrollComponent implements OnInit {
       }
     }
 
-    ref().afterClose.subscribe((result: resultModalSalaryData) => {
-      if (result) {
-        this.actions$.dispatch(PayrollActions.loadOne(
-          Object.assign({id: this.getPayrollId},
-            result.salaryId
-              ? {
-                updateOneSalary: {
-                  salaryId: result.salaryId,
-                  salaryType: type
-                }
-              }
-              : {}
-          )
-        ))
+    ref().afterClose.subscribe((val) => {
+      if (val) {
+        this.actions$.dispatch(PayrollActions.loadOne({id: this.getPayrollId}))
       }
     })
   }
@@ -453,47 +441,12 @@ export class DetailPayrollComponent implements OnInit {
     }
   }
 
-  onSort(column: FilterSalaryEnum, type: NzTableSortOrder, salaries: SalaryEntity [], salaryType: SalaryTypeEnum) {
-    salaries.sort((a, b) => {
-      const isAsc = type === 'descend';
-      switch (column) {
-        case FilterSalaryEnum.TITLE:
-          return CompareSortUtil(a.title, b.title, isAsc);
-        case FilterSalaryEnum.DATETIME:
-          return CompareSortUtil(a.startedAt, b.startedAt, isAsc);
-        case FilterSalaryEnum.DURATION:
-          return CompareSortUtil(a.duration, b.duration, isAsc);
-        case FilterSalaryEnum.TYPE:
-          return CompareSortUtil(a.type, b.type, isAsc);
-        case FilterSalaryEnum.TITLE_SETTING:
-          return CompareSortUtil(a.setting.title, b.setting.title, isAsc);
-        case FilterSalaryEnum.DATETIME_SETTING:
-          return CompareSortUtil(a.setting.startedAt, b.setting.startedAt, isAsc);
-        case FilterSalaryEnum.RATE_SETTING:
-          return CompareSortUtil(a.setting.rate, b.setting.rate, isAsc);
-        case FilterSalaryEnum.TITLE_SETTING_PARTIAL:
-          return CompareSortUtil(a.setting.title + a.partial, b.setting.title + b.partial, isAsc);
-      }
-    });
-
-    switch (salaryType) {
-      case SalaryTypeEnum.OVERTIME:
-        this.payrollStore.update(this.getPayrollId, {overtimes: salaries})
-        break
-      case SalaryTypeEnum.ALLOWANCE:
-        this.payrollStore.update(this.getPayrollId, {allowances: salaries})
-        break
-      case SalaryTypeEnum.ABSENT:
-        this.payrollStore.update(this.getPayrollId, {absents: salaries})
-        break
-      case SalaryTypeEnum.HOLIDAY:
-        this.payrollStore.update(this.getPayrollId, {holidays: salaries})
-        break
-      case SalaryTypeEnum.WFH:
-        this.payrollStore.update(this.getPayrollId, {remotes: salaries})
-        break
-      case SalaryTypeEnum.DAY_OFF:
-        this.payrollStore.update(this.getPayrollId, {dayoffs: salaries})
+  onSort(column: FilterSalaryEnum, type: NzTableSortOrder, salaries: SalaryEntity [], salaryType?: SalaryTypeEnum) {
+    if (salaryType === SalaryTypeEnum.OVERTIME) {
+      this.payrollStore.update(this.getPayrollId, {
+        searchOvertime: {column, type},
+        overtimes: SortSalaryUtil(column, type, salaries)
+      });
     }
   }
 

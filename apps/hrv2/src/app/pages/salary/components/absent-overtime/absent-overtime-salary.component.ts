@@ -25,7 +25,6 @@ import {ModalAddOrUpdateAbsentOrOvertime} from '../../data';
 import {RateConditionConstant} from '../../../setting/salary/constants/rate-condition.constant';
 import {ConditionConstant} from '../../../setting/salary/constants/condition.constant';
 import {AccountQuery} from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
-import {resultModalSalaryData} from "../../data/result-modal-salary.data";
 
 @Component({
   templateUrl: 'absent-overtime-salary.component.html'
@@ -262,12 +261,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   }
 
   private onSubmitSuccess(res: ResponseMessageEntity) {
-    this.message.success(res.message);
     this.submitting = false;
-    const result: resultModalSalaryData =
-      this.data.update && !this.data.update.multiple
-        ? {salaryId: this.data.update.salary.id}
-        : {title: this.formGroup.value.template.title}
-    this.modalRef.close(result)
+    this.modalRef.close(this.formGroup.value.template.title)
   }
 }

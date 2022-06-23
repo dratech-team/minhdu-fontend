@@ -1,12 +1,5 @@
 import {Employee, Salary} from '@minhdu-fontend/data-models';
-import {
-  EmployeeType,
-  FilterTypeEnum,
-  FlatSalary,
-  RecipeType,
-  SalaryTypeEnum,
-  SearchTypeEnum
-} from '@minhdu-fontend/enums';
+import {EmployeeType, FilterTypeEnum, RecipeType, SearchTypeEnum} from '@minhdu-fontend/enums';
 import {Payslip} from '../payslip/payslip.interface';
 
 export type AddPayroll = Pick<Payroll, 'createdAt'> & {
