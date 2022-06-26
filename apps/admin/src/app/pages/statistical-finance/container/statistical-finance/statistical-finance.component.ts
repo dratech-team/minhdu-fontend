@@ -3,7 +3,7 @@ import { AdminAction } from '../../../../states/admin.action';
 import { MenuWarehouseEum } from '@minhdu-fontend/enums';
 import { Store } from '@ngrx/store';
 import { FianceConstant } from '../../../../../../../../libs/constants/admin/fiance.constant';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { FinanceEnum } from '../../../../../../../../libs/enums/admin/finance.enum';
 import {MenuAdminEnum} from "../../../../../enums/menu-admin.enum";
 
@@ -13,7 +13,7 @@ import {MenuAdminEnum} from "../../../../../enums/menu-admin.enum";
 export class StatisticalFinanceComponent implements OnInit {
   fianceConstant = FianceConstant;
   financeEnum = FinanceEnum;
-  selectFinance = new FormControl(FinanceEnum.COLLECT);
+  selectFinance = new UntypedFormControl(FinanceEnum.COLLECT);
 
   constructor(
     private readonly store: Store

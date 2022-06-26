@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {DatePipe} from "@angular/common";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {UntypedFormBuilder, UntypedFormGroup} from "@angular/forms";
 import {map} from "rxjs/operators";
 import {RecipeTypesConstant} from "@minhdu-fontend/constants";
 import {NzModalRef} from "ng-zorro-antd/modal";
@@ -17,7 +17,7 @@ export class UpdatePayrollComponent implements OnInit {
   @Input() data!: {
     payroll: PayrollEntity
   }
-  formGroup!: FormGroup
+  formGroup!: UntypedFormGroup
   positions?: PositionEntity[];
   recipeTypeConstant = RecipeTypesConstant
   branches$ = this.branchQuery.selectAll().pipe(map(branches => {
@@ -38,7 +38,7 @@ export class UpdatePayrollComponent implements OnInit {
     private readonly payrollQuery: PayrollQuery,
     private readonly actions$: Actions,
     private readonly datePipe: DatePipe,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly modalRef: NzModalRef,
   ) {
   }

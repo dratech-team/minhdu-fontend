@@ -1,77 +1,96 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {DefaultLayoutComponent} from './container/default-layout.component';
-
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { DefaultLayoutComponent } from './container/default-layout.component';
 
 const routes: Routes = [
   {
     path: 'auth/login',
-    loadChildren: () => import('@minhdu-fontend/auth').then(m => m.AuthModule)
+    loadChildren: () =>
+      import('@minhdu-fontend/auth').then((m) => m.AuthModule),
   },
   {
     path: '',
     component: DefaultLayoutComponent,
     data: {
-      title: 'Home'
+      title: 'Home',
     },
     children: [
       {
         path: '',
-        loadChildren: () => import('./pages/overview/overview-hr.module').then(m => m.OverviewHrModule),
+        loadChildren: () =>
+          import('./pages/overview/overview-hr.module').then(
+            (m) => m.OverviewHrModule
+          ),
         data: {
-          title: ''
-        }
+          title: '',
+        },
       },
       {
         path: 'ho-so',
-        loadChildren: () => import('./pages/employee/employee.module').then(m => m.EmployeeModule),
+        loadChildren: () =>
+          import('./pages/employee/employee.module').then(
+            (m) => m.EmployeeModule
+          ),
         data: {
-          title: 'Hồ sơ nhân viên'
-        }
+          title: 'Hồ sơ nhân viên',
+        },
       },
       {
         path: 'phieu-luong',
-        loadChildren: () => import('./pages/payroll/payroll.module').then(m => m.PayrollModule),
+        loadChildren: () =>
+          import('./pages/payroll/payroll.module').then((m) => m.PayrollModule),
         data: {
-          title: 'Danh sách phiếu lương'
+          title: 'Danh sách phiếu lương',
         },
       },
       {
         path: 'ban-mau',
-        loadChildren: () => import('./pages/template/template.module').then(m => m.TemplateModule),
+        loadChildren: () =>
+          import('./pages/template/template.module').then(
+            (m) => m.TemplateModule
+          ),
         data: {
-          title: 'Thiết lập'
+          title: 'Thiết lập',
         },
       },
       {
         path: 'he-thong',
-        loadChildren: () => import('@minhdu-fontend/system').then(m => m.SystemModule),
+        loadChildren: () =>
+          import('@minhdu-fontend/system').then((m) => m.SystemModule),
         data: {
-          title: 'Lịch sử hệ thống'
+          title: 'Lịch sử hệ thống',
         },
       },
       {
         path: 'xep-hang',
-        loadChildren: () => import('./pages/rank/rank.module').then(m => m.RankModule),
+        loadChildren: () =>
+          import('./pages/rank/rank.module').then((m) => m.RankModule),
         data: {
-          title: 'Xếp hạng cuối năm'
+          title: 'Xếp hạng cuối năm',
         },
       },
       {
         path: 'to-chuc',
-        loadChildren: () => import('./pages/orgchart/orgchart.module').then(m => m.OrgchartModule),
+        loadChildren: () =>
+          import('./pages/orgchart/orgchart.module').then(
+            (m) => m.OrgchartModule
+          ),
         data: {
-          title: 'to-chuc'
+          title: 'to-chuc',
         },
       },
-      {path: '**', redirectTo: ''}
-    ]
-  }
+      { path: '**', redirectTo: '' },
+    ],
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {useHash: true, initialNavigation: 'enabled'})],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(routes, {
+      useHash: true,
+      initialNavigation: 'enabledBlocking',
+    }),
+  ],
+  exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

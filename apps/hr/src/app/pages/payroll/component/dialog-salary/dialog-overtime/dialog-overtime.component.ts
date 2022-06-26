@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ConvertBooleanFrontEnd, DatetimeUnitEnum, partialDay, RecipeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {select, Store} from '@ngrx/store';
@@ -30,7 +30,7 @@ export class DialogOvertimeComponent implements OnInit {
   templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
   loadingTemplate$ = this.store.pipe(select(selectTemplateLoaded));
   type = SalaryTypeEnum;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   submitted = false;
   firstDayInMonth!: string | null;
   lastDayInMonth!: string | null;
@@ -41,7 +41,7 @@ export class DialogOvertimeComponent implements OnInit {
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly snackBar: MatSnackBar,
     private readonly message: NzMessageService,
     private readonly dialogRef: MatDialogRef<DialogOvertimeComponent>,

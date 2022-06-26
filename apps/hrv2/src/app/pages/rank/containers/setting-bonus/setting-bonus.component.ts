@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {BonusTypeConstant} from "../../constants/bonus-type.constant";
 import {BonusUnitConstant} from "../../constants/bonus-unit.constant";
 import {Router} from "@angular/router";
@@ -15,15 +15,15 @@ export class SettingBonusComponent implements OnInit {
   bonusConstant = BonusTypeConstant
   bonusUnitConstant = BonusUnitConstant
 
-  formGroup = new FormGroup({
-    bonusType: new FormControl(''),
-    unit: new FormControl(''),
-    rate: new FormControl(''),
-    price: new FormControl(''),
-    rating: new FormControl(''),
-    diligent: new FormControl(''),
-    from: new FormControl(''),
-    to: new FormControl(''),
+  formGroup = new UntypedFormGroup({
+    bonusType: new UntypedFormControl(''),
+    unit: new UntypedFormControl(''),
+    rate: new UntypedFormControl(''),
+    price: new UntypedFormControl(''),
+    rating: new UntypedFormControl(''),
+    diligent: new UntypedFormControl(''),
+    from: new UntypedFormControl(''),
+    to: new UntypedFormControl(''),
   });
 
   constructor(

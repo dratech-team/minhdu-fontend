@@ -4,7 +4,7 @@ import {AppState} from '../../../../reducers';
 import {FilterTypeEnum, ItemContextMenu, OrgchartEnum} from '@minhdu-fontend/enums';
 import {MatDialog} from '@angular/material/dialog';
 import {getAllPosition, getPositionLoaded, PositionActions} from '@minhdu-fontend/orgchart-position';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 import {debounceTime} from 'rxjs/operators';
 import {DialogDeleteComponent} from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import {DialogPositionComponent} from '../../component/dialog-position/dialog-position.component';
@@ -29,7 +29,7 @@ export class PositionContainer implements OnInit {
   ItemContextMenu = ItemContextMenu;
   pageSize = 30;
   pageIndexInit = 0;
-  positions = new FormControl();
+  positions = new UntypedFormControl();
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {PaidType} from 'libs/enums/paidType.enum';
 import {Router} from '@angular/router';
 import {OrderEntity} from '../../../pages/order/enitities/order.entity';
@@ -28,11 +28,11 @@ export class TableOrdersComponent implements OnInit {
   @Input() loading$!: Observable<boolean>
   @Input() customerId?: number
 
-  formGroup = new FormGroup(
+  formGroup = new UntypedFormGroup(
     {
-      createdAt: new FormControl(''),
-      ward: new FormControl(''),
-      explain: new FormControl('')
+      createdAt: new UntypedFormControl(''),
+      ward: new UntypedFormControl(''),
+      explain: new UntypedFormControl('')
     });
   paidType = PaidType;
   pageSize = 10;

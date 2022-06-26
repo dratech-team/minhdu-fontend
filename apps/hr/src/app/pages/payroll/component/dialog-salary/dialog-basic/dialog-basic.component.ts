@@ -1,6 +1,6 @@
 import {DatePipe} from '@angular/common';
 import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ConvertBooleanFrontEnd, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {select, Store} from '@ngrx/store';
@@ -25,7 +25,7 @@ export class DialogBasicComponent implements OnInit {
   adding$ = this.store.select(selectedAddingPayroll)
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
   type = SalaryTypeEnum;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   submitted = false;
   checkSalary = true;
   roleEnum = Role;
@@ -48,7 +48,7 @@ export class DialogBasicComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly message: NzMessageService,
     private readonly store: Store<AppState>,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly dialogRef: MatDialogRef<DialogBasicComponent>,
     private readonly salaryService: SalaryService,
     @Inject(MAT_DIALOG_DATA) public data?: any

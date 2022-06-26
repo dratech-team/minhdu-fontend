@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CommodityDialogComponent } from '../../component';
 import { CommodityUnit } from '@minhdu-fontend/enums';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Actions } from '@datorama/akita-ng-effects';
 
 @Component({
@@ -16,11 +16,11 @@ export class CommodityComponent implements OnInit {
   commodityUnit = CommodityUnit;
   pageIndex = 1;
   pageSize = 30;
-  formGroup = new FormGroup(
+  formGroup = new UntypedFormGroup(
     {
-      name: new FormControl(''),
-      code: new FormControl(''),
-      unit: new FormControl('')
+      name: new UntypedFormControl(''),
+      code: new UntypedFormControl(''),
+      unit: new UntypedFormControl('')
     }
   );
 

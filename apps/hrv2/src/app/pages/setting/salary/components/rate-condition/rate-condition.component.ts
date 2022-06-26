@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from "@angular/core";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {ConditionConstant} from "../../constants/condition.constant";
 import {RateConditionEntity} from "../../entities/rate-condition.entity";
 import {RateConditionService} from "../../services/rate-condition.service";
@@ -19,15 +19,15 @@ export class RateConditionComponent implements OnInit {
   rateConditions: RateConditionEntity[] = [];
   conditionConstant = ConditionConstant;
   rateConditionConstant = RateConditionConstant;
-  rateConditionControl = new FormControl('')
+  rateConditionControl = new UntypedFormControl('')
   total =  0;
   loading = false
 
-  formGroupTable = new FormGroup({
-    condition: new FormControl(''),
-    with: new FormControl(''),
-    default: new FormControl(''),
-    type: new FormControl(''),
+  formGroupTable = new UntypedFormGroup({
+    condition: new UntypedFormControl(''),
+    with: new UntypedFormControl(''),
+    default: new UntypedFormControl(''),
+    type: new UntypedFormControl(''),
   })
 
 

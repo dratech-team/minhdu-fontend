@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {PaidType} from 'libs/enums/paidType.enum';
 import {OrderActions, OrderQuery} from '../../../pages/order/+state';
 import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
@@ -18,7 +18,7 @@ import {SearchOrderDto} from "../../../pages/order/dto";
 })
 export class PickOrderComponent implements OnInit {
   @Input() columns!: OrderEnum[]
-  @Input() formGroup!: FormGroup;
+  @Input() formGroup!: UntypedFormGroup;
   @Input() pickOne = false;
   @Input() customerId?: number;
   @Input() disableReselect = false;
@@ -32,15 +32,15 @@ export class PickOrderComponent implements OnInit {
   orderEnum = OrderEnum
   setOfCheckedOrder = new Set<OrderEntity>();
   setOfCheckedCommodity = new Set<CommodityEntity>();
-  formGroupTable = new FormGroup(
+  formGroupTable = new UntypedFormGroup(
     {
-      filterRoute: new FormControl(false),
-      customer: new FormControl(''),
-      startedAt: new FormControl(
+      filterRoute: new UntypedFormControl(false),
+      customer: new UntypedFormControl(''),
+      startedAt: new UntypedFormControl(
         [getFirstDayInMonth(new Date()), getLastDayInMonth(new Date())]
       ),
-      paidType: new FormControl(''),
-      explain: new FormControl('')
+      paidType: new UntypedFormControl(''),
+      explain: new UntypedFormControl('')
     });
   eventSearch = true;
   checked = false;

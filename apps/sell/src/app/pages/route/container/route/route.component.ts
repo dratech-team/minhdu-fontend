@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api} from '@minhdu-fontend/constants';
@@ -38,13 +38,13 @@ export class RouteComponent implements OnInit {
   radios = RadiosStatusRouteConstant;
   sortRouteEnum = SortRouteEnum;
   stateSearch = this.routeQuery.getValue().search;
-  formGroup = new FormGroup({
-    search: new FormControl(this.stateSearch.search),
-    startedAt_start: new FormControl(this.stateSearch.startedAt_start),
-    startedAt_end: new FormControl(this.stateSearch.startedAt_end),
-    endedAt_start: new FormControl(this.stateSearch.endedAt_start),
-    endedAt_end: new FormControl(this.stateSearch.endedAt_end),
-    status: new FormControl(this.stateSearch.status)
+  formGroup = new UntypedFormGroup({
+    search: new UntypedFormControl(this.stateSearch.search),
+    startedAt_start: new UntypedFormControl(this.stateSearch.startedAt_start),
+    startedAt_end: new UntypedFormControl(this.stateSearch.startedAt_end),
+    endedAt_start: new UntypedFormControl(this.stateSearch.endedAt_start),
+    endedAt_end: new UntypedFormControl(this.stateSearch.endedAt_end),
+    status: new UntypedFormControl(this.stateSearch.status)
   });
 
   valueSort?: Sort;

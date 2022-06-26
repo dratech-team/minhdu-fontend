@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Branch, Position} from '@minhdu-fontend/data-models';
@@ -34,14 +34,14 @@ export class TemplateOvertimeComponent implements OnInit {
   pageSize = 30;
   pageIndexInit = 0;
   EmployeeType = EmployeeType;
-  formGroup = new FormGroup({
-    title: new FormControl(''),
-    price: new FormControl(''),
-    unit: new FormControl(''),
-    note: new FormControl(''),
-    branch: new FormControl([]),
-    position: new FormControl([]),
-    employeeType: new FormControl('')
+  formGroup = new UntypedFormGroup({
+    title: new UntypedFormControl(''),
+    price: new UntypedFormControl(''),
+    unit: new UntypedFormControl(''),
+    note: new UntypedFormControl(''),
+    branch: new UntypedFormControl([]),
+    position: new UntypedFormControl([]),
+    employeeType: new UntypedFormControl('')
   });
   templateOverConstant = TemplateOverConstant
   positions$ = this.store.pipe(select(getAllPosition));

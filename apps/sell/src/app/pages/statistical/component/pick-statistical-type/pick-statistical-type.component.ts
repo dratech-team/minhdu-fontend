@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { FilterOverviewEnum, OptionOverviewEnum } from '@minhdu-fontend/enums';
 
 @Component({
@@ -13,9 +13,9 @@ export class PickStatisticalTypeComponent implements OnInit {
 
   optionOverview = OptionOverviewEnum;
   filterOverview = FilterOverviewEnum;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
 
-  constructor(private readonly formBuilder: FormBuilder) {}
+  constructor(private readonly formBuilder: UntypedFormBuilder) {}
 
   ngOnInit() {
     this.formGroup = this.formBuilder.group({

@@ -6,7 +6,7 @@ import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {Payslip} from '../../+state/payslip/payslip.interface';
 import {PayslipService} from '../../service/payslip.service';
 import {EmployeeType, RecipeType, Role} from '@minhdu-fontend/enums';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 import {DatePipe} from '@angular/common';
 import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
 import {selectedConfirmedPayroll} from '../../+state/payroll/payroll.selector';
@@ -23,7 +23,7 @@ import {AccountQuery} from "../../../../../../../../libs/system/src/lib/state/ac
   styleUrls: ['confirm-payroll.component.scss']
 })
 export class ConfirmPayrollComponent implements OnInit {
-  accConfirmedAt = new FormControl(this.datePipe.transform(
+  accConfirmedAt = new UntypedFormControl(this.datePipe.transform(
     this.data?.payroll?.accConfirmedAt ? getLastDayInMonth(
         new Date(this.data.payroll.accConfirmedAt)) :
       getLastDayInMonth(

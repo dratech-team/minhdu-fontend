@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ConvertBooleanFrontEnd, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {select, Store} from '@ngrx/store';
@@ -20,7 +20,7 @@ import {Payroll} from "../../../+state/payroll/payroll.interface";
 export class DialogStayComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
   type = SalaryTypeEnum;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   submitted = false;
   indexTitle = 0;
   tabindex = 0
@@ -34,7 +34,7 @@ export class DialogStayComponent implements OnInit {
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly snackBar: MatSnackBar,
     private readonly dialogRef: MatDialogRef<DialogStayComponent>,
     private readonly salaryService: SalaryService,

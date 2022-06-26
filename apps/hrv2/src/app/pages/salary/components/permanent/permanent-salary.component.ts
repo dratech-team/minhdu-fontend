@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {EmployeeType, ModeEnum, Role, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {SalaryPayroll} from '@minhdu-fontend/data-models';
 import {NzMessageService} from 'ng-zorro-antd/message';
@@ -54,7 +54,7 @@ export class PermanentSalaryComponent implements OnInit {
   salaryTypeEnum = SalaryTypeEnum;
   modeEnum = ModeEnum;
   createdAt = this.payrollQuery.getValue().search.startedAt
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
 
   compareFn = (o1: any, o2: any) => o1 && o2 ? (o1.id === o2.id || o1 === o2.title) : o1 === o2;
 
@@ -63,7 +63,7 @@ export class PermanentSalaryComponent implements OnInit {
     private readonly settingSalaryQuery: SettingSalaryQuery,
     private readonly payrollQuery: PayrollQuery,
     private readonly message: NzMessageService,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly modalRef: NzModalRef,
     private readonly service: SalaryPermanentService,
     private readonly employeeService: EmployeeService,

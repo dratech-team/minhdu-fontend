@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {Actions} from "@datorama/akita-ng-effects";
 import {DataAddOrUpAllowanceBranch} from "../../data/modal-allowance-branch.data";
@@ -14,12 +14,12 @@ import {AllowanceBranchService} from "../../service/allowance-branch.service";
 })
 export class AllowanceBranchComponent implements OnInit {
   @Input() data!: DataAddOrUpAllowanceBranch
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   summiting = false;
 
   constructor(
     private readonly modalRef: NzModalRef,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly actions$: Actions,
     private readonly service: AllowanceBranchService,
     private readonly message: NzMessageService

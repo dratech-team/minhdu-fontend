@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {DatePipe} from '@angular/common';
 import {Store} from '@ngrx/store';
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
@@ -23,12 +23,12 @@ export class IoiReceiptDialogComponent implements OnInit {
   branches$ = this.branchQuery.selectAll();
   products$ = this.productQuery.selectAll();
   loadingProduct$ = this.productQuery.select(state => state.loading)
-  formGroup!: FormGroup
+  formGroup!: UntypedFormGroup
   discountTypeConstant = DiscountTypeConstant
   pageSizeTable = 5
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     public datePipe: DatePipe,
     private readonly productQuery: ProductQuery,
     private readonly actions$: Actions,

@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {EmployeeStatusEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {Employee} from '@minhdu-fontend/data-models';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {debounceTime, mergeMap} from 'rxjs/operators';
 import {pickOne, someComplete} from '@minhdu-fontend/utils';
 import {MatDialog} from "@angular/material/dialog";
@@ -26,7 +26,7 @@ import {FlatSalaryTypeEnum} from "../../../../../apps/hrv2/src/app/pages/employe
   templateUrl: './pick-employee.component.html'
 })
 export class PickEmployeeComponent implements OnInit {
-  @Input() formGroup!: FormGroup
+  @Input() formGroup!: UntypedFormGroup
   @Output() EventSelectEmployee = new EventEmitter<Employee[]>();
   positions$ = this.positionQuery.selectAll()
   branches$ = this.branchQuery.selectAll()
@@ -42,10 +42,10 @@ export class PickEmployeeComponent implements OnInit {
   employeesSelected: Employee[] = []
 
 
-  formGroupTable = new FormGroup({
-    name: new FormControl('', Validators.required),
-    position: new FormControl('', Validators.required),
-    branch: new FormControl('', Validators.required)
+  formGroupTable = new UntypedFormGroup({
+    name: new UntypedFormControl('', Validators.required),
+    position: new UntypedFormControl('', Validators.required),
+    branch: new UntypedFormControl('', Validators.required)
   });
 
   constructor(

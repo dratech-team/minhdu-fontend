@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { getBranchAdded } from '@minhdu-fontend/orgchart';
 import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
@@ -14,13 +14,13 @@ import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
 })
 export class AllowanceBranchComponent implements OnInit {
   @ViewChild('branchInput') branchInput!: ElementRef;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   submitted = false;
   numberChars = new RegExp('[^0-9]', 'g');
 
   constructor(
     private readonly dialogRef: MatDialogRef<AllowanceBranchComponent>,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly store: Store,
     private readonly branchService: BranchService,
     private readonly snackbar: MatSnackBar,

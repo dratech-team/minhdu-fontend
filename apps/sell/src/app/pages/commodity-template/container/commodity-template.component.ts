@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {debounceTime} from 'rxjs/operators';
 import {PaginationDto} from '@minhdu-fontend/constants';
@@ -32,9 +32,9 @@ export class CommodityTemplateComponent implements OnInit {
   visible = false;
 
 
-  formGroup = new FormGroup(
+  formGroup = new UntypedFormGroup(
     {
-      search: new FormControl(''),
+      search: new UntypedFormControl(''),
     }
   );
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);

@@ -2,7 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {PayrollQuery, PayrollStore} from "../../state";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollActions} from "../../state/payroll.action";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {EmployeeStatusEnum, FilterTypeEnum} from "@minhdu-fontend/enums";
 import {PaginationDto} from "@minhdu-fontend/constants";
 import {ActivatedRoute} from "@angular/router";
@@ -22,18 +22,18 @@ export class HistoryPayrollComponent implements OnInit {
   loading$ = this.payrollQuery.select(state => state.loading)
 
   stateSearch = this.payrollQuery.getValue().searchHistory
-  formGroup = new FormGroup({
-    code: new FormControl(this.stateSearch.name || ''),
-    name: new FormControl(this.stateSearch.code || ''),
-    rangeDay: new FormControl(this.stateSearch.rangeDay),
-    accConfirmed: new FormControl(this.stateSearch.accConfirmed || ''),
-    filterType: new FormControl(FilterTypeEnum.PAYROLL),
-    paidAt: new FormControl(this.stateSearch.paidAt || ''),
-    manConfirmedAt: new FormControl(this.stateSearch.manConfirmedAt || ''),
-    branch: new FormControl(this.stateSearch.branch || ''),
-    position: new FormControl(this.stateSearch.position || ''),
-    empStatus: new FormControl(EmployeeStatusEnum.ALL),
-    employeeId: new FormControl(this.getEmployeeId)
+  formGroup = new UntypedFormGroup({
+    code: new UntypedFormControl(this.stateSearch.name || ''),
+    name: new UntypedFormControl(this.stateSearch.code || ''),
+    rangeDay: new UntypedFormControl(this.stateSearch.rangeDay),
+    accConfirmed: new UntypedFormControl(this.stateSearch.accConfirmed || ''),
+    filterType: new UntypedFormControl(FilterTypeEnum.PAYROLL),
+    paidAt: new UntypedFormControl(this.stateSearch.paidAt || ''),
+    manConfirmedAt: new UntypedFormControl(this.stateSearch.manConfirmedAt || ''),
+    branch: new UntypedFormControl(this.stateSearch.branch || ''),
+    position: new UntypedFormControl(this.stateSearch.position || ''),
+    empStatus: new UntypedFormControl(EmployeeStatusEnum.ALL),
+    employeeId: new UntypedFormControl(this.getEmployeeId)
   })
 
   constructor(

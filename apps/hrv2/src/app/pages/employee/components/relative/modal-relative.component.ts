@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {ConvertBoolean} from '@minhdu-fontend/enums';
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {Actions} from "@datorama/akita-ng-effects";
@@ -25,11 +25,11 @@ export class ModalRelativeComponent implements OnInit {
   submitted = false;
   convertBoolean = ConvertBoolean;
 
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
 
   constructor(
     private readonly datePipe: DatePipe,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly modalRef: NzModalRef,
     private readonly actions$: Actions,
     private readonly employeeQuery: EmployeeQuery

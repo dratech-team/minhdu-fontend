@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {DatePipe} from "@angular/common";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {select, Store} from "@ngrx/store";
 import {getAllOrgchart, OrgchartActions} from "@minhdu-fontend/orgchart";
 import {Position} from "@minhdu-fontend/data-models";
@@ -15,7 +15,7 @@ import {FlatSalary} from "@minhdu-fontend/enums";
   templateUrl: 'update-payroll.component.html'
 })
 export class UpdatePayrollComponent implements OnInit {
-  formGroup!: FormGroup
+  formGroup!: UntypedFormGroup
   positions?: Position[];
   recipeTypeConstant = RecipeTypesConstant
   branches$ = this.store.pipe(select(getAllOrgchart)).pipe(map(branches => {
@@ -34,7 +34,7 @@ export class UpdatePayrollComponent implements OnInit {
   constructor(
     private readonly datePipe: DatePipe,
     private readonly store: Store,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly dialogRef: MatDialogRef<UpdatePayrollComponent>,
     @Inject(MAT_DIALOG_DATA) public data?: any
   ) {

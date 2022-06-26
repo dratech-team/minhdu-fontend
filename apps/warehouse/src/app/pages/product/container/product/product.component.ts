@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {debounceTime, map} from 'rxjs/operators';
 import {PaginationDto} from '@minhdu-fontend/constants';
@@ -25,12 +25,12 @@ export class ProductComponent implements OnInit {
   products$ = this.productQuery.selectAll();
   loading$ = this.productQuery.selectLoading();
   stateSearch = this.productQuery.getValue().search;
-  formGroup = new FormGroup(
+  formGroup = new UntypedFormGroup(
     {
-      search: new FormControl(''),
-      branch: new FormControl(this.stateSearch?.branches||''),
-      category: new FormControl(this.stateSearch?.category||''),
-      supplier: new FormControl(this.stateSearch?.supplier||''),
+      search: new UntypedFormControl(''),
+      branch: new UntypedFormControl(this.stateSearch?.branches||''),
+      category: new UntypedFormControl(this.stateSearch?.category||''),
+      supplier: new UntypedFormControl(this.stateSearch?.supplier||''),
     }
   );
   panelOpenState = false;

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from "@angular/core";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {Actions} from "@datorama/akita-ng-effects";
 import {BranchActions, BranchEntity, BranchQuery} from "@minhdu-fontend/orgchart-v2";
 import {BaseAddBranchDto, BaseUpdateBranchDto} from "../../../../../../../../libs/orgchart-v2/src/lib/branch/dto";
@@ -13,11 +13,11 @@ export class ModalBranchComponent implements OnInit {
 
   loading$ = this.branchQuery.select(state => state.loading)
 
-  formGroup!: FormGroup
+  formGroup!: UntypedFormGroup
   submitted = false
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly action: Actions,
     private readonly branchQuery: BranchQuery,
     private readonly modalRef: NzModalRef,

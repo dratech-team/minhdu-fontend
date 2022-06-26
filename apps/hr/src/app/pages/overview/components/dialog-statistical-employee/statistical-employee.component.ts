@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogRef } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
@@ -12,13 +12,13 @@ import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.
   templateUrl: 'statistical-employee.component.html'
 })
 export class StatisticalEmployeeComponent implements OnInit {
-  branches = new FormControl();
-  formGroup!: FormGroup;
+  branches = new UntypedFormControl();
+  formGroup!: UntypedFormGroup;
   submitted = false;
   branches$ = this.store.pipe(select(getAllOrgchart));
   branchId!: number
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly store: Store,
     private readonly snackbar: MatSnackBar,
     private readonly dialogRef: MatDialogRef<StatisticalEmployeeComponent>,

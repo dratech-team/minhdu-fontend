@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
 import {Store} from '@ngrx/store';
 import {RouteActions} from '../../+state';
 import {DatePipe} from '@angular/common';
@@ -9,12 +9,12 @@ import {DatePipe} from '@angular/common';
   templateUrl: 'complete-route-dialog.component.html',
 })
 export class CompleteRouteDialogComponent implements OnInit {
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   submitted = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly store: Store,
     private readonly datePipe: DatePipe,
     private readonly dialogRef: MatDialogRef<CompleteRouteDialogComponent>,

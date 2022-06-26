@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -45,14 +45,14 @@ export class HistoryPayrollComponent implements OnInit {
   name$: Observable<string> = this.activatedRoute.queryParams.pipe(map(param => param.name));
   payroll$ = this.store.pipe(select(selectorAllPayroll));
 
-  formGroup = new FormGroup({
-    name: new FormControl(''),
-    paidAt: new FormControl(''),
-    accConfirmedAt: new FormControl(''),
-    manConfirmedAt: new FormControl(''),
-    createdAt: new FormControl(),
-    position: new FormControl(''),
-    branch: new FormControl(''),
+  formGroup = new UntypedFormGroup({
+    name: new UntypedFormControl(''),
+    paidAt: new UntypedFormControl(''),
+    accConfirmedAt: new UntypedFormControl(''),
+    manConfirmedAt: new UntypedFormControl(''),
+    createdAt: new UntypedFormControl(),
+    position: new UntypedFormControl(''),
+    branch: new UntypedFormControl(''),
   });
 
   constructor(

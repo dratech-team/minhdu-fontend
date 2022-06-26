@@ -14,7 +14,7 @@ export class PositionService extends BaseService<PositionEntity> {
   ) {
     super(Api.HR.EMPLOYEE.POSITION, http);
   }
-  pagination(params?: SearchPositionDto): Observable<ResponsePaginate<PositionEntity>> {
+  pagination(params?: Partial<SearchPositionDto>): Observable<ResponsePaginate<PositionEntity>> {
     return super.pagination(params?.search);
   }
 

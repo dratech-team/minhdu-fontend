@@ -1,6 +1,6 @@
 import {DatePipe} from '@angular/common';
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {DatetimeUnitEnum, EmployeeType, ModeEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {NzModalRef} from 'ng-zorro-antd/modal';
 import {NzMessageService} from 'ng-zorro-antd/message';
@@ -50,14 +50,14 @@ export class HolidaySalaryComponent implements OnInit {
   datetimeUnit = DatetimeUnitEnum;
   employeeType = EmployeeType;
 
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
 
   constructor(
     public datePipe: DatePipe,
     public actions$: Actions,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly modalRef: NzModalRef,
     private readonly message: NzMessageService,
     private readonly settingSalaryQuery: SettingSalaryQuery,

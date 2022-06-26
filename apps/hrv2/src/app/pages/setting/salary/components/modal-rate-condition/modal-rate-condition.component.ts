@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from "@angular/core";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {ConditionConstant} from "../../constants/condition.constant";
 import {ModalRateConditionData} from "../../data/modal-rate-condition.data";
 import {NzModalRef, NzModalService} from "ng-zorro-antd/modal";
@@ -22,11 +22,11 @@ export class ModalRateConditionComponent implements OnInit {
   rateConditionConstant = RateConditionConstant
   rateConditionEnum = RateConditionEnum
   submitting = false
-  formGroup!: FormGroup
+  formGroup!: UntypedFormGroup
   with?: number
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly modalRef: NzModalRef,
     private readonly modal: NzModalService,
     private readonly service: RateConditionService,

@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
 import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {TemplateSalaryAction} from '../../+state/teamlate-salary/template-salary.action';
@@ -21,19 +21,19 @@ import {UnitSalaryConstant} from "../../constants/unit-salary.constant";
 export class TemplateSalaryComponent implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart));
   numberChars = new RegExp('[^0-9]', 'g');
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   submitted = false;
   blockSalary = blockSalariesConstant;
   unitConstant = UnitSalaryConstant
   salaryTypeEnum = SalaryTypeEnum
-  branches = new FormControl();
+  branches = new UntypedFormControl();
   branchesSelected: Branch[] = [];
   constraint: SalaryTypeEnum[] = []
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type || o1.type === o2.type : o1 === o2);
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { template: SalarySetting, isUpdate: boolean },
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly store: Store,
     private readonly message: NzMessageService,
     private readonly dialogRef: MatDialogRef<TemplateSalaryComponent>,

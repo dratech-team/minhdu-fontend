@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { AppState } from '../../../../reducers';
 import { Store } from '@ngrx/store';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
@@ -12,7 +12,7 @@ export class DialogManConfirmedAtComponent {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly store: Store<AppState>
   ) {
   }

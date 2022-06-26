@@ -4,7 +4,7 @@ import {DialogDeleteComponent} from '@minhdu-fontend/components';
 import {ConsignmentActions} from '../../state/consignment.actions';
 import {ConsignmentQuery} from '../../state/consignment.query';
 import {Actions} from '@datorama/akita-ng-effects';
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {PaginationDto} from "@minhdu-fontend/constants";
 import {ProductActions} from "../../../product/state/product.actions";
 import {ConsignmentEntity} from "../../entities";
@@ -18,10 +18,10 @@ import {ConsignmentStore} from "../../state/consignment.store";
   templateUrl: 'consignment.component.html'
 })
 export class ConsignmentComponent implements OnInit {
-  formGroup = new FormGroup({
-    code: new FormControl(''),
-    mfg: new FormControl(''),
-    exp: new FormControl(''),
+  formGroup = new UntypedFormGroup({
+    code: new UntypedFormControl(''),
+    mfg: new UntypedFormControl(''),
+    exp: new UntypedFormControl(''),
   })
   consignments$ = this.consignmentQuery.selectAll().pipe(map(consignments => {
     this.currentPageData = JSON.parse(JSON.stringify(consignments))

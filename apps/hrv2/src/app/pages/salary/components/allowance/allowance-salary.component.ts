@@ -1,6 +1,6 @@
 import {DatePipe} from '@angular/common';
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {DatetimeUnitEnum, EmployeeType} from '@minhdu-fontend/enums';
 import {getFirstDayInMonth, getLastDayInMonth, isEqualDatetime} from 'libs/utils/daytime.until';
@@ -25,7 +25,7 @@ import {ModalAddOrUpdateAllowance} from "../../data";
 export class AllowanceSalaryComponent implements OnInit {
   @Input() data!: ModalAddOrUpdateAllowance;
 
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
 
   indexStep = 0;
   submitting = false;
@@ -43,7 +43,7 @@ export class AllowanceSalaryComponent implements OnInit {
   constructor(
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly service: AllowanceSalaryService,
     private readonly message: NzMessageService,
     private readonly modal: NzModalService,

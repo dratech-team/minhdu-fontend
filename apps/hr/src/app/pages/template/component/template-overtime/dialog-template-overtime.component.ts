@@ -1,6 +1,6 @@
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {Branch, Position} from '@minhdu-fontend/data-models';
@@ -27,11 +27,11 @@ export class DialogTemplateOvertimeComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
   branchesSelected: Branch [] = [];
   positionSelected: Position[] = [];
-  positions = new FormControl();
-  branches = new FormControl();
+  positions = new UntypedFormControl();
+  branches = new UntypedFormControl();
   typeUnit = DatetimeUnitEnum;
   employeeTypeEnum = EmployeeType;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   submitted = false;
@@ -40,7 +40,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly store: Store,
     private readonly dialogRef: MatDialogRef<DialogTemplateOvertimeComponent>,
     private readonly positionService: PositionService,

@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {select, Store} from '@ngrx/store';
@@ -19,7 +19,7 @@ export class DialogAllowanceMultipleComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
   type = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   submitted = false;
   payrollsSelected: Payroll[] = [];
   isManyPeople = false;
@@ -29,7 +29,7 @@ export class DialogAllowanceMultipleComponent implements OnInit {
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly snackBar: MatSnackBar,
     private readonly dialogRef: MatDialogRef<DialogAllowanceMultipleComponent>,
     @Inject(MAT_DIALOG_DATA) public data?: any

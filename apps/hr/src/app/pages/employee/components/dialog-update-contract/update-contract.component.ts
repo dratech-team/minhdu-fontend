@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AppState } from '../../../../reducers';
 import { Store } from '@ngrx/store';
 import { ContractService } from '../../../../../../../../libs/employee/src/lib/+state/service/contract.service';
@@ -13,13 +13,13 @@ import { DialogDeleteComponent } from '../../../../../../../../libs/components/s
   templateUrl: 'update-contract.component.html'
 })
 export class UpdateContractComponent implements OnInit {
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   lastContract!: number;
 
   constructor(
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly store: Store,
     private readonly dialog: MatDialog,
     private readonly dialogRef: MatDialogRef<UpdateContractComponent>,

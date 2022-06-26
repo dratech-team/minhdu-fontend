@@ -7,7 +7,7 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {MatMenuTrigger} from '@angular/material/menu';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -93,24 +93,24 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   eventScrollX = new Subject<any>();
   categories$ = this.departmentQuery.selectAll();
   employees: Employee[] = [];
-  categoryControl = new FormControl('');
+  categoryControl = new UntypedFormControl('');
   role!: string | null;
-  formGroup = new FormGroup({
-    name: new FormControl(''),
+  formGroup = new UntypedFormGroup({
+    name: new UntypedFormControl(''),
     // birthday: new FormControl(''),
-    phone: new FormControl(''),
-    identity: new FormControl(''),
-    address: new FormControl(''),
-    province: new FormControl(''),
-    district: new FormControl(''),
-    ward: new FormControl(''),
-    gender: new FormControl(''),
+    phone: new UntypedFormControl(''),
+    identity: new UntypedFormControl(''),
+    address: new UntypedFormControl(''),
+    province: new UntypedFormControl(''),
+    district: new UntypedFormControl(''),
+    ward: new UntypedFormControl(''),
+    gender: new UntypedFormControl(''),
     // workedAt: new FormControl(''),
-    flatSalary: new FormControl('-1'),
-    position: new FormControl(''),
-    branch: new FormControl(''),
-    employeeType: new FormControl(EmployeeType.FULL_TIME),
-    status: new FormControl(EmployeeStatusEnum.IS_ACTIVE)
+    flatSalary: new UntypedFormControl('-1'),
+    position: new UntypedFormControl(''),
+    branch: new UntypedFormControl(''),
+    employeeType: new UntypedFormControl(EmployeeType.FULL_TIME),
+    status: new UntypedFormControl(EmployeeStatusEnum.IS_ACTIVE)
   });
   modeEnum = ModeEnum
 

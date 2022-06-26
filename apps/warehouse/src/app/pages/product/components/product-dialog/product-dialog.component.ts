@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {DatePipe} from '@angular/common';
 import {Actions} from '@datorama/akita-ng-effects';
 import {WarehouseAction, WarehouseQuery} from '../../../warehouse/state';
@@ -24,11 +24,11 @@ export class ProductDialogComponent implements OnInit {
   supplier$ = this.supplierQuery.selectAll()
   loading$ = this.productQuery.select(state => state.loading)
   categoryUnitConstant = CategoryUnitConstant
-  formGroup!: FormGroup
+  formGroup!: UntypedFormGroup
   typeProductEnum = TypeProductEnum
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     public datePipe: DatePipe,
     private readonly categoryQuery: WarehouseQuery,
     private readonly supplierQuery: SupplierQuery,

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ModeEnum, OrgchartEnum} from '@minhdu-fontend/enums';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Actions} from "@datorama/akita-ng-effects";
 import {BranchActions, BranchEntity, BranchQuery} from "@minhdu-fontend/orgchart-v2";
@@ -24,7 +24,7 @@ export class DetailBranchComponent implements OnInit {
   type = OrgchartEnum;
   pageSize = 30;
   pageIndexInit = 0;
-  branch = new FormControl();
+  branch = new UntypedFormControl();
   modeEnum = ModeEnum
 
   constructor(

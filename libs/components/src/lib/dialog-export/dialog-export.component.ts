@@ -1,6 +1,6 @@
 import {DatePipe} from '@angular/common';
 import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FilterTypeEnum} from '@minhdu-fontend/enums';
 import {ExportService} from '@minhdu-fontend/service';
@@ -11,7 +11,7 @@ import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
   templateUrl: 'dialog-export.component.html'
 })
 export class DialogExportComponent implements OnInit {
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   exportType = FilterTypeEnum;
   submitted = false;
   isSelectAll = true;
@@ -25,7 +25,7 @@ export class DialogExportComponent implements OnInit {
     private readonly itemExportService: ItemExportService,
     private readonly exportService: ExportService,
     private readonly datePipe: DatePipe,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: {
       params: any,
       title: string,
@@ -49,7 +49,7 @@ export class DialogExportComponent implements OnInit {
           'YYYY-MM-dd'
         )],
       } : {
-        name: new FormControl(this.data?.filename ? this.data.filename : '', Validators.required),
+        name: new UntypedFormControl(this.data?.filename ? this.data.filename : '', Validators.required),
         createdAt: [this.data.selectDatetime ?  this.datePipe.transform(
           new Date(this.data.params?.startedAt || this.data.params?.startedAt_start),
           'YYYY-MM'):'']

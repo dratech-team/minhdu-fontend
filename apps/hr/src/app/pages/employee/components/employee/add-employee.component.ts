@@ -1,5 +1,5 @@
 import {Component, ElementRef, Inject, Input, LOCALE_ID, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../../reducers';
 import {EmployeeType, FlatSalary, RecipeType} from '@minhdu-fontend/enums';
@@ -46,12 +46,12 @@ export class AddEmployeeComponent implements OnInit {
   recipeTypesConstant = RecipeTypesConstant;
   employeeTypeConstant = EmployeeTypeConstant
 
-  formGroup!: FormGroup
+  formGroup!: UntypedFormGroup
 
   constructor(
     public datePipe: DatePipe,
     @Inject(LOCALE_ID) private locale: string,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly message: NzMessageService,
     private readonly positionService: PositionService,
     private readonly branchService: BranchService,

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommodityUnit, CustomerResource, CustomerType, PaymentType} from '@minhdu-fontend/enums';
@@ -30,7 +30,7 @@ export class AddOrderComponent implements OnInit {
   customerPicked: CustomerEntity | undefined;
   customerId: number = this.route.snapshot.queryParams.customerid;
   payType = PaymentType;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   customerType = CustomerType;
   resourceType = CustomerResource;
   submitted = false;
@@ -38,7 +38,7 @@ export class AddOrderComponent implements OnInit {
   constructor(
     private readonly actions$: Actions,
     private readonly customerQuery: CustomerQuery,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly dialog: MatDialog,
     private readonly route: ActivatedRoute,
     private readonly router: Router,

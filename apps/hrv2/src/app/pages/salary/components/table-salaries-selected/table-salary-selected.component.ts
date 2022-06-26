@@ -1,13 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {SalaryEntity} from "../../entities";
-import {FormGroup} from "@angular/forms";
+import {UntypedFormGroup} from "@angular/forms";
 
 @Component({
   selector: 'minhdu-fontend-table-salaries-selected',
   templateUrl: 'table-salaries-selected.component.html'
 })
 export class TableSalarySelectedComponent implements OnInit{
-  @Input() formGroup!: FormGroup
+  @Input() formGroup!: UntypedFormGroup
   @Input() salaries: SalaryEntity[] = []
   checked = true
   indeterminate = false;

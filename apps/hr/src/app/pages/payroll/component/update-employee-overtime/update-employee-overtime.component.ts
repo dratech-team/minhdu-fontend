@@ -7,7 +7,7 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Employee } from '@minhdu-fontend/data-models';
 import {
@@ -35,8 +35,8 @@ export class UpdateEmployeeOvertimeComponent implements OnInit {
   employees: any[] = [];
   salaryIds: number[] = [];
   allowSalaryIds: number[] = [];
-  formGroup = new FormGroup({
-    name: new FormControl('')
+  formGroup = new UntypedFormGroup({
+    name: new UntypedFormControl('')
   });
   loaded = false
 

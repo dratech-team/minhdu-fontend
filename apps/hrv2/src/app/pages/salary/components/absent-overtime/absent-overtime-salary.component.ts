@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { PartialDayEnum } from '@minhdu-fontend/data-models';
 import { DatetimeUnitEnum, EmployeeType, ModeEnum, partialDay, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { catchError, map } from 'rxjs/operators';
@@ -64,7 +64,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   employeeType = EmployeeType;
   modeEnum = ModeEnum;
 
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
   disabledHoursStart = (): number[] => this.limitStartHour;
@@ -75,7 +75,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   constructor(
     public readonly datePipe: DatePipe,
     private readonly settingSalaryQuery: SettingSalaryQuery,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly modalRef: NzModalRef,
     private readonly message: NzMessageService,
     private readonly absentSalaryService: AbsentSalaryService,

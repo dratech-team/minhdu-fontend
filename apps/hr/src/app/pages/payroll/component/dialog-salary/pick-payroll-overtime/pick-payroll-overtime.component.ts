@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {select, Store} from '@ngrx/store';
@@ -30,10 +30,10 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
   @Input() allowPayrollsSelected: Payroll[] = [];
   @Output() EventSelectPayroll = new EventEmitter<Payroll[]>();
   @Output() EventSelectAllowance = new EventEmitter<Payroll[]>();
-  formGroup = new FormGroup({
-    name: new FormControl(''),
-    position: new FormControl(''),
-    code: new FormControl('')
+  formGroup = new UntypedFormGroup({
+    name: new UntypedFormControl(''),
+    position: new UntypedFormControl(''),
+    code: new UntypedFormControl('')
   });
   pageSize = 20;
   pageIndex = 0;

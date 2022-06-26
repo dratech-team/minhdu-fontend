@@ -1,6 +1,6 @@
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
 import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
 import {getBranchAdded, OrgchartActions, PositionService} from '@minhdu-fontend/orgchart';
@@ -16,16 +16,16 @@ import {Observable} from 'rxjs';
 })
 export class DialogBranchComponent implements OnInit {
   @ViewChild('positionInput') inputPosition!: ElementRef;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   submitted = false;
   positionSelected: Position[] = [];
-  positions = new FormControl('');
+  positions = new UntypedFormControl('');
   positions$ = this.store.pipe(select(getAllPosition));
   branch$?: Observable<Branch | undefined>;
 
   constructor(
     private readonly dialogRef: MatDialogRef<DialogBranchComponent>,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly store: Store,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly snackBar: MatSnackBar,

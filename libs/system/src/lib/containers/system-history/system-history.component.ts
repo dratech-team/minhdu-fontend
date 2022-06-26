@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {App, ModeEnum} from '@minhdu-fontend/enums';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {appConstant, MethodConstant} from '@minhdu-fontend/constants';
 import {Actions} from "@datorama/akita-ng-effects";
 import {SystemHistoryQuery} from "../../state/system-history/system-history.query";
@@ -29,15 +29,15 @@ export class systemHistoryComponent implements OnInit {
   modeEnum = ModeEnum
 
   stateSearch = this.systemHistoryQuery.getValue().search
-  formGroup = new FormGroup({
-    search: new FormControl(this.stateSearch?.search || ''),
-    id: new FormControl(this.stateSearch?.id || ''),
-    appName: new FormControl(this.stateSearch?.appName || ''),
-    name: new FormControl(this.stateSearch?.name || ''),
-    activity: new FormControl(this.stateSearch?.activity || ''),
-    description: new FormControl(this.stateSearch?.description || ''),
-    ip: new FormControl(this.stateSearch?.ip || ''),
-    createdAt: new FormControl(this.stateSearch?.createdAt || ''),
+  formGroup = new UntypedFormGroup({
+    search: new UntypedFormControl(this.stateSearch?.search || ''),
+    id: new UntypedFormControl(this.stateSearch?.id || ''),
+    appName: new UntypedFormControl(this.stateSearch?.appName || ''),
+    name: new UntypedFormControl(this.stateSearch?.name || ''),
+    activity: new UntypedFormControl(this.stateSearch?.activity || ''),
+    description: new UntypedFormControl(this.stateSearch?.description || ''),
+    ip: new UntypedFormControl(this.stateSearch?.ip || ''),
+    createdAt: new UntypedFormControl(this.stateSearch?.createdAt || ''),
   });
   pageSizeTable = 15
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.value == o2.value : o1 === o2);

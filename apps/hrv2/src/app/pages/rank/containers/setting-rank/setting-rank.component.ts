@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
 import {SettingRankQuery} from "../../state/setting-rank/setting-rank.query";
 import {SettingRankStore} from "../../state/setting-rank/setting-rank.store";
@@ -25,15 +25,15 @@ export class SettingRankComponent implements OnInit {
 
   updateSettingRank?: SettingRankEntity
 
-  formGroup = new FormGroup({
-    from: new FormControl(''),
-    to: new FormControl(''),
-    rank: new FormControl(''),
+  formGroup = new UntypedFormGroup({
+    from: new UntypedFormControl(''),
+    to: new UntypedFormControl(''),
+    rank: new UntypedFormControl(''),
   });
 
   constructor(
     private readonly router: Router,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly actions$: Actions,
     private readonly settingRankQuery: SettingRankQuery,
     private readonly settingRankStore: SettingRankStore,

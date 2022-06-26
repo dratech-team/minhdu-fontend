@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import {
   MatDialog,
   MatDialogRef,
@@ -22,12 +22,12 @@ import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
   templateUrl: 'add-payroll.component.html',
 })
 export class AddPayrollComponent implements OnInit {
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   adding$ = this.store.pipe(select(selectedAddingPayroll));
   createdAt = getSelectors<RangeDay>(selectedRangeDayPayroll, this.store).start;
   constructor(
     private dialogRef: MatDialogRef<AddPayrollComponent>,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly store: Store,
     private readonly datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data?: any

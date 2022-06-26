@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {Actions} from "@datorama/akita-ng-effects";
 import {BranchActions, BranchQuery, PositionActions, PositionEntity, PositionQuery} from "@minhdu-fontend/orgchart-v2";
@@ -15,13 +15,13 @@ export class ModalBranchComponent implements OnInit {
   positions$ = this.positionQuery.selectAll()
   loading$ = this.branchQuery.select(state => state.loading)
 
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   compareFn = (o1: any, o2: any) => (o1 && o2 ? o1.id === o2.id : o1 === o2);
 
   constructor(
     private readonly modalRef: NzModalRef,
     private readonly actions$: Actions,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly positionQuery: PositionQuery,
     private readonly branchQuery: BranchQuery,
   ) {

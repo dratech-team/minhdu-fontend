@@ -1,17 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {BreedLayoutComponent} from "./container/base/breed-layout.component";
+import { BreedLayoutComponent } from './container/base/breed-layout.component';
 
 const routes: Routes = [
   {
     path: 'auth/login',
-    loadChildren: () => import('@minhdu-fontend/auth').then(m => m.AuthModule)
+    loadChildren: () =>
+      import('@minhdu-fontend/auth').then((m) => m.AuthModule),
   },
   {
     path: '',
-    component:BreedLayoutComponent,
+    component: BreedLayoutComponent,
     data: {
-      title: 'Home'
+      title: 'Home',
     },
     children: [
       {
@@ -19,21 +20,20 @@ const routes: Routes = [
         loadChildren: () =>
           import('./pages/incubator-factory/incubator-factory.module').then(
             (m) => m.IncubatorFactoryModule
-          )
+          ),
       },
-      { path: '**', redirectTo: '' }
-    ]
-  }
+      { path: '**', redirectTo: '' },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
       useHash: true,
-      initialNavigation: 'enabled'
-    })
+      initialNavigation: 'enabledBlocking',
+    }),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

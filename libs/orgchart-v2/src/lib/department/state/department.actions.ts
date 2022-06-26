@@ -16,7 +16,7 @@ const addOne = createAction(
 
 const loadAll = createAction(
   '[Department] Load All',
-  props<SearchDepartmentDto>()
+  props<Partial<SearchDepartmentDto>>()
 );
 
 const loadOne = createAction(

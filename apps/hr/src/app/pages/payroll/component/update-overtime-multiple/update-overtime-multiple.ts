@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { SalaryService } from '../../service/salary.service';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../libs/utils/daytime.until';
@@ -10,8 +10,8 @@ import { DatePipe } from '@angular/common';
   templateUrl: 'update-overtime-multiple.html'
 })
 export class UpdateOvertimeMultiple implements OnInit {
-  datetimeControl = new FormControl();
-  timesControl = new FormControl();
+  datetimeControl = new UntypedFormControl();
+  timesControl = new UntypedFormControl();
   firstDayInMonth!: string | null;
   lastDayInMonth!: string | null;
 

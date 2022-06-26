@@ -7,7 +7,7 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {DatetimeUnitEnum, ItemContextMenu, sortEmployeeTypeEnum} from '@minhdu-fontend/enums';
 import {OvertimeService} from '../../service/overtime.service';
@@ -24,7 +24,7 @@ import {MatSort} from '@angular/material/sort';
   templateUrl: 'payroll-time-sheet.component.html'
 })
 export class PayrollTimeSheetComponent implements AfterContentChecked {
-  @Input() formGroup!: FormGroup;
+  @Input() formGroup!: UntypedFormGroup;
   @Input() loaded$?: Observable<boolean>;
   @Input() total$?: Observable<number>;
   @Input() daysInMonth: any[] = [];

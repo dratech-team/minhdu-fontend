@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Localhost} from '../../../../enums/localhost.enum';
 import {Actions} from "@datorama/akita-ng-effects";
@@ -11,12 +11,12 @@ import {appConstant} from "@minhdu-fontend/constants";
   templateUrl: 'auth.container.html'
 })
 export class AuthComponent implements OnInit {
-  loginForm!: FormGroup;
+  loginForm!: UntypedFormGroup;
   loading$ = this.accountQuery.select(state => state.loading)
   localhost = Localhost;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private readonly dialog: MatDialog,
     private readonly actions$: Actions,
     private readonly accountQuery: AccountQuery,

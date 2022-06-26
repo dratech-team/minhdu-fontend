@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { select, Store } from '@ngrx/store';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Employee } from '@minhdu-fontend/data-models';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { debounceTime, startWith, tap } from 'rxjs/operators';
 import { TimekeepingService } from './timekeeping.service';
 import { of } from 'rxjs';
@@ -41,10 +41,10 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges
   loaded$ = this.store.pipe(select(selectEmployeeLoaded));
   total$ = this.store.pipe(select(selectorTotalEmployee));
 
-  formGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
-    position: new FormControl('', Validators.required),
-    branch: new FormControl('', Validators.required)
+  formGroup = new UntypedFormGroup({
+    name: new UntypedFormControl('', Validators.required),
+    position: new UntypedFormControl('', Validators.required),
+    branch: new UntypedFormControl('', Validators.required)
   });
 
   constructor(

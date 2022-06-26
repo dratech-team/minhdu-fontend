@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {App} from '@minhdu-fontend/enums';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {debounceTime} from 'rxjs/operators';
 import {AccountActions} from '../../state/account-management/account.actions';
 import {MatDialog} from '@angular/material/dialog';
@@ -31,15 +31,15 @@ export class AccountManagementComponent implements OnInit {
   app = App;
 
   stateSearch = this.accountQuery.getValue().search
-  formGroup = new FormGroup({
-    search: new FormControl(this.stateSearch?.search || ''),
-    id: new FormControl(this.stateSearch?.id || ''),
-    username: new FormControl(this.stateSearch?.username || ''),
-    branches: new FormControl(this.stateSearch?.branches || []),
-    role: new FormControl(this.stateSearch?.role || ''),
-    loggedAt: new FormControl(this.stateSearch?.loggedAt || ''),
-    ip: new FormControl(this.stateSearch?.ip || ''),
-    timestamp: new FormControl(this.stateSearch?.timestamp || '')
+  formGroup = new UntypedFormGroup({
+    search: new UntypedFormControl(this.stateSearch?.search || ''),
+    id: new UntypedFormControl(this.stateSearch?.id || ''),
+    username: new UntypedFormControl(this.stateSearch?.username || ''),
+    branches: new UntypedFormControl(this.stateSearch?.branches || []),
+    role: new UntypedFormControl(this.stateSearch?.role || ''),
+    loggedAt: new UntypedFormControl(this.stateSearch?.loggedAt || ''),
+    ip: new UntypedFormControl(this.stateSearch?.ip || ''),
+    timestamp: new UntypedFormControl(this.stateSearch?.timestamp || '')
   });
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 

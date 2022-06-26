@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {AccountService} from "../../../../../system/src/lib/services/account.service";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {catchError} from "rxjs/operators";
@@ -10,12 +10,12 @@ import {throwError} from "rxjs";
   templateUrl: 'modal-change-password.component.html'
 })
 export class ModalChangePasswordComponent implements OnInit {
-  fromGroup!: FormGroup;
+  fromGroup!: UntypedFormGroup;
   isHidden = false;
   summiting = false;
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly accountService: AccountService,
     private readonly message: NzMessageService,
     private readonly modal: NzModalRef,

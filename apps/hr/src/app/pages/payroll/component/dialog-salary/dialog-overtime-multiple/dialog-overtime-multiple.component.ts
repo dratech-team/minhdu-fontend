@@ -1,5 +1,5 @@
 import {AfterContentChecked, ChangeDetectorRef, Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {DatetimeUnitEnum, EmployeeType, RecipeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {select, Store} from '@ngrx/store';
@@ -30,7 +30,7 @@ import {values} from "lodash";
 })
 export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChecked {
   @ViewChild(MatStepper) stepper!: MatStepper;
-  positions = new FormControl();
+  positions = new UntypedFormControl();
   positions$ = this.store.pipe(select(getAllPosition));
   isAllowanceOvertime = false;
   numberChars = new RegExp('[^0-9]', 'g');
@@ -38,7 +38,7 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
   allowPayrollSelected: Payroll[] = [];
   times?: number;
   type = SalaryTypeEnum;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   submitted = false;
   positionsSelected: Position[] = []
   datetimeUnitEnum = DatetimeUnitEnum;
@@ -54,7 +54,7 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly snackBar: MatSnackBar,
     private readonly salaryService: SalaryService,
     private readonly message: NzMessageService,

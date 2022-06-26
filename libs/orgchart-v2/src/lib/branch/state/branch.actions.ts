@@ -9,7 +9,7 @@ const addOne = createAction(
 
 const loadAll = createAction(
   '[Branch] Load All',
-  props<SearchBranchDto>()
+  props<Partial<SearchBranchDto>>()
 );
 
 const loadOne = createAction(

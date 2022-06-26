@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { stakedChart } from '@minhdu-fontend/data-models';
 import { getMonth } from 'ngx-bootstrap/chronos';
 import { DatetimeUnitEnum, MenuWarehouseEum } from '@minhdu-fontend/enums';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminAction } from '../../../../states/admin.action';
 import { Store } from '@ngrx/store';
@@ -24,7 +24,7 @@ export class StatisticalSellComponent implements OnInit {
   });
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly store: Store,
     private readonly dialog: MatDialog,
     private readonly service: StatisticalSellService

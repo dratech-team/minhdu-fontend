@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {OrderEnum, PaymentType} from '@minhdu-fontend/enums';
 import {DatePipe} from '@angular/common';
 import {NzModalRef} from "ng-zorro-antd/modal";
@@ -22,7 +22,7 @@ export class PaymentModalComponent implements OnInit {
   loading$ = this.paymentQuery.select(state => state.loading)
 
   payTypeConstant = PayTypeConstant.filter(item => item.value !== PaymentType.ALL)
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   indexStep = 0;
   orderEnum = OrderEnum
 
@@ -30,7 +30,7 @@ export class PaymentModalComponent implements OnInit {
     public datePipe: DatePipe,
     public modalRef: NzModalRef,
     private readonly actions$: Actions,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly paymentQuery: PaymentQuery,
     private readonly orderQuery: OrderQuery,
     private readonly message: NzMessageService,

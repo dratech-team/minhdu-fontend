@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {debounceTime} from 'rxjs/operators';
 import {PaginationDto} from '@minhdu-fontend/constants';
@@ -61,12 +61,12 @@ export class SettingSalaryComponent implements OnInit {
   sortEnum = SortSettingSalaryEnum;
   modeEnum = ModeEnum
 
-  formGroup = new FormGroup(
+  formGroup = new UntypedFormGroup(
     {
-      search: new FormControl(this.stateSearch?.search || ''),
-      types: new FormControl(this.stateSearch?.types || []),
-      positions: new FormControl(this.stateSearch?.positions || []),
-      branches: new FormControl(this.stateSearch?.branches || []),
+      search: new UntypedFormControl(this.stateSearch?.search || ''),
+      types: new UntypedFormControl(this.stateSearch?.types || []),
+      positions: new UntypedFormControl(this.stateSearch?.positions || []),
+      branches: new UntypedFormControl(this.stateSearch?.branches || []),
     }
   );
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);

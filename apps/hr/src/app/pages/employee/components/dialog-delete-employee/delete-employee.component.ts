@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { EmployeeAction, selectEmployeeDeleted } from '@minhdu-fontend/employee';
 import { select, Store } from '@ngrx/store';
@@ -18,7 +18,7 @@ export class DeleteEmployeeComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<DeleteEmployeeComponent>,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly datePipe: DatePipe,
     private readonly store: Store,
     private readonly router: Router
