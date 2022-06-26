@@ -1,15 +1,16 @@
-import {Injectable} from '@angular/core';
-import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
-import {catchError, concatMap, map, switchMap, tap} from 'rxjs/operators';
-import {of} from 'rxjs';
-import {CustomerActions} from './customer.actions';
-import {CustomerService} from '../service';
-import {CustomerQuery} from './customer.query';
-import {CustomerStore} from './customer.store';
-import {OrderService} from '../../order/service';
-import {AddCustomerDto, SearchCustomerDto} from '../dto';
-import {NzMessageService} from 'ng-zorro-antd/message';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
+import { catchError, concatMap, map, switchMap, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { CustomerActions } from './customer.actions';
+import { CustomerService } from '../service';
+import { CustomerQuery } from './customer.query';
+import { CustomerStore } from './customer.store';
+import { OrderService } from '../../order/service';
+import { AddCustomerDto, SearchCustomerDto } from '../dto';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SortPipe } from '../../../../../../../libs/pipes/src/lib/sort.pipe';
 
 @Injectable()
 export class CustomerEffect {
@@ -21,23 +22,24 @@ export class CustomerEffect {
     private readonly message: NzMessageService,
     private readonly snackbar: MatSnackBar,
     private readonly orderService: OrderService,
+    private readonly sortPipe: SortPipe
   ) {
   }
 
   @Effect()
-  loadCustomers$ = this.action$.pipe(
+  loadAll$ = this.action$.pipe(
     ofType(CustomerActions.loadAll),
-    switchMap((props) => {
+    switchMap((props: SearchCustomerDto) => {
       this.customerStore.update(state => ({
         ...state,
         loading: true
       }));
-      const params = Object.assign(props.search, props.search?.orderType
-        ? {orderType: props.search.orderType === 'ascend' ? 'asc' : 'desc'}
-        : {});
-      // check annonate ng đặt fixme là Long nhưng ko chú thích nên không biết vấn đề cần fix là gì
-      /// FIXME:
-      return this.customerService.pagination(params as SearchCustomerDto).pipe(
+      const params = Object.assign(
+        props.search, props.search?.orderType
+          ? { orderType: this.sortPipe.transform(props.search.orderType) }
+          : {}
+      );
+      return this.customerService.pagination(params).pipe(
         map((response) => {
           this.customerStore.update(state => ({
             ...state,
@@ -60,10 +62,10 @@ export class CustomerEffect {
             ...state,
             loading: undefined
           }));
-          return of(CustomerActions.error(err))
+          return of(CustomerActions.error(err));
         })
       );
-    }),
+    })
   );
 
   @Effect()
@@ -77,7 +79,7 @@ export class CustomerEffect {
       }));
       return this.customerService.addOne(props).pipe(
         tap((res) => {
-            this.message.success('Thêm khác hành thành công')
+            this.message.success('Thêm khác hành thành công');
             this.customerStore.update(state => ({
               ...state,
               loading: false
@@ -90,23 +92,23 @@ export class CustomerEffect {
             ...state,
             loading: undefined
           }));
-          return of(CustomerActions.error(err))
-        }),
+          return of(CustomerActions.error(err));
+        })
       );
-    }),
+    })
   );
 
   @Effect()
-  getCustomer$ = this.action$.pipe(
+  loadOne$ = this.action$.pipe(
     ofType(CustomerActions.loadOne),
     switchMap((props) => this.customerService.getOne(props.id).pipe(
       map(customer => this.customerStore.upsert(customer.id, customer)),
       catchError((err) => of(CustomerActions.error(err)))
-    )),
+    ))
   );
 
   @Effect()
-  updateCustomer$ = this.action$.pipe(
+  updateOne$ = this.action$.pipe(
     ofType(CustomerActions.update),
     switchMap((props) => {
         this.customerStore.update(state => ({
@@ -126,7 +128,7 @@ export class CustomerEffect {
                 ...state,
                 loading: undefined
               }));
-              return of(CustomerActions.error(err))
+              return of(CustomerActions.error(err));
             }
           )
         );
@@ -135,7 +137,7 @@ export class CustomerEffect {
   );
 
   @Effect()
-  deleteCustomer$ = this.action$.pipe(
+  removeOne = this.action$.pipe(
     ofType(CustomerActions.remove),
     switchMap((props) => {
         this.customerStore.update(state => ({
@@ -146,17 +148,17 @@ export class CustomerEffect {
               this.customerStore.update(state => ({
                 ...state, total: state.total - 1, loading: false
               }));
-              this.message.success('Xoá khách hàng thành công')
-              return this.customerStore.remove(props.id)
+              this.message.success('Xoá khách hàng thành công');
+              return this.customerStore.remove(props.id);
             }
           ),
           catchError((err) => {
             this.customerStore.update(state => ({
               ...state, loading: undefined
             }));
-            return of(CustomerActions.error(err))
+            return of(CustomerActions.error(err));
           })
-        )
+        );
       }
     )
   );
@@ -172,7 +174,7 @@ export class CustomerEffect {
           deliveredLoading: props?.typeOrder === 'delivered' ? true : state.deliveredLoading
         }));
         return this.orderService.pagination(Object.assign(props.params,
-          {status: props.typeOrder === 'delivered' ? 1 : 0})
+          { status: props.typeOrder === 'delivered' ? 1 : 0 })
         ).pipe(
           tap(res => {
             if (res.data.length === 0) {
@@ -190,9 +192,9 @@ export class CustomerEffect {
               }
             } else {
               if (props.typeOrder === 'delivering') {
-                this.customerStore.update(props.params.customerId, {delivering: res.data});
+                this.customerStore.update(props.params.customerId, { delivering: res.data });
               } else {
-                this.customerStore.update(props.params.customerId, {delivered: res.data});
+                this.customerStore.update(props.params.customerId, { delivered: res.data });
               }
             }
             this.customerStore.update((state) => ({

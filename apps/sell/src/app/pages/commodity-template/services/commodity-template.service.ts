@@ -20,7 +20,7 @@ export class CommodityTemplateService extends BaseService<CommodityTemplateEntit
     return super.addOne(addBranchDto.body);
   }
 
-  pagination(props?: SearchCommodityTemplateDto): Observable<ResponsePaginate<CommodityTemplateEntity>> {
+  pagination(props: Partial<SearchCommodityTemplateDto>): Observable<ResponsePaginate<CommodityTemplateEntity>> {
     return super.pagination(props?.search);
   }
 

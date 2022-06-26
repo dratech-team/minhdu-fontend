@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
-import { CustomerEntity } from '../entities';
+import { BaseSearchCustomerDto, CustomerEntity } from '../entities';
 import { AddCustomerDto } from '../dto';
 import { UpdateCustomerDto } from '../dto';
 import {SearchCustomerDto} from "../dto";
@@ -21,7 +21,7 @@ export class CustomerService extends BaseService<CustomerEntity> {
     return super.addOne(props.body);
   }
 
-  pagination(params: SearchCustomerDto): Observable<ResponsePaginate<CustomerEntity>> {
+  pagination(params: Partial<BaseSearchCustomerDto>): Observable<ResponsePaginate<CustomerEntity>> {
     return super.pagination(params);
   }
 
