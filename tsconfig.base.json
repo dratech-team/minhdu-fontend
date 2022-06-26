@@ -33,6 +33,7 @@
         "libs/orgchart/src/lib/+state/position/index.ts"
       ],
       "@minhdu-fontend/orgchart-v2": ["libs/orgchart-v2/src/index.ts"],
+      "@minhdu-fontend/pipes": ["libs/pipes/src/index.ts"],
       "@minhdu-fontend/service": ["libs/service/index.ts"],
       "@minhdu-fontend/system": ["libs/system/src/index.ts"],
       "@minhdu-fontend/utils": ["libs/utils/index.ts"]

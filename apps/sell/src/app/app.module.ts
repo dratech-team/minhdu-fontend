@@ -37,6 +37,7 @@ import {CommodityTemplateModule} from './pages/commodity-template/commodity-temp
 import {RouteModule} from './pages/route/route.module';
 import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
 import {AccountEffects} from "../../../../libs/system/src/lib/state/account-management/account.effects";
+import { PipesModule } from '@minhdu-fontend/pipes';
 
 registerLocaleData(localeVi);
 
@@ -71,7 +72,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     NzMessageModule,
     CommodityTemplateModule,
     RouteModule,
-    AuthModule
+    AuthModule,
+    PipesModule
   ],
   declarations: [PickMenuComponent, AppComponent, SellLayoutComponent],
   providers: [

@@ -10,7 +10,7 @@ import { OrderService } from '../../order/service';
 import { AddCustomerDto, SearchCustomerDto } from '../dto';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SortPipe } from '../../../../../../../libs/pipes/src/lib/sort.pipe';
+import { SortPipe } from '@minhdu-fontend/pipes';
 
 @Injectable()
 export class CustomerEffect {
