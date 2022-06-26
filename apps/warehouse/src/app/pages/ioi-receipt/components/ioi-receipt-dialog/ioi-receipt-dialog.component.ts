@@ -1,31 +1,27 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
-import {DatePipe} from '@angular/common';
-import {Store} from '@ngrx/store';
-import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
-import {Actions} from '@datorama/akita-ng-effects';
-import {SupplierActions} from '../../../supplier/state';
-import {IoiReceiptActions} from '../../state/ioi-receipt.actions';
-import {ProductActions} from "../../../product/state/product.actions";
-import {ProductQuery} from "../../../product/state/product.query";
-import {IoiReceiptEntity} from "../../entities";
-import {BaseUpdateIoiReceiptDto} from "../../dto";
-import {DiscountTypeConstant} from "../../constants";
-import {DiscountTypeEnum, IoiReceiptEnum} from "../../../../../shared/enums";
-import {PaginationDto} from "@minhdu-fontend/constants";
-import {BranchActions, BranchQuery} from "@minhdu-fontend/orgchart-v2";
+import { Component, Input, OnInit } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { Actions } from '@datorama/akita-ng-effects';
+import { SupplierActions } from '../../../supplier/state';
+import { IoiReceiptActions } from '../../state/ioi-receipt.actions';
+import { ProductActions } from '../../../product/state/product.actions';
+import { ProductQuery } from '../../../product/state/product.query';
+import { IoiReceiptEntity } from '../../entities';
+import { BaseUpdateIoiReceiptDto } from '../../dto';
+import { DiscountTypeEnum, IoiReceiptEnum } from '../../../../../shared/enums';
+import { PaginationDto } from '@minhdu-fontend/constants';
+import { BranchActions, BranchQuery } from '@minhdu-fontend/orgchart-v2';
 
 @Component({
   templateUrl: 'ioi-receipt-dialog.component.html'
 })
 export class IoiReceiptDialogComponent implements OnInit {
-  @Input() data!: { ioiReceipt?: IoiReceiptEntity, isUpdate?: boolean, ioiReceiptType: IoiReceiptEnum }
+  @Input() data!: { ioiReceipt?: IoiReceiptEntity, isUpdate?: boolean, ioiReceiptType: IoiReceiptEnum };
   branches$ = this.branchQuery.selectAll();
   products$ = this.productQuery.selectAll();
-  loadingProduct$ = this.productQuery.select(state => state.loading)
-  formGroup!: UntypedFormGroup
-  discountTypeConstant = DiscountTypeConstant
-  pageSizeTable = 5
+  loadingProduct$ = this.productQuery.select(state => state.loading);
+  formGroup!: UntypedFormGroup;
+  pageSizeTable = 5;
 
   constructor(
     private readonly formBuilder: UntypedFormBuilder,
@@ -38,8 +34,8 @@ export class IoiReceiptDialogComponent implements OnInit {
 
   ngOnInit() {
     this.actions$.dispatch(BranchActions.loadAll({}));
-    this.actions$.dispatch(SupplierActions.loadAll({}));
-    this.actions$.dispatch(ProductActions.loadAll({}))
+    this.actions$.dispatch(SupplierActions.loadAll({ search: {} }));
+    this.actions$.dispatch(ProductActions.loadAll({ search: {} }));
     if (this.data?.ioiReceipt) {
       this.formGroup = this.formBuilder.group({
         accountedAt: [this.datePipe.transform(
@@ -71,7 +67,7 @@ export class IoiReceiptDialogComponent implements OnInit {
         attachment: [this.data.ioiReceipt?.attachment?.file],
         product: [this.data.ioiReceipt.product, Validators.required],
         consignment: [this.data.ioiReceipt?.consignment],
-        branch: [this.data.ioiReceipt.branch, Validators.required],
+        branch: [this.data.ioiReceipt.branch, Validators.required]
       });
     } else {
       this.formGroup = this.formBuilder.group({
@@ -89,7 +85,7 @@ export class IoiReceiptDialogComponent implements OnInit {
         attachment: [''],
         product: ['', Validators.required],
         consignment: [],
-        branch: ['', Validators.required],
+        branch: ['', Validators.required]
       });
     }
   }
@@ -119,11 +115,11 @@ export class IoiReceiptDialogComponent implements OnInit {
       attachment: value.attachment,
       branchId: value.branch.id,
       products: value.product
-    }
+    };
     if (this.data?.isUpdate && this.data.ioiReceipt) {
-      this.actions$.dispatch(IoiReceiptActions.update({id: this.data.ioiReceipt.id, updates: stockUpdate}));
+      this.actions$.dispatch(IoiReceiptActions.update({ id: this.data.ioiReceipt.id, updates: stockUpdate }));
     } else {
-      this.actions$.dispatch(IoiReceiptActions.addOne({body: value}));
+      this.actions$.dispatch(IoiReceiptActions.addOne({ body: value }));
     }
   }
 
@@ -131,7 +127,7 @@ export class IoiReceiptDialogComponent implements OnInit {
     const count = this.productQuery.getCount();
     if (index * this.pageSizeTable >= count) {
       this.actions$.dispatch(ProductActions.loadAll({
-        search: {take: PaginationDto.take, skip: count},
+        search: { take: PaginationDto.take, skip: count },
         isPaginate: true
       }));
     }

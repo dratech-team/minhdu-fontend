@@ -44,7 +44,7 @@ export class ConsignmentComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(ConsignmentActions.loadAll({}));
+    this.actions$.dispatch(ConsignmentActions.loadAll({search: {}}));
   }
 
   onAdd(consignment?: ConsignmentEntity) {
