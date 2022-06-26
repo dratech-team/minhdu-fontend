@@ -15,7 +15,6 @@ import { AddRelativeDto, RemoveRelativeDto, UpdateRelativeDto } from '../../dto/
 import { arrayAdd, arrayRemove, arrayUpdate } from '@datorama/akita';
 import { RemoveDegreeDto } from '../../dto/degree';
 import { ContractService } from '../../services/contract.service';
-import { SortPipe } from '@minhdu-fontend/pipes';
 
 @Injectable()
 export class EmployeeEffect {
@@ -27,8 +26,7 @@ export class EmployeeEffect {
     private readonly relativeService: RelativeService,
     private readonly degreeService: DegreeService,
     private readonly contractService: ContractService,
-    private readonly message: NzMessageService,
-    private readonly sortPipe: SortPipe
+    private readonly message: NzMessageService
   ) {
   }
 
@@ -129,7 +127,7 @@ export class EmployeeEffect {
             skip: props.isPaginate ? this.employeeQuery.getCount() : PaginationDto.skip
           },
           props.search?.orderType
-            ? { orderType: this.sortPipe.transform(props.search?.orderType) }
+            ? { orderType: props.search.orderType === 'ascend' ? 'asc' : 'desc' }
             : {}
         );
         return this.employeeService.pagination(props).pipe(

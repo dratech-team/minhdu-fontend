@@ -4,7 +4,6 @@ import {HttpClientModule} from "@angular/common/http";
 import {NzMessageModule} from "ng-zorro-antd/message";
 import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
 import {EmployeeEffect} from "./employee/state/employee";
-import { PipesModule } from '@minhdu-fontend/pipes';
 
 @NgModule({
   imports: [
@@ -12,7 +11,6 @@ import { PipesModule } from '@minhdu-fontend/pipes';
     HttpClientModule,
     NzMessageModule,
     AkitaNgEffectsModule.forFeature([EmployeeEffect]),
-    PipesModule
   ],
 })
 export class EmployeeLibV2Module {}

@@ -10,7 +10,6 @@ import { OrderService } from '../../order/service';
 import { AddCustomerDto, SearchCustomerDto } from '../dto';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SortPipe } from '@minhdu-fontend/pipes';
 
 @Injectable()
 export class CustomerEffect {
@@ -21,8 +20,7 @@ export class CustomerEffect {
     private readonly customerService: CustomerService,
     private readonly message: NzMessageService,
     private readonly snackbar: MatSnackBar,
-    private readonly orderService: OrderService,
-    private readonly sortPipe: SortPipe
+    private readonly orderService: OrderService
   ) {
   }
 
@@ -36,7 +34,7 @@ export class CustomerEffect {
       }));
       const params = Object.assign(
         props.search, props.search?.orderType
-          ? { orderType: this.sortPipe.transform(props.search.orderType) }
+          ? { orderType: props.search.orderType === 'ascend' ? 'asc' : 'desc' }
           : {}
       );
       return this.customerService.pagination(params).pipe(
