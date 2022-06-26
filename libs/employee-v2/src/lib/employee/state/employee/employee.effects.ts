@@ -186,7 +186,7 @@ export class EmployeeEffect {
   );
 
   @Effect()
-  update$ = this.actions$.pipe(
+  updateOne$ = this.actions$.pipe(
     ofType(EmployeeActions.update),
     switchMap((props) => {
         this.employeeStore.update(state => ({
