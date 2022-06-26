@@ -1,20 +1,21 @@
-import {Injectable} from '@angular/core';
-import {of} from 'rxjs';
-import {catchError, concatMap, map, switchMap} from 'rxjs/operators';
-import {NzMessageService} from 'ng-zorro-antd/message';
-import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
-import {EmployeeService} from '@minhdu-fontend/employee-v2';
-import {EmployeeStore} from './employee.store';
-import {EmployeeActions} from './employee.actions';
-import {RemoveEmployeeDto} from '../../dto/employee';
-import {RelativeService} from '../../services/relative.service';
-import {DegreeService} from '../../services/degree.service';
-import {PaginationDto} from '@minhdu-fontend/constants';
-import {EmployeeQuery} from './employee.query';
-import {AddRelativeDto, RemoveRelativeDto, UpdateRelativeDto} from "../../dto/relative";
-import {arrayAdd, arrayRemove, arrayUpdate} from "@datorama/akita";
-import {RemoveDegreeDto} from "../../dto/degree";
-import {ContractService} from "../../services/contract.service";
+import { Injectable } from '@angular/core';
+import { of } from 'rxjs';
+import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
+import { EmployeeService } from '@minhdu-fontend/employee-v2';
+import { EmployeeStore } from './employee.store';
+import { EmployeeActions } from './employee.actions';
+import { RemoveEmployeeDto } from '../../dto/employee';
+import { RelativeService } from '../../services/relative.service';
+import { DegreeService } from '../../services/degree.service';
+import { PaginationDto } from '@minhdu-fontend/constants';
+import { EmployeeQuery } from './employee.query';
+import { AddRelativeDto, RemoveRelativeDto, UpdateRelativeDto } from '../../dto/relative';
+import { arrayAdd, arrayRemove, arrayUpdate } from '@datorama/akita';
+import { RemoveDegreeDto } from '../../dto/degree';
+import { ContractService } from '../../services/contract.service';
+import { SortPipe } from '@minhdu-fontend/pipes';
 
 @Injectable()
 export class EmployeeEffect {
@@ -27,6 +28,7 @@ export class EmployeeEffect {
     private readonly degreeService: DegreeService,
     private readonly contractService: ContractService,
     private readonly message: NzMessageService,
+    private readonly sortPipe: SortPipe
   ) {
   }
 
@@ -69,9 +71,9 @@ export class EmployeeEffect {
               ...state, loading: false
             }));
             this.message.info('Thêm người thân thành công');
-            this.employeeStore.update(props.body.employeeId, ({relatives}) => ({
+            this.employeeStore.update(props.body.employeeId, ({ relatives }) => ({
               relatives: arrayAdd(relatives, res)
-            }))
+            }));
           }),
           catchError((err) => {
             this.employeeStore.update(state => ({
@@ -97,9 +99,9 @@ export class EmployeeEffect {
               ...state, loading: false
             }));
             this.message.info('Thêm bằng cấp thành công');
-            this.employeeStore.update(props.body.employeeId, ({degrees}) => ({
+            this.employeeStore.update(props.body.employeeId, ({ degrees }) => ({
               degrees: arrayAdd(degrees, res)
-            }))
+            }));
           }),
           catchError((err) => {
             this.employeeStore.update(state => ({
@@ -127,9 +129,9 @@ export class EmployeeEffect {
             skip: props.isPaginate ? this.employeeQuery.getCount() : PaginationDto.skip
           },
           props.search?.orderType
-            ? {orderType: props.search?.orderType === 'ascend' ? 'asc' : 'desc'}
+            ? { orderType: this.sortPipe.transform(props.search?.orderType) }
             : {}
-        )
+        );
         return this.employeeService.pagination(props).pipe(
           map((res) => {
             if (res.data.length === 0) {
@@ -156,10 +158,10 @@ export class EmployeeEffect {
           catchError((err) => {
             this.employeeStore.update(state => (Object.assign({
                 ...state,
-                loading: undefined,
+                loading: undefined
               })
             ));
-            return of(EmployeeActions.error(err))
+            return of(EmployeeActions.error(err));
           })
         );
       }
@@ -221,9 +223,9 @@ export class EmployeeEffect {
             this.employeeStore.update(state => ({
               ...state, loading: false
             }));
-            this.employeeStore.update(props.updates.employeeId, ({relatives}) => ({
+            this.employeeStore.update(props.updates.employeeId, ({ relatives }) => ({
               relatives: arrayUpdate(relatives, res.id, res)
-            }))
+            }));
             this.message.info('Cập nhật người thân thành công');
             this.employeeStore.update(res.id, res);
           }),
@@ -251,9 +253,9 @@ export class EmployeeEffect {
               ...state, loading: false
             }));
             this.message.info('Cập nhật bằng cấp thành công');
-            this.employeeStore.update(props.updates.employeeId, ({degrees}) => ({
+            this.employeeStore.update(props.updates.employeeId, ({ degrees }) => ({
               degrees: arrayUpdate(degrees, res.id, res)
-            }))
+            }));
           }),
           catchError((err) => {
             this.employeeStore.update(state => ({
@@ -273,7 +275,7 @@ export class EmployeeEffect {
         return this.employeeService.updateHistorySalary(props.id, props.salary).pipe(
           map((res) => {
             this.message.info(res.message);
-            this.actions$.dispatch(EmployeeActions.loadOne({id: props.employeeId}));
+            this.actions$.dispatch(EmployeeActions.loadOne({ id: props.employeeId }));
           }),
           catchError((err) => {
             return of(EmployeeActions.error(err));
@@ -318,7 +320,7 @@ export class EmployeeEffect {
             this.message.info(props.body?.leftAt ?
               'Nhân viên đã nghỉ tạm thời' :
               'Đã khôi phục nhân viên thành công');
-            this.employeeStore.remove(props.id)
+            this.employeeStore.remove(props.id);
           }),
           catchError((err) => {
             this.employeeStore.update(state => ({
@@ -338,9 +340,9 @@ export class EmployeeEffect {
         return this.relativeService.deleteRelative(props.id).pipe(
           map((res) => {
             this.message.info('Xoá người thân thành công');
-            this.employeeStore.update(props.employeeId, ({relatives}) => ({
+            this.employeeStore.update(props.employeeId, ({ relatives }) => ({
               relatives: arrayRemove(relatives, props.id)
-            }))
+            }));
           }),
           catchError((err) => {
             return of(EmployeeActions.error(err));
@@ -357,9 +359,9 @@ export class EmployeeEffect {
         return this.degreeService.deleteDegree(props.id).pipe(
           map((_) => {
             this.message.info('Xoá bằng cấp thành công');
-            this.employeeStore.update(props.employeeId, ({degrees}) => ({
+            this.employeeStore.update(props.employeeId, ({ degrees }) => ({
               degrees: arrayRemove(degrees, props.id)
-            }))
+            }));
           }),
           catchError((err) => {
             return of(EmployeeActions.error(err));
@@ -376,9 +378,9 @@ export class EmployeeEffect {
         return this.contractService.delete(props.id).pipe(
           map((_) => {
             this.message.info('Xóa bằng hợp đồng thành công');
-            this.employeeStore.update(props.employeeId, ({contracts}) => ({
+            this.employeeStore.update(props.employeeId, ({ contracts }) => ({
               contracts: arrayRemove(contracts, props.id)
-            }))
+            }));
           }),
           catchError((err) => {
             return of(EmployeeActions.error(err));
@@ -395,9 +397,9 @@ export class EmployeeEffect {
         return this.employeeService.deleteWorkHistory(props.id).pipe(
           map((res) => {
             this.message.info('Xoá lịch sử công tác thành công');
-            this.employeeStore.update(props.employeeId, ({workHistories}) => ({
+            this.employeeStore.update(props.employeeId, ({ workHistories }) => ({
               workHistories: arrayRemove(workHistories, props.id)
-            }))
+            }));
           }),
           catchError((err) => {
             return of(EmployeeActions.error(err));
