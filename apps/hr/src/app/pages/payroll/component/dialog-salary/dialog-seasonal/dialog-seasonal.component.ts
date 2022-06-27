@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
@@ -24,13 +24,13 @@ export class DialogSeasonalComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
   type = SalaryTypeEnum;
   datetime = DatetimeUnitEnum;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   submitted = false;
   roleEnum = Role;
   role = localStorage.getItem('role');
   templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
   title!: string;
-  titleOvertimes = new FormControl();
+  titleOvertimes = new UntypedFormControl();
   checkTemplate = false;
   onAllowanceOvertime = false;
   firstDayInMonth!: string | null;
@@ -41,7 +41,7 @@ export class DialogSeasonalComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly message: NzMessageService,
     private readonly store: Store<AppState>,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly dialogRef: MatDialogRef<DialogSeasonalComponent>,
     @Inject(MAT_DIALOG_DATA) public data?: any
   ) {

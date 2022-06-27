@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {
   DialogSharedComponent
@@ -18,10 +18,10 @@ import {NzModalService} from "ng-zorro-antd/modal";
 })
 export class SupplierComponent implements OnInit {
   supplier$ = this.supplierQuery.selectAll();
-  formGroup = new FormGroup({
-    search: new FormControl(),
-    startedAt: new FormControl(),
-    endedAt: new FormControl()
+  formGroup = new UntypedFormGroup({
+    search: new UntypedFormControl(),
+    startedAt: new UntypedFormControl(),
+    endedAt: new UntypedFormControl()
   });
   total$ = this.supplierQuery.selectCount();
   loading$ = this.supplierQuery.select(state => state.loading);

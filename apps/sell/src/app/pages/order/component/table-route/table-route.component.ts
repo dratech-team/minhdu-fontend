@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {PaidType} from 'libs/enums/paidType.enum';
 import {Router} from '@angular/router';
 import {TableRouteService} from './table-route.service';
@@ -12,12 +12,12 @@ import {RouteQuery} from '../../../route/+state';
 })
 
 export class TableRouteComponent implements OnInit {
-  formGroup = new FormGroup(
+  formGroup = new UntypedFormGroup(
     {
-      name: new FormControl(''),
-      startedAt: new FormControl(''),
-      endedAt: new FormControl(''),
-      paidType: new FormControl('')
+      name: new UntypedFormControl(''),
+      startedAt: new UntypedFormControl(''),
+      endedAt: new UntypedFormControl(''),
+      paidType: new UntypedFormControl('')
     });
   paidType = PaidType;
   routes$ = this.routeQuery.selectAll();

@@ -15,7 +15,7 @@ export class SalarySettingService extends BaseService<SalarySettingEntity> {
     super(Api.HR.SETTING_SALARY, http);
   }
 
-  pagination(params?: SearchSalarySettingDto): Observable<ResponsePaginate<SalarySettingEntity>> {
+  pagination(params: Partial<SearchSalarySettingDto>): Observable<ResponsePaginate<SalarySettingEntity>> {
     return super.pagination(params?.search);
   }
 

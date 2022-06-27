@@ -12,7 +12,7 @@ const addOne = createAction(
 
 const loadAll = createAction(
   '[COMMODITY_TEMPLATE] Load All',
-  props<SearchCommodityTemplateDto>()
+  props<Partial<SearchCommodityTemplateDto>>()
 );
 
 const loadOne = createAction(

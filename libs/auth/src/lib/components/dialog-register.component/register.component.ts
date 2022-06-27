@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {App} from '@minhdu-fontend/enums';
 import {RoleService} from '../../services/role.service';
 import {BranchActions, BranchEntity, BranchQuery} from "@minhdu-fontend/orgchart-v2";
@@ -22,11 +22,11 @@ export class RegisterComponent implements OnInit {
 
   localhost = `${window.location.host}`;
   app = App;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly branchQuery: BranchQuery,
     private readonly accountQuery: AccountQuery,
     private readonly roleService: RoleService,

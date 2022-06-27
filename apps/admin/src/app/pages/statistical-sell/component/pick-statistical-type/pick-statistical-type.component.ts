@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import {  StatisticalYType } from '@minhdu-fontend/enums';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -10,10 +10,10 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class PickStatisticalTypeComponent implements OnInit {
   statisticalYType = StatisticalYType;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
 
   ) {
   }

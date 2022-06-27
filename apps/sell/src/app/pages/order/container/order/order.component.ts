@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, CurrenciesConstant, PaginationDto} from '@minhdu-fontend/constants';
@@ -52,22 +52,22 @@ export class OrderComponent implements OnInit {
   stateSearch = this.orderQuery.getValue().search;
   valueSort?: Sort;
   widthConstant = WidthConstant
-  formGroup = new FormGroup({
-    search: new FormControl(this.stateSearch.search),
+  formGroup = new UntypedFormGroup({
+    search: new UntypedFormControl(this.stateSearch.search),
     // paidType: new FormControl(this.stateSearch.paidType),
     // customer: new FormControl(this.stateSearch.customer),
-    status: new FormControl(this.stateSearch.status),
+    status: new UntypedFormControl(this.stateSearch.status),
     // explain: new FormControl(this.stateSearch.explain),
-    endedAt_start: new FormControl(this.stateSearch.endedAt_start),
-    endedAt_end: new FormControl(this.stateSearch.endedAt_end),
-    startedAt_end: new FormControl(this.stateSearch.startedAt_start),
-    startedAt_start: new FormControl(this.stateSearch.startedAt_end),
-    deliveredAt_start: new FormControl(this.stateSearch.deliveredAt_start),
-    deliveredAt_end: new FormControl(this.stateSearch.deliveredAt_end),
+    endedAt_start: new UntypedFormControl(this.stateSearch.endedAt_start),
+    endedAt_end: new UntypedFormControl(this.stateSearch.endedAt_end),
+    startedAt_end: new UntypedFormControl(this.stateSearch.startedAt_start),
+    startedAt_start: new UntypedFormControl(this.stateSearch.startedAt_end),
+    deliveredAt_start: new UntypedFormControl(this.stateSearch.deliveredAt_start),
+    deliveredAt_end: new UntypedFormControl(this.stateSearch.deliveredAt_end),
     // commodityTotal: new FormControl(this.stateSearch.commodityTotal),
     // province: new FormControl(this.stateSearch.province),
     // bsx: new FormControl(this.stateSearch.bsx),
-    commodity: new FormControl(this.stateSearch.commodity)
+    commodity: new UntypedFormControl(this.stateSearch.commodity)
   });
 
   constructor(

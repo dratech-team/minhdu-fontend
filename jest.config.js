@@ -16,5 +16,6 @@ module.exports = {
     '<rootDir>/apps/farm',
     '<rootDir>/libs/orgchart-v2',
     '<rootDir>/libs/employee-v2',
+    '<rootDir>/libs/pipes',
   ],
 };

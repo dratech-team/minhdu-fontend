@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 import {debounceTime, tap} from 'rxjs/operators';
 import {ItemContextMenu, PaymentType} from '@minhdu-fontend/enums';
@@ -28,11 +28,11 @@ export class TablePaymentComponent implements OnInit {
   pageTypeEnum = ItemContextMenu;
   payType = PaymentType;
 
-  formGroup = new FormGroup(
+  formGroup = new UntypedFormGroup(
     {
-      name: new FormControl(''),
-      paidAt: new FormControl(''),
-      createdAt: new FormControl('')
+      name: new UntypedFormControl(''),
+      paidAt: new UntypedFormControl(''),
+      createdAt: new UntypedFormControl('')
     });
 
 

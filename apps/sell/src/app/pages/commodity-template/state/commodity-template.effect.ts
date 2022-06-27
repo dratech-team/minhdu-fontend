@@ -46,7 +46,7 @@ export class CommodityTemplateEffect {
   @Effect()
   loadAll$ = this.action$.pipe(
     ofType(CommodityTemplateActions.loadAll),
-    switchMap((props: SearchCommodityTemplateDto) => {
+    switchMap((props) => {
       this.store.update(state => (
         Object.assign({
             ...state,

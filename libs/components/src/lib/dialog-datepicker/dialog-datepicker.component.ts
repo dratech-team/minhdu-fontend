@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Inject, Output} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {UntypedFormBuilder, UntypedFormGroup} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Store} from "@ngrx/store";
 import {DatePipe} from "@angular/common";
@@ -8,12 +8,12 @@ import {DatePipe} from "@angular/common";
   templateUrl:'dialog-datapicker.html'
 })
 export class DialogDatePickerComponent {
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   submitted = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly store: Store,
     private readonly datePipe: DatePipe,
     private readonly dialogRef: MatDialogRef<DialogDatePickerComponent>,

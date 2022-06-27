@@ -1,5 +1,5 @@
 import {Component, Inject, Input, LOCALE_ID, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {DatePipe} from '@angular/common';
 import {CustomerResource, CustomerType} from '@minhdu-fontend/enums';
 import {CustomerActions, CustomerQuery} from '../../+state';
@@ -25,11 +25,11 @@ export class CustomerModalComponent implements OnInit {
   districtId: number | undefined;
   wardId: number | undefined;
 
-  formGroup!: FormGroup
+  formGroup!: UntypedFormGroup
 
   constructor(
     @Inject(LOCALE_ID) private locale: string,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     public datePipe: DatePipe,
     private readonly actions$: Actions,
     private readonly customerQuery: CustomerQuery,

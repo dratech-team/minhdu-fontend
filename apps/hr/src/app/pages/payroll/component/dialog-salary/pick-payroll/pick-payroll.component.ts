@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {debounceTime, startWith, tap} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
@@ -39,10 +39,10 @@ export class PickPayrollComponent implements OnInit, OnChanges {
   loading = true
   total = 0
 
-  formGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
-    position: new FormControl('', Validators.required),
-    branch: new FormControl('', Validators.required)
+  formGroup = new UntypedFormGroup({
+    name: new UntypedFormControl('', Validators.required),
+    position: new UntypedFormControl('', Validators.required),
+    branch: new UntypedFormControl('', Validators.required)
   });
   loadMore = false
 

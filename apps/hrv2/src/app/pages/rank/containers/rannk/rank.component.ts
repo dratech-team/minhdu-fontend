@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {Observable} from "rxjs";
 import {Branch, Position} from "@minhdu-fontend/data-models";
 import {AppStore} from "../../../../state/app.store";
@@ -23,12 +23,12 @@ export class RankComponent implements OnInit {
   positions$ = new Observable<Position[]>()
   branches$ = new Observable<Branch[]>()
 
-  formGroup = new FormGroup({
-    search: new FormControl(''),
-    name: new FormControl(''),
-    gender: new FormControl(''),
-    position: new FormControl([]),
-    branch: new FormControl('')
+  formGroup = new UntypedFormGroup({
+    search: new UntypedFormControl(''),
+    name: new UntypedFormControl(''),
+    gender: new UntypedFormControl(''),
+    position: new UntypedFormControl([]),
+    branch: new UntypedFormControl('')
   });
 
   constructor(

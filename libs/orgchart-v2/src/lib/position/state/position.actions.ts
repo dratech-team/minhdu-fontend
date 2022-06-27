@@ -12,7 +12,7 @@ const addOne = createAction(
 
 const loadAll = createAction(
   '[POSITION] Load All',
-  props<SearchPositionDto>()
+  props<Partial<SearchPositionDto>>()
 );
 
 const loadOne = createAction(

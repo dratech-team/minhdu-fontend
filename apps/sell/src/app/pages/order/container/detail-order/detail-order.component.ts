@@ -11,7 +11,7 @@ import {
   DialogSharedComponent
 } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
 import { OrderHistoryService } from '../../service';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -34,9 +34,9 @@ export class DetailOrderComponent implements OnInit {
   orderHistories: OrderHistoryEntity[] = [];
   loading$ = new BehaviorSubject<boolean>(false);
 
-  formOrderHistory = new FormGroup({
-    content: new FormControl(''),
-    commodity: new FormControl('')
+  formOrderHistory = new UntypedFormGroup({
+    content: new UntypedFormControl(''),
+    commodity: new UntypedFormControl('')
   });
 
   constructor(
@@ -49,7 +49,7 @@ export class DetailOrderComponent implements OnInit {
     private readonly orderHistoryService: OrderHistoryService,
     private readonly modal: NzModalService,
     private readonly viewContentRef: ViewContainerRef,
-    private readonly formBuilder: FormBuilder
+    private readonly formBuilder: UntypedFormBuilder
   ) {
   }
 

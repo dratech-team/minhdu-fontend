@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {RouteActions, RouteQuery, RouteStore} from '../../+state';
 import {DatePipe} from '@angular/common';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -22,10 +22,10 @@ export class RouteDialogComponent implements OnInit {
   isSelectAll = false;
   stepIndex = 0;
   updateTypeEnum = UpdateTypeEnum
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly actions$: Actions,
     private readonly routeQuery: RouteQuery,
     private readonly routeStore: RouteStore,

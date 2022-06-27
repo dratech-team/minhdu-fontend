@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewContainerRef } from '@angular/core';
-import { ControlContainer, FormControl, FormGroup } from '@angular/forms';
+import { ControlContainer, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { CustomerEntity } from '../../../pages/customer/entities';
 import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
@@ -18,7 +18,7 @@ export class PickCustomerComponent implements OnInit {
   customers$ = this.customerQuery.selectAll();
   @Input() customers: CustomerEntity[] = [];
   @Input() pickOne = false;
-  @Input() formGroup!:FormGroup;
+  @Input() formGroup!:UntypedFormGroup;
   @Input() closeable = false;
   @Output() checkEvent = new EventEmitter<number[]>();
   @Input() data!: any;
@@ -31,11 +31,11 @@ export class PickCustomerComponent implements OnInit {
   pageSizeTable = 5;
   isSelectAll = false;
   customerIds: number[] = [];
-  formGroupCustomer = new FormGroup(
+  formGroupCustomer = new UntypedFormGroup(
     {
-      name: new FormControl(''),
-      type: new FormControl(''),
-      resource: new FormControl('')
+      name: new UntypedFormControl(''),
+      type: new UntypedFormControl(''),
+      resource: new UntypedFormControl('')
     });
 
   constructor(

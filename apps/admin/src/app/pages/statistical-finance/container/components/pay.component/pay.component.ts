@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-pay',
   templateUrl: 'pay.component.html'
 })
 export class PayComponent implements OnInit {
-  formGroup = new FormGroup({
-    createdAt : new FormControl(''),
-    income : new FormControl(''),
-    name : new FormControl(''),
+  formGroup = new UntypedFormGroup({
+    createdAt : new UntypedFormControl(''),
+    income : new UntypedFormControl(''),
+    name : new UntypedFormControl(''),
   });
   ngOnInit() {
   }

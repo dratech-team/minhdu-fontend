@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { PayrollQuery, PayrollStore } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { PayrollActions } from '../../state/payroll.action';
@@ -47,25 +47,25 @@ export class PayrollComponent implements OnInit {
   filterTypeEnum = FilterTypeEnum;
   payrollConstant = PayrollConstant;
 
-  formGroup = new FormGroup({
-    code: new FormControl(this.stateSearch.code || ''),
-    name: new FormControl(this.stateSearch.name || ''),
-    branch: new FormControl(this.stateSearch.branch || ''),
-    position: new FormControl(this.stateSearch.position || ''),
-    empStatus: new FormControl(this.stateSearch.empStatus || ''),
-    startedAt: new FormControl(this.stateSearch.startedAt || ''),
-    endedAt: new FormControl(this.stateSearch.endedAt || ''),
-    employeeType: new FormControl(this.stateSearch.employeeType || ''),
-    department: new FormControl(this.stateSearch.department || ''),
-    filterType: new FormControl(this.stateSearch.filterType || ''),
-    accConfirmed: new FormControl(this.stateSearch.accConfirmed),
-    paidAt: new FormControl(this.stateSearch.paidAt),
-    manConfirmedAt: new FormControl(this.stateSearch.manConfirmedAt),
-    rangeDay: new FormControl([
+  formGroup = new UntypedFormGroup({
+    code: new UntypedFormControl(this.stateSearch.code || ''),
+    name: new UntypedFormControl(this.stateSearch.name || ''),
+    branch: new UntypedFormControl(this.stateSearch.branch || ''),
+    position: new UntypedFormControl(this.stateSearch.position || ''),
+    empStatus: new UntypedFormControl(this.stateSearch.empStatus || ''),
+    startedAt: new UntypedFormControl(this.stateSearch.startedAt || ''),
+    endedAt: new UntypedFormControl(this.stateSearch.endedAt || ''),
+    employeeType: new UntypedFormControl(this.stateSearch.employeeType || ''),
+    department: new UntypedFormControl(this.stateSearch.department || ''),
+    filterType: new UntypedFormControl(this.stateSearch.filterType || ''),
+    accConfirmed: new UntypedFormControl(this.stateSearch.accConfirmed),
+    paidAt: new UntypedFormControl(this.stateSearch.paidAt),
+    manConfirmedAt: new UntypedFormControl(this.stateSearch.manConfirmedAt),
+    rangeDay: new UntypedFormControl([
       this.stateSearch.startedAt,
       this.stateSearch.endedAt
     ]),
-    titles: new FormControl([])
+    titles: new UntypedFormControl([])
   });
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? (o1.id == o2.id || o1 === o2.name) : o1 === o2);

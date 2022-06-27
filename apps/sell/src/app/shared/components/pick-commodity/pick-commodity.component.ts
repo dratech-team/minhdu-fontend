@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {ControlContainer, FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {ControlContainer, FormBuilder, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityUnit, CustomerType } from '@minhdu-fontend/enums';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -16,7 +16,7 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 })
 export class PickCommodityComponent implements OnInit {
   @Input() data: any;
-  @Input() formGroup!: FormGroup;
+  @Input() formGroup!: UntypedFormGroup;
   @Input() pickPOne: boolean | undefined;
   setOfCheckedId = new Set<number>();
   commodityUnit = CommodityUnit;
@@ -26,10 +26,10 @@ export class PickCommodityComponent implements OnInit {
 
   commodities$ = this.commodityQuery.selectAll();
   total$ = this.commodityQuery.selectCount();
-  formGroupCommodity = new FormGroup({
-    code: new FormControl(''),
-    name: new FormControl(''),
-    unit: new FormControl('')
+  formGroupCommodity = new UntypedFormGroup({
+    code: new UntypedFormControl(''),
+    name: new UntypedFormControl(''),
+    unit: new UntypedFormControl('')
   });
   indeterminate = false;
   listOfCurrentPageData: readonly CommodityEntity[] = [];

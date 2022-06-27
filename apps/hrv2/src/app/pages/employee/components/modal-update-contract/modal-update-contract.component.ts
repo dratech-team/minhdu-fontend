@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {DatePipe} from '@angular/common';
 import {NzModalRef, NzModalService} from "ng-zorro-antd/modal";
 import {ContractService} from "../../../../../../../../libs/employee-v2/src/lib/employee/services/contract.service";
@@ -19,11 +19,11 @@ export class ModalUpdateContractComponent implements OnInit {
     contracts: ContractEntity [],
   }
   submitting = false
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
 
   constructor(
     public datePipe: DatePipe,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly modal: NzModalService,
     private readonly modalRef: NzModalRef,
     private readonly contractService: ContractService,

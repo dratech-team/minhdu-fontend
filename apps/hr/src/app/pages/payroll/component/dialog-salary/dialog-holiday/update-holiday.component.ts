@@ -1,6 +1,6 @@
 import {DatePipe} from '@angular/common';
 import {Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {PartialDayEnum, SalaryPayroll} from '@minhdu-fontend/data-models';
@@ -19,14 +19,14 @@ import {NzMessageService} from "ng-zorro-antd/message";
 })
 export class UpdateHolidayComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
 
   constructor(
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly dialogRef: MatDialogRef<UpdateHolidayComponent>,
     @Inject(MAT_DIALOG_DATA) public data?: any
   ) {

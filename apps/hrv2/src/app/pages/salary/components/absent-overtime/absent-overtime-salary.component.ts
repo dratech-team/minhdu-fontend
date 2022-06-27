@@ -1,30 +1,31 @@
-import {DatePipe} from '@angular/common';
-import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {PartialDayEnum} from '@minhdu-fontend/data-models';
-import {DatetimeUnitEnum, EmployeeType, ModeEnum, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {catchError, map} from 'rxjs/operators';
-import {SettingSalaryActions, SettingSalaryQuery} from '../../../setting/salary/state';
-import {PriceType} from '../../../setting/salary/enums';
-import {AbsentSalaryService, OvertimeSalaryService} from '../../service';
-import {NzModalRef} from 'ng-zorro-antd/modal';
-import {NzMessageService} from 'ng-zorro-antd/message';
-import {Actions} from '@datorama/akita-ng-effects';
-import {UnitSalaryConstant} from '../../constants';
-import {SessionConstant, workingTime} from '../../../../../shared/constants';
-import {recipesConstant} from '../../../setting/salary/constants';
-import {SalarySettingEntity} from '../../../setting/salary/entities';
-import {getAfterTime, getBeforeTime, getFirstDayInMonth} from '@minhdu-fontend/utils';
-import {throwError} from 'rxjs';
-import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
+import { DatePipe } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { PartialDayEnum } from '@minhdu-fontend/data-models';
+import { DatetimeUnitEnum, EmployeeType, ModeEnum, partialDay, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { catchError, map } from 'rxjs/operators';
+import { SettingSalaryActions, SettingSalaryQuery } from '../../../setting/salary/state';
+import { PriceType } from '../../../setting/salary/enums';
+import { AbsentSalaryService, OvertimeSalaryService } from '../../service';
+import { NzModalRef } from 'ng-zorro-antd/modal';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { Actions } from '@datorama/akita-ng-effects';
+import { UnitSalaryConstant } from '../../constants';
+import { SessionConstant, workingTime } from '../../../../../shared/constants';
+import { recipesConstant } from '../../../setting/salary/constants';
+import { SalarySettingEntity } from '../../../setting/salary/entities';
+import { getAfterTime, getBeforeTime, getFirstDayInMonth } from '@minhdu-fontend/utils';
+import { throwError } from 'rxjs';
+import { PayrollActions } from '../../../payroll/state/payroll.action';
+import { ResponseMessageEntity } from '@minhdu-fontend/base-entity';
 import * as moment from 'moment';
-import {validateDayInMonth} from '../../utils/validate-day-in-month.util';
-import {PayrollQuery, PayrollStore} from '../../../payroll/state';
-import {SessionEntity} from '../../../../../shared/entities';
-import {ModalAddOrUpdateAbsentOrOvertime} from '../../data';
-import {RateConditionConstant} from '../../../setting/salary/constants/rate-condition.constant';
-import {ConditionConstant} from '../../../setting/salary/constants/condition.constant';
-import {AccountQuery} from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
+import { validateDayInMonth } from '../../utils/validate-day-in-month.util';
+import { PayrollQuery } from '../../../payroll/state';
+import { SessionEntity } from '../../../../../shared/entities';
+import { ModalAddOrUpdateAbsentOrOvertime } from '../../data';
+import { RateConditionConstant } from '../../../setting/salary/constants/rate-condition.constant';
+import { ConditionConstant } from '../../../setting/salary/constants/condition.constant';
+import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 
 @Component({
   templateUrl: 'absent-overtime-salary.component.html'
@@ -63,7 +64,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   employeeType = EmployeeType;
   modeEnum = ModeEnum;
 
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
   disabledHoursStart = (): number[] => this.limitStartHour;
@@ -74,14 +75,13 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
   constructor(
     public readonly datePipe: DatePipe,
     private readonly settingSalaryQuery: SettingSalaryQuery,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly modalRef: NzModalRef,
     private readonly message: NzMessageService,
     private readonly absentSalaryService: AbsentSalaryService,
     private readonly overtimeSalaryService: OvertimeSalaryService,
     private readonly actions$: Actions,
     private readonly payrollQuery: PayrollQuery,
-    private readonly payrollStore: PayrollStore,
     private readonly accountQuery: AccountQuery
   ) {
   }
@@ -94,7 +94,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
         : this.data.update.salary.startedAt || this.payrollQuery.getValue().search.startedAt)
     );
     this.actions$.dispatch(SettingSalaryActions.loadAll({
-      search: {types: [this.data.type]}
+      search: { types: [this.data.type] }
     }));
     const salary = this.data.add?.salary || this.data?.update?.salary;
     this.formGroup = this.formBuilder.group({
@@ -191,7 +191,16 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
         return this.onSubmitError(err);
       }))
       .subscribe(res => {
-        this.onSubmitSuccess(res);
+        this.onSubmitSuccess(res, this.data.add
+          ? (
+            !this.data.add?.multiple
+              ? this.data.add?.payroll?.id
+              : undefined
+          )
+          : (!this.data.update.multiple
+            ? this.data.update.salary.payrollId
+            : undefined)
+        );
       });
   }
 
@@ -231,11 +240,11 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     return Object.assign(salary,
       this.data.update
         ? this.data.update.multiple
-          ? {salaryIds: value.salaryIds}
+          ? { salaryIds: value.salaryIds }
           : this.data.update.multiple
-            ? {salaryIds: value.salaryIds}
-            : {salaryIds: [this.data.update.salary.id]}
-        : {payrollIds: value.payrollIds},
+            ? { salaryIds: value.salaryIds }
+            : { salaryIds: [this.data.update.salary.id] }
+        : { payrollIds: value.payrollIds },
       value.isAllowance && value.priceAllowance && value.titleAllowance && this.data.add
         ? {
           allowances: {
@@ -260,8 +269,12 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     return throwError(err);
   }
 
-  private onSubmitSuccess(res: ResponseMessageEntity) {
+  private onSubmitSuccess(res: ResponseMessageEntity, payrollId?: number) {
+    this.message.success(res.message);
+    if (payrollId) {
+      this.actions$.dispatch(PayrollActions.loadOne({ id: payrollId }));
+    }
     this.submitting = false;
-    this.modalRef.close(this.formGroup.value.template.title)
+    this.modalRef.close(this.formGroup.value.template.title);
   }
 }

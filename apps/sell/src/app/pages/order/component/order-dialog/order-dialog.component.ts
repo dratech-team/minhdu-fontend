@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {PaymentType} from '@minhdu-fontend/enums';
 import {OrderActions, OrderQuery} from '../../+state';
 import {DatePipe} from '@angular/common';
@@ -17,7 +17,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 export class OrderDialogComponent implements OnInit {
   @Input() data: any;
   payType = PaymentType;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   submitted = false;
   routes: number[] = [];
   customers: CustomerEntity[] = [];
@@ -30,7 +30,7 @@ export class OrderDialogComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly commodityQuery: CommodityQuery,
     private readonly customerQuery: CustomerQuery,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly datePipe: DatePipe,
     private readonly orderQuery: OrderQuery,
     private readonly modalRef: NzModalRef,

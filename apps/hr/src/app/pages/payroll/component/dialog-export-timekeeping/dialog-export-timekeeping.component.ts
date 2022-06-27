@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Api } from '@minhdu-fontend/constants';
 import { ExportService } from '@minhdu-fontend/service';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { FilterTypeEnum } from '@minhdu-fontend/enums';
 
@@ -10,7 +10,7 @@ import { FilterTypeEnum } from '@minhdu-fontend/enums';
   templateUrl: 'dialog-export-timekeeping.component.html'
 })
 export class DialogExportTimekeepingComponent {
-  name = new FormControl('', Validators.required);
+  name = new UntypedFormControl('', Validators.required);
   submitted = false
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,

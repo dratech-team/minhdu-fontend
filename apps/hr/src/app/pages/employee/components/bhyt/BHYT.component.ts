@@ -1,6 +1,6 @@
 import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { EmployeeService } from 'libs/employee/src/lib/+state/service/employee.service';
 
@@ -9,7 +9,7 @@ import { EmployeeService } from 'libs/employee/src/lib/+state/service/employee.s
 })
 
 export class BHYTComponent implements OnInit {
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   submitted = false;
 
   constructor(
@@ -17,7 +17,7 @@ export class BHYTComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     @Inject(LOCALE_ID) private locale: string,
     private readonly employeeService: EmployeeService,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly dialogRef: MatDialogRef<BHYTComponent>
   ) {
   }

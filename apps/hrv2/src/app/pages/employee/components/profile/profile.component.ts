@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 import {checkInputNumber} from '@minhdu-fontend/utils';
 import {GenderTypeConstant} from "@minhdu-fontend/constants";
 
@@ -12,7 +12,7 @@ import {GenderTypeConstant} from "@minhdu-fontend/constants";
 export class ProfileComponent {
   @Input() submitting!: boolean
   @Input() form: any
-  @Input() formGroup!: FormGroup;
+  @Input() formGroup!: UntypedFormGroup;
   genderConstant = GenderTypeConstant
   checkInputNumber(event: any) {
     return checkInputNumber(event)

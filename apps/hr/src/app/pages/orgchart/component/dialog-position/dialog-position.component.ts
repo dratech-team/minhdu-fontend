@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { PositionActions, selectPositionAdded } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { Branch } from '@minhdu-fontend/data-models';
@@ -14,16 +14,16 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   templateUrl: 'dialog-position.component.html'
 })
 export class DialogPositionComponent implements OnInit {
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   submitted = false;
   branchId!: number;
-  branches = new FormControl();
+  branches = new UntypedFormControl();
   branches$ = this.store.pipe(select(getAllOrgchart));
   branchesSelected: Branch[] = [];
 
   constructor(
     private readonly dialogRef: MatDialogRef<DialogPositionComponent>,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly store: Store,
     private readonly message: NzMessageService,
     @Inject(MAT_DIALOG_DATA) public data: any

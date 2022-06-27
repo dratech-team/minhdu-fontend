@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {DatetimeUnitEnum, EmployeeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {Branch} from '@minhdu-fontend/data-models';
 import {NzMessageService} from 'ng-zorro-antd/message';
@@ -45,14 +45,14 @@ export class ModalSettingSalaryComponent implements OnInit {
   constraint: SalaryTypeEnum[] = []
   prices: number[] = []
 
-  branches = new FormControl();
-  formGroup!: FormGroup;
+  branches = new UntypedFormControl();
+  formGroup!: UntypedFormGroup;
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type || o1.type === o2.type : o1 === o2);
   compareFNId = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly actions$: Actions,
     private readonly settingSalaryQuery: SettingSalaryQuery,
     private readonly branchQuery: BranchQuery,

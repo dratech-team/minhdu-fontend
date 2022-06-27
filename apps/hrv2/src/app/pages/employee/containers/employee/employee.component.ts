@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   EmployeeStatusEnum,
@@ -86,21 +86,21 @@ export class EmployeeComponent implements OnInit {
     orderType: this.stateEmployee.orderType
   };
 
-  departmentControl = new FormControl(this.stateEmployee.department || '');
-  formGroup = new FormGroup({
-    name: new FormControl(this.stateEmployee.name),
-    phone: new FormControl(this.stateEmployee.phone),
-    identify: new FormControl(this.stateEmployee.phone),
-    address: new FormControl(this.stateEmployee.address),
-    province: new FormControl(this.stateEmployee.province || ''),
-    district: new FormControl(this.stateEmployee.district || ''),
-    ward: new FormControl(this.stateEmployee.ward || ''),
-    gender: new FormControl(this.stateEmployee.gender),
-    flatSalary: new FormControl(this.stateEmployee.flatSalary),
-    position: new FormControl(this.stateEmployee.position || ''),
-    branch: new FormControl(this.stateEmployee.branch || ''),
-    type: new FormControl(this.stateEmployee.type),
-    status: new FormControl(this.stateEmployee.status)
+  departmentControl = new UntypedFormControl(this.stateEmployee.department || '');
+  formGroup = new UntypedFormGroup({
+    name: new UntypedFormControl(this.stateEmployee.name),
+    phone: new UntypedFormControl(this.stateEmployee.phone),
+    identify: new UntypedFormControl(this.stateEmployee.phone),
+    address: new UntypedFormControl(this.stateEmployee.address),
+    province: new UntypedFormControl(this.stateEmployee.province || ''),
+    district: new UntypedFormControl(this.stateEmployee.district || ''),
+    ward: new UntypedFormControl(this.stateEmployee.ward || ''),
+    gender: new UntypedFormControl(this.stateEmployee.gender),
+    flatSalary: new UntypedFormControl(this.stateEmployee.flatSalary),
+    position: new UntypedFormControl(this.stateEmployee.position || ''),
+    branch: new UntypedFormControl(this.stateEmployee.branch || ''),
+    type: new UntypedFormControl(this.stateEmployee.type),
+    status: new UntypedFormControl(this.stateEmployee.status)
   });
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);

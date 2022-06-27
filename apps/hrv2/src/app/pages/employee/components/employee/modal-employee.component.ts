@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {EmployeeType, RecipeType} from '@minhdu-fontend/enums';
 import {DatePipe} from '@angular/common';
 import {checkInputNumber} from '@minhdu-fontend/utils';
@@ -50,7 +50,7 @@ export class ModalEmployeeComponent implements OnInit {
   submitting = false;
   recipeType = RecipeType;
   typeEmployee = EmployeeType;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
 
 
   constructor(
@@ -58,7 +58,7 @@ export class ModalEmployeeComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly branchQuery: BranchQuery,
     private readonly employeeQuery: EmployeeQuery,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly message: NzMessageService,
     private readonly modalRef: NzModalRef,
     private readonly departmentQuery: DepartmentQuery

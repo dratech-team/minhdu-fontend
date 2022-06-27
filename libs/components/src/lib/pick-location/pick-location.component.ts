@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { District, Province, Ward } from '@minhdu-fontend/data-models';
-import { ControlContainer, FormControl, FormGroup } from '@angular/forms';
+import { ControlContainer, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { DistrictService, ProvinceService, WardService } from '@minhdu-fontend/location';
 
@@ -20,12 +20,12 @@ export class PickLocationComponent implements OnInit {
   @Input() district?: any;
   @Input() ward?: Ward;
   @Input() reload$?: Subject<boolean>;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   provinces$ = this.provinceService.getAll();
   lstDistrict: District[] = [];
   lstWard: Ward [] = [];
-  formDistrict = new FormControl();
-  formWard = new FormControl();
+  formDistrict = new UntypedFormControl();
+  formWard = new UntypedFormControl();
 
   constructor(
     private controlContainer: ControlContainer,
@@ -36,7 +36,7 @@ export class PickLocationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.formGroup = <FormGroup>this.controlContainer.control;
+    this.formGroup = <UntypedFormGroup>this.controlContainer.control;
     this.reload$?.subscribe(val => {
       if (val) {
         this.formGroup.reset();

@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
 import {DatePipe} from '@angular/common';
 import {getAllOrgchart} from "@minhdu-fontend/orgchart";
@@ -17,9 +17,9 @@ import {CategoryService} from "../../../../../../../../libs/employee/src/lib/+st
 })
 
 export class DialogCategoryComponent implements OnInit {
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   submitted = false;
-  branches = new FormControl();
+  branches = new UntypedFormControl();
   branches$ = this.store.pipe(select(getAllOrgchart));
   branchSelected?: Branch
   tabIndex = 0;
@@ -28,7 +28,7 @@ export class DialogCategoryComponent implements OnInit {
   constructor(
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly store: Store,
     private readonly snackbar: MatSnackBar,
     private readonly dialogRef: MatDialogRef<DialogCategoryComponent>,

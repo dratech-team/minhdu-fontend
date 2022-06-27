@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 
@@ -8,10 +8,10 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   templateUrl:'pick-day-to-day.component.html',
 })
 export class PickDayToDayComponent implements OnInit {
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
 
   ) {
   }

@@ -53,7 +53,7 @@ export class SettingSalaryEffect {
   @Effect()
   loadAll$ = this.action$.pipe(
     ofType(SettingSalaryActions.loadAll),
-    switchMap((props: SearchSalarySettingDto) => {
+    switchMap((props) => {
       this.settingSalaryStore.update(state => ({
           ...state,
           loading: true

@@ -4,7 +4,7 @@ import { AppState } from '../../../../reducers';
 import { OrgchartEnum } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
 
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { getBranchById, getOrgchartLoaded, OrgchartActions } from '@minhdu-fontend/orgchart';
@@ -21,7 +21,7 @@ export class DetailBranchContainer implements OnInit {
   type = OrgchartEnum;
   pageSize = 30;
   pageIndexInit = 0;
-  branch = new FormControl();
+  branch = new UntypedFormControl();
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,

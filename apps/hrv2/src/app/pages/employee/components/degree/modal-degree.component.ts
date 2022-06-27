@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {Store} from '@ngrx/store';
 import {ModalDegreeData} from "../../data/modal-degree.data";
 import {
@@ -31,10 +31,10 @@ export class ModalDegreeComponent implements OnInit {
 
   submitted = false;
 
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly store: Store,
     private readonly modalRef: NzModalRef,
     private readonly actions$: Actions,

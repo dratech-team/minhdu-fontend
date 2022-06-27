@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PositionQuery} from "@minhdu-fontend/orgchart-v2";
@@ -15,12 +15,12 @@ export class ModalCommodityTemplateComponent implements OnInit {
 
   added$ = this.query.select(state => state.added)
 
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
 
   constructor(
     private readonly modalRef: NzModalRef,
     private readonly actions$: Actions,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly positionQuery: PositionQuery,
     private readonly query: CommodityTemplateQuery,
   ) {

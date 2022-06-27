@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {Actions} from "@datorama/akita-ng-effects";
 import {BranchActions, BranchQuery} from "@minhdu-fontend/orgchart-v2";
@@ -8,13 +8,13 @@ import {BranchActions, BranchQuery} from "@minhdu-fontend/orgchart-v2";
   templateUrl: 'statistical-employee.component.html'
 })
 export class StatisticalEmployeeComponent implements OnInit {
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   branches$ = this.branchQuery.selectAll();
 
   constructor(
     private readonly actions$: Actions,
     private readonly branchQuery: BranchQuery,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly modalRef: NzModalRef,
   ) {
   }

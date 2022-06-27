@@ -1,6 +1,6 @@
 import {DatePipe} from '@angular/common';
 import {Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {SalaryPayroll} from '@minhdu-fontend/data-models';
@@ -20,7 +20,7 @@ export class DialogWFHComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
   type = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   submitted = false;
   selectedIndex?: number;
   unitMinute = false;
@@ -34,7 +34,7 @@ export class DialogWFHComponent implements OnInit {
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly snackBar: MatSnackBar,
     private readonly dialogRef: MatDialogRef<DialogWFHComponent>,
     private readonly snackbar: MatSnackBar,

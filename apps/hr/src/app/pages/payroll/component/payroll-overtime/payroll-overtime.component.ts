@@ -1,6 +1,6 @@
 import {DatePipe} from '@angular/common';
 import {ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
@@ -79,18 +79,18 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
   totalOvertime$ = this.store.pipe(select(selectedTotalOvertimePayroll));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
 
-  formGroup = new FormGroup({
-    titles: new FormControl([]),
-    code: new FormControl(''),
-    name: new FormControl(''),
-    empStatus: new FormControl(getSelectors<number>(selectedEmpStatusPayroll, this.store)),
-    position: new FormControl(
+  formGroup = new UntypedFormGroup({
+    titles: new UntypedFormControl([]),
+    code: new UntypedFormControl(''),
+    name: new UntypedFormControl(''),
+    empStatus: new UntypedFormControl(getSelectors<number>(selectedEmpStatusPayroll, this.store)),
+    position: new UntypedFormControl(
       getSelectors(selectedPositionPayroll, this.store)
     ),
-    branch: new FormControl(
+    branch: new UntypedFormControl(
       getSelectors(selectedBranchPayroll, this.store)
     ),
-    searchType: new FormControl(SearchTypeEnum.CONTAINS)
+    searchType: new UntypedFormControl(SearchTypeEnum.CONTAINS)
   });
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 

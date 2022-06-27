@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Employee } from '@minhdu-fontend/data-models';
 import {
@@ -38,10 +38,10 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   isSelectAllEmployee = false;
   isSelectAllowance = false;
   employees: Employee[] = [];
-  formGroup = new FormGroup({
-    name: new FormControl(''),
-    position: new FormControl(''),
-    code: new FormControl('')
+  formGroup = new UntypedFormGroup({
+    name: new UntypedFormControl(''),
+    position: new UntypedFormControl(''),
+    code: new UntypedFormControl('')
   });
   positions$ = this.store.pipe(select(getAllPosition));
   isEventSearch = false;

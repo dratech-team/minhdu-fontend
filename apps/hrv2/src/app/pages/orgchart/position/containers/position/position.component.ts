@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {debounceTime, map} from 'rxjs/operators';
 import {Actions} from '@datorama/akita-ng-effects';
@@ -32,9 +32,9 @@ export class PositionComponent implements OnInit {
   itemContextMenu = ItemContextMenu
   filterType = FilterTypeEnum
   modeEnum = ModeEnum
-  formGroup = new FormGroup(
+  formGroup = new UntypedFormGroup(
     {
-      search: new FormControl(this.stateSearch.search),
+      search: new UntypedFormControl(this.stateSearch.search),
     }
   );
 

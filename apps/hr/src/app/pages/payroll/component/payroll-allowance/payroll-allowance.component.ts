@@ -9,7 +9,7 @@ import {
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
 import {Subject} from 'rxjs';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {Api, SearchTypeConstant, UnitAllowanceConstant} from '@minhdu-fontend/constants';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../../reducers';
@@ -71,17 +71,17 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollAllowance$ = this.store.pipe(select(selectorAllPayroll));
   positions$ = this.store.pipe(select(getAllPosition))
-  formGroup = new FormGroup({
-    titles: new FormControl(''),
-    code: new FormControl(''),
-    unit: new FormControl(''),
-    name: new FormControl(''),
-    empStatus: new FormControl(getSelectors<number>(selectedEmpStatusPayroll, this.store)),
-    searchType: new FormControl(SearchTypeEnum.CONTAINS),
-    position: new FormControl(
+  formGroup = new UntypedFormGroup({
+    titles: new UntypedFormControl(''),
+    code: new UntypedFormControl(''),
+    unit: new UntypedFormControl(''),
+    name: new UntypedFormControl(''),
+    empStatus: new UntypedFormControl(getSelectors<number>(selectedEmpStatusPayroll, this.store)),
+    searchType: new UntypedFormControl(SearchTypeEnum.CONTAINS),
+    position: new UntypedFormControl(
       getSelectors(selectedPositionPayroll, this.store)
     ),
-    branch: new FormControl(
+    branch: new UntypedFormControl(
       getSelectors(selectedBranchPayroll, this.store)
     ),
   });

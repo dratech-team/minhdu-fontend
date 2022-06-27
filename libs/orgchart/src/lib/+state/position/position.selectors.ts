@@ -5,16 +5,11 @@ export const getPositionState = createFeatureSelector<positionState>(
   POSITION_FEATURE_KEY
 );
 
-const { selectAll, selectEntities } = positionAdapter.getSelectors();
+const { selectAll } = positionAdapter.getSelectors();
 
 export const getPositionLoaded = createSelector(
   getPositionState,
   (state: positionState) => state.loaded
-);
-
-export const getDepartmentError = createSelector(
-  getPositionState,
-  (state: positionState) => state.error
 );
 
 export const getAllPosition = createSelector(
@@ -22,25 +17,7 @@ export const getAllPosition = createSelector(
   (state: positionState) => selectAll(state)
 );
 
-export const selectPositionLoaded = createSelector(
-  getPositionState,
-  (state: positionState) => state.loaded
-);
-
 export const selectPositionAdded = createSelector(
   getPositionState,
   (state: positionState) => state.added
-);
-
-
- const getSelectedId = createSelector(
-  getPositionState,
-  (state: positionState) => state.selectedId
-);
-
- //chưa sử dụng
-export const getSelected = createSelector(
-  getAllPosition,
-  getSelectedId,
-  (entities, selectedId) => (selectedId ? entities[selectedId] : undefined)
 );

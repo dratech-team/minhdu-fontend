@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { getFirstDayInMonth, getLastDayInMonth, searchAndAddAutocomplete } from '@minhdu-fontend/utils';
 import { debounceTime, map, startWith, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -37,10 +37,10 @@ export class IncubatorFactoryComponent implements OnInit {
   pageSize = 30;
   pageIndex = 0;
 
-  formGroup = new FormGroup({
-    branches: new FormControl(''),
-    startedAt: new FormControl(this.datePipe.transform(getFirstDayInMonth(new Date()), 'yyyy-MM-dd')),
-    endedAt: new FormControl(this.datePipe.transform(getLastDayInMonth(new Date()), 'yyyy-MM-dd'))
+  formGroup = new UntypedFormGroup({
+    branches: new UntypedFormControl(''),
+    startedAt: new UntypedFormControl(this.datePipe.transform(getFirstDayInMonth(new Date()), 'yyyy-MM-dd')),
+    endedAt: new UntypedFormControl(this.datePipe.transform(getLastDayInMonth(new Date()), 'yyyy-MM-dd'))
   });
 
   constructor(

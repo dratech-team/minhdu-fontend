@@ -1,6 +1,6 @@
 import {DatePipe} from '@angular/common';
 import {ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
@@ -73,15 +73,15 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
   payrollAbsent$ = this.store.pipe(select(selectorAllPayroll));
   positions$ = this.store.pipe(select(getAllPosition))
 
-  formGroup = new FormGroup({
-    titles: new FormControl(''),
-    code: new FormControl(''),
-    name: new FormControl(''),
-    unit: new FormControl(''),
-    empStatus: new FormControl(getSelectors<number>(selectedEmpStatusPayroll, this.store)),
-    searchType: new FormControl(SearchTypeEnum.CONTAINS),
-    position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
-    branch: new FormControl(getSelectors(selectedBranchPayroll, this.store)),
+  formGroup = new UntypedFormGroup({
+    titles: new UntypedFormControl(''),
+    code: new UntypedFormControl(''),
+    name: new UntypedFormControl(''),
+    unit: new UntypedFormControl(''),
+    empStatus: new UntypedFormControl(getSelectors<number>(selectedEmpStatusPayroll, this.store)),
+    searchType: new UntypedFormControl(SearchTypeEnum.CONTAINS),
+    position: new UntypedFormControl(getSelectors(selectedPositionPayroll, this.store)),
+    branch: new UntypedFormControl(getSelectors(selectedBranchPayroll, this.store)),
   });
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 

@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {select, Store} from '@ngrx/store';
@@ -39,7 +39,7 @@ export class DialogTimekeepingComponent implements OnInit {
       return templates
     })
   )
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   references = referencesTypeConstant;
   selectedIndex = 0;
   unitMinute = false;
@@ -56,7 +56,7 @@ export class DialogTimekeepingComponent implements OnInit {
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly snackBar: MatSnackBar,
     private readonly dialogRef: MatDialogRef<DialogTimekeepingComponent>,
     @Inject(MAT_DIALOG_DATA) public data?: {

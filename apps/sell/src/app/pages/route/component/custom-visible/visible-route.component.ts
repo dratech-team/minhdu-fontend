@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { RouteQuery, RouteStore } from '../../+state';
 
 @Component({
@@ -8,7 +8,7 @@ import { RouteQuery, RouteStore } from '../../+state';
 })
 export class VisibleRouteComponent {
   ui$ = this.routeQuery.select(state => state.ui);
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   visibleEntity: any = {};
 
   constructor(

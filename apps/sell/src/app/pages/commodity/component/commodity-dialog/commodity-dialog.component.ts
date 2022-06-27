@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {CommodityUnit} from '@minhdu-fontend/enums';
 import {CommodityAction} from '../../+state';
@@ -20,11 +20,11 @@ export class CommodityDialogComponent implements OnInit {
   @Input() data: any;
   commodities$ = this.commodityTemplateQuery.selectAll();
   CommodityUnit = CommodityUnit;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   added$ = this.commodityQuery.select(state => state.added);
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly actions$: Actions,
     private readonly dialog: MatDialog,
     private readonly modalRef: NzModalRef,

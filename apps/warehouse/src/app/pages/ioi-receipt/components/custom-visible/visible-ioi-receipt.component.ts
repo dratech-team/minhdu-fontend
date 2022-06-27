@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 import {IoiReceiptQuery} from "../../state/ioi-receipt.query";
 import {IoiReceiptStore} from "../../state/ioi-receipt.store";
 
@@ -9,7 +9,7 @@ import {IoiReceiptStore} from "../../state/ioi-receipt.store";
 })
 export class VisibleIoiReceiptComponent {
   ui$ = this.ioiReceiptQuery.select(state => state.ui);
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   visibleEntity: any = {};
 
   constructor(

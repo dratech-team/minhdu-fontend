@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ControlContainer, FormGroup} from '@angular/forms';
+import {ControlContainer, UntypedFormGroup} from '@angular/forms';
 import {checkInputNumber} from '../../../../../../../../libs/utils/checkInputNumber.util';
 
 
@@ -11,7 +11,7 @@ import {checkInputNumber} from '../../../../../../../../libs/utils/checkInputNum
 export class AddProfileComponent implements OnInit  {
   @Input() submitted!: boolean
   @Input() form: any
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
 
   constructor(
     private controlContainer: ControlContainer
@@ -19,7 +19,7 @@ export class AddProfileComponent implements OnInit  {
   }
 
   ngOnInit(): void {
-    this.formGroup = <FormGroup>this.controlContainer.control;
+    this.formGroup = <UntypedFormGroup>this.controlContainer.control;
   }
   checkInputNumber(event: any){
     return checkInputNumber(event)

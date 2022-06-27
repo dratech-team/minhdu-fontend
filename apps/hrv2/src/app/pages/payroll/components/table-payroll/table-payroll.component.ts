@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {PayrollEntity} from "../../entities";
-import {FormGroup} from "@angular/forms";
+import {UntypedFormGroup} from "@angular/forms";
 import {BranchQuery, PositionQuery} from "@minhdu-fontend/orgchart-v2";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollQuery, PayrollStore} from "../../state";
@@ -51,7 +51,7 @@ import {AccountQuery} from "../../../../../../../../libs/system/src/lib/state/ac
 })
 export class TablePayrollComponent implements OnInit {
   @Input() payrolls!: PayrollEntity[];
-  @Input() formGroup!: FormGroup;
+  @Input() formGroup!: UntypedFormGroup;
   @Input() isSalaryType: boolean = false;
   @Input() scroll?: { x: string, y: string } = ScrollTablePayrollConstant.find(item =>
     item.type === this.payrollQuery.getValue().search.filterType)?.scroll;

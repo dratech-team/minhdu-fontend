@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {Store} from '@ngrx/store';
 import {Actions} from '@datorama/akita-ng-effects';
 import {SupplierActions, SupplierQuery} from '../../state';
@@ -12,11 +12,11 @@ import {NzModalRef} from "ng-zorro-antd/modal";
 export class DialogSupplierComponent implements OnInit {
   @Input() data?: { supplier?: SupplierEntity, isUpdate?: boolean }
   loading$ = this.supplierQuery.select(state => state.loading)
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   submitted = false;
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly store: Store,
     private readonly actions$: Actions,
     private readonly supplierQuery: SupplierQuery,

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {DatetimeUnitEnum, ItemContextMenu} from '@minhdu-fontend/enums';
@@ -22,7 +22,7 @@ import {ExportService} from "@minhdu-fontend/service";
 export class PayrollSeasonalComponent {
   @Input() payroll$!: Observable<Payroll[]>;
   @Input() total$!: Observable<number>;
-  @Input() formGroup!: FormGroup;
+  @Input() formGroup!: UntypedFormGroup;
   @Input() positions$!: Observable<Position[]>;
   @Input() branches$!: Observable<Branch[]>;
   @Output() EventHistoryPayroll = new EventEmitter<any>();

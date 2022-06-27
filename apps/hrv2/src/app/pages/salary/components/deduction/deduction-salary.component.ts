@@ -1,6 +1,6 @@
 import {DatePipe} from '@angular/common';
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {SalaryPayroll} from '@minhdu-fontend/data-models';
 import {DatetimeUnitEnum, EmployeeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {catchError} from 'rxjs/operators';
@@ -19,7 +19,7 @@ import {ModalAddOrUpdateDeduction} from "../../data/modal-deduction-salary.data"
 export class DeductionSalaryComponent implements OnInit {
   @Input() data!: ModalAddOrUpdateDeduction;
 
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
 
   salaryPayrolls: SalaryPayroll[] = [];
 
@@ -31,7 +31,7 @@ export class DeductionSalaryComponent implements OnInit {
   constructor(
     public readonly datePipe: DatePipe,
     private readonly settingSalaryQuery: SettingSalaryQuery,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly modalRef: NzModalRef,
     private readonly message: NzMessageService,
     private readonly deductionSalaryService: DeductionSalaryService,

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {DatePipe} from '@angular/common';
 import {Actions} from "@datorama/akita-ng-effects";
 import {DataAddOrUpdateDepartment} from "../../data/modal-department.data";
@@ -24,14 +24,14 @@ export class ModalDepartmentComponent implements OnInit {
   loading$ = this.departmentQuery.select(state => state.loading)
 
   stepIndex = 0;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
 
   compareFn = (o1: any, o2: any) => (o1 && o2 ? (o1 == o2.id || o1.id === o2.id) : o1 === o2);
 
   constructor(
     public datePipe: DatePipe,
     private readonly actions$: Actions,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly branchQuery: BranchQuery,
     private readonly modalRef: NzModalRef,
     private readonly departmentQuery: DepartmentQuery,

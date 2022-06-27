@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 import {SettingSalaryQuery} from "../../state";
 import {SettingSalaryStore} from "../../state";
 
@@ -9,7 +9,7 @@ import {SettingSalaryStore} from "../../state";
 })
 export class VisibleSalarySettingComponent {
   ui$ = this.productQuery.select(state => state.ui);
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   visibleEntity: any = {};
 
   constructor(

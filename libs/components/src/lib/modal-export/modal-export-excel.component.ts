@@ -1,6 +1,6 @@
 import {DatePipe} from '@angular/common';
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {FilterTypeEnum} from '@minhdu-fontend/enums';
 import {ExportService} from '@minhdu-fontend/service';
 import {ItemExportService} from './item-export.service';
@@ -19,7 +19,7 @@ interface itemExport{
 })
 export class ModalExportExcelComponent implements OnInit {
   @Input() data!: ModalExportExcelData
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   exportType = FilterTypeEnum;
   itemsExports: itemExport[] = [];
   loading = true
@@ -33,7 +33,7 @@ export class ModalExportExcelComponent implements OnInit {
     private readonly itemExportService: ItemExportService,
     private readonly exportService: ExportService,
     private readonly datePipe: DatePipe,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
   ) {
   }
 
@@ -47,7 +47,7 @@ export class ModalExportExcelComponent implements OnInit {
           ]
         ]
       } : {
-        name: new FormControl(this.data?.filename ? this.data.filename : '', Validators.required),
+        name: new UntypedFormControl(this.data?.filename ? this.data.filename : '', Validators.required),
         createdAt: [this.data.selectDatetime ? this.datePipe.transform(
           new Date(this.data.params?.startedAt || this.data.params?.startedAt_start),
           'YYYY-MM') : '']

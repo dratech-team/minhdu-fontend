@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { OrderQuery, OrderStore } from '../../+state';
 
 @Component({
@@ -8,7 +8,7 @@ import { OrderQuery, OrderStore } from '../../+state';
 })
 export class VisibleOrderComponent {
   ui$ = this.orderQuery.select(state => state.ui);
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   visibleEntity: any = {};
 
   constructor(

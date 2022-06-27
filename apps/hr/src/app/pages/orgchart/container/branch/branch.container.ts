@@ -3,7 +3,7 @@ import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../../reducers';
 import {FilterTypeEnum, ItemContextMenu, OrgchartEnum} from '@minhdu-fontend/enums';
 import {MatDialog} from '@angular/material/dialog';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {debounceTime, startWith} from 'rxjs/operators';
 import {DialogDeleteComponent} from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import {getAllOrgchart, getOrgchartLoaded, OrgchartActions} from '@minhdu-fontend/orgchart';
@@ -30,10 +30,10 @@ export class BranchContainer implements OnInit {
   branchLoaded$ = this.store.pipe(select(getOrgchartLoaded));
   positions$ = this.store.pipe(select(getAllPosition));
 
-  formGroup = new FormGroup({
-    code: new FormControl(''),
-    branch: new FormControl(),
-    position: new FormControl('')
+  formGroup = new UntypedFormGroup({
+    code: new UntypedFormControl(''),
+    branch: new UntypedFormControl(),
+    position: new UntypedFormControl('')
   });
 
   constructor(

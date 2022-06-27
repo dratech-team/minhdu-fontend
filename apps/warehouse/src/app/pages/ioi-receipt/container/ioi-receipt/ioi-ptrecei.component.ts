@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {DialogDeleteComponent} from '@minhdu-fontend/components';
 import {debounceTime, map} from 'rxjs/operators';
@@ -34,7 +34,7 @@ export class IoiPtreceiComponent implements OnInit {
   stateSearch = this.ioiReceiptQuery.getValue().search;
   warehouseIdSelected = this.ioiReceiptQuery.getValue().warehouseIdSelected;
   stockType = IoiReceiptEnum
-  formGroup = new FormGroup(
+  formGroup = new UntypedFormGroup(
     // check annonate ng đặt fixme là Long nhưng ko chú thích nên không biết vấn đề cần fix là gì
     /// FIXME:
     {

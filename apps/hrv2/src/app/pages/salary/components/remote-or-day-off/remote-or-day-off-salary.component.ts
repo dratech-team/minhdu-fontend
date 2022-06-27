@@ -1,6 +1,6 @@
 import {DatePipe} from '@angular/common';
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {DatetimeUnitEnum, EmployeeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {NzModalRef} from 'ng-zorro-antd/modal';
 import {SalaryRemoteService} from '../../service';
@@ -24,7 +24,7 @@ import {UnitSalaryConstant} from "../../constants";
 export class RemoteOrDayOffSalaryComponent implements OnInit {
   @Input() data!: ModalAddOrUpdateRemoteOrDayOff;
   remoteConstant = RemoteConstant
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
 
   indexStep = 0;
   submitting = false;
@@ -43,7 +43,7 @@ export class RemoteOrDayOffSalaryComponent implements OnInit {
   constructor(
     public datePipe: DatePipe,
     public actions$: Actions,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly modalRef: NzModalRef,
     private readonly message: NzMessageService,
     private readonly remoteService: SalaryRemoteService,

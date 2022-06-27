@@ -1,6 +1,6 @@
 import {DatePipe} from '@angular/common';
 import {AfterContentChecked, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {MatMenuTrigger} from '@angular/material/menu';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -65,27 +65,27 @@ import {PayrollConstantV1} from "../../../../../../../../libs/constants/HR/payro
 })
 export class PayrollComponent implements OnInit, AfterContentChecked {
   @ViewChild(MatSort) sort!: MatSort;
-  categoryControl = new FormControl('');
-  formEmpStatus = new FormControl(EmployeeStatusEnum.IS_ACTIVE)
-  formGroup = new FormGroup({
-    accConfirmed: new FormControl(-1),
-    name: new FormControl(''),
-    code: new FormControl(''),
-    paidAt: new FormControl(''),
-    accConfirmedAt: new FormControl(''),
-    manConfirmedAt: new FormControl(''),
-    position: new FormControl(
+  categoryControl = new UntypedFormControl('');
+  formEmpStatus = new UntypedFormControl(EmployeeStatusEnum.IS_ACTIVE)
+  formGroup = new UntypedFormGroup({
+    accConfirmed: new UntypedFormControl(-1),
+    name: new UntypedFormControl(''),
+    code: new UntypedFormControl(''),
+    paidAt: new UntypedFormControl(''),
+    accConfirmedAt: new UntypedFormControl(''),
+    manConfirmedAt: new UntypedFormControl(''),
+    position: new UntypedFormControl(
       getSelectors<string>(selectedPositionPayroll, this.store)
     ),
   });
-  selectPayroll = new FormControl(
+  selectPayroll = new UntypedFormControl(
     getSelectors<FilterTypeEnum>(selectedTypePayroll, this.store)
   );
   selectedPayroll: FilterTypeEnum = getSelectors<FilterTypeEnum>(
     selectedTypePayroll,
     this.store
   );
-  formCtrlBranch = new FormControl(getSelectors<Branch>(selectedBranchPayroll, this.store))
+  formCtrlBranch = new UntypedFormControl(getSelectors<Branch>(selectedBranchPayroll, this.store))
   salaryType = SalaryTypeEnum;
   contextMenu!: MatMenuTrigger;
   pageSize = 30;
@@ -135,8 +135,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   selectEmpStatusBasic?: number
   selectEmpStatusAllowance?: number
   selectEmpStatusStay?: number
-  formCreatedAt = new FormControl(this.getRangeDay().start)
-  formRangeDay = new FormControl([
+  formCreatedAt = new UntypedFormControl(this.getRangeDay().start)
+  formRangeDay = new UntypedFormControl([
     this.getRangeDay().start,
     this.getRangeDay().end,
   ])

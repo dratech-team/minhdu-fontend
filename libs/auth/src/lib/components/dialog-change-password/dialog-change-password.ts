@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {AccountService} from "../../../../../system/src/lib/services/account.service";
@@ -8,12 +8,12 @@ import {AccountService} from "../../../../../system/src/lib/services/account.ser
   templateUrl: 'dialog-change-password.html'
 })
 export class DialogChangePassword implements OnInit {
-  fromGroup!: FormGroup;
+  fromGroup!: UntypedFormGroup;
   submitted = false;
   isHidden = false;
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly accountService: AccountService,
     private readonly snackBar: MatSnackBar,
     private readonly dialogRef:MatDialogRef<DialogChangePassword>,

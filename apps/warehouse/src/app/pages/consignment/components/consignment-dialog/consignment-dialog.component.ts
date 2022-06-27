@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {DatePipe} from '@angular/common';
 import {Actions} from '@datorama/akita-ng-effects';
 import {ConsignmentEntity} from "../../entities";
@@ -14,9 +14,9 @@ import {ConsignmentActions} from "../../state/consignment.actions";
 export class ConsignmentDialogComponent implements OnInit {
   @Input() data?: { consignment?: ConsignmentEntity, isUpdate?: boolean }
   loading$ = this.consignmentQuery.select(state => state.loading)
-  formGroup!: FormGroup
+  formGroup!: UntypedFormGroup
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     public datePipe: DatePipe,
     private readonly consignmentQuery: ConsignmentQuery,
     private readonly action$: Actions,

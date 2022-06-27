@@ -1,6 +1,6 @@
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {DatePipe} from '@angular/common';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../../reducers';
@@ -18,15 +18,15 @@ export class DialogHolidayComponent implements OnInit {
   @ViewChild('positionInput') inputPosition!: ElementRef;
   numberChars = new RegExp('[^0-9]', 'g');
   submitted = false;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   positions$ = this.store.pipe(select(getAllPosition));
-  formPosition = new FormControl()
-  positions = new FormControl('');
+  formPosition = new UntypedFormControl()
+  positions = new UntypedFormControl('');
   hidePrice = true;
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
   constructor(
     public datePipe: DatePipe,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly store: Store<AppState>,
     private readonly dialogRef: MatDialogRef<DialogHolidayComponent>,

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {debounceTime, tap} from 'rxjs/operators';
 import {select, Store} from '@ngrx/store';
 import {DialogDeleteComponent} from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -36,11 +36,11 @@ export class SalaryComponent implements OnInit {
   ]);
   pageSize = 30;
   pageIndexInit = 0;
-  formGroup = new FormGroup(
+  formGroup = new UntypedFormGroup(
     {
-      title: new FormControl(''),
-      unit: new FormControl(''),
-      salaryType: new FormControl('')
+      title: new UntypedFormControl(''),
+      unit: new UntypedFormControl(''),
+      salaryType: new UntypedFormControl('')
     }
   );
 

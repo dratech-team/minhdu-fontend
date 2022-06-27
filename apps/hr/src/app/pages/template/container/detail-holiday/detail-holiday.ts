@@ -9,7 +9,7 @@ import {
   selectPositionHoliday
 } from '../../+state/holiday/holiday.selector';
 import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { debounceTime, startWith, tap } from 'rxjs/operators';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
@@ -28,15 +28,15 @@ export class DetailHoliday implements OnInit {
   positions$ = this.store.pipe(select(getAllPosition));
   loaded$ = this.store.pipe(select(selectHolidayLoaded));
   branches$ = this.store.pipe(select(getAllOrgchart));
-  fCtrlPosition = new FormControl(getSelectors(selectPositionHoliday, this.store));
-  fCtrlBranch = new FormControl('');
-  formGroup = new FormGroup(
+  fCtrlPosition = new UntypedFormControl(getSelectors(selectPositionHoliday, this.store));
+  fCtrlBranch = new UntypedFormControl('');
+  formGroup = new UntypedFormGroup(
     {
-      name: new FormControl(''),
-      code: new FormControl(''),
-      position: new FormControl(getSelectors(selectPositionHoliday, this.store)),
-      branch: new FormControl(''),
-      isConstraint: new FormControl('')
+      name: new UntypedFormControl(''),
+      code: new UntypedFormControl(''),
+      position: new UntypedFormControl(getSelectors(selectPositionHoliday, this.store)),
+      branch: new UntypedFormControl(''),
+      isConstraint: new UntypedFormControl('')
     }
   );
 

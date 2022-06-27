@@ -10,7 +10,7 @@ import {EmployeeEffect} from "./employee/state/employee";
     CommonModule,
     HttpClientModule,
     NzMessageModule,
-    AkitaNgEffectsModule.forFeature([EmployeeEffect])
+    AkitaNgEffectsModule.forFeature([EmployeeEffect]),
   ],
 })
 export class EmployeeLibV2Module {}

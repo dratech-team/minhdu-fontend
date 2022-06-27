@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {  FormGroup } from '@angular/forms';
+import {  UntypedFormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RouteEntity } from '../../../pages/route/entities/route.entity';
@@ -21,7 +21,7 @@ export class PickRoutesComponent implements OnInit {
   pageIndexInit = 0;
   isSelectAll = false;
   routeIds: number[] = [];
-  formGroup = new FormGroup(
+  formGroup = new UntypedFormGroup(
     {}
   );
 

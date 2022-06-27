@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {throwError} from 'rxjs';
 import {EmployeeType, RecipeType} from '@minhdu-fontend/enums';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 import {DatePipe} from '@angular/common';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {
@@ -31,7 +31,7 @@ export class PayslipComponent implements OnInit {
   payslip$ = this.payslipService.getOne(this.data.payroll.id);
   loading$ = this.payrollQuery.select(state => state.loading)
 
-  accConfirmedAt = new FormControl('');
+  accConfirmedAt = new UntypedFormControl('');
   recipeType = RecipeType;
   isConfirmed = false;
   typeEmployee = EmployeeType;

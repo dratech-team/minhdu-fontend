@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {UntypedFormBuilder, UntypedFormGroup} from "@angular/forms";
 import {NzModalRef} from "ng-zorro-antd/modal";
 
 @Component({
@@ -7,10 +7,10 @@ import {NzModalRef} from "ng-zorro-antd/modal";
 })
 export class ModalNoteComponent implements OnInit {
   @Input() data?: { noteInit?: string }
-  formGroup!: FormGroup
+  formGroup!: UntypedFormGroup
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly modalRef: NzModalRef
   ) {
   }

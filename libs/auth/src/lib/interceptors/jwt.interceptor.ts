@@ -45,8 +45,6 @@ export class JwtInterceptor implements HttpInterceptor {
     }
     request = request.clone({url});
     console.log(request);
-    return next.handle(request).pipe(
-      catchError(err => retry(5))
-    );
+    return next.handle(request);
   }
 }

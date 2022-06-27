@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, GenderTypeConstant} from '@minhdu-fontend/constants';
@@ -46,12 +46,12 @@ export class CustomerComponent implements OnInit {
   visible = false;
   stateSearch = this.customerQuery.getValue().search;
 
-  formGroup = new FormGroup({
-    resource: new FormControl(this.stateSearch.resource),
-    isPotential: new FormControl(this.stateSearch.isPotential),
-    type: new FormControl(this.stateSearch.type),
-    gender: new FormControl(this.stateSearch.gender),
-    search: new FormControl(this.stateSearch.search)
+  formGroup = new UntypedFormGroup({
+    resource: new UntypedFormControl(this.stateSearch.resource),
+    isPotential: new UntypedFormControl(this.stateSearch.isPotential),
+    type: new UntypedFormControl(this.stateSearch.type),
+    gender: new UntypedFormControl(this.stateSearch.gender),
+    search: new UntypedFormControl(this.stateSearch.search)
   });
 
   constructor(

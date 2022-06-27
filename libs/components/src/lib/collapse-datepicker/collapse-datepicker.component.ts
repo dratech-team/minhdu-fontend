@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormControl} from "@angular/forms";
+import {UntypedFormControl} from "@angular/forms";
 import {RangeDay} from "@minhdu-fontend/data-models";
 
 @Component({
@@ -11,9 +11,9 @@ export class CollapseDatepickerComponent implements OnInit {
   @Input() rangeDayInit?: RangeDay
   @Output() onPicker = new EventEmitter<any>();
 
-  formTitlePicker = new FormControl();
-  formRange = new FormControl();
-  formRadio = new FormControl()
+  formTitlePicker = new UntypedFormControl();
+  formRange = new UntypedFormControl();
+  formRadio = new UntypedFormControl()
   visible = false
 
   ngOnInit() {

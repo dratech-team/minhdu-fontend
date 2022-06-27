@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {debounceTime} from 'rxjs/operators';
 import {Actions} from "@datorama/akita-ng-effects";
 import {BranchActions, BranchEntity, BranchQuery, BranchStore} from "@minhdu-fontend/orgchart-v2";
@@ -16,10 +16,10 @@ export class BranchComponent implements OnInit {
 
   branchStatusConstant = BranchStatusConstant
   stateSearch = this.branchQuery.getValue().search
-  formGroup = new FormGroup({
-    search: new FormControl(this.stateSearch?.search || ''),
-    status: new FormControl(this.stateSearch?.status || ''),
-    position: new FormControl(this.stateSearch?.position || ''),
+  formGroup = new UntypedFormGroup({
+    search: new UntypedFormControl(this.stateSearch?.search || ''),
+    status: new UntypedFormControl(this.stateSearch?.status || ''),
+    position: new UntypedFormControl(this.stateSearch?.position || ''),
   });
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 

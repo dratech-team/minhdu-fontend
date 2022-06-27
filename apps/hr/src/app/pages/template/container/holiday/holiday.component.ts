@@ -11,7 +11,7 @@ import {
   selectorAllHoliday,
   selectTotalHoliday
 } from '../../+state/holiday/holiday.selector';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {debounceTime, startWith, tap} from 'rxjs/operators';
 import {ConvertBoolean} from '@minhdu-fontend/enums';
 import {checkInputNumber, searchAutocomplete} from '@minhdu-fontend/utils';
@@ -35,13 +35,13 @@ export class HolidayComponent implements OnInit {
   holidays$ = this.store.pipe(select(selectorAllHoliday));
   loaded$ = this.store.pipe(select(selectHolidayLoaded));
 
-  formGroup = new FormGroup(
+  formGroup = new UntypedFormGroup(
     {
-      name: new FormControl(''),
-      datetime: new FormControl(''),
-      rate: new FormControl(''),
-      position: new FormControl(''),
-      isConstraint: new FormControl('')
+      name: new UntypedFormControl(''),
+      datetime: new UntypedFormControl(''),
+      rate: new UntypedFormControl(''),
+      position: new UntypedFormControl(''),
+      isConstraint: new UntypedFormControl('')
     }
   );
 

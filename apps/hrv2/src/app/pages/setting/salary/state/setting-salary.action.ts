@@ -14,7 +14,7 @@ const addOne = createAction(
 
 const loadAll = createAction(
   '[SETTING_SALARY] Load All',
-  props<SearchSalarySettingDto>()
+  props<Partial<SearchSalarySettingDto>>()
 );
 
 const getOne = createAction(

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from "@angular/core";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {Actions} from "@datorama/akita-ng-effects";
 import {PayrollEntity} from "../../../app/pages/payroll/entities";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
@@ -14,7 +14,7 @@ import {PayrollService} from "../../../app/pages/payroll/services/payroll.servic
   templateUrl: 'table-select-payroll.component.html',
 })
 export class TableSelectPayrollComponent implements OnInit {
-  @Input() formGroup!: FormGroup
+  @Input() formGroup!: UntypedFormGroup
   @Input() createdAt!: Date
   @Input() employeeType!: EmployeeType
 
@@ -27,10 +27,10 @@ export class TableSelectPayrollComponent implements OnInit {
   total = 0
   payrollIdsSelected = new Set<number>();
 
-  formGroupTable = new FormGroup({
-    branch: new FormControl(''),
-    position: new FormControl(''),
-    name: new FormControl('')
+  formGroupTable = new UntypedFormGroup({
+    branch: new UntypedFormControl(''),
+    position: new UntypedFormControl(''),
+    name: new UntypedFormControl('')
   })
 
   constructor(

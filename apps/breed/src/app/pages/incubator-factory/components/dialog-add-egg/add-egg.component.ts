@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { select, Store } from '@ngrx/store';
@@ -23,11 +23,11 @@ export class AddEggComponent implements OnInit {
   eggType$ = this.eggTypeQuery.selectAll();
   branches$ = this.storeNgrx.pipe(select(getAllOrgchart));
 
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   submitted = false;
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly datePipe: DatePipe,
     private readonly snackbar: MatSnackBar,
     private readonly dialogRef: MatDialogRef<AddEggComponent>,
