@@ -1,27 +1,27 @@
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { PayrollStore } from './payroll.store';
-import { PayrollService } from '../services/payroll.service';
-import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { PayrollActions } from './payroll.action';
-import { AddPayrollDto } from '../dto';
-import { Injectable } from '@angular/core';
-import { AbsentSalaryEntity, OvertimeSalaryEntity, SalaryEntity } from '../../salary/entities';
-import { PayrollEntity, TotalSalary } from '../entities';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { PartialDayEnum } from '@minhdu-fontend/data-models';
-import { StateHistoryPlugin } from '@datorama/akita';
-import { PayrollQuery } from './payroll.query';
-import { PaginationDto } from '@minhdu-fontend/constants';
-import { AddManyPayrollDto } from '../dto/add-many-payroll.dto';
-import { HolidaySalaryEntity } from '../../salary/entities/holiday-salary.entity';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {PayrollStore} from './payroll.store';
+import {PayrollService} from '../services/payroll.service';
+import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {of} from 'rxjs';
+import {PayrollActions} from './payroll.action';
+import {AddPayrollDto, LoadOnePayrollDto} from '../dto';
+import {Injectable} from '@angular/core';
+import {AbsentSalaryEntity, OvertimeSalaryEntity, SalaryEntity} from '../../salary/entities';
+import {PayrollEntity, TotalSalary} from '../entities';
+import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {PartialDayEnum} from '@minhdu-fontend/data-models';
+import {arrayUpdate, StateHistoryPlugin} from '@datorama/akita';
+import {PayrollQuery} from './payroll.query';
+import {PaginationDto} from '@minhdu-fontend/constants';
+import {AddManyPayrollDto} from '../dto/add-many-payroll.dto';
+import {HolidaySalaryEntity} from '../../salary/entities/holiday-salary.entity';
 import * as moment from 'moment';
-import { CompareSortUtil } from '../utils/compare-sort.util';
-import { ConvertMinutePipe } from '../../../../../../../libs/components/src/lib/pipes/convert-minute.pipe';
-import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
+import {CompareSortUtil} from '../utils/compare-sort.util';
+import {ConvertMinutePipe} from '../../../../../../../libs/components/src/lib/pipes/convert-minute.pipe';
+import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class PayrollEffect {
   private stateHistory: StateHistoryPlugin;
 
@@ -37,7 +37,7 @@ export class PayrollEffect {
   }
 
 
-  @Effect({ dispatch: false })
+  @Effect({dispatch: false})
   addOne$ = this.action$.pipe(
     ofType(PayrollActions.addOne),
     switchMap((props: AddPayrollDto) => {
@@ -65,7 +65,7 @@ export class PayrollEffect {
     })
   );
 
-  @Effect({ dispatch: true })
+  @Effect({dispatch: true})
   addMany$ = this.action$.pipe(
     ofType(PayrollActions.addMany),
     switchMap((props: AddManyPayrollDto) => {
@@ -99,7 +99,7 @@ export class PayrollEffect {
     })
   );
 
-  @Effect({ dispatch: false })
+  @Effect({dispatch: false})
   loadAll$ = this.action$.pipe(
     ofType(PayrollActions.loadAll),
     switchMap((props) => {
@@ -152,16 +152,28 @@ export class PayrollEffect {
     })
   );
 
-  @Effect({ dispatch: false })
+  @Effect({dispatch: false})
   getOne$ = this.action$.pipe(
     ofType(PayrollActions.loadOne),
-    switchMap(props => {
+    switchMap((props: LoadOnePayrollDto) => {
       return this.service.getOne(props).pipe(
         map(res => {
-          return this.mapToPayroll(res);
-        }),
-        tap(res => {
-          this.payrollStore.upsert(res.id, res);
+          if (this.payrollQuery.getEntity(props.id)?.idUpdate?.overtime) {
+            this.payrollStore.update(props.id, entity => {
+              return (
+                entity.idUpdate?.overtime ? {
+                    overtimes: arrayUpdate(
+                      entity.overtimes,
+                      entity.idUpdate.overtime,
+                      res.overtimes.find(salary => salary.id === entity.idUpdate?.overtime) || {} as SalaryEntity),
+                    total: Object.assign({}, entity.total, {overtime: this.getTotalOvertimeOrAbsent(res.overtimes)})
+                  }
+                  : res
+              )
+            })
+          } else {
+            this.payrollStore.upsert(res.id, this.mapToPayroll(res));
+          }
         }),
         catchError(err => {
           return of(PayrollActions.error(err));
@@ -170,7 +182,7 @@ export class PayrollEffect {
     })
   );
 
-  @Effect({ dispatch: false })
+  @Effect({dispatch: false})
   update$ = this.action$.pipe(
     ofType(PayrollActions.update),
     switchMap(props => {
@@ -196,7 +208,7 @@ export class PayrollEffect {
     })
   );
 
-  @Effect({ dispatch: false })
+  @Effect({dispatch: false})
   remove$ = this.action$.pipe(
     ofType(PayrollActions.remove),
     switchMap((props) => {
@@ -223,7 +235,7 @@ export class PayrollEffect {
     })
   );
 
-  @Effect({ dispatch: false })
+  @Effect({dispatch: false})
   confirmPayroll$ = this.action$.pipe(
     ofType(PayrollActions.confirmPayroll),
     switchMap((props) => {
@@ -254,7 +266,7 @@ export class PayrollEffect {
    * @deprecated
    * thay đổi logic ngày lễ ko còn quét
    * */
-  @Effect({ dispatch: false })
+  @Effect({dispatch: false})
   scanHoliday$ = this.action$.pipe(
     ofType(PayrollActions.scanHoliday),
     switchMap((props) => {
@@ -281,7 +293,7 @@ export class PayrollEffect {
     })
   );
 
-  @Effect({ dispatch: false })
+  @Effect({dispatch: false})
   restore$ = this.action$.pipe(
     ofType(PayrollActions.restore),
     switchMap((props) => {
@@ -311,7 +323,6 @@ export class PayrollEffect {
   private mapToPayroll(payroll: PayrollEntity): PayrollEntity {
     const basics = payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.BASIC || item.type === SalaryTypeEnum.BASIC_INSURANCE);
     const stays = payroll.salariesv2.filter(item => item.type === SalaryTypeEnum.STAY);
-    const overtimes = this.payrollQuery.getEntity(payroll.id)?.overtimes;
 
     return Object.assign(payroll, {
       basics: basics,
@@ -319,11 +330,11 @@ export class PayrollEffect {
       allowances: this.sortDatetime(payroll.allowances),
       absents: this.sortDatetime(payroll.absents),
       dayoffs: this.sortDatetime(payroll.dayoffs),
-      overtimes: this.sortDatetime(payroll.overtimes)?.map(overtime => Object.assign(overtime, { expand: false })),
+      overtimes: this.sortDatetime(payroll.overtimes)?.map(overtime => Object.assign(overtime, {expand: false})),
       holidays: payroll.holidays?.sort((a, b) => {
           return CompareSortUtil(a.setting.startedAt, b.setting.startedAt, true);
         }
-      ).map(holiday => Object.assign(holiday, { expand: false })),
+      ).map(holiday => Object.assign(holiday, {expand: false})),
       remotes: this.sortDatetime(payroll.remotes),
       total: {
         payroll: payroll.total,
@@ -350,7 +361,7 @@ export class PayrollEffect {
           hour: 0
         }
       };
-    }, { price: 0, total: 0, duration: { day: 0, hour: 0 } } as TotalSalary);
+    }, {price: 0, total: 0, duration: {day: 0, hour: 0}} as TotalSalary);
   }
 
   private getTotalOvertimeOrAbsent(salary: (AbsentSalaryEntity | OvertimeSalaryEntity)[]): TotalSalary {
@@ -379,7 +390,7 @@ export class PayrollEffect {
           minute: minute
         }
       };
-    }, { price: 0, total: 0, duration: { day: 0, hour: 0, minute: 0 } });
+    }, {price: 0, total: 0, duration: {day: 0, hour: 0, minute: 0}});
   }
 
   private getTotalRemoteOrDayOff(salary: SalaryEntity []) {
@@ -387,7 +398,7 @@ export class PayrollEffect {
       return {
         duration: a.duration + ((b.partial && b.partial === PartialDayEnum.ALL_DAY) ? b.duration : (b.duration / 2))
       };
-    }, { duration: 0 });
+    }, {duration: 0});
   }
 
   private getTotalHoliday(salary: HolidaySalaryEntity[]) {
@@ -399,7 +410,7 @@ export class PayrollEffect {
         ),
         total: a.total + b.total
       };
-    }, { duration: 0, total: 0 });
+    }, {duration: 0, total: 0});
   }
 
   private sortDatetime(salaries?: SalaryEntity[]) {

@@ -162,7 +162,7 @@
                 <td> {{salary.title}}</td>
                 <td> {{salary.rate}}</td>
                 <td class=' text-center ' style='color: #05981C'>
-                  {{salary.price
+                  {{salary.price || 0
                   | roundingnumber :1000
                   | number:'1.0'
                   | notEmpty:'0'}} đ
@@ -233,7 +233,7 @@
                 <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"> {{salary.id}}</td>
                 <td> {{salary.title}}</td>
                 <td style='color: #05981C'>
-                  {{salary.price
+                  {{salary.price || 0
                   | roundingnumber :1000
                   |number:'1.0'
                   |notEmpty:'0'}} đ
@@ -282,17 +282,17 @@
               <th style="width: 40px">STT</th>
               <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" nzWidth="50px">Id</th>
               <th [nzSortFn]='true'
-                  (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE, $event, payroll.allowances)'>
+                  (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE, $event, payroll.allowances, salaryTypeEnum.ALLOWANCE)'>
                 <div>Phụ cấp</div>
               </th>
               <th [nzSortFn]='true'
-                  (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME, $event, payroll.allowances)'
+                  (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME, $event, payroll.allowances, salaryTypeEnum.ALLOWANCE)'
                   style='width: 155px'>
                 <div>Thời gian</div>
               </th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterSalaryEnum.DURATION, $event, payroll.allowances)'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DURATION, $event, payroll.allowances, salaryTypeEnum.ALLOWANCE)'
                 style="width: 100px">
                 <div>Tổng ngày</div>
               </th>
@@ -355,7 +355,7 @@
               <td>
                 <label nz-checkbox nzDisabled [nzChecked]='salary.inWorkday'></label>
               </td>
-              <td style='color: #05981C'>{{salary.price
+              <td style='color: #05981C'>{{salary.price || 0
                 | roundingnumber :1000
                 |number:'1.0'
                 | notEmpty:'0'}} đ
@@ -423,7 +423,7 @@
               <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" nzWidth="50px">Id</th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE_SETTING, $event, payroll.overtimes)'>
+                (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE_SETTING, $event, payroll.overtimes, salaryTypeEnum.OVERTIME)'>
                 Tăng ca
               </th>
               <th nzWidth="80px">
@@ -431,12 +431,12 @@
               </th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME, $event, payroll.overtimes)'>
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME, $event, payroll.overtimes, salaryTypeEnum.OVERTIME)'>
                 Thời gian
               </th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterSalaryEnum.DURATION, $event, payroll.overtimes)'>
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DURATION, $event, payroll.overtimes, salaryTypeEnum.OVERTIME)'>
                 Tổng thời gian
               </th>
               <th>Thành tiền</th>
@@ -579,7 +579,7 @@
           </nz-table>
           </tr>
           </ng-template>
-          <tr *ngIf='payroll.overtimes?.length > 0' class='font-weight-bold'>
+          <tr *ngIf='payroll.overtimes && payroll.overtimes.length > 0' class='font-weight-bold'>
             <td></td>
             <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"></td>
             <td></td>
@@ -617,20 +617,20 @@
               <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" nzWidth="50px">Id</th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE_SETTING, $event, payroll.holidays)'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE_SETTING, $event, payroll.holidays, salaryTypeEnum.HOLIDAY)'
                 nzWidth='20%'>
                 Ngày lễ
               </th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME_SETTING, $event, payroll.holidays)'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME_SETTING, $event, payroll.holidays, salaryTypeEnum.HOLIDAY)'
                 nzWidth='20%'>
                 ngày
               </th>
               <th nzWidth='10%'>Đơn vị</th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME_SETTING, $event, payroll.holidays)'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME_SETTING, $event, payroll.holidays, salaryTypeEnum.HOLIDAY)'
                 nzWidth='60px'>
                 Hệ số
               </th>
@@ -784,18 +784,18 @@
               <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" nzWidth="50px">Id</th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterSalaryEnum.TYPE, $event, payroll.remotes)'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.TYPE, $event, payroll.remotes, salaryTypeEnum.WFH)'
               >
                 Remote/Onsite/WFH
               </th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME, $event, payroll.remotes)'>
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME, $event, payroll.remotes, salaryTypeEnum.WFH)'>
                 Thời gian
               </th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterSalaryEnum.DURATION, $event, payroll.remotes)'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DURATION, $event, payroll.remotes, salaryTypeEnum.WFH)'
               >
                 Tổng ngày
               </th>
@@ -891,19 +891,19 @@
               <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" nzWidth="50px">Id</th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE_SETTING_PARTIAL, $event, payroll.absents)'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE_SETTING_PARTIAL, $event, payroll.absents, salaryTypeEnum.ABSENT)'
                 width='20%'>
                 <div>Loại vắng</div>
               </th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME, $event, payroll.absents)'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME, $event, payroll.absents, salaryTypeEnum.ABSENT)'
                 width='13%'>
                 Thời gian
               </th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterSalaryEnum.DURATION, $event, payroll.absents)'
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DURATION, $event, payroll.absents, salaryTypeEnum.ABSENT)'
               >
                 Tổng ngày
               </th>
@@ -965,7 +965,7 @@
               </td>
               <td>
                     <span style='color: red'>
-                      {{salary.price
+                      {{salary.price || 0
                       | roundingnumber :100
                       | number:'1.0-0'}} đ
                     </span>
@@ -1037,17 +1037,17 @@
               <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" nzWidth="50px">Id</th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE, $event, payroll.dayoffs)'>
+                (nzSortOrderChange)='onSort(filterSalaryEnum.TITLE, $event, payroll.dayoffs ,salaryTypeEnum.DAY_OFF)'>
                 Không đi làm
               </th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME, $event, payroll.dayoffs)'>
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DATETIME, $event, payroll.dayoffs ,salaryTypeEnum.DAY_OFF)'>
                 Thời gian
               </th>
               <th
                 [nzSortFn]='true'
-                (nzSortOrderChange)='onSort(filterSalaryEnum.DURATION, $event, payroll.dayoffs)'>
+                (nzSortOrderChange)='onSort(filterSalaryEnum.DURATION, $event, payroll.dayoffs ,salaryTypeEnum.DAY_OFF)'>
                 Tổng ngày
               </th>
               <th>

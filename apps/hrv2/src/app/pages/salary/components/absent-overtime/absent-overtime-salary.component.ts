@@ -191,16 +191,7 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
         return this.onSubmitError(err);
       }))
       .subscribe(res => {
-        this.onSubmitSuccess(res, this.data.add
-          ? (
-            !this.data.add?.multiple
-              ? this.data.add?.payroll?.id
-              : undefined
-          )
-          : (!this.data.update.multiple
-            ? this.data.update.salary.payrollId
-            : undefined)
-        );
+        this.onSubmitSuccess(res);
       });
   }
 
@@ -269,11 +260,8 @@ export class AbsentOvertimeSalaryComponent implements OnInit {
     return throwError(err);
   }
 
-  private onSubmitSuccess(res: ResponseMessageEntity, payrollId?: number) {
+  private onSubmitSuccess(res: ResponseMessageEntity) {
     this.message.success(res.message);
-    if (payrollId) {
-      this.actions$.dispatch(PayrollActions.loadOne({ id: payrollId }));
-    }
     this.submitting = false;
     this.modalRef.close(this.formGroup.value.template.title);
   }

@@ -10,7 +10,6 @@ import {NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
 import {catchError} from 'rxjs/operators';
 import {throwError} from 'rxjs';
 import {Actions} from '@datorama/akita-ng-effects';
-import {PayrollActions} from '../../../payroll/state/payroll.action';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {validateDayInMonth} from '../../utils/validate-day-in-month.util';
 import * as moment from 'moment';
@@ -114,16 +113,7 @@ export class AllowanceSalaryComponent implements OnInit {
         return this.onSubmitError(err);
       }))
       .subscribe(res => {
-        this.onSubmitSuccess(res, this.data.add
-          ? (
-            !this.data.add?.multiple
-              ? this.data.add?.payroll?.id
-              : undefined
-          )
-          : (!this.data.update.multiple
-            ? this.data.update.salary.payrollId
-            : undefined)
-        );
+        this.onSubmitSuccess(res);
       });
   }
 
@@ -163,15 +153,10 @@ export class AllowanceSalaryComponent implements OnInit {
     return throwError(err);
   }
 
-  onSubmitSuccess(res: ResponseMessageEntity, payrollId?: number) {
+  onSubmitSuccess(res: ResponseMessageEntity) {
     this.message.success(res.message);
-    if (payrollId) {
-      this.actions$.dispatch(PayrollActions.loadOne({
-        id: payrollId
-      }));
-    }
     this.submitting = false;
-    this.modalRef.close(this.mapSalary(this.formGroup.value).title);
+    this.modalRef.close(this.formGroup.value.title)
   }
 
   move(type: 'next' | 'previous'): void {

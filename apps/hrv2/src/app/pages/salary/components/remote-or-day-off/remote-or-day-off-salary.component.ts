@@ -8,7 +8,6 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 import {throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {Actions} from '@datorama/akita-ng-effects';
-import {PayrollActions} from '../../../payroll/state/payroll.action';
 import {getFirstDayInMonth} from '@minhdu-fontend/utils';
 import {ResponseMessageEntity} from '@minhdu-fontend/base-entity';
 import {RemoteConstant} from "../../constants/remote.constant";
@@ -94,16 +93,7 @@ export class RemoteOrDayOffSalaryComponent implements OnInit {
         return this.onSubmitError(err);
       }))
       .subscribe(res => {
-        this.onSubmitSuccess(res, this.data.add
-          ? (
-            !this.data.add?.multiple
-              ? this.data.add.payroll.id
-              : undefined
-          )
-          : (!this.data.update.multiple
-            ? this.data.update.salary.payrollId
-            : undefined)
-        );
+        this.onSubmitSuccess(res);
       });
   }
 
@@ -146,12 +136,9 @@ export class RemoteOrDayOffSalaryComponent implements OnInit {
     return throwError(err);
   }
 
-  onSubmitSuccess(res: ResponseMessageEntity, payrollId?: number) {
-    if (payrollId) {
-      this.actions$.dispatch(PayrollActions.loadOne({id: payrollId}));
-    }
+  onSubmitSuccess(res: ResponseMessageEntity) {
     this.message.success(res.message);
-    this.modalRef.close();
+    this.modalRef.close(this.mapSalary(this.formGroup.value).type)
   }
 
   move(type: 'next' | 'previous'): void {

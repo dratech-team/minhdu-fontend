@@ -5,8 +5,6 @@ import {Observable} from 'rxjs';
 import {AbsentSalaryEntity} from "../entities";
 import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
 import {BaseService} from "@minhdu-fontend/service";
-import {DeductionSalaryEntity} from "../entities/deduction-salary.entity";
-import {BaseAddAbsentSalaryDto} from "../dto";
 
 @Injectable({providedIn: 'root'})
 export class AbsentSalaryService extends BaseService<AbsentSalaryEntity> {
