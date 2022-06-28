@@ -5,7 +5,7 @@ import {PartialDayEnum} from '@minhdu-fontend/data-models';
 import {getDaysInMonth} from '@minhdu-fontend/utils';
 import {DatePipe} from '@angular/common';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {catchError, tap} from 'rxjs/operators';
+import {catchError, map, tap} from 'rxjs/operators';
 import {PayrollQuery, PayrollStore} from '../../state';
 import {PayrollActions} from '../../state/payroll.action';
 import {PayrollEntity} from '../../entities';
@@ -60,7 +60,13 @@ import {SortSalaryUtil} from "../../utils/sort-salary.util";
   styleUrls: ['detail-payroll.component.scss']
 })
 export class DetailPayrollComponent implements OnInit {
-  payroll$ = this.payrollQuery.selectOneSort(this.getPayrollId).pipe(
+  payroll$ = this.payrollQuery.selectEntity(this.getPayrollId).pipe(
+    map(payroll => {
+      if (payroll) {
+        return JSON.parse(JSON.stringify(payroll))
+      }
+      return payroll
+    }),
     tap(payroll => {
         if (payroll?.createdAt) {
           this.daysInMonth = getDaysInMonth(payroll.createdAt);
@@ -248,6 +254,11 @@ export class DetailPayrollComponent implements OnInit {
 
     ref().afterClose.subscribe((val) => {
       if (val) {
+        if (type === SalaryTypeEnum.OVERTIME && update) {
+          this.payrollStore.update(this.getPayrollId, entity => ({
+            idUpdate: Object.assign({}, entity.idUpdate, {overtime: update.salary.id})
+          }))
+        }
         this.actions$.dispatch(PayrollActions.loadOne({id: this.getPayrollId}))
       }
     })
@@ -437,13 +448,10 @@ export class DetailPayrollComponent implements OnInit {
 
   onSort(column: FilterSalaryEnum, type: NzTableSortOrder, salaries: SalaryEntity [], salaryType?: SalaryTypeEnum) {
     if (salaryType === SalaryTypeEnum.OVERTIME) {
-      this.payrollStore.update(this.getPayrollId, {
-        sort: {
-          overtime: {column, type}
-        },
-      });
+      this.payrollStore.update(this.getPayrollId, {overtimes: SortSalaryUtil(column, type, salaries)})
+    }else{
+      SortSalaryUtil(column, type, salaries)
     }
-    SortSalaryUtil(column, type, salaries)
   }
 
   prePayroll(payroll: PayrollEntity) {

@@ -11,7 +11,7 @@ import {AbsentSalaryEntity, OvertimeSalaryEntity, SalaryEntity} from '../../sala
 import {PayrollEntity, TotalSalary} from '../entities';
 import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {PartialDayEnum} from '@minhdu-fontend/data-models';
-import {StateHistoryPlugin} from '@datorama/akita';
+import {arrayUpdate, StateHistoryPlugin} from '@datorama/akita';
 import {PayrollQuery} from './payroll.query';
 import {PaginationDto} from '@minhdu-fontend/constants';
 import {AddManyPayrollDto} from '../dto/add-many-payroll.dto';
@@ -158,7 +158,22 @@ export class PayrollEffect {
     switchMap((props: LoadOnePayrollDto) => {
       return this.service.getOne(props).pipe(
         map(res => {
-          this.payrollStore.upsert(res.id, this.mapToPayroll(res));
+          if (this.payrollQuery.getEntity(props.id)?.idUpdate?.overtime) {
+            this.payrollStore.update(props.id, entity => {
+              return (
+                entity.idUpdate?.overtime ? {
+                    overtimes: arrayUpdate(
+                      entity.overtimes,
+                      entity.idUpdate.overtime,
+                      res.overtimes.find(salary => salary.id === entity.idUpdate?.overtime) || {} as SalaryEntity),
+                    total: Object.assign({}, entity.total, {overtime: this.getTotalOvertimeOrAbsent(res.overtimes)})
+                  }
+                  : res
+              )
+            })
+          } else {
+            this.payrollStore.upsert(res.id, this.mapToPayroll(res));
+          }
         }),
         catchError(err => {
           return of(PayrollActions.error(err));

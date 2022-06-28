@@ -4,7 +4,7 @@ import {SalaryEntity} from "../../salary/entities";
 import {CompareSortUtil} from "./compare-sort.util";
 
 export const SortSalaryUtil = (column: FilterSalaryEnum, type: NzTableSortOrder, salaries: SalaryEntity []) => {
-  salaries.sort((a, b) => {
+  return salaries.sort((a, b) => {
     const isAsc = type === 'descend';
     switch (column) {
       case FilterSalaryEnum.TITLE:
