@@ -2,7 +2,7 @@
 
 body {
   margin: 0 !important;
-  background: white !important;
+  background: rgba(255, 255, 255, 0.71) !important;
   overflow-x: hidden;
 }
 
@@ -313,9 +313,6 @@ input[type="search"] {
 input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: searchfield-cancel-button;
 }
-.mat-typography{
-  background: #eee!important;
-}
 
 table td,
 table th {
@@ -323,7 +320,7 @@ table th {
 }
 
 table thead tr th{
-  background: #dddddd!important;
+  background: #dddddd !important;
   font-weight: 700 !important;
 }
  .ant-table .ant-table-small{

@@ -283,12 +283,11 @@ input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: searchfield-cancel-button;
 }
 
-//custom class bootstrap
 .form-control.is-invalid {
   background-image: none !important;
 }
 .invalid-feedback{
-  display: block!important;
+  display: block !important;
 }
 
 .cdk-overlay-connected-position-bounding-box{
