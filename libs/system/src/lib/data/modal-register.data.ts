@@ -1,7 +1,7 @@
-import {AccountEntity} from "../entities/account.entity";
+import { AccountEntity } from '../entities/account.entity';
 
-export interface ModalRegisterData{
+export interface ModalRegisterData {
   update: {
-    account: AccountEntity
-  }
+    account: AccountEntity;
+  };
 }

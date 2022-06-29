@@ -1,4 +1,3 @@
-import {BaseRankEntity} from "../bases/base-rank.entity";
+import { BaseRankEntity } from '../bases/base-rank.entity';
 
-export interface RankEntity extends BaseRankEntity{
-}
+export interface RankEntity extends BaseRankEntity {}

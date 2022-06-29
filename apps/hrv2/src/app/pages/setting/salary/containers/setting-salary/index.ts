@@ -1,1 +1,1 @@
-export * from './setting-salary.component'
+export * from './setting-salary.component';

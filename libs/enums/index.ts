@@ -15,6 +15,7 @@ export * from './hr/type-employee';
 export * from './hr/overviewFilter.enum';
 export * from './hr/type-sort-employee';
 export * from './hr/role.enum';
+export * from './hr/flat-salary-type.enum';
 
 // sell
 export * from './sell/customer-type';
@@ -36,7 +37,6 @@ export * from './sell/customer.enum';
 export * from './warehouse/medicine/medicine-unit.enum';
 export * from './warehouse/warehouse-type.enum';
 export * from './warehouse/menu-warehouse.eum';
-
 
 //common
 export * from './contracts.enum';

@@ -20,16 +20,13 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { CommodityService } from './service/commodity.service';
-import {CommodityTemplateEffect} from "../commodity-template/state/commodity-template.effect";
+import { CommodityTemplateEffect } from '../commodity-template/state/commodity-template.effect';
 
 @NgModule({
   imports: [
     ComponentsModule,
     CommodityRoutingModule,
-    AkitaNgEffectsModule.forFeature([
-      CommodityEffect,
-      CommodityTemplateEffect
-    ]),
+    AkitaNgEffectsModule.forFeature([CommodityEffect, CommodityTemplateEffect]),
     MatInputModule,
     InfiniteScrollModule,
     CommonModule,
@@ -41,14 +38,13 @@ import {CommodityTemplateEffect} from "../commodity-template/state/commodity-tem
     FormsModule,
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
     MatAutocompleteModule,
-    NzButtonModule
+    NzButtonModule,
   ],
   declarations: [
     CommodityComponent,
     CommodityDialogComponent,
-    DetailCommodityComponent
+    DetailCommodityComponent,
   ],
-  providers: [DatePipe, PickCommodityService, CommodityService]
+  providers: [DatePipe, PickCommodityService, CommodityService],
 })
-export class CommodityModule {
-}
+export class CommodityModule {}

@@ -1,24 +1,34 @@
-<div class='px-5 ' style='margin-top: 100px'>
-  <div class=' row '>
-    <div class='row col-12'>
-      <div class='p-3'>
-        <span class='h3'> Tổng quan</span>
+<div class="px-5" style="margin-top: 100px">
+  <div class="row">
+    <div class="row col-12">
+      <div class="p-3">
+        <span class="h3"> Tổng quan</span>
       </div>
     </div>
-    <input type='month' (change)='valueChange($event)'>
-    <div class=' row col-12 my-2 mx-1' *ngIf='overview$ | async as overview'>
-      <a class='col-md-4 col-xm-12 p-1 pointer' [href]='overview.order.link' target=' _blank'>
-        <div class='col-12 p-2  rounded bg-success'>
-          <div class='h4'>Đơn hàng trong tháng {{overview.datetime | date: 'MM/YYYY'}}</div>
-          <div class='d-flex'>
-            <div class='h5 mr-2'>Tổng đơn: {{overview.order.total}} </div>
+    <input type="month" (change)="valueChange($event)" />
+    <div class="row col-12 my-2 mx-1" *ngIf="overview$ | async as overview">
+      <a
+        class="col-md-4 col-xm-12 p-1 pointer"
+        [href]="overview.order.link"
+        target=" _blank"
+      >
+        <div class="col-12 p-2 rounded bg-success">
+          <div class="h4">
+            Đơn hàng trong tháng {{ overview.datetime | date: 'MM/YYYY' }}
           </div>
-          <div class='h5 d-flex'>
+          <div class="d-flex">
+            <div class="h5 mr-2">Tổng đơn: {{ overview.order.total }}</div>
+          </div>
+          <div class="h5 d-flex">
             So với tháng trước:
-            <span class='ml-2'>{{overview.order.rate }} %</span>
-            <img *ngIf='overview.order.rate > 0; else down' src='/assets/icon/share/caret-up-fill.svg' alt='up'>
+            <span class="ml-2">{{ overview.order.rate }} %</span>
+            <img
+              *ngIf="overview.order.rate > 0; else down"
+              src="/assets/icon/share/caret-up-fill.svg"
+              alt="up"
+            />
             <ng-template #down>
-              <img src='/assets/icon/share/caret-down-fill.svg' alt='up'>
+              <img src="/assets/icon/share/caret-down-fill.svg" alt="up" />
             </ng-template>
           </div>
         </div>
@@ -39,21 +49,33 @@
       <!--          </div>-->
       <!--        </div>-->
       <!--      </div>-->
-      <a class='col-md-4 col-xm-12 p-1 pointer' [href]='overview.order.link' target='_blank'>
-        <div class='col-12 p-2 rounded  bg-primary'>
-          <div class='h4'>Doanh thu tháng {{overview.datetime | date:'MM/YYYY'}}</div>
-          <div class='d-flex'>
-            <div class='h5 mr-2'>Tổng:</div>
-            <div class='d-flex align-items-center'>
-              <span class='h5 mr-2'>{{overview.order.income.total | number: '1.0-0'}} đ</span>
+      <a
+        class="col-md-4 col-xm-12 p-1 pointer"
+        [href]="overview.order.link"
+        target="_blank"
+      >
+        <div class="col-12 p-2 rounded bg-primary">
+          <div class="h4">
+            Doanh thu tháng {{ overview.datetime | date: 'MM/YYYY' }}
+          </div>
+          <div class="d-flex">
+            <div class="h5 mr-2">Tổng:</div>
+            <div class="d-flex align-items-center">
+              <span class="h5 mr-2"
+                >{{ overview.order.income.total | number: '1.0-0' }} đ</span
+              >
             </div>
           </div>
-          <div class='h5 d-flex'>
+          <div class="h5 d-flex">
             <div>So với tháng trước:</div>
-            <span class='ml-2'>{{overview.order.income.rate }} %</span>
-            <img *ngIf='overview.order.income.rate > 0; else down' src='/assets/icon/share/caret-up-fill.svg' alt='up'>
+            <span class="ml-2">{{ overview.order.income.rate }} %</span>
+            <img
+              *ngIf="overview.order.income.rate > 0; else down"
+              src="/assets/icon/share/caret-up-fill.svg"
+              alt="up"
+            />
             <ng-template #down>
-              <img src='/assets/icon/share/caret-down-fill.svg' alt='up'>
+              <img src="/assets/icon/share/caret-down-fill.svg" alt="up" />
             </ng-template>
           </div>
         </div>

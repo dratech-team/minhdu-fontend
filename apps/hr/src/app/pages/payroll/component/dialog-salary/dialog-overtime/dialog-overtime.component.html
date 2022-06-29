@@ -1,58 +1,74 @@
-<div class=' main-popup'>
-  <div mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='../../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+<div class="main-popup">
+  <div mat-dialog-close class="close-popup">
+    <span class="mr-1"> close</span>
+    <div class="x-popup">
+      <img src="../../../../../../assets/img/share/x2-lg.svg" alt="cancel" />
     </div>
   </div>
   <mat-stepper linear>
-    <mat-step *ngIf='data.updateMultiple'>
-      <ng-template matStepLabel>Nhân viên đã chọn ({{salariesSelected.length}})</ng-template>
+    <mat-step *ngIf="data.updateMultiple">
+      <ng-template matStepLabel
+        >Nhân viên đã chọn ({{ salariesSelected.length }})</ng-template
+      >
       <app-table-salaries-selected
-        [salaries]='salariesSelected'
-        (EmitSalariesSelected)='changeSalariesSelected($event)'>
+        [salaries]="salariesSelected"
+        (EmitSalariesSelected)="changeSalariesSelected($event)"
+      >
       </app-table-salaries-selected>
-      <button class='btn btn-primary' matStepperNext>Tiếp theo</button>
+      <button class="btn btn-primary" matStepperNext>Tiếp theo</button>
     </mat-step>
-    <mat-step label='Tăng ca'>
-      <mat-dialog-content class='mat-typography' style='max-height: 40vh'>
-        <form [formGroup]='formGroup' class='px-3'>
-          <div [formGroup]='formGroup' class='px-3'>
+    <mat-step label="Tăng ca">
+      <mat-dialog-content class="mat-typography" style="max-height: 40vh">
+        <form [formGroup]="formGroup" class="px-3">
+          <div [formGroup]="formGroup" class="px-3">
             <!--Overtime - Tăng ca -->
-            <div class='form-group'>
-              <div class='row'>
-                <div class='date-or-time col'>
-                  <div class='  title-item mb-1'>
+            <div class="form-group">
+              <div class="row">
+                <div class="date-or-time col">
+                  <div class="title-item mb-1">
                     <span>Đơn vị tăng ca</span>
                   </div>
-                  <div class=' mb-3'>
-                    <nz-select style="width: 100%" formControlName="unit" [nzDisabled]="data.isUpdate">
-                      <nz-option [nzValue]='datetimeUnitEnum.DAY' [nzLabel]="'Ngày'"></nz-option>
-                      <nz-option [nzValue]='datetimeUnitEnum.HOUR' [nzLabel]="'Giờ'"></nz-option>
-                      <nz-option [nzValue]='datetimeUnitEnum.TIMES' [nzLabel]="'Lần'"></nz-option>
+                  <div class="mb-3">
+                    <nz-select
+                      style="width: 100%"
+                      formControlName="unit"
+                      [nzDisabled]="data.isUpdate"
+                    >
+                      <nz-option
+                        [nzValue]="datetimeUnitEnum.DAY"
+                        [nzLabel]="'Ngày'"
+                      ></nz-option>
+                      <nz-option
+                        [nzValue]="datetimeUnitEnum.HOUR"
+                        [nzLabel]="'Giờ'"
+                      ></nz-option>
+                      <nz-option
+                        [nzValue]="datetimeUnitEnum.TIMES"
+                        [nzLabel]="'Lần'"
+                      ></nz-option>
                     </nz-select>
                   </div>
                 </div>
               </div>
               <div>
                 <div>
-                  <div class=' title-item mb-1'>
-                    <span> Loại tăng ca</span><span class='star'>*</span>
+                  <div class="title-item mb-1">
+                    <span> Loại tăng ca</span><span class="star">*</span>
                   </div>
                   <div>
                     <nz-select
-                      class='mb-2'
+                      class="mb-2"
                       nzShowSearch
-                      style='width:100%'
-                      nzPlaceHolder='Chọn loại tăng ca'
-                      [compareWith]='compareFN'
+                      style="width: 100%"
+                      nzPlaceHolder="Chọn loại tăng ca"
+                      [compareWith]="compareFN"
                       formControlName="title"
-                      [nzLoading]="!(loadingTemplate$|async)"
+                      [nzLoading]="!(loadingTemplate$ | async)"
                     >
                       <nz-option
-                        *ngFor='let template of templateOvertime$ | async'
-                        [nzLabel]='template.title'
-                        [nzValue]='template'
+                        *ngFor="let template of templateOvertime$ | async"
+                        [nzLabel]="template.title"
+                        [nzValue]="template"
                       >
                       </nz-option>
                     </nz-select>
@@ -60,123 +76,205 @@
                 </div>
               </div>
               <div>
-                <div class='d-flex row'>
-                  <div *ngIf='formGroup.value.unit === datetimeUnitEnum.DAY' class='col'>
-                    <div class=' title-item mb-1 '>
+                <div class="d-flex row">
+                  <div
+                    *ngIf="formGroup.value.unit === datetimeUnitEnum.DAY"
+                    class="col"
+                  >
+                    <div class="title-item mb-1">
                       <span>Số ngày tăng ca</span>
                     </div>
-                    <div class=' mb-3' [formGroup]='formGroup'>
-                      <input style='pointer-events: none; background: #eee' type='number' class='form-control'
-                             formControlName='days' min='1'>
+                    <div class="mb-3" [formGroup]="formGroup">
+                      <input
+                        style="pointer-events: none; background: #eee"
+                        type="number"
+                        class="form-control"
+                        formControlName="days"
+                        min="1"
+                      />
                     </div>
                   </div>
-                  <div class='work-time col' *ngIf=' formGroup.value.unit === datetimeUnitEnum.HOUR'>
+                  <div
+                    class="work-time col"
+                    *ngIf="formGroup.value.unit === datetimeUnitEnum.HOUR"
+                  >
                     <div>
-                      <div class='mr-2'>
-                        <div class=' title-item mb-1'>
+                      <div class="mr-2">
+                        <div class="title-item mb-1">
                           <span>Giờ làm việc</span>
-                          <span class='star'>*</span>
+                          <span class="star">*</span>
                         </div>
-                        <div class=' mb-3' [formGroup]='formGroup'>
-                          <input type='number' class='form-control px-1' placeholder='Nhập số giờ làm việc' min='0'
-                                 formControlName='times'>
+                        <div class="mb-3" [formGroup]="formGroup">
+                          <input
+                            type="number"
+                            class="form-control px-1"
+                            placeholder="Nhập số giờ làm việc"
+                            min="0"
+                            formControlName="times"
+                          />
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div *ngIf='formGroup.value.unit !== datetimeUnitEnum.TIMES && (!(formGroup.get("days")?.value > 1) ||
-                   formGroup.value.unit === datetimeUnitEnum.HOUR)'
-                       class='date-or-time col'>
-                    <div class=' title-item mb-1'>
+                  <div
+                    *ngIf="
+                      formGroup.value.unit !== datetimeUnitEnum.TIMES &&
+                      (!(formGroup.get('days')?.value > 1) ||
+                        formGroup.value.unit === datetimeUnitEnum.HOUR)
+                    "
+                    class="date-or-time col"
+                  >
+                    <div class="title-item mb-1">
                       <span>Ngày</span>
-                      <span class='star'>*</span>
+                      <span class="star">*</span>
                     </div>
-                    <div class=' mb-3' [formGroup]='formGroup'>
-                      <input *ngIf='!data.updateMultiple else datetimeMultiple' type='date' class='form-control '
-                             formControlName='datetime' min='{{firstDayInMonth}}'
-                             max='{{lastDayInMonth}}'>
+                    <div class="mb-3" [formGroup]="formGroup">
+                      <input
+                        *ngIf="!data.updateMultiple; else datetimeMultiple"
+                        type="date"
+                        class="form-control"
+                        formControlName="datetime"
+                        min="{{ firstDayInMonth }}"
+                        max="{{ lastDayInMonth }}"
+                      />
                       <ng-template #datetimeMultiple>
-                        <input type='date' class='form-control ' formControlName='datetime'>
+                        <input
+                          type="date"
+                          class="form-control"
+                          formControlName="datetime"
+                        />
                       </ng-template>
                     </div>
                   </div>
                 </div>
                 <div *ngIf="formGroup.value.unit === datetimeUnitEnum.TIMES">
-                  <div class='unit-price'>
-                    <div class='d-flex title-item mb-1'>
+                  <div class="unit-price">
+                    <div class="d-flex title-item mb-1">
                       <span>Tổng tăng ca</span>
-                      <div class='star'>*</div>
+                      <div class="star">*</div>
                     </div>
-                    <div class=' mb-3' [formGroup]='formGroup'>
-                      <input class="form-control" formControlName="times" type="number">
+                    <div class="mb-3" [formGroup]="formGroup">
+                      <input
+                        class="form-control"
+                        formControlName="times"
+                        type="number"
+                      />
                     </div>
                   </div>
                 </div>
-                <div *ngIf="formGroup.value.unit === 'DAY' || formGroup.value.unit === datetimeUnitEnum.TIMES">
-                  <div class='unit-price'>
-                    <div class='d-flex title-item mb-1'>
+                <div
+                  *ngIf="
+                    formGroup.value.unit === 'DAY' ||
+                    formGroup.value.unit === datetimeUnitEnum.TIMES
+                  "
+                >
+                  <div class="unit-price">
+                    <div class="d-flex title-item mb-1">
                       <span>Giá tăng ca</span>
-                      <div class='star'>*</div>
+                      <div class="star">*</div>
                     </div>
-                    <div class=' mb-3' [formGroup]='formGroup'>
-                      <div class="form-control px-1" style="pointer-events: none; background: #eee">
-                        {{formGroup.value.price ? (formGroup.value.price  |number:'1.0-0') : 'Theo lương chuẩn'}}
+                    <div class="mb-3" [formGroup]="formGroup">
+                      <div
+                        class="form-control px-1"
+                        style="pointer-events: none; background: #eee"
+                      >
+                        {{
+                          formGroup.value.price
+                            ? (formGroup.value.price | number: '1.0-0')
+                            : 'Theo lương chuẩn'
+                        }}
                       </div>
                     </div>
                   </div>
                 </div>
-                <div *ngIf='formGroup.value.unit === datetimeUnitEnum.HOUR'>
-                  <div class='unit-price'>
-                    <div class=' title-item mb-1'>
+                <div *ngIf="formGroup.value.unit === datetimeUnitEnum.HOUR">
+                  <div class="unit-price">
+                    <div class="title-item mb-1">
                       <span>Đơn giá (1 giờ)</span>
-                      <span class='star'>*</span>
+                      <span class="star">*</span>
                     </div>
-                    <div class=' mb-3' [formGroup]='formGroup'>
-                      <div class="form-control px-1" style="pointer-events: none; background: #eee">
-                        {{formGroup.value.price|number:'1.0-0'}} đ
+                    <div class="mb-3" [formGroup]="formGroup">
+                      <div
+                        class="form-control px-1"
+                        style="pointer-events: none; background: #eee"
+                      >
+                        {{ formGroup.value.price | number: '1.0-0' }} đ
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class=' d-flex align-items-center title-item mb-2' *ngIf="formGroup.value.unit !== datetimeUnitEnum.TIMES">
+                <div
+                  class="d-flex align-items-center title-item mb-2"
+                  *ngIf="formGroup.value.unit !== datetimeUnitEnum.TIMES"
+                >
                   <span>Phụ cấp tăng ca:</span>
-                  <input type='checkbox' [checked]='isAllowanceOvertime' class='ml-2'
-                         (click)='checkAllowanceOvertime()'>
+                  <input
+                    type="checkbox"
+                    [checked]="isAllowanceOvertime"
+                    class="ml-2"
+                    (click)="checkAllowanceOvertime()"
+                  />
                 </div>
-                <div class='allowance-overtime p-2 border' *ngIf='isAllowanceOvertime'>
-                  <div class=' mb-2'>
-                    <span class='title-item mb-2'>Tiêu đề phụ cấp tăng ca</span>
+                <div
+                  class="allowance-overtime p-2 border"
+                  *ngIf="isAllowanceOvertime"
+                >
+                  <div class="mb-2">
+                    <span class="title-item mb-2">Tiêu đề phụ cấp tăng ca</span>
                   </div>
-                  <div class=' mb-3' [formGroup]='formGroup'>
-                    <input type='text' class='form-control  px-1' formControlName='titleAllowance'>
+                  <div class="mb-3" [formGroup]="formGroup">
+                    <input
+                      type="text"
+                      class="form-control px-1"
+                      formControlName="titleAllowance"
+                    />
                   </div>
-                  <div class=''>
-                    <div class=' title-item mb-1'>
+                  <div class="">
+                    <div class="title-item mb-1">
                       <span>Mức Phụ cấp tăng ca</span>
                     </div>
-                    <div class=' mb-3' [formGroup]='formGroup'>
-                      <input type='text' class='form-control  px-1' formControlName='priceAllowance' inputCurrency>
+                    <div class="mb-3" [formGroup]="formGroup">
+                      <input
+                        type="text"
+                        class="form-control px-1"
+                        formControlName="priceAllowance"
+                        inputCurrency
+                      />
                     </div>
                   </div>
                 </div>
               </div>
-              <div class=' title-item mb-1 mt-3'>
+              <div class="title-item mb-1 mt-3">
                 <span>Hệ số</span>
               </div>
-              <div class=' mb-3' [formGroup]='formGroup'>
-                <input class='form-control' formControlName='rate' style="pointer-events: none; background: #eee">
+              <div class="mb-3" [formGroup]="formGroup">
+                <input
+                  class="form-control"
+                  formControlName="rate"
+                  style="pointer-events: none; background: #eee"
+                />
               </div>
-              <div class=' title-item mb-1 mt-3'>
+              <div class="title-item mb-1 mt-3">
                 <span>Chú thích</span>
               </div>
-              <div class=' mb-3' [formGroup]='formGroup'>
-                <input class='form-control' placeholder='Nhập chú thích ' formControlName='note'>
+              <div class="mb-3" [formGroup]="formGroup">
+                <input
+                  class="form-control"
+                  placeholder="Nhập chú thích "
+                  formControlName="note"
+                />
               </div>
             </div>
           </div>
-          <div class='mt-2 row ml-3 '>
-            <button (click)='onSubmit()' class='btn btn-ok '>Lưu</button>
-            <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
+          <div class="mt-2 row ml-3">
+            <button (click)="onSubmit()" class="btn btn-ok">Lưu</button>
+            <button
+              type="button"
+              class="btn award"
+              data-toggle="tooltip"
+              data-placement="left"
+              title="xóa"
+            >
               ?
             </button>
           </div>

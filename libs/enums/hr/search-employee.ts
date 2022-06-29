@@ -5,5 +5,5 @@ export enum SearchEmployeeType {
   BRANCH = 'BRANCH',
   CODE = 'CODE',
   WORKEDAT = 'WORKEDAT',
-  GENDER = 'GENDER'
+  GENDER = 'GENDER',
 }

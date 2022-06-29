@@ -1,4 +1,3 @@
-import {BaseAllowanceBranchEntity} from "../base/base-allowance-branch.entity";
+import { BaseAllowanceBranchEntity } from '../base/base-allowance-branch.entity';
 
-export interface AllowanceBranchEntity extends BaseAllowanceBranchEntity {
-}
+export interface AllowanceBranchEntity extends BaseAllowanceBranchEntity {}

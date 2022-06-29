@@ -1,4 +1,4 @@
-export enum DiveEnum{
-  STANDARD = "STANDARD",
-  OTHER = 'OTHER'
+export enum DiveEnum {
+  STANDARD = 'STANDARD',
+  OTHER = 'OTHER',
 }

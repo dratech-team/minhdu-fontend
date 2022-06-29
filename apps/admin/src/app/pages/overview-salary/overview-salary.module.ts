@@ -13,7 +13,6 @@ import { OverviewSalaryComponent } from './container/overview-salary/overview-sa
 import { OverviewSalaryRoutingModule } from './overview-salary-routing.module';
 import { MatDialogModule } from '@angular/material/dialog';
 
-
 @NgModule({
   imports: [
     OverviewSalaryRoutingModule,
@@ -25,16 +24,10 @@ import { MatDialogModule } from '@angular/material/dialog';
     ReactiveFormsModule,
     MatAutocompleteModule,
     MatInputModule,
-    MatDialogModule
+    MatDialogModule,
   ],
-  declarations: [
-    OverviewSalaryComponent,
-    DetailOverviewComponent
-  ],
-  providers: [
-    DatePipe
-  ],
-  exports: []
+  declarations: [OverviewSalaryComponent, DetailOverviewComponent],
+  providers: [DatePipe],
+  exports: [],
 })
-export class OverviewSalaryModule {
-}
+export class OverviewSalaryModule {}

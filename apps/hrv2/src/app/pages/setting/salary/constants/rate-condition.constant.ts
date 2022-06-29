@@ -1,4 +1,4 @@
-import {RateConditionEnum} from "../enums/rate-condition.enum";
+import { RateConditionEnum } from '../enums/rate-condition.enum';
 
 export const RateConditionConstant = [
   {
@@ -9,4 +9,4 @@ export const RateConditionConstant = [
     name: 'Theo ngày công chuẩn',
     value: RateConditionEnum.WORKDAY,
   },
-]
+];

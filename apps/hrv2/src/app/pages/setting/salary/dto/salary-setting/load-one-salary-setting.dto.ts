@@ -1,3 +1,3 @@
-import {BaseLoadOneDto} from "@minhdu-fontend/base-dto";
+import { BaseLoadOneDto } from '@minhdu-fontend/base-dto';
 
-export type LoadOneSalarySettingDto = BaseLoadOneDto
+export type LoadOneSalarySettingDto = BaseLoadOneDto;

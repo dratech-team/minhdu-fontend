@@ -1,28 +1,36 @@
-<div class='main-customer' style='padding: 0 15%'>
-  <div class='row d-flex align-items-center mt-5 ml-2 '>
-    <div class='row align-items-center h2 mr-4'>Lịch sử thanh toán</div>
+<div class="main-customer" style="padding: 0 15%">
+  <div class="row d-flex align-items-center mt-5 ml-2">
+    <div class="row align-items-center h2 mr-4">Lịch sử thanh toán</div>
   </div>
-  <div class='mt-3 '>
-    <table class='mt-3'>
+  <div class="mt-3">
+    <table class="mt-3">
       <tr>
-        <th class='text-center'>Ngày thanh toán</th>
-        <th class='text-center'>Số thanh toán</th>
-        <th class='text-center'>Đơn vị</th>
-        <th class='text-center'> Loại thanh toán</th>
-        <th class='text-center'> Chú thích</th>
+        <th class="text-center">Ngày thanh toán</th>
+        <th class="text-center">Số thanh toán</th>
+        <th class="text-center">Đơn vị</th>
+        <th class="text-center">Loại thanh toán</th>
+        <th class="text-center">Chú thích</th>
       </tr>
-      <tr *ngFor='let paymentHistory of paymentHistories'>
-        <td class='text-center'> {{paymentHistory?.paidAt | date: 'dd/MM/yyyy'}} </td>
-        <td  class='text-center'>  {{paymentHistory.total|number:'1.0'|notEmpty:'0'}} đ</td>
-        <td class='text-center' *ngIf='paymentHistory.currency === "VND"'> Việt Nam Đồng </td>
-        <td class='text-center' *ngIf='paymentHistory.payType === "CASH"'> Tiền mặt </td>
-        <td class='text-center'> {{paymentHistory.note}} </td>
+      <tr *ngFor="let paymentHistory of paymentHistories">
+        <td class="text-center">
+          {{ paymentHistory?.paidAt | date: 'dd/MM/yyyy' }}
+        </td>
+        <td class="text-center">
+          {{ paymentHistory.total | number: '1.0' | notEmpty: '0' }} đ
+        </td>
+        <td class="text-center" *ngIf="paymentHistory.currency === 'VND'">
+          Việt Nam Đồng
+        </td>
+        <td class="text-center" *ngIf="paymentHistory.payType === 'CASH'">
+          Tiền mặt
+        </td>
+        <td class="text-center">{{ paymentHistory.note }}</td>
       </tr>
-      <tr *ngIf='!paymentHistories|| paymentHistories.length === 0'>
-        <td colspan='5' class='text-center check-content'> Chưa có lịch sử thanh toán nào! </td>
+      <tr *ngIf="!paymentHistories || paymentHistories.length === 0">
+        <td colspan="5" class="text-center check-content">
+          Chưa có lịch sử thanh toán nào!
+        </td>
       </tr>
-
     </table>
   </div>
 </div>
-

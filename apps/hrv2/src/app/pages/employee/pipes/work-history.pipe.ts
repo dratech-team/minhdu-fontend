@@ -1,5 +1,5 @@
-import {Pipe, PipeTransform} from '@angular/core';
-import {WorkHistory} from '@minhdu-fontend/data-models';
+import { Pipe, PipeTransform } from '@angular/core';
+import { WorkHistory } from '@minhdu-fontend/data-models';
 
 @Pipe({
   name: 'workhistorypipe',
@@ -7,9 +7,9 @@ import {WorkHistory} from '@minhdu-fontend/data-models';
 })
 export class WorkHistoryPipe implements PipeTransform {
   transform(workHistories: readonly WorkHistory[]) {
-      const arrClone = [...workHistories]
-      return arrClone.sort(function (a, b) {
-        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-      });
+    const arrClone = [...workHistories];
+    return arrClone.sort(function (a, b) {
+      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+    });
   }
 }

@@ -4,7 +4,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import {EmployeeStatusEnum, ItemContextMenu, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {
+  EmployeeStatusEnum,
+  ItemContextMenu,
+  SalaryTypeEnum,
+} from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
@@ -13,18 +17,24 @@ import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
   selectedAddingPayroll,
   selectedLoadedPayroll,
-  selectorAllPayroll
+  selectorAllPayroll,
 } from '../../+state/payroll/payroll.selector';
-import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
+import {
+  getAllPosition,
+  PositionActions,
+} from '@minhdu-fontend/orgchart-position';
 import { AppState } from '../../../../reducers';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
-import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
+import {
+  DialogDeleteComponent,
+  DialogExportComponent,
+} from '@minhdu-fontend/components';
 import { searchAutocomplete } from '@minhdu-fontend/utils';
 import { DialogManConfirmedAtComponent } from '../../component/dialog-manconfirmedAt/dialog-man-confirmed-at.component';
 
 @Component({
-  templateUrl: 'history-payroll.component.html'
+  templateUrl: 'history-payroll.component.html',
 })
 export class HistoryPayrollComponent implements OnInit {
   @ViewChild(MatMenuTrigger)
@@ -42,7 +52,9 @@ export class HistoryPayrollComponent implements OnInit {
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
-  name$: Observable<string> = this.activatedRoute.queryParams.pipe(map(param => param.name));
+  name$: Observable<string> = this.activatedRoute.queryParams.pipe(
+    map((param) => param.name)
+  );
   payroll$ = this.store.pipe(select(selectorAllPayroll));
 
   formGroup = new UntypedFormGroup({
@@ -61,35 +73,36 @@ export class HistoryPayrollComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    this.employeeType$ = this.activatedRoute.queryParams.pipe(map(param => {
+    this.employeeType$ = this.activatedRoute.queryParams.pipe(
+      map((param) => {
         return param.employeeType;
-      }
-    ));
+      })
+    );
     this.store.dispatch(
       PayrollAction.loadInit({
         payrollDTO: {
           skip: this.pageIndexInit,
           take: this.pageSize,
-          employeeId: this.getEmployeeId
-        }
+          employeeId: this.getEmployeeId,
+        },
       })
     );
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
 
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe((val) => {
-      this.store.dispatch(PayrollAction.loadInit(
-        {
-          payrollDTO: this.payroll(val)
-        }
-      ));
+      this.store.dispatch(
+        PayrollAction.loadInit({
+          payrollDTO: this.payroll(val),
+        })
+      );
     });
     this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
+      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) ||
+        of(''),
       this.store.pipe(select(getAllPosition))
     );
 
@@ -109,7 +122,7 @@ export class HistoryPayrollComponent implements OnInit {
       createdAt: val.createdAt,
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
-      employeeId: this.getEmployeeId
+      employeeId: this.getEmployeeId,
     };
     if (val.createdAt) {
       return payroll;
@@ -125,17 +138,17 @@ export class HistoryPayrollComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(PayrollAction.loadMorePayrolls(
-      {
-        payrollDTO: this.payroll(val)
-      }
-    ));
+    this.store.dispatch(
+      PayrollAction.loadMorePayrolls({
+        payrollDTO: this.payroll(val),
+      })
+    );
   }
 
   updateConfirmPayroll(id: number, type: string) {
     this.dialog.open(UpdateConfirmComponent, {
       width: '25%',
-      data: { id, type }
+      data: { id, type },
     });
   }
 
@@ -148,7 +161,7 @@ export class HistoryPayrollComponent implements OnInit {
   exportPayroll() {
     this.dialog.open(DialogExportComponent, {
       width: '30%',
-      data: this.formGroup.value
+      data: this.formGroup.value,
     });
   }
 
@@ -173,22 +186,25 @@ export class HistoryPayrollComponent implements OnInit {
   createPayroll() {
     this.dialog.open(AddPayrollComponent, {
       width: '30%',
-      data: { employeeId: this.getEmployeeId, addOne: true, inHistory: true }
+      data: { employeeId: this.getEmployeeId, addOne: true, inHistory: true },
     });
   }
 
   updateManConfirm(id: number, manConfirmedAt: any, createdAt?: Date) {
     this.dialog.open(DialogManConfirmedAtComponent, {
       width: 'fit-content',
-      data: { id, createdAt, manConfirmedAt: !!manConfirmedAt }
+      data: { id, createdAt, manConfirmedAt: !!manConfirmedAt },
     });
   }
 
   deletePayroll(event: any) {
-    this.dialog.open(DialogDeleteComponent, { width: 'fit-content' }).afterClosed().subscribe(val => {
-      if (val) {
-        this.store.dispatch(PayrollAction.deletePayroll({ id: event.id }));
-      }
-    });
+    this.dialog
+      .open(DialogDeleteComponent, { width: 'fit-content' })
+      .afterClosed()
+      .subscribe((val) => {
+        if (val) {
+          this.store.dispatch(PayrollAction.deletePayroll({ id: event.id }));
+        }
+      });
   }
 }

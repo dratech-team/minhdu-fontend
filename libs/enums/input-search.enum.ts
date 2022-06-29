@@ -20,5 +20,5 @@ export enum InputSearchEnum {
   PAYSLIP_IN_NOT_HOLIDAY = 'payslipNotInHoliday',
   DEDUCTION = 'deduction',
   TAX = 'tax',
-  TOTAL = 'total'
+  TOTAL = 'total',
 }

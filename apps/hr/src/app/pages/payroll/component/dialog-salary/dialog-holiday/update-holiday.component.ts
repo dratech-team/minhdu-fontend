@@ -1,21 +1,42 @@
-import {DatePipe} from '@angular/common';
-import {Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild} from '@angular/core';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {PartialDayEnum, SalaryPayroll} from '@minhdu-fontend/data-models';
-import {ConvertBooleanFrontEnd, DatetimeUnitEnum, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {select, Store} from '@ngrx/store';
-import {PayrollAction} from '../../../+state/payroll/payroll.action';
-import {selectedAddedPayroll} from '../../../+state/payroll/payroll.selector';
-import {AppState} from '../../../../../reducers';
+import { DatePipe } from '@angular/common';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Inject,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+} from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { PartialDayEnum, SalaryPayroll } from '@minhdu-fontend/data-models';
+import {
+  ConvertBooleanFrontEnd,
+  DatetimeUnitEnum,
+  partialDay,
+  SalaryTypeEnum,
+} from '@minhdu-fontend/enums';
+import { select, Store } from '@ngrx/store';
+import { PayrollAction } from '../../../+state/payroll/payroll.action';
+import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
+import { AppState } from '../../../../../reducers';
 import * as moment from 'moment';
-import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
-import {SalaryService} from '../../../service/salary.service';
-import {NzMessageService} from "ng-zorro-antd/message";
+import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
+import { SalaryService } from '../../../service/salary.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
-  templateUrl: 'update-holiday.component.html'
+  templateUrl: 'update-holiday.component.html',
 })
 export class UpdateHolidayComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
@@ -29,15 +50,14 @@ export class UpdateHolidayComponent implements OnInit {
     private readonly formBuilder: UntypedFormBuilder,
     private readonly dialogRef: MatDialogRef<UpdateHolidayComponent>,
     @Inject(MAT_DIALOG_DATA) public data?: any
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     if (this.data?.isUpdate) {
       this.formGroup = this.formBuilder.group({
         title: [this.data.salary.title, Validators.required],
         datetime: [
-          this.datePipe.transform(this.data.salary?.datetime, 'yyyy-MM-dd')
+          this.datePipe.transform(this.data.salary?.datetime, 'yyyy-MM-dd'),
         ],
         times: [this.data.salary.times],
         rate: [this.data.salary.rate],
@@ -70,7 +90,7 @@ export class UpdateHolidayComponent implements OnInit {
       PayrollAction.updateSalary({
         id: this.data.salary.id,
         payrollId: this.data.salary.payrollId,
-        salary: salary
+        salary: salary,
       })
     );
     this.store.pipe(select(selectedAddedPayroll)).subscribe((added) => {

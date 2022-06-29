@@ -1,31 +1,45 @@
-import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
-import {select, Store} from '@ngrx/store';
-import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
-import {Branch, Position} from '@minhdu-fontend/data-models';
-import {DatetimeUnitEnum, EmployeeType} from '@minhdu-fontend/enums';
-import {getAllPosition, PositionActions} from 'libs/orgchart/src/lib/+state/position';
-import {startWith} from 'rxjs/operators';
-import {PositionService} from '@minhdu-fontend/orgchart';
-import {BranchService} from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
-import {TemplateOvertimeAction} from '../../+state/template-overtime/template-overtime.action';
-import {ReqOvertime} from '../../+state/template-overtime/template-overtime.interface';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { select, Store } from '@ngrx/store';
+import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { Branch, Position } from '@minhdu-fontend/data-models';
+import { DatetimeUnitEnum, EmployeeType } from '@minhdu-fontend/enums';
+import {
+  getAllPosition,
+  PositionActions,
+} from 'libs/orgchart/src/lib/+state/position';
+import { startWith } from 'rxjs/operators';
+import { PositionService } from '@minhdu-fontend/orgchart';
+import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
+import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
+import { ReqOvertime } from '../../+state/template-overtime/template-overtime.interface';
 import * as lodash from 'lodash';
-import {selectTemplateAdded} from '../../+state/template-overtime/template-overtime.selector';
-import {searchAndAddAutocomplete} from '@minhdu-fontend/utils';
-import {NzMessageService} from 'ng-zorro-antd/message';
-import {TemplateOverConstant} from "../../constants";
-import {salaryReference} from "../../enums";
+import { selectTemplateAdded } from '../../+state/template-overtime/template-overtime.selector';
+import { searchAndAddAutocomplete } from '@minhdu-fontend/utils';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { TemplateOverConstant } from '../../constants';
+import { salaryReference } from '../../enums';
 
 @Component({
-  templateUrl: 'dialog-template-overtime.component.html'
+  templateUrl: 'dialog-template-overtime.component.html',
 })
 export class DialogTemplateOvertimeComponent implements OnInit {
   @ViewChild('positionInput') inputPosition!: ElementRef;
   @ViewChild('branchInput') branchInput!: ElementRef;
   numberChars = new RegExp('[^0-9]', 'g');
-  branchesSelected: Branch [] = [];
+  branchesSelected: Branch[] = [];
   positionSelected: Position[] = [];
   positions = new UntypedFormControl();
   branches = new UntypedFormControl();
@@ -35,8 +49,8 @@ export class DialogTemplateOvertimeComponent implements OnInit {
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   submitted = false;
-  templateOverConstant = TemplateOverConstant
-  priceTypeEnum = salaryReference
+  templateOverConstant = TemplateOverConstant;
+  priceTypeEnum = salaryReference;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -46,14 +60,13 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     private readonly positionService: PositionService,
     private readonly branchService: BranchService,
     private readonly message: NzMessageService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
     if (this.data?.template?.branches) {
-      this.branchesSelected = [...this.data.template.branches]
+      this.branchesSelected = [...this.data.template.branches];
     }
     if (this.data?.template?.positions) {
       this.positionSelected = [...this.data.template.positions];
@@ -61,14 +74,25 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     if (this.data?.isUpdate) {
       this.formGroup = this.formBuilder.group({
         title: [this.data?.template?.title, Validators.required],
-        employeeType: [this.data?.template?.employeeType ?
+        employeeType: [
           this.data?.template?.employeeType
-          : EmployeeType.FULL_TIME, Validators.required],
+            ? this.data?.template?.employeeType
+            : EmployeeType.FULL_TIME,
+          Validators.required,
+        ],
         price: [this.data?.template?.price],
-        priceType: [this.data?.template?.price ? salaryReference.PRICE : salaryReference.STANDARD, Validators.required],
+        priceType: [
+          this.data?.template?.price
+            ? salaryReference.PRICE
+            : salaryReference.STANDARD,
+          Validators.required,
+        ],
         unit: [this.data?.template?.unit, Validators.required],
-        rate: [this.data?.template?.rate ? this.data.template.rate : 1, Validators.required],
-        note: [this.data?.template?.note]
+        rate: [
+          this.data?.template?.rate ? this.data.template.rate : 1,
+          Validators.required,
+        ],
+        note: [this.data?.template?.note],
       });
     } else {
       this.formGroup = this.formBuilder.group({
@@ -78,15 +102,14 @@ export class DialogTemplateOvertimeComponent implements OnInit {
         priceType: [salaryReference.PRICE, Validators.required],
         unit: ['', Validators.required],
         rate: [1, Validators.required],
-        note: ['']
+        note: [''],
       });
     }
 
-
-    this.formGroup.get('employeeType')?.valueChanges.subscribe(val => {
+    this.formGroup.get('employeeType')?.valueChanges.subscribe((val) => {
       if (val === EmployeeType.SEASONAL) {
         this.formGroup.get('unit')?.patchValue(DatetimeUnitEnum.HOUR);
-        this.formGroup.get('priceType')?.patchValue(salaryReference.PRICE)
+        this.formGroup.get('priceType')?.patchValue(salaryReference.PRICE);
       }
     });
 
@@ -124,28 +147,36 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     }
     const value = this.formGroup.value;
     if (value.priceType === salaryReference.PRICE && !value.price) {
-      return this.message.error('Chưa nhập mức tăng ca')
+      return this.message.error('Chưa nhập mức tăng ca');
     }
     const template = {
       title: value.title,
       employeeType: value.employeeType,
-      positionIds: this.positionSelected.map(val => val.id),
-      branchIds: this.branchesSelected?.map(val => val.id),
+      positionIds: this.positionSelected.map((val) => val.id),
+      branchIds: this.branchesSelected?.map((val) => val.id),
       unit: value.unit,
       note: value.note,
       rate: value.rate,
-      price: value.priceType === salaryReference.PRICE ?
-        (typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price) : null,
+      price:
+        value.priceType === salaryReference.PRICE
+          ? typeof value.price === 'string'
+            ? Number(value.price.replace(this.numberChars, ''))
+            : value.price
+          : null,
     } as ReqOvertime;
     if (this.data?.isUpdate) {
-      this.store.dispatch(TemplateOvertimeAction.updateTemplate({
-        id: this.data.template.id,
-        templateOvertime: template
-      }));
+      this.store.dispatch(
+        TemplateOvertimeAction.updateTemplate({
+          id: this.data.template.id,
+          templateOvertime: template,
+        })
+      );
     } else {
-      this.store.dispatch(TemplateOvertimeAction.AddTemplate({template: template}));
+      this.store.dispatch(
+        TemplateOvertimeAction.AddTemplate({ template: template })
+      );
     }
-    this.store.pipe(select(selectTemplateAdded)).subscribe(added => {
+    this.store.pipe(select(selectTemplateAdded)).subscribe((added) => {
       if (added) {
         this.dialogRef.close();
       }
@@ -155,7 +186,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
   onCreatePosition(event: any, position: Position, positionInput: HTMLElement) {
     if (event.isUserInput) {
       if (position.id) {
-        if (this.positionSelected.some(item => item.id === position.id)) {
+        if (this.positionSelected.some((item) => item.id === position.id)) {
           this.message.success('chức vụ đã được chọn');
         } else {
           this.positionSelected.push(position);
@@ -163,18 +194,15 @@ export class DialogTemplateOvertimeComponent implements OnInit {
       } else {
         this.positionService
           .addOne({
-            name: this.inputPosition.nativeElement.value
+            name: this.inputPosition.nativeElement.value,
           })
-          .subscribe((position) => (
-            this.positionSelected.push(position)
-          ));
+          .subscribe((position) => this.positionSelected.push(position));
         this.message.success('Đã tạo');
       }
       setTimeout(() => {
         this.positions.setValue('');
         positionInput.blur();
       });
-
     }
   }
 
@@ -182,18 +210,16 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     if (event.isUserInput) {
       if (branch?.id === 0) {
         this.branchService
-          .addOne({name: this.branchInput.nativeElement.value})
-          .subscribe((branch) => (this.branchesSelected?.push(branch)));
+          .addOne({ name: this.branchInput.nativeElement.value })
+          .subscribe((branch) => this.branchesSelected?.push(branch));
         this.message.success('Đã tạo');
       } else {
-        if (branch)
-          this.branchesSelected?.push(branch);
+        if (branch) this.branchesSelected?.push(branch);
       }
       setTimeout(() => {
         this.branches.setValue('');
         branchInput.blur();
       });
-
     }
   }
 
@@ -202,6 +228,6 @@ export class DialogTemplateOvertimeComponent implements OnInit {
   }
 
   onRemoveBranch(branch: Branch) {
-    lodash.remove(this.branchesSelected, branch)
+    lodash.remove(this.branchesSelected, branch);
   }
 }

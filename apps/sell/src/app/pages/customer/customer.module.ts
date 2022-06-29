@@ -8,7 +8,10 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { CustomerEffect } from './+state';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { HttpClientModule } from '@angular/common/http';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
+import {
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
+  MatSnackBarModule,
+} from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
@@ -57,7 +60,7 @@ import { SortPipe } from '@minhdu-fontend/pipes';
       CustomerEffect,
       CommodityEffect,
       RouteEffect,
-      PaymentEffect
+      PaymentEffect,
     ]),
     MatCheckboxModule,
     ReactiveFormsModule,
@@ -84,13 +87,13 @@ import { SortPipe } from '@minhdu-fontend/pipes';
     NzSelectModule,
     NzStepsModule,
     NzDatePickerModule,
-    PaymentModule
+    PaymentModule,
   ],
   declarations: [
     CustomerComponent,
     DetailCustomerComponent,
     CustomerModalComponent,
-    VisibleCustomerComponent
+    VisibleCustomerComponent,
   ],
   providers: [
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
@@ -98,7 +101,6 @@ import { SortPipe } from '@minhdu-fontend/pipes';
     CustomerService,
     PaymentService,
     OrderService,
-  ]
+  ],
 })
-export class CustomerModule {
-}
+export class CustomerModule {}

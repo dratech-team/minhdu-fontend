@@ -7,28 +7,26 @@ import { HistoryPayrollComponent } from './container/history-payroll/history-pay
 const routes: Routes = [
   {
     path: '',
-    component: PayrollComponent
+    component: PayrollComponent,
   },
   {
     path: 'chi-tiet-phieu-luong/:id',
     component: DetailPayrollComponent,
     data: {
-      title: 'Chi tiết Phiếu lương'
-    }
+      title: 'Chi tiết Phiếu lương',
+    },
   },
   {
     path: 'lich-su-luong/:id',
     component: HistoryPayrollComponent,
     data: {
-      title: 'Lịch sử lương nhân viên'
-    }
+      title: 'Lịch sử lương nhân viên',
+    },
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-
-export class PayrollRoutingModule {
-}
+export class PayrollRoutingModule {}

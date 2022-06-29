@@ -1,31 +1,55 @@
-<div class='main-popup'>
-  <div mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+<div class="main-popup">
+  <div mat-dialog-close class="close-popup">
+    <span class="mr-1"> close</span>
+    <div class="x-popup">
+      <img src="../../../../../assets/img/share/x2-lg.svg" alt="cancel" />
     </div>
   </div>
-  <div class='p-2'>
-    <div class='title-popup'>Tùy chọn</div>
-    <mat-dialog-content class='mt-2' style='max-width: 45vh'>
-      <form [formGroup]='formGroup'>
+  <div class="p-2">
+    <div class="title-popup">Tùy chọn</div>
+    <mat-dialog-content class="mt-2" style="max-width: 45vh">
+      <form [formGroup]="formGroup">
         <div>
           <div>
-            <span class='title-item'>Từ ngày đến ngày</span><span class='star'>*</span>
+            <span class="title-item">Từ ngày đến ngày</span
+            ><span class="star">*</span>
           </div>
           <div>
-            <mat-form-field appearance='fill'>
+            <mat-form-field appearance="fill">
               <mat-label>Chọn từ ngày đến ngày</mat-label>
-              <mat-date-range-input [formGroup]='formGroup' [rangePicker]='picker'>
-                <input matStartDate formControlName='startedAt'  placeholder='ngày bắt đầu'>
-                <input matEndDate formControlName='endedAt'  placeholder='ngày kết thúc'>
+              <mat-date-range-input
+                [formGroup]="formGroup"
+                [rangePicker]="picker"
+              >
+                <input
+                  matStartDate
+                  formControlName="startedAt"
+                  placeholder="ngày bắt đầu"
+                />
+                <input
+                  matEndDate
+                  formControlName="endedAt"
+                  placeholder="ngày kết thúc"
+                />
               </mat-date-range-input>
-              <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
               <mat-date-range-picker #picker></mat-date-range-picker>
-              <div *ngIf='submitted && checkValid.startedAt.errors?.required && checkValid.endedAt.errors?.required ' style='width: 100%;
-                   margin-top: 0.25rem;
-                   font-size: 80%;
-                   color: #f86c6b'>
+              <div
+                *ngIf="
+                  submitted &&
+                  checkValid.startedAt.errors?.required &&
+                  checkValid.endedAt.errors?.required
+                "
+                style="
+                  width: 100%;
+                  margin-top: 0.25rem;
+                  font-size: 80%;
+                  color: #f86c6b;
+                "
+              >
                 <div>Chưa chọn từ ngày đến ngày</div>
               </div>
             </mat-form-field>
@@ -33,24 +57,32 @@
         </div>
         <div>
           <div>
-            <span class='title-item'>Đơn vị</span>
+            <span class="title-item">Đơn vị</span>
           </div>
           <div>
-            <input class='form-control border' type='text' matInput [formControl]='branches' [matAutocomplete]='branch'
-                   #branchInput>
-            <mat-autocomplete #branch='matAutocomplete'>
-              <mat-option *ngFor='let branch of branches$ | async'
-                          (onSelectionChange)='onselectBranch($event,branch)'
-                          [value]='!branch.id ? branchInput.value : branch.name'>
-                {{branch.name}}
+            <input
+              class="form-control border"
+              type="text"
+              matInput
+              [formControl]="branches"
+              [matAutocomplete]="branch"
+              #branchInput
+            />
+            <mat-autocomplete #branch="matAutocomplete">
+              <mat-option
+                *ngFor="let branch of branches$ | async"
+                (onSelectionChange)="onselectBranch($event, branch)"
+                [value]="!branch.id ? branchInput.value : branch.name"
+              >
+                {{ branch.name }}
               </mat-option>
             </mat-autocomplete>
           </div>
         </div>
       </form>
     </mat-dialog-content>
-    <div class='mt-2'>
-      <button (click)='onSubmit()' class='btn btn-ok'>Đồng ý</button>
+    <div class="mt-2">
+      <button (click)="onSubmit()" class="btn btn-ok">Đồng ý</button>
     </div>
   </div>
 </div>

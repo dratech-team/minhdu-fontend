@@ -3,14 +3,14 @@ import { SearchTypeEnum } from '../enums';
 export const SearchTypeConstant = [
   {
     name: 'Chứa',
-    value: SearchTypeEnum.CONTAINS
+    value: SearchTypeEnum.CONTAINS,
   },
   {
     name: 'Trùng khớp',
-    value: SearchTypeEnum.EQUALS
+    value: SearchTypeEnum.EQUALS,
   },
   {
     name: 'Bắt đầu với',
-    value: SearchTypeEnum.START_WITH
+    value: SearchTypeEnum.START_WITH,
   },
 ];

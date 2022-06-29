@@ -1,32 +1,40 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
-import {DatePipe} from '@angular/common';
-import {Actions} from "@datorama/akita-ng-effects";
-import {DataAddOrUpdateDepartment} from "../../data/modal-department.data";
-import {BranchActions, BranchQuery, DepartmentActions, DepartmentQuery} from "@minhdu-fontend/orgchart-v2";
-import {tap} from "rxjs/operators";
-import {NzModalRef} from "ng-zorro-antd/modal";
-
+import { Component, Input, OnInit } from '@angular/core';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { Actions } from '@datorama/akita-ng-effects';
+import { DataAddOrUpdateDepartment } from '../../data/modal-department.data';
+import {
+  BranchActions,
+  BranchQuery,
+  DepartmentActions,
+  DepartmentQuery,
+} from '@minhdu-fontend/orgchart-v2';
+import { tap } from 'rxjs/operators';
+import { NzModalRef } from 'ng-zorro-antd/modal';
 
 @Component({
-  templateUrl: 'modal-department.component.html'
+  templateUrl: 'modal-department.component.html',
 })
-
 export class ModalDepartmentComponent implements OnInit {
-  @Input() data?: DataAddOrUpdateDepartment
-  branches$ = this.branchQuery.selectAll()
-    .pipe(
-      tap(branches => {
-        if (branches.length === 1 && !this.data?.update) {
-          this.formGroup.get('branch')?.setValue(branches[0])
-        }
-      }))
-  loading$ = this.departmentQuery.select(state => state.loading)
+  @Input() data?: DataAddOrUpdateDepartment;
+  branches$ = this.branchQuery.selectAll().pipe(
+    tap((branches) => {
+      if (branches.length === 1 && !this.data?.update) {
+        this.formGroup.get('branch')?.setValue(branches[0]);
+      }
+    })
+  );
+  loading$ = this.departmentQuery.select((state) => state.loading);
 
   stepIndex = 0;
   formGroup!: UntypedFormGroup;
 
-  compareFn = (o1: any, o2: any) => (o1 && o2 ? (o1 == o2.id || o1.id === o2.id) : o1 === o2);
+  compareFn = (o1: any, o2: any) =>
+    o1 && o2 ? o1 == o2.id || o1.id === o2.id : o1 === o2;
 
   constructor(
     public datePipe: DatePipe,
@@ -34,21 +42,20 @@ export class ModalDepartmentComponent implements OnInit {
     private readonly formBuilder: UntypedFormBuilder,
     private readonly branchQuery: BranchQuery,
     private readonly modalRef: NzModalRef,
-    private readonly departmentQuery: DepartmentQuery,
-  ) {
-  }
+    private readonly departmentQuery: DepartmentQuery
+  ) {}
 
   ngOnInit() {
-    this.actions$.dispatch(BranchActions.loadAll({}))
-    const department = this.data?.add?.department || this.data?.update?.department
+    this.actions$.dispatch(BranchActions.loadAll({}));
+    const department =
+      this.data?.add?.department || this.data?.update?.department;
     this.formGroup = this.formBuilder.group({
       branch: [department?.branch, Validators.required],
       name: [department?.name, Validators.required],
       note: [department?.note],
-      employeeIds: [department?.employeeIds || []]
+      employeeIds: [department?.employeeIds || []],
     });
   }
-
 
   get checkValid() {
     return this.formGroup.controls;
@@ -62,27 +69,30 @@ export class ModalDepartmentComponent implements OnInit {
     const department = this.mapDepartment();
     this.actions$.dispatch(
       this.data?.update
-        ? DepartmentActions.update({id: this.data.update.department.id, updates: department})
-        : DepartmentActions.addOne({body: department})
-    )
-    this.loading$.subscribe(loading => {
+        ? DepartmentActions.update({
+            id: this.data.update.department.id,
+            updates: department,
+          })
+        : DepartmentActions.addOne({ body: department })
+    );
+    this.loading$.subscribe((loading) => {
       if (loading === false) {
-        this.modalRef.close()
+        this.modalRef.close();
       }
-    })
+    });
   }
 
   mapDepartment() {
-    const value = this.formGroup.value
+    const value = this.formGroup.value;
     return {
       name: value.name,
       note: value.note,
       branchId: value.branch.id || value.branch,
-      employeeIds: value.employeeIds
-    }
+      employeeIds: value.employeeIds,
+    };
   }
 
   move(type: 'next' | 'pre') {
-    type === 'next' ? this.stepIndex += 1 : this.stepIndex -= 1
+    type === 'next' ? (this.stepIndex += 1) : (this.stepIndex -= 1);
   }
 }

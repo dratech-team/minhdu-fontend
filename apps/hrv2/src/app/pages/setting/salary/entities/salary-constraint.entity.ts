@@ -1,6 +1,6 @@
-import {SalaryTypeEnum} from "../enums";
+import { SalaryTypeEnum } from '../enums';
 
 export interface SalaryConstraintEntity {
-  id: number,
-  type: SalaryTypeEnum
+  id: number;
+  type: SalaryTypeEnum;
 }

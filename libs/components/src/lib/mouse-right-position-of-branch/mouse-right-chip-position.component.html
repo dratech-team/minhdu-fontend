@@ -1,18 +1,11 @@
 <context-menu>
-
-  <ng-template
-               contextMenuItem let-item
-               (execute)='onEmployee($event.item)'>
+  <ng-template contextMenuItem let-item (execute)="onEmployee($event.item)">
     Hồ sơ
   </ng-template>
-  <ng-template
-               contextMenuItem let-item
-               (execute)='onPayroll($event.item)'>
-   Bảng lương
+  <ng-template contextMenuItem let-item (execute)="onPayroll($event.item)">
+    Bảng lương
   </ng-template>
-  <ng-template
-               contextMenuItem let-item
-               (execute)='onOvertime($event.item)'>
-   Tăng ca
+  <ng-template contextMenuItem let-item (execute)="onOvertime($event.item)">
+    Tăng ca
   </ng-template>
 </context-menu>

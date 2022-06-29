@@ -3,7 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { SellLayoutComponent } from './container/sell-layout.component';
 import { AppRoutingModule } from './app-routing.module';
-import { AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule } from '@coreui/angular';
+import {
+  AppBreadcrumbModule,
+  AppFooterModule,
+  AppHeaderModule,
+  AppSidebarModule,
+} from '@coreui/angular';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,14 +16,21 @@ import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthModule } from '@minhdu-fontend/auth';
 import { HashLocationStrategy, registerLocaleData } from '@angular/common';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
+import {
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
+  MatSnackBarModule,
+} from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { NxModule } from '@nrwl/angular';
 import { SharedModule } from './shared/shared.module';
 import { PickMenuComponent } from './components/pick-menu-mobile/pick-menu.component';
-import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DEFAULT_OPTIONS,
+  MatDialogConfig,
+  MatDialogModule,
+} from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 import localeVi from '@angular/common/locales/vi';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
@@ -39,7 +51,9 @@ registerLocaleData(localeVi);
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
 };
-const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key]);
+const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
+  (key) => antDesignIcons[key]
+);
 
 @NgModule({
   imports: [
@@ -67,7 +81,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     NzMessageModule,
     CommodityTemplateModule,
     RouteModule,
-    AuthModule
+    AuthModule,
   ],
   declarations: [PickMenuComponent, AppComponent, SellLayoutComponent],
   providers: [
@@ -77,10 +91,15 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     { provide: LOCALE_ID, useValue: 'vi-VN' },
     { provide: NZ_I18N, useValue: vi_VN },
     { provide: NZ_ICONS, useValue: icons },
-    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true, disableClose: true } as MatDialogConfig },
-    { provide: NZ_CONFIG, useValue: { message: { nzMaxStack: 1 } } as NzConfig }
+    {
+      provide: MAT_DIALOG_DEFAULT_OPTIONS,
+      useValue: { hasBackdrop: true, disableClose: true } as MatDialogConfig,
+    },
+    {
+      provide: NZ_CONFIG,
+      useValue: { message: { nzMaxStack: 1 } } as NzConfig,
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

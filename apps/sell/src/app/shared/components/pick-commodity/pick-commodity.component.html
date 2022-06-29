@@ -1,87 +1,113 @@
 <div>
   <div class="d-flex justify-content-between mb-2">
-    <button (click)='addCommodity()' nz-button nzType="primary">Thêm hàng hóa</button>
-    <div class=' mr-5'>
-      <span class='font-weight-bold'>Đã chọn ({{setOfCheckedId.size}} / {{total$ | async}})</span>
+    <button (click)="addCommodity()" nz-button nzType="primary">
+      Thêm hàng hóa
+    </button>
+    <div class="mr-5">
+      <span class="font-weight-bold"
+        >Đã chọn ({{ setOfCheckedId.size }} / {{ total$ | async }})</span
+      >
     </div>
   </div>
   <div>
-    <nz-table #tableCommodity
-              [nzData]="(commodities$|async)|| []"
-              [formGroup]='formGroupCommodity'
-              [nzPageSize]="pageSizeTable"
-              nzSize="small"
-              [nzScroll]="{x:'1800px',y:'50vh'}"
-              (nzPageIndexChange)="onPagination($event)"
-              (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+    <nz-table
+      #tableCommodity
+      [nzData]="(commodities$ | async) || []"
+      [formGroup]="formGroupCommodity"
+      [nzPageSize]="pageSizeTable"
+      nzSize="small"
+      [nzScroll]="{ x: '1800px', y: '50vh' }"
+      (nzPageIndexChange)="onPagination($event)"
+      (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
     >
       <thead>
-      <tr>
-        <th nzWidth="70px" nzLeft
+        <tr>
+          <th
+            nzWidth="70px"
+            nzLeft
             [nzChecked]="checked"
             [nzIndeterminate]="indeterminate"
-            (nzCheckedChange)="onAllChecked($event)"></th>
-        <th nzWidth="120px">
-          <div>Mã hàng</div>
-          <input nz-input type='text' formControlName='code'>
-        </th>
-        <th nzWidth="200px">
-          <div>Tên Hàng hóa</div>
-          <input nz-input type='search' formControlName='name'>
-        </th>
-        <th nzWidth="120px">
-          <div>Giá trước KM</div>
-          <input nz-input disabled type='number'>
-        </th>
-        <th nzWidth="120px">
-          <div>Số lượng</div>
-          <input nz-input type='number' disabled>
-        </th>
-        <th nzWidth="120px">
-          <div>Khuyến mãi</div>
-          <input nz-input type='number' disabled>
-        </th>
-        <th nzWidth="120px">
-          <div>Mua thêm</div>
-          <input nz-input type='number' disabled>
-        </th>
-        <th nzWidth="120px">
-          <div>Giá sau KM</div>
-          <input nz-input type='number' disabled>
-        </th>
-        <th nzWidth="120px">
-          <div>Đơn vị</div>
-          <input nz-input type='number' formControlName='unit'>
-        </th>
-      </tr>
+            (nzCheckedChange)="onAllChecked($event)"
+          ></th>
+          <th nzWidth="120px">
+            <div>Mã hàng</div>
+            <input nz-input type="text" formControlName="code" />
+          </th>
+          <th nzWidth="200px">
+            <div>Tên Hàng hóa</div>
+            <input nz-input type="search" formControlName="name" />
+          </th>
+          <th nzWidth="120px">
+            <div>Giá trước KM</div>
+            <input nz-input disabled type="number" />
+          </th>
+          <th nzWidth="120px">
+            <div>Số lượng</div>
+            <input nz-input type="number" disabled />
+          </th>
+          <th nzWidth="120px">
+            <div>Khuyến mãi</div>
+            <input nz-input type="number" disabled />
+          </th>
+          <th nzWidth="120px">
+            <div>Mua thêm</div>
+            <input nz-input type="number" disabled />
+          </th>
+          <th nzWidth="120px">
+            <div>Giá sau KM</div>
+            <input nz-input type="number" disabled />
+          </th>
+          <th nzWidth="120px">
+            <div>Đơn vị</div>
+            <input nz-input type="number" formControlName="unit" />
+          </th>
+        </tr>
       </thead>
       <tbody>
-      <ng-template ngFor let-commodity [ngForOf]="tableCommodity.data" let-i='index'>
-        <tr (contextmenu)='child.onContextMenu($event,commodity)'
-            class="pointer">
-          <td nzWidth="70px" nzLeft
+        <ng-template
+          ngFor
+          let-commodity
+          [ngForOf]="tableCommodity.data"
+          let-i="index"
+        >
+          <tr
+            (contextmenu)="child.onContextMenu($event, commodity)"
+            class="pointer"
+          >
+            <td
+              nzWidth="70px"
+              nzLeft
               [nzChecked]="setOfCheckedId.has(commodity.id)"
               (nzCheckedChange)="onItemChecked(commodity.id, $event)"
-          ></td>
-          <td>{{commodity.code}} </td>
-          <td>{{commodity.name}} </td>
-          <td>
-            {{commodity.price | number:'1.0' | notEmpty:'0'}} đ
-          </td>
-          <td>{{commodity.amount | number :'1.0'}} </td>
-          <td>{{(commodity.gift | number :'1.0') || '0'}} </td>
-          <td>{{(commodity?.more?.amount | number :'1.0') || '0'}} </td>
-          <td>
-            {{commodity?.more?.price | number:'1.0' | notEmpty:'0'}} đ
-          </td>
-          <td> {{commodity.unit === commodityUnit.KG ? 'KG' : 'Con'}}</td>
-        </tr>
-      </ng-template>
+            ></td>
+            <td>{{ commodity.code }}</td>
+            <td>{{ commodity.name }}</td>
+            <td>{{ commodity.price | number: '1.0' | notEmpty: '0' }} đ</td>
+            <td>{{ commodity.amount | number: '1.0' }}</td>
+            <td>{{ (commodity.gift | number: '1.0') || '0' }}</td>
+            <td>{{ (commodity?.more?.amount | number: '1.0') || '0' }}</td>
+            <td>
+              {{ commodity?.more?.price | number: '1.0' | notEmpty: '0' }} đ
+            </td>
+            <td>{{ commodity.unit === commodityUnit.KG ? 'KG' : 'Con' }}</td>
+          </tr>
+        </ng-template>
       </tbody>
     </nz-table>
   </div>
-  <button class="mt-1" *ngIf='data?.type === "DIALOG"' (click)='closeDialog()' nz-button nzType="primary">xác nhận
+  <button
+    class="mt-1"
+    *ngIf="data?.type === 'DIALOG'"
+    (click)="closeDialog()"
+    nz-button
+    nzType="primary"
+  >
+    xác nhận
   </button>
 </div>
-<app-mouse-right #child (onAdd)='addCommodity()' (onDel)='deleteCommodity($event)'
-                 (onUpdate)='updateCommodity($event)'></app-mouse-right>
+<app-mouse-right
+  #child
+  (onAdd)="addCommodity()"
+  (onDel)="deleteCommodity($event)"
+  (onUpdate)="updateCommodity($event)"
+></app-mouse-right>

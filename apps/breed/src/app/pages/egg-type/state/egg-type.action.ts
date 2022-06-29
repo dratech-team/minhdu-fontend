@@ -9,5 +9,6 @@ const addOne = createAction(
 const loadAll = createAction('[EGG-TYPE] Load All Egg Type');
 
 export const EggTypeActions = {
-  addOne, loadAll
+  addOne,
+  loadAll,
 };

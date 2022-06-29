@@ -1,13 +1,16 @@
-import {RequireOnlyOne} from "../../../../../shared/types";
-import {BranchEntity} from "@minhdu-fontend/orgchart-v2";
+import { RequireOnlyOne } from '../../../../../shared/types';
+import { BranchEntity } from '@minhdu-fontend/orgchart-v2';
 
 export interface ModalBranchData {
   add?: {
-    branch?: BranchEntity
-  }
+    branch?: BranchEntity;
+  };
   update?: {
-    branch: BranchEntity
-  }
+    branch: BranchEntity;
+  };
 }
 
-export type DataAddOrUpBranch = RequireOnlyOne<ModalBranchData, 'add' | 'update'>
+export type DataAddOrUpBranch = RequireOnlyOne<
+  ModalBranchData,
+  'add' | 'update'
+>;

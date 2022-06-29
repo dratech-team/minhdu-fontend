@@ -1,6 +1,5 @@
 export enum FilterOvertimeEnum {
-  TITLE= 'TITLE',
+  TITLE = 'TITLE',
   DATETIME = 'DATETIME',
   DURATION = 'DURATION',
-
 }

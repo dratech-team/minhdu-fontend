@@ -1,4 +1,4 @@
 export enum LegendPosition {
-  Right = "right",
-  Below = "below"
+  Right = 'right',
+  Below = 'below',
 }

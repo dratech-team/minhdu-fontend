@@ -6,20 +6,19 @@ import { EmployeeComponent } from './containers/employee/employee.component';
 const routes: Routes = [
   {
     path: '',
-    component: EmployeeComponent
+    component: EmployeeComponent,
   },
   {
     path: 'chi-tiet-nhan-vien/:id',
     component: DetailEmployeeComponent,
     data: {
-      title: 'Chi tiết nhân viên'
-    }
-  }
+      title: 'Chi tiết nhân viên',
+    },
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class EmployeeRoutingModule {
-}
+export class EmployeeRoutingModule {}

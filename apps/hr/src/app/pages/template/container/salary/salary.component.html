@@ -1,115 +1,192 @@
-<div class='main-content'>
-  <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
-  <div class='main-customer mx-auto' style='width: fit-content;min-width: 100vh'>
-    <div class=' h3 '>Danh sách thiết lập</div>
+<div class="main-content">
+  <mat-spinner *ngIf="adding$ | async" class="loading"></mat-spinner>
+  <div
+    class="main-customer mx-auto"
+    style="width: fit-content; min-width: 100vh"
+  >
+    <div class="h3">Danh sách thiết lập</div>
     <div>
-      <button (click)='addTemplateSalary()' class='btn btn-primary mt-3 '>Tạo mẫu</button>
+      <button (click)="addTemplateSalary()" class="btn btn-primary mt-3">
+        Tạo mẫu
+      </button>
     </div>
-    <ngx-skeleton-loader *ngIf='!(loaded$|async) else tableTemplate' count='18' appearance='line'></ngx-skeleton-loader>
+    <ngx-skeleton-loader
+      *ngIf="!(loaded$ | async); else tableTemplate"
+      count="18"
+      appearance="line"
+    ></ngx-skeleton-loader>
     <ng-template #tableTemplate>
-      <div class='mt-3 font-weight-bold'>
-        Tổng: {{total$|async}}
-      </div>
-      <div class='fixTableHead mt-2'
-           infiniteScroll
-           [infiniteScrollDistance]='0.5'
-           [scrollWindow]='false'
-           [alwaysCallback]='true'
-           (scrolled)='onScroll()'
+      <div class="mt-3 font-weight-bold">Tổng: {{ total$ | async }}</div>
+      <div
+        class="fixTableHead mt-2"
+        infiniteScroll
+        [infiniteScrollDistance]="0.5"
+        [scrollWindow]="false"
+        [alwaysCallback]="true"
+        (scrolled)="onScroll()"
       >
-        <table [formGroup]='formGroup' style='width: 1200px;'>
+        <table [formGroup]="formGroup" style="width: 1200px">
           <thead>
-          <tr>
-            <th style='width: 50px'>
-              <div class='border-top d-flex justify-content-center align-items-center'>stt</div>
-              <input type='text' disabled>
-            </th>
-            <th style='width: 100px'>
-              <div class='border-top d-flex justify-content-center align-items-center'>Mã bản mẫu</div>
-              <input type='search' disabled>
-            </th>
-            <th>
-              <div class='border-top d-flex justify-content-center align-items-center'>Tên bản mẫu</div>
-              <input class='form-control text-center' placeholder='Nhập tên bản mẫu' formControlName='title'
-                     type='search'>
-            </th>
-            <th>
-              <div class='border-top d-flex justify-content-center align-items-center'>Đơn giá/Công thức tính</div>
-              <input type='text' disabled>
-            </th>
-            <th style='width: 200px'>
-              <div class='border-top d-flex justify-content-center align-items-center'>Ràng buộc</div>
-              <input type='text' disabled>
-            </th>
-            <th style='width: 200px'>
-              <div class='border-top d-flex justify-content-center align-items-center'>Hệ số</div>
-              <input type='text' disabled>
-            </th>
-            <th>
-              <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị</div>
-              <input type='text' disabled>
-            </th>
-            <th style='width: 220px;'>
-              <div class='border-top d-flex justify-content-center align-items-center'>Loại bản mẫu</div>
-              <mat-select class='form-control border-top' formControlName='salaryType'>
-                <mat-option *ngFor='let item of blockSalaries' [value]='item.type'> {{item.title}}</mat-option>
-              </mat-select>
-            </th>
-          </tr>
+            <tr>
+              <th style="width: 50px">
+                <div
+                  class="border-top d-flex justify-content-center align-items-center"
+                >
+                  stt
+                </div>
+                <input type="text" disabled />
+              </th>
+              <th style="width: 100px">
+                <div
+                  class="border-top d-flex justify-content-center align-items-center"
+                >
+                  Mã bản mẫu
+                </div>
+                <input type="search" disabled />
+              </th>
+              <th>
+                <div
+                  class="border-top d-flex justify-content-center align-items-center"
+                >
+                  Tên bản mẫu
+                </div>
+                <input
+                  class="form-control text-center"
+                  placeholder="Nhập tên bản mẫu"
+                  formControlName="title"
+                  type="search"
+                />
+              </th>
+              <th>
+                <div
+                  class="border-top d-flex justify-content-center align-items-center"
+                >
+                  Đơn giá/Công thức tính
+                </div>
+                <input type="text" disabled />
+              </th>
+              <th style="width: 200px">
+                <div
+                  class="border-top d-flex justify-content-center align-items-center"
+                >
+                  Ràng buộc
+                </div>
+                <input type="text" disabled />
+              </th>
+              <th style="width: 200px">
+                <div
+                  class="border-top d-flex justify-content-center align-items-center"
+                >
+                  Hệ số
+                </div>
+                <input type="text" disabled />
+              </th>
+              <th>
+                <div
+                  class="border-top d-flex justify-content-center align-items-center"
+                >
+                  Đơn vị
+                </div>
+                <input type="text" disabled />
+              </th>
+              <th style="width: 220px">
+                <div
+                  class="border-top d-flex justify-content-center align-items-center"
+                >
+                  Loại bản mẫu
+                </div>
+                <mat-select
+                  class="form-control border-top"
+                  formControlName="salaryType"
+                >
+                  <mat-option
+                    *ngFor="let item of blockSalaries"
+                    [value]="item.type"
+                  >
+                    {{ item.title }}</mat-option
+                  >
+                </mat-select>
+              </th>
+            </tr>
           </thead>
-          <tbody *ngIf='(templateSalaries$|async) as templateSalaries '>
-          <tr *ngFor='let templateSalary of templateSalaries;let i = index '
-              (contextmenu)='child.onContextMenu($event,templateSalary)'
-          >
-            <th class='pointer' (click)='updateTemplateSalary(templateSalary)'>
-              {{i + 1}}
-            </th>
-            <th class='pointer' (click)='updateTemplateSalary(templateSalary)'>
-              {{templateSalary?.id}}
-            </th>
-            <th class='pointer' (click)='updateTemplateSalary(templateSalary)'>
-              {{templateSalary?.title}}
-            </th>
-            <th class='pointer' (click)='updateTemplateSalary(templateSalary)'>
-              {{templateSalary.type === salaryTypeEnum.ABSENT ?
-              (((templateSalary.price | number:'1.0-0')) || tranFormType(templateSalary.types))
-              + ' / ' +
-              (templateSalary.workday || 'Ngày công chuẩn') :
-              templateSalary.price}}
-            </th>
-            <th class='pointer' (click)='updateTemplateSalary(templateSalary)'>
-              {{tranFormType(templateSalary.constraints)}}
-            </th>
-            <th class='pointer' (click)='updateTemplateSalary(templateSalary)'>
-              {{templateSalary.rate}}
-            </th>
-            <th class='pointer' (click)='updateTemplateSalary(templateSalary)'>
-              {{templateSalary.unit | unitdatetimepipe }}
-            </th>
-            <th class='pointer' (click)='updateTemplateSalary(templateSalary)'>
-              {{templateSalary.type | transformUBlockSalary: blockSalaries }}
-            </th>
-          </tr>
-          <tr *ngIf='templateSalaries.length === 0 ' style='height: 50vh'>
-            <td colspan='11' class='text-center check-content font-weight-bold font-xl '>Hiện không có phiếu tăng ca nào
-            </td>
-          </tr>
+          <tbody *ngIf="templateSalaries$ | async as templateSalaries">
+            <tr
+              *ngFor="let templateSalary of templateSalaries; let i = index"
+              (contextmenu)="child.onContextMenu($event, templateSalary)"
+            >
+              <th
+                class="pointer"
+                (click)="updateTemplateSalary(templateSalary)"
+              >
+                {{ i + 1 }}
+              </th>
+              <th
+                class="pointer"
+                (click)="updateTemplateSalary(templateSalary)"
+              >
+                {{ templateSalary?.id }}
+              </th>
+              <th
+                class="pointer"
+                (click)="updateTemplateSalary(templateSalary)"
+              >
+                {{ templateSalary?.title }}
+              </th>
+              <th
+                class="pointer"
+                (click)="updateTemplateSalary(templateSalary)"
+              >
+                {{
+                  templateSalary.type === salaryTypeEnum.ABSENT
+                    ? ((templateSalary.price | number: '1.0-0') ||
+                        tranFormType(templateSalary.types)) +
+                      ' / ' +
+                      (templateSalary.workday || 'Ngày công chuẩn')
+                    : templateSalary.price
+                }}
+              </th>
+              <th
+                class="pointer"
+                (click)="updateTemplateSalary(templateSalary)"
+              >
+                {{ tranFormType(templateSalary.constraints) }}
+              </th>
+              <th
+                class="pointer"
+                (click)="updateTemplateSalary(templateSalary)"
+              >
+                {{ templateSalary.rate }}
+              </th>
+              <th
+                class="pointer"
+                (click)="updateTemplateSalary(templateSalary)"
+              >
+                {{ templateSalary.unit | unitdatetimepipe }}
+              </th>
+              <th
+                class="pointer"
+                (click)="updateTemplateSalary(templateSalary)"
+              >
+                {{ templateSalary.type | transformUBlockSalary: blockSalaries }}
+              </th>
+            </tr>
+            <tr *ngIf="templateSalaries.length === 0" style="height: 50vh">
+              <td
+                colspan="11"
+                class="text-center check-content font-weight-bold font-xl"
+              >
+                Hiện không có phiếu tăng ca nào
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
     </ng-template>
-
   </div>
   <app-mouse-right
     #child
-    (onAdd)='addTemplateSalary($event)'
-    (onUpdate)='updateTemplateSalary($event)'
-    (onDel)='deleteBasicSalary($event)'
+    (onAdd)="addTemplateSalary($event)"
+    (onUpdate)="updateTemplateSalary($event)"
+    (onDel)="deleteBasicSalary($event)"
   ></app-mouse-right>
 </div>
-
-
-
-
-
-

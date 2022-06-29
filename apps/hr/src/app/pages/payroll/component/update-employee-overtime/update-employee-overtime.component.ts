@@ -5,7 +5,7 @@ import {
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -13,16 +13,20 @@ import { Employee } from '@minhdu-fontend/data-models';
 import {
   EmployeeAction,
   selectEmployeeLoaded,
-  selectorAllEmployee
+  selectorAllEmployee,
 } from '@minhdu-fontend/employee';
-import { EmployeeType, RecipeType, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import {
+  EmployeeType,
+  RecipeType,
+  SalaryTypeEnum,
+} from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, tap } from 'rxjs/operators';
 import { PickEmployeeService } from './pick-employee.service';
 
 @Component({
   selector: 'app-update-employee-overtime',
-  templateUrl: 'update-employee-overtime.component.html'
+  templateUrl: 'update-employee-overtime.component.html',
 })
 export class UpdateEmployeeOvertimeComponent implements OnInit {
   @Input() checkAllowance = false;
@@ -36,27 +40,28 @@ export class UpdateEmployeeOvertimeComponent implements OnInit {
   salaryIds: number[] = [];
   allowSalaryIds: number[] = [];
   formGroup = new UntypedFormGroup({
-    name: new UntypedFormControl('')
+    name: new UntypedFormControl(''),
   });
-  loaded = false
+  loaded = false;
 
   constructor(
     private readonly store: Store,
     private readonly service: PickEmployeeService,
     private readonly snackBar: MatSnackBar
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.service.onInit({
-      title: this.search.overtimeTitle || '',
-      datetime: this.search.createdPayroll,
-      times: this.search.times || '',
-      unit: this.search.unit || ''
-    }).subscribe((employee) => {
-      this.loaded = true
-      this.employees = JSON.parse(JSON.stringify(employee));
-    });
+    this.service
+      .onInit({
+        title: this.search.overtimeTitle || '',
+        datetime: this.search.createdPayroll,
+        times: this.search.times || '',
+        unit: this.search.unit || '',
+      })
+      .subscribe((employee) => {
+        this.loaded = true;
+        this.employees = JSON.parse(JSON.stringify(employee));
+      });
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
@@ -66,11 +71,11 @@ export class UpdateEmployeeOvertimeComponent implements OnInit {
             title: this.search.overtimeTitle || '',
             datetime: this.search.createdPayroll,
             times: this.search.times || '',
-            unit: this.search.unit || ''
+            unit: this.search.unit || '',
           };
-          this.loaded = false
+          this.loaded = false;
           this.service.onInit(param).subscribe((employee) => {
-            this.loaded = true
+            this.loaded = true;
             this.employees = JSON.parse(JSON.stringify(employee));
           });
         })
@@ -102,8 +107,8 @@ export class UpdateEmployeeOvertimeComponent implements OnInit {
 
   someCompleteEmployee(): boolean {
     return (
-      this.employees.filter((e) => this.salaryIds.includes(e.salary.id)).length >
-      0 && !this.isSelectEmployee
+      this.employees.filter((e) => this.salaryIds.includes(e.salary.id))
+        .length > 0 && !this.isSelectEmployee
     );
   }
 
@@ -156,8 +161,8 @@ export class UpdateEmployeeOvertimeComponent implements OnInit {
 
   someCompleteAllowance(): boolean {
     return (
-      this.employees.filter((e) => this.allowSalaryIds.includes(e.salary.id)).length >
-      0 && !this.isSelectAllowance
+      this.employees.filter((e) => this.allowSalaryIds.includes(e.salary.id))
+        .length > 0 && !this.isSelectAllowance
     );
   }
 

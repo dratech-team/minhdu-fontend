@@ -1,27 +1,39 @@
 <div class="d-flex mt-3 ml-2">
-  <div class='d-flex flex-column ml-3 border p-2' style='height: 80vh; width:250px; overflow-y: scroll'>
+  <div
+    class="d-flex flex-column ml-3 border p-2"
+    style="height: 80vh; width: 250px; overflow-y: scroll"
+  >
     <nz-collapse>
-      <nz-collapse-panel
-        nzHeader='Tìm kiếm'
-        nzActive='true'>
-        <div [formGroup]='formGroup'>
-          <input nz-input class='form-control' type='search' formControlName='search'>
+      <nz-collapse-panel nzHeader="Tìm kiếm" nzActive="true">
+        <div [formGroup]="formGroup">
+          <input
+            nz-input
+            class="form-control"
+            type="search"
+            formControlName="search"
+          />
         </div>
       </nz-collapse-panel>
     </nz-collapse>
     <nz-collapse class="mt-2">
       <nz-collapse-panel
         [formGroup]="formGroup"
-        nzHeader='Chức vụ'
-        nzActive='true'>
-        <nz-select style="width: 100%"
-                   nzAllowClear
-                   nzShowSearch
-                   [compareWith]="compareFN"
-                   nzPlaceHolder="Chọn chức vụ"
-                   formControlName="position"
+        nzHeader="Chức vụ"
+        nzActive="true"
+      >
+        <nz-select
+          style="width: 100%"
+          nzAllowClear
+          nzShowSearch
+          [compareWith]="compareFN"
+          nzPlaceHolder="Chọn chức vụ"
+          formControlName="position"
         >
-          <nz-option *ngFor="let item of positions$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
+          <nz-option
+            *ngFor="let item of positions$ | async"
+            [nzLabel]="item.name"
+            [nzValue]="item"
+          ></nz-option>
         </nz-select>
       </nz-collapse-panel>
     </nz-collapse>
@@ -30,64 +42,92 @@
     <div class="mt-2 d-flex flex-column">
       <div class="d-flex mb-2 justify-content-between align-items-center">
         <div>
-          <span class="font-weight-bold">Tổng: </span> {{total$|async}}
+          <span class="font-weight-bold">Tổng: </span> {{ total$ | async }}
         </div>
         <div>
           <button nz-button nzType="primary" (click)="onAdd()">Thêm</button>
         </div>
       </div>
-      <nz-table #tableBranch
-                nzShowPagination="false"
-                [nzLoading]="(loading$ | async) && (total$ | async) === 0 "
-                [nzScroll]="{ x: '1500px',y: '53vh'}"
-                nzSize='small'
-                [nzData]="(branches$|async)|| []">
+      <nz-table
+        #tableBranch
+        nzShowPagination="false"
+        [nzLoading]="(loading$ | async) && (total$ | async) === 0"
+        [nzScroll]="{ x: '1500px', y: '53vh' }"
+        nzSize="small"
+        [nzData]="(branches$ | async) || []"
+      >
         <thead>
-        <tr>
-          <th nzLeft nzWidth="60px">STT</th>
-          <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" nzWidth="120px">Mã đơn vị</th>
-          <th nzLeft>Tên Đơn vị</th>
-          <th>Chức vụ</th>
-          <th>Tổng nhân viên</th>
-          <th>Tổng nhân viên đã nghỉ việc</th>
-        </tr>
+          <tr>
+            <th nzLeft nzWidth="60px">STT</th>
+            <th
+              *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"
+              nzWidth="120px"
+            >
+              Mã đơn vị
+            </th>
+            <th nzLeft>Tên Đơn vị</th>
+            <th>Chức vụ</th>
+            <th>Tổng nhân viên</th>
+            <th>Tổng nhân viên đã nghỉ việc</th>
+          </tr>
         </thead>
         <tbody>
-        <ng-template ngFor let-branch [ngForOf]="tableBranch.data" let-i='index'>
-          <tr class="pointer"
-              (click)='onDetail(branch)'
-              (contextmenu)='child.onContextMenu($event,branch)'>
-            <td nzLeft>{{i + 1}}</td>
-            <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">{{branch.id}}</td>
-            <td nzLeft>{{branch.name}}</td>
-            <td>
-              <mat-chip-list>
-                <mat-chip
-                  (click)="$event.stopPropagation()"
-                  [contextMenu]='childChip'
-                  [contextMenuSubject]='{position: position, branch: branch}'
-                  [style]='{"background": formGroup.get("position")?.value?.id === position.id ? "red" : "#00000040"}'
-                  *ngFor='let position of branch.positions'>
-                  {{position.name}}
-                </mat-chip>
-              </mat-chip-list>
-            </td>
-            <td>{{branch?._count?.employees}}</td>
-            <td>{{branch?._count?.employeeLeft}}</td>
-          </tr>
-        </ng-template>
+          <ng-template
+            ngFor
+            let-branch
+            [ngForOf]="tableBranch.data"
+            let-i="index"
+          >
+            <tr
+              class="pointer"
+              (click)="onDetail(branch)"
+              (contextmenu)="child.onContextMenu($event, branch)"
+            >
+              <td nzLeft>{{ i + 1 }}</td>
+              <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">
+                {{ branch.id }}
+              </td>
+              <td nzLeft>{{ branch.name }}</td>
+              <td>
+                <mat-chip-list>
+                  <mat-chip
+                    (click)="$event.stopPropagation()"
+                    [contextMenu]="childChip"
+                    [contextMenuSubject]="{
+                      position: position,
+                      branch: branch
+                    }"
+                    [style]="{
+                      background:
+                        formGroup.get('position')?.value?.id === position.id
+                          ? 'red'
+                          : '#00000040'
+                    }"
+                    *ngFor="let position of branch.positions"
+                  >
+                    {{ position.name }}
+                  </mat-chip>
+                </mat-chip-list>
+              </td>
+              <td>{{ branch?._count?.employees }}</td>
+              <td>{{ branch?._count?.employeeLeft }}</td>
+            </tr>
+          </ng-template>
         </tbody>
       </nz-table>
     </div>
-
   </div>
 </div>
 <app-mouse-right
-  [items]="[itemContextMenu.PROFILE, itemContextMenu.PAYROLL,itemContextMenu.OVERTIME]"
+  [items]="[
+    itemContextMenu.PROFILE,
+    itemContextMenu.PAYROLL,
+    itemContextMenu.OVERTIME
+  ]"
   #child
-  (onAdd)='onAdd()'
-  (onUpdate)='onUpdate($event)'
-  (onDel)='onDelete($event)'
+  (onAdd)="onAdd()"
+  (onUpdate)="onUpdate($event)"
+  (onDel)="onDelete($event)"
   (onProfile)="onEmployee($event)"
   (onPayroll)="onPayroll($event, filterType.PAYROLL)"
   (onOvertime)="onPayroll($event, filterType.OVERTIME)"
@@ -96,17 +136,24 @@
 <context-menu #childChip>
   <ng-template
     contextMenuItem
-    (execute)='onEmployee($event.item.branch, $event.item.position)'>
+    (execute)="onEmployee($event.item.branch, $event.item.position)"
+  >
     Nhân viên
   </ng-template>
   <ng-template
     contextMenuItem
-    (execute)='onPayroll( $event.item.branch, filterType.PAYROLL, $event.item.position)'>
+    (execute)="
+      onPayroll($event.item.branch, filterType.PAYROLL, $event.item.position)
+    "
+  >
     Bảng lương
   </ng-template>
   <ng-template
     contextMenuItem
-    (execute)='onPayroll( $event.item.branch,  filterType.OVERTIME, $event.item.position)'>
+    (execute)="
+      onPayroll($event.item.branch, filterType.OVERTIME, $event.item.position)
+    "
+  >
     Tăng ca
   </ng-template>
 </context-menu>

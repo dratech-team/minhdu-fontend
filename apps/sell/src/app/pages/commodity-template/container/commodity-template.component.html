@@ -1,11 +1,17 @@
-<div class="d-flex mt-3 ml-2">
-  <div class='d-flex flex-column ml-3 border p-2' style='height: 75vh; width:250px; overflow-y: scroll'>
+<div class="container d-flex">
+  <div
+    class="d-flex flex-column ml-3 border p-2"
+    style="height: 75vh; width: 250px; overflow-y: scroll"
+  >
     <nz-collapse>
-      <nz-collapse-panel
-        nzHeader='Tìm kiếm'
-        nzActive='true'>
-        <div [formGroup]='formGroup'>
-          <input nz-input class='form-control' type='search' formControlName='search'>
+      <nz-collapse-panel nzHeader="Tìm kiếm" nzActive="true">
+        <div [formGroup]="formGroup">
+          <input
+            nz-input
+            class="form-control"
+            type="search"
+            formControlName="search"
+          />
         </div>
       </nz-collapse-panel>
     </nz-collapse>
@@ -15,47 +21,51 @@
       <div class="font-xl font-weight-bold">Quản lý dòng gà</div>
       <div>
         <div>
-          <button nz-button nzType="primary" class="ml-2" (click)="onAdd()">Thêm</button>
+          <button nz-button nzType="primary" class="ml-2" (click)="onAdd()">
+            Thêm
+          </button>
         </div>
       </div>
     </div>
     <div>
-      <div class="mb-1"><span class="font-weight-bold">Tổng :</span> {{total$|async}}</div>
+      <div class="mb-1">
+        <span class="font-weight-bold">Tổng :</span> {{ total$ | async }}
+      </div>
       <nz-table
         #tableTemplate
-        *ngIf=" (templates$|async) as templates"
-        [nzScroll]="{ x: '',y: '58vh'}"
-        nzSize='middle'
-        (nzPageIndexChange)='onPagination($event)'
+        *ngIf="templates$ | async as templates"
+        [nzScroll]="{ x: '', y: '58vh' }"
+        nzSize="middle"
+        (nzPageIndexChange)="onPagination($event)"
         [nzPageSize]="pageSizeTable"
-        [nzLoading]="loading$|async"
+        [nzLoading]="loading$ | async"
         [nzData]="templates"
       >
         <thead>
-        <tr>
-          <th nzLeft nzWidth="60px">STT</th>
-          <th>Mã bản mẫu</th>
-          <th>Tên bản mẫu</th>
-        </tr>
+          <tr>
+            <th nzLeft nzWidth="60px">STT</th>
+            <th>Mã bản mẫu</th>
+            <th>Tên bản mẫu</th>
+          </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let template of tableTemplate.data; let i = index"
+          <tr
+            *ngFor="let template of tableTemplate.data; let i = index"
             (click)="onUpdate(template)"
-            (contextmenu)='child.onContextMenu($event,template)'>
-          <td nzLeft>{{(i + 1) + ((tableTemplate.nzPageIndex - 1) * 10)}}</td>
-          <td>{{template.code}}</td>
-          <td>{{template.name}}</td>
-        </tr>
+            (contextmenu)="child.onContextMenu($event, template)"
+          >
+            <td nzLeft>{{ i + 1 + (tableTemplate.nzPageIndex - 1) * 10 }}</td>
+            <td>{{ template.code }}</td>
+            <td>{{ template.name }}</td>
+          </tr>
         </tbody>
       </nz-table>
     </div>
-
   </div>
 </div>
 <app-mouse-right
   #child
-  (onAdd)='onAdd()'
-  (onUpdate)='onUpdate($event)'
-  (onDel)='onDelete($event)'
+  (onAdd)="onAdd()"
+  (onUpdate)="onUpdate($event)"
+  (onDel)="onDelete($event)"
 ></app-mouse-right>
-

@@ -1,9 +1,7 @@
 import { Department } from '@minhdu-fontend/data-models';
 import { createAction, props } from '@ngrx/store';
 
-export const loadDepartment = createAction(
-  '[Department/API] Load Department',
-);
+export const loadDepartment = createAction('[Department/API] Load Department');
 
 export const loadDepartmentSuccess = createAction(
   '[Department/API] Load Department Success',
@@ -12,7 +10,7 @@ export const loadDepartmentSuccess = createAction(
 
 export const addDepartment = createAction(
   '[Department/API] Add Department',
-  props<{ department: {name: string, branchId: number} }>()
+  props<{ department: { name: string; branchId: number } }>()
 );
 
 export const getDepartment = createAction(
@@ -22,7 +20,7 @@ export const getDepartment = createAction(
 
 export const updateDepartment = createAction(
   '[Department/API] Update Department',
-  props<{ id: number, name: string }>()
+  props<{ id: number; name: string }>()
 );
 
 export const deleteDepartment = createAction(
@@ -33,7 +31,6 @@ export const loadDepartmentFailure = createAction(
   '[Department/API] Load Department Failure',
   props<{ error: any }>()
 );
-
 
 export const DepartmentActions = {
   getDepartment,

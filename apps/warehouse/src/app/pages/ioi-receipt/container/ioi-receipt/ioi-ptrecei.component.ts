@@ -1,39 +1,41 @@
-import {Component, OnInit} from '@angular/core';
-import {UntypedFormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {DialogDeleteComponent} from '@minhdu-fontend/components';
-import {debounceTime, map} from 'rxjs/operators';
-import {PaginationDto} from '@minhdu-fontend/constants';
-import {IoiReceiptActions} from '../../state/ioi-receipt.actions';
-import {IoiReceiptQuery} from '../../state/ioi-receipt.query';
-import {InventoryTitleConstants} from '../../constants';
-import {Actions} from '@datorama/akita-ng-effects';
-import {NzModalService} from 'ng-zorro-antd/modal';
-import {IoiReceiptStore} from '../../state/ioi-receipt.store';
-import {IoiReceiptEntity} from "../../entities";
-import {IoiReceiptEnum} from "../../../../../shared/enums";
+import { Component, OnInit } from '@angular/core';
+import { UntypedFormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogDeleteComponent } from '@minhdu-fontend/components';
+import { debounceTime, map } from 'rxjs/operators';
+import { PaginationDto } from '@minhdu-fontend/constants';
+import { IoiReceiptActions } from '../../state/ioi-receipt.actions';
+import { IoiReceiptQuery } from '../../state/ioi-receipt.query';
+import { InventoryTitleConstants } from '../../constants';
+import { Actions } from '@datorama/akita-ng-effects';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { IoiReceiptStore } from '../../state/ioi-receipt.store';
+import { IoiReceiptEntity } from '../../entities';
+import { IoiReceiptEnum } from '../../../../../shared/enums';
 import { WarehouseAction, WarehouseQuery } from '../../../warehouse/state';
-import {IoiReceiptDialogComponent} from "../../components";
+import { IoiReceiptDialogComponent } from '../../components';
 
 @Component({
   selector: 'minhdu-fontend-category',
-  templateUrl: 'ioi-receipt.component.html'
-
+  templateUrl: 'ioi-receipt.component.html',
 })
 export class IoiPtreceiComponent implements OnInit {
-  categories$ = this.categoryQuery.selectAll().pipe(map(warehouses => {
-      return warehouses.map(warehouse => ({value: warehouse.id, name: warehouse.name})).concat({
-        value: -1,
-        name: 'Tất cả'
-      });
-    }
-  ));
+  categories$ = this.categoryQuery.selectAll().pipe(
+    map((warehouses) => {
+      return warehouses
+        .map((warehouse) => ({ value: warehouse.id, name: warehouse.name }))
+        .concat({
+          value: -1,
+          name: 'Tất cả',
+        });
+    })
+  );
   products$ = this.ioiReceiptQuery.selectAll();
   loading$ = this.ioiReceiptQuery.selectLoading();
-  ui$ = this.ioiReceiptQuery.select(state => state.ui);
+  ui$ = this.ioiReceiptQuery.select((state) => state.ui);
   stateSearch = this.ioiReceiptQuery.getValue().search;
   warehouseIdSelected = this.ioiReceiptQuery.getValue().warehouseIdSelected;
-  stockType = IoiReceiptEnum
+  stockType = IoiReceiptEnum;
   formGroup = new UntypedFormGroup(
     // check annonate ng đặt fixme là Long nhưng ko chú thích nên không biết vấn đề cần fix là gì
     /// FIXME:
@@ -55,63 +57,67 @@ export class IoiPtreceiComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
     private readonly ioiReceiptStore: IoiReceiptStore
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    this.actions$.dispatch(IoiReceiptActions.loadAll({
-      params: this.mapProduct(this.formGroup.value, false)
-    }));
+    this.actions$.dispatch(
+      IoiReceiptActions.loadAll({
+        params: this.mapProduct(this.formGroup.value, false),
+      })
+    );
 
     this.actions$.dispatch(WarehouseAction.loadAll());
 
-    this.formGroup.valueChanges.pipe(
-      debounceTime(1000),
-      map(_ => {
-          this.actions$.dispatch(IoiReceiptActions.loadAll({
-            params: this.mapProduct(this.formGroup.value, false)
-          }));
-        }
+    this.formGroup.valueChanges
+      .pipe(
+        debounceTime(1000),
+        map((_) => {
+          this.actions$.dispatch(
+            IoiReceiptActions.loadAll({
+              params: this.mapProduct(this.formGroup.value, false),
+            })
+          );
+        })
       )
-    ).subscribe();
+      .subscribe();
   }
 
   onPagination(index: number) {
     const count = this.ioiReceiptQuery.getCount();
     if (index * this.pageSizeTable >= count) {
-      this.actions$.dispatch(IoiReceiptActions.loadAll({
-        params: this.mapProduct(this.formGroup.value, true),
-        isPagination: true
-      }));
+      this.actions$.dispatch(
+        IoiReceiptActions.loadAll({
+          params: this.mapProduct(this.formGroup.value, true),
+          isPagination: true,
+        })
+      );
     }
-
-
   }
 
   onDelete($event: any) {
-    const ref = this.dialog.open(DialogDeleteComponent, {width: '30%'});
-    ref.afterClosed().subscribe(val => {
+    const ref = this.dialog.open(DialogDeleteComponent, { width: '30%' });
+    ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.actions$.dispatch(IoiReceiptActions.remove({id: $event.id}));
+        this.actions$.dispatch(IoiReceiptActions.remove({ id: $event.id }));
       }
     });
   }
 
   onUpdate(Product: any) {
-    this.dialog.open(IoiReceiptDialogComponent,
-      {
-        width: '40%',
-        data: Product
-      });
+    this.dialog.open(IoiReceiptDialogComponent, {
+      width: '40%',
+      data: Product,
+    });
   }
 
   mapProduct(dataFG: any, isPagination: boolean) {
-    this.ioiReceiptStore.update(state => ({
-      ...state, search: dataFG
+    this.ioiReceiptStore.update((state) => ({
+      ...state,
+      search: dataFG,
     }));
     Object.assign(dataFG, {
       take: PaginationDto.take,
-      skip: isPagination ? this.ioiReceiptQuery.getCount() : PaginationDto.skip
+      skip: isPagination ? this.ioiReceiptQuery.getCount() : PaginationDto.skip,
     });
     return dataFG;
   }
@@ -119,15 +125,20 @@ export class IoiPtreceiComponent implements OnInit {
   import(ioiReceipt: IoiReceiptEnum, ioiReceiptEntity?: IoiReceiptEntity) {
     this.modal.create({
       nzWidth: 'fit-content',
-      nzTitle: ioiReceipt === IoiReceiptEnum.GOODS_RECEIPT ? 'Nhập kho' : ioiReceipt === IoiReceiptEnum.GOODS_ISSUE ? 'Xuất kho' : '',
+      nzTitle:
+        ioiReceipt === IoiReceiptEnum.GOODS_RECEIPT
+          ? 'Nhập kho'
+          : ioiReceipt === IoiReceiptEnum.GOODS_ISSUE
+          ? 'Xuất kho'
+          : '',
       nzContent: IoiReceiptDialogComponent,
       nzComponentParams: {
         data: {
           ioiReceipt: ioiReceiptEntity,
-          ioiReceiptType: ioiReceipt
-        }
+          ioiReceiptType: ioiReceipt,
+        },
       },
-      nzFooter: null
+      nzFooter: null,
     });
   }
 }

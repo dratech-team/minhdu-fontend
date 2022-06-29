@@ -48,7 +48,7 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
     OrgchartRoutingModule,
     MatDialogModule,
     ContextMenuModule,
-    NzMessageModule
+    NzMessageModule,
   ],
   declarations: [
     DialogPositionComponent,
@@ -56,8 +56,7 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
     BranchContainer,
     DialogBranchComponent,
     AllowanceBranchComponent,
-    DetailBranchContainer
-  ]
+    DetailBranchContainer,
+  ],
 })
-export class OrgchartModule {
-}
+export class OrgchartModule {}

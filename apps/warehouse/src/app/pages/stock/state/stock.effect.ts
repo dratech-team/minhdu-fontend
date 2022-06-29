@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
-import {catchError, switchMap, tap} from 'rxjs/operators';
-import {of} from 'rxjs';
-import {StockActions} from './stock.actions';
-import {StockStore} from './stock.store';
-import {StockService} from '../services';
-import {NzMessageService} from "ng-zorro-antd/message";
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
+import { catchError, switchMap, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { StockActions } from './stock.actions';
+import { StockStore } from './stock.store';
+import { StockService } from '../services';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable()
 export class StockEffect {
@@ -14,49 +14,51 @@ export class StockEffect {
     private readonly service: StockService,
     private readonly stockStore: StockStore,
     private readonly message: NzMessageService
-  ) {
-  }
+  ) {}
 
   @Effect()
   addOne$ = this.action$.pipe(
     ofType(StockActions.addOne),
-    switchMap(props => {
-      this.stockStore.update(state => ({
-        ...state, loading: true
-      }))
+    switchMap((props) => {
+      this.stockStore.update((state) => ({
+        ...state,
+        loading: true,
+      }));
       return this.service.addOne(props).pipe(
-        tap(res => {
-          this.stockStore.update(state => ({
-            ...state, loading: false
-          }))
+        tap((res) => {
+          this.stockStore.update((state) => ({
+            ...state,
+            loading: false,
+          }));
           this.stockStore.upsert(res.id, res);
         }),
-        catchError(err => {
-          this.stockStore.update(state => ({
-            ...state, loading: undefined
-          }))
-          return of(StockActions.error(err))
+        catchError((err) => {
+          this.stockStore.update((state) => ({
+            ...state,
+            loading: undefined,
+          }));
+          return of(StockActions.error(err));
         })
       );
-    }),
+    })
   );
 
   @Effect()
   loadAll$ = this.action$.pipe(
     ofType(StockActions.loadAll),
     switchMap((props) => {
-      this.stockStore.update(state => ({
+      this.stockStore.update((state) => ({
         ...state,
-        loading: true
-      }))
+        loading: true,
+      }));
       return this.service.pagination(props).pipe(
         tap((res) => {
-          this.stockStore.update(state => ({
+          this.stockStore.update((state) => ({
             ...state,
-            loading: false
-          }))
+            loading: false,
+          }));
           if (res.data.length === 0) {
-            this.message.warning('Đã lấy hết hàng hoá')
+            this.message.warning('Đã lấy hết hàng hoá');
           }
           if (props.isPaginate) {
             this.stockStore.add(res.data);
@@ -65,82 +67,82 @@ export class StockEffect {
           }
         }),
         catchError((err) => {
-          this.stockStore.update(state => ({
+          this.stockStore.update((state) => ({
             ...state,
-            loading: undefined
-          }))
-          return of(StockActions.error(err))
+            loading: undefined,
+          }));
+          return of(StockActions.error(err));
         })
       );
-    }),
+    })
   );
 
   @Effect()
   getOne$ = this.action$.pipe(
     ofType(StockActions.getOne),
-    switchMap(props => {
+    switchMap((props) => {
       return this.service.getOne(props.id).pipe(
-        tap(res => {
+        tap((res) => {
           this.stockStore.update(res?.id, res);
         }),
-        catchError(err => {
-          return of(StockActions.error(err))
+        catchError((err) => {
+          return of(StockActions.error(err));
         })
       );
-    }),
+    })
   );
 
   @Effect()
   update$ = this.action$.pipe(
     ofType(StockActions.update),
-    switchMap(props => {
-      this.stockStore.update(state => ({
+    switchMap((props) => {
+      this.stockStore.update((state) => ({
         ...state,
-        loading: true
-      }))
+        loading: true,
+      }));
       return this.service.update(props).pipe(
-        tap(res => {
-          this.stockStore.update(state => ({
+        tap((res) => {
+          this.stockStore.update((state) => ({
             ...state,
-            loading: false
-          }))
+            loading: false,
+          }));
           this.stockStore.update(res?.id, res);
         }),
-        catchError(err => {
-          this.stockStore.update(state => ({
+        catchError((err) => {
+          this.stockStore.update((state) => ({
             ...state,
-            loading: undefined
-          }))
-          return of(StockActions.error(err))
+            loading: undefined,
+          }));
+          return of(StockActions.error(err));
         })
       );
-    }),
+    })
   );
 
   @Effect()
   delete$ = this.action$.pipe(
     ofType(StockActions.remove),
-    switchMap(props => {
-      this.stockStore.update(state => ({
+    switchMap((props) => {
+      this.stockStore.update((state) => ({
         ...state,
-        loading: true
-      }))
+        loading: true,
+      }));
       return this.service.delete(props.id).pipe(
-        tap(_ => {
-          this.stockStore.update(state => ({
+        tap((_) => {
+          this.stockStore.update((state) => ({
             ...state,
-            loading: false
-          }))
+            loading: false,
+          }));
           this.stockStore.remove(props?.id);
         }),
-        catchError(err => {
-          this.stockStore.update(state => ({
+        catchError((err) => {
+          this.stockStore.update((state) => ({
             ...state,
-            loading: undefined
-          }))
-          return of(StockActions.error(err))
+            loading: undefined,
+          }));
+          return of(StockActions.error(err));
         })
       );
-    }),
+    })
   );
 }

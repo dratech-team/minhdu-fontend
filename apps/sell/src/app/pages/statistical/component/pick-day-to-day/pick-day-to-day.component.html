@@ -1,18 +1,28 @@
-<form [formGroup]='formGroup' class='d-flex flex-column p-2'>
-  <div class=' mt-1'>
-    <span class='h5'>Từ ngày</span>
-    <input type='date' class='form-control mt-1' formControlName='startedAt'>
+<form [formGroup]="formGroup" class="d-flex flex-column p-2">
+  <div class="mt-1">
+    <span class="h5">Từ ngày</span>
+    <input type="date" class="form-control mt-1" formControlName="startedAt" />
   </div>
-  <div class=' mt-1'>
-    <span class='h5'> Đến ngày</span>
-    <input type='date' class='form-control mt-1' formControlName='endedAt'>
+  <div class="mt-1">
+    <span class="h5"> Đến ngày</span>
+    <input type="date" class="form-control mt-1" formControlName="endedAt" />
   </div>
-  <div class=' d-flex align-items-end mt-2'>
-    <button type='submit' [mat-dialog-close]='onSubmit()' class='btn btn-primary' style='height: 35px;'>Thống kê
+  <div class="d-flex align-items-end mt-2">
+    <button
+      type="submit"
+      [mat-dialog-close]="onSubmit()"
+      class="btn btn-primary"
+      style="height: 35px"
+    >
+      Thống kê
     </button>
-    <button type='submit' [mat-dialog-close]='print()' class='btn btn-primary ml-2' style='height: 35px;width: 60px '>
+    <button
+      type="submit"
+      [mat-dialog-close]="print()"
+      class="btn btn-primary ml-2"
+      style="height: 35px; width: 60px"
+    >
       In
     </button>
   </div>
 </form>
-

@@ -1,15 +1,16 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
-import {AddIoiReceiptDto, SearchIoiReceiptDto, UpdateIoiReceiptDto} from '../dto';
+import {
+  AddIoiReceiptDto,
+  SearchIoiReceiptDto,
+  UpdateIoiReceiptDto,
+} from '../dto';
 import { IoiReceiptEntity } from '../entities';
 
-const addOne = createAction(
-  '[IOI_RECEIPT] Add One',
-  props<AddIoiReceiptDto>()
-);
+const addOne = createAction('[IOI_RECEIPT] Add One', props<AddIoiReceiptDto>());
 
 const loadAll = createAction(
   '[IOI_RECEIPT] Load All',
-  props<{ params: SearchIoiReceiptDto, isPagination?: boolean }>()
+  props<{ params: SearchIoiReceiptDto; isPagination?: boolean }>()
 );
 
 const getOne = createAction(
@@ -27,8 +28,12 @@ const remove = createAction(
   props<{ id: IoiReceiptEntity['id'] }>()
 );
 
-const error = createAction(
-  '[IOI_RECEIPT] Error',
-  props<{ err: string }>()
-);
-export const IoiReceiptActions = { addOne, loadAll, getOne, update, remove , error};
+const error = createAction('[IOI_RECEIPT] Error', props<{ err: string }>());
+export const IoiReceiptActions = {
+  addOne,
+  loadAll,
+  getOne,
+  update,
+  remove,
+  error,
+};

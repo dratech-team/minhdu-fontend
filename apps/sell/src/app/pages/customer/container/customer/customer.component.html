@@ -1,171 +1,294 @@
-<nz-spin *ngIf="(deleted$| async) === false" class="position-center"></nz-spin>
-<div class='d-flex'>
-  <div class='d-flex flex-column ml-3 border p-2' style='height: 80vh; width:280px; overflow-y: scroll'>
+<nz-spin *ngIf="(deleted$ | async) === false" class="position-center"></nz-spin>
+<div class="d-flex">
+  <div
+    class="d-flex flex-column ml-3 border p-2"
+    style="height: 80vh; width: 280px; overflow-y: scroll"
+  >
     <nz-collapse>
-      <nz-collapse-panel
-        nzHeader='Tìm kiếm'
-        nzActive='true'>
-        <div [formGroup]='formGroup'>
-          <input nz-input class='form-control' type='search' formControlName='search'>
+      <nz-collapse-panel nzHeader="Tìm kiếm" nzActive="true">
+        <div [formGroup]="formGroup">
+          <input
+            nz-input
+            class="form-control"
+            type="search"
+            formControlName="search"
+          />
         </div>
       </nz-collapse-panel>
     </nz-collapse>
-    <div class='mt-2'>
+    <div class="mt-2">
       <minhdu-fontend-collapse-radios
-        [formGroup]='formGroup' header='Giới tính'
+        [formGroup]="formGroup"
+        header="Giới tính"
         [controlName]="'gender'"
-        [active]='true'
-        [radios]='radiosGender'
+        [active]="true"
+        [radios]="radiosGender"
       >
       </minhdu-fontend-collapse-radios>
     </div>
-    <div class='mt-2'>
+    <div class="mt-2">
       <minhdu-fontend-collapse-radios
-        [formGroup]='formGroup' header='Tiềm năng'
+        [formGroup]="formGroup"
+        header="Tiềm năng"
         [controlName]="'isPotential'"
-        [active]='true'
-        [radios]='potentialsConstant'
+        [active]="true"
+        [radios]="potentialsConstant"
       >
       </minhdu-fontend-collapse-radios>
     </div>
-    <div class='mt-2'>
+    <div class="mt-2">
       <minhdu-fontend-collapse-radios
-        [formGroup]='formGroup' header='Nguồn khác hàng'
+        [formGroup]="formGroup"
+        header="Nguồn khác hàng"
         [controlName]="'resource'"
-        [active]='true'
-        [radios]='resourcesConstant'
+        [active]="true"
+        [radios]="resourcesConstant"
       >
       </minhdu-fontend-collapse-radios>
     </div>
-    <div class='mt-2'>
+    <div class="mt-2">
       <minhdu-fontend-collapse-radios
-        [formGroup]='formGroup' header='Loại khách hàng'
+        [formGroup]="formGroup"
+        header="Loại khách hàng"
         [controlName]="'type'"
-        [active]='true'
-        [radios]='customerConstant'
+        [active]="true"
+        [radios]="customerConstant"
       >
       </minhdu-fontend-collapse-radios>
     </div>
   </div>
-  <div class='ml-3' style='width: 76vw'>
-    <div class='d-flex justify-content-between mt-3'>
-      <div class='h3'>Hồ sơ khách hàng</div>
-      <div class='ml-3 d-flex'>
-        <button (click)='add()' class='mr-2' nz-button nzType='primary'>Thêm</button>
-        <button (click)='printCustomer()' nz-button nzType='default'>Xuất</button>
-        <button class='ml-2' nz-button nz-popover nzPopoverTitle='Thêm cột'
-                [(nzPopoverVisible)]='visible'
-                nzPopoverPlacement='bottomRight'
-                [nzPopoverContent]='pinColumn'
-                nzPopoverTrigger='click'
-        >Ghim
+  <div class="ml-3" style="width: 76vw">
+    <div class="d-flex justify-content-between mt-3">
+      <div class="h3">Hồ sơ khách hàng</div>
+      <div class="ml-3 d-flex">
+        <button (click)="add()" class="mr-2" nz-button nzType="primary">
+          Thêm
+        </button>
+        <button (click)="printCustomer()" nz-button nzType="default">
+          Xuất
+        </button>
+        <button
+          class="ml-2"
+          nz-button
+          nz-popover
+          nzPopoverTitle="Thêm cột"
+          [(nzPopoverVisible)]="visible"
+          nzPopoverPlacement="bottomRight"
+          [nzPopoverContent]="pinColumn"
+          nzPopoverTrigger="click"
+        >
+          Ghim
         </button>
       </div>
     </div>
-    <div class='mt-3'>
-      <div class='mb-1'><span class='font-weight-bold'>Tổng khách hàng:</span> {{total$|async}}</div>
+    <div class="mt-3">
+      <div class="mb-1">
+        <span class="font-weight-bold">Tổng khách hàng:</span>
+        {{ total$ | async }}
+      </div>
       <nz-table
         #tableCustomer
-        nzSize='middle'
-        [nzData]='(customers$|async)'
-        [nzScroll]="{ x: '2300px',y: '59vh'}"
-        [nzShowPagination]='true'
-        (nzPageIndexChange)='onPagination($event)'
-        [nzPageSize]='pageSizeTable'
-        [nzLoading]='(loading$ | async)'
-        *ngIf="(ui$|async) as ui"
+        nzSize="middle"
+        [nzData]="customers$ | async"
+        [nzScroll]="{ x: '2300px', y: '59vh' }"
+        [nzShowPagination]="true"
+        (nzPageIndexChange)="onPagination($event)"
+        [nzPageSize]="pageSizeTable"
+        [nzLoading]="loading$ | async"
+        *ngIf="ui$ | async as ui"
       >
         <thead>
-        <tr>
-          <th *ngIf='ui.stt?.visible' [nzLeft]='ui.stt?.pinned||false' nzWidth='60px'>
-            STT
-          </th>
-          <th nzWidth="250px" *ngIf='ui.name?.visible' [nzLeft]='ui.name?.pinned||false'
-              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy: sortCustomerEnum.NAME, orderType:$event})'>
-            Tên khách hàng
-          </th>
-          <th nzWidth="150px" *ngIf='ui.phone?.visible' [nzLeft]='ui.phone?.pinned||false'>
-            Số điện thoại
-          </th>
-          <th nzWidth="150px" *ngIf='ui.birthday?.visible' [nzLeft]='ui.birthday?.pinned||false'>
-            Ngày sinh
-          </th>
-          <th nzWidth="150px" *ngIf='ui.gender?.visible' [nzLeft]='ui.gender?.pinned||false'
-              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy: sortCustomerEnum.GENDER, orderType:$event})'>
-            Giới tính
-          </th>
-          <th nzWidth="100px" *ngIf='ui.potential?.visible' [nzLeft]='ui.potential?.pinned||false'
-              [nzSortFn]='true'
-              (nzSortOrderChange)='onSort({orderBy: sortCustomerEnum.IS_POTENTIAL, orderType:$event})'>
-            Tiềm năng
-          </th>
-          <!--        <th style='width: 200px'>-->
-          <!--          <div class=''>Quốc gia</div>-->
-          <!--          <input formControlName='nationId' class='form-control' type='text'>-->
-          <!--        </th>-->
-          <th nzWidth="150px" *ngIf='ui.resource?.visible' [nzLeft]='ui.resource?.pinned||false'
-              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy: sortCustomerEnum.RESOURCE, orderType:$event})'>
-            Nguồn khách hàng
-          </th>
-          <th nzWidth="180px" *ngIf='ui.customerType?.visible' [nzLeft]='ui.customerType?.pinned||false'
-              [nzSortFn]='true'
-              (nzSortOrderChange)='onSort({orderBy: sortCustomerEnum.CUSTOMER_TYPE, orderType:$event})'>
-            Loại khách hàng
-          </th>
-          <th *ngIf='ui.email?.visible' [nzLeft]='ui.email?.pinned||false'>
-            Email
-          </th>
-          <th *ngIf='ui.address?.visible' [nzLeft]='ui.address?.pinned||false'>
-            Địa chỉ
-          </th>
-          <th *ngIf='ui.note?.visible' [nzLeft]='ui.note?.pinned||false'>
-            Chú thích
-          </th>
-        </tr>
+          <tr>
+            <th
+              *ngIf="ui.stt?.visible"
+              [nzLeft]="ui.stt?.pinned || false"
+              nzWidth="60px"
+            >
+              STT
+            </th>
+            <th
+              nzWidth="250px"
+              *ngIf="ui.name?.visible"
+              [nzLeft]="ui.name?.pinned || false"
+              [nzSortFn]="true"
+              (nzSortOrderChange)="
+                onSort({ orderBy: sortCustomerEnum.NAME, orderType: $event })
+              "
+            >
+              Tên khách hàng
+            </th>
+            <th
+              nzWidth="150px"
+              *ngIf="ui.phone?.visible"
+              [nzLeft]="ui.phone?.pinned || false"
+            >
+              Số điện thoại
+            </th>
+            <th
+              nzWidth="150px"
+              *ngIf="ui.birthday?.visible"
+              [nzLeft]="ui.birthday?.pinned || false"
+            >
+              Ngày sinh
+            </th>
+            <th
+              nzWidth="150px"
+              *ngIf="ui.gender?.visible"
+              [nzLeft]="ui.gender?.pinned || false"
+              [nzSortFn]="true"
+              (nzSortOrderChange)="
+                onSort({ orderBy: sortCustomerEnum.GENDER, orderType: $event })
+              "
+            >
+              Giới tính
+            </th>
+            <th
+              nzWidth="100px"
+              *ngIf="ui.potential?.visible"
+              [nzLeft]="ui.potential?.pinned || false"
+              [nzSortFn]="true"
+              (nzSortOrderChange)="
+                onSort({
+                  orderBy: sortCustomerEnum.IS_POTENTIAL,
+                  orderType: $event
+                })
+              "
+            >
+              Tiềm năng
+            </th>
+            <!--        <th style='width: 200px'>-->
+            <!--          <div class=''>Quốc gia</div>-->
+            <!--          <input formControlName='nationId' class='form-control' type='text'>-->
+            <!--        </th>-->
+            <th
+              nzWidth="150px"
+              *ngIf="ui.resource?.visible"
+              [nzLeft]="ui.resource?.pinned || false"
+              [nzSortFn]="true"
+              (nzSortOrderChange)="
+                onSort({
+                  orderBy: sortCustomerEnum.RESOURCE,
+                  orderType: $event
+                })
+              "
+            >
+              Nguồn khách hàng
+            </th>
+            <th
+              nzWidth="180px"
+              *ngIf="ui.customerType?.visible"
+              [nzLeft]="ui.customerType?.pinned || false"
+              [nzSortFn]="true"
+              (nzSortOrderChange)="
+                onSort({
+                  orderBy: sortCustomerEnum.CUSTOMER_TYPE,
+                  orderType: $event
+                })
+              "
+            >
+              Loại khách hàng
+            </th>
+            <th *ngIf="ui.email?.visible" [nzLeft]="ui.email?.pinned || false">
+              Email
+            </th>
+            <th
+              *ngIf="ui.address?.visible"
+              [nzLeft]="ui.address?.pinned || false"
+            >
+              Địa chỉ
+            </th>
+            <th *ngIf="ui.note?.visible" [nzLeft]="ui.note?.pinned || false">
+              Chú thích
+            </th>
+          </tr>
         </thead>
         <tbody>
-        <ng-template ngFor let-customer [ngForOf]='tableCustomer.data' let-i='index'>
-          <tr
-            class='pointer'
-            (click)='readAndUpdate(customer, false)'
-            (contextmenu)='child.onContextMenu($event, customer)'
+          <ng-template
+            ngFor
+            let-customer
+            [ngForOf]="tableCustomer.data"
+            let-i="index"
           >
-            <td *ngIf='ui.stt?.visible'
-                [nzLeft]='ui.stt?.pinned||false'>{{(i + 1) + ((tableCustomer.nzPageIndex - 1) * 10)}}</td>
-            <td *ngIf='ui.name?.visible' [nzLeft]='ui.name?.pinned||false'>{{customer?.lastName}}</td>
-            <td *ngIf='ui.phone?.visible' [nzLeft]='ui.phone?.pinned||false'>
-              {{customer?.phone | existpipe}}
-            </td>
-            <td *ngIf='ui.birthday?.visible' [nzLeft]='ui.birthday?.pinned||false'>
-              {{customer?.birthday | existpipe}}
-            </td>
-            <td *ngIf='ui.gender?.visible' [nzLeft]='ui.gender?.pinned||false'>
-              {{customer?.gender|transformconstant: genderConstant}}
-            </td>
-            <td *ngIf='ui.potential?.visible' [nzLeft]='ui.potential?.pinned||false'>
-              <input type='checkbox' disabled [checked]='customer.isPotential'>
-            </td>
-            <!--        <th>-->
-            <!--          {{customer?.ward?.district?.province?.nation?.name ? customer?.ward?.district?.province?.nation?.name :-->
-            <!--          'Chưa cập nhật'}}-->
-            <!--        </th>-->
-            <td *ngIf='ui.resource?.visible' [nzLeft]='ui.resource?.pinned||false'>
-              {{ customer?.resource | transformconstant: resourcesConstant}}
-            </td>
-            <td *ngIf='ui.customerType?.visible' [nzLeft]='ui.customerType?.pinned||false'>
-              {{customer?.type | transformconstant: customerConstant}}
-            </td>
-            <td *ngIf='ui.email?.visible' [nzLeft]='ui.email?.pinned||false'>
-              {{customer?.email | existpipe}}
-            </td>
-            <td *ngIf='ui.address?.visible' [nzLeft]='ui.address?.pinned||false'>
-              {{(customer?.address || '') + ' ' + (customer.ward?.name || '') + ' ' + (customer.district?.name || '') + ' ' + customer.province.name}}
-            </td>
-            <td *ngIf='ui.note?.visible' [nzLeft]='ui.note?.pinned||false'>
-              {{customer?.note | existpipe}}
-            </td>
-          </tr>
-        </ng-template>
+            <tr
+              class="pointer"
+              (click)="readAndUpdate(customer, false)"
+              (contextmenu)="child.onContextMenu($event, customer)"
+            >
+              <td *ngIf="ui.stt?.visible" [nzLeft]="ui.stt?.pinned || false">
+                {{ i + 1 + (tableCustomer.nzPageIndex - 1) * 10 }}
+              </td>
+              <td *ngIf="ui.name?.visible" [nzLeft]="ui.name?.pinned || false">
+                {{ customer?.lastName }}
+              </td>
+              <td
+                *ngIf="ui.phone?.visible"
+                [nzLeft]="ui.phone?.pinned || false"
+              >
+                {{ customer?.phone | existpipe }}
+              </td>
+              <td
+                *ngIf="ui.birthday?.visible"
+                [nzLeft]="ui.birthday?.pinned || false"
+              >
+                {{ customer?.birthday | existpipe }}
+              </td>
+              <td
+                *ngIf="ui.gender?.visible"
+                [nzLeft]="ui.gender?.pinned || false"
+              >
+                {{ customer?.gender | transformconstant: genderConstant }}
+              </td>
+              <td
+                *ngIf="ui.potential?.visible"
+                [nzLeft]="ui.potential?.pinned || false"
+              >
+                <input
+                  type="checkbox"
+                  disabled
+                  [checked]="customer.isPotential"
+                />
+              </td>
+              <!--        <th>-->
+              <!--          {{customer?.ward?.district?.province?.nation?.name ? customer?.ward?.district?.province?.nation?.name :-->
+              <!--          'Chưa cập nhật'}}-->
+              <!--        </th>-->
+              <td
+                *ngIf="ui.resource?.visible"
+                [nzLeft]="ui.resource?.pinned || false"
+              >
+                {{ customer?.resource | transformconstant: resourcesConstant }}
+              </td>
+              <td
+                *ngIf="ui.customerType?.visible"
+                [nzLeft]="ui.customerType?.pinned || false"
+              >
+                {{ customer?.type | transformconstant: customerConstant }}
+              </td>
+              <td
+                *ngIf="ui.email?.visible"
+                [nzLeft]="ui.email?.pinned || false"
+              >
+                {{ customer?.email | existpipe }}
+              </td>
+              <td
+                *ngIf="ui.address?.visible"
+                [nzLeft]="ui.address?.pinned || false"
+              >
+                {{
+                  (customer?.address || '') +
+                    ' ' +
+                    (customer.ward?.name || '') +
+                    ' ' +
+                    (customer.district?.name || '') +
+                    ' ' +
+                    customer.province.name
+                }}
+              </td>
+              <td *ngIf="ui.note?.visible" [nzLeft]="ui.note?.pinned || false">
+                {{ customer?.note | existpipe }}
+              </td>
+            </tr>
+          </ng-template>
         </tbody>
       </nz-table>
     </div>
@@ -178,11 +301,11 @@
 
 <app-mouse-right
   #child
-  [items]='[ItemContextMenu.PAYMENT, ItemContextMenu.ADD_ORDER]'
-  (onAddOrder)='addOrder($event)'
-  (onAdd)='add()'
-  (onDel)='deleteCustomer($event)'
-  (onPay)='onPayment($event)'
-  (onUpdate)='readAndUpdate($event, true)'
+  [items]="[ItemContextMenu.PAYMENT, ItemContextMenu.ADD_ORDER]"
+  (onAddOrder)="addOrder($event)"
+  (onAdd)="add()"
+  (onDel)="deleteCustomer($event)"
+  (onPay)="onPayment($event)"
+  (onUpdate)="readAndUpdate($event, true)"
 >
 </app-mouse-right>

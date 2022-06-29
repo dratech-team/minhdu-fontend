@@ -1,8 +1,8 @@
-import {RelativeEntity} from "../../../../../../../libs/employee-v2/src/lib/employee/entities/relative.entity";
+import { RelativeEntity } from '../../../../../../../libs/employee-v2/src/lib/employee/entities/relative.entity';
 
 export interface ModalRelative {
-  employeeId: number
+  employeeId: number;
   update?: {
-    relative: RelativeEntity,
-  }
+    relative: RelativeEntity;
+  };
 }

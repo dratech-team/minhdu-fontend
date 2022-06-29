@@ -1,4 +1,4 @@
-@import "~@coreui/coreui-pro/scss/coreui";
+@import '~@coreui/coreui-pro/scss/coreui';
 
 body {
   margin: 0 !important;
@@ -29,6 +29,7 @@ $spinkit-spinner-color: $body-color;
 .background-snackbar-validate {
   background: #f86c6ba6;
 }
+
 app-dashboard {
   height: fit-content !important;
   min-height: auto !important;
@@ -41,14 +42,13 @@ app-dashboard {
   overflow: hidden;
 }
 
-// Here you can add other styles
 .main {
   background: white;
   font-family: Roboto, serif;
 }
 
 .no-underline {
-  text-decoration: none !important
+  text-decoration: none !important;
 }
 
 .ngx-charts-outer {
@@ -73,10 +73,6 @@ app-dashboard {
   color: #1f2229;
 }
 
-.contain-detail {
-
-}
-
 .required {
   color: red;
 }
@@ -96,7 +92,7 @@ app-dashboard {
 .label-input {
   font-size: 16px;
   line-height: 19px;
-  color: #3C3B54;
+  color: #3c3b54;
 }
 
 .star {
@@ -120,7 +116,7 @@ app-dashboard {
   font-size: 16px;
   line-height: 19px;
   text-align: center;
-  background: #EBEBEB;
+  background: #ebebeb;
   border-radius: 4px;
 }
 
@@ -128,7 +124,7 @@ app-dashboard {
   font-weight: 300;
   font-size: 16px;
   line-height: 19px;
-  color: #3C3B54;
+  color: #3c3b54;
   vertical-align: inherit !important;
 }
 
@@ -136,7 +132,7 @@ app-dashboard {
   font-weight: 500;
   font-size: 20px;
   line-height: 24px;
-  color: #80828B;
+  color: #80828b;
 }
 
 .btn-ok {
@@ -148,7 +144,7 @@ app-dashboard {
   line-height: 19px;
   text-align: center;
   color: #ffffff;
-  background: #3C3B54;
+  background: #3c3b54;
   border-radius: 4px;
 }
 
@@ -158,7 +154,7 @@ app-dashboard {
 
 .main-popup .close-popup {
   font-size: 16px;
-  color: #7749F8;
+  color: #7749f8;
   display: flex;
   align-items: center;
   position: absolute;
@@ -176,41 +172,41 @@ app-dashboard {
   align-content: center;
   width: 14px;
   height: 14px;
-  border: solid 1px #7749F8;
+  border: solid 1px #7749f8;
   border-radius: 50%;
-  background: #7749F8;
+  background: #7749f8;
 }
 
 .color-delete {
-  color: #EB5757 !important;
+  color: #eb5757 !important;
 }
 
 .background-delete {
-  background: #EB5757 !important;
+  background: #eb5757 !important;
 }
 
 .success {
-  background: #B5EEBB;
+  background: #b5eebb;
 }
 
 .fail {
-  background: #EEB5B5;
+  background: #eeb5b5;
 }
 
 .attention {
-  background: #EDEEB5;
+  background: #edeeb5;
 }
 
 .btn-print {
-  border: solid 1px #95AAF8;
-  background: #95AAF8;
+  border: solid 1px #95aaf8;
+  background: #95aaf8;
   border-radius: 32px;
 }
 
 .title-input {
   font-size: 16px;
   line-height: 19px;
-  color: #3C3B54;
+  color: #3c3b54;
 }
 
 .share-table {
@@ -219,7 +215,7 @@ app-dashboard {
 
 .title-child {
   font-size: 16px;
-  color: #3C3B54;
+  color: #3c3b54;
   line-height: 19px;
 }
 
@@ -232,7 +228,7 @@ app-dashboard {
 }
 
 .btn-edit {
-  border: solid 1px #80828B;
+  border: solid 1px #80828b;
   border-radius: 20%;
 }
 
@@ -263,8 +259,6 @@ table {
   width: 100%;
 }
 
-
-
 .pointer {
   cursor: pointer;
 }
@@ -285,9 +279,9 @@ table {
   cursor: pointer;
   display: flex;
   margin-right: 10px;
-  background: #4B3880;
+  background: #4b3880;
   padding: 4px;
-  border: solid 1px #4B3880;
+  border: solid 1px #4b3880;
   border-radius: 4px;
 }
 
@@ -296,37 +290,37 @@ table {
   cursor: pointer;
   font-size: 12px;
   line-height: 28px;
-  color: #7749F8
+  color: #7749f8;
 }
 
 .loading {
   position: fixed !important;
   left: 50%;
   top: 50%;
-  z-index: 2000
+  z-index: 2000;
 }
 
-input[type="search"] {
+input[type='search'] {
   -webkit-appearance: searchfield;
 }
 
-input[type="search"]::-webkit-search-cancel-button {
+input[type='search']::-webkit-search-cancel-button {
   -webkit-appearance: searchfield-cancel-button;
 }
 
 table td,
 table th {
-  text-align:center !important;
+  text-align: center !important;
 }
 
-table thead tr th{
+table thead tr th {
   background: #dddddd !important;
   font-weight: 700 !important;
 }
- .ant-table .ant-table-small{
-   float: right;
-   width: 60%;
- }
+.ant-table .ant-table-small {
+  float: right;
+  width: 60%;
+}
 
 .position-center {
   position: absolute;
@@ -334,9 +328,9 @@ table thead tr th{
   left: 50%;
 }
 
-.invalid-feedback{
+.invalid-feedback {
   display: block !important;
 }
 
-@import "scss/custom-scroll-table";
-@import "~ng-zorro-antd/ng-zorro-antd.min.css";
+@import 'scss/custom-scroll-table';
+@import '~ng-zorro-antd/ng-zorro-antd.min.css';

@@ -1,29 +1,33 @@
-import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
-import {Injectable} from '@angular/core';
-import {PayrollEntity} from '../entities';
-import {EmployeeStatusEnum, EmployeeType, FilterTypeEnum} from '@minhdu-fontend/enums';
-import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
-import {BranchEntity, PositionEntity} from '@minhdu-fontend/orgchart-v2';
-import {ConfirmStatus, PaidStatus} from '../enums';
-import {BaseSearchPayrollDto} from '../dto';
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { Injectable } from '@angular/core';
+import { PayrollEntity } from '../entities';
+import {
+  EmployeeStatusEnum,
+  EmployeeType,
+  FilterTypeEnum,
+} from '@minhdu-fontend/enums';
+import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
+import { BranchEntity, PositionEntity } from '@minhdu-fontend/orgchart-v2';
+import { ConfirmStatus, PaidStatus } from '../enums';
+import { BaseSearchPayrollDto } from '../dto';
 
 export interface PayrollEntityState extends EntityState<PayrollEntity> {
   total: number;
-  loading?: boolean
+  loading?: boolean;
   remain: number;
   totalSalary: number;
   expandAll: boolean;
-  search: BaseSearchPayrollDto,
+  search: BaseSearchPayrollDto;
   searchHistory: {
-    code?: string,
-    name?: string,
-    branch?: BranchEntity,
-    position?: PositionEntity,
-    rangeDay: Date []
-    accConfirmed?: ConfirmStatus,
-    manConfirmedAt?: ConfirmStatus,
-    paidAt?: PaidStatus,
-  }
+    code?: string;
+    name?: string;
+    branch?: BranchEntity;
+    position?: PositionEntity;
+    rangeDay: Date[];
+    accConfirmed?: ConfirmStatus;
+    manConfirmedAt?: ConfirmStatus;
+    paidAt?: PaidStatus;
+  };
 }
 
 export function createInitialState(): PayrollEntityState {
@@ -43,20 +47,17 @@ export function createInitialState(): PayrollEntityState {
       paidAt: PaidStatus.ALL,
     },
     searchHistory: {
-      rangeDay: [
-        new Date(new Date().getFullYear(), 0, 1),
-        new Date()
-      ],
+      rangeDay: [new Date(new Date().getFullYear(), 0, 1), new Date()],
       accConfirmed: ConfirmStatus.ALL,
       manConfirmedAt: ConfirmStatus.ALL,
-      paidAt: PaidStatus.ALL
+      paidAt: PaidStatus.ALL,
     },
-    scanned: null
+    scanned: null,
   };
 }
 
-@Injectable({providedIn: 'root'})
-@StoreConfig({name: 'payroll'})
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: 'payroll' })
 export class PayrollStore extends EntityStore<PayrollEntityState> {
   constructor() {
     super(createInitialState());

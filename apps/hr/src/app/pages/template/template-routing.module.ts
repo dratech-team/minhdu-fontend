@@ -5,15 +5,14 @@ import { HolidayComponent } from './container/holiday/holiday.component';
 import { SalaryComponent } from './container/salary/salary.component';
 import { DetailHoliday } from './container/detail-holiday/detail-holiday';
 
-
 const routes: Routes = [
   {
     path: '',
-    component: SalaryComponent
+    component: SalaryComponent,
   },
   {
     path: 'tang-ca',
-    component: TemplateOvertimeComponent
+    component: TemplateOvertimeComponent,
   },
   {
     path: 'ngay-le',
@@ -27,8 +26,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-
-export class TemplateRoutingModule {
-}
+export class TemplateRoutingModule {}

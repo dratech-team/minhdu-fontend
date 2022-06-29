@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  templateUrl: 'detail-overview.component.html'
+  templateUrl: 'detail-overview.component.html',
 })
 export class DetailOverviewComponent implements OnInit {
   type = 'MONTH';
@@ -23,19 +23,20 @@ export class DetailOverviewComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly salaryPaymentService: SalaryPaymentService,
     @Inject(MAT_DIALOG_DATA) public data?: any
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.title = this.data.title;
-    this.salaryPaymentService.getOne(this.data.id, this.data.year).subscribe(val => {
-      if (val) {
-        val.map((item: any) => {
-          this.totalSalary = this.totalSalary + item.total;
-        });
-        this.dataDetail = val;
-      }
-    });
+    this.salaryPaymentService
+      .getOne(this.data.id, this.data.year)
+      .subscribe((val) => {
+        if (val) {
+          val.map((item: any) => {
+            this.totalSalary = this.totalSalary + item.total;
+          });
+          this.dataDetail = val;
+        }
+      });
     // this.store.dispatch(AdminAction.updateStateMenu({ tab: MenuWarehouseEum.OVERVIEW }));
     // this.activatedRoute.queryParams.subscribe(val => {
     //   if (val) {

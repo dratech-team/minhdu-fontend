@@ -9,9 +9,7 @@ import { ResponsePaginate } from '@minhdu-fontend/data-models';
 
 @Injectable({ providedIn: 'root' })
 export class TemplateSalaryService extends BaseService<SalarySetting> {
-  constructor(
-    public readonly http: HttpClient
-  ) {
+  constructor(public readonly http: HttpClient) {
     super(Api.HR.TEMPLATE.BASIC_TEMPLATE, http);
   }
 

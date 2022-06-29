@@ -1,117 +1,103 @@
 <div>
-  <nz-table #tableOrder
-            [nzScroll]="{y: '300px'}"
-            nzSize='middle'
-            [nzData]="orders"
-            [nzLoading]="(loading$|async)"
-            [nzPageSize]="pageSizeTable"
-            (nzPageIndexChange)="isPagination($event)"
+  <nz-table
+    #tableOrder
+    [nzScroll]="{ y: '300px' }"
+    nzSize="middle"
+    [nzData]="orders"
+    [nzLoading]="loading$ | async"
+    [nzPageSize]="pageSizeTable"
+    (nzPageIndexChange)="isPagination($event)"
   >
-    <thead [formGroup]='formGroup'>
-    <tr>
-      <th>
-        <div>Ngày tạo</div>
-        <input
-          formControlName='createdAt'
-          nz-input
-          type='date'>
-      </th>
-      <th>
-        <div class=''>Điểm đến</div>
-        <input
-          formControlName='ward'
-          nz-input
-          type='search'>
-      </th>
-      <th>
-        <div class=''> Tiền đơn hàng</div>
-        <input
-          nz-input
-          [disabled]='true'
-          type='number'>
-      </th>
-      <th>
-        <div class=''> Tiền thanh toán</div>
-        <input
-          nz-input
-          [disabled]='true'
-          type='number'>
-      </th>
-      <th *ngIf='delivered'>
-        <div class=''>Ngày giao hàng</div>
-        <input
-          nz-input
-          [disabled]='true'
-          type='date'>
-      </th>
-      <th *ngIf='!delivered'>
-        <div class=''>Diễn giải</div>
-        <input
-          nz-input
-          formControlName='explain'
-          type='search'>
-      </th>
-      <th *ngIf='delivered'>
-        <div class=''>Ẩn nợ</div>
-        <input
-          nz-input
-          [disabled]='true'
-          type='number'>
-      </th>
-      <th *ngIf='!delivered'>
-        <div class=''>Đã giao</div>
-        <input
-          nz-input
-          [disabled]='true'
-          type='number'>
-      </th>
-      <th *ngIf='!delivered'>
-        <div class=''>Hủy</div>
-        <input
-          nz-input
-          [disabled]='true'
-          type='number'>
-      </th>
-    </tr>
+    <thead [formGroup]="formGroup">
+      <tr>
+        <th>
+          <div>Ngày tạo</div>
+          <input formControlName="createdAt" nz-input type="date" />
+        </th>
+        <th>
+          <div class="">Điểm đến</div>
+          <input formControlName="ward" nz-input type="search" />
+        </th>
+        <th>
+          <div class="">Tiền đơn hàng</div>
+          <input nz-input [disabled]="true" type="number" />
+        </th>
+        <th>
+          <div class="">Tiền thanh toán</div>
+          <input nz-input [disabled]="true" type="number" />
+        </th>
+        <th *ngIf="delivered">
+          <div class="">Ngày giao hàng</div>
+          <input nz-input [disabled]="true" type="date" />
+        </th>
+        <th *ngIf="!delivered">
+          <div class="">Diễn giải</div>
+          <input nz-input formControlName="explain" type="search" />
+        </th>
+        <th *ngIf="delivered">
+          <div class="">Ẩn nợ</div>
+          <input nz-input [disabled]="true" type="number" />
+        </th>
+        <th *ngIf="!delivered">
+          <div class="">Đã giao</div>
+          <input nz-input [disabled]="true" type="number" />
+        </th>
+        <th *ngIf="!delivered">
+          <div class="">Hủy</div>
+          <input nz-input [disabled]="true" type="number" />
+        </th>
+      </tr>
     </thead>
     <tbody>
-    <ng-template ngFor let-order [ngForOf]="tableOrder.data">
-      <tr class='pointer'>
-        <td *ngIf='order?.createdAt!== null ' (click)='detailOrder(order.id)'>
-          {{order?.createdAt | date: 'dd/MM/yyyy'}}
-        </td>
-        <td *ngIf='order?.createdAt=== null' (click)='detailOrder(order.id)'>
-          Đang cập nhật
-        </td>
-        <td (click)='detailOrder(order.id)'>
-          {{order?.ward?.name}} -
-          {{order?.district?.name}} -
-          {{order?.province?.name}}
-        </td>
-        <td (click)='detailOrder(order.id)' style='color: #f86c6b'>
-          {{order.commodityTotal | number:'1.0-0'|notEmpty:'0'}} đ
-        </td>
-        <td (click)='detailOrder(order.id)' style='color: #20c997'>
-          {{order?.paymentTotal | number:'1.0-0'|notEmpty:'0'}} đ
-        </td>
-        <td *ngIf='delivered' (click)='detailOrder(order.id)'>
-          {{order?.deliveredAt | date: 'dd/MM/yyyy'}}
-        </td>
-        <td *ngIf='!delivered' (click)='detailOrder(order.id)'>
-          {{order?.explain}}
-        </td>
-        <td *ngIf='delivered'>
-          <mat-slide-toggle [checked]='order.hiddenDebt' (click)='updateOrder(order)' class='m-auto'></mat-slide-toggle>
-        </td>
-        <td *ngIf='!delivered'>
-          <button nz-button nzType="primary" (click)='confirmOrder(order)'>Đã giao</button>
-        <td *ngIf='!delivered'>
-          <button *ngIf='order.paymentTotal === 0' nz-button nzType="default" (click)='deleteOrder(order)'>Hủy</button>
-      </tr>
-    </ng-template>
+      <ng-template ngFor let-order [ngForOf]="tableOrder.data">
+        <tr class="pointer">
+          <td *ngIf="order?.createdAt !== null" (click)="detailOrder(order.id)">
+            {{ order?.createdAt | date: 'dd/MM/yyyy' }}
+          </td>
+          <td *ngIf="order?.createdAt === null" (click)="detailOrder(order.id)">
+            Đang cập nhật
+          </td>
+          <td (click)="detailOrder(order.id)">
+            {{ order?.ward?.name }} - {{ order?.district?.name }} -
+            {{ order?.province?.name }}
+          </td>
+          <td (click)="detailOrder(order.id)" style="color: #f86c6b">
+            {{ order.commodityTotal | number: '1.0-0' | notEmpty: '0' }} đ
+          </td>
+          <td (click)="detailOrder(order.id)" style="color: #20c997">
+            {{ order?.paymentTotal | number: '1.0-0' | notEmpty: '0' }} đ
+          </td>
+          <td *ngIf="delivered" (click)="detailOrder(order.id)">
+            {{ order?.deliveredAt | date: 'dd/MM/yyyy' }}
+          </td>
+          <td *ngIf="!delivered" (click)="detailOrder(order.id)">
+            {{ order?.explain }}
+          </td>
+          <td *ngIf="delivered">
+            <mat-slide-toggle
+              [checked]="order.hiddenDebt"
+              (click)="updateOrder(order)"
+              class="m-auto"
+            ></mat-slide-toggle>
+          </td>
+          <td *ngIf="!delivered">
+            <button nz-button nzType="primary" (click)="confirmOrder(order)">
+              Đã giao
+            </button>
+          </td>
+
+          <td *ngIf="!delivered">
+            <button
+              *ngIf="order.paymentTotal === 0"
+              nz-button
+              nzType="default"
+              (click)="deleteOrder(order)"
+            >
+              Hủy
+            </button>
+          </td>
+        </tr>
+      </ng-template>
     </tbody>
   </nz-table>
 </div>
-
-
-

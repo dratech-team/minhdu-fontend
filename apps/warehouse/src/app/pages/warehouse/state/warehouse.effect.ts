@@ -11,8 +11,7 @@ export class WarehouseEffect {
     private readonly action$: Actions,
     private readonly service: CategoryService,
     private readonly warehouseStore: WarehouseStore
-  ) {
-  }
+  ) {}
 
   @Effect({ dispatch: false })
   loadWarehouses$ = this.action$.pipe(
@@ -29,6 +28,6 @@ export class WarehouseEffect {
   addWarehouse$ = this.action$.pipe(
     ofType(WarehouseAction.addOne),
     switchMap((warehouse) => this.service.addOne(warehouse)),
-    tap(warehouse => this.warehouseStore.add(warehouse))
+    tap((warehouse) => this.warehouseStore.add(warehouse))
   );
 }

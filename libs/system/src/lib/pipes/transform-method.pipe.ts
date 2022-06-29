@@ -4,7 +4,7 @@ import { App } from '@minhdu-fontend/enums';
 
 @Pipe({
   name: 'transformMethod',
-  pure: false
+  pure: false,
 })
 export class TransformMethodPipe implements PipeTransform {
   transform(method: string, methods: any[]): string {

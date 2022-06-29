@@ -1,5 +1,5 @@
-export enum UpdateTypeEnum{
+export enum UpdateTypeEnum {
   INFO = 'INFO',
   ORDER = 'ORDER',
-  ALL = 'ALL'
+  ALL = 'ALL',
 }

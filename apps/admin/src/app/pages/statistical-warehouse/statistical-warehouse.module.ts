@@ -14,13 +14,9 @@ import { StatisticalWarehouseComponent } from './container/statistical-warehouse
     MatButtonModule,
     CommonModule,
     MatFormFieldModule,
-    MatSelectModule
+    MatSelectModule,
   ],
-  declarations: [
-    StatisticalWarehouseComponent
-  ],
-  exports: [
-  ],
+  declarations: [StatisticalWarehouseComponent],
+  exports: [],
 })
-export class StatisticalWarehouseModule {
-}
+export class StatisticalWarehouseModule {}

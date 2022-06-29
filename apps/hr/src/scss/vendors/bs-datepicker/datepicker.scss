@@ -10,7 +10,8 @@
   .bs-datepicker-body {
     border-color: lighten($border-color, 5%) !important;
   }
-  .bs-datepicker-body table td.disabled span, .bs-datepicker-body table td span.disabled {
+  .bs-datepicker-body table td.disabled span,
+  .bs-datepicker-body table td span.disabled {
     color: lighten($nav-link-disabled-color, 10%) !important;
   }
   .bs-datepicker-body table.days span.in-range:not(.select-start):before {

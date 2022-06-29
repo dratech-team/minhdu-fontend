@@ -1,17 +1,17 @@
 // If you want to override variables do it here
-@import "variables";
-@import "vendors/ng-modal/modal";
-@import "autocomplete";
+@import 'variables';
+@import 'vendors/ng-modal/modal';
+@import 'autocomplete';
 // Import styles with default layout.
 // If you are going to use dark layout please comment next liFe
-@import "~@coreui/coreui-pro/scss/coreui";
+@import '~@coreui/coreui-pro/scss/coreui';
 
 // If you want to add something do it here
-@import "custom";
-@import "custom-table";
-@import "custom-salary";
+@import 'custom';
+@import 'custom-table';
+@import 'custom-salary';
 
 // Spinkit
 $spinkit-spinner-color: $body-color;
 @import '~spinkit/scss/spinkit.scss';
-@import "~ng-zorro-antd/ng-zorro-antd.min.css";
+@import '~ng-zorro-antd/ng-zorro-antd.min.css';

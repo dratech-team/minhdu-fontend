@@ -1,21 +1,27 @@
-<div class="animated main-popup p-3" style='min-width: 300px'>
+<div class="animated main-popup p-3" style="min-width: 300px">
   <div mat-dialog-close class="close-popup">
     <span class="mr-1"></span>
   </div>
   <div class="title-popup">
-    <span>{{data.title}}</span>
+    <span>{{ data.title }}</span>
   </div>
-  <div class=" mt-4 ml-2 ">
-    <span class='font-lg'>{{data.description}}</span>
+  <div class="mt-4 ml-2">
+    <span class="font-lg">{{ data.description }}</span>
   </div>
   <div class="row mt-4 ml-2">
-    <button [mat-dialog-close]="onClick()"
-            style='font-size: 12px'
-            class="  col-md-2 btn btn-cancel d-flex justify-content-center">Không</button>
-    <button [mat-dialog-close]="onClick()"
-            style='font-size: 12px'
-            class="ml-3 col-md-3 btn btn-ok d-flex justify-content-center">Đồng ý
+    <button
+      [mat-dialog-close]="onClick()"
+      style="font-size: 12px"
+      class="col-md-2 btn btn-cancel d-flex justify-content-center"
+    >
+      Không
+    </button>
+    <button
+      [mat-dialog-close]="onClick()"
+      style="font-size: 12px"
+      class="ml-3 col-md-3 btn btn-ok d-flex justify-content-center"
+    >
+      Đồng ý
     </button>
   </div>
 </div>
-

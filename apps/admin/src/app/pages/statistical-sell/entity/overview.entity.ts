@@ -16,5 +16,5 @@ export interface OverviewSell {
     potential: number;
     total: number;
     link: string;
-  }
+  };
 }

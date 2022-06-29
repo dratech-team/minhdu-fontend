@@ -15,10 +15,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
-  declarations: [
-    IncubatorFactoryComponent,
-    AddEggComponent
-  ],
+  declarations: [IncubatorFactoryComponent, AddEggComponent],
   imports: [
     IncubatorFactoryRoutingModule,
     AkitaNgEffectsModule.forFeature([IncubatorFactoryEffect]),
@@ -30,7 +27,6 @@ import { MatSelectModule } from '@angular/material/select';
     InfiniteScrollModule,
     MatSelectModule,
   ],
-  providers: [IncubatorFactoryService, EggService]
+  providers: [IncubatorFactoryService, EggService],
 })
-export class IncubatorFactoryModule {
-}
+export class IncubatorFactoryModule {}

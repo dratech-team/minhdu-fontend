@@ -1,12 +1,11 @@
-import {Employee, Salary} from '@minhdu-fontend/data-models';
+import { Employee, Salary } from '@minhdu-fontend/data-models';
 import { Predicate } from '@ngrx/entity';
-import { UpdateNum } from '@ngrx/entity/src/models';
 import { createAction, props } from '@ngrx/store';
 import { EmployeeDto } from './employee.dto';
 
 export const loadInit = createAction(
   '[LOAD_EMPLOYEE] Load Employee',
-  props<{ employee: EmployeeDto; isPickEmp?: boolean  }>()
+  props<{ employee: EmployeeDto; isPickEmp?: boolean }>()
 );
 
 export const loadMoreEmployees = createAction(
@@ -16,7 +15,7 @@ export const loadMoreEmployees = createAction(
 
 export const LoadEmployeesSuccess = createAction(
   '[LOAD_EMPLOYEE] Load Employee Success',
-  props<{ employees: Employee[]; total: number, }>()
+  props<{ employees: Employee[]; total: number }>()
 );
 
 const RemoveManyEmployee = createAction(
@@ -26,7 +25,7 @@ const RemoveManyEmployee = createAction(
 
 export const LoadMoreEmployeesSuccess = createAction(
   '[LOAD_EMPLOYEE] LoadMore Employee Success',
-  props<{ employees: Employee[]; total: number, }>()
+  props<{ employees: Employee[]; total: number }>()
 );
 
 export const addEmployee = createAction(
@@ -130,24 +129,23 @@ export const deleteContractSuccess = createAction(
 
 export const updateStateEmployee = createAction(
   '[UPDATE_STATE] Update State Employee  ',
-  props<{ scrollX?: number, added?: boolean }>()
+  props<{ scrollX?: number; added?: boolean }>()
 );
 
 export const deleteWorkHistory = createAction(
   '[DELETE_WORK_HISTORY] Delete Work History ',
-  props<{ id: number, employeeId: number }>()
+  props<{ id: number; employeeId: number }>()
 );
 
 export const updateHistorySalary = createAction(
   '[UPDATE_HISTORY_SALARY] Update History Salary ',
-  props<{ id: number, salary: Partial<Salary>, employeeId: number}>()
+  props<{ id: number; salary: Partial<Salary>; employeeId: number }>()
 );
 
 export const deleteHistorySalary = createAction(
   '[DELETE_HISTORY_SALARY] Delete History Salary ',
-  props<{ id: number, employeeId: number}>()
+  props<{ id: number; employeeId: number }>()
 );
-
 
 export const EmployeeAction = {
   loadMoreEmployees,
@@ -179,5 +177,5 @@ export const EmployeeAction = {
   updateStateEmployee,
   deleteWorkHistory,
   updateHistorySalary,
-  deleteHistorySalary
+  deleteHistorySalary,
 };

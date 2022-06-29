@@ -1,6 +1,11 @@
-import {Employee, Salary} from '@minhdu-fontend/data-models';
-import {EmployeeType, FilterTypeEnum, RecipeType, SearchTypeEnum} from '@minhdu-fontend/enums';
-import {Payslip} from '../payslip/payslip.interface';
+import { Employee, Salary } from '@minhdu-fontend/data-models';
+import {
+  EmployeeType,
+  FilterTypeEnum,
+  RecipeType,
+  SearchTypeEnum,
+} from '@minhdu-fontend/enums';
+import { Payslip } from '../payslip/payslip.interface';
 
 export type AddPayroll = Pick<Payroll, 'createdAt'> & {
   employeeId: number;
@@ -9,7 +14,7 @@ export type AddPayroll = Pick<Payroll, 'createdAt'> & {
 
 export interface Payroll {
   id: number;
-  payrollId: number,
+  payrollId: number;
   employee: Employee;
   createdAt: Date;
   salaries: Salary[];
@@ -17,47 +22,47 @@ export interface Payroll {
   paidAt: Date;
   accConfirmedAt: Date;
   workday?: number;
-  isFlatSalary: boolean,
+  isFlatSalary: boolean;
   totalWorkday: number;
   actualday?: number;
   payrollIds: number[];
   payslip: Payslip;
   taxed: boolean;
-  tax: number
+  tax: number;
   recipeType: RecipeType;
   timesheet: { datetime: any[]; total: number };
   salary?: {
-    total: number,
+    total: number;
     unit: {
-      days: number,
-      hours: number
-    }
-  }
-  note?: string
-  branch?: string,
-  position?: string
+      days: number;
+      hours: number;
+    };
+  };
+  note?: string;
+  branch?: string;
+  position?: string;
 }
 
 //fix me
 export interface PayrollDTO {
-  take?: number,
-  skip?: number,
-  createdAt?: Date,
-  name?: string,
-  code?: string,
-  unit?: string,
-  position?: string,
-  department?: string,
-  branch?: string,
-  paidAt?: boolean,
-  accConfirmedAt?: boolean,
-  filterType?: FilterTypeEnum,
-  title?: string,
-  titles?: string[]
-  searchType?: SearchTypeEnum,
-  employeeId?: number,
-  startedAt?: Date,
-  endedAt?: Date,
-  employeeType?: string
-  empStatus?: number
+  take?: number;
+  skip?: number;
+  createdAt?: Date;
+  name?: string;
+  code?: string;
+  unit?: string;
+  position?: string;
+  department?: string;
+  branch?: string;
+  paidAt?: boolean;
+  accConfirmedAt?: boolean;
+  filterType?: FilterTypeEnum;
+  title?: string;
+  titles?: string[];
+  searchType?: SearchTypeEnum;
+  employeeId?: number;
+  startedAt?: Date;
+  endedAt?: Date;
+  employeeType?: string;
+  empStatus?: number;
 }

@@ -3,5 +3,5 @@ export enum CustomerResource {
   INTRODUCED = 'INTRODUCED',
   SELF_FIND = 'SELF_FIND',
   OTHER = 'OTHER',
-  ALL = ''
+  ALL = '',
 }

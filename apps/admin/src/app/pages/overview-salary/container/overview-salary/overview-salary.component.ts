@@ -14,9 +14,8 @@ import { DetailOverviewComponent } from '../detail-overview/detail-overview.comp
 import { of } from 'rxjs';
 import { MenuAdminEnum } from '../../../../../enums/menu-admin.enum';
 
-
 @Component({
-  templateUrl: 'overview-salary.component.html'
+  templateUrl: 'overview-salary.component.html',
 })
 export class OverviewSalaryComponent implements OnInit {
   data: OverviewSalary[] = [];
@@ -24,7 +23,7 @@ export class OverviewSalaryComponent implements OnInit {
   totalSalary!: number;
   formGroup = new UntypedFormGroup({
     branch: new UntypedFormControl(''),
-    year: new UntypedFormControl('')
+    year: new UntypedFormControl(''),
   });
   pageSize = 30;
   branches$ = this.store.pipe(select(getAllOrgchart));
@@ -35,8 +34,7 @@ export class OverviewSalaryComponent implements OnInit {
     private readonly datePipe: DatePipe,
     private readonly router: Router,
     private readonly salaryPaymentService: SalaryPaymentService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
@@ -44,8 +42,10 @@ export class OverviewSalaryComponent implements OnInit {
       this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
       this.branches$
     );
-    this.store.dispatch(AdminAction.updateStateMenu({ tab: MenuAdminEnum.OVERVIEW }));
-    this.salaryPaymentService.getAll({ take: 30, skip: 0 }).subscribe(val => {
+    this.store.dispatch(
+      AdminAction.updateStateMenu({ tab: MenuAdminEnum.OVERVIEW })
+    );
+    this.salaryPaymentService.getAll({ take: 30, skip: 0 }).subscribe((val) => {
       if (val) {
         this.totalSalary = val.totalSalary;
         this.data = val.data;
@@ -53,14 +53,16 @@ export class OverviewSalaryComponent implements OnInit {
       }
     });
 
-    this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(val => {
-      this.salaryPaymentService.getAll(this.mapVal(val, true)).subscribe(val => {
-        if (val) {
-          this.totalSalary = val.totalSalary;
-          this.data = val.data;
-          this.total = val.data.length;
-        }
-      });
+    this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((val) => {
+      this.salaryPaymentService
+        .getAll(this.mapVal(val, true))
+        .subscribe((val) => {
+          if (val) {
+            this.totalSalary = val.totalSalary;
+            this.data = val.data;
+            this.total = val.data.length;
+          }
+        });
     });
   }
 
@@ -70,18 +72,17 @@ export class OverviewSalaryComponent implements OnInit {
       data: {
         id: overviewSalary.id,
         year: this.datePipe.transform(overviewSalary.datetime, 'yyyy'),
-        title: overviewSalary.name
-      }
+        title: overviewSalary.name,
+      },
     });
   }
-
 
   mapVal(val: any, isSearch?: boolean) {
     return {
       take: this.pageSize,
       skip: isSearch ? '' : this.total,
       year: val.year,
-      branch: val.branch
+      branch: val.branch,
     };
   }
 

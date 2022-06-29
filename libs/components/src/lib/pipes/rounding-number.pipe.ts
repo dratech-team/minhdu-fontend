@@ -1,4 +1,4 @@
-import {Pipe, PipeTransform} from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'roundingnumber',
@@ -6,6 +6,6 @@ import {Pipe, PipeTransform} from '@angular/core';
 })
 export class RoundingNumberPipe implements PipeTransform {
   transform(number: number, rounding: number) {
-   return Math.round(number/rounding)*rounding
+    return Math.round(number / rounding) * rounding;
   }
 }

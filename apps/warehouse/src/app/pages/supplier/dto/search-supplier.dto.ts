@@ -1,8 +1,6 @@
-import {BaseSearchDto} from '@minhdu-fontend/base-dto';
-import {BaseSupplierEntity} from "../bases";
+import { BaseSearchDto } from '@minhdu-fontend/base-dto';
+import { BaseSupplierEntity } from '../bases';
 
-export interface BaseSearchSupplierDto extends BaseSupplierEntity {
+export interface BaseSearchSupplierDto extends BaseSupplierEntity {}
 
-}
-
-export type SearchSupplierDto = BaseSearchDto<BaseSearchSupplierDto>
+export type SearchSupplierDto = BaseSearchDto<BaseSearchSupplierDto>;

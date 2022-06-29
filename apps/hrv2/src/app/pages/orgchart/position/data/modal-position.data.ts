@@ -1,13 +1,16 @@
-import {RequireOnlyOne} from "../../../../../shared/types";
-import {PositionEntity} from "@minhdu-fontend/orgchart-v2";
+import { RequireOnlyOne } from '../../../../../shared/types';
+import { PositionEntity } from '@minhdu-fontend/orgchart-v2';
 
 export interface ModalPositionData {
   add?: {
-    position?: PositionEntity
-  }
+    position?: PositionEntity;
+  };
   update?: {
-    position: PositionEntity
-  }
+    position: PositionEntity;
+  };
 }
 
-export type DataAddOrUpdatePosition = RequireOnlyOne<ModalPositionData, 'add' | 'update'>
+export type DataAddOrUpdatePosition = RequireOnlyOne<
+  ModalPositionData,
+  'add' | 'update'
+>;

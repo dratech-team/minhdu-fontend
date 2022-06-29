@@ -1,11 +1,17 @@
 <div class="d-flex mt-2">
-  <div class='d-flex flex-column ml-3 border p-2' style='height: 80vh; width:280px; overflow-y: scroll'>
+  <div
+    class="d-flex flex-column ml-3 border p-2"
+    style="height: 80vh; width: 280px; overflow-y: scroll"
+  >
     <nz-collapse>
-      <nz-collapse-panel
-        nzHeader='Tìm kiếm'
-        nzActive='true'>
-        <div [formGroup]='formGroup'>
-          <input nz-input class='form-control' type='search' formControlName='search'>
+      <nz-collapse-panel nzHeader="Tìm kiếm" nzActive="true">
+        <div [formGroup]="formGroup">
+          <input
+            nz-input
+            class="form-control"
+            type="search"
+            formControlName="search"
+          />
         </div>
       </nz-collapse-panel>
     </nz-collapse>
@@ -15,7 +21,7 @@
         [active]="true"
         header="Đơn vị"
         controlName="branch"
-        [data]="(branches$|async)||[]"
+        [data]="(branches$ | async) || []"
       >
       </minhdu-fontend-collapse-select>
     </div>
@@ -26,64 +32,84 @@
         header="Chức vụ"
         controlName="position"
         [selectMultiple]="true"
-        [data]="(positions$|async)||[]"
+        [data]="(positions$ | async) || []"
       >
       </minhdu-fontend-collapse-select>
     </div>
   </div>
-  <div class='ml-2' style='width: 78vw'>
+  <div class="ml-2" style="width: 78vw">
     <div class="d-flex justify-content-between align-items-center mb-2">
       <div class="font-weight-bold font-xl">Xếp hạng cuối năm</div>
       <ul class="border rounded" nz-menu [nzMode]="'vertical'">
         <li nz-submenu nzIcon="setting">
           <ul class="pointer">
-            <li nz-menu-group nzTitle="Xếp loại" (click)="onSetting('RANK')"></li>
-            <li nz-menu-group nzTitle="Thưởng" (click)="onSetting('BONUS')"></li>
+            <li
+              nz-menu-group
+              nzTitle="Xếp loại"
+              (click)="onSetting('RANK')"
+            ></li>
+            <li
+              nz-menu-group
+              nzTitle="Thưởng"
+              (click)="onSetting('BONUS')"
+            ></li>
           </ul>
         </li>
       </ul>
     </div>
-    <div style='width: 100%'>
-      <nz-table #tableRank
-                *ngIf="(ranks$|async) as ranks"
-                [nzLoading]="(loading$|async)"
-                [nzScroll]="{ x: '2000px',y: '58vh'}"
-                nzSize='middle'
-                [nzData]="ranks">
+    <div style="width: 100%">
+      <nz-table
+        #tableRank
+        *ngIf="ranks$ | async as ranks"
+        [nzLoading]="loading$ | async"
+        [nzScroll]="{ x: '2000px', y: '58vh' }"
+        nzSize="middle"
+        [nzData]="ranks"
+      >
         <thead>
-        <tr>
-          <th nzWidth="60px">STT</th>
-          <th>Mã nhân viên</th>
-          <th>Tên nhân viên</th>
-          <th>Đơn vị</th>
-          <th>Chức vụ</th>
-          <th>Ngày nghỉ</th>
-          <th>Mức lương</th>
-        </tr>
+          <tr>
+            <th nzWidth="60px">STT</th>
+            <th>Mã nhân viên</th>
+            <th>Tên nhân viên</th>
+            <th>Đơn vị</th>
+            <th>Chức vụ</th>
+            <th>Ngày nghỉ</th>
+            <th>Mức lương</th>
+          </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let rank of ranks ; let i = index">
-          <td>{{i + 1}}</td>
-          <td>{{rank.employee.code}}</td>
-          <td>{{rank.employee.lastName}}</td>
-          <td>{{rank.employee.branch.name}}</td>
-          <td>{{rank.employee.position.name}}</td>
-          <td>{{rank.dayOff}}</td>
-          <td>{{rank.salary}}</td>
-        </tr>
-        <tr *ngIf="(total$|async) !== 0 && (((count$ | async) || 0) < ((total$ | async) || 0))">
-          <td colspan="3">
-            <div class="w-100 d-flex justify-content-start" style="position: relative">
-              <button
-                (click)="onLoadMore()"
-                style="position: sticky; left: 45vw"
-                nz-button nzType="primary"
-                [nzLoading]="loadMore$ | async">
-                Tải thêm {{remain$|async}}
-              </button>
-            </div>
-          </td>
-        </tr>
+          <tr *ngFor="let rank of ranks; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ rank.employee.code }}</td>
+            <td>{{ rank.employee.lastName }}</td>
+            <td>{{ rank.employee.branch.name }}</td>
+            <td>{{ rank.employee.position.name }}</td>
+            <td>{{ rank.dayOff }}</td>
+            <td>{{ rank.salary }}</td>
+          </tr>
+          <tr
+            *ngIf="
+              (total$ | async) !== 0 &&
+              ((count$ | async) || 0) < ((total$ | async) || 0)
+            "
+          >
+            <td colspan="3">
+              <div
+                class="w-100 d-flex justify-content-start"
+                style="position: relative"
+              >
+                <button
+                  (click)="onLoadMore()"
+                  style="position: sticky; left: 45vw"
+                  nz-button
+                  nzType="primary"
+                  [nzLoading]="loadMore$ | async"
+                >
+                  Tải thêm {{ remain$ | async }}
+                </button>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </nz-table>
     </div>

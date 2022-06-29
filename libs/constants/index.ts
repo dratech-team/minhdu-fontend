@@ -18,5 +18,5 @@ export * from './HR/payroll.constant';
 //sell
 
 //Common
-export * from './gender-type.constant'
-export * from './storage-name.constant'
+export * from './gender-type.constant';
+export * from './storage-name.constant';

@@ -8,11 +8,13 @@ import { sortDatetime } from '../../../../../../../libs/utils/daytime.until';
 })
 export class FilterPipe implements PipeTransform {
   transform(salaries: Salary[], type: string[]): any {
-    if(salaries){
-      const salariesFilter = salaries?.filter((salary) => type.includes(salary.type));
-      return sortDatetime(salariesFilter)
-    }else{
-      return []
+    if (salaries) {
+      const salariesFilter = salaries?.filter((salary) =>
+        type.includes(salary.type)
+      );
+      return sortDatetime(salariesFilter);
+    } else {
+      return [];
     }
   }
 }

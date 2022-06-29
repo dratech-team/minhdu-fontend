@@ -1,10 +1,24 @@
-import {DatePipe} from '@angular/common';
-import {ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {Router} from '@angular/router';
-import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Branch, Position, RangeDay, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import { DatePipe } from '@angular/common';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { Api, SearchTypeConstant } from '@minhdu-fontend/constants';
+import {
+  Branch,
+  Position,
+  RangeDay,
+  Salary,
+  SalaryPayroll,
+} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -12,40 +26,49 @@ import {
   ItemContextMenu,
   SalaryTypeEnum,
   SearchTypeEnum,
-  sortEmployeeTypeEnum
+  sortEmployeeTypeEnum,
 } from '@minhdu-fontend/enums';
-import {OrgchartActions} from '@minhdu-fontend/orgchart';
-import {select, Store} from '@ngrx/store';
-import {Subject} from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
-import {PayrollAction} from '../../+state/payroll/payroll.action';
+import { OrgchartActions } from '@minhdu-fontend/orgchart';
+import { select, Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
-  selectedBranchPayroll, selectedEmpStatusPayroll,
+  selectedBranchPayroll,
+  selectedEmpStatusPayroll,
   selectedLoadedPayroll,
   selectedPositionPayroll,
   selectedRangeDayPayroll,
   selectedTotalPayroll,
-  selectorAllPayroll
+  selectorAllPayroll,
 } from '../../+state/payroll/payroll.selector';
-import {getAllPosition} from '@minhdu-fontend/orgchart-position';
-import {checkInputNumber, filterSalaryPayroll, getSelectors, updateSelectOneSalaryPayroll} from '@minhdu-fontend/utils';
-import {AppState} from '../../../../reducers';
-import {SalaryService} from '../../service/salary.service';
-import {DialogStayComponent} from '../dialog-salary/dialog-stay/dialog-stay.component';
-import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
-import {MatSort} from '@angular/material/sort';
-import {NzMessageService} from 'ng-zorro-antd/message';
-import {PayrollService} from "../../service/payroll.service";
-import {ExportService} from "@minhdu-fontend/service";
-import {ClassifyOvertimeComponent} from "../classify-overtime/classify-overtime.component";
+import { getAllPosition } from '@minhdu-fontend/orgchart-position';
+import {
+  checkInputNumber,
+  filterSalaryPayroll,
+  getSelectors,
+  updateSelectOneSalaryPayroll,
+} from '@minhdu-fontend/utils';
+import { AppState } from '../../../../reducers';
+import { SalaryService } from '../../service/salary.service';
+import { DialogStayComponent } from '../dialog-salary/dialog-stay/dialog-stay.component';
+import {
+  DialogDeleteComponent,
+  DialogExportComponent,
+} from '@minhdu-fontend/components';
+import { MatSort } from '@angular/material/sort';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { PayrollService } from '../../service/payroll.service';
+import { ExportService } from '@minhdu-fontend/service';
+import { ClassifyOvertimeComponent } from '../classify-overtime/classify-overtime.component';
 
 @Component({
   selector: 'app-payroll-stay',
-  templateUrl: 'payroll-stay.component.html'
+  templateUrl: 'payroll-stay.component.html',
 })
 export class PayrollStayComponent implements OnInit, OnChanges {
   ItemContextMenu = ItemContextMenu;
-  @Input() eventExportStay?: Subject<boolean>
+  @Input() eventExportStay?: Subject<boolean>;
   @Input() eventSearchBranch?: Branch;
   @Input() eventSelectEmpStatus?: number;
   @Input() eventSelectRangeDay = new Subject<boolean>();
@@ -55,10 +78,16 @@ export class PayrollStayComponent implements OnInit, OnChanges {
     titles: new UntypedFormControl([]),
     code: new UntypedFormControl(''),
     name: new UntypedFormControl(''),
-    empStatus: new UntypedFormControl(getSelectors<number>(selectedEmpStatusPayroll, this.store)),
+    empStatus: new UntypedFormControl(
+      getSelectors<number>(selectedEmpStatusPayroll, this.store)
+    ),
     searchType: new UntypedFormControl(SearchTypeEnum.CONTAINS),
-    position: new UntypedFormControl(getSelectors(selectedPositionPayroll, this.store)),
-    branch: new UntypedFormControl(getSelectors(selectedBranchPayroll, this.store)),
+    position: new UntypedFormControl(
+      getSelectors(selectedPositionPayroll, this.store)
+    ),
+    branch: new UntypedFormControl(
+      getSelectors(selectedBranchPayroll, this.store)
+    ),
   });
   totalSalaryStay$ = this.store.select(selectedTotalPayroll);
   searchTypeConstant = SearchTypeConstant;
@@ -73,8 +102,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
   positions$ = this.store.pipe(select(getAllPosition));
   isEventSearch = false;
   sortEnum = sortEmployeeTypeEnum;
-  templateStays: string [] = []
-  loadingDelete = false
+  templateStays: string[] = [];
+  loadingDelete = false;
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
@@ -86,16 +115,25 @@ export class PayrollStayComponent implements OnInit, OnChanges {
     private readonly router: Router,
     private ref: ChangeDetectorRef,
     private payrollService: PayrollService,
-    private exportService: ExportService,
-  ) {
-  }
+    private exportService: ExportService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.eventSearchBranch?.currentValue !== changes.eventSearchBranch?.previousValue) {
-      this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
+    if (
+      changes.eventSearchBranch?.currentValue !==
+      changes.eventSearchBranch?.previousValue
+    ) {
+      this.formGroup
+        .get('branch')
+        ?.patchValue(changes.eventSearchBranch.currentValue);
     }
-    if (changes.eventSelectEmpStatus?.currentValue !== changes.eventSelectEmpStatus?.previousValue) {
-      this.formGroup.get('empStatus')?.setValue(changes.eventSelectEmpStatus.currentValue)
+    if (
+      changes.eventSelectEmpStatus?.currentValue !==
+      changes.eventSelectEmpStatus?.previousValue
+    ) {
+      this.formGroup
+        .get('empStatus')
+        ?.setValue(changes.eventSelectEmpStatus.currentValue);
     }
   }
 
@@ -108,10 +146,13 @@ export class PayrollStayComponent implements OnInit, OnChanges {
           startedAt: this.getRangeDay().start,
           endedAt: this.getRangeDay().end,
           filterType: FilterTypeEnum.STAY,
-          position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
-          branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
-          empStatus: getSelectors<number>(selectedEmpStatusPayroll, this.store)
-        }
+          position:
+            getSelectors<Position>(selectedPositionPayroll, this.store)?.name ||
+            '',
+          branch:
+            getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
+          empStatus: getSelectors<number>(selectedEmpStatusPayroll, this.store),
+        },
       })
     );
 
@@ -119,14 +160,17 @@ export class PayrollStayComponent implements OnInit, OnChanges {
 
     this.getTemplateStay(
       getSelectors<Branch>(selectedBranchPayroll, this.store)?.name,
-      getSelectors<Position>(selectedPositionPayroll, this.store)?.name,
-    )
+      getSelectors<Position>(selectedPositionPayroll, this.store)?.name
+    );
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((value) => {
       this.isEventSearch = true;
-      this.getTemplateStay(value.branch?.name, value.position?.name,)
-      this.store.dispatch(PayrollAction.updateStatePosition({position: value.position}));
-      this.store.dispatch(PayrollAction.loadInit({payrollDTO: this.mapPayrollStay()})
+      this.getTemplateStay(value.branch?.name, value.position?.name);
+      this.store.dispatch(
+        PayrollAction.updateStatePosition({ position: value.position })
+      );
+      this.store.dispatch(
+        PayrollAction.loadInit({ payrollDTO: this.mapPayrollStay() })
       );
     });
 
@@ -137,11 +181,15 @@ export class PayrollStayComponent implements OnInit, OnChanges {
           if (payroll.salaries) {
             payroll.salaries.forEach((salary) => {
               if (salary.type === SalaryTypeEnum.STAY) {
-                this.salaries.push({salary, payroll: payroll});
-                if (filterSalaryPayroll(this.salariesSelected, salary).length > 0 &&
-                  this.salariesSelected.every(salaryPayroll => salaryPayroll.salary.id !== salary.id)
+                this.salaries.push({ salary, payroll: payroll });
+                if (
+                  filterSalaryPayroll(this.salariesSelected, salary).length >
+                    0 &&
+                  this.salariesSelected.every(
+                    (salaryPayroll) => salaryPayroll.salary.id !== salary.id
+                  )
                 ) {
-                  this.salariesSelected.push({salary, payroll})
+                  this.salariesSelected.push({ salary, payroll });
                 }
               }
             });
@@ -167,29 +215,35 @@ export class PayrollStayComponent implements OnInit, OnChanges {
         this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
           data: {
-            filename: `Xuất bản phụ cấp lương từ ngày ${this.datePipe.transform(payrollStay.startedAt, 'MM-yyyy')} đến ngày ${this.datePipe.transform(payrollStay.endedAt, 'MM-yyyy')}`,
+            filename: `Xuất bản phụ cấp lương từ ngày ${this.datePipe.transform(
+              payrollStay.startedAt,
+              'MM-yyyy'
+            )} đến ngày ${this.datePipe.transform(
+              payrollStay.endedAt,
+              'MM-yyyy'
+            )}`,
             title: 'Xuât bảng phụ cấp lương',
             params: payrollStay,
             selectDatetime: true,
             api: Api.HR.PAYROLL.EXPORT,
-          }
-        })
+          },
+        });
       }
     });
 
-    this.eventSelectRangeDay.subscribe(val => {
+    this.eventSelectRangeDay.subscribe((val) => {
       if (val) {
-        this.store.dispatch(PayrollAction.loadInit({
-          payrollDTO: this.mapPayrollStay()
-        }))
+        this.store.dispatch(
+          PayrollAction.loadInit({
+            payrollDTO: this.mapPayrollStay(),
+          })
+        );
       }
-    })
+    });
   }
 
   readPayroll(event: any) {
-    this.router
-      .navigate(['phieu-luong/chi-tiet-phieu-luong', event.id])
-      .then();
+    this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', event.id]).then();
   }
 
   addSalaryStay(salary: Salary) {
@@ -200,15 +254,15 @@ export class PayrollStayComponent implements OnInit, OnChanges {
         salary: salary,
         createdAt: this.getRangeDay().start,
         type: SalaryTypeEnum.STAY,
-        selectEmp: true
-      }
+        selectEmp: true,
+      },
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
         //ở v2 khi thêm thành công sẽ search theo title của salary stay vừa tạo nhưng back end chưa xử lý nên frontend  đang tạm ẩn
         this.store.dispatch(
           PayrollAction.loadInit({
-            payrollDTO: this.mapPayrollStay()
+            payrollDTO: this.mapPayrollStay(),
           })
         );
       }
@@ -227,8 +281,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
           isUpdate: true,
           salary: this.salariesSelected[0].salary,
           salariesSelected: this.salariesSelected,
-          updateMultiple: true
-        }
+          updateMultiple: true,
+        },
       });
       ref.componentInstance.EmitSalariesSelected.subscribe((val) => {
         this.salariesSelected = val;
@@ -237,10 +291,12 @@ export class PayrollStayComponent implements OnInit, OnChanges {
       ref.afterClosed().subscribe((val) => {
         if (val) {
           this.salariesSelected = [];
-          this.formGroup.get('titles')?.setValue([val.title], {emitEvent: false});
+          this.formGroup
+            .get('titles')
+            ?.setValue([val.title], { emitEvent: false });
           this.store.dispatch(
             PayrollAction.loadInit({
-              payrollDTO: this.mapPayrollStay()
+              payrollDTO: this.mapPayrollStay(),
             })
           );
         }
@@ -252,11 +308,11 @@ export class PayrollStayComponent implements OnInit, OnChanges {
 
   deleteMultipleSalaryStay() {
     const ref = this.dialog.open(DialogDeleteComponent, {
-      width: 'fit-content'
+      width: 'fit-content',
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.loadingDelete = true
+        this.loadingDelete = true;
         const deleteSuccess = new Subject<number>();
         this.salariesSelected.forEach((item, index) => {
           this.salaryService.delete(item.salary.id).subscribe((val: any) => {
@@ -267,11 +323,11 @@ export class PayrollStayComponent implements OnInit, OnChanges {
         });
         deleteSuccess.subscribe((val) => {
           if (val === this.salariesSelected.length - 1) {
-            this.loadingDelete = false
+            this.loadingDelete = false;
             this.salariesSelected = [];
             this.message.success('Xóa phụ cấp lương thành công');
             this.store.dispatch(
-              PayrollAction.loadInit({payrollDTO: this.mapPayrollStay()})
+              PayrollAction.loadInit({ payrollDTO: this.mapPayrollStay() })
             );
           }
         });
@@ -281,7 +337,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
 
   deleteSalaryStay(event: any) {
     const ref = this.dialog.open(DialogDeleteComponent, {
-      width: 'fit-content'
+      width: 'fit-content',
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -290,7 +346,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
             this.message.success('Xóa phiếu lương thành công');
             this.store.dispatch(
               PayrollAction.loadInit({
-                payrollDTO: this.mapPayrollStay()
+                payrollDTO: this.mapPayrollStay(),
               })
             );
           }
@@ -304,35 +360,45 @@ export class PayrollStayComponent implements OnInit, OnChanges {
     const value = this.formGroup.value;
     this.store.dispatch(
       PayrollAction.loadMorePayrolls({
-        payrollDTO: this.mapPayrollStay()
+        payrollDTO: this.mapPayrollStay(),
       })
     );
   }
 
   updateSelectSalary(salaryPayroll: SalaryPayroll, event: boolean) {
-    this.dialog.open(ClassifyOvertimeComponent, {
-      data: {
-        title: 'Chọn loại phụ cấp',
-        type: event ? "SELECT" : "REMOVE",
-        salary: salaryPayroll.salary
-      }
-    }).afterClosed().subscribe(type => {
-      if (type === 'ALL') {
-        if (event) {
-          this.salariesSelected = [...
-            filterSalaryPayroll(this.salaries, salaryPayroll.salary)
-          ]
+    this.dialog
+      .open(ClassifyOvertimeComponent, {
+        data: {
+          title: 'Chọn loại phụ cấp',
+          type: event ? 'SELECT' : 'REMOVE',
+          salary: salaryPayroll.salary,
+        },
+      })
+      .afterClosed()
+      .subscribe((type) => {
+        if (type === 'ALL') {
+          if (event) {
+            this.salariesSelected = [
+              ...filterSalaryPayroll(this.salaries, salaryPayroll.salary),
+            ];
+          } else {
+            filterSalaryPayroll(this.salaries, salaryPayroll.salary).forEach(
+              (val) => {
+                const index = this.salariesSelected.findIndex(
+                  (value) => value.salary.id === val.salary.id
+                );
+                this.salariesSelected.splice(index, 1);
+              }
+            );
+          }
         } else {
-          filterSalaryPayroll(this.salaries, salaryPayroll.salary).forEach(val => {
-            const index = this.salariesSelected.findIndex(value => value.salary.id === val.salary.id)
-            this.salariesSelected.splice(index, 1)
-          })
+          updateSelectOneSalaryPayroll(
+            event,
+            salaryPayroll,
+            this.salariesSelected
+          );
         }
-
-      } else {
-        updateSelectOneSalaryPayroll(event, salaryPayroll, this.salariesSelected)
-      }
-    })
+      });
   }
 
   mapPayrollStay() {
@@ -349,12 +415,12 @@ export class PayrollStayComponent implements OnInit, OnChanges {
       filterType: FilterTypeEnum.STAY,
       position: value.position?.name || '',
       branch: value.branch.name || '',
-      empStatus: value.empStatus
+      empStatus: value.empStatus,
     };
     if (this.sort?.active) {
       Object.assign(params, {
         orderBy: this.sort.active,
-        orderType: this.sort ? this.sort.direction : ''
+        orderType: this.sort ? this.sort.direction : '',
       });
     }
     if (!value.name) {
@@ -372,22 +438,26 @@ export class PayrollStayComponent implements OnInit, OnChanges {
   }
 
   sortPayroll() {
-    this.store.dispatch(PayrollAction.loadInit({
-      payrollDTO: this.mapPayrollStay()
-    }));
+    this.store.dispatch(
+      PayrollAction.loadInit({
+        payrollDTO: this.mapPayrollStay(),
+      })
+    );
   }
 
   getTemplateStay(branch?: string, position?: string) {
-    this.payrollService.getAllTempLate({
-      branch: branch || '',
-      position: position || '',
-      startedAt: this.getRangeDay().start,
-      endedAt: this.getRangeDay().end,
-      salaryType: SalaryTypeEnum.STAY
-    }).subscribe(val => this.templateStays = val)
+    this.payrollService
+      .getAllTempLate({
+        branch: branch || '',
+        position: position || '',
+        startedAt: this.getRangeDay().start,
+        endedAt: this.getRangeDay().end,
+        salaryType: SalaryTypeEnum.STAY,
+      })
+      .subscribe((val) => (this.templateStays = val));
   }
 
   getRangeDay(): RangeDay {
-    return getSelectors<RangeDay>(selectedRangeDayPayroll, this.store)
+    return getSelectors<RangeDay>(selectedRangeDayPayroll, this.store);
   }
 }

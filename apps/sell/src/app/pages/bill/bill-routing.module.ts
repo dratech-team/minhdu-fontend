@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { BillComponent } from './container/bill/bill.component';
 import { DetailBillComponent } from './container/detail-bill/detail-bill.component';
 
-
 export const routes: Routes = [
   {
     path: '',
@@ -12,11 +11,10 @@ export const routes: Routes = [
   {
     path: '/detail-bill:id',
     component: DetailBillComponent,
-  }
-]
+  },
+];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class BillRoutingModule {
-}
+export class BillRoutingModule {}

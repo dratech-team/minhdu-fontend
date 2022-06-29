@@ -1,13 +1,16 @@
 import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { EmployeeService } from 'libs/employee/src/lib/+state/service/employee.service';
 
 @Component({
-  templateUrl: 'BHYT.component.html'
+  templateUrl: 'BHYT.component.html',
 })
-
 export class BHYTComponent implements OnInit {
   formGroup!: UntypedFormGroup;
   submitted = false;
@@ -19,8 +22,7 @@ export class BHYTComponent implements OnInit {
     private readonly employeeService: EmployeeService,
     private readonly formBuilder: UntypedFormBuilder,
     private readonly dialogRef: MatDialogRef<BHYTComponent>
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
@@ -32,7 +34,7 @@ export class BHYTComponent implements OnInit {
       IdBookBHXH: [this.data?.IdBookBHXH, Validators.required],
       codeBHXH: [this.data?.codeBHXH, Validators.required],
       registerPlaceKCB: [this.data?.registerPlaceKCB, Validators.required],
-      registerPlaceId: [this.data?.registerPlaceId, Validators.required]
+      registerPlaceId: [this.data?.registerPlaceId, Validators.required],
     });
   }
 
@@ -50,6 +52,6 @@ export class BHYTComponent implements OnInit {
     if (this.data.update) {
     } else {
     }
-    this.dialogRef.close()
+    this.dialogRef.close();
   }
 }

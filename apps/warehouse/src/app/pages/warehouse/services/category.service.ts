@@ -3,9 +3,9 @@ import { Api } from '@minhdu-fontend/constants';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import {ResponsePaginate} from '@minhdu-fontend/data-models';
-import {WarehouseEntity} from "../entities";
-import {AddWarehouseDto} from "../dto";
+import { ResponsePaginate } from '@minhdu-fontend/data-models';
+import { WarehouseEntity } from '../entities';
+import { AddWarehouseDto } from '../dto';
 
 @Injectable()
 export class CategoryService extends BaseService<WarehouseEntity> {

@@ -8,9 +8,7 @@ import { UpdateNum } from '@ngrx/entity/src/models';
 
 @Injectable()
 export class PositionService extends BaseService<Position> {
-  constructor(
-    public readonly http: HttpClient
-  ) {
+  constructor(public readonly http: HttpClient) {
     super(Api.HR.EMPLOYEE.POSITION, http);
   }
   pagination(params?: any): Observable<ResponsePaginate<Position>> {
@@ -21,8 +19,7 @@ export class PositionService extends BaseService<Position> {
     return super.addOne(props);
   }
 
-
-  getAll(prams?:any): Observable<any[]> {
+  getAll(prams?: any): Observable<any[]> {
     return super.getAll(prams);
   }
 

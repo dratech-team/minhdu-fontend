@@ -1,13 +1,12 @@
-import {DegreeStatusEnum} from "@minhdu-fontend/enums";
+import { DegreeStatusEnum } from '@minhdu-fontend/enums';
 
 export const DegreeStatusTypeConstant = [
   {
     name: 'Đã tốt nghiệp',
-    value: DegreeStatusEnum.GRADUATED
+    value: DegreeStatusEnum.GRADUATED,
   },
   {
     name: 'Chưa tốt nghiệp',
-    value: DegreeStatusEnum.NOT_GRADUATED
+    value: DegreeStatusEnum.NOT_GRADUATED,
   },
-]
-
+];

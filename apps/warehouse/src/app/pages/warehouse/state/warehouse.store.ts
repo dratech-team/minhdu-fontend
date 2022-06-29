@@ -9,7 +9,7 @@ export interface WarehouseState extends EntityState<WarehouseEntity> {
 
 export function createInitialState(): WarehouseState {
   return {
-    loading: true
+    loading: true,
   };
 }
 

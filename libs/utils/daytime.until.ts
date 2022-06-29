@@ -22,8 +22,8 @@ export function isEqualDatetime(
   return moment(datetime1).isSame(datetime2, type);
 }
 
-export const rageDaysInMonth = (datetime: Date|undefined) => {
-  if(datetime){
+export const rageDaysInMonth = (datetime: Date | undefined) => {
+  if (datetime) {
     const range = [];
     const fromDate = moment(getFirstDayInMonth(datetime));
     const toDate = moment(getLastDayInMonth(datetime));
@@ -31,18 +31,20 @@ export const rageDaysInMonth = (datetime: Date|undefined) => {
     for (let i = 0; i < diff; i++) {
       range.push({
         title: moment(getFirstDayInMonth(datetime)).add(i, 'days'),
-        key: moment(getFirstDayInMonth(datetime)).add(i, 'days').format('DD-MM')
+        key: moment(getFirstDayInMonth(datetime))
+          .add(i, 'days')
+          .format('DD-MM'),
       });
     }
     return range;
-  }else{
-    return []
+  } else {
+    return [];
   }
 };
 
 export const sortDatetime = (array: any[]) => {
-  if (array.every(e => e.datetime)) {
-    return array.sort(function(a, b) {
+  if (array.every((e) => e.datetime)) {
+    return array.sort(function (a, b) {
       return new Date(a.datetime).getTime() - new Date(b.datetime).getTime();
     });
   } else {
@@ -54,23 +56,27 @@ export const getYesterday = () => {
   const timeStamp = new Date().getTime();
   const yesterdayTimeStamp = timeStamp - 24 * 60 * 60 * 1000;
   return new Date(yesterdayTimeStamp);
-}
+};
 
 export const getDateInPreviousMonth = () => {
-  const fistDate = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1);
+  const fistDate = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth() - 1,
+    1
+  );
   const lastDate = getLastDayInMonth(fistDate);
   return {
     fistDate,
-    lastDate
+    lastDate,
   };
 };
 
 export const getDateIn30Day = () => {
-  const curr = new Date;
+  const curr = new Date();
   const last = curr.getDate() - 30;
 
   return {
     firstDate: curr,
-    lastDate: new Date(curr.setDate(last)).toUTCString()
-  }
-}
+    lastDate: new Date(curr.setDate(last)).toUTCString(),
+  };
+};

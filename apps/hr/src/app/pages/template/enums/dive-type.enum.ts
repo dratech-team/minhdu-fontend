@@ -1,4 +1,4 @@
 export enum DiveTypeEnum {
   STANDARD = 'STANDARD',
-  OTHER ='OTHER'
+  OTHER = 'OTHER',
 }

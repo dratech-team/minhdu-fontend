@@ -1,9 +1,9 @@
 export interface Payslip {
-  workday: number,
-  tax: number,
-  total: number,
-  actualDay: number,
-  basic: number,
+  workday: number;
+  tax: number;
+  total: number;
+  actualDay: number;
+  basic: number;
   totalStandard: number;
   overtime: number;
   deduction: number;
@@ -18,16 +18,16 @@ export interface Payslip {
   stay: number;
   payslipOutOfWorkday: number;
   allowance: number;
-  bsc: number,
-  bscSalary: number,
-  workdays: number,
-  totalSalaryWorkday: number,
-  times: number,
-  totalSalaryTimes: number,
+  bsc: number;
+  bscSalary: number;
+  workdays: number;
+  totalSalaryWorkday: number;
+  times: number;
+  totalSalaryTimes: number;
 }
 
 interface workHoliday {
-  day: number,
-  datetime: Date,
-  rate: number
+  day: number;
+  datetime: Date;
+  rate: number;
 }

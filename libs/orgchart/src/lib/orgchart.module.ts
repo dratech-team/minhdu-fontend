@@ -23,16 +23,18 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
     StoreModule.forFeature(FeatureName.POSITION, formPosition.reducer),
     StoreModule.forFeature(FeatureName.ORG_CHART, fromOrgchart.reducer),
     StoreModule.forFeature(FeatureName.DEPARTMENT, formDepartment.reducer),
-    EffectsModule.forFeature([OrgchartEffects, DepartmentEffects, PositionEffects]),
-    NzMessageModule
+    EffectsModule.forFeature([
+      OrgchartEffects,
+      DepartmentEffects,
+      PositionEffects,
+    ]),
+    NzMessageModule,
   ],
   providers: [
     BranchService,
     PositionService,
     DepartmentService,
-    OrgchartService
-  ]
-
+    OrgchartService,
+  ],
 })
-export class OrgchartModule {
-}
+export class OrgchartModule {}

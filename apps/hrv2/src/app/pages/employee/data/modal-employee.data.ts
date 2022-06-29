@@ -1,13 +1,13 @@
-import {EmployeeEntity} from "@minhdu-fontend/employee-v2";
-import {RequireOnlyOne} from "../../../../shared/types";
+import { EmployeeEntity } from '@minhdu-fontend/employee-v2';
+import { RequireOnlyOne } from '../../../../shared/types';
 
 export interface ModalEmployee {
   add?: {
-    employee?: EmployeeEntity,
-  },
+    employee?: EmployeeEntity;
+  };
   update?: {
-    employee: EmployeeEntity,
-  }
+    employee: EmployeeEntity;
+  };
 }
 
-export type ModalEmployeeData = RequireOnlyOne<ModalEmployee, 'add' | 'update'>
+export type ModalEmployeeData = RequireOnlyOne<ModalEmployee, 'add' | 'update'>;

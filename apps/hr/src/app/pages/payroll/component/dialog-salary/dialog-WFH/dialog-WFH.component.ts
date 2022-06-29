@@ -1,19 +1,35 @@
-import {DatePipe} from '@angular/common';
-import {Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild} from '@angular/core';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {SalaryPayroll} from '@minhdu-fontend/data-models';
-import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {select, Store} from '@ngrx/store';
-import {PayrollAction} from '../../../+state/payroll/payroll.action';
-import {selectedAddedPayroll} from '../../../+state/payroll/payroll.selector';
-import {AppState} from '../../../../../reducers';
+import { DatePipe } from '@angular/common';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Inject,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+} from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SalaryPayroll } from '@minhdu-fontend/data-models';
+import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { select, Store } from '@ngrx/store';
+import { PayrollAction } from '../../../+state/payroll/payroll.action';
+import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
+import { AppState } from '../../../../../reducers';
 import * as moment from 'moment';
-import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
+import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 
 @Component({
-  templateUrl: 'dialog-WFH.component.html'
+  templateUrl: 'dialog-WFH.component.html',
 })
 export class DialogWFHComponent implements OnInit {
   @ViewChild('titleAbsent') titleAbsent!: ElementRef;
@@ -39,33 +55,36 @@ export class DialogWFHComponent implements OnInit {
     private readonly dialogRef: MatDialogRef<DialogWFHComponent>,
     private readonly snackbar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data?: any
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     if (this.data?.isUpdate) {
       this.formGroup = this.formBuilder.group({
         title: [this.data.salary.title, Validators.required],
         datetime: [
-          this.datePipe.transform(this.data.salary?.datetime, 'yyyy-MM-dd')
+          this.datePipe.transform(this.data.salary?.datetime, 'yyyy-MM-dd'),
         ],
         note: [this.data.salary?.note],
       });
     } else {
       this.firstDayInMonth = this.datePipe.transform(
-        getFirstDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
+        getFirstDayInMonth(new Date(this.data.payroll.createdAt)),
+        'yyyy-MM-dd'
+      );
       this.lastDayInMonth = this.datePipe.transform(
-        getLastDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
+        getLastDayInMonth(new Date(this.data.payroll.createdAt)),
+        'yyyy-MM-dd'
+      );
       this.formGroup = this.formBuilder.group({
         title: ['', Validators.required],
         startedAt: [
-          this.datePipe.transform(
-            this.data.payroll.createdAt, 'yyyy-MM-dd')
-          , Validators.required],
+          this.datePipe.transform(this.data.payroll.createdAt, 'yyyy-MM-dd'),
+          Validators.required,
+        ],
         endedAt: [
-          this.datePipe.transform(
-            this.data.payroll.createdAt, 'yyyy-MM-dd')
-          , Validators.required],
+          this.datePipe.transform(this.data.payroll.createdAt, 'yyyy-MM-dd'),
+          Validators.required,
+        ],
         note: [],
       });
     }
@@ -87,35 +106,37 @@ export class DialogWFHComponent implements OnInit {
       type: SalaryTypeEnum.WFH,
       note: value.note,
       unit: DatetimeUnitEnum.DAY,
-      payrollId: this.data.payroll.id
+      payrollId: this.data.payroll.id,
     };
     if (this.data.isUpdate) {
       Object.assign(salary, {
-        datetime: value.datetime
-      })
+        datetime: value.datetime,
+      });
       this.store.dispatch(
         PayrollAction.updateSalary({
           id: this.data.salary.id,
           payrollId: this.data.salary.payrollId,
-          salary: salary
+          salary: salary,
         })
       );
     } else {
-      if (moment(value.startedAt).format('YYYY-MM-DD')
-        === moment(value.endedAt).format('YYYY-MM-DD')){
+      if (
+        moment(value.startedAt).format('YYYY-MM-DD') ===
+        moment(value.endedAt).format('YYYY-MM-DD')
+      ) {
         Object.assign(salary, {
           datetime: value.startedAt,
-        })
-      }else{
+        });
+      } else {
         Object.assign(salary, {
-          startedAt:moment(value.startedAt).format('YYYY-MM-DD'),
+          startedAt: moment(value.startedAt).format('YYYY-MM-DD'),
           endedAt: moment(value.endedAt).format('YYYY-MM-DD'),
-        })
+        });
       }
-        this.store.dispatch(
+      this.store.dispatch(
         PayrollAction.addSalary({
           payrollId: this.data.payroll.id,
-          salary: salary
+          salary: salary,
         })
       );
     }

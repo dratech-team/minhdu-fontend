@@ -37,7 +37,7 @@ const COMMON_MODULE = [
   ReactiveFormsModule,
   FormsModule,
   SharedModule,
-  ComponentsModule
+  ComponentsModule,
 ];
 
 const NZ_MODULES = [
@@ -53,20 +53,17 @@ const NZ_MODULES = [
   NzSelectModule,
   NzTimePickerModule,
   NzDatePickerModule,
-  NzCheckboxModule
+  NzCheckboxModule,
 ];
 
-const PIPES = [
-  TransformSalaryTypePipe,
-  PartialdayPipe,
-];
+const PIPES = [TransformSalaryTypePipe, PartialdayPipe];
 const COMPONENTS = [
   PermanentSalaryComponent,
   AbsentOvertimeSalaryComponent,
   RemoteOrDayOffSalaryComponent,
   DeductionSalaryComponent,
   HolidaySalaryComponent,
-  TableSalarySelectedComponent
+  TableSalarySelectedComponent,
 ];
 
 @NgModule({
@@ -76,18 +73,10 @@ const COMPONENTS = [
     AkitaNgEffectsModule.forFeature([PayrollEffect, SettingSalaryEffect]),
     NgxCurrencyModule,
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
-    SettingModule
+    SettingModule,
   ],
-  declarations: [
-    COMPONENTS,
-    PIPES
-  ],
-  exports: [
-    TableSalarySelectedComponent
-  ],
-  providers: [
-    DatePipe
-  ]
+  declarations: [COMPONENTS, PIPES],
+  exports: [TableSalarySelectedComponent],
+  providers: [DatePipe],
 })
-export class SalaryModule {
-}
+export class SalaryModule {}

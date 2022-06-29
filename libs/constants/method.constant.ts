@@ -3,23 +3,22 @@ import { ActivityType } from '../enums';
 export const MethodConstant = [
   {
     name: 'Thêm',
-    value: ActivityType.POST
+    value: ActivityType.POST,
   },
   {
     name: 'Xóa',
-    value: ActivityType.DELETE
+    value: ActivityType.DELETE,
   },
   {
     name: 'Sửa',
-    value: ActivityType.PATCH
+    value: ActivityType.PATCH,
   },
   {
     name: 'Xem dữ liệu',
-    value: ActivityType.GET
+    value: ActivityType.GET,
   },
   {
     name: 'tất cả',
-    value: ''
-  }
-
+    value: '',
+  },
 ];

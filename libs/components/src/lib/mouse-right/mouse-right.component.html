@@ -1,64 +1,120 @@
 <context-menu>
-  <ng-template *ngIf='items?.includes(ItemContextMenu.ADD_ORDER)' contextMenuItem let-item
-               (execute)='addOrder($event.item)'>
+  <ng-template
+    *ngIf="items?.includes(ItemContextMenu.ADD_ORDER)"
+    contextMenuItem
+    let-item
+    (execute)="addOrder($event.item)"
+  >
     Thêm đơn hàng
   </ng-template>
-  <ng-template contextMenuItem let-item (execute)='add($event.item)'>
+  <ng-template contextMenuItem let-item (execute)="add($event.item)">
     Thêm
   </ng-template>
-  <ng-template *ngIf='!items?.includes(ItemContextMenu.CANCEL_ORDER)' contextMenuItem let-item
-               (execute)='delete($event.item)'>
+  <ng-template
+    *ngIf="!items?.includes(ItemContextMenu.CANCEL_ORDER)"
+    contextMenuItem
+    let-item
+    (execute)="delete($event.item)"
+  >
     Xóa
   </ng-template>
-  <ng-template contextMenuItem let-item (execute)='update($event.item)'>
+  <ng-template contextMenuItem let-item (execute)="update($event.item)">
     Sửa
   </ng-template>
-  <ng-template *ngIf='items?.includes(ItemContextMenu.CANCEL_ORDER)' contextMenuItem let-item
-               (execute)='cancel($event.item)'>
+  <ng-template
+    *ngIf="items?.includes(ItemContextMenu.CANCEL_ORDER)"
+    contextMenuItem
+    let-item
+    (execute)="cancel($event.item)"
+  >
     Huỷ đơn hàng
   </ng-template>
-  <ng-template *ngIf='items?.includes(ItemContextMenu.PERMANENTLY)' contextMenuItem let-item
-               (execute)='permanentlyDeleted($event.item)'>
+  <ng-template
+    *ngIf="items?.includes(ItemContextMenu.PERMANENTLY)"
+    contextMenuItem
+    let-item
+    (execute)="permanentlyDeleted($event.item)"
+  >
     Xóa vĩnh viễn
   </ng-template>
-  <ng-template *ngIf='items?.includes(ItemContextMenu.RESTORE)' contextMenuItem let-item
-               (execute)='restore($event.item)'>
+  <ng-template
+    *ngIf="items?.includes(ItemContextMenu.RESTORE)"
+    contextMenuItem
+    let-item
+    (execute)="restore($event.item)"
+  >
     Khôi phục
   </ng-template>
-  <ng-template *ngIf='items?.includes(ItemContextMenu.DETAIL)' contextMenuItem let-item
-               (execute)='readAndUpdate($event.item)'>
+  <ng-template
+    *ngIf="items?.includes(ItemContextMenu.DETAIL)"
+    contextMenuItem
+    let-item
+    (execute)="readAndUpdate($event.item)"
+  >
     Xem chi tiết
   </ng-template>
-  <ng-template *ngIf='items?.includes(ItemContextMenu.PAYMENT)' contextMenuItem let-item
-               (execute)='onPayment($event.item)'>
+  <ng-template
+    *ngIf="items?.includes(ItemContextMenu.PAYMENT)"
+    contextMenuItem
+    let-item
+    (execute)="onPayment($event.item)"
+  >
     Thanh toán
   </ng-template>
-  <ng-template *ngIf='items?.includes(ItemContextMenu.ENDED_AT)' contextMenuItem let-item
-               (execute)='onDelivered($event.item)'>
+  <ng-template
+    *ngIf="items?.includes(ItemContextMenu.ENDED_AT)"
+    contextMenuItem
+    let-item
+    (execute)="onDelivered($event.item)"
+  >
     Ngày giao hàng
   </ng-template>
-  <ng-template *ngIf='items?.includes(ItemContextMenu.HISTORY_PAYROLL)' contextMenuItem let-item
-               (execute)='onHistoryPayroll($event.item)'>
+  <ng-template
+    *ngIf="items?.includes(ItemContextMenu.HISTORY_PAYROLL)"
+    contextMenuItem
+    let-item
+    (execute)="onHistoryPayroll($event.item)"
+  >
     Lịch sử lương
   </ng-template>
-  <ng-template *ngIf='items?.includes(ItemContextMenu.PROFILE)' contextMenuItem let-item
-               (execute)='onEmployee($event.item)'>
+  <ng-template
+    *ngIf="items?.includes(ItemContextMenu.PROFILE)"
+    contextMenuItem
+    let-item
+    (execute)="onEmployee($event.item)"
+  >
     Hồ sơ
   </ng-template>
-  <ng-template *ngIf='items?.includes(ItemContextMenu.PAYROLL)' contextMenuItem let-item
-               (execute)='payroll($event.item)'>
+  <ng-template
+    *ngIf="items?.includes(ItemContextMenu.PAYROLL)"
+    contextMenuItem
+    let-item
+    (execute)="payroll($event.item)"
+  >
     Bảng lương
   </ng-template>
-  <ng-template *ngIf='items?.includes(ItemContextMenu.OVERTIME)' contextMenuItem let-item
-               (execute)='overtime($event.item)'>
+  <ng-template
+    *ngIf="items?.includes(ItemContextMenu.OVERTIME)"
+    contextMenuItem
+    let-item
+    (execute)="overtime($event.item)"
+  >
     Bảng tăng ca
   </ng-template>
-  <ng-template *ngIf='items?.includes(ItemContextMenu.POSITIONS)' contextMenuItem let-item
-               (execute)='onListPosition($event.item)'>
+  <ng-template
+    *ngIf="items?.includes(ItemContextMenu.POSITIONS)"
+    contextMenuItem
+    let-item
+    (execute)="onListPosition($event.item)"
+  >
     Danh sách chức vụ
   </ng-template>
-  <ng-template *ngIf='items?.includes(ItemContextMenu.PRINT)' contextMenuItem let-item
-               (execute)='print($event.item)'>
+  <ng-template
+    *ngIf="items?.includes(ItemContextMenu.PRINT)"
+    contextMenuItem
+    let-item
+    (execute)="print($event.item)"
+  >
     In
   </ng-template>
 </context-menu>

@@ -1,4 +1,4 @@
-export enum BonusTypeEnum{
+export enum BonusTypeEnum {
   MONTH = 'MONTH',
-  PRICE = 'PRICE'
+  PRICE = 'PRICE',
 }

@@ -1,24 +1,35 @@
-<mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
-<div class='row animated fadeIn' *ngIf='(payroll$ | async) as payroll'>
-  <div class='container'>
-    <div class='row' style='display: flex; justify-content: space-between'>
-      <button (click)='prePayroll(payroll)' class='mb-5 create-salary'>
-        <img class='mr-2' style='height: 14px;' src='assets/img/payroll/caret-left.svg' alt='edit icon'><span>Phiếu
-          lương trước đó</span>
+<mat-spinner *ngIf="adding$ | async" class="loading"></mat-spinner>
+<div class="row animated fadeIn" *ngIf="payroll$ | async as payroll">
+  <div class="container">
+    <div class="row" style="display: flex; justify-content: space-between">
+      <button (click)="prePayroll(payroll)" class="mb-5 create-salary">
+        <img
+          class="mr-2"
+          style="height: 14px"
+          src="assets/img/payroll/caret-left.svg"
+          alt="edit icon"
+        /><span>Phiếu lương trước đó</span>
       </button>
-      <button (click)='nextPayroll(payroll)' class='mb-5 mr-4 create-salary'>
+      <button (click)="nextPayroll(payroll)" class="mb-5 mr-4 create-salary">
         Phiếu lương tiếp theo
-        <img class='mr-2' style='height: 14px;' src='assets/img/payroll/caret-right%20(1).svg' alt='edit icon'>
+        <img
+          class="mr-2"
+          style="height: 14px"
+          src="assets/img/payroll/caret-right%20(1).svg"
+          alt="edit icon"
+        />
       </button>
     </div>
-    <div class='row'>
-      <div class='col-12  main-title font-2xl text-center mb-2'>
-        Phiếu lương tháng {{payroll.createdAt|date: 'MM/yyyy'}}
+    <div class="row">
+      <div class="col-12 main-title font-2xl text-center mb-2">
+        Phiếu lương tháng {{ payroll.createdAt | date: 'MM/yyyy' }}
       </div>
-      <div class='row col-md-12'>
-        <div class=' col-4 pointer '>
-          <div class='employee row col-md-12 mt-3 d-flex flex-column align-items-center justify-content-center '
-               style='min-height: 116px; padding: 10px '>
+      <div class="row col-md-12">
+        <div class="col-4 pointer">
+          <div
+            class="employee row col-md-12 mt-3 d-flex flex-column align-items-center justify-content-center"
+            style="min-height: 116px; padding: 10px"
+          >
             <!--            <div class='row col-md-3 mr-1 info-employee'>-->
             <!--              <img-->
             <!--                class='rounded-circle'-->
@@ -28,79 +39,146 @@
             <!--                height='64px'-->
             <!--              />-->
             <!--            </div>-->
-            <div class='row d-flex flex-column '>
-              <div class='d-flex justify-content-between font-weight-bold'>
-                <div class='ml-3'
-                     routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}'>{{payroll.employee.lastName}}</div>
-                <div (click)='updatePayroll(payroll)' style='background: #1b8eb7' class='p-1 rounded'>
-                  <img style='height: 10px; width:15px' src='/assets/img/share/pencil-fill.svg' alt='edit icon'>
+            <div class="row d-flex flex-column">
+              <div class="d-flex justify-content-between font-weight-bold">
+                <div
+                  class="ml-3"
+                  routerLink="/ho-so/chi-tiet-nhan-vien/{{
+                    payroll.employee.id
+                  }}"
+                >
+                  {{ payroll.employee.lastName }}
+                </div>
+                <div
+                  (click)="updatePayroll(payroll)"
+                  style="background: #1b8eb7"
+                  class="p-1 rounded"
+                >
+                  <img
+                    style="height: 10px; width: 15px"
+                    src="/assets/img/share/pencil-fill.svg"
+                    alt="edit icon"
+                  />
                 </div>
               </div>
-              <div class='col-12 d-flex justify-content-start ' style='color: black'>
-                <span class='d-inline-block font-weight-bold'>Ngày tạo phiếu lương: </span>
-                <span class='ml-2 pointer border px-1 rounded'>{{payroll.createdAt|date: 'dd/MM/yyyy'}}</span>
+              <div
+                class="col-12 d-flex justify-content-start"
+                style="color: black"
+              >
+                <span class="d-inline-block font-weight-bold"
+                  >Ngày tạo phiếu lương:
+                </span>
+                <span class="ml-2 pointer border px-1 rounded">{{
+                  payroll.createdAt | date: 'dd/MM/yyyy'
+                }}</span>
               </div>
-              <div class='col-12 d-flex justify-content-start ' style='color: black'>
-                <span class='d-inline-block font-weight-bold'>Ngày xác nhận phiếu lương: </span>
-                <span class='ml-2 pointer  px-1 rounded'>
-                  {{payroll.accConfirmedAt ? (payroll.accConfirmedAt|date: 'dd/MM/yyyy') : 'Chưa xác nhận'}}
+              <div
+                class="col-12 d-flex justify-content-start"
+                style="color: black"
+              >
+                <span class="d-inline-block font-weight-bold"
+                  >Ngày xác nhận phiếu lương:
+                </span>
+                <span class="ml-2 pointer px-1 rounded">
+                  {{
+                    payroll.accConfirmedAt
+                      ? (payroll.accConfirmedAt | date: 'dd/MM/yyyy')
+                      : 'Chưa xác nhận'
+                  }}
                 </span>
               </div>
-              <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}'
-                   class='col-12 d-flex justify-content-start ' style='color: black'>
-                <span class='d-inline-block font-weight-bold'>Đơn vị: </span>
-                <span class='ml-1'>{{payroll.branch}}</span>
+              <div
+                routerLink="/ho-so/chi-tiet-nhan-vien/{{ payroll.employee.id }}"
+                class="col-12 d-flex justify-content-start"
+                style="color: black"
+              >
+                <span class="d-inline-block font-weight-bold">Đơn vị: </span>
+                <span class="ml-1">{{ payroll.branch }}</span>
               </div>
             </div>
-            <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}'
-                 class='col-12 d-flex align-items-center mt-2'>
-              <div class='row' style='width: 100%;'>
-                <div class='col-6 ' style='border-radius: 20px;height: 24px ;min-width: 150px;'>
-                  <div class='col-md position btn btn-primary'>{{payroll.position}}</div>
+            <div
+              routerLink="/ho-so/chi-tiet-nhan-vien/{{ payroll.employee.id }}"
+              class="col-12 d-flex align-items-center mt-2"
+            >
+              <div class="row" style="width: 100%">
+                <div
+                  class="col-6"
+                  style="border-radius: 20px; height: 24px; min-width: 150px"
+                >
+                  <div class="col-md position btn btn-primary">
+                    {{ payroll.position }}
+                  </div>
                 </div>
               </div>
-              <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}' class='col-6 '
-                   style='border-radius: 20px;height: 24px ;min-width: 150px;'>
-                <div class='col-md position btn btn-primary'>
-                  <span class='mr-2'>{{payroll.recipeType}}</span>
-                  <span class='ml-2'>{{payroll.employee.id}}</span>
+              <div
+                routerLink="/ho-so/chi-tiet-nhan-vien/{{ payroll.employee.id }}"
+                class="col-6"
+                style="border-radius: 20px; height: 24px; min-width: 150px"
+              >
+                <div class="col-md position btn btn-primary">
+                  <span class="mr-2">{{ payroll.recipeType }}</span>
+                  <span class="ml-2">{{ payroll.employee.id }}</span>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
-        <div *ngIf='payroll.recipeType !== recipeType.CT3' class='employee row col mt-3'>
-          <div class='col' style='min-width: 170px'>
-            <div class='row d-flex justify-content-center '>Ngày làm việc chuẩn</div>
-            <div class='row content-title'>
-              {{payroll.workday}}
+        <div
+          *ngIf="payroll.recipeType !== recipeType.CT3"
+          class="employee row col mt-3"
+        >
+          <div class="col" style="min-width: 170px">
+            <div class="row d-flex justify-content-center">
+              Ngày làm việc chuẩn
+            </div>
+            <div class="row content-title">
+              {{ payroll.workday }}
             </div>
           </div>
-          <div class='col' style='min-width: 170px'>
-            <div class='row justify-content-center'> Ngày làm việc thực tế</div>
-            <div class='row content-title'>
-              {{payroll.actualday || payroll.totalWorkday || "0"}}
+          <div class="col" style="min-width: 170px">
+            <div class="row justify-content-center">Ngày làm việc thực tế</div>
+            <div class="row content-title">
+              {{ payroll.actualday || payroll.totalWorkday || '0' }}
             </div>
           </div>
-          <div class='col' style='min-width: 170px'>
-            <div class='row d-flex justify-content-center '>Số ngày trong tháng</div>
-            <div class='row content-title'>
-              {{daysInMonth}}
+          <div class="col" style="min-width: 170px">
+            <div class="row d-flex justify-content-center">
+              Số ngày trong tháng
+            </div>
+            <div class="row content-title">
+              {{ daysInMonth }}
             </div>
           </div>
-          <div class='col' style='min-width: 170px'>
-            <div class='row justify-content-center'> Thuộc diện hợp đồng</div>
-            <div class='row' style='display: flex;justify-content: center;align-items: center;height: 43px;'>
-              <div *ngIf='payroll.tax > 0 else tax'
-                   class='font-weight-bold font-lg'>{{payroll.tax | percent:'0.0-3':'vi'}}</div>
+          <div class="col" style="min-width: 170px">
+            <div class="row justify-content-center">Thuộc diện hợp đồng</div>
+            <div
+              class="row"
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 43px;
+              "
+            >
+              <div
+                *ngIf="payroll.tax > 0; else tax"
+                class="font-weight-bold font-lg"
+              >
+                {{ payroll.tax | percent: '0.0-3':'vi' }}
+              </div>
               <ng-template #tax>
-                <img [src]="'../../../../../assets/img/share/x-lg.svg'" [alt]="'not contract' ">
+                <img
+                  [src]="'../../../../../assets/img/share/x-lg.svg'"
+                  [alt]="'not contract'"
+                />
               </ng-template>
             </div>
-            <div class='row d-flex justify-content-center align-items-center'>
-              <div class='pointer' (click)='updateTaxed(payroll)'>
-                <mat-slide-toggle style='pointer-events: none' [checked]='payroll.taxed'>
+            <div class="row d-flex justify-content-center align-items-center">
+              <div class="pointer" (click)="updateTaxed(payroll)">
+                <mat-slide-toggle
+                  style="pointer-events: none"
+                  [checked]="payroll.taxed"
+                >
                 </mat-slide-toggle>
               </div>
             </div>
@@ -108,517 +186,833 @@
         </div>
       </div>
     </div>
-    <div class='row' style='display: flex ; align-items: center'>
-      <div class='col' style='border-top: 2px dashed #9FA2B4; margin: 50px 0;'></div>
+    <div class="row" style="display: flex; align-items: center">
+      <div
+        class="col"
+        style="border-top: 2px dashed #9fa2b4; margin: 50px 0"
+      ></div>
     </div>
-    <div class='row d-flex flex-column'
-         *ngIf='payroll.employee.type !== employeeTypeEnum.SEASONAL; else seasonal'>
-      <div #basic class='d-flex'>
+    <div
+      class="row d-flex flex-column"
+      *ngIf="payroll.employee.type !== employeeTypeEnum.SEASONAL; else seasonal"
+    >
+      <div #basic class="d-flex">
         <!--Lương cơ bản-->
-        <div class='col-6'>
+        <div class="col-6">
           <table>
             <thead>
-            <tr style='background-color: #dddddd66;'>
-              <th width="7%" class=' text-center '>Id</th>
-              <th width='43%' class=' text-center '>Lương cơ bản</th>
-              <th width='28%' class=' text-center '>Thành tiền</th>
-              <th width='22%' class=' text-center ' (click)='addSalary(type.BASIC,payroll)'>
-                <span class='mr-1 pointer' style='color: #1b8eb7'>Thêm mục</span>
-                <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
-                     alt='add icon'>
-              </th>
-            </tr>
+              <tr style="background-color: #dddddd66">
+                <th width="7%" class="text-center">Id</th>
+                <th width="43%" class="text-center">Lương cơ bản</th>
+                <th width="28%" class="text-center">Thành tiền</th>
+                <th
+                  width="22%"
+                  class="text-center"
+                  (click)="addSalary(type.BASIC, payroll)"
+                >
+                  <span class="mr-1 pointer" style="color: #1b8eb7"
+                    >Thêm mục</span
+                  >
+                  <img
+                    style="margin-left: 2px; width: 10px"
+                    src="../../../../../assets/img/payroll/plus-lg.svg"
+                    alt="add icon"
+                  />
+                </th>
+              </tr>
             </thead>
             <tbody>
-            <tr style='background: white'
-                *ngFor="let salary of payroll.salaries | filterTypeSalary:['BASIC_INSURANCE','BASIC' ] ">
-              <th width='7%'> {{salary.id}}</th>
-              <th width='43%'> {{salary.title}}</th>
-              <th width='28%' class=' text-center ' style='color: #4B3880'>
-                {{salary.price|number:'1.0'|notEmpty:'0'}} đ
-              </th>
-              <th width='22%' class='col-md-2'>
-                <div class='d-flex justify-content-around'>
-                  <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated mr-2'
-                          (click)='updateSalary(type.BASIC,salary,payroll)'>
-                    <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
-                  </button>
-                  <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                          (click)='removeSalary(salary.id, payroll.id)'>
-                    <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
-                  </button>
-                </div>
-              </th>
-            </tr>
+              <tr
+                style="background: white"
+                *ngFor="
+                  let salary of payroll.salaries
+                    | filterTypeSalary: ['BASIC_INSURANCE', 'BASIC']
+                "
+              >
+                <th width="7%">{{ salary.id }}</th>
+                <th width="43%">{{ salary.title }}</th>
+                <th width="28%" class="text-center" style="color: #4b3880">
+                  {{ salary.price | number: '1.0' | notEmpty: '0' }} đ
+                </th>
+                <th width="22%" class="col-md-2">
+                  <div class="d-flex justify-content-around">
+                    <button
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title=" chỉnh sửa "
+                      class="edit animated mr-2"
+                      (click)="updateSalary(type.BASIC, salary, payroll)"
+                    >
+                      <img
+                        style="height: 9px"
+                        src="../../../../../assets/img/share/pencil-fill.svg"
+                        alt="edit icon"
+                      />
+                    </button>
+                    <button
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="xóa"
+                      class="trash animated"
+                      (click)="removeSalary(salary.id, payroll.id)"
+                    >
+                      <img
+                        style="height: 9px"
+                        src="../../../../../assets/img/payroll/trash.svg"
+                        alt="delete icon"
+                      />
+                    </button>
+                  </div>
+                </th>
+              </tr>
             </tbody>
           </table>
         </div>
         <!--Phụ cấp ở lại-->
-        <div class='col-6'>
+        <div class="col-6">
           <table>
             <thead>
-            <tr style='background-color: #dddddd66;'>
-              <th width="7%" class=' text-center '>Id</th>
-              <th width='43%' class=' text-center '>Phụ cấp lương</th>
-              <th width='28%' class=' text-center '>Thành tiền</th>
-              <th width='22%' class=' text-center ' (click)='addSalary(type.STAY,payroll)'>
-                <span class='mr-1 pointer' style='color: #1b8eb7'>Thêm mục</span>
-                <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
-                     alt='add icon'>
-              </th>
-            </tr>
+              <tr style="background-color: #dddddd66">
+                <th width="7%" class="text-center">Id</th>
+                <th width="43%" class="text-center">Phụ cấp lương</th>
+                <th width="28%" class="text-center">Thành tiền</th>
+                <th
+                  width="22%"
+                  class="text-center"
+                  (click)="addSalary(type.STAY, payroll)"
+                >
+                  <span class="mr-1 pointer" style="color: #1b8eb7"
+                    >Thêm mục</span
+                  >
+                  <img
+                    style="margin-left: 2px; width: 10px"
+                    src="../../../../../assets/img/payroll/plus-lg.svg"
+                    alt="add icon"
+                  />
+                </th>
+              </tr>
             </thead>
             <tbody>
-            <tr style='background: white' *ngFor="let salary of payroll.salaries | filterTypeSalary:['STAY' ] ">
-              <th width='7%'> {{salary.id}}</th>
-              <th width='43%'> {{salary.title}}</th>
-              <th width='28%' class=' text-center ' style='color: #4B3880'>
-                {{salary.price|number:'1.0'|notEmpty:'0'}} đ
-              </th>
-              <th width='22%'>
-                <div class='d-flex justify-content-around'>
-                  <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated mr-2'
-                          (click)='updateSalary(type.STAY,salary)'>
-                    <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
-                  </button>
-                  <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                          (click)='removeSalary(salary.id, payroll.id)'>
-                    <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
-                  </button>
-                </div>
-              </th>
-
-            </tr>
+              <tr
+                style="background: white"
+                *ngFor="
+                  let salary of payroll.salaries | filterTypeSalary: ['STAY']
+                "
+              >
+                <th width="7%">{{ salary.id }}</th>
+                <th width="43%">{{ salary.title }}</th>
+                <th width="28%" class="text-center" style="color: #4b3880">
+                  {{ salary.price | number: '1.0' | notEmpty: '0' }} đ
+                </th>
+                <th width="22%">
+                  <div class="d-flex justify-content-around">
+                    <button
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title=" chỉnh sửa "
+                      class="edit animated mr-2"
+                      (click)="updateSalary(type.STAY, salary)"
+                    >
+                      <img
+                        style="height: 9px"
+                        src="../../../../../assets/img/share/pencil-fill.svg"
+                        alt="edit icon"
+                      />
+                    </button>
+                    <button
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="xóa"
+                      class="trash animated"
+                      (click)="removeSalary(salary.id, payroll.id)"
+                    >
+                      <img
+                        style="height: 9px"
+                        src="../../../../../assets/img/payroll/trash.svg"
+                        alt="delete icon"
+                      />
+                    </button>
+                  </div>
+                </th>
+              </tr>
             </tbody>
-
           </table>
         </div>
       </div>
       <!--Phụ cấp -->
-      <div #allowance class='col-12 mt-5'>
+      <div #allowance class="col-12 mt-5">
         <table>
           <thead>
-          <tr style='background-color: #dddddd66;'>
-            <th width='4%' class=' title text-center '>Id</th>
-            <th width='24%' class=' title text-center '>Phụ cấp</th>
-            <th width='15%' class=' title text-center '>Thời gian</th>
-            <th width='10%' class=' title text-center '>Đơn vị</th>
-            <th width='15%' class=' title text-center '>Thành tiền</th>
-            <th width='22%' class=' title text-center '>Chú thích</th>
-            <th width='10%' class='text-center' style='padding: 0; color: #1b8eb7'
-                (click)='addSalary(type.ALLOWANCE, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
-              <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
-                   alt='add icon'>
-            </th>
-          </tr>
+            <tr style="background-color: #dddddd66">
+              <th width="4%" class="title text-center">Id</th>
+              <th width="24%" class="title text-center">Phụ cấp</th>
+              <th width="15%" class="title text-center">Thời gian</th>
+              <th width="10%" class="title text-center">Đơn vị</th>
+              <th width="15%" class="title text-center">Thành tiền</th>
+              <th width="22%" class="title text-center">Chú thích</th>
+              <th
+                width="10%"
+                class="text-center"
+                style="padding: 0; color: #1b8eb7"
+                (click)="addSalary(type.ALLOWANCE, payroll)"
+              >
+                <span class="mr-1 pointer">Thêm mục</span>
+                <img
+                  style="margin-left: 2px; width: 10px"
+                  src="../../../../../assets/img/payroll/plus-lg.svg"
+                  alt="add icon"
+                />
+              </th>
+            </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let salary of payroll.salaries | filterTypeSalary:['ALLOWANCE'] "
-              style='background: white !important;'>
-            <th width="4%">{{salary.id}}</th>
-            <th width='24%'>
-              <span>{{salary.title}}</span>
-            </th>
-            <th width='15%' class=' text-center '>
-              -
-            </th>
-            <th width='10%' class=' text-center '>
-              <span *ngIf='salary.unit === datetimeUnit.MONTH'>Tháng</span>
-              <span *ngIf='salary.unit === datetimeUnit.DAY'>Ngày</span>
-            </th>
-            <th width='15%' class=' text-center ' style='color: #29CC97'>{{salary.price|number:'1.0'| notEmpty:'0'}}đ
-            </th>
-            <th width='22%' class=' text-center '>
-              <span>{{salary.note}}</span>
-            </th>
-            <th width='10%'>
-              <div class='d-flex justify-content-around '>
-                <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
-                        (click)='updateSalary(type.ALLOWANCE ,salary , payroll)'>
-                  <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
-                </button>
-                <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                        (click)='removeSalary(salary.id , payroll.id)'>
-                  <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
-                </button>
-              </div>
-            </th>
-          </tr>
+            <tr
+              *ngFor="
+                let salary of payroll.salaries | filterTypeSalary: ['ALLOWANCE']
+              "
+              style="background: white !important"
+            >
+              <th width="4%">{{ salary.id }}</th>
+              <th width="24%">
+                <span>{{ salary.title }}</span>
+              </th>
+              <th width="15%" class="text-center">-</th>
+              <th width="10%" class="text-center">
+                <span *ngIf="salary.unit === datetimeUnit.MONTH">Tháng</span>
+                <span *ngIf="salary.unit === datetimeUnit.DAY">Ngày</span>
+              </th>
+              <th width="15%" class="text-center" style="color: #29cc97">
+                {{ salary.price | number: '1.0' | notEmpty: '0' }}đ
+              </th>
+              <th width="22%" class="text-center">
+                <span>{{ salary.note }}</span>
+              </th>
+              <th width="10%">
+                <div class="d-flex justify-content-around">
+                  <button
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title=" chỉnh sửa "
+                    class="edit animated"
+                    (click)="updateSalary(type.ALLOWANCE, salary, payroll)"
+                  >
+                    <img
+                      style="height: 9px"
+                      src="../../../../../assets/img/share/pencil-fill.svg"
+                      alt="edit icon"
+                    />
+                  </button>
+                  <button
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="xóa"
+                    class="trash animated"
+                    (click)="removeSalary(salary.id, payroll.id)"
+                  >
+                    <img
+                      style="height: 9px"
+                      src="../../../../../assets/img/payroll/trash.svg"
+                      alt="delete icon"
+                    />
+                  </button>
+                </div>
+              </th>
+            </tr>
           </tbody>
         </table>
       </div>
       <!--Tăng ca -->
-      <div #overtime class='col-12 mt-5'>
-        <table matSort (matSortChange)='sortData($event)'>
+      <div #overtime class="col-12 mt-5">
+        <table matSort (matSortChange)="sortData($event)">
           <thead>
-          <tr style='background-color: #dddddd66;'>
-            <th width='4%' class=' title text-center '>Id
-            </th>
-            <th mat-sort-header='title'
-                width='24%' class=' title text-center '>Tăng ca
-            </th>
-            <th mat-sort-header='datetime'
-                width='15%' class=' title text-center '>Thời gian
-            </th>
-            <th width='8%' class=' title text-center '>Hệ số
-            </th>
-            <th mat-sort-header='unit'
-                width='8%' class=' title text-center '>Đơn vị
-            </th>
-            <th width='13%' class=' title text-center '>Thành tiền</th>
-            <th width='18%' class=' title text-center '>Chú thích</th>
-            <th width='10%' class='text-center' style='padding: 0; color: #1b8eb7'
-                (click)='addSalary(type.OVERTIME, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
-              <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
-                   alt='add icon'>
-            </th>
-          </tr>
+            <tr style="background-color: #dddddd66">
+              <th width="4%" class="title text-center">Id</th>
+              <th mat-sort-header="title" width="24%" class="title text-center">
+                Tăng ca
+              </th>
+              <th
+                mat-sort-header="datetime"
+                width="15%"
+                class="title text-center"
+              >
+                Thời gian
+              </th>
+              <th width="8%" class="title text-center">Hệ số</th>
+              <th mat-sort-header="unit" width="8%" class="title text-center">
+                Đơn vị
+              </th>
+              <th width="13%" class="title text-center">Thành tiền</th>
+              <th width="18%" class="title text-center">Chú thích</th>
+              <th
+                width="10%"
+                class="text-center"
+                style="padding: 0; color: #1b8eb7"
+                (click)="addSalary(type.OVERTIME, payroll)"
+              >
+                <span class="mr-1 pointer">Thêm mục</span>
+                <img
+                  style="margin-left: 2px; width: 10px"
+                  src="../../../../../assets/img/payroll/plus-lg.svg"
+                  alt="add icon"
+                />
+              </th>
+            </tr>
           </thead>
           <tbody>
-          <tr *ngFor='let salary of sortedSalaryOver'
-              style='background: white !important;'>
-            <td>
-              <div>
-                <span>{{salary.id}}</span>
-              </div>
-            </td>
-            <td>
-              <div>
-                <span>{{salary.title}}</span>
-                <span class='ml-2' *ngIf='salary.allowance'> + {{salary.allowance.title}}</span>
-              </div>
-            </td>
-            <td class=' text-center '>
-                <span *ngIf='salary.unit'>
-                  {{salary.datetime ? (salary.datetime|date:'dd-MM-yyyy') : '-'}}
+            <tr
+              *ngFor="let salary of sortedSalaryOver"
+              style="background: white !important"
+            >
+              <td>
+                <div>
+                  <span>{{ salary.id }}</span>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <span>{{ salary.title }}</span>
+                  <span class="ml-2" *ngIf="salary.allowance">
+                    + {{ salary.allowance.title }}</span
+                  >
+                </div>
+              </td>
+              <td class="text-center">
+                <span *ngIf="salary.unit">
+                  {{
+                    salary.datetime
+                      ? (salary.datetime | date: 'dd-MM-yyyy')
+                      : '-'
+                  }}
                 </span>
-            </td>
-            <td class=' text-center '>
-              <span>{{salary.rate}}</span>
-            </td>
-            <td class=' text-center '>
-              <span *ngIf='salary.unit === datetimeUnit.HOUR'> {{salary.times}} Giờ </span>
-              <span *ngIf='salary.unit === datetimeUnit.DAY'>{{salary.times}} Ngày</span>
-              <span *ngIf='salary.unit === datetimeUnit.TIMES'>{{salary.times}} Lần</span>
-            </td>
-            <td class=' text-center ' style='color: #29CC97'>
+              </td>
+              <td class="text-center">
+                <span>{{ salary.rate }}</span>
+              </td>
+              <td class="text-center">
+                <span *ngIf="salary.unit === datetimeUnit.HOUR">
+                  {{ salary.times }} Giờ
+                </span>
+                <span *ngIf="salary.unit === datetimeUnit.DAY"
+                  >{{ salary.times }} Ngày</span
+                >
+                <span *ngIf="salary.unit === datetimeUnit.TIMES"
+                  >{{ salary.times }} Lần</span
+                >
+              </td>
+              <td class="text-center" style="color: #29cc97">
                 <span>
-                  {{ salary.price ? ((salary.price * salary.times * (salary?.rate || 1))|number:'1.0') + 'đ' : 'Theo lương chuẩn'}}
+                  {{
+                    salary.price
+                      ? (salary.price * salary.times * (salary?.rate || 1)
+                          | number: '1.0') + 'đ'
+                      : 'Theo lương chuẩn'
+                  }}
                 </span>
-              <span *ngIf='salary.allowance'>
-                  + {{salary.allowance.price * salary.times}}
+                <span *ngIf="salary.allowance">
+                  + {{ salary.allowance.price * salary.times }}
                 </span>
-            </td>
-            <td class=' text-center '>
-              <span>{{salary.note}}</span>
-            </td>
-            <th>
-              <div class='d-flex justify-content-around '>
-                <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
-                        (click)='updateSalary(type.OVERTIME, salary,payroll)'>
-                  <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
-                </button>
-                <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                        (click)='removeSalary(salary.id, payroll.id)'>
-                  <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
-                </button>
-              </div>
-            </th>
-          </tr>
+              </td>
+              <td class="text-center">
+                <span>{{ salary.note }}</span>
+              </td>
+              <th>
+                <div class="d-flex justify-content-around">
+                  <button
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title=" chỉnh sửa "
+                    class="edit animated"
+                    (click)="updateSalary(type.OVERTIME, salary, payroll)"
+                  >
+                    <img
+                      style="height: 9px"
+                      src="../../../../../assets/img/share/pencil-fill.svg"
+                      alt="edit icon"
+                    />
+                  </button>
+                  <button
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="xóa"
+                    class="trash animated"
+                    (click)="removeSalary(salary.id, payroll.id)"
+                  >
+                    <img
+                      style="height: 9px"
+                      src="../../../../../assets/img/payroll/trash.svg"
+                      alt="delete icon"
+                    />
+                  </button>
+                </div>
+              </th>
+            </tr>
           </tbody>
         </table>
       </div>
       <!--Khấu trừ-->
-      <div #absent class='col-12 mt-5'>
+      <div #absent class="col-12 mt-5">
         <table>
           <thead>
-          <tr style='background-color: #dddddd66;'>
-            <th width='3%' class=' title text-center '>STT</th>
-            <th width='4%' class=' title text-center '>Id</th>
-            <th width='14%' class=' title text-center '>Khấu trừ</th>
-            <th width='14%' class=' title text-center '>Thời gian</th>
-            <th width='21%' class=' title text-center '>Ngày</th>
-            <th width='10%' class=' title text-center '>Chú thích</th>
-            <th width='10%' class='text-center' style='padding: 0; color: #1b8eb7'
-                (click)='addSalary(type.ABSENT, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
-              <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
-                   alt='add icon'>
-            </th>
-          </tr>
+            <tr style="background-color: #dddddd66">
+              <th width="3%" class="title text-center">STT</th>
+              <th width="4%" class="title text-center">Id</th>
+              <th width="14%" class="title text-center">Khấu trừ</th>
+              <th width="14%" class="title text-center">Thời gian</th>
+              <th width="21%" class="title text-center">Ngày</th>
+              <th width="10%" class="title text-center">Chú thích</th>
+              <th
+                width="10%"
+                class="text-center"
+                style="padding: 0; color: #1b8eb7"
+                (click)="addSalary(type.ABSENT, payroll)"
+              >
+                <span class="mr-1 pointer">Thêm mục</span>
+                <img
+                  style="margin-left: 2px; width: 10px"
+                  src="../../../../../assets/img/payroll/plus-lg.svg"
+                  alt="add icon"
+                />
+              </th>
+            </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let salary of payroll.salaries | filterTypeSalary:['ABSENT','DAY_OFF','DEDUCTION'], let i= index "
-              style='background: white !important;' class='pointer' (click)='onSalarySetting(salary?.setting?.title)'>
-            <th>
-              {{i + 1}}
-            </th>
-            <th>
-              {{salary.id}}
-            </th>
-            <th >
-              <div>
-                <span>{{salary.title}}</span>
-              </div>
-            </th>
-            <th class=' text-center'>
-              <span *ngIf='salary.unit === datetimeUnit.MONTH'> Tháng </span>
-              <span
-                *ngIf='salary.unit === datetimeUnit.DAY'>
-                {{salary.partial | rangedatetimepipe: salary.startedAt : salary.endedAt}}
-              </span>
-              <span
-                *ngIf='salary.unit === datetimeUnit.MINUTE'>
-                {{(salary.times|convertMinute).hour}} Giờ,
-                {{(salary.times|convertMinute).minute}} phút
-              </span>
-              <span
-                *ngIf='salary.unit === datetimeUnit.TIMES'>
-                {{salary.times}} lần,
-              </span>
-            </th>
-            <th class='text-center'>
-              {{salary.datetime | date:'dd/MM/yyyy'}}
-            </th>
-            <th class=' text-center '>
-              <span>{{salary.note}}</span>
-            </th>
-            <th>
-              <div class='d-flex justify-content-around '>
-                <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
-                        (click)='updateSalary(type.ABSENT, salary, payroll); $event.stopPropagation()'>
-                  <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
-                </button>
-                <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                        (click)='removeSalary(salary.id, payroll.id); $event.stopPropagation()'>
-                  <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
-                </button>
-              </div>
-            </th>
-          </tr>
+            <tr
+              *ngFor="
+                let salary of payroll.salaries
+                  | filterTypeSalary: ['ABSENT', 'DAY_OFF', 'DEDUCTION'];
+                let i = index
+              "
+              style="background: white !important"
+              class="pointer"
+              (click)="onSalarySetting(salary?.setting?.title)"
+            >
+              <th>
+                {{ i + 1 }}
+              </th>
+              <th>
+                {{ salary.id }}
+              </th>
+              <th>
+                <div>
+                  <span>{{ salary.title }}</span>
+                </div>
+              </th>
+              <th class="text-center">
+                <span *ngIf="salary.unit === datetimeUnit.MONTH"> Tháng </span>
+                <span *ngIf="salary.unit === datetimeUnit.DAY">
+                  {{
+                    salary.partial
+                      | rangedatetimepipe: salary.startedAt:salary.endedAt
+                  }}
+                </span>
+                <span *ngIf="salary.unit === datetimeUnit.MINUTE">
+                  {{ (salary.times | convertMinute).hour }} Giờ,
+                  {{ (salary.times | convertMinute).minute }} phút
+                </span>
+                <span *ngIf="salary.unit === datetimeUnit.TIMES">
+                  {{ salary.times }} lần,
+                </span>
+              </th>
+              <th class="text-center">
+                {{ salary.datetime | date: 'dd/MM/yyyy' }}
+              </th>
+              <th class="text-center">
+                <span>{{ salary.note }}</span>
+              </th>
+              <th>
+                <div class="d-flex justify-content-around">
+                  <button
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title=" chỉnh sửa "
+                    class="edit animated"
+                    (click)="
+                      updateSalary(type.ABSENT, salary, payroll);
+                      $event.stopPropagation()
+                    "
+                  >
+                    <img
+                      style="height: 9px"
+                      src="../../../../../assets/img/share/pencil-fill.svg"
+                      alt="edit icon"
+                    />
+                  </button>
+                  <button
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="xóa"
+                    class="trash animated"
+                    (click)="
+                      removeSalary(salary.id, payroll.id);
+                      $event.stopPropagation()
+                    "
+                  >
+                    <img
+                      style="height: 9px"
+                      src="../../../../../assets/img/payroll/trash.svg"
+                      alt="delete icon"
+                    />
+                  </button>
+                </div>
+              </th>
+            </tr>
           </tbody>
         </table>
       </div>
       <!--      ngày lễ-->
-      <div #holiday class='col-12 mt-5'>
+      <div #holiday class="col-12 mt-5">
         <table>
           <thead>
-          <tr style='background-color: #dddddd66;'>
-            <th width='3%' class='title text-center'>STT</th>
-            <th width='4%' class='title text-center'>Id</th>
-            <th width='21%' class='title text-center'>Đi làm ngày lễ</th>
-            <th width='14%' class='title text-center'>Ngày</th>
-            <th width='9%' class='title text-center'>Hệ số</th>
-            <th width='14%' class='title text-center'>Đơn giá</th>
-            <th width='14%' class='title text-center'>Tổng tiền</th>
-            <th width='10%' style='color: #1b8eb7' (click)='scanHoliday(payroll.id)'><span
-              class='mx-2 pointer'>Quét</span>
-              <img class='pointer' style='margin-left: 2px;width: 13px;' src='./assets/icon/search.svg'
-                   alt='add icon'>
-            </th>
-          </tr>
+            <tr style="background-color: #dddddd66">
+              <th width="3%" class="title text-center">STT</th>
+              <th width="4%" class="title text-center">Id</th>
+              <th width="21%" class="title text-center">Đi làm ngày lễ</th>
+              <th width="14%" class="title text-center">Ngày</th>
+              <th width="9%" class="title text-center">Hệ số</th>
+              <th width="14%" class="title text-center">Đơn giá</th>
+              <th width="14%" class="title text-center">Tổng tiền</th>
+              <th
+                width="10%"
+                style="color: #1b8eb7"
+                (click)="scanHoliday(payroll.id)"
+              >
+                <span class="mx-2 pointer">Quét</span>
+                <img
+                  class="pointer"
+                  style="margin-left: 2px; width: 13px"
+                  src="./assets/icon/search.svg"
+                  alt="add icon"
+                />
+              </th>
+            </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let salary of payroll.salaries | filterTypeSalary:['HOLIDAY']; let i = index "
-              style='background: white !important;'>
-            <th>
-              {{i + 1}}
-            </th>
-            <th>
-              {{salary.id}}
-            </th>
-            <th class=' text-center'>
-              {{salary.datetime | date: "dd/MM/yyyy"}}
-            </th>
-            <th class=' text-center'>
-              {{salary.times}} ngày
-            </th>
-            <th class=' text-center'>
-              <span>{{salary.rate}}</span>
-            </th>
-            <th class=' text-center'>
-              {{salary.price | number:'1.0' | notEmpty:'Theo hệ số lương cơ bản'}}
-            </th>
-            <th class=' text-center'>
-              {{(salary.price * salary.times * salary.rate) | number:'1.0' | notEmpty:'Theo hệ số lương cơ bản'}}
-            </th>
-            <th>
-              <div class='d-flex justify-content-around '>
-                <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
-                        (click)='updateSalary(type.HOLIDAY, salary, payroll)'>
-                  <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
-                </button>
-                <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                        (click)='removeSalary(salary.id, payroll.id)'>
-                  <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
-                </button>
-              </div>
-            </th>
-          </tr>
+            <tr
+              *ngFor="
+                let salary of payroll.salaries | filterTypeSalary: ['HOLIDAY'];
+                let i = index
+              "
+              style="background: white !important"
+            >
+              <th>
+                {{ i + 1 }}
+              </th>
+              <th>
+                {{ salary.id }}
+              </th>
+              <th class="text-center">
+                {{ salary.datetime | date: 'dd/MM/yyyy' }}
+              </th>
+              <th class="text-center">{{ salary.times }} ngày</th>
+              <th class="text-center">
+                <span>{{ salary.rate }}</span>
+              </th>
+              <th class="text-center">
+                {{
+                  salary.price
+                    | number: '1.0'
+                    | notEmpty: 'Theo hệ số lương cơ bản'
+                }}
+              </th>
+              <th class="text-center">
+                {{
+                  salary.price * salary.times * salary.rate
+                    | number: '1.0'
+                    | notEmpty: 'Theo hệ số lương cơ bản'
+                }}
+              </th>
+              <th>
+                <div class="d-flex justify-content-around">
+                  <button
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title=" chỉnh sửa "
+                    class="edit animated"
+                    (click)="updateSalary(type.HOLIDAY, salary, payroll)"
+                  >
+                    <img
+                      style="height: 9px"
+                      src="../../../../../assets/img/share/pencil-fill.svg"
+                      alt="edit icon"
+                    />
+                  </button>
+                  <button
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="xóa"
+                    class="trash animated"
+                    (click)="removeSalary(salary.id, payroll.id)"
+                  >
+                    <img
+                      style="height: 9px"
+                      src="../../../../../assets/img/payroll/trash.svg"
+                      alt="delete icon"
+                    />
+                  </button>
+                </div>
+              </th>
+            </tr>
           </tbody>
         </table>
       </div>
 
       <!--WFH-->
-      <div #absent class='col-12 mt-5'>
+      <div #absent class="col-12 mt-5">
         <table>
           <thead>
-          <tr style='background-color: #dddddd66;'>
-            <th width='3%' class=' title text-center '>STT</th>
-            <th width='3%' class=' title text-center '>Id</th>
-            <th width='22%' class=' title text-center '>Chú thích ngày</th>
-            <th width='9%' class=' title text-center '>Thời gian</th>
-            <th width='7%' class=' title text-center '>Đơn vị</th>
-            <th width='20%' class=' title text-center '>Diễn giải</th>
-            <th width='10%' class='text-center' style='padding: 0; color: #1b8eb7'
-                (click)='addSalary(type.WFH, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
-              <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
-                   alt='add icon'>
-            </th>
-          </tr>
+            <tr style="background-color: #dddddd66">
+              <th width="3%" class="title text-center">STT</th>
+              <th width="3%" class="title text-center">Id</th>
+              <th width="22%" class="title text-center">Chú thích ngày</th>
+              <th width="9%" class="title text-center">Thời gian</th>
+              <th width="7%" class="title text-center">Đơn vị</th>
+              <th width="20%" class="title text-center">Diễn giải</th>
+              <th
+                width="10%"
+                class="text-center"
+                style="padding: 0; color: #1b8eb7"
+                (click)="addSalary(type.WFH, payroll)"
+              >
+                <span class="mr-1 pointer">Thêm mục</span>
+                <img
+                  style="margin-left: 2px; width: 10px"
+                  src="../../../../../assets/img/payroll/plus-lg.svg"
+                  alt="add icon"
+                />
+              </th>
+            </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let salary of payroll.salaries | filterTypeSalary:['WFH'];let i=index "
-              style='background: white !important;'>
-            <th>
-              <div>
-                <span>{{i + 1}}</span>
-              </div>
-            </th>
-            <th>
-              <div>
-                <span>{{salary.id}}</span>
-              </div>
-            </th>
-            <th>
-              <div>
-                <span>{{salary.title}}</span>
-              </div>
-            </th>
-            <th class='text-center '>
-                 <span>
-                  {{salary.datetime | date:'dd-MM-yyyy'}}
+            <tr
+              *ngFor="
+                let salary of payroll.salaries | filterTypeSalary: ['WFH'];
+                let i = index
+              "
+              style="background: white !important"
+            >
+              <th>
+                <div>
+                  <span>{{ i + 1 }}</span>
+                </div>
+              </th>
+              <th>
+                <div>
+                  <span>{{ salary.id }}</span>
+                </div>
+              </th>
+              <th>
+                <div>
+                  <span>{{ salary.title }}</span>
+                </div>
+              </th>
+              <th class="text-center">
+                <span>
+                  {{ salary.datetime | date: 'dd-MM-yyyy' }}
                 </span>
-            </th>
-            <th class=' text-center '>
-              <span *ngIf='salary.unit === datetimeUnit.DAY'>Ngày</span>
-            </th>
-            <th class=' text-center '>
-              <span>{{salary.note}}</span>
-            </th>
-            <th>
-              <div class='d-flex justify-content-around '>
-                <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
-                        (click)='updateSalary(type.WFH, salary, payroll)'>
-                  <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
-                </button>
-                <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                        (click)='removeSalary(salary.id, payroll.id)'>
-                  <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
-                </button>
-              </div>
-            </th>
-          </tr>
+              </th>
+              <th class="text-center">
+                <span *ngIf="salary.unit === datetimeUnit.DAY">Ngày</span>
+              </th>
+              <th class="text-center">
+                <span>{{ salary.note }}</span>
+              </th>
+              <th>
+                <div class="d-flex justify-content-around">
+                  <button
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title=" chỉnh sửa "
+                    class="edit animated"
+                    (click)="updateSalary(type.WFH, salary, payroll)"
+                  >
+                    <img
+                      style="height: 9px"
+                      src="../../../../../assets/img/share/pencil-fill.svg"
+                      alt="edit icon"
+                    />
+                  </button>
+                  <button
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="xóa"
+                    class="trash animated"
+                    (click)="removeSalary(salary.id, payroll.id)"
+                  >
+                    <img
+                      style="height: 9px"
+                      src="../../../../../assets/img/payroll/trash.svg"
+                      alt="delete icon"
+                    />
+                  </button>
+                </div>
+              </th>
+            </tr>
           </tbody>
         </table>
       </div>
 
       <!--chú thích-->
-      <div #note class='col-12 mt-5'>
+      <div #note class="col-12 mt-5">
         <table>
           <thead>
-          <tr style='background-color: #dddddd66;'>
-            <th class=' title  '>Chú thích phiếu lương</th>
-            <th width='10%' style='color: #1b8eb7' (click)='addNote(payroll)'><span
-              class='mx-2 pointer'>{{payroll?.note ? 'Sửa' : 'Thêm'}}</span>
-              <img class='pointer' style='margin-left: 2px;width: 13px;' src='./assets/img/payroll/plus-lg.svg'
-                   alt='add icon'>
-            </th>
-          </tr>
+            <tr style="background-color: #dddddd66">
+              <th class="title">Chú thích phiếu lương</th>
+              <th width="10%" style="color: #1b8eb7" (click)="addNote(payroll)">
+                <span class="mx-2 pointer">{{
+                  payroll?.note ? 'Sửa' : 'Thêm'
+                }}</span>
+                <img
+                  class="pointer"
+                  style="margin-left: 2px; width: 13px"
+                  src="./assets/img/payroll/plus-lg.svg"
+                  alt="add icon"
+                />
+              </th>
+            </tr>
           </thead>
           <tbody>
-          <tr *ngIf='payroll?.note' style='background: white !important;'>
-            <th>
-              <div>
-                <span>{{payroll?.note}}</span>
-              </div>
-            </th>
-            <th width='10%'>
-            </th>
-          </tr>
+            <tr *ngIf="payroll?.note" style="background: white !important">
+              <th>
+                <div>
+                  <span>{{ payroll?.note }}</span>
+                </div>
+              </th>
+              <th width="10%"></th>
+            </tr>
           </tbody>
         </table>
       </div>
 
-      <div class='sticky-scroll' *ngIf='isSticky'>
-        <div class='pointer' (click)='onSticky(sticky)'>Ẩn >></div>
-        <div class='pointer ' (click)='scroll(basic,sticky)'>Lương cơ bản</div>
-        <div class='pointer' (click)='scroll(basic,sticky)'>Phụ cấp lương</div>
-        <div class='pointer' (click)='scroll(allowance,sticky)'>Phụ cấp</div>
-        <div class='pointer' (click)='scroll(overtime,sticky)'>Tăng ca</div>
-        <div class='pointer' (click)='scroll(absent,sticky)'>Khấu trừ</div>
-        <div class='pointer' (click)='scroll(holiday,sticky)'>Đi làm ngày lễ</div>
-        <div class='pointer' (click)='scroll(note,sticky)'>Chú thích</div>
-        <div class='pointer' (click)='scroll(footer,sticky)'>Lịch sử và xác nhận lương</div>
-      </div>
-      <div class='sticky-scroll' #sticky>
-        <div class='pointer' (click)='onSticky(sticky)'>
-          << Hiện
+      <div class="sticky-scroll" *ngIf="isSticky">
+        <div class="pointer" (click)="onSticky(sticky)">Ẩn >></div>
+        <div class="pointer" (click)="scroll(basic, sticky)">Lương cơ bản</div>
+        <div class="pointer" (click)="scroll(basic, sticky)">Phụ cấp lương</div>
+        <div class="pointer" (click)="scroll(allowance, sticky)">Phụ cấp</div>
+        <div class="pointer" (click)="scroll(overtime, sticky)">Tăng ca</div>
+        <div class="pointer" (click)="scroll(absent, sticky)">Khấu trừ</div>
+        <div class="pointer" (click)="scroll(holiday, sticky)">
+          Đi làm ngày lễ
         </div>
+        <div class="pointer" (click)="scroll(note, sticky)">Chú thích</div>
+        <div class="pointer" (click)="scroll(footer, sticky)">
+          Lịch sử và xác nhận lương
+        </div>
+      </div>
+      <div class="sticky-scroll" #sticky>
+        <div class="pointer" (click)="onSticky(sticky)"><< Hiện</div>
       </div>
     </div>
     <ng-template #seasonal>
-      <div class='row d-flex flex-column'>
-        <div class='d-flex'>
-          <div class='col-12'>
+      <div class="row d-flex flex-column">
+        <div class="d-flex">
+          <div class="col-12">
             <table>
               <thead>
-              <tr style='background-color: #dddddd66;'>
-                <th class=' text-center '>Lương công nhật</th>
-                <th class=' text-center '>Thời gian</th>
-                <th class=' text-center '>Đơn giá</th>
-                <th class=' text-center '>Thành tiền</th>
-                <th width='12%' class=' text-center ' (click)='addSalary(type.PART_TIME,payroll)'>
-                  <span class='mr-1 pointer' style='color: #1b8eb7'>Thêm mục</span>
-                  <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
-                       alt='add icon'>
-                </th>
-              </tr>
+                <tr style="background-color: #dddddd66">
+                  <th class="text-center">Lương công nhật</th>
+                  <th class="text-center">Thời gian</th>
+                  <th class="text-center">Đơn giá</th>
+                  <th class="text-center">Thành tiền</th>
+                  <th
+                    width="12%"
+                    class="text-center"
+                    (click)="addSalary(type.PART_TIME, payroll)"
+                  >
+                    <span class="mr-1 pointer" style="color: #1b8eb7"
+                      >Thêm mục</span
+                    >
+                    <img
+                      style="margin-left: 2px; width: 10px"
+                      src="../../../../../assets/img/payroll/plus-lg.svg"
+                      alt="add icon"
+                    />
+                  </th>
+                </tr>
               </thead>
               <tbody>
-              <tr style='background: white'
-                  *ngFor="let salary of payroll.salaries | filterTypeSalary:['PART_TIME','OVERTIME'] ">
-                <th> {{salary.title}} {{salary?.allowance ? '+ ' + salary.allowance.title : ''}}</th>
-                <th class='text-center'>
-                  {{salary.times}} {{salary.unit === 'DAY' ? 'ngày' : 'giờ' }}
-                  {{salary?.datetime ? ' ngày ' + (salary.datetime|date:'dd/MM/yyyy') : ''}}
-                </th>
-                <th class=' text-center '>
-                  {{salary.price|number:'1.0'|notEmpty:'0'}} đ
-                  {{salary.allowance ? '+ ' + (salary.allowance.price|number:'1.0'|notEmpty:'0') + ' đ' : ''}}
-                </th>
-                <th class=' text-center ' style='color: #4B3880'>
-                  <span *ngIf='!salary.allowance; else total'>
-                     {{salary.price * salary.times|number:'1.0'|notEmpty:'0'}} đ
-                  </span>
-                  <ng-template #total>
+                <tr
+                  style="background: white"
+                  *ngFor="
+                    let salary of payroll.salaries
+                      | filterTypeSalary: ['PART_TIME', 'OVERTIME']
+                  "
+                >
+                  <th>
+                    {{ salary.title }}
+                    {{ salary?.allowance ? '+ ' + salary.allowance.title : '' }}
+                  </th>
+                  <th class="text-center">
+                    {{ salary.times }}
+                    {{ salary.unit === 'DAY' ? 'ngày' : 'giờ' }}
+                    {{
+                      salary?.datetime
+                        ? ' ngày ' + (salary.datetime | date: 'dd/MM/yyyy')
+                        : ''
+                    }}
+                  </th>
+                  <th class="text-center">
+                    {{ salary.price | number: '1.0' | notEmpty: '0' }} đ
+                    {{
+                      salary.allowance
+                        ? '+ ' +
+                          (salary.allowance.price
+                            | number: '1.0'
+                            | notEmpty: '0') +
+                          ' đ'
+                        : ''
+                    }}
+                  </th>
+                  <th class="text-center" style="color: #4b3880">
+                    <span *ngIf="!salary.allowance; else total">
+                      {{
+                        salary.price * salary.times
+                          | number: '1.0'
+                          | notEmpty: '0'
+                      }}
+                      đ
+                    </span>
+                    <ng-template #total>
                       <span>
-                     {{salary.price * salary.times + salary.allowance.price|number:'1.0'|notEmpty:'0'}} đ
-                  </span>
-                  </ng-template>
-                </th>
-                <th>
-                  <div class='d-flex justify-content-around'>
-                    <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated mr-2'
-                            (click)='updateSalary(type.PART_TIME,salary,payroll)'>
-                      <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
-                    </button>
-                    <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
-                            (click)='removeSalary(salary.id, payroll.id)'>
-                      <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
-                    </button>
-                  </div>
-                </th>
-              </tr>
+                        {{
+                          salary.price * salary.times + salary.allowance.price
+                            | number: '1.0'
+                            | notEmpty: '0'
+                        }}
+                        đ
+                      </span>
+                    </ng-template>
+                  </th>
+                  <th>
+                    <div class="d-flex justify-content-around">
+                      <button
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title=" chỉnh sửa "
+                        class="edit animated mr-2"
+                        (click)="updateSalary(type.PART_TIME, salary, payroll)"
+                      >
+                        <img
+                          style="height: 9px"
+                          src="../../../../../assets/img/share/pencil-fill.svg"
+                          alt="edit icon"
+                        />
+                      </button>
+                      <button
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="xóa"
+                        class="trash animated"
+                        (click)="removeSalary(salary.id, payroll.id)"
+                      >
+                        <img
+                          style="height: 9px"
+                          src="../../../../../assets/img/payroll/trash.svg"
+                          alt="delete icon"
+                        />
+                      </button>
+                    </div>
+                  </th>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -626,26 +1020,46 @@
       </div>
     </ng-template>
 
-    <div class='col-md-12' style='border-top: 2px dashed #9FA2B4; margin: 50px 0;'>
-    </div>
+    <div
+      class="col-md-12"
+      style="border-top: 2px dashed #9fa2b4; margin: 50px 0"
+    ></div>
     <div #footer>
-      <div class='col-md-12' *ngIf='(payroll$ | async) as payroll' style='display: flex; justify-content: flex-end'>
-
+      <div
+        class="col-md-12"
+        *ngIf="payroll$ | async as payroll"
+        style="display: flex; justify-content: flex-end"
+      >
         <button
-          (click)='deletePayroll(payroll)'
-          class='btn btn-danger mr-3' style='height: 35px'>
+          (click)="deletePayroll(payroll)"
+          class="btn btn-danger mr-3"
+          style="height: 35px"
+        >
           Xóa phiếu lương
         </button>
-        <button (click)='historySalary(payroll)'
-                class='mb-5 btn d-flex d-flex justify-content-center  align-items-center mr-3'
-                style='border: solid 1px #4B3880'>
-          <img class='mr-1' src='../../../../../assets/img/share/arrow-counterclockwise.svg' alt='history'><span>xem
-            lịch
-            sử lương</span>
+        <button
+          (click)="historySalary(payroll)"
+          class="mb-5 btn d-flex d-flex justify-content-center align-items-center mr-3"
+          style="border: solid 1px #4b3880"
+        >
+          <img
+            class="mr-1"
+            src="../../../../../assets/img/share/arrow-counterclockwise.svg"
+            alt="history"
+          /><span>xem lịch sử lương</span>
         </button>
-        <button (click)='confirmPayroll(payroll)' class='mb-5 create-salary'>
-          <img class='mr-2' style='height: 12px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
-          {{role === roleEnum.HUMAN_RESOURCE ? 'Khôi phục phiếu lương' : 'Xác nhận phiếu lương'}}
+        <button (click)="confirmPayroll(payroll)" class="mb-5 create-salary">
+          <img
+            class="mr-2"
+            style="height: 12px"
+            src="../../../../../assets/img/share/pencil-fill.svg"
+            alt="edit icon"
+          />
+          {{
+            role === roleEnum.HUMAN_RESOURCE
+              ? 'Khôi phục phiếu lương'
+              : 'Xác nhận phiếu lương'
+          }}
         </button>
       </div>
     </div>

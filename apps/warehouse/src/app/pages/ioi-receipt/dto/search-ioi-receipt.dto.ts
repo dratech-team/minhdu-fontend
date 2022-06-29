@@ -1,8 +1,6 @@
-import {BaseIoiReceiptEntity} from "../bases";
-import {BaseSearchDto} from "@minhdu-fontend/base-dto";
+import { BaseIoiReceiptEntity } from '../bases';
+import { BaseSearchDto } from '@minhdu-fontend/base-dto';
 
-interface BaseSearchIoiReceiptDto extends BaseIoiReceiptEntity{
+interface BaseSearchIoiReceiptDto extends BaseIoiReceiptEntity {}
 
-}
-
-export type SearchIoiReceiptDto = BaseSearchDto<BaseSearchIoiReceiptDto>
+export type SearchIoiReceiptDto = BaseSearchDto<BaseSearchIoiReceiptDto>;

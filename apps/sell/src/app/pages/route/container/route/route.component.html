@@ -1,178 +1,294 @@
-<nz-spin *ngIf="(deleted$| async) === false" class="position-center"></nz-spin>
-<div class='d-flex'>
-  <div class='d-flex flex-column ml-3 border p-2' style='height: 80vh;overflow-y: scroll; width:280px '>
+<nz-spin *ngIf="(deleted$ | async) === false" class="position-center"></nz-spin>
+<div class="d-flex">
+  <div
+    class="d-flex flex-column ml-3 border p-2"
+    style="height: 80vh; overflow-y: scroll; width: 280px"
+  >
     <nz-collapse>
-      <nz-collapse-panel
-        nzHeader='Tìm kiếm'
-        nzActive='true'>
-        <div [formGroup]='formGroup'>
-          <input nz-input class='form-control' type='search' formControlName='search'>
+      <nz-collapse-panel nzHeader="Tìm kiếm" nzActive="true">
+        <div [formGroup]="formGroup">
+          <input
+            nz-input
+            class="form-control"
+            type="search"
+            formControlName="search"
+          />
         </div>
       </nz-collapse-panel>
     </nz-collapse>
-    <div class='mt-2'>
+    <div class="mt-2">
       <minhdu-fontend-collapse-radios
-        [formGroup]='formGroup' [controlName]="'status'" [active]='true'
-        header='Trạng thái' [radios]='radios'>
+        [formGroup]="formGroup"
+        [controlName]="'status'"
+        [active]="true"
+        header="Trạng thái"
+        [radios]="radios"
+      >
       </minhdu-fontend-collapse-radios>
     </div>
-    <div class='mt-2'>
+    <div class="mt-2">
       <minhdu-fontend-collapse-datepicker
         [title]="'Ngày bắt đầu'"
-        [rangeDayInit]="{start: stateSearch.startedAt_start, end:stateSearch.startedAt_end}"
-        (onPicker)='onPickStartedDay($event)'>
+        [rangeDayInit]="{
+          start: stateSearch.startedAt_start,
+          end: stateSearch.startedAt_end
+        }"
+        (onPicker)="onPickStartedDay($event)"
+      >
       </minhdu-fontend-collapse-datepicker>
     </div>
-    <div class='mt-2'>
+    <div class="mt-2">
       <minhdu-fontend-collapse-datepicker
-        title='Ngày kết thúc'
-        [rangeDayInit]="{start: stateSearch.endedAt_start, end:stateSearch.endedAt_end}"
-        (onPicker)='onPickEndedAtDay($event)'>
-
+        title="Ngày kết thúc"
+        [rangeDayInit]="{
+          start: stateSearch.endedAt_start,
+          end: stateSearch.endedAt_end
+        }"
+        (onPicker)="onPickEndedAtDay($event)"
+      >
       </minhdu-fontend-collapse-datepicker>
     </div>
   </div>
-  <div class='ml-3' style='width: 76vw; height: 80vh'>
-    <div class='d-flex justify-content-between'>
-      <div class=' h3 mt-3 '>
-        Danh sách tuyến đường
-      </div>
-      <div class='d-flex justify-content-between mt-3'>
-        <button (click)='onAdd()' nz-button nzType='primary' class='mr-2'>Thêm</button>
-        <button (click)='printRouter()' nz-button nzType='default'>Xuất</button>
-        <button class='ml-2' nz-button nz-popover nzPopoverTitle='Chọn cột hiển thị / ghim'
-                [(nzPopoverVisible)]='visible'
-                nzPopoverPlacement='bottomRight'
-                [nzPopoverContent]='pinColumn'
-                nzPopoverTrigger='click'
-        >Ghim
+  <div class="ml-3" style="width: 76vw; height: 80vh">
+    <div class="d-flex justify-content-between">
+      <div class="h3 mt-3">Danh sách tuyến đường</div>
+      <div class="d-flex justify-content-between mt-3">
+        <button (click)="onAdd()" nz-button nzType="primary" class="mr-2">
+          Thêm
+        </button>
+        <button (click)="printRouter()" nz-button nzType="default">Xuất</button>
+        <button
+          class="ml-2"
+          nz-button
+          nz-popover
+          nzPopoverTitle="Chọn cột hiển thị / ghim"
+          [(nzPopoverVisible)]="visible"
+          nzPopoverPlacement="bottomRight"
+          [nzPopoverContent]="pinColumn"
+          nzPopoverTrigger="click"
+        >
+          Ghim
         </button>
       </div>
     </div>
-    <div class='mt-2'>
-      <div class='mb-1'><span class='font-weight-bold'>Tổng tuyến đường:</span> {{total$ | async}}</div>
+    <div class="mt-2">
+      <div class="mb-1">
+        <span class="font-weight-bold">Tổng tuyến đường:</span>
+        {{ total$ | async }}
+      </div>
       <nz-table
         #tableRoute
-        [nzLoading]='loading$ | async'
-        [nzScroll]="{ x: '2000px',y: '60vh'}"
-        nzSize='default'
-        [nzShowPagination]='true'
-        [nzData]='(routes$ | async)'
-        [nzPageSize]='pageSizeTable'
-        (nzPageIndexChange)='onPagination($event)'
-        *ngIf="(ui$|async) as ui"
+        [nzLoading]="loading$ | async"
+        [nzScroll]="{ x: '2000px', y: '60vh' }"
+        nzSize="default"
+        [nzShowPagination]="true"
+        [nzData]="routes$ | async"
+        [nzPageSize]="pageSizeTable"
+        (nzPageIndexChange)="onPagination($event)"
+        *ngIf="ui$ | async as ui"
       >
         <thead>
-        <tr>
-          <th nzLeft nzWidth='50px' (click)='onExpandAll()'>
-            <img *ngIf='(expandAll$ | async) else dash_square' src='assets/icon/share/dash-square.svg'>
-            <ng-template #dash_square>
-              <img src='assets/icon/share/plus-square.svg'>
-            </ng-template>
-          </th>
-          <th *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false' nzWidth='70px'>STT</th>
-          <th *ngIf="ui.name.visible" [nzLeft]='ui.name?.pinned||false'
-              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.NAME ,orderType:$event})'>
-            Tên Tuyến đường
-          </th>
-          <th *ngIf="ui.startedAt.visible" [nzLeft]='ui.startedAt?.pinned||false'
-              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.START ,orderType:$event})'>
-            Ngày bắt đầu
-          </th>
-          <th *ngIf="ui.endedAt.visible" [nzLeft]='ui.endedAt?.pinned||false'
-              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.END ,orderType:$event})'>
-            Ngày Kết thúc
-          </th>
-          <th *ngIf="ui.driver.visible" [nzLeft]='ui.driver?.pinned||false'
-              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.DRIVER ,orderType:$event})'>
-            Tên Tài xế
-          </th>
-<!--          <th *ngIf="ui.customer.visible" [nzLeft]='ui.customer?.pinned||false'-->
-<!--              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.CUSTOMER ,orderType:$event})'>-->
-<!--            Khách hàng-->
-<!--          </th>-->
-          <th *ngIf="ui.bsx.visible" [nzLeft]='ui.bsx?.pinned||false'
-              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.BSX ,orderType:$event})'>
-            Biển số xe
-          </th>
-          <th *ngIf="ui.garage.visible" [nzLeft]='ui.garage?.pinned||false'
-              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.GARAGE ,orderType:$event})'>
-            Nhà xe
-          </th>
-          <th *ngIf="ui.status.visible" [nzLeft]='ui.status?.pinned||false'>
-            Trạng thái chuyến xe
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        <ng-template ngFor let-route [ngForOf]='tableRoute.data' let-i='index'>
-          <tr (contextmenu)='child.onContextMenu($event, route)' class='pointer'>
-            <td nzLeft [(nzExpand)]='route.expand'></td>
-            <td *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false'
-                (click)='onDetail(route.id, false)'>
-              {{(i + 1) + ((tableRoute.nzPageIndex - 1) * 10)}}
-            </td>
-            <td *ngIf="ui.name.visible" [nzLeft]='ui.name?.pinned||false'
-                (click)='onDetail(route.id, false)'>
-              {{route?.name || 'Chưa cập nhật'}}
-            </td>
-            <td *ngIf="ui.startedAt.visible" [nzLeft]='ui.startedAt?.pinned||false'
-                (click)='onDetail(route.id, false)'>
-              {{(route?.startedAt | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
-            </td>
-            <td *ngIf="ui.endedAt.visible"
-                [nzLeft]='ui.endedAt?.pinned||false'
-                (click)='onDetail(route.id, false)'>
-
-              {{(route?.endedAt | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
-            </td>
-            <td *ngIf="ui.driver.visible" [nzLeft]='ui.driver?.pinned||false'
-                (click)='onDetail(route.id, false)'>
-              {{route?.driver || route?.employee?.lastName}}
-            </td>
-<!--            <td *ngIf="ui.customer.visible" [nzLeft]='ui.customer?.pinned||false'-->
-<!--                (click)='onDetail(route.id, false)'>-->
-<!--              <div class=' d-flex align-items-center justify-content-center pointer ' [ngClass]='{-->
-<!--              "border-top": route.orders.length > 1 && index  !== 0-->
-<!--              }' *ngFor='let order of route.orders; let index = index'>-->
-<!--                {{order.customer.lastName}}-->
-<!--              </div>-->
-<!--            </td>-->
-            <td *ngIf="ui.bsx.visible" [nzLeft]='ui.bsx?.pinned||false'
-                (click)='onDetail(route.id, false)'>{{route?.bsx || 'Chưa cập nhật'}}</td>
-            <td *ngIf="ui.garage.visible" [nzLeft]='ui.garage?.pinned||false'
-                (click)='onDetail(route.id, false)'>
-              {{route?.garage || 'Chưa cập nhật'}}
-            </td>
-            <td *ngIf="ui.status.visible" [nzLeft]='ui.status?.pinned||false'
-                (click)='onDetail(route.id, false)'>
-              {{!route.endedAt ? 'Đang chạy' : compareDay(route.endedAt) ? (route.endedAt|date:'dd-MM-yyyy') : 'Hoàn thành'}}
-            </td>
+          <tr>
+            <th nzLeft nzWidth="50px" (click)="onExpandAll()">
+              <img
+                *ngIf="expandAll$ | async; else dash_square"
+                src="assets/icon/share/dash-square.svg"
+              />
+              <ng-template #dash_square>
+                <img src="assets/icon/share/plus-square.svg" />
+              </ng-template>
+            </th>
+            <th
+              *ngIf="ui.stt.visible"
+              [nzLeft]="ui.stt?.pinned || false"
+              nzWidth="70px"
+            >
+              STT
+            </th>
+            <th
+              *ngIf="ui.name.visible"
+              [nzLeft]="ui.name?.pinned || false"
+              [nzSortFn]="true"
+              (nzSortOrderChange)="
+                onSort({ orderBy: sortRouteEnum.NAME, orderType: $event })
+              "
+            >
+              Tên Tuyến đường
+            </th>
+            <th
+              *ngIf="ui.startedAt.visible"
+              [nzLeft]="ui.startedAt?.pinned || false"
+              [nzSortFn]="true"
+              (nzSortOrderChange)="
+                onSort({ orderBy: sortRouteEnum.START, orderType: $event })
+              "
+            >
+              Ngày bắt đầu
+            </th>
+            <th
+              *ngIf="ui.endedAt.visible"
+              [nzLeft]="ui.endedAt?.pinned || false"
+              [nzSortFn]="true"
+              (nzSortOrderChange)="
+                onSort({ orderBy: sortRouteEnum.END, orderType: $event })
+              "
+            >
+              Ngày Kết thúc
+            </th>
+            <th
+              *ngIf="ui.driver.visible"
+              [nzLeft]="ui.driver?.pinned || false"
+              [nzSortFn]="true"
+              (nzSortOrderChange)="
+                onSort({ orderBy: sortRouteEnum.DRIVER, orderType: $event })
+              "
+            >
+              Tên Tài xế
+            </th>
+            <!--          <th *ngIf="ui.customer.visible" [nzLeft]='ui.customer?.pinned||false'-->
+            <!--              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.CUSTOMER ,orderType:$event})'>-->
+            <!--            Khách hàng-->
+            <!--          </th>-->
+            <th
+              *ngIf="ui.bsx.visible"
+              [nzLeft]="ui.bsx?.pinned || false"
+              [nzSortFn]="true"
+              (nzSortOrderChange)="
+                onSort({ orderBy: sortRouteEnum.BSX, orderType: $event })
+              "
+            >
+              Biển số xe
+            </th>
+            <th
+              *ngIf="ui.garage.visible"
+              [nzLeft]="ui.garage?.pinned || false"
+              [nzSortFn]="true"
+              (nzSortOrderChange)="
+                onSort({ orderBy: sortRouteEnum.GARAGE, orderType: $event })
+              "
+            >
+              Nhà xe
+            </th>
+            <th *ngIf="ui.status.visible" [nzLeft]="ui.status?.pinned || false">
+              Trạng thái chuyến xe
+            </th>
           </tr>
-          <tr [nzExpand]='route.expand'>
-            <nz-table #innerTable [nzData]='route.orders' nzSize='small' [nzShowPagination]='false'>
-        <thead>
-        <tr>
-          <th class='text-center'>Tên khách hàng</th>
-          <th class='text-center'>Ngày tạo</th>
-          <th class='text-center'>Điểm đến</th>
-          <th class='text-center'>Tiền hàng</th>
-          <th class='text-center'>Tổng hàng hoá</th>
-        </tr>
         </thead>
         <tbody>
-        <tr *ngFor='let order of innerTable.data'>
-          <td>{{order.customer.lastName}}</td>
-          <td>{{order.createdAt|date:'dd-MM-yyyy'}}</td>
-          <td>{{order?.province?.name}} - {{order?.district?.name}} - {{order?.ward?.name}}</td>
-          <td>{{order?.commodityTotal|number:'1.0-0'}} đ</td>
-          <td>{{order?.totalCommodity|number:'1.0-0'}}</td>
-        </tr>
+          <ng-template
+            ngFor
+            let-route
+            [ngForOf]="tableRoute.data"
+            let-i="index"
+          >
+            <tr
+              (contextmenu)="child.onContextMenu($event, route)"
+              class="pointer"
+            >
+              <td nzLeft [(nzExpand)]="route.expand"></td>
+              <td
+                *ngIf="ui.stt.visible"
+                [nzLeft]="ui.stt?.pinned || false"
+                (click)="onDetail(route.id, false)"
+              >
+                {{ i + 1 + (tableRoute.nzPageIndex - 1) * 10 }}
+              </td>
+              <td
+                *ngIf="ui.name.visible"
+                [nzLeft]="ui.name?.pinned || false"
+                (click)="onDetail(route.id, false)"
+              >
+                {{ route?.name || 'Chưa cập nhật' }}
+              </td>
+              <td
+                *ngIf="ui.startedAt.visible"
+                [nzLeft]="ui.startedAt?.pinned || false"
+                (click)="onDetail(route.id, false)"
+              >
+                {{ (route?.startedAt | date: 'dd/MM/yyyy') || 'Chưa cập nhật' }}
+              </td>
+              <td
+                *ngIf="ui.endedAt.visible"
+                [nzLeft]="ui.endedAt?.pinned || false"
+                (click)="onDetail(route.id, false)"
+              >
+                {{ (route?.endedAt | date: 'dd/MM/yyyy') || 'Chưa cập nhật' }}
+              </td>
+              <td
+                *ngIf="ui.driver.visible"
+                [nzLeft]="ui.driver?.pinned || false"
+                (click)="onDetail(route.id, false)"
+              >
+                {{ route?.driver || route?.employee?.lastName }}
+              </td>
+              <!--            <td *ngIf="ui.customer.visible" [nzLeft]='ui.customer?.pinned||false'-->
+              <!--                (click)='onDetail(route.id, false)'>-->
+              <!--              <div class=' d-flex align-items-center justify-content-center pointer ' [ngClass]='{-->
+              <!--              "border-top": route.orders.length > 1 && index  !== 0-->
+              <!--              }' *ngFor='let order of route.orders; let index = index'>-->
+              <!--                {{order.customer.lastName}}-->
+              <!--              </div>-->
+              <!--            </td>-->
+              <td
+                *ngIf="ui.bsx.visible"
+                [nzLeft]="ui.bsx?.pinned || false"
+                (click)="onDetail(route.id, false)"
+              >
+                {{ route?.bsx || 'Chưa cập nhật' }}
+              </td>
+              <td
+                *ngIf="ui.garage.visible"
+                [nzLeft]="ui.garage?.pinned || false"
+                (click)="onDetail(route.id, false)"
+              >
+                {{ route?.garage || 'Chưa cập nhật' }}
+              </td>
+              <td
+                *ngIf="ui.status.visible"
+                [nzLeft]="ui.status?.pinned || false"
+                (click)="onDetail(route.id, false)"
+              >
+                {{
+                  !route.endedAt
+                    ? 'Đang chạy'
+                    : compareDay(route.endedAt)
+                    ? (route.endedAt | date: 'dd-MM-yyyy')
+                    : 'Hoàn thành'
+                }}
+              </td>
+            </tr>
+            <tr [nzExpand]="route.expand">
+              <nz-table
+                #innerTable
+                [nzData]="route.orders"
+                nzSize="small"
+                [nzShowPagination]="false"
+              >
+                <thead>
+                  <tr>
+                    <th class="text-center">Tên khách hàng</th>
+                    <th class="text-center">Ngày tạo</th>
+                    <th class="text-center">Điểm đến</th>
+                    <th class="text-center">Tiền hàng</th>
+                    <th class="text-center">Tổng hàng hoá</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let order of innerTable.data">
+                    <td>{{ order.customer.lastName }}</td>
+                    <td>{{ order.createdAt | date: 'dd-MM-yyyy' }}</td>
+                    <td>
+                      {{ order?.province?.name }} -
+                      {{ order?.district?.name }} - {{ order?.ward?.name }}
+                    </td>
+                    <td>{{ order?.commodityTotal | number: '1.0-0' }} đ</td>
+                    <td>{{ order?.totalCommodity | number: '1.0-0' }}</td>
+                  </tr>
+                </tbody>
+              </nz-table>
+            </tr>
+          </ng-template>
         </tbody>
-      </nz-table>
-      </tr>
-      </ng-template>
-      </tbody>
       </nz-table>
     </div>
   </div>
@@ -184,10 +300,10 @@
 
 <app-mouse-right
   #child
-  [items]='[ItemContextMenu.ENDED_AT]'
-  (onAdd)='onAdd()'
-  (onDel)='onRemove($event)'
-  (onUpdate)='onDetail($event.id, true)'
-  (onEnd)='onEnd($event)'
+  [items]="[ItemContextMenu.ENDED_AT]"
+  (onAdd)="onAdd()"
+  (onDel)="onRemove($event)"
+  (onUpdate)="onDetail($event.id, true)"
+  (onEnd)="onEnd($event)"
 >
 </app-mouse-right>

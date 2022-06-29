@@ -1,26 +1,27 @@
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {Api} from '@minhdu-fontend/constants';
-import {Injectable} from '@angular/core';
-import {BaseService} from '@minhdu-fontend/service';
-import {DepartmentEntity} from "@minhdu-fontend/orgchart-v2";
-import {AddDepartmentDto, LoadOneDepartmentDto, UpdateDepartmentDto} from "../dto";
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Api } from '@minhdu-fontend/constants';
+import { Injectable } from '@angular/core';
+import { BaseService } from '@minhdu-fontend/service';
+import { DepartmentEntity } from '@minhdu-fontend/orgchart-v2';
+import {
+  AddDepartmentDto,
+  LoadOneDepartmentDto,
+  UpdateDepartmentDto,
+} from '../dto';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class DepartmentService extends BaseService<DepartmentEntity> {
-  constructor(
-    public readonly http: HttpClient
-  ) {
+  constructor(public readonly http: HttpClient) {
     super(Api.HR.EMPLOYEE.CATEGORY, http);
   }
 
-
   addOne(props: AddDepartmentDto): Observable<DepartmentEntity> {
-    return super.addOne(props.body)
+    return super.addOne(props.body);
   }
 
   update(props: UpdateDepartmentDto): Observable<DepartmentEntity> {
-    return super.update(props.id, props.updates)
+    return super.update(props.id, props.updates);
   }
 
   getAll(params?: any): Observable<DepartmentEntity[]> {
@@ -36,6 +37,6 @@ export class DepartmentService extends BaseService<DepartmentEntity> {
   }
 
   removeEmployee(id: number, body: any): Observable<any> {
-    return this.http.patch<any>(this.url + `/${id}/employee`, body)
+    return this.http.patch<any>(this.url + `/${id}/employee`, body);
   }
 }

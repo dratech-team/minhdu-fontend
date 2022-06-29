@@ -1,11 +1,11 @@
-import {Component, EventEmitter, Inject, Output} from '@angular/core';
-import {UntypedFormBuilder, UntypedFormGroup} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {Store} from "@ngrx/store";
-import {DatePipe} from "@angular/common";
+import { Component, EventEmitter, Inject, Output } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
+import { DatePipe } from '@angular/common';
 
 @Component({
-  templateUrl:'dialog-datapicker.html'
+  templateUrl: 'dialog-datapicker.html',
 })
 export class DialogDatePickerComponent {
   formGroup!: UntypedFormGroup;
@@ -16,16 +16,17 @@ export class DialogDatePickerComponent {
     private readonly formBuilder: UntypedFormBuilder,
     private readonly store: Store,
     private readonly datePipe: DatePipe,
-    private readonly dialogRef: MatDialogRef<DialogDatePickerComponent>,
-  ) {
-  }
+    private readonly dialogRef: MatDialogRef<DialogDatePickerComponent>
+  ) {}
 
   ngOnInit() {
     this.formGroup = this.formBuilder.group({
       day: [
         this.datePipe.transform(
-          this.data?.dayInit? this.data.dayInit : new Date(), 'yyyy-MM-dd'),
-      ]
+          this.data?.dayInit ? this.data.dayInit : new Date(),
+          'yyyy-MM-dd'
+        ),
+      ],
     });
   }
 
@@ -38,6 +39,6 @@ export class DialogDatePickerComponent {
     if (this.formGroup.invalid) {
       return;
     }
-    this.dialogRef.close({day: this.formGroup.value.day});
+    this.dialogRef.close({ day: this.formGroup.value.day });
   }
 }

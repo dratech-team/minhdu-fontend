@@ -1,27 +1,29 @@
-import {Injectable} from '@angular/core';
-import {BaseService} from '@minhdu-fontend/service';
-import {HttpClient} from '@angular/common/http';
-import {Api} from '@minhdu-fontend/constants';
-import {Observable} from 'rxjs';
-import {Update} from '@ngrx/entity';
-import {ResponsePaginate} from '@minhdu-fontend/data-models';
-import {AddOrderDto, SearchOrderDto, UpdateOrderDto} from '../dto';
-import {CommodityUniq} from '../../commodity/entities';
-import {OrderEntity} from "../enitities/order.entity";
+import { Injectable } from '@angular/core';
+import { BaseService } from '@minhdu-fontend/service';
+import { HttpClient } from '@angular/common/http';
+import { Api } from '@minhdu-fontend/constants';
+import { Observable } from 'rxjs';
+import { Update } from '@ngrx/entity';
+import { ResponsePaginate } from '@minhdu-fontend/data-models';
+import { AddOrderDto, SearchOrderDto, UpdateOrderDto } from '../dto';
+import { CommodityUniq } from '../../commodity/entities';
+import { OrderEntity } from '../enitities/order.entity';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class OrderService extends BaseService<OrderEntity> {
-  constructor(
-    public readonly http: HttpClient
-  ) {
+  constructor(public readonly http: HttpClient) {
     super(Api.SELL.ORDER.ORDER, http);
   }
 
   addOne(props: AddOrderDto): Observable<OrderEntity> {
-    return super.addOne(props.body)
+    return super.addOne(props.body);
   }
 
-  pagination(params?: SearchOrderDto): Observable<ResponsePaginate<OrderEntity> & { commodityUniq: CommodityUniq[] }> {
+  pagination(
+    params?: SearchOrderDto
+  ): Observable<
+    ResponsePaginate<OrderEntity> & { commodityUniq: CommodityUniq[] }
+  > {
     return super.pagination(params);
   }
 

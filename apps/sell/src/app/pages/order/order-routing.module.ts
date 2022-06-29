@@ -5,7 +5,6 @@ import { DetailOrderComponent } from './container';
 import { AddOrderComponent } from './container';
 import { PaymentHistoryComponent } from './container';
 
-
 const routes: Routes = [
   {
     path: '',
@@ -23,11 +22,9 @@ const routes: Routes = [
     path: 'lich-su-thanh-toan',
     component: PaymentHistoryComponent,
   },
-]
+];
 @NgModule({
-  imports:[RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-export class OrderRoutingModule {
-
-}
+export class OrderRoutingModule {}

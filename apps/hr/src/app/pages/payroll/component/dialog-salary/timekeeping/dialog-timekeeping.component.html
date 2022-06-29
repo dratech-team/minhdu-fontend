@@ -1,150 +1,266 @@
-<div class='main-popup'>
-  <div mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='../../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+<div class="main-popup">
+  <div mat-dialog-close class="close-popup">
+    <span class="mr-1"> close</span>
+    <div class="x-popup">
+      <img src="../../../../../../assets/img/share/x2-lg.svg" alt="cancel" />
     </div>
   </div>
-  <mat-dialog-content class='mat-typography'>
-    <form [formGroup]='formGroup'>
-      <mat-tab-group #tabGroup [(selectedIndex)]='tabIndex' dynamicHeight>
-        <mat-tab label='Khấu trừ'>
-          <form [formGroup]='formGroup' class="px-2 pt-2" style="max-height: 40vh; overflow-y: scroll">
-            <div class='mb-2'>
-              <span class="font-weight-bold">Khoảng khấu trừ </span><span class='star'>*</span>
-              <nz-select class="mt-1" style="width: 100%" formControlName="template"
-                         [compareWith]="compareFN"
+  <mat-dialog-content class="mat-typography">
+    <form [formGroup]="formGroup">
+      <mat-tab-group #tabGroup [(selectedIndex)]="tabIndex" dynamicHeight>
+        <mat-tab label="Khấu trừ">
+          <form
+            [formGroup]="formGroup"
+            class="px-2 pt-2"
+            style="max-height: 40vh; overflow-y: scroll"
+          >
+            <div class="mb-2">
+              <span class="font-weight-bold">Khoảng khấu trừ </span
+              ><span class="star">*</span>
+              <nz-select
+                class="mt-1"
+                style="width: 100%"
+                formControlName="template"
+                [compareWith]="compareFN"
               >
-                <nz-option *ngFor='let item of templateSalary$|async'
-                           [nzValue]="item" [nzLabel]="item.title"></nz-option>
+                <nz-option
+                  *ngFor="let item of templateSalary$ | async"
+                  [nzValue]="item"
+                  [nzLabel]="item.title"
+                ></nz-option>
               </nz-select>
-              <div *ngIf='checkValid.template.errors ' class='invalid-feedback'>
+              <div *ngIf="checkValid.template.errors" class="invalid-feedback">
                 <div>Chưa chọn loại khấu trừ</div>
               </div>
             </div>
-            <div class='mb-3' *ngIf="formGroup.value?.template?.id === 0 else absentTemplate">
-              <span class='font-weight-bold'>Tiêu đề</span><span class='star'>*</span>
-              <input class="mt-1" nz-input formControlName="title">
-            </div>  <div class='mb-3'>
-            <span class='font-weight-bold'>Đơn vị</span><span class='star'>*</span>
-            <nz-select formControlName="unit" style="width: 100%"  nzDisabled >
-              <nz-option *ngFor="let item of unitConstant" [nzValue]="item.value" [nzLabel]="item.name"></nz-option>
-            </nz-select>
-          </div>
+            <div
+              class="mb-3"
+              *ngIf="formGroup.value?.template?.id === 0; else absentTemplate"
+            >
+              <span class="font-weight-bold">Tiêu đề</span
+              ><span class="star">*</span>
+              <input class="mt-1" nz-input formControlName="title" />
+            </div>
+            <div class="mb-3">
+              <span class="font-weight-bold">Đơn vị</span
+              ><span class="star">*</span>
+              <nz-select formControlName="unit" style="width: 100%" nzDisabled>
+                <nz-option
+                  *ngFor="let item of unitConstant"
+                  [nzValue]="item.value"
+                  [nzLabel]="item.name"
+                ></nz-option>
+              </nz-select>
+            </div>
             <ng-template #absentTemplate>
-              <div class='mb-3'>
-                <span class='font-weight-bold'>Buổi</span><span class='star'>*</span>
-                <nz-select class="mt-1" style="width: 100%" formControlName='partialDay'>
-                  <nz-option *ngFor='let item of titleSession' [nzValue]='item' [nzLabel]="item.name"></nz-option>
+              <div class="mb-3">
+                <span class="font-weight-bold">Buổi</span
+                ><span class="star">*</span>
+                <nz-select
+                  class="mt-1"
+                  style="width: 100%"
+                  formControlName="partialDay"
+                >
+                  <nz-option
+                    *ngFor="let item of titleSession"
+                    [nzValue]="item"
+                    [nzLabel]="item.name"
+                  ></nz-option>
                 </nz-select>
-                <div *ngIf='checkValid.partialDay.errors ' class='invalid-feedback'>
+                <div
+                  *ngIf="checkValid.partialDay.errors"
+                  class="invalid-feedback"
+                >
                   <div>Chưa chọn buổi khấu trừ</div>
                 </div>
               </div>
-              <div class='mb-3 row'>
+              <div class="mb-3 row">
                 <div class="col d-flex flex-column">
-                  <div class="font-weight-bold">Từ ngày đến ngày <span class="star">*</span></div>
-                  <nz-range-picker class="mt-1" formControlName="rangeDay"></nz-range-picker>
-                  <div *ngIf='checkValid.rangeDay.errors ' class='invalid-feedback'>
+                  <div class="font-weight-bold">
+                    Từ ngày đến ngày <span class="star">*</span>
+                  </div>
+                  <nz-range-picker
+                    class="mt-1"
+                    formControlName="rangeDay"
+                  ></nz-range-picker>
+                  <div
+                    *ngIf="checkValid.rangeDay.errors"
+                    class="invalid-feedback"
+                  >
                     <div>Chưa chọn từ ngày đến ngày</div>
                   </div>
                 </div>
                 <div class="col d-flex">
                   <div class="col">
-                    <span class="font-weight-bold">Từ giờ</span><span class="star">*</span>
+                    <span class="font-weight-bold">Từ giờ</span
+                    ><span class="star">*</span>
                     <nz-time-picker
                       class="mt-1"
-                      [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.CUSTOM"
+                      [nzDisabled]="
+                        formGroup.value.partialDay?.value !==
+                        partialDayEnum.CUSTOM
+                      "
                       formControlName="startTime"
                       nzFormat="HH:mm"
                       [nzDisabledHours]="disabledHoursStart"
                     ></nz-time-picker>
-                    <div *ngIf='checkValid.startTime.errors ' class='invalid-feedback'>
+                    <div
+                      *ngIf="checkValid.startTime.errors"
+                      class="invalid-feedback"
+                    >
                       <div>Chưa chọn từ giờ</div>
                     </div>
                   </div>
                   <div class="col">
-                    <span class="font-weight-bold">Đến giờ</span><span class="star">*</span>
+                    <span class="font-weight-bold">Đến giờ</span
+                    ><span class="star">*</span>
                     <nz-time-picker
                       class="mt-1"
-                      [nzDisabled]="formGroup.value.partialDay?.value !== partialDayEnum.CUSTOM"
+                      [nzDisabled]="
+                        formGroup.value.partialDay?.value !==
+                        partialDayEnum.CUSTOM
+                      "
                       formControlName="endTime"
                       nzFormat="HH:mm"
                       [nzDisabledHours]="disabledHoursEnd"
                     ></nz-time-picker>
-                    <div *ngIf='checkValid.endTime.errors ' class='invalid-feedback'>
+                    <div
+                      *ngIf="checkValid.endTime.errors"
+                      class="invalid-feedback"
+                    >
                       <div>Chưa chọn đến giờ</div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class='mb-3'>
-                <span class='font-weight-bold'>Hệ số</span><span class="star">*</span>
-                <div class="form-control mt-1" style="background: #dddddd">{{formGroup.value.rate}}</div>
-              </div>
-              <div class='mb-3 d-flex flex-column'>
-                <div>
-                  <span class='font-weight-bold'>Khấu trừ theo</span><span class="star">*</span>
+              <div class="mb-3">
+                <span class="font-weight-bold">Hệ số</span
+                ><span class="star">*</span>
+                <div class="form-control mt-1" style="background: #dddddd">
+                  {{ formGroup.value.rate }}
                 </div>
-                <nz-radio-group nzDisabled="{{true}}" formControlName="reference">
-                  <label nz-radio [nzValue]="item.value" *ngFor="let item of references">{{item.name}}</label>
+              </div>
+              <div class="mb-3 d-flex flex-column">
+                <div>
+                  <span class="font-weight-bold">Khấu trừ theo</span
+                  ><span class="star">*</span>
+                </div>
+                <nz-radio-group
+                  nzDisabled="{{ true }}"
+                  formControlName="reference"
+                >
+                  <label
+                    nz-radio
+                    [nzValue]="item.value"
+                    *ngFor="let item of references"
+                    >{{ item.name }}</label
+                  >
                 </nz-radio-group>
               </div>
-              <div class='mb-3'>
-                <span class='font-weight-bold'>Ràng buộc ngày lễ:</span>
-                <label nz-checkbox nzDisabled="true"  class="ml-2" formControlName="constraintHoliday"></label>
+              <div class="mb-3">
+                <span class="font-weight-bold">Ràng buộc ngày lễ:</span>
+                <label
+                  nz-checkbox
+                  nzDisabled="true"
+                  class="ml-2"
+                  formControlName="constraintHoliday"
+                ></label>
               </div>
-              <div class='mb-3'>
-                <span class='font-weight-bold'>Ràng buộc theo tăng ca:</span>
-                <label nz-checkbox nzDisabled="true" class="ml-2" formControlName="constraintOvertime"></label>
+              <div class="mb-3">
+                <span class="font-weight-bold">Ràng buộc theo tăng ca:</span>
+                <label
+                  nz-checkbox
+                  nzDisabled="true"
+                  class="ml-2"
+                  formControlName="constraintOvertime"
+                ></label>
               </div>
             </ng-template>
-            <div class='mb-3'>
-              <span class='font-weight-bold'>Đơn giá</span>
-              <span *ngIf="formGroup.value?.template?.id === 0" class="star">*</span>
-              <input *ngIf="formGroup.value?.template?.id === 0 else price" nz-input
-                     type="text" formControlName='price'
-                     currencyMask
-                     [options]="{ suffix: ' đ' }">
+            <div class="mb-3">
+              <span class="font-weight-bold">Đơn giá</span>
+              <span *ngIf="formGroup.value?.template?.id === 0" class="star"
+                >*</span
+              >
+              <input
+                *ngIf="formGroup.value?.template?.id === 0; else price"
+                nz-input
+                type="text"
+                formControlName="price"
+                currencyMask
+                [options]="{ suffix: ' đ' }"
+              />
               <ng-template #price>
-                <div *ngIf="formGroup.value?.template" class="form-control" style="background: #dddddd">{{
-                  (((formGroup.value.template?.price|number:'1.0-0')) || tranFormType(formGroup.value.template?.types))
-                  + ' / ' +
-                  (formGroup.value.template?.workday || 'Ngày công chuẩn')
-                  }} </div>
+                <div
+                  *ngIf="formGroup.value?.template"
+                  class="form-control"
+                  style="background: #dddddd"
+                >
+                  {{
+                    ((formGroup.value.template?.price | number: '1.0-0') ||
+                      tranFormType(formGroup.value.template?.types)) +
+                      ' / ' +
+                      (formGroup.value.template?.workday || 'Ngày công chuẩn')
+                  }}
+                </div>
               </ng-template>
             </div>
-            <div class='mb-3'>
-              <span class='font-weight-bold'>Chú thích</span>
-              <input nz-input placeholder='Nhập chú thích ' formControlName='note'>
+            <div class="mb-3">
+              <span class="font-weight-bold">Chú thích</span>
+              <input
+                nz-input
+                placeholder="Nhập chú thích "
+                formControlName="note"
+              />
             </div>
           </form>
-          <button class='btn btn-primary' (click)='nextTab(tabGroup)'>Tiếp theo</button>
-        </mat-tab>
-        <mat-tab [disabled]='!formGroup.get("rangeDay")?.value' class='col-12 ' label='Chọn nhân viên'>
-          <app-pick-payroll [payrollsSelected]="payrollSelected"
-                            [createdAt]='formGroup.get("rangeDay")?.value[0]'
-                            (EventSelectPayroll)="pickPayroll($event)"
-          >
-
-          </app-pick-payroll>
-          <div class='mt-2'>
-            <button class='btn btn-primary mr-2' (click)='previousTab(tabGroup)'>Trở lại</button>
-            <button class='btn btn-primary' (click)='nextTab(tabGroup)'>Tiếp theo</button>
-          </div>
+          <button class="btn btn-primary" (click)="nextTab(tabGroup)">
+            Tiếp theo
+          </button>
         </mat-tab>
         <mat-tab
-          label='Nhân viên đã chọn ({{this.payrollSelected.length}})'>
+          [disabled]="!formGroup.get('rangeDay')?.value"
+          class="col-12"
+          label="Chọn nhân viên"
+        >
+          <app-pick-payroll
+            [payrollsSelected]="payrollSelected"
+            [createdAt]="formGroup.get('rangeDay')?.value[0]"
+            (EventSelectPayroll)="pickPayroll($event)"
+          >
+          </app-pick-payroll>
+          <div class="mt-2">
+            <button
+              class="btn btn-primary mr-2"
+              (click)="previousTab(tabGroup)"
+            >
+              Trở lại
+            </button>
+            <button class="btn btn-primary" (click)="nextTab(tabGroup)">
+              Tiếp theo
+            </button>
+          </div>
+        </mat-tab>
+        <mat-tab label="Nhân viên đã chọn ({{ this.payrollSelected.length }})">
           <app-table-payroll-selected
             [payrolls]="payrollSelected"
             (EventSelectPayroll)="pickPayroll($event)"
           >
-
           </app-table-payroll-selected>
-          <div class='row  mt-2 ml-2'>
-            <button class='btn btn-primary mr-2' (click)='previousTab(tabGroup)'>Trở lại</button>
-            <button class='btn btn-ok ' (click)='onSubmit()'>Lưu</button>
-            <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
+          <div class="row mt-2 ml-2">
+            <button
+              class="btn btn-primary mr-2"
+              (click)="previousTab(tabGroup)"
+            >
+              Trở lại
+            </button>
+            <button class="btn btn-ok" (click)="onSubmit()">Lưu</button>
+            <button
+              type="button"
+              class="btn award"
+              data-toggle="tooltip"
+              data-placement="left"
+              title="xóa"
+            >
               ?
             </button>
           </div>
@@ -153,4 +269,4 @@
     </form>
   </mat-dialog-content>
 </div>
-<mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
+<mat-spinner *ngIf="adding$ | async" class="loading"></mat-spinner>

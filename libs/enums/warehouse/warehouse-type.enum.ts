@@ -1,4 +1,4 @@
-export enum WarehouseTypeEnum{
+export enum WarehouseTypeEnum {
   MEDICINE = 'MEDICINE',
   MATERIAL = 'MATERIAL',
   MAIN_WAREHOUSE = 'MAIN_WAREHOUSE',

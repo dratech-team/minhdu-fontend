@@ -1,12 +1,12 @@
-import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
-import {Injectable} from '@angular/core';
-import {StorageName} from '@minhdu-fontend/constants';
-import {PaymentEntity} from "../entities/payment.entity";
-import {SearchPaymentDto} from "../dto/search-payment.dto";
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { Injectable } from '@angular/core';
+import { StorageName } from '@minhdu-fontend/constants';
+import { PaymentEntity } from '../entities/payment.entity';
+import { SearchPaymentDto } from '../dto/search-payment.dto';
 
 export interface PaymentState extends EntityState<PaymentEntity> {
   loading?: boolean;
-  total: number
+  total: number;
   search?: Partial<SearchPaymentDto>;
 }
 
@@ -16,8 +16,8 @@ function createInitState(): PaymentState {
   };
 }
 
-@Injectable({providedIn: 'root'})
-@StoreConfig({name: StorageName.PAYMENT})
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: StorageName.PAYMENT })
 export class PaymentStore extends EntityStore<PaymentState> {
   constructor() {
     super(createInitState());

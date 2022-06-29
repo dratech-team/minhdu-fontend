@@ -1,274 +1,420 @@
-<div class='main-popup'>
-  <form [formGroup]='formGroup' style='max-height: 45vh; overflow-y: scroll'>
-    <div class='m-4'>
-      <div class=' main-popup mt-2'>
-        <div><span class='font-weight-bold'>Khối lương</span><span class='star'>*</span></div>
-        <nz-select formControlName='block' style='width: 100%' [compareWith]='compareFN'>
-          <nz-option *ngFor='let item of blockSalary' [nzValue]='item' [nzLabel]='item.title'></nz-option>
+<div class="main-popup">
+  <form [formGroup]="formGroup" style="max-height: 45vh; overflow-y: scroll">
+    <div class="m-4">
+      <div class="main-popup mt-2">
+        <div>
+          <span class="font-weight-bold">Khối lương</span
+          ><span class="star">*</span>
+        </div>
+        <nz-select
+          formControlName="block"
+          style="width: 100%"
+          [compareWith]="compareFN"
+        >
+          <nz-option
+            *ngFor="let item of blockSalary"
+            [nzValue]="item"
+            [nzLabel]="item.title"
+          ></nz-option>
         </nz-select>
       </div>
-      <div class=' main-popup mt-2'>
-        <div><span class='font-weight-bold'>Tiêu đề</span><span class='star'>*</span></div>
-        <input class='form-control mt-1' type='text' formControlName='title'>
-        <div *ngIf='checkValid.title.errors ' class='invalid-feedback'>
+      <div class="main-popup mt-2">
+        <div>
+          <span class="font-weight-bold">Tiêu đề</span
+          ><span class="star">*</span>
+        </div>
+        <input class="form-control mt-1" type="text" formControlName="title" />
+        <div *ngIf="checkValid.title.errors" class="invalid-feedback">
           <div>Chưa nhập tiêu đề</div>
         </div>
       </div>
-      <div class='mt-2' *ngIf='formGroup.value.block?.insurance?.show'>
-        <span class='font-weight-bold'>Trích bảo hiểm</span>
-        <label class='ml-2' nz-checkbox formControlName='insurance'></label>
+      <div class="mt-2" *ngIf="formGroup.value.block?.insurance?.show">
+        <span class="font-weight-bold">Trích bảo hiểm</span>
+        <label class="ml-2" nz-checkbox formControlName="insurance"></label>
       </div>
-      <div class=' main-popup mt-2' *ngIf="formGroup.value.block?.employeeType?.show">
-        <div><span class='font-weight-bold'>Loại nhân viên</span><span class='star'>*</span></div>
+      <div
+        class="main-popup mt-2"
+        *ngIf="formGroup.value.block?.employeeType?.show"
+      >
+        <div>
+          <span class="font-weight-bold">Loại nhân viên</span
+          ><span class="star">*</span>
+        </div>
         <div>
           <nz-select style="width: 100%" formControlName="employeeType">
-            <nz-option *ngFor="let item of employeeConstant" [nzValue]="item.value" [nzLabel]="item.name">
+            <nz-option
+              *ngFor="let item of employeeConstant"
+              [nzValue]="item.value"
+              [nzLabel]="item.name"
+            >
             </nz-option>
           </nz-select>
         </div>
-        <div *ngIf='checkValid.employeeType.errors ' class='invalid-feedback'>
+        <div *ngIf="checkValid.employeeType.errors" class="invalid-feedback">
           <div>Chưa chọn loại nhân viên</div>
         </div>
       </div>
       <div class="mt-2" *ngIf="formGroup.value.block?.branch?.show">
         <div class="font-weight-bold">Đơn vị</div>
-        <nz-select style="width: 100%"
-                   [nzLoading]="(loadingBranch$ | async)"
-                   [compareWith]="compareFNId"
-                   [nzDisabled]="formGroup.value.block.branch?.disabled"
-                   [nzMaxTagCount]="3"
-                   [nzMaxTagPlaceholder]="tagPlaceHolderBranch"
-                   nzMode="multiple"
-                   nzPlaceHolder="Chọn đơn vị"
-                   formControlName="branches"
+        <nz-select
+          style="width: 100%"
+          [nzLoading]="loadingBranch$ | async"
+          [compareWith]="compareFNId"
+          [nzDisabled]="formGroup.value.block.branch?.disabled"
+          [nzMaxTagCount]="3"
+          [nzMaxTagPlaceholder]="tagPlaceHolderBranch"
+          nzMode="multiple"
+          nzPlaceHolder="Chọn đơn vị"
+          formControlName="branches"
         >
-          <nz-option *ngFor="let item of branches$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
+          <nz-option
+            *ngFor="let item of branches$ | async"
+            [nzLabel]="item.name"
+            [nzValue]="item"
+          ></nz-option>
         </nz-select>
-        <ng-template #tagPlaceHolderBranch let-positionSelected>và {{ positionSelected.length }} đã chọn
+        <ng-template #tagPlaceHolderBranch let-positionSelected
+          >và {{ positionSelected.length }} đã chọn
         </ng-template>
       </div>
       <div class="mt-2" *ngIf="formGroup.value.block?.position?.show">
-        <div class='font-weight-bold'>Chức vụ</div>
-        <nz-select style="width: 100%"
-                   [nzLoading]="(loadingPosition$ | async)"
-                   [compareWith]="compareFNId"
-                   [nzDisabled]="formGroup.value.block.position?.disabled"
-                   [nzMaxTagCount]="3"
-                   [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
-                   nzMode="multiple"
-                   nzPlaceHolder="Chọn chức vụ"
-                   formControlName="positions"
+        <div class="font-weight-bold">Chức vụ</div>
+        <nz-select
+          style="width: 100%"
+          [nzLoading]="loadingPosition$ | async"
+          [compareWith]="compareFNId"
+          [nzDisabled]="formGroup.value.block.position?.disabled"
+          [nzMaxTagCount]="3"
+          [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
+          nzMode="multiple"
+          nzPlaceHolder="Chọn chức vụ"
+          formControlName="positions"
         >
-          <nz-option *ngFor="let item of positions$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
+          <nz-option
+            *ngFor="let item of positions$ | async"
+            [nzLabel]="item.name"
+            [nzValue]="item"
+          ></nz-option>
         </nz-select>
-        <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn
+        <ng-template #tagPlaceHolderPosition let-positionSelected
+          >và {{ positionSelected.length }} đã chọn
         </ng-template>
       </div>
-      <div class='d-flex mt-2' *ngIf='formGroup.value?.block?.rate'>
+      <div class="d-flex mt-2" *ngIf="formGroup.value?.block?.rate">
         <div>
           <div class="d-flex row">
             <div class="col">
-              <div><span class='font-weight-bold'>Hệ số</span><span class='star'>*</span></div>
+              <div>
+                <span class="font-weight-bold">Hệ số</span
+                ><span class="star">*</span>
+              </div>
               <input
-                nz-input type='number'
-                formControlName='rate'
+                nz-input
+                type="number"
+                formControlName="rate"
                 [ngStyle]="{
-                 'pointer-events':formGroup.value.block.rate.disabled ? 'none': 'auto',
-                 'background':formGroup.value.block.rate.disabled ? '#dddddd':'white'
-                  }"
-              >
+                  'pointer-events': formGroup.value.block.rate.disabled
+                    ? 'none'
+                    : 'auto',
+                  background: formGroup.value.block.rate.disabled
+                    ? '#dddddd'
+                    : 'white'
+                }"
+              />
             </div>
-            <div *ngIf="formGroup.value.block?.hasConstraints?.show" class="col-7 mt-3 mr-2 align-items-center">
-              <div
-                (click)="selectRateCondition()"
-                class="font-weight-bold">Áp dụng điều kiện :
+            <div
+              *ngIf="formGroup.value.block?.hasConstraints?.show"
+              class="col-7 mt-3 mr-2 align-items-center"
+            >
+              <div (click)="selectRateCondition()" class="font-weight-bold">
+                Áp dụng điều kiện :
                 <label
                   style="pointer-events: none"
-                  class=" ml-2"
+                  class="ml-2"
                   nz-checkbox
                   [nzChecked]="!!formGroup.value.rateConditionId"
-                  ></label>
+                ></label>
               </div>
             </div>
           </div>
-          <div *ngIf='checkValid.rate.errors?.required ' class='invalid-feedback ml-2'>
+          <div
+            *ngIf="checkValid.rate.errors?.required"
+            class="invalid-feedback ml-2"
+          >
             <div>Chưa nhập hệ số</div>
           </div>
-
         </div>
       </div>
-      <div class='mt-2' *ngIf='formGroup.value?.block?.datetime?.show'>
+      <div class="mt-2" *ngIf="formGroup.value?.block?.datetime?.show">
         <div>
-          <span>Chọn {{formGroup.value.block.datetime.type|transformNzDateMode:'name'}}</span>
+          <span
+            >Chọn
+            {{
+              formGroup.value.block.datetime.type | transformNzDateMode: 'name'
+            }}</span
+          >
           <span class="star">*</span>
         </div>
         <div>
           <nz-date-picker
-            [nzFormat]="formGroup.value.block.datetime.type|transformNzDateMode:'format'"
-            [nzMode]="formGroup.value.block.datetime.type">
+            [nzFormat]="
+              formGroup.value.block.datetime.type
+                | transformNzDateMode: 'format'
+            "
+            [nzMode]="formGroup.value.block.datetime.type"
+          >
           </nz-date-picker>
         </div>
-        <div *ngIf='checkValid.datetime.errors?.required ' class='invalid-feedback'>
+        <div
+          *ngIf="checkValid.datetime.errors?.required"
+          class="invalid-feedback"
+        >
           <div>Chưa chọn ngày</div>
         </div>
       </div>
-      <div class='mt-2' *ngIf='formGroup.value?.block?.rangeDay?.show'>
+      <div class="mt-2" *ngIf="formGroup.value?.block?.rangeDay?.show">
         <div>
-          <span>Chọn từ ngày đến ngày
-          </span>
+          <span>Chọn từ ngày đến ngày </span>
           <span class="star">*</span>
         </div>
         <div>
           <nz-range-picker
             [nzMode]="formGroup.value.block.rangeDay.type"
             nzFormat="dd-MM-yyyy"
-            formControlName="rangeDay">
+            formControlName="rangeDay"
+          >
           </nz-range-picker>
         </div>
-        <div *ngIf='checkValid.rangeDay.errors?.required ' class='invalid-feedback'>
+        <div
+          *ngIf="checkValid.rangeDay.errors?.required"
+          class="invalid-feedback"
+        >
           <div>Chưa chọn ngày</div>
         </div>
       </div>
-      <div class=' main-popup mt-2' *ngIf='formGroup.value?.block?.unit'>
-        <div><span class='font-weight-bold'>Đơn vị thời gian</span><span class='star'>*</span></div>
-        <nz-select style="width: 100%" formControlName="unit" [nzDisabled]="formGroup.value.block.unit.disabled">
-          <nz-option *ngFor="let item of formGroup.value.block.unit.units"
-                     [nzValue]="item.value"
-                     [nzLabel]="item.name"></nz-option>
+      <div class="main-popup mt-2" *ngIf="formGroup.value?.block?.unit">
+        <div>
+          <span class="font-weight-bold">Đơn vị thời gian</span
+          ><span class="star">*</span>
+        </div>
+        <nz-select
+          style="width: 100%"
+          formControlName="unit"
+          [nzDisabled]="formGroup.value.block.unit.disabled"
+        >
+          <nz-option
+            *ngFor="let item of formGroup.value.block.unit.units"
+            [nzValue]="item.value"
+            [nzLabel]="item.name"
+          ></nz-option>
         </nz-select>
-        <div *ngIf='checkValid.unit.errors?.required ' class='invalid-feedback'>
+        <div *ngIf="checkValid.unit.errors?.required" class="invalid-feedback">
           <div>Chưa chọn đơn vị</div>
         </div>
       </div>
-      <div class='d-flex mt-2' *ngIf='formGroup.value.block?.constraintHoliday?.show'>
-        <div><span class='font-weight-bold'>Ràng buộc ngày lễ:</span></div>
+      <div
+        class="d-flex mt-2"
+        *ngIf="formGroup.value.block?.constraintHoliday?.show"
+      >
+        <div><span class="font-weight-bold">Ràng buộc ngày lễ:</span></div>
         <label
           nz-checkbox
-          class='ml-2'
-          formControlName='constraintHoliday'
-          [nzDisabled]='formGroup.value.block.constraintHoliday.disabled'
+          class="ml-2"
+          formControlName="constraintHoliday"
+          [nzDisabled]="formGroup.value.block.constraintHoliday.disabled"
         >
         </label>
       </div>
-      <div class='d-flex mt-2' *ngIf='formGroup.value.block?.constraintOvertime?.show'>
-        <div><span class='font-weight-bold'>Ràng buộc tăng ca:</span></div>
+      <div
+        class="d-flex mt-2"
+        *ngIf="formGroup.value.block?.constraintOvertime?.show"
+      >
+        <div><span class="font-weight-bold">Ràng buộc tăng ca:</span></div>
         <label
           nz-checkbox
-          class='ml-2'
-          formControlName='constraintOvertime'
-          [nzDisabled]='formGroup.value.block.constraintOvertime?.disabled'
+          class="ml-2"
+          formControlName="constraintOvertime"
+          [nzDisabled]="formGroup.value.block.constraintOvertime?.disabled"
         >
         </label>
       </div>
-      <div class='mt-2' *ngIf='formGroup.value?.block?.price?.show
-       && !formGroup.value.block.recipesConstant'>
+      <div
+        class="mt-2"
+        *ngIf="
+          formGroup.value?.block?.price?.show &&
+          !formGroup.value.block.recipesConstant
+        "
+      >
         <span class="font-weight-bold">Đơn giá</span>
         <div class="d-flex justify-content-center align-items-center">
-          <nz-input-group [nzSuffix]="suffixTemplateInfo" [nzPrefix]="prefixTemplateUser">
+          <nz-input-group
+            [nzSuffix]="suffixTemplateInfo"
+            [nzPrefix]="prefixTemplateUser"
+          >
             <input
               currencyMask
               [options]="{ suffix: ' đ' }"
-              nz-input type='text' placeholder='Đơn giá'
+              nz-input
+              type="text"
+              placeholder="Đơn giá"
               formControlName="prices"
               (keyup.enter)="validatePrices()"
               [ngStyle]="{
-                 'pointer-events':formGroup.value.block.price.disabled ? 'none': 'auto',
-                 'background':formGroup.value.block.price.disabled ? '#dddddd':'white'
-                  }"/>
+                'pointer-events': formGroup.value.block.price.disabled
+                  ? 'none'
+                  : 'auto',
+                background: formGroup.value.block.price.disabled
+                  ? '#dddddd'
+                  : 'white'
+              }"
+            />
           </nz-input-group>
           <ng-template #prefixTemplateUser>
-            <i *ngIf="formGroup.value.insurance"
-               (click)="validatePrices()"
-               nz-icon nzType="plus" nzTheme="outline"></i>
+            <i
+              *ngIf="formGroup.value.insurance"
+              (click)="validatePrices()"
+              nz-icon
+              nzType="plus"
+              nzTheme="outline"
+            ></i>
           </ng-template>
           <ng-template #suffixTemplateInfo>
-            <i *ngIf="formGroup.value.insurance" nz-icon nz-tooltip
-               nzTooltipTitle="Nhấn enter hoặc nút cộng để thêm vào list giá" nzType="info-circle"></i>
+            <i
+              *ngIf="formGroup.value.insurance"
+              nz-icon
+              nz-tooltip
+              nzTooltipTitle="Nhấn enter hoặc nút cộng để thêm vào list giá"
+              nzType="info-circle"
+            ></i>
           </ng-template>
         </div>
-        <div *ngIf="prices.length > 0" class="border p-1 mt-2"
-             style="height: 120px ; overflow-y: scroll">
+        <div
+          *ngIf="prices.length > 0"
+          class="border p-1 mt-2"
+          style="height: 120px; overflow-y: scroll"
+        >
           <mat-chip-list>
             <mat-chip
               *ngFor="let price of prices"
-              (removed)='onRemovePrice(price)'
-              [selectable]='true'
-              [removable]='true'>
-              {{price|number: '1.0-0'}}
-              <button class='btn' matChipRemove *ngIf='true'>
-                <mat-icon style='position: absolute; top:4px ; right: 5px'>x</mat-icon>
+              (removed)="onRemovePrice(price)"
+              [selectable]="true"
+              [removable]="true"
+            >
+              {{ price | number: '1.0-0' }}
+              <button class="btn" matChipRemove *ngIf="true">
+                <mat-icon style="position: absolute; top: 4px; right: 5px"
+                  >x</mat-icon
+                >
               </button>
             </mat-chip>
           </mat-chip-list>
         </div>
       </div>
-      <div *ngIf='formGroup.value.block?.recipesConstant'>
-        <div class='font-weight-bold my-2'>
-          Công thức tính
-        </div>
-        <div class='mt-2'>
+      <div *ngIf="formGroup.value.block?.recipesConstant">
+        <div class="font-weight-bold my-2">Công thức tính</div>
+        <div class="mt-2">
           <div>
-            <span class='font-weight-bold'>Tổng của</span><span class='star'>*</span>
+            <span class="font-weight-bold">Tổng của</span
+            ><span class="star">*</span>
           </div>
-          <nz-radio-group formControlName='totalOf'>
-            <label nz-radio *ngFor='let item of formGroup.value.block?.recipesConstant'
-                   [nzValue]='item'>{{item.name}}</label>
+          <nz-radio-group formControlName="totalOf">
+            <label
+              nz-radio
+              *ngFor="let item of formGroup.value.block?.recipesConstant"
+              [nzValue]="item"
+              >{{ item.name }}</label
+            >
           </nz-radio-group>
         </div>
-        <div class='mt-2' *ngIf='formGroup.value?.block?.price?.show'>
+        <div class="mt-2" *ngIf="formGroup.value?.block?.price?.show">
           <input
-            *ngIf='formGroup.value.totalOf.value === priceType.PRICE '
+            *ngIf="formGroup.value.totalOf.value === priceType.PRICE"
             currencyMask
             [options]="{ suffix: ' đ' }"
-            nz-input type='text' placeholder='Đơn giá'
+            nz-input
+            type="text"
+            placeholder="Đơn giá"
             formControlName="prices"
             [ngStyle]="{
-                 'pointer-events':formGroup.value.block.price.disabled ? 'none': 'auto',
-                 'background':formGroup.value.block.price.disabled ? '#dddddd':'white'
-                  }">
-          <div *ngIf='formGroup.value.totalOf.value === priceType.BLOCK '>
-            <nz-select nzMode='multiple' style='width: 100%' formControlName='salaries'>
-              <nz-option *ngFor='let item of formGroup.value.totalOf.salariesConstant'
-                         [nzValue]='item.value'
-                         [nzLabel]='item.name'
+              'pointer-events': formGroup.value.block.price.disabled
+                ? 'none'
+                : 'auto',
+              background: formGroup.value.block.price.disabled
+                ? '#dddddd'
+                : 'white'
+            }"
+          />
+          <div *ngIf="formGroup.value.totalOf.value === priceType.BLOCK">
+            <nz-select
+              nzMode="multiple"
+              style="width: 100%"
+              formControlName="salaries"
+            >
+              <nz-option
+                *ngFor="let item of formGroup.value.totalOf.salariesConstant"
+                [nzValue]="item.value"
+                [nzLabel]="item.name"
               ></nz-option>
             </nz-select>
           </div>
-          <div *ngIf="prices.length > 0" class="border p-1 mt-2 "
-               style="height: 120px ; overflow-y: scroll">
+          <div
+            *ngIf="prices.length > 0"
+            class="border p-1 mt-2"
+            style="height: 120px; overflow-y: scroll"
+          >
             <mat-chip-list>
               <mat-chip
                 *ngFor="let price of prices"
-                (removed)='onRemovePrice(price)'
-                [selectable]='true'
-                [removable]='true'>
-                {{price|number: '1.0-0'}}
-                <button class='btn' matChipRemove *ngIf='true'>
-                  <mat-icon style='position: absolute; top:4px ; right: 5px'>x</mat-icon>
+                (removed)="onRemovePrice(price)"
+                [selectable]="true"
+                [removable]="true"
+              >
+                {{ price | number: '1.0-0' }}
+                <button class="btn" matChipRemove *ngIf="true">
+                  <mat-icon style="position: absolute; top: 4px; right: 5px"
+                    >x</mat-icon
+                  >
                 </button>
               </mat-chip>
             </mat-chip-list>
           </div>
         </div>
-        <div class='mt-2'
-             *ngIf='formGroup.value?.totalOf?.diveFor'>
-          <div><span class='font-weight-bold'>Chia cho</span><span class='star'>*</span></div>
-          <div class='d-flex'>
-            <nz-radio-group formControlName='diveFor'>
-              <label *ngFor='let item of formGroup.value.totalOf.diveFor' nz-radio
-                     [nzValue]='item.value'>{{item.name}}</label>
+        <div class="mt-2" *ngIf="formGroup.value?.totalOf?.diveFor">
+          <div>
+            <span class="font-weight-bold">Chia cho</span
+            ><span class="star">*</span>
+          </div>
+          <div class="d-flex">
+            <nz-radio-group formControlName="diveFor">
+              <label
+                *ngFor="let item of formGroup.value.totalOf.diveFor"
+                nz-radio
+                [nzValue]="item.value"
+                >{{ item.name }}</label
+              >
             </nz-radio-group>
-            <input placeholder='Nhập số ngày' style='width: 150px' *ngIf="formGroup.value.diveFor === 'OTHER'"
-                   type='number'
-                   formControlName='workday'
-                   nz-input/>
+            <input
+              placeholder="Nhập số ngày"
+              style="width: 150px"
+              *ngIf="formGroup.value.diveFor === 'OTHER'"
+              type="number"
+              formControlName="workday"
+              nz-input
+            />
           </div>
         </div>
       </div>
     </div>
   </form>
-  <div class='row ml-2 mt-2'>
-    <button nz-button nzType="primary" [nzLoading]="loading$ | async" (click)='onSubmit()' class='ml-2'>Lưu
+  <div class="row ml-2 mt-2">
+    <button
+      nz-button
+      nzType="primary"
+      [nzLoading]="loading$ | async"
+      (click)="onSubmit()"
+      class="ml-2"
+    >
+      Lưu
     </button>
   </div>
 </div>

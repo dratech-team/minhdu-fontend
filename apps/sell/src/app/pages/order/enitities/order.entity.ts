@@ -1,11 +1,11 @@
-import {BaseOrderEntity} from "./base-order.entity";
-import {District, PaymentHistory, Ward} from "@minhdu-fontend/data-models";
-import {PaymentType} from "@minhdu-fontend/enums";
+import { BaseOrderEntity } from './base-order.entity';
+import { District, PaymentHistory, Ward } from '@minhdu-fontend/data-models';
+import { PaymentType } from '@minhdu-fontend/enums';
 
-export interface OrderEntity extends BaseOrderEntity{
+export interface OrderEntity extends BaseOrderEntity {
   hiddenDebt: boolean;
-  totalCommodity: number,
-  expand: boolean,
+  totalCommodity: number;
+  expand: boolean;
   paymentHistories: PaymentHistory[];
   customerId: number;
   explain: string;

@@ -1,15 +1,14 @@
-
-.header{
+.header {
   z-index: 100;
   background: white;
   position: fixed;
-  top:0;
+  top: 0;
   right: 0;
   left: 0;
 }
-.footer{
+.footer {
   position: fixed;
-  bottom:0;
+  bottom: 0;
   right: 0;
   left: 0;
   z-index: 100;
@@ -56,12 +55,18 @@ h2 {
   background-color: rgba(68, 138, 255, 0.04);
 }
 
-.animate-submenu{
+.animate-submenu {
   animation-name: show-sub-menu;
   animation-duration: 0.4s;
 }
 
 @keyframes show-sub-menu {
-  0%   {top: 15px; opacity: 0}
-  100% {top:30px; opacity: 1}
+  0% {
+    top: 15px;
+    opacity: 0;
+  }
+  100% {
+    top: 30px;
+    opacity: 1;
+  }
 }

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { IoiReceiptEntity } from '../entities';
 import { AddIoiReceiptDto, SearchIoiReceiptDto } from '../dto';
-import {UpdateIoiReceiptDto} from "../dto";
+import { UpdateIoiReceiptDto } from '../dto';
 
 @Injectable()
 export class IoiReceiptService extends BaseService<IoiReceiptEntity> {
@@ -18,7 +18,9 @@ export class IoiReceiptService extends BaseService<IoiReceiptEntity> {
     return super.addOne(props.body);
   }
 
-  pagination(params?: SearchIoiReceiptDto): Observable<ResponsePaginate<IoiReceiptEntity>> {
+  pagination(
+    params?: SearchIoiReceiptDto
+  ): Observable<ResponsePaginate<IoiReceiptEntity>> {
     return super.pagination(params);
   }
 
@@ -30,12 +32,11 @@ export class IoiReceiptService extends BaseService<IoiReceiptEntity> {
     return super.getOne(id);
   }
 
-  update(updateDto:UpdateIoiReceiptDto): Observable<IoiReceiptEntity> {
+  update(updateDto: UpdateIoiReceiptDto): Observable<IoiReceiptEntity> {
     return super.update(updateDto.id, updateDto.updates);
   }
 
   delete(id: IoiReceiptEntity['id'], params?: any): Observable<void> {
     return super.delete(id, params);
   }
-
 }

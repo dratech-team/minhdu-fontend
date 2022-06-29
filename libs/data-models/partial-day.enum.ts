@@ -4,5 +4,5 @@ export enum PartialDayEnum {
   NIGHT = 'NIGHT',
   ALL_DAY = 'ALL_DAY',
   MONTH = 'MONTH',
-  CUSTOM = 'CUSTOM'
+  CUSTOM = 'CUSTOM',
 }

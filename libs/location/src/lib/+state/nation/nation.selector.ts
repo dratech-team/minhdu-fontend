@@ -6,22 +6,20 @@ import * as fromNation from './nation.reducer';
 
 export const SelectorNationState = createFeatureSelector<NationState>(
   FeatureName.NATION
-)
-export const getSelectedNationId = (state: Nation) => state.id
+);
+export const getSelectedNationId = (state: Nation) => state.id;
 export const selectAllNation = createSelector(
   SelectorNationState,
   fromNation.selectAll
-)
+);
 export const selectorEntities = createSelector(
   SelectorNationState,
   fromNation.selectEntities
-)
-export const selectNationById = (id: number) => createSelector(
-  selectorEntities,
-  (nationEntities) =>{
-    return  nationEntities[id]
-  }
-)
+);
+export const selectNationById = (id: number) =>
+  createSelector(selectorEntities, (nationEntities) => {
+    return nationEntities[id];
+  });
 export const selectedLoaded = createSelector(
   SelectorNationState,
   (state) => state.loaded

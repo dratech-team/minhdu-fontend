@@ -1,16 +1,16 @@
-import {MenuHrEnum} from "../enums";
-import {TabEnum} from "../../app/state/app.entity";
+import { MenuHrEnum } from '../enums';
+import { TabEnum } from '../../app/state/app.entity';
 
 interface MenuHrConstant {
-  name: string,
-  icon: string,
-  state: MenuHrEnum,
-  href: string,
+  name: string;
+  icon: string;
+  state: MenuHrEnum;
+  href: string;
   children?: {
-    name: string,
-    icon?: string,
-    href: string
-  }[]
+    name: string;
+    icon?: string;
+    href: string;
+  }[];
 }
 
 export const MenuHrConstant: MenuHrConstant[] = [
@@ -18,13 +18,13 @@ export const MenuHrConstant: MenuHrConstant[] = [
     name: 'Tổng quan',
     icon: '/assets/icons/menu/clipboard2 (1).svg',
     state: MenuHrEnum.DASHBOARD,
-    href: TabEnum.DASHBOARD
+    href: TabEnum.DASHBOARD,
   },
   {
     name: 'Nhân viên',
     icon: '/assets/icons/menu/person.svg',
     state: MenuHrEnum.EMPLOYEE,
-    href: TabEnum.EMPLOYEE
+    href: TabEnum.EMPLOYEE,
   },
   {
     name: 'Phiếu lương',
@@ -46,24 +46,23 @@ export const MenuHrConstant: MenuHrConstant[] = [
     children: [
       {
         name: 'Đơn vị',
-        href: 'to-chuc'
+        href: 'to-chuc',
       },
       {
         name: 'Phòng ban',
-        href: 'to-chuc/phong-ban'
+        href: 'to-chuc/phong-ban',
       },
       {
         name: 'Chức vụ',
-        href: 'to-chuc/chuc-vu'
+        href: 'to-chuc/chuc-vu',
       },
-
-    ]
+    ],
   },
   {
     name: 'Xếp hạng',
     icon: '/assets/icons/menu/bar-chart-steps.svg',
     state: MenuHrEnum.RANK,
-    href: TabEnum.RANK
+    href: TabEnum.RANK,
   },
   {
     name: 'Hệ thống',
@@ -73,13 +72,12 @@ export const MenuHrConstant: MenuHrConstant[] = [
     children: [
       {
         name: 'Lịch sử hệ thống',
-        href: 'he-thong'
+        href: 'he-thong',
       },
       {
         name: 'Quản lý tài khản',
-        href: 'he-thong/quan-ly-tai-khoan'
-      }
-    ]
+        href: 'he-thong/quan-ly-tai-khoan',
+      },
+    ],
   },
-]
-
+];

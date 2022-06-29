@@ -1,16 +1,16 @@
-import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
-import {Injectable} from '@angular/core';
-import {RouteEntity, routeVisibleEntity} from '../entities';
-import {SearchRouteDto} from '../dto';
-import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
-import {updateStateUiUtil} from '../../../utils/update-state-ui.util';
-import {StorageName} from "@minhdu-fontend/constants";
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { Injectable } from '@angular/core';
+import { RouteEntity, routeVisibleEntity } from '../entities';
+import { SearchRouteDto } from '../dto';
+import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
+import { updateStateUiUtil } from '../../../utils/update-state-ui.util';
+import { StorageName } from '@minhdu-fontend/constants';
 
 export interface RouteState extends EntityState<RouteEntity> {
   loading?: boolean;
-  total: number,
-  expandedAll: boolean,
-  search: SearchRouteDto,
+  total: number;
+  expandedAll: boolean;
+  search: SearchRouteDto;
   readonly ui?: routeVisibleEntity;
 }
 
@@ -21,28 +21,28 @@ export const createInitialState = () => ({
     search: '',
     startedAt_start: getFirstDayInMonth(new Date()),
     startedAt_end: getLastDayInMonth(new Date()),
-    status: -1
+    status: -1,
   },
   ui: {
     stt: {
       pinned: true,
-      visible: true
+      visible: true,
     },
     name: {
       pinned: false,
-      visible: true
+      visible: true,
     },
     startedAt: {
       pinned: false,
-      visible: true
+      visible: true,
     },
     endedAt: {
       pinned: false,
-      visible: true
+      visible: true,
     },
     driver: {
       pinned: false,
-      visible: true
+      visible: true,
     },
     // customer: {
     //   pinned: false,
@@ -50,31 +50,36 @@ export const createInitialState = () => ({
     // },
     bsx: {
       pinned: false,
-      visible: true
+      visible: true,
     },
     garage: {
       pinned: false,
-      visible: true
+      visible: true,
     },
     status: {
       pinned: false,
-      visible: true
-    }
-  }
+      visible: true,
+    },
+  },
 });
 
-@Injectable({providedIn: 'root'})
-@StoreConfig({name: StorageName.ROUTE})
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: StorageName.ROUTE })
 export class RouteStore extends EntityStore<RouteState> {
   constructor() {
     super(createInitialState());
   }
 
   updateUI(newState: Partial<routeVisibleEntity>, type: 'visible' | 'pinned') {
-    return this.update(state => {
+    return this.update((state) => {
       return {
         ...state,
-        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), updateStateUiUtil<routeVisibleEntity>(newState, type)) : state.ui
+        ui: state.ui
+          ? Object.assign(
+              JSON.parse(JSON.stringify(state.ui)),
+              updateStateUiUtil<routeVisibleEntity>(newState, type)
+            )
+          : state.ui,
       };
     });
   }

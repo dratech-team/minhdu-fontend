@@ -5,14 +5,12 @@ import { StatisticalSellComponent } from './containers/statiscal-sell/statistica
 const routes: Routes = [
   {
     path: '',
-    component:StatisticalSellComponent
+    component: StatisticalSellComponent,
   },
-
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class StatisticalSellRoutingModule {
-}
+export class StatisticalSellRoutingModule {}

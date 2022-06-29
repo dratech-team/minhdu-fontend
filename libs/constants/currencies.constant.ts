@@ -1,40 +1,40 @@
-import { CurrencyUnit,  } from '../enums';
+import { CurrencyUnit } from '../enums';
 
 export const CurrenciesConstant = [
   {
     name: 'Nhân dân tệ',
-    type: CurrencyUnit.CNY
+    type: CurrencyUnit.CNY,
   },
   {
     name: 'Bảng anh',
-    type: CurrencyUnit.GBP
+    type: CurrencyUnit.GBP,
   },
   {
     name: 'Yên',
-    type: CurrencyUnit.JPY
+    type: CurrencyUnit.JPY,
   },
   {
     name: 'euro',
-    type: CurrencyUnit.EUR
+    type: CurrencyUnit.EUR,
   },
   {
     name: 'USD',
-    type: CurrencyUnit.USD
+    type: CurrencyUnit.USD,
   },
   {
     name: 'Kyat',
-    type: CurrencyUnit.MMK
+    type: CurrencyUnit.MMK,
   },
   {
     name: 'Ringgit ',
-    type: CurrencyUnit.MYR
+    type: CurrencyUnit.MYR,
   },
   {
     name: 'Việt Nam đồng ',
-    type: CurrencyUnit.VND
+    type: CurrencyUnit.VND,
   },
   {
     name: 'Tất cả',
-    type: ''
-  }
+    type: '',
+  },
 ];

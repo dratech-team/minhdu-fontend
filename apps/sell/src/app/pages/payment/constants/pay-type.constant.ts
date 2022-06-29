@@ -1,16 +1,16 @@
-import {PaymentType} from "@minhdu-fontend/enums";
+import { PaymentType } from '@minhdu-fontend/enums';
 
 export const PayTypeConstant = [
   {
     name: 'Tiền mặt',
-    value: PaymentType.CASH
+    value: PaymentType.CASH,
   },
   {
     name: 'Chuyển khoản',
-    value: PaymentType.TRANSFER
+    value: PaymentType.TRANSFER,
   },
   {
     name: 'Tất cả',
-    value: PaymentType.ALL
+    value: PaymentType.ALL,
   },
-]
+];

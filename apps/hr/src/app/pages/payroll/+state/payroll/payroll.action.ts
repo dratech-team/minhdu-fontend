@@ -1,9 +1,14 @@
-import {ConvertBooleanFrontEnd, FilterTypeEnum} from '@minhdu-fontend/enums';
-import {UpdateNum} from '@ngrx/entity/src/models';
-import {createAction, props} from '@ngrx/store';
-import {PayrollSalary} from '../../../../../../../../libs/data-models/hr/salary/payroll-salary';
-import {Payroll, PayrollDTO} from './payroll.interface';
-import {Branch, Position, RangeDay, totalSalary} from '@minhdu-fontend/data-models';
+import { ConvertBooleanFrontEnd, FilterTypeEnum } from '@minhdu-fontend/enums';
+import { UpdateNum } from '@ngrx/entity/src/models';
+import { createAction, props } from '@ngrx/store';
+import { PayrollSalary } from '../../../../../../../../libs/data-models/hr/salary/payroll-salary';
+import { Payroll, PayrollDTO } from './payroll.interface';
+import {
+  Branch,
+  Position,
+  RangeDay,
+  totalSalary,
+} from '@minhdu-fontend/data-models';
 
 export const loadInit = createAction(
   '[LOAD_PAYROLL] Load Payrolls',
@@ -12,7 +17,7 @@ export const loadInit = createAction(
 
 export const loadInitSuccess = createAction(
   '[LOAD_PAYROLL] Load Payrolls Success',
-  props<{ payrolls: Payroll[]; total: number, totalOvertime?: totalSalary }>()
+  props<{ payrolls: Payroll[]; total: number; totalOvertime?: totalSalary }>()
 );
 export const loadMorePayrolls = createAction(
   '[LOAD_PAYROLL] Load More Payrolls',
@@ -21,7 +26,7 @@ export const loadMorePayrolls = createAction(
 
 export const loadMorePayrollsSuccess = createAction(
   '[LOAD_PAYROLL] Load More Payrolls Success',
-  props<{ payrolls: Payroll[]; total: number, totalOvertime?: totalSalary }>()
+  props<{ payrolls: Payroll[]; total: number; totalOvertime?: totalSalary }>()
 );
 
 export const filterOvertime = createAction(
@@ -56,7 +61,7 @@ export const addSalary = createAction(
     salary: any;
     payrollId?: number;
     isTimesheet?: boolean;
-    isDetailPayroll?: boolean
+    isDetailPayroll?: boolean;
     branchId?: number;
   }>()
 );
@@ -139,17 +144,17 @@ export const scanHolidayError = createAction(
 export const updateStateBranch = createAction(
   '[UPDATE_STATE_BRANCH] UPDATE STATE Branch Payroll',
   props<{ branch: Branch }>()
-)
+);
 
 export const updateStatePosition = createAction(
   '[UPDATE_STATE_POSITION] UPDATE STATE Position Payroll',
   props<{ position: Position }>()
-)
+);
 
 export const updateStatePayroll = createAction(
   '[UPDATE_STATE_PAYROLL] UPDATE STATE PAYROLL Payroll',
   props<{
-    empStatus?: number,
+    empStatus?: number;
     filter?: FilterTypeEnum;
     rangeDay?: RangeDay;
     added?: ConvertBooleanFrontEnd;
@@ -188,5 +193,5 @@ export const PayrollAction = {
   updateSalaryMultipleSuccess,
   addSalaryMultipleSuccess,
   updateStateBranch,
-  updateStatePosition
+  updateStatePosition,
 };

@@ -2,36 +2,47 @@
   <div class="col-9 border shadow p-2" style="height: 78vh">
     <div class="h-100">
       <nz-table
-        *ngIf="(settingRanks$|async) as settingRanks"
+        *ngIf="settingRanks$ | async as settingRanks"
         [nzData]="settingRanks"
-        [nzLoading]="(loading$|async)"
-        class="mt-2 border">
+        [nzLoading]="loading$ | async"
+        class="mt-2 border"
+      >
         <thead>
-        <tr>
-          <th nzWidth="100px">STT</th>
-          <th>Ngày nghỉ</th>
-          <th>Xếp loại</th>
-        </tr>
+          <tr>
+            <th nzWidth="100px">STT</th>
+            <th>Ngày nghỉ</th>
+            <th>Xếp loại</th>
+          </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let settingRank of settingRanks; let i = index" (click)="onUpdate(settingRank)">
-          <td>{{i + 1}}</td>
-          <td>từ ngày {{settingRank.from}} đến ngày {{settingRank.to}}</td>
-          <td>{{settingRank.rank}}</td>
-        </tr>
-        <tr *ngIf="((count$ | async) || 0) < ((total$ | async) || 0)">
-          <td colspan="3">
-            <div class="w-100 d-flex justify-content-start" style="position: relative">
-              <button
-                (click)="onLoadMore()"
-                style="position: sticky; left: 45vw"
-                nz-button nzType="primary"
-                [nzLoading]="loadMore$ | async">
-                Tải thêm
-              </button>
-            </div>
-          </td>
-        </tr>
+          <tr
+            *ngFor="let settingRank of settingRanks; let i = index"
+            (click)="onUpdate(settingRank)"
+          >
+            <td>{{ i + 1 }}</td>
+            <td>
+              từ ngày {{ settingRank.from }} đến ngày {{ settingRank.to }}
+            </td>
+            <td>{{ settingRank.rank }}</td>
+          </tr>
+          <tr *ngIf="((count$ | async) || 0) < ((total$ | async) || 0)">
+            <td colspan="3">
+              <div
+                class="w-100 d-flex justify-content-start"
+                style="position: relative"
+              >
+                <button
+                  (click)="onLoadMore()"
+                  style="position: sticky; left: 45vw"
+                  nz-button
+                  nzType="primary"
+                  [nzLoading]="loadMore$ | async"
+                >
+                  Tải thêm
+                </button>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </nz-table>
     </div>
@@ -39,23 +50,28 @@
   <form [formGroup]="formGroup" class="col-3 d-flex flex-column">
     <div>
       <div class="font-weight-bold">Từ ngày <span class="star">*</span></div>
-      <input nz-input formControlName="from" [min]="1" type="number">
+      <input nz-input formControlName="from" [min]="1" type="number" />
     </div>
     <div class="mt-2">
       <div class="font-weight-bold">Đến ngày <span class="star">*</span></div>
-      <input nz-input formControlName="to" [min]="1" type="number">
+      <input nz-input formControlName="to" [min]="1" type="number" />
     </div>
     <div class="mt-2">
       <div class="font-weight-bold">Xếp loại <span class="star">*</span></div>
-      <input
-        nz-input
-        formControlName="rank"
-        type="text" [maxlength]="1"
-      >
+      <input nz-input formControlName="rank" type="text" [maxlength]="1" />
     </div>
     <div class="mt-5 d-flex">
-      <button nz-button nzType="default" class="mr-2" (click)="onCancel()">Huỷ</button>
-      <button nz-button nzType="primary" [nzLoading]="(added$|async) === false" (click)="onSubmit()">Xác nhận</button>
+      <button nz-button nzType="default" class="mr-2" (click)="onCancel()">
+        Huỷ
+      </button>
+      <button
+        nz-button
+        nzType="primary"
+        [nzLoading]="(added$ | async) === false"
+        (click)="onSubmit()"
+      >
+        Xác nhận
+      </button>
     </div>
   </form>
 </div>

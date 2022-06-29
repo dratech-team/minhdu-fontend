@@ -1,1 +1,1 @@
-export * from './session.constant'
+export * from './session.constant';

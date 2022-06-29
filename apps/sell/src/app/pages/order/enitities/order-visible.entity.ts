@@ -1,4 +1,4 @@
-import {VisibleEntity} from "@minhdu-fontend/data-models";
+import { VisibleEntity } from '@minhdu-fontend/data-models';
 
 export interface OrderVisibleEntity {
   readonly stt: VisibleEntity;
@@ -16,9 +16,9 @@ export interface OrderVisibleEntity {
   readonly debt: VisibleEntity;
   readonly destination: VisibleEntity;
   readonly endedAt: VisibleEntity;
-  readonly totalCommodity: VisibleEntity,
-  readonly expand: VisibleEntity,
-  readonly paymentHistories: VisibleEntity,
-  readonly vans:VisibleEntity,
-  readonly status:VisibleEntity,
+  readonly totalCommodity: VisibleEntity;
+  readonly expand: VisibleEntity;
+  readonly paymentHistories: VisibleEntity;
+  readonly vans: VisibleEntity;
+  readonly status: VisibleEntity;
 }

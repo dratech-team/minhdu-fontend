@@ -19,5 +19,5 @@ export const MenuDashboardConstant = [
     titleButton: 'cấu hình cửa hàng',
     icon: 'string',
     mainColor: '#ffa500',
-  }
-]
+  },
+];

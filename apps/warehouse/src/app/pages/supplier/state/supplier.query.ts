@@ -6,7 +6,5 @@ import { SupplierState, SupplierStore } from './supplier.store';
 export class SupplierQuery extends QueryEntity<SupplierState> {
   constructor(protected store: SupplierStore) {
     super(store);
-
   }
-
 }

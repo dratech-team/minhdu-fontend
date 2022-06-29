@@ -1,4 +1,4 @@
-export enum SalaryTypeEnum{
+export enum SalaryTypeEnum {
   BASIC = 'BASIC',
   HISTORY = 'HISTORY',
   BASIC_INSURANCE = 'BASIC_INSURANCE',
@@ -15,5 +15,5 @@ export enum SalaryTypeEnum{
   PART_TIME = 'PART_TIME',
   BASIC_TRUST_MANAGER = 'BASIC_TRUST_MANAGER',
   WFH = 'WFH',
-  HOLIDAY = 'HOLIDAY'
+  HOLIDAY = 'HOLIDAY',
 }

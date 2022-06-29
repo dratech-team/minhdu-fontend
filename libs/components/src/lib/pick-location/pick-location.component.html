@@ -1,5 +1,5 @@
-<form [formGroup]='formGroup'>
-  <div class='row'>
+<form [formGroup]="formGroup">
+  <div class="row">
     <!--    <div class='col-sm' [formGroup]='formGroup'>-->
     <!--      <label for='nation'>Quốc gia<span class='star'>*</span></label>-->
     <!--      <mat-select-->
@@ -12,71 +12,88 @@
     <!--        </mat-option>-->
     <!--      </mat-select>-->
     <!--    </div>-->
-    <div class='col-sm' [formGroup]='formGroup'>
-      <label>Tỉnh/Thành phố</label><span *ngIf='isRequiredProvince' class=' star'>*</span>
+    <div class="col-sm" [formGroup]="formGroup">
+      <label>Tỉnh/Thành phố</label
+      ><span *ngIf="isRequiredProvince" class="star">*</span>
       <nz-select
-        [nzLoading]="!(provinces$|async)"
+        [nzLoading]="!(provinces$ | async)"
         nzShowSearch
         nzAllowClear
-        style='width:100%'
-        formControlName='province'
-        nzPlaceHolder='chọn Tỉnh/Thành phố'
-        [compareWith]='compareFN'
-        [ngClass]="{ 'is-invalid': submitting && form.province.errors?.required }"
+        style="width: 100%"
+        formControlName="province"
+        nzPlaceHolder="chọn Tỉnh/Thành phố"
+        [compareWith]="compareFN"
+        [ngClass]="{
+          'is-invalid': submitting && form.province.errors?.required
+        }"
       >
         <nz-option
-          *ngFor='let province of provinces$| async'
-          [nzLabel]='province.name'
-          [nzValue]='province'
+          *ngFor="let province of provinces$ | async"
+          [nzLabel]="province.name"
+          [nzValue]="province"
         >
         </nz-option>
       </nz-select>
-      <div *ngIf='submitting && form.province.errors?.required' class='invalid-feedback'>
-        <div *ngIf=' form.province.errors?.required'>Chưa chọn Tỉnh/Thành phố</div>
+      <div
+        *ngIf="submitting && form.province.errors?.required"
+        class="invalid-feedback"
+      >
+        <div *ngIf="form.province.errors?.required">
+          Chưa chọn Tỉnh/Thành phố
+        </div>
       </div>
     </div>
-    <div class='col-sm' [formGroup]='formGroup'>
-      <label>Quận/Huyện</label><span *ngIf='isRequiredDistrict' class=' star'>*</span>
+    <div class="col-sm" [formGroup]="formGroup">
+      <label>Quận/Huyện</label
+      ><span *ngIf="isRequiredDistrict" class="star">*</span>
       <nz-select
         nzShowSearch
         nzAllowClear
-        style='width:100%'
-        formControlName='district'
-        nzPlaceHolder='chọn Quận/Huyện'
-        [compareWith]='compareFN'
-        [ngClass]="{ 'is-invalid': submitting && form.district.errors?.required }"
+        style="width: 100%"
+        formControlName="district"
+        nzPlaceHolder="chọn Quận/Huyện"
+        [compareWith]="compareFN"
+        [ngClass]="{
+          'is-invalid': submitting && form.district.errors?.required
+        }"
       >
         <nz-option
-          *ngFor='let district of lstDistrict'
-          [nzLabel]='district.name'
-          [nzValue]='district'
+          *ngFor="let district of lstDistrict"
+          [nzLabel]="district.name"
+          [nzValue]="district"
         >
         </nz-option>
       </nz-select>
-      <div *ngIf='submitting && form.district.errors?.required' class='invalid-feedback'>
-        <div *ngIf=' form.district.errors?.required'>Chưa chọn Quận/Huyện</div>
+      <div
+        *ngIf="submitting && form.district.errors?.required"
+        class="invalid-feedback"
+      >
+        <div *ngIf="form.district.errors?.required">Chưa chọn Quận/Huyện</div>
       </div>
     </div>
-    <div class='col-sm' [formGroup]='formGroup'>
-      <label>Phường/Xã</label><span *ngIf='isRequiredWard' class='star'>*</span>
+    <div class="col-sm" [formGroup]="formGroup">
+      <label>Phường/Xã</label><span *ngIf="isRequiredWard" class="star">*</span>
       <nz-select
         nzShowSearch
         nzAllowClear
-        style='width:100%'
-        formControlName='ward'
-        nzPlaceHolder='chọn Phường/Xã'
-        [compareWith]='compareFN'
+        style="width: 100%"
+        formControlName="ward"
+        nzPlaceHolder="chọn Phường/Xã"
+        [compareWith]="compareFN"
         [ngClass]="{ 'is-invalid': submitting && form.ward.errors?.required }"
       >
         <nz-option
-          *ngFor='let ward of lstWard'
-          [nzLabel]='ward.name'
-          [nzValue]='ward'
+          *ngFor="let ward of lstWard"
+          [nzLabel]="ward.name"
+          [nzValue]="ward"
         >
         </nz-option>
       </nz-select>
-      <div *ngIf='submitting && form.ward.errors?.required' class='invalid-feedback'>
-        <div *ngIf=' form.ward.errors?.required'>Chưa chọn Phường/Xã</div>
+      <div
+        *ngIf="submitting && form.ward.errors?.required"
+        class="invalid-feedback"
+      >
+        <div *ngIf="form.ward.errors?.required">Chưa chọn Phường/Xã</div>
       </div>
     </div>
   </div>

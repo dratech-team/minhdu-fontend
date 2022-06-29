@@ -4,17 +4,16 @@ import { setAll, updateSelect } from '../../utils/pick-salary';
 
 @Component({
   selector: 'app-table-salaries-selected',
-  templateUrl: 'table-salaries-selected.html'
+  templateUrl: 'table-salaries-selected.html',
 })
-export class TableSalarySelected implements OnInit{
-  @Input() salaries: SalaryPayroll[] = []
-  @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>()
-  salariesSelected: SalaryPayroll [] = []
-  isSelectAll = true
-  constructor() {
-  }
+export class TableSalarySelected implements OnInit {
+  @Input() salaries: SalaryPayroll[] = [];
+  @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
+  salariesSelected: SalaryPayroll[] = [];
+  isSelectAll = true;
+  constructor() {}
   ngOnInit() {
-    this.salariesSelected = this.salaries
+    this.salariesSelected = this.salaries;
   }
 
   updateSelectSalary(salarySelected: SalaryPayroll) {
@@ -27,13 +26,18 @@ export class TableSalarySelected implements OnInit{
   }
 
   setAllSalary(select: boolean) {
-    this.isSelectAll = setAll(select, this.salaries, this.salariesSelected, true);
-    this.EmitSalariesSelected.emit(this.salariesSelected)
+    this.isSelectAll = setAll(
+      select,
+      this.salaries,
+      this.salariesSelected,
+      true
+    );
+    this.EmitSalariesSelected.emit(this.salariesSelected);
   }
 
   selectSalary(salary: Salary) {
-   const event = this.salariesSelected.some((e) => e.salary.id === salary.id);
-    this.EmitSalariesSelected.emit(this.salariesSelected)
-    return event
+    const event = this.salariesSelected.some((e) => e.salary.id === salary.id);
+    this.EmitSalariesSelected.emit(this.salariesSelected);
+    return event;
   }
 }

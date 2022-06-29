@@ -1,22 +1,19 @@
-import {Injectable} from '@angular/core';
-import {BaseService} from '@minhdu-fontend/service';
-import {HttpClient} from '@angular/common/http';
-import {Api} from '@minhdu-fontend/constants';
-import {Observable} from 'rxjs';
-import {AccountEntity} from "../entities/account.entity";
-import {SearchAccountDto} from "../dto/account/search-account.dto";
-import {LoadOneAccountDto} from "../dto/account/load-one-account.dto";
-import {UpdateAccountDto} from "../dto/account/update-account.dto";
-import {AddAccountDto} from "../dto/account/add-account.dto";
-import {SignInDto} from "../dto/account/sign-in.dto";
-import {VersionEnum} from "@minhdu-fontend/enums";
+import { Injectable } from '@angular/core';
+import { BaseService } from '@minhdu-fontend/service';
+import { HttpClient } from '@angular/common/http';
+import { Api } from '@minhdu-fontend/constants';
+import { Observable } from 'rxjs';
+import { AccountEntity } from '../entities/account.entity';
+import { SearchAccountDto } from '../dto/account/search-account.dto';
+import { LoadOneAccountDto } from '../dto/account/load-one-account.dto';
+import { UpdateAccountDto } from '../dto/account/update-account.dto';
+import { AddAccountDto } from '../dto/account/add-account.dto';
+import { SignInDto } from '../dto/account/sign-in.dto';
+import { VersionEnum } from '@minhdu-fontend/enums';
 
-
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class AccountService extends BaseService<AccountEntity> {
-  constructor(
-    public readonly http: HttpClient
-  ) {
+  constructor(public readonly http: HttpClient) {
     super(Api.AUTH, http);
   }
 

@@ -1,8 +1,8 @@
-import {BasePositionEntity} from "../bases";
-import {BaseAddDto} from "@minhdu-fontend/base-dto";
+import { BasePositionEntity } from '../bases';
+import { BaseAddDto } from '@minhdu-fontend/base-dto';
 
 export interface BaseAddPositionDto extends Omit<BasePositionEntity, 'id'> {
-  branchIds?: number [],
+  branchIds?: number[];
 }
 
-export type AddPositionDto = BaseAddDto<BaseAddPositionDto>
+export type AddPositionDto = BaseAddDto<BaseAddPositionDto>;

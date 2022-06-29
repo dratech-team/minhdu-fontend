@@ -3,7 +3,6 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
 import * as fromHoliday from './holiday.reducer';
 
-
 export interface state {
   holiday: holidayState;
 }
@@ -21,12 +20,10 @@ export const selectorHolidayTotal = createSelector(
   fromHoliday.selectTotal
 );
 
-export const  getHolidayById = (id: number) => createSelector(
-  selectorAllHoliday,
-  (holiday) =>{
-    return  holiday.find(item => item.id == id)
-  }
-)
+export const getHolidayById = (id: number) =>
+  createSelector(selectorAllHoliday, (holiday) => {
+    return holiday.find((item) => item.id == id);
+  });
 
 export const selectHolidayLoaded = createSelector(
   selectorHolidayState,

@@ -1,17 +1,15 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Api} from '@minhdu-fontend/constants';
-import {Observable} from 'rxjs';
-import {AllowanceSalaryEntity} from "../entities";
-import {ResponseMessageEntity} from "@minhdu-fontend/base-entity";
-import {BaseService} from "@minhdu-fontend/service";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Api } from '@minhdu-fontend/constants';
+import { Observable } from 'rxjs';
+import { AllowanceSalaryEntity } from '../entities';
+import { ResponseMessageEntity } from '@minhdu-fontend/base-entity';
+import { BaseService } from '@minhdu-fontend/service';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class AllowanceSalaryService extends BaseService<AllowanceSalaryEntity> {
-  constructor(
-    public readonly http: HttpClient
-  ) {
-    super( Api.HR.PAYROLL.ALLOWANCE_SALARY, http);
+  constructor(public readonly http: HttpClient) {
+    super(Api.HR.PAYROLL.ALLOWANCE_SALARY, http);
   }
 
   addMany(body: any): Observable<ResponseMessageEntity> {

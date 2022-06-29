@@ -17,16 +17,9 @@ import { BillService } from './service';
     BillRoutingModule,
     MatInputModule,
     InfiniteScrollModule,
-    CommonModule
+    CommonModule,
   ],
-  declarations: [
-    BillComponent,
-    DetailBillComponent
-  ],
-  providers: [
-    DatePipe,
-    BillService
-  ]
+  declarations: [BillComponent, DetailBillComponent],
+  providers: [DatePipe, BillService],
 })
-export class BillModule {
-}
+export class BillModule {}

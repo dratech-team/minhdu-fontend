@@ -4,7 +4,6 @@ import { AppComponent } from '../app/app.component';
 
 @NgModule({
   declarations: [WarehouseLayoutComponent, AppComponent],
-  imports: []
+  imports: [],
 })
-export class SharedModule {
-}
+export class SharedModule {}

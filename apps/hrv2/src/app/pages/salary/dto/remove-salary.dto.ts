@@ -1,3 +1,3 @@
 export interface RemoveSalaryDto {
-  salaryIds: number[]
+  salaryIds: number[];
 }

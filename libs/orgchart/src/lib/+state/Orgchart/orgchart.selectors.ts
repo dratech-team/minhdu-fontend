@@ -1,11 +1,14 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { ORGCHART_FEATURE_KEY, orgchartAdapter, State } from './orgchart.reducer';
+import {
+  ORGCHART_FEATURE_KEY,
+  orgchartAdapter,
+  State,
+} from './orgchart.reducer';
 import { Branch } from '@minhdu-fontend/data-models';
 
 // Lookup the 'branch' feature state managed by NgRx
-export const getOrgchartState = createFeatureSelector<State>(
-  ORGCHART_FEATURE_KEY
-);
+export const getOrgchartState =
+  createFeatureSelector<State>(ORGCHART_FEATURE_KEY);
 
 const { selectAll, selectEntities } = orgchartAdapter.getSelectors();
 
@@ -17,10 +20,8 @@ export const getOrgchartError = createSelector(
   (state: State) => state.error
 );
 
-
-export const getAllOrgchart = createSelector(
-  getOrgchartState,
-  (state: State) => selectAll(state)
+export const getAllOrgchart = createSelector(getOrgchartState, (state: State) =>
+  selectAll(state)
 );
 
 export const getLatestOrgchart = createSelector(
@@ -35,13 +36,12 @@ export const getOrgchartEntities = createSelector(
 
 export const getBranchById = (id: number | undefined) =>
   createSelector(getOrgchartEntities, (branchEntities) => {
-      if (id) {
-        return branchEntities[id];
-      } else {
-        return undefined;
-      }
+    if (id) {
+      return branchEntities[id];
+    } else {
+      return undefined;
     }
-  );
+  });
 
 export const getOrgchartLoaded = createSelector(
   getOrgchartState,

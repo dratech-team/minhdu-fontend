@@ -12,8 +12,7 @@ export class BillEffect {
     private readonly actions$: Actions,
     private readonly billStore: BillStore,
     private readonly billService: BillService
-  ) {
-  }
+  ) {}
 
   @Effect()
   loadInit$ = this.actions$.pipe(
@@ -22,6 +21,6 @@ export class BillEffect {
     tap((response) => {
       this.billStore.add(response.data);
     }),
-    catchError(err => throwError(err))
+    catchError((err) => throwError(err))
   );
 }

@@ -1,25 +1,25 @@
-import {PriceType, SalaryTypeEnum} from "../enums";
-import {DatetimeUnitEnum} from "@minhdu-fontend/enums";
+import { PriceType, SalaryTypeEnum } from '../enums';
+import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
 
 interface visible {
-  show?: boolean,
-  disabled?: boolean
+  show?: boolean;
+  disabled?: boolean;
 }
 
 export interface BlockSettingSalaryEntity {
-  title: string,
-  type: SalaryTypeEnum,
-  rate?: visible
+  title: string;
+  type: SalaryTypeEnum;
+  rate?: visible;
   units?: {
-    name: string,
-    value: DatetimeUnitEnum
-  }[],
-  constraintHoliday?: visible,
-  constraintOvertime?: visible
+    name: string;
+    value: DatetimeUnitEnum;
+  }[];
+  constraintHoliday?: visible;
+  constraintOvertime?: visible;
   references?: {
-    name: string,
-    value: PriceType
-  }[],
-  price?: visible
-  insurance?: visible
+    name: string;
+    value: PriceType;
+  }[];
+  price?: visible;
+  insurance?: visible;
 }

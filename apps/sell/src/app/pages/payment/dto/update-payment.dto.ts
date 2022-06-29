@@ -1,8 +1,8 @@
-import {BasePaymentEntity} from "../base/base-payment.entity";
-import {BaseUpdateDto} from "@minhdu-fontend/base-dto";
+import { BasePaymentEntity } from '../base/base-payment.entity';
+import { BaseUpdateDto } from '@minhdu-fontend/base-dto';
 
 export interface BaseUpdatePaymentDto extends Omit<BasePaymentEntity, 'id'> {
-  orderId: number
+  orderId: number;
 }
 
-export type UpdatePaymentDto = BaseUpdateDto<BaseUpdatePaymentDto>
+export type UpdatePaymentDto = BaseUpdateDto<BaseUpdatePaymentDto>;

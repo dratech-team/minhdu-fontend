@@ -1,21 +1,20 @@
-import {PayrollEntity} from '../../payroll/entities';
-import {SalaryEntity} from '../entities';
+import { PayrollEntity } from '../../payroll/entities';
+import { SalaryEntity } from '../entities';
 
 export interface ModalAddSalary {
-  payroll: PayrollEntity,
-  salary?: SalaryEntity
-  multiple?: boolean
+  payroll: PayrollEntity;
+  salary?: SalaryEntity;
+  multiple?: boolean;
 }
 
 export interface ModalUpdateSalary {
-  salary: SalaryEntity
+  salary: SalaryEntity;
   multiple?: {
-    salaries: SalaryEntity[]
-  },
+    salaries: SalaryEntity[];
+  };
 }
 
-
 export interface BaseModalSalaryData {
-  add?: ModalAddSalary
-  update?: ModalUpdateSalary
+  add?: ModalAddSalary;
+  update?: ModalUpdateSalary;
 }

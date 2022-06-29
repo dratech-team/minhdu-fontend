@@ -1,5 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { DEPARTMENT_FEATURE_KEY, departmentAdapter, departmentState } from './department.reducer';
+import {
+  DEPARTMENT_FEATURE_KEY,
+  departmentAdapter,
+  departmentState,
+} from './department.reducer';
 import { Department } from '@minhdu-fontend/data-models';
 
 export const getDepartmentState = createFeatureSelector<departmentState>(
@@ -20,28 +24,22 @@ export const getDepartmentError = createSelector(
   (state: departmentState) => state.error
 );
 
-export const getAllDepartment = createSelector(
-  getDepartmentState,
-  selectAll
-);
+export const getAllDepartment = createSelector(getDepartmentState, selectAll);
 
-export const getDepartmentByBranchId = (branchId: number)  => createSelector(
-  getAllDepartment,
-  (departmentEntities) => {
-    return  departmentEntities.filter( department => department.branchId === branchId)
-  }
-);
+export const getDepartmentByBranchId = (branchId: number) =>
+  createSelector(getAllDepartment, (departmentEntities) => {
+    return departmentEntities.filter(
+      (department) => department.branchId === branchId
+    );
+  });
 
 export const getDepartmentEntities = createSelector(
   getDepartmentState,
   selectEntities
 );
 
-export const getDepartmentById = (id: number) => createSelector(
-  getDepartmentEntities,
-  (departmentEntities) => departmentEntities[id]
-);
-
-
-
-
+export const getDepartmentById = (id: number) =>
+  createSelector(
+    getDepartmentEntities,
+    (departmentEntities) => departmentEntities[id]
+  );

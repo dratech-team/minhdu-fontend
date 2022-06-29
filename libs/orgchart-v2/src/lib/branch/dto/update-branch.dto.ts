@@ -1,8 +1,8 @@
-import {BaseBranchEntity} from "../bases";
-import {BaseUpdateDto} from "@minhdu-fontend/base-dto";
+import { BaseBranchEntity } from '../bases';
+import { BaseUpdateDto } from '@minhdu-fontend/base-dto';
 
 export interface BaseUpdateBranchDto extends Omit<BaseBranchEntity, 'id'> {
-  positionIds?: number [],
+  positionIds?: number[];
 }
 
-export type UpdateBranchDto = BaseUpdateDto<BaseUpdateBranchDto>
+export type UpdateBranchDto = BaseUpdateDto<BaseUpdateBranchDto>;

@@ -1,9 +1,13 @@
-import {FilterSalaryEnum} from "../enums/filter-salary.enum";
-import {NzTableSortOrder} from "ng-zorro-antd/table";
-import {SalaryEntity} from "../../salary/entities";
-import {CompareSortUtil} from "./compare-sort.util";
+import { FilterSalaryEnum } from '../enums/filter-salary.enum';
+import { NzTableSortOrder } from 'ng-zorro-antd/table';
+import { SalaryEntity } from '../../salary/entities';
+import { CompareSortUtil } from './compare-sort.util';
 
-export const SortSalaryUtil = (column: FilterSalaryEnum, type: NzTableSortOrder, salaries: SalaryEntity []) => {
+export const SortSalaryUtil = (
+  column: FilterSalaryEnum,
+  type: NzTableSortOrder,
+  salaries: SalaryEntity[]
+) => {
   return salaries.sort((a, b) => {
     const isAsc = type === 'descend';
     switch (column) {
@@ -22,7 +26,11 @@ export const SortSalaryUtil = (column: FilterSalaryEnum, type: NzTableSortOrder,
       case FilterSalaryEnum.RATE_SETTING:
         return CompareSortUtil(a.setting.rate, b.setting.rate, isAsc);
       case FilterSalaryEnum.TITLE_SETTING_PARTIAL:
-        return CompareSortUtil(a.setting.title + a.partial, b.setting.title + b.partial, isAsc);
+        return CompareSortUtil(
+          a.setting.title + a.partial,
+          b.setting.title + b.partial,
+          isAsc
+        );
     }
   });
-}
+};

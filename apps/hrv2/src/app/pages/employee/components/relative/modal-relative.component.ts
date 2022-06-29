@@ -1,26 +1,29 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
-import {ConvertBoolean} from '@minhdu-fontend/enums';
-import {NzModalRef} from "ng-zorro-antd/modal";
-import {Actions} from "@datorama/akita-ng-effects";
-import {EmployeeActions, EmployeeQuery} from "@minhdu-fontend/employee-v2";
+import { Component, Input, OnInit } from '@angular/core';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { ConvertBoolean } from '@minhdu-fontend/enums';
+import { NzModalRef } from 'ng-zorro-antd/modal';
+import { Actions } from '@datorama/akita-ng-effects';
+import { EmployeeActions, EmployeeQuery } from '@minhdu-fontend/employee-v2';
 import {
   BaseAddRelativeDto,
-  BaseUpdateRelativeDto
-} from "../../../../../../../../libs/employee-v2/src/lib/employee/dto/relative";
-import {RelationshipConstant} from "../../constants/relationship.constant";
-import {ModalRelative} from "../../data/modal-relative.data";
-import {DatePipe} from "@angular/common";
-
+  BaseUpdateRelativeDto,
+} from '../../../../../../../../libs/employee-v2/src/lib/employee/dto/relative';
+import { RelationshipConstant } from '../../constants/relationship.constant';
+import { ModalRelative } from '../../data/modal-relative.data';
+import { DatePipe } from '@angular/common';
 
 @Component({
-  templateUrl: 'modal-relative.component.html'
+  templateUrl: 'modal-relative.component.html',
 })
 export class ModalRelativeComponent implements OnInit {
-  @Input() data!: ModalRelative
-  loading$ = this.employeeQuery.select(state => state.loading)
+  @Input() data!: ModalRelative;
+  loading$ = this.employeeQuery.select((state) => state.loading);
 
-  relationshipConstant = RelationshipConstant
+  relationshipConstant = RelationshipConstant;
 
   submitted = false;
   convertBoolean = ConvertBoolean;
@@ -33,11 +36,10 @@ export class ModalRelativeComponent implements OnInit {
     private readonly modalRef: NzModalRef,
     private readonly actions$: Actions,
     private readonly employeeQuery: EmployeeQuery
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    const relative = this.data.update?.relative
+    const relative = this.data.update?.relative;
     this.formGroup = this.formBuilder.group({
       lastName: [relative?.lastName || '', Validators.required],
       issuedBy: [relative?.issuedBy || ''],
@@ -49,13 +51,16 @@ export class ModalRelativeComponent implements OnInit {
       idCardAt: [
         relative?.idCardAt
           ? this.datePipe.transform(relative.idCardAt, 'yyyy-MM-dd')
-          : ''
+          : '',
       ],
       phone: [relative?.phone],
       workPhone: [relative?.workPhone],
-      birthday: [relative?.birthday
-        ? this.datePipe.transform(relative.birthday, 'yyyy-MM-dd')
-        : '', Validators.required],
+      birthday: [
+        relative?.birthday
+          ? this.datePipe.transform(relative.birthday, 'yyyy-MM-dd')
+          : '',
+        Validators.required,
+      ],
       gender: [relative?.gender, Validators.required],
       note: [relative?.note],
       relationship: [relative?.relationship, Validators.required],
@@ -72,7 +77,7 @@ export class ModalRelativeComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submitted = true
+    this.submitted = true;
     if (this.formGroup.invalid) {
       return;
     }
@@ -81,20 +86,19 @@ export class ModalRelativeComponent implements OnInit {
     this.actions$.dispatch(
       this.data.update?.relative
         ? EmployeeActions.updateRelative({
-          id: this.data.update.relative.id,
-          updates: relative
-        })
+            id: this.data.update.relative.id,
+            updates: relative,
+          })
         : EmployeeActions.addOneRelative({
-          body: relative
-        })
-    )
+            body: relative,
+          })
+    );
 
-    this.loading$.subscribe(loading => {
+    this.loading$.subscribe((loading) => {
       if (loading == false) {
-        this.modalRef.close()
+        this.modalRef.close();
       }
-    })
-
+    });
   }
 
   private mapRelative(value: any): BaseAddRelativeDto | BaseUpdateRelativeDto {
@@ -114,13 +118,10 @@ export class ModalRelativeComponent implements OnInit {
       idCardAt: value.idCardAt,
       religion: value.religion,
       ethnicity: value.ethnicity,
-      sos: value.sos ?
-        this.convertBoolean.TRUE :
-        this.convertBoolean.FALSE,
+      sos: value.sos ? this.convertBoolean.TRUE : this.convertBoolean.FALSE,
       career: value.career,
       note: value.note,
-      email: value.email
-    }
+      email: value.email,
+    };
   }
-
 }

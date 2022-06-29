@@ -5,23 +5,27 @@ import {
   EventEmitter,
   Input,
   Output,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
-import {UntypedFormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {DatetimeUnitEnum, ItemContextMenu, sortEmployeeTypeEnum} from '@minhdu-fontend/enums';
-import {OvertimeService} from '../../service/overtime.service';
-import {DialogManConfirmedAtComponent} from '../dialog-manconfirmedAt/dialog-man-confirmed-at.component';
-import {Observable} from 'rxjs';
-import {Branch, Position} from '@minhdu-fontend/data-models';
-import {Payroll} from '../../+state/payroll/payroll.interface';
-import {DatePipe} from '@angular/common';
-import {checkInputNumber} from '@minhdu-fontend/utils';
-import {MatSort} from '@angular/material/sort';
+import { UntypedFormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  DatetimeUnitEnum,
+  ItemContextMenu,
+  sortEmployeeTypeEnum,
+} from '@minhdu-fontend/enums';
+import { OvertimeService } from '../../service/overtime.service';
+import { DialogManConfirmedAtComponent } from '../dialog-manconfirmedAt/dialog-man-confirmed-at.component';
+import { Observable } from 'rxjs';
+import { Branch, Position } from '@minhdu-fontend/data-models';
+import { Payroll } from '../../+state/payroll/payroll.interface';
+import { DatePipe } from '@angular/common';
+import { checkInputNumber } from '@minhdu-fontend/utils';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-payroll-time-sheet',
-  templateUrl: 'payroll-time-sheet.component.html'
+  templateUrl: 'payroll-time-sheet.component.html',
 })
 export class PayrollTimeSheetComponent implements AfterContentChecked {
   @Input() formGroup!: UntypedFormGroup;
@@ -51,8 +55,7 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
     private readonly dialog: MatDialog,
     private readonly datePipe: DatePipe,
     private ref: ChangeDetectorRef
-  ) {
-  }
+  ) {}
 
   ngAfterContentChecked() {
     this.ref.detectChanges();
@@ -73,7 +76,7 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
   updateManConfirm(id: number, manConfirmedAt: any, createdAt?: Date) {
     this.dialog.open(DialogManConfirmedAtComponent, {
       width: 'fit-content',
-      data: {id, createdAt, manConfirmedAt: !!manConfirmedAt}
+      data: { id, createdAt, manConfirmedAt: !!manConfirmedAt },
     });
   }
 
@@ -92,7 +95,6 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
   onSelectBranch(branchName: string) {
     this.EventSelectBranch.emit(branchName);
   }
-
 
   checkInputNumber(event: any) {
     return checkInputNumber(event);

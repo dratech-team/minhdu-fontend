@@ -1,14 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import {Api} from '@minhdu-fontend/constants';
-import {stakedChart} from '@minhdu-fontend/data-models';
-import {DatetimeUnitEnum, FilterOverviewEnum, OptionOverviewEnum} from '@minhdu-fontend/enums';
-import {ExportService} from '@minhdu-fontend/service';
-import {StatisticalService} from '../../service/statistical/statistical.service';
+import { Component, OnInit } from '@angular/core';
+import { Api } from '@minhdu-fontend/constants';
+import { stakedChart } from '@minhdu-fontend/data-models';
+import {
+  DatetimeUnitEnum,
+  FilterOverviewEnum,
+  OptionOverviewEnum,
+} from '@minhdu-fontend/enums';
+import { ExportService } from '@minhdu-fontend/service';
+import { StatisticalService } from '../../service/statistical/statistical.service';
 
 @Component({
   selector: 'minhdu-fontend-overview-sell',
   templateUrl: 'statistical.component.html',
-  styleUrls: ['statistical.component.scss']
+  styleUrls: ['statistical.component.scss'],
 })
 export class StatisticalComponent implements OnInit {
   Api = Api;
@@ -24,19 +28,18 @@ export class StatisticalComponent implements OnInit {
   constructor(
     private readonly statisticalService: StatisticalService,
     private readonly exportService: ExportService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.onStatistical(this.filterOverview.NATION, {
-      option: OptionOverviewEnum.SALES
+      option: OptionOverviewEnum.SALES,
     });
     this.onStatistical(this.filterOverview.YEAR, {
-      option: OptionOverviewEnum.SALES
+      option: OptionOverviewEnum.SALES,
     });
 
     this.onStatistical(this.filterOverview.CUSTOMER, {
-      option: OptionOverviewEnum.SALES
+      option: OptionOverviewEnum.SALES,
     });
   }
 
@@ -44,7 +47,7 @@ export class StatisticalComponent implements OnInit {
     const value = {
       startedAt: params.startedAt,
       endedAt: params.endedAt,
-      option: params.option
+      option: params.option,
     };
     if (!params.startedAt) {
       delete value.startedAt;

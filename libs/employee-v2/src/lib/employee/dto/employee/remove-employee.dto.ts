@@ -1,3 +1,3 @@
-import {BaseRemoveDto} from "@minhdu-fontend/base-dto";
+import { BaseRemoveDto } from '@minhdu-fontend/base-dto';
 
-export type RemoveEmployeeDto = BaseRemoveDto
+export type RemoveEmployeeDto = BaseRemoveDto;

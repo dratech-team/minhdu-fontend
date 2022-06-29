@@ -7,12 +7,9 @@ import { Employee } from '@minhdu-fontend/data-models';
 
 @Injectable({ providedIn: 'root' })
 export class PickEmployeeService {
-  constructor(
-    private readonly http: HttpClient
-  ) {
-  }
+  constructor(private readonly http: HttpClient) {}
 
   onInit(val?: any): Observable<any> {
-   return  this.http.get<any>('employee/salary/overtime', { params: val });
+    return this.http.get<any>('employee/salary/overtime', { params: val });
   }
 }

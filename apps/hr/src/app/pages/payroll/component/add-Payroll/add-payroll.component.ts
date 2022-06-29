@@ -4,19 +4,19 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import {
   MatDialog,
   MatDialogRef,
-  MAT_DIALOG_DATA
+  MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
   selectedAddedPayroll,
   selectedAddingPayroll,
-  selectedRangeDayPayroll
+  selectedRangeDayPayroll,
 } from '../../+state/payroll/payroll.selector';
 import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
 import { LoadingComponent } from '../popup-loading/loading.component';
-import {RangeDay} from "@minhdu-fontend/data-models";
-import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
+import { RangeDay } from '@minhdu-fontend/data-models';
+import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 
 @Component({
   templateUrl: 'add-payroll.component.html',

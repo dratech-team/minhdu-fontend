@@ -5,7 +5,7 @@ import { ItemContextMenu } from '../../../../enums/sell/page-type.enum';
 @Component({
   selector: 'app-mouse-right',
   templateUrl: './mouse-right.component.html',
-  styleUrls: ['./mouse-right.component.scss']
+  styleUrls: ['./mouse-right.component.scss'],
 })
 export class MouseRightComponent {
   @Input() items?: ItemContextMenu[];
@@ -27,13 +27,12 @@ export class MouseRightComponent {
   @Output() onCancel = new EventEmitter();
   @Output() onPrint = new EventEmitter();
 
-  constructor(private contextMenuService: ContextMenuService) {
-  }
+  constructor(private contextMenuService: ContextMenuService) {}
 
   public onContextMenu($event: MouseEvent, item: any): void {
     this.contextMenuService.show.next({
       event: $event,
-      item: item
+      item: item,
     });
     $event.preventDefault();
     $event.stopPropagation();
@@ -96,10 +95,10 @@ export class MouseRightComponent {
   }
 
   cancel(item: any) {
-    this.onCancel.emit(item)
+    this.onCancel.emit(item);
   }
 
   print(item: any) {
-    this.onPrint.emit(item)
+    this.onPrint.emit(item);
   }
 }

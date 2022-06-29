@@ -1,9 +1,9 @@
 export interface ProvinceRevenue {
-  province: string,
-  revenue: number
+  province: string;
+  revenue: number;
 }
 
 export interface ProvinceOrder {
-  province: string,
-  orders: number
+  province: string;
+  orders: number;
 }

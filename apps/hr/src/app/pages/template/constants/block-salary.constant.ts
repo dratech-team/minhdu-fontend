@@ -1,67 +1,67 @@
-import {SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {referencesTypeConstant} from "./references-type.constant";
-import {salaryReference} from "../enums";
+import { SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { referencesTypeConstant } from './references-type.constant';
+import { salaryReference } from '../enums';
 
 export interface BlockSalary {
-  title: string,
-  type: SalaryTypeEnum,
+  title: string;
+  type: SalaryTypeEnum;
   rate?: {
-    disabled?: boolean,
-    show?: boolean
-  }
+    disabled?: boolean;
+    show?: boolean;
+  };
   constraintHoliday?: {
-    disabled?: boolean,
-    show?: boolean
-  },
+    disabled?: boolean;
+    show?: boolean;
+  };
   constraintOvertime?: {
-    disabled?: boolean,
-    show?: boolean
-  }
+    disabled?: boolean;
+    show?: boolean;
+  };
   references?: {
-    name: string,
-    value: salaryReference
-  }[],
+    name: string;
+    value: salaryReference;
+  }[];
   price?: {
-    disabled?: boolean,
-    show?: boolean
-  },
+    disabled?: boolean;
+    show?: boolean;
+  };
   unit?: {
-    disabled?: boolean,
-    show?: boolean
-  }
-  insurance? :{
-    disabled?: boolean,
-    show?: boolean
-  }
+    disabled?: boolean;
+    show?: boolean;
+  };
+  insurance?: {
+    disabled?: boolean;
+    show?: boolean;
+  };
 }
 
 export const blockSalariesConstant: BlockSalary[] = [
   {
     title: 'Lương cơ bản',
     type: SalaryTypeEnum.BASIC,
-    insurance:{
+    insurance: {
       show: true,
-      disabled: false
+      disabled: false,
     },
     rate: {
       disabled: false,
-      show: true
+      show: true,
     },
     price: {
       disabled: false,
-      show: true
-    }
+      show: true,
+    },
   },
   {
     title: 'Phụ cấp lương',
     type: SalaryTypeEnum.STAY,
     rate: {
       disabled: false,
-      show: true
+      show: true,
     },
     price: {
       disabled: false,
-      show: true
+      show: true,
     },
   },
   {
@@ -70,23 +70,23 @@ export const blockSalariesConstant: BlockSalary[] = [
     references: referencesTypeConstant,
     constraintHoliday: {
       disabled: false,
-      show: true
+      show: true,
     },
     constraintOvertime: {
       disabled: false,
-      show: true
+      show: true,
     },
     rate: {
       disabled: false,
-      show: true
+      show: true,
     },
     price: {
       disabled: false,
-      show: true
+      show: true,
     },
     unit: {
       disabled: false,
-      show: true
+      show: true,
     },
   },
   {
@@ -94,23 +94,23 @@ export const blockSalariesConstant: BlockSalary[] = [
     type: SalaryTypeEnum.OVERTIME,
     rate: {
       disabled: false,
-      show: true
+      show: true,
     },
     price: {
       disabled: false,
-      show: true
-    }
+      show: true,
+    },
   },
   {
     title: 'Ngày lễ',
     type: SalaryTypeEnum.HOLIDAY,
     rate: {
       disabled: false,
-      show: true
+      show: true,
     },
     price: {
       disabled: false,
-      show: true
-    }
+      show: true,
+    },
   },
 ];

@@ -27,8 +27,11 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import {ProductModule} from "../product/product.module";
-import {IoiReceiptDialogComponent, VisibleIoiReceiptComponent} from "./components";
+import { ProductModule } from '../product/product.module';
+import {
+  IoiReceiptDialogComponent,
+  VisibleIoiReceiptComponent,
+} from './components';
 
 @NgModule({
   imports: [
@@ -54,21 +57,14 @@ import {IoiReceiptDialogComponent, VisibleIoiReceiptComponent} from "./component
     NzInputModule,
     NzPopoverModule,
     NzButtonModule,
-    ProductModule
+    ProductModule,
   ],
   declarations: [
     IoiReceiptDialogComponent,
     IoiPtreceiComponent,
-    VisibleIoiReceiptComponent
+    VisibleIoiReceiptComponent,
   ],
-  exports: [
-    VisibleIoiReceiptComponent
-  ],
-  providers: [
-    DatePipe,
-    CategoryService,
-    IoiReceiptService
-  ]
+  exports: [VisibleIoiReceiptComponent],
+  providers: [DatePipe, CategoryService, IoiReceiptService],
 })
-export class IoiReceiptModule {
-}
+export class IoiReceiptModule {}

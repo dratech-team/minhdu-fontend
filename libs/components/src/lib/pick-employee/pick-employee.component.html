@@ -1,91 +1,110 @@
-<div style='min-width: 80vw; width: 100%'>
-  <div class='font-weight-bold mb-1'>Đã chọn:({{this.employeesSelected.length}}/{{total}})</div>
+<div style="min-width: 80vw; width: 100%">
+  <div class="font-weight-bold mb-1">
+    Đã chọn:({{ this.employeesSelected.length }}/{{ total }})
+  </div>
   <nz-table
     [nzLoading]="loading"
     nzShowPagination="false"
-    [formGroup]='formGroupTable'
-    style='width:100%'
+    [formGroup]="formGroupTable"
+    style="width: 100%"
     [nzData]="employees"
     nzSize="small"
-    [nzScroll]="{x: '80vw', y: '48vh'}"
+    [nzScroll]="{ x: '80vw', y: '48vh' }"
   >
-    <thead style='z-index: 2'>
-    <tr>
-      <th style='width: 50px'>
-        <div class='text-center'>stt</div>
-        <input nz-input disabled>
-      </th>
-      <th>
-        <div class='text-center'>Tên nhân viên</div>
-        <input nz-input
-               type='search'
-               placeholder='Trần Gia Hiệu'
-               formControlName='name'>
-      </th>
-      <th>
-        <div class='text-center'>Đơn vị</div>
-        <nz-select style="width: 100%" formControlName="branch">
-          <nz-option *ngFor='let branch of branches$ | async' [nzValue]='branch.name'
-                     [nzLabel]="branch.name"></nz-option>
-        </nz-select>
-      </th>
-      <th>
-        <div class='text-center'>Chức vụ</div>
-        <nz-select style="width: 100%" formControlName="position">
-          <nz-option *ngFor='let position of positions$ | async' [nzValue]='position.name'
-                     [nzLabel]="position.name"></nz-option>
-        </nz-select>
-      </th>
-      <th>
-        <div class='text-center'>Danh mục</div>
-        <input nz-input
-               type='search'
-               disabled
-        >
-      </th>
-      <th style='width: 100px;'>
-        <div class=' text-center' style='background: white'>Tất cả</div>
-        <div>
-          <mat-checkbox class='example-margin  mt-2 mx-auto'
-                        [checked]='isSelectAll'
-                        [indeterminate]='someComplete()'
-                        (change)='setAll($event.checked)'>
-          </mat-checkbox>
-        </div>
-      </th>
-    </tr>
+    <thead style="z-index: 2">
+      <tr>
+        <th style="width: 50px">
+          <div class="text-center">stt</div>
+          <input nz-input disabled />
+        </th>
+        <th>
+          <div class="text-center">Tên nhân viên</div>
+          <input
+            nz-input
+            type="search"
+            placeholder="Trần Gia Hiệu"
+            formControlName="name"
+          />
+        </th>
+        <th>
+          <div class="text-center">Đơn vị</div>
+          <nz-select style="width: 100%" formControlName="branch">
+            <nz-option
+              *ngFor="let branch of branches$ | async"
+              [nzValue]="branch.name"
+              [nzLabel]="branch.name"
+            ></nz-option>
+          </nz-select>
+        </th>
+        <th>
+          <div class="text-center">Chức vụ</div>
+          <nz-select style="width: 100%" formControlName="position">
+            <nz-option
+              *ngFor="let position of positions$ | async"
+              [nzValue]="position.name"
+              [nzLabel]="position.name"
+            ></nz-option>
+          </nz-select>
+        </th>
+        <th>
+          <div class="text-center">Danh mục</div>
+          <input nz-input type="search" disabled />
+        </th>
+        <th style="width: 100px">
+          <div class="text-center" style="background: white">Tất cả</div>
+          <div>
+            <mat-checkbox
+              class="example-margin mt-2 mx-auto"
+              [checked]="isSelectAll"
+              [indeterminate]="someComplete()"
+              (change)="setAll($event.checked)"
+            >
+            </mat-checkbox>
+          </div>
+        </th>
+      </tr>
     </thead>
     <tbody>
-    <tr *ngFor='let employee of employees; let i = index'>
-      <td class='pointer'>{{i + 1}}</td>
-      <td class='pointer'>{{employee.lastName}}</td>
-      <td class='pointer'>{{employee.branch?.name}}</td>
-      <td class='pointer'>{{employee.position?.name}}</td>
-      <td class='pointer'>{{employee.category?.name}}</td>
-      <td class='pointer'>
-        <div class='mt-2'>
-          <mat-checkbox *ngIf="!employee?.category else category"
-                        (change)='updateSelect(employee)'
-                        [checked]='checkEmployee(employee)'>
-          </mat-checkbox>
-          <ng-template #category>
-            <span (click)="removeEmpInCategory(employee)" style="color: red">bỏ chọn</span>
-          </ng-template>
-        </div>
-      </td>
-    </tr>
-    <tr *ngIf="employees.length < total">
-      <td colspan="6">
-        <div  class="w-100 d-flex justify-content-start" style="position: relative">
-          <button
-            style="position: sticky; left: 45%"
-            [nzLoading]="loadMore"
-            nz-button
-            nzType="primary"
-            (click)="onScroll()">Tải thêm {{total - employees.length}} nhân viên</button>
-        </div>
-      </td>
-    </tr>
+      <tr *ngFor="let employee of employees; let i = index">
+        <td class="pointer">{{ i + 1 }}</td>
+        <td class="pointer">{{ employee.lastName }}</td>
+        <td class="pointer">{{ employee.branch?.name }}</td>
+        <td class="pointer">{{ employee.position?.name }}</td>
+        <td class="pointer">{{ employee.category?.name }}</td>
+        <td class="pointer">
+          <div class="mt-2">
+            <mat-checkbox
+              *ngIf="!employee?.category; else category"
+              (change)="updateSelect(employee)"
+              [checked]="checkEmployee(employee)"
+            >
+            </mat-checkbox>
+            <ng-template #category>
+              <span (click)="removeEmpInCategory(employee)" style="color: red"
+                >bỏ chọn</span
+              >
+            </ng-template>
+          </div>
+        </td>
+      </tr>
+      <tr *ngIf="employees.length < total">
+        <td colspan="6">
+          <div
+            class="w-100 d-flex justify-content-start"
+            style="position: relative"
+          >
+            <button
+              style="position: sticky; left: 45%"
+              [nzLoading]="loadMore"
+              nz-button
+              nzType="primary"
+              (click)="onScroll()"
+            >
+              Tải thêm {{ total - employees.length }} nhân viên
+            </button>
+          </div>
+        </td>
+      </tr>
     </tbody>
   </nz-table>
 </div>
@@ -94,4 +113,3 @@
     text-align: center;
   }
 </style>
-

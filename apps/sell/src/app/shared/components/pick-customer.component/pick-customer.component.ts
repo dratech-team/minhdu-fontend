@@ -1,5 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewContainerRef } from '@angular/core';
-import { ControlContainer, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewContainerRef,
+} from '@angular/core';
+import {
+  ControlContainer,
+  UntypedFormControl,
+  UntypedFormGroup,
+} from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { CustomerEntity } from '../../../pages/customer/entities';
 import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
@@ -8,17 +19,20 @@ import { CustomerActions } from '../../../pages/customer/+state';
 import { CustomerQuery } from '../../../pages/customer/+state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { CustomerConstant, ResourcesConstant } from '../../../pages/customer/constants';
+import {
+  CustomerConstant,
+  ResourcesConstant,
+} from '../../../pages/customer/constants';
 
 @Component({
   selector: 'app-pick-customer',
-  templateUrl: 'pick-customer.component.html'
+  templateUrl: 'pick-customer.component.html',
 })
 export class PickCustomerComponent implements OnInit {
   customers$ = this.customerQuery.selectAll();
   @Input() customers: CustomerEntity[] = [];
   @Input() pickOne = false;
-  @Input() formGroup!:UntypedFormGroup;
+  @Input() formGroup!: UntypedFormGroup;
   @Input() closeable = false;
   @Output() checkEvent = new EventEmitter<number[]>();
   @Input() data!: any;
@@ -31,45 +45,51 @@ export class PickCustomerComponent implements OnInit {
   pageSizeTable = 5;
   isSelectAll = false;
   customerIds: number[] = [];
-  formGroupCustomer = new UntypedFormGroup(
-    {
-      name: new UntypedFormControl(''),
-      type: new UntypedFormControl(''),
-      resource: new UntypedFormControl('')
-    });
+  formGroupCustomer = new UntypedFormGroup({
+    name: new UntypedFormControl(''),
+    type: new UntypedFormControl(''),
+    resource: new UntypedFormControl(''),
+  });
 
   constructor(
     private readonly actions$: Actions,
     private readonly customerQuery: CustomerQuery,
     private readonly modal: NzModalService,
     private readonly viewContentRef: ViewContainerRef,
-    private readonly modalRef: NzModalRef,
-  ) {
-  }
+    private readonly modalRef: NzModalRef
+  ) {}
 
   ngOnInit(): void {
     if (this.customers.length === 0) {
-      this.actions$.dispatch(CustomerActions.loadAll({ search: { take: 30, skip: 0 } }));
-      this.customers$.subscribe(customers => {
+      this.actions$.dispatch(
+        CustomerActions.loadAll({ search: { take: 30, skip: 0 } })
+      );
+      this.customers$.subscribe((customers) => {
         this.customers = JSON.parse(JSON.stringify(customers));
       });
     }
-    this.formGroupCustomer.valueChanges.pipe(
-      debounceTime(1000),
-      tap((value) => {
-        this.actions$.dispatch(CustomerActions.loadAll({ search: this.customer(value) }));
-      })
-    ).subscribe();
+    this.formGroupCustomer.valueChanges
+      .pipe(
+        debounceTime(1000),
+        tap((value) => {
+          this.actions$.dispatch(
+            CustomerActions.loadAll({ search: this.customer(value) })
+          );
+        })
+      )
+      .subscribe();
   }
 
   onPagination(pageIndex: number) {
     const count = this.customerQuery.getCount();
     const val = this.formGroupCustomer.value;
     if (pageIndex * this.pageSizeTable >= count) {
-      this.actions$.dispatch(CustomerActions.loadAll({
-        search: this.customer(val, true),
-        isPaginate: true
-      }));
+      this.actions$.dispatch(
+        CustomerActions.loadAll({
+          search: this.customer(val, true),
+          isPaginate: true,
+        })
+      );
     }
   }
 
@@ -79,7 +99,7 @@ export class PickCustomerComponent implements OnInit {
       take: this.pageSize,
       lastName: val.name.trim(),
       type: val.type,
-      resource: val.resource
+      resource: val.resource,
     };
   }
 
@@ -90,7 +110,9 @@ export class PickCustomerComponent implements OnInit {
     } else {
       this.customerIds.push(id);
     }
-    this.isSelectAll = this.customers !== null && this.customers.every(e => this.customerIds.includes(e.id));
+    this.isSelectAll =
+      this.customers !== null &&
+      this.customers.every((e) => this.customerIds.includes(e.id));
     this.checkEvent.emit(this.customerIds);
   }
 
@@ -99,7 +121,8 @@ export class PickCustomerComponent implements OnInit {
       return false;
     }
     return (
-      this.customers.filter(e => this.customerIds.includes(e.id)).length > 0 && !this.isSelectAll
+      this.customers.filter((e) => this.customerIds.includes(e.id)).length >
+        0 && !this.isSelectAll
     );
   }
 
@@ -108,22 +131,20 @@ export class PickCustomerComponent implements OnInit {
     if (this.customers == null) {
       return;
     }
-    this.customers?.forEach(customer => {
-        if (select) {
-          if (!this.customerIds.includes(customer.id)) {
-            this.customerIds.push(customer.id);
-          }
-        } else {
-          const index = this.customerIds.indexOf(customer.id);
-          if (index > -1) {
-            this.customerIds.splice(index, 1);
-          }
+    this.customers?.forEach((customer) => {
+      if (select) {
+        if (!this.customerIds.includes(customer.id)) {
+          this.customerIds.push(customer.id);
+        }
+      } else {
+        const index = this.customerIds.indexOf(customer.id);
+        if (index > -1) {
+          this.customerIds.splice(index, 1);
         }
       }
-    );
+    });
     this.checkEvent.emit(this.customerIds);
   }
-
 
   closeDialog() {
     this.modalRef.close(this.formGroupCustomer.value);
@@ -136,7 +157,7 @@ export class PickCustomerComponent implements OnInit {
       nzViewContainerRef: this.viewContentRef,
       nzFooter: null,
       nzWidth: '65vw',
-      nzMaskClosable: false
+      nzMaskClosable: false,
     });
   }
 }

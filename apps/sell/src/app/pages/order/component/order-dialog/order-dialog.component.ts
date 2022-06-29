@@ -1,18 +1,22 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
-import {PaymentType} from '@minhdu-fontend/enums';
-import {OrderActions, OrderQuery} from '../../+state';
-import {DatePipe} from '@angular/common';
-import {CustomerEntity} from '../../../customer/entities';
-import {CommodityQuery} from '../../../commodity/+state';
-import {CustomerQuery} from '../../../customer/+state';
-import {Actions} from '@datorama/akita-ng-effects';
-import {CommodityEntity} from '../../../commodity/entities';
-import {NzModalRef} from 'ng-zorro-antd/modal';
-import {NzMessageService} from 'ng-zorro-antd/message';
+import { Component, Input, OnInit } from '@angular/core';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { PaymentType } from '@minhdu-fontend/enums';
+import { OrderActions, OrderQuery } from '../../+state';
+import { DatePipe } from '@angular/common';
+import { CustomerEntity } from '../../../customer/entities';
+import { CommodityQuery } from '../../../commodity/+state';
+import { CustomerQuery } from '../../../customer/+state';
+import { Actions } from '@datorama/akita-ng-effects';
+import { CommodityEntity } from '../../../commodity/entities';
+import { NzModalRef } from 'ng-zorro-antd/modal';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
-  templateUrl: 'order-dialog.component.html'
+  templateUrl: 'order-dialog.component.html',
 })
 export class OrderDialogComponent implements OnInit {
   @Input() data: any;
@@ -24,7 +28,7 @@ export class OrderDialogComponent implements OnInit {
   districtId!: number;
   provinceId!: number;
   stepIndex = 0;
-  loading$ = this.orderQuery.select(state => state.loading);
+  loading$ = this.orderQuery.select((state) => state.loading);
 
   constructor(
     private readonly actions$: Actions,
@@ -35,25 +39,29 @@ export class OrderDialogComponent implements OnInit {
     private readonly orderQuery: OrderQuery,
     private readonly modalRef: NzModalRef,
     private readonly message: NzMessageService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     if (this.data?.isUpdate) {
       this.formGroup = this.formBuilder.group({
-        createdAt: [this.datePipe.transform(
-          this.data.order.createdAt, 'yyyy-MM-dd')
-          , Validators.required],
-        endedAt: [this.datePipe.transform(
-          this.data.order?.endedAt, 'yyyy-MM-dd')],
-        deliveredAt: [this.datePipe.transform(
-          this.data.order?.deliveredAt, 'yyyy-MM-dd')],
+        createdAt: [
+          this.datePipe.transform(this.data.order.createdAt, 'yyyy-MM-dd'),
+          Validators.required,
+        ],
+        endedAt: [
+          this.datePipe.transform(this.data.order?.endedAt, 'yyyy-MM-dd'),
+        ],
+        deliveredAt: [
+          this.datePipe.transform(this.data.order?.deliveredAt, 'yyyy-MM-dd'),
+        ],
         explain: [this.data.order?.explain],
         province: [this.data.order.province, Validators.required],
         district: [this.data.order?.district],
         ward: [this.data.order?.ward],
         customerId: [this.data.order.customerId],
-        commodityIds: [this.data.order?.commodities.map((val: CommodityEntity) => val.id)]
+        commodityIds: [
+          this.data.order?.commodities.map((val: CommodityEntity) => val.id),
+        ],
       });
     } else {
       this.formGroup = this.formBuilder.group({
@@ -64,11 +72,10 @@ export class OrderDialogComponent implements OnInit {
         province: ['', Validators.required],
         district: [],
         ward: [],
-        customerId: [this.data?.customerId ||''],
-        commodityIds: [[]]
+        customerId: [this.data?.customerId || ''],
+        commodityIds: [[]],
       });
     }
-
   }
 
   get checkValid() {
@@ -91,26 +98,28 @@ export class OrderDialogComponent implements OnInit {
       explain: val.explain,
       deliveredAt: val.deliveredAt,
       createdAt: val.createdAt,
-      endedAt: val.endedAt
+      endedAt: val.endedAt,
     };
     if (!val.deliveredAt) {
-      delete order.deliveredAt
+      delete order.deliveredAt;
     }
-    if(!order.districtId){
-      delete order.districtId
+    if (!order.districtId) {
+      delete order.districtId;
     }
-    if(!order.wardId){
-      delete order.wardId
+    if (!order.wardId) {
+      delete order.wardId;
     }
     if (this.data?.isUpdate) {
-      this.actions$.dispatch(OrderActions.update({
-        id: this.data.order.id,
-        updates: order
-      }));
+      this.actions$.dispatch(
+        OrderActions.update({
+          id: this.data.order.id,
+          updates: order,
+        })
+      );
     } else {
-      this.actions$.dispatch(OrderActions.addOne({body: order}));
+      this.actions$.dispatch(OrderActions.addOne({ body: order }));
     }
-    this.loading$.subscribe(loading => {
+    this.loading$.subscribe((loading) => {
       if (loading === false) {
         this.modalRef.close();
       }
@@ -122,7 +131,6 @@ export class OrderDialogComponent implements OnInit {
   }
 
   next(): any {
-
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;

@@ -7,5 +7,3 @@ export * from './lib/service/nation.service';
 export * from './lib/service/province.service';
 export * from './lib/service/district.service';
 export * from './lib/service/ward.service';
-
-

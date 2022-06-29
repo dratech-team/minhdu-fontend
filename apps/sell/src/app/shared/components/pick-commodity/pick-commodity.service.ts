@@ -1,5 +1,8 @@
 import { Store } from '@ngrx/store';
-import { CommodityAction, CommodityQuery } from '../../../pages/commodity/+state';
+import {
+  CommodityAction,
+  CommodityQuery,
+} from '../../../pages/commodity/+state';
 import { Injectable } from '@angular/core';
 import { SearchCommodityDto } from '../../../pages/commodity/dto';
 
@@ -10,15 +13,18 @@ export class PickCommodityService {
   constructor(
     private readonly store: Store,
     private readonly commodityQuery: CommodityQuery
-  ) {
-  }
+  ) {}
 
   loadInit() {
-    return this.store.dispatch(CommodityAction.loadAll({ search: { take: 30, skip: 0 } }));
+    return this.store.dispatch(
+      CommodityAction.loadAll({ search: { take: 30, skip: 0 } })
+    );
   }
 
   scrollCommodities(val: SearchCommodityDto['search']) {
-    this.store.dispatch(CommodityAction.loadAll({ search: val, isPaginate: true }));
+    this.store.dispatch(
+      CommodityAction.loadAll({ search: val, isPaginate: true })
+    );
   }
 
   commodities() {

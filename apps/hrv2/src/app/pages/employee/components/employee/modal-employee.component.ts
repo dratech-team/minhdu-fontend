@@ -1,57 +1,65 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
-import {EmployeeType, RecipeType} from '@minhdu-fontend/enums';
-import {DatePipe} from '@angular/common';
-import {checkInputNumber} from '@minhdu-fontend/utils';
-import {RecipeTypesConstant} from '@minhdu-fontend/constants';
-import {NzMessageService} from 'ng-zorro-antd/message';
-import {NzModalRef} from 'ng-zorro-antd/modal';
-import {map} from 'rxjs/operators';
+import { Component, Input, OnInit } from '@angular/core';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { EmployeeType, RecipeType } from '@minhdu-fontend/enums';
+import { DatePipe } from '@angular/common';
+import { checkInputNumber } from '@minhdu-fontend/utils';
+import { RecipeTypesConstant } from '@minhdu-fontend/constants';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalRef } from 'ng-zorro-antd/modal';
+import { map } from 'rxjs/operators';
 import {
   BranchActions,
   BranchEntity,
   BranchQuery,
   DepartmentActions,
   DepartmentQuery,
-  PositionEntity
+  PositionEntity,
 } from '@minhdu-fontend/orgchart-v2';
-import {Actions} from '@datorama/akita-ng-effects';
-import {EmployeeActions, EmployeeQuery} from '@minhdu-fontend/employee-v2';
-import {FlatSalaryTypeConstant} from '../../constants/flat-salary-type.constant';
-import {FlatSalaryTypeEnum} from '../../enums/flat-salary-type.enum';
-import {ModalEmployeeData} from '../../data/modal-employee.data';
-import {EmployeeTypeConstant} from '../../constants/employee-type.constant';
+import { Actions } from '@datorama/akita-ng-effects';
+import { EmployeeActions, EmployeeQuery } from '@minhdu-fontend/employee-v2';
+import { FlatSalaryTypeConstant } from '../../constants/flat-salary-type.constant';
+import { FlatSalaryTypeEnum } from '../../enums/flat-salary-type.enum';
+import { ModalEmployeeData } from '../../data/modal-employee.data';
+import { EmployeeTypeConstant } from '../../constants/employee-type.constant';
 import {
   BaseAddEmployeeDto,
-  BaseUpdateEmployeeDto
-} from "../../../../../../../../libs/employee-v2/src/lib/employee/dto/employee";
+  BaseUpdateEmployeeDto,
+} from '../../../../../../../../libs/employee-v2/src/lib/employee/dto/employee';
 
 @Component({
-  templateUrl: 'modal-employee.component.html'
+  templateUrl: 'modal-employee.component.html',
 })
 export class ModalEmployeeComponent implements OnInit {
   @Input() data!: ModalEmployeeData;
 
-  branches$ = this.branchQuery.selectAll().pipe(map(branches => {
-    if (branches.length === 1) {
-      this.formGroup.get('branch')?.setValue(branches[0], {emitEvent: false});
-      if (branches[0].positions)
-        this.lstPosition = branches[0].positions;
-    }
-    return branches;
-  }));
+  branches$ = this.branchQuery.selectAll().pipe(
+    map((branches) => {
+      if (branches.length === 1) {
+        this.formGroup
+          .get('branch')
+          ?.setValue(branches[0], { emitEvent: false });
+        if (branches[0].positions) this.lstPosition = branches[0].positions;
+      }
+      return branches;
+    })
+  );
   categories$ = this.departmentQuery.selectAll();
-  loading$ = this.employeeQuery.select(state => state.loading);
+  loading$ = this.employeeQuery.select((state) => state.loading);
 
-  lstPosition: PositionEntity [] = [];
-  flatSalaryTypeConstant = FlatSalaryTypeConstant.filter(item => item.value !== FlatSalaryTypeEnum.ALL);
+  lstPosition: PositionEntity[] = [];
+  flatSalaryTypeConstant = FlatSalaryTypeConstant.filter(
+    (item) => item.value !== FlatSalaryTypeEnum.ALL
+  );
   recipeTypesConstant = RecipeTypesConstant;
   employeeTypeConstant = EmployeeTypeConstant;
   submitting = false;
   recipeType = RecipeType;
   typeEmployee = EmployeeType;
   formGroup!: UntypedFormGroup;
-
 
   constructor(
     public datePipe: DatePipe,
@@ -62,21 +70,22 @@ export class ModalEmployeeComponent implements OnInit {
     private readonly message: NzMessageService,
     private readonly modalRef: NzModalRef,
     private readonly departmentQuery: DepartmentQuery
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.actions$.dispatch(BranchActions.loadAll({}));
-    this.actions$.dispatch(DepartmentActions.loadAll({}))
+    this.actions$.dispatch(DepartmentActions.loadAll({}));
     this.lstPosition = this.data?.update?.employee?.branch?.positions || [];
-    const employeeInit = this.data?.add?.employee || this.data?.update?.employee;
+    const employeeInit =
+      this.data?.add?.employee || this.data?.update?.employee;
     this.formGroup = this.formBuilder.group({
       identify: [employeeInit?.identify],
       issuedBy: [employeeInit?.issuedBy],
       birthplace: [employeeInit?.birthplace],
       idCardAt: [
-        employeeInit?.idCardAt ?
-          this.datePipe.transform(employeeInit.idCardAt, 'yyyy-MM-dd') : ''
+        employeeInit?.idCardAt
+          ? this.datePipe.transform(employeeInit.idCardAt, 'yyyy-MM-dd')
+          : '',
       ],
       email: [employeeInit?.email],
       workday: [employeeInit?.workday],
@@ -84,25 +93,29 @@ export class ModalEmployeeComponent implements OnInit {
       workPhone: [employeeInit?.workPhone],
       note: [employeeInit?.note],
       workedAt: [
-        employeeInit?.workedAt ?
-          this.datePipe.transform(employeeInit.workedAt, 'yyyy-MM-dd') : ''
+        employeeInit?.workedAt
+          ? this.datePipe.transform(employeeInit.workedAt, 'yyyy-MM-dd')
+          : '',
       ],
       createdAt: [
-        employeeInit?.createdAt ?
-          this.datePipe.transform(employeeInit.createdAt, 'yyyy-MM-dd') : '', Validators.required
+        employeeInit?.createdAt
+          ? this.datePipe.transform(employeeInit.createdAt, 'yyyy-MM-dd')
+          : '',
+        Validators.required,
       ],
       isFlatSalary: [
         employeeInit?.isFlatSalary
           ? FlatSalaryTypeEnum.FLAT_SALARY
-          : FlatSalaryTypeEnum.NOT_FLAT_SALARY
+          : FlatSalaryTypeEnum.NOT_FLAT_SALARY,
       ],
       lastName: [employeeInit?.lastName, Validators.required],
       address: [employeeInit?.address, Validators.required],
       gender: [employeeInit?.gender, Validators.required],
       birthday: [
-        employeeInit?.birthday ?
-          this.datePipe.transform(employeeInit.birthday, 'yyyy-MM-dd') : '',
-        Validators.required
+        employeeInit?.birthday
+          ? this.datePipe.transform(employeeInit.birthday, 'yyyy-MM-dd')
+          : '',
+        Validators.required,
       ],
       ethnicity: [employeeInit?.ethnicity],
       religion: [employeeInit?.religion],
@@ -111,29 +124,34 @@ export class ModalEmployeeComponent implements OnInit {
       createAtContract: [''],
       expiredAtContract: [''],
       recipeType: [employeeInit?.recipeType || this.recipeType.CT2],
-      type: [employeeInit ?
-        employeeInit.type : EmployeeType.FULL_TIME, Validators.required],
+      type: [
+        employeeInit ? employeeInit.type : EmployeeType.FULL_TIME,
+        Validators.required,
+      ],
       category: [employeeInit?.category],
       province: [employeeInit?.ward?.district?.province, Validators.required],
       district: [employeeInit?.ward?.district, Validators.required],
       ward: [employeeInit?.ward, Validators.required],
       branch: [employeeInit?.branch, Validators.required],
-      position: [employeeInit?.position, Validators.required]
-
+      position: [employeeInit?.position, Validators.required],
     });
 
-    this.formGroup.get('branch')?.valueChanges.subscribe((val: BranchEntity) => {
-      if (val.positions) {
-        this.formGroup.get('position')?.setValue('');
-        this.lstPosition = val.positions;
-      }
-    });
+    this.formGroup
+      .get('branch')
+      ?.valueChanges.subscribe((val: BranchEntity) => {
+        if (val.positions) {
+          this.formGroup.get('position')?.setValue('');
+          this.lstPosition = val.positions;
+        }
+      });
 
-    this.formGroup.get('position')?.valueChanges.subscribe((val: PositionEntity) => {
-      this.formGroup.get('workday')?.patchValue(val.workday);
-    });
+    this.formGroup
+      .get('position')
+      ?.valueChanges.subscribe((val: PositionEntity) => {
+        this.formGroup.get('workday')?.patchValue(val.workday);
+      });
 
-    this.formGroup.get('type')?.valueChanges.subscribe(val => {
+    this.formGroup.get('type')?.valueChanges.subscribe((val) => {
       if (val === EmployeeType.SEASONAL) {
         this.formGroup.get('recipeType')?.setValue(RecipeType.CT3);
       }
@@ -157,15 +175,16 @@ export class ModalEmployeeComponent implements OnInit {
     }
 
     const employee = this.mapEmployee(value);
-    this.actions$.dispatch(this.data.update
-      ? EmployeeActions.update({
-        id: this.data.update.employee.id,
-        updates: employee as BaseUpdateEmployeeDto
-      })
-      : EmployeeActions.addOne({body: employee as BaseAddEmployeeDto})
+    this.actions$.dispatch(
+      this.data.update
+        ? EmployeeActions.update({
+            id: this.data.update.employee.id,
+            updates: employee as BaseUpdateEmployeeDto,
+          })
+        : EmployeeActions.addOne({ body: employee as BaseAddEmployeeDto })
     );
 
-    this.loading$.subscribe(loading => {
+    this.loading$.subscribe((loading) => {
       if (loading === false) {
         this.modalRef.close();
       }
@@ -199,8 +218,10 @@ export class ModalEmployeeComponent implements OnInit {
       issuedBy: value.issuedBy,
       birthday: value.birthday ? new Date(value.birthday) : undefined,
       email: value.email ? value.email : undefined,
-      isFlatSalary: value.type === EmployeeType.FULL_TIME ?
-        value.isFlatSalary === FlatSalaryTypeEnum.FLAT_SALARY : false,
+      isFlatSalary:
+        value.type === EmployeeType.FULL_TIME
+          ? value.isFlatSalary === FlatSalaryTypeEnum.FLAT_SALARY
+          : false,
       positionId: value.position.id,
       branchId: value.branch.id,
       wardId: value.ward.id,
@@ -212,13 +233,13 @@ export class ModalEmployeeComponent implements OnInit {
           : undefined,
         expiredAt: value.expiredAtContract
           ? new Date(value.expiredAtContract)
-          : undefined
+          : undefined,
       },
       categoryId: value.category,
       phone: value.phone,
       workPhone: value.workPhone,
       mst: value.mst,
       bhyt: value.bhyt,
-    }
+    };
   }
 }

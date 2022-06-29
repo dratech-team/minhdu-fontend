@@ -7,21 +7,20 @@ import { LimitedAccessComponent } from './containers/limited-access/limited-acce
 const routes: Routes = [
   {
     path: '',
-    component: systemHistoryComponent
+    component: systemHistoryComponent,
   },
   {
     path: 'quan-ly-tai-khoan',
-    component: AccountManagementComponent
+    component: AccountManagementComponent,
   },
   {
     path: 'han-che-truy-cap',
-    component: LimitedAccessComponent
-  }
+    component: LimitedAccessComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class SystemRoutingModule {
-}
+export class SystemRoutingModule {}

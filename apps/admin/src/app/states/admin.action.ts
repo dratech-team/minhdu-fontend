@@ -1,5 +1,5 @@
-import {createAction, props} from '@ngrx/store';
-import {MenuAdminEnum} from "../../enums/menu-admin.enum";
+import { createAction, props } from '@ngrx/store';
+import { MenuAdminEnum } from '../../enums/menu-admin.enum';
 
 export const updateStateMenu = createAction(
   '[UPDATE_STATE_ADMIN] Update State Admin',
@@ -7,5 +7,5 @@ export const updateStateMenu = createAction(
 );
 
 export const AdminAction = {
-  updateStateMenu
-}
+  updateStateMenu,
+};

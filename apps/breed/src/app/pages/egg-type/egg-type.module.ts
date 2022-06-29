@@ -4,11 +4,7 @@ import { EggTypeService } from './services/egg-type.service';
 import { EggTypeEffect } from './state/egg-type.effect';
 
 @NgModule({
-  imports: [
-    AkitaNgEffectsModule.forFeature([EggTypeEffect])
-  ],
-  providers: [EggTypeService]
+  imports: [AkitaNgEffectsModule.forFeature([EggTypeEffect])],
+  providers: [EggTypeService],
 })
-export class EggTypeModule {
-
-}
+export class EggTypeModule {}

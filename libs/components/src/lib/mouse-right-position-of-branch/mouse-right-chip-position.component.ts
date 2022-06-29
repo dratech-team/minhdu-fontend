@@ -11,15 +11,12 @@ export class MouseRightChipPositionComponent {
   @Output() payroll = new EventEmitter();
   @Output() overtime = new EventEmitter();
 
-  constructor(
-    private contextMenuService: ContextMenuService
-  ) {
-  }
+  constructor(private contextMenuService: ContextMenuService) {}
 
   public onContextMenu($event: MouseEvent, item: any): void {
     this.contextMenuService.show.next({
       event: $event,
-      item: item
+      item: item,
     });
     $event.preventDefault();
     $event.stopPropagation();

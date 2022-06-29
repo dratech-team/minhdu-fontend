@@ -1,7 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Holiday, HolidayDTO } from './holiday.interface';
 
-
 export const AddHoliday = createAction(
   '[Add_HOLIDAY] Add HOLIDAY',
   props<{ holiday: any }>()
@@ -16,9 +15,7 @@ export const handleHolidayError = createAction(
   '[API_HOLIDAY] Handle HOLIDAY Error'
 );
 
-export const LoadAllHoliday = createAction(
-  '[Load_HOLIDAY] Load All holiday'
-);
+export const LoadAllHoliday = createAction('[Load_HOLIDAY] Load All holiday');
 
 export const LoadInit = createAction(
   '[Load_HOLIDAY] Load Init holiday',
@@ -27,7 +24,7 @@ export const LoadInit = createAction(
 
 export const LoadInitHolidaySuccess = createAction(
   '[Load_HOLIDAY] Load holiday Success',
-  props<{ holidays: Holiday[], total: number }>()
+  props<{ holidays: Holiday[]; total: number }>()
 );
 
 export const LoadMoreHoliday = createAction(
@@ -37,12 +34,12 @@ export const LoadMoreHoliday = createAction(
 
 export const LoadMoreHolidaySuccess = createAction(
   '[Load_HOLIDAY] Load More holiday Success',
-  props<{ holidays: Holiday[], total: number }>()
+  props<{ holidays: Holiday[]; total: number }>()
 );
 
 export const UpdateHoliday = createAction(
   '[UPDATE_HOLIDAY] Update Holiday',
-  props<{ id: number, holiday: any, updateDetail: boolean }>()
+  props<{ id: number; holiday: any; updateDetail: boolean }>()
 );
 
 export const DeleteHoliday = createAction(
@@ -51,7 +48,15 @@ export const DeleteHoliday = createAction(
 );
 export const getHoliday = createAction(
   '[GET_HOLIDAY] Get One Holiday',
-  props<{ id: number, params?: { position?: string, branch?: string, code?: number, name?: string } }>()
+  props<{
+    id: number;
+    params?: {
+      position?: string;
+      branch?: string;
+      code?: number;
+      name?: string;
+    };
+  }>()
 );
 
 export const getHolidaySuccess = createAction(
@@ -61,7 +66,7 @@ export const getHolidaySuccess = createAction(
 
 export const updateStateHoliday = createAction(
   '[State_HOLIDAY] Update state Holiday ',
-  props<{ branch?: string, position?: string }>()
+  props<{ branch?: string; position?: string }>()
 );
 
 export const HolidayAction = {
@@ -77,5 +82,5 @@ export const HolidayAction = {
   DeleteHoliday,
   getHoliday,
   getHolidaySuccess,
-  updateStateHoliday
+  updateStateHoliday,
 };

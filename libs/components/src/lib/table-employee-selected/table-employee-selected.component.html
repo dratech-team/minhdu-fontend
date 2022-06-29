@@ -1,66 +1,68 @@
-<div style='min-width: 850px'>
-    <div class='fixTableHead' style='height: 40vh'
-         infiniteScroll
-         [infiniteScrollThrottle]='20'
-         [alwaysCallback]='true'
-         [infiniteScrollDistance]='1'
-         [scrollWindow]='false'>
-      <table style='width: 850px'>
-        <thead style='z-index: 2'>
+<div style="min-width: 850px">
+  <div
+    class="fixTableHead"
+    style="height: 40vh"
+    infiniteScroll
+    [infiniteScrollThrottle]="20"
+    [alwaysCallback]="true"
+    [infiniteScrollDistance]="1"
+    [scrollWindow]="false"
+  >
+    <table style="width: 850px">
+      <thead style="z-index: 2">
         <tr>
-          <th style='width: 50px'>
-            <div class='border-top text-center'>stt</div>
-            <input class='form-control  '
-                  disabled
-            >
+          <th style="width: 50px">
+            <div class="border-top text-center">stt</div>
+            <input class="form-control" disabled />
           </th>
           <th>
-            <div class='border-top text-center'>Tên nhân viên</div>
-            <input class='form-control' disabled >
+            <div class="border-top text-center">Tên nhân viên</div>
+            <input class="form-control" disabled />
           </th>
           <th>
-            <div class=' text-center'>Chức vụ</div>
-            <input disabled>
-
+            <div class="text-center">Chức vụ</div>
+            <input disabled />
           </th>
           <th>
-            <div class=' text-center'>Đơn vị</div>
-            <input disabled>
+            <div class="text-center">Đơn vị</div>
+            <input disabled />
           </th>
           <th>
-            <div class=' text-center'>Danh mục</div>
-            <input disabled>
+            <div class="text-center">Danh mục</div>
+            <input disabled />
           </th>
-          <th style='width: 100px;'>
-            <div class=' text-center' style='background: white'>Tất cả</div>
-            <div class='border-top border-bottom'>
-              <mat-checkbox class='example-margin  mt-2 mx-auto'
-                            [checked]='isSelectAll'
-                            [indeterminate]='someComplete()'
-                            (change)='setAll()'>
-              </mat-checkbox>
-            </div>
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor='let employee of employees; let i = index'>
-          <th class='   pointer'>{{i + 1}}</th>
-          <th class='   pointer'>{{employee.lastName}}</th>
-          <th class='   pointer'>{{employee?.position?.name}}</th>
-          <th class='   pointer'>{{employee?.branch?.name}}</th>
-          <th class='   pointer'>{{employee?.category?.name}}</th>
-          <th class='   pointer'>
-            <div class='mt-2'>
+          <th style="width: 100px">
+            <div class="text-center" style="background: white">Tất cả</div>
+            <div class="border-top border-bottom">
               <mat-checkbox
-                (change)='updateSelect(employee)'
-                [checked]='selectEmployee(employee)'>
+                class="example-margin mt-2 mx-auto"
+                [checked]="isSelectAll"
+                [indeterminate]="someComplete()"
+                (change)="setAll()"
+              >
               </mat-checkbox>
             </div>
           </th>
         </tr>
-        </tbody>
-      </table>
-    </div>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employee of employees; let i = index">
+          <th class="pointer">{{ i + 1 }}</th>
+          <th class="pointer">{{ employee.lastName }}</th>
+          <th class="pointer">{{ employee?.position?.name }}</th>
+          <th class="pointer">{{ employee?.branch?.name }}</th>
+          <th class="pointer">{{ employee?.category?.name }}</th>
+          <th class="pointer">
+            <div class="mt-2">
+              <mat-checkbox
+                (change)="updateSelect(employee)"
+                [checked]="selectEmployee(employee)"
+              >
+              </mat-checkbox>
+            </div>
+          </th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
-

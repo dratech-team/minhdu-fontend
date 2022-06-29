@@ -1,2 +1,2 @@
-export * from './payroll.query'
-export * from './payroll.store'
+export * from './payroll.query';
+export * from './payroll.store';

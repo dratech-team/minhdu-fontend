@@ -1,7 +1,7 @@
-import {CommodityTemplateEntity} from "../entities";
+import { CommodityTemplateEntity } from '../entities';
 
-export interface DataModalCommodityTemplateData{
-  update?:{
-    template: CommodityTemplateEntity
-  }
+export interface DataModalCommodityTemplateData {
+  update?: {
+    template: CommodityTemplateEntity;
+  };
 }

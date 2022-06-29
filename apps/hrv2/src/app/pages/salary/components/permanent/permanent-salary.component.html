@@ -1,28 +1,50 @@
 <div>
   <nz-steps [nzCurrent]="indexStep">
-    <nz-step [nzTitle]="this.data.type === salaryTypeEnum.STAY?'Phụ cấp lương':'Lương cơ bản'"></nz-step>
+    <nz-step
+      [nzTitle]="
+        this.data.type === salaryTypeEnum.STAY
+          ? 'Phụ cấp lương'
+          : 'Lương cơ bản'
+      "
+    ></nz-step>
     <nz-step nzTitle="Chọn nhân viên" *ngIf="this.data.add"></nz-step>
-    <nz-step *ngIf="data?.update?.multiple" nzTitle="Nhân viên đã chọn"></nz-step>
+    <nz-step
+      *ngIf="data?.update?.multiple"
+      nzTitle="Nhân viên đã chọn"
+    ></nz-step>
   </nz-steps>
   <ng-template [ngIf]="indexStep === 0">
     <form [formGroup]="formGroup">
-      <div *ngIf='false' class=' mb-5 title-popup'>
+      <div *ngIf="false" class="mb-5 title-popup">
         <span> Lương cơ bản</span>
       </div>
-      <div class='contract-salary mt-1' *ngIf="!data?.update?.history; else title">
-        <div class=' title-item mb-1'>
+      <div
+        class="contract-salary mt-1"
+        *ngIf="!data?.update?.history; else title"
+      >
+        <div class="title-item mb-1">
           <span>Loại lương</span>
-          <span class='star'>*</span>
+          <span class="star">*</span>
         </div>
-        <div class=' mb-3' [formGroup]='formGroup'>
-          <nz-select style="width: 100%" formControlName='template'
-                     [compareWith]="compareFn"
-                     [nzLoading]="(loadingSettingSalary$|async)"
-                     [ngClass]="{ 'is-invalid': checkValid.template.errors }">
-            <nz-option *ngFor='let salary of (salariesSetting$|async)' [nzValue]="salary" [nzLabel]="salary.title">
+        <div class="mb-3" [formGroup]="formGroup">
+          <nz-select
+            style="width: 100%"
+            formControlName="template"
+            [compareWith]="compareFn"
+            [nzLoading]="loadingSettingSalary$ | async"
+            [ngClass]="{ 'is-invalid': checkValid.template.errors }"
+          >
+            <nz-option
+              *ngFor="let salary of salariesSetting$ | async"
+              [nzValue]="salary"
+              [nzLabel]="salary.title"
+            >
             </nz-option>
           </nz-select>
-          <div *ngIf='checkValid.template.errors?.required' class='invalid-feedback'>
+          <div
+            *ngIf="checkValid.template.errors?.required"
+            class="invalid-feedback"
+          >
             <div>Chưa chọn loại lương</div>
           </div>
         </div>
@@ -31,69 +53,102 @@
         <div class="title-item mt-2">
           <span> Loại lương</span>
         </div>
-        <div class="form-control ">
-          {{this.data.update?.salary?.title}}
+        <div class="form-control">
+          {{ this.data.update?.salary?.title }}
         </div>
       </ng-template>
-      <div class="mb-2" *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO && formGroup.value?.template">
-        <div><span class="font-weight-bold">Id :</span> {{formGroup.value.template.id}}</div>
-      </div>
-      <div class='basic-salary'>
-        <div class=' title-item my-1'>
-          <span>Mức lương</span>
-          <span class='star'>*</span>
+      <div
+        class="mb-2"
+        *ngIf="
+          (currentUser$ | async)?.mode === modeEnum.INFO &&
+          formGroup.value?.template
+        "
+      >
+        <div>
+          <span class="font-weight-bold">Id :</span>
+          {{ formGroup.value.template.id }}
         </div>
-        <div class=' mb-3' [formGroup]='formGroup'
-             *ngIf='formGroup.value.template?.type === salaryTypeEnum.BASIC_INSURANCE  else inputPrice'>
-          <nz-select style="width: 100%" formControlName='price'
-                     [ngClass]="{ 'is-invalid': checkValid.price.errors }">
-            <nz-option *ngFor='let item of formGroup.value.template.prices' [nzValue]='item'
-                       [nzLabel]="(item|number:'1.0-0') + ' đ'"
+      </div>
+      <div class="basic-salary">
+        <div class="title-item my-1">
+          <span>Mức lương</span>
+          <span class="star">*</span>
+        </div>
+        <div
+          class="mb-3"
+          [formGroup]="formGroup"
+          *ngIf="
+            formGroup.value.template?.type === salaryTypeEnum.BASIC_INSURANCE;
+            else inputPrice
+          "
+        >
+          <nz-select
+            style="width: 100%"
+            formControlName="price"
+            [ngClass]="{ 'is-invalid': checkValid.price.errors }"
+          >
+            <nz-option
+              *ngFor="let item of formGroup.value.template.prices"
+              [nzValue]="item"
+              [nzLabel]="(item | number: '1.0-0') + ' đ'"
             >
             </nz-option>
           </nz-select>
         </div>
         <ng-template #inputPrice>
-          <div class=' mb-3' [formGroup]='formGroup'>
-            <input nz-input
-                   type='text'
-                   placeholder='Nhập mức lương'
-                   formControlName='price'
-                   currencyMask
-                   [options]="{ suffix: ' đ' }"
-                   [ngClass]="{ 'is-invalid': checkValid.price.errors }">
-            <div *ngIf='checkValid.price.errors?.required' class='invalid-feedback'>
+          <div class="mb-3" [formGroup]="formGroup">
+            <input
+              nz-input
+              type="text"
+              placeholder="Nhập mức lương"
+              formControlName="price"
+              currencyMask
+              [options]="{ suffix: ' đ' }"
+              [ngClass]="{ 'is-invalid': checkValid.price.errors }"
+            />
+            <div
+              *ngIf="checkValid.price.errors?.required"
+              class="invalid-feedback"
+            >
               <div>Chưa nhập mức lương</div>
             </div>
           </div>
         </ng-template>
       </div>
       <div *ngIf="data?.update?.history">
-        <div class=' title-item mt-2 mbt-2'>
+        <div class="title-item mt-2 mbt-2">
           <span>Ngày tạo</span>
-          <span class='star'>*</span>
+          <span class="star">*</span>
         </div>
-        <div class=' mb-3' [formGroup]='formGroup'>
-          <input class="form-control" type='date' formControlName='datetime'
-                 [ngClass]="{ 'is-invalid': checkValid.datetime.errors }">
-          <div *ngIf=' checkValid.datetime.errors?.required' class='invalid-feedback'>
+        <div class="mb-3" [formGroup]="formGroup">
+          <input
+            class="form-control"
+            type="date"
+            formControlName="datetime"
+            [ngClass]="{ 'is-invalid': checkValid.datetime.errors }"
+          />
+          <div
+            *ngIf="checkValid.datetime.errors?.required"
+            class="invalid-feedback"
+          >
             <div>Chưa chọn ngày</div>
           </div>
         </div>
       </div>
     </form>
   </ng-template>
-  <ng-template [ngIf]="indexStep === 1 && this.data.add ">
+  <ng-template [ngIf]="indexStep === 1 && this.data.add">
     <div class="py-2">
       <minhdu-fontend-select-payroll
         [employeeType]="employeeType.FULL_TIME"
         [formGroup]="formGroup"
-        [createdAt]="data.add.payroll?.createdAt || createdAt ">
+        [createdAt]="data.add.payroll?.createdAt || createdAt"
+      >
       </minhdu-fontend-select-payroll>
     </div>
   </ng-template>
   <ng-template [ngIf]="indexStep === 1 && data.update">
-    <div *ngIf="data.update.multiple else alert">
+    <div *ngIf="data.update.multiple; else alert">
       <minhdu-fontend-table-salaries-selected
         [formGroup]="formGroup"
         [salaries]="data.update?.multiple?.salaries || []"
@@ -113,18 +168,27 @@
     <button
       *ngIf="indexStep > 0"
       (click)="move('previous')"
-      class="mr-2" nz-button nzType="default">
+      class="mr-2"
+      nz-button
+      nzType="default"
+    >
       <span>Trở lại</span>
     </button>
     <button
       *ngIf="indexStep < 1"
       (click)="move('next')"
-      class="mr-2" nz-button nzType="default">
+      class="mr-2"
+      nz-button
+      nzType="default"
+    >
       <span>Tiếp theo</span>
     </button>
-    <button nz-button nzType="primary"
-            [nzLoading]="submitting"
-            (click)="onSubmit()">
+    <button
+      nz-button
+      nzType="primary"
+      [nzLoading]="submitting"
+      (click)="onSubmit()"
+    >
       <span>Xác nhận</span>
     </button>
   </div>

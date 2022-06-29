@@ -1,4 +1,4 @@
-export interface ModalAlertEntity{
-  description: string,
-  buttonNo?: boolean
+export interface ModalAlertEntity {
+  description: string;
+  buttonNo?: boolean;
 }

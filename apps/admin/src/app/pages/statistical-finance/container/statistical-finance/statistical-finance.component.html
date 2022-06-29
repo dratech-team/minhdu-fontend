@@ -1,21 +1,25 @@
-<div class='mx-3' style='margin-top: 100px'>
- <div>
-  <mat-select style='width: 300px' class='form-control' [formControl]='selectFinance'>
-    <mat-option *ngFor='let item of fianceConstant' [value]='item.value'>
-      {{item.name}}
-    </mat-option>
-  </mat-select>
- </div>
-  <div *ngIf='selectFinance.value === financeEnum.COLLECT'>
+<div class="mx-3" style="margin-top: 100px">
+  <div>
+    <mat-select
+      style="width: 300px"
+      class="form-control"
+      [formControl]="selectFinance"
+    >
+      <mat-option *ngFor="let item of fianceConstant" [value]="item.value">
+        {{ item.name }}
+      </mat-option>
+    </mat-select>
+  </div>
+  <div *ngIf="selectFinance.value === financeEnum.COLLECT">
     <app-collect></app-collect>
   </div>
-  <div *ngIf='selectFinance.value === financeEnum.PAY'>
+  <div *ngIf="selectFinance.value === financeEnum.PAY">
     <app-pay></app-pay>
   </div>
-  <div *ngIf='selectFinance.value === financeEnum.DEBTS'>
+  <div *ngIf="selectFinance.value === financeEnum.DEBTS">
     <app-debt></app-debt>
   </div>
-  <div *ngIf='selectFinance.value === financeEnum.LOAN'>
+  <div *ngIf="selectFinance.value === financeEnum.LOAN">
     <app-loan></app-loan>
   </div>
 </div>

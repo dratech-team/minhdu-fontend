@@ -7,7 +7,6 @@ export const AddTemplate = createAction(
   props<{ template: Partial<SalarySetting> }>()
 );
 
-
 export const HandelTemplateError = createAction(
   '[API_Template_Salary] Template Salary  Error'
 );
@@ -27,9 +26,8 @@ export const loadInit = createAction(
 );
 export const loadInitTempLateSuccess = createAction(
   '[Load_Template_Salary] Load Template Salary Success',
-  props<{ templateSalary: SalarySetting[], total: number }>()
+  props<{ templateSalary: SalarySetting[]; total: number }>()
 );
-
 
 export const loadMoreTemplateBasic = createAction(
   '[Load_Template_Salary] Load More Salary Basic',
@@ -37,19 +35,18 @@ export const loadMoreTemplateBasic = createAction(
 );
 export const loadMoreTempLateSuccess = createAction(
   '[Load_Template_Salary] Load More Template Salary Success',
-  props<{ templateSalary: SalarySetting[], total: number }>()
+  props<{ templateSalary: SalarySetting[]; total: number }>()
 );
 
 export const updateTemplate = createAction(
   '[UPDATE_Template_Salary] Update Template Salary',
-  props<{ id: number, template: Partial<SalarySetting> }>()
+  props<{ id: number; template: Partial<SalarySetting> }>()
 );
 
 export const deleteTemplate = createAction(
   '[DELETE_Template_Salary] Delete Template Salary',
   props<{ id: number }>()
 );
-
 
 export const TemplateSalaryAction = {
   loadALlTemplate,
@@ -61,5 +58,5 @@ export const TemplateSalaryAction = {
   loadInitTempLateSuccess,
   loadMoreTemplateBasic,
   loadMoreTempLateSuccess,
-  deleteTemplate
+  deleteTemplate,
 };

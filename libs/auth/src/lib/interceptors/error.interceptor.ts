@@ -1,24 +1,32 @@
-import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {Router} from '@angular/router';
-import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
-import {Actions} from "@datorama/akita-ng-effects";
-import {AccountActions} from "../../../../system/src/lib/state/account-management/account.actions";
-import {AccountQuery} from "../../../../system/src/lib/state/account-management/account.query";
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { Actions } from '@datorama/akita-ng-effects';
+import { AccountActions } from '../../../../system/src/lib/state/account-management/account.actions';
+import { AccountQuery } from '../../../../system/src/lib/state/account-management/account.query';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(
     private readonly actions$: Actions,
     private readonly router: Router,
     private readonly snackBar: MatSnackBar,
     private readonly accountQuery: AccountQuery
-  ) {
-  }
+  ) {}
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((err) => {
         if ([401].indexOf(err.status) !== -1) {
@@ -26,7 +34,9 @@ export class ErrorInterceptor implements HttpInterceptor {
           // chuyển sang dùng store đã logout được khi chưa đăng nhập
           const currentUser = this.accountQuery.getCurrentUser();
           if (currentUser) {
-            this.actions$.dispatch(AccountActions.logout({id: currentUser.id}));
+            this.actions$.dispatch(
+              AccountActions.logout({ id: currentUser.id })
+            );
           }
         } else if ([403].indexOf(err.status) !== -1) {
           this.router.navigate(['/he-thong/han-che-truy-cap']).then();

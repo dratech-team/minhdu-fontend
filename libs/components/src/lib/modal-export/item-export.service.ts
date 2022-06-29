@@ -1,15 +1,16 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Api} from '@minhdu-fontend/constants';
-import {Observable} from 'rxjs';
-import {VersionEnum} from "@minhdu-fontend/enums";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Api } from '@minhdu-fontend/constants';
+import { Observable } from 'rxjs';
+import { VersionEnum } from '@minhdu-fontend/enums';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class ItemExportService {
-  constructor(public readonly http: HttpClient) {
-  }
+  constructor(public readonly http: HttpClient) {}
 
   getItemExport(params?: any): Observable<any[]> {
-    return this.http.get<any>(VersionEnum.V1 + (params?.api || Api.HR.EXPORT), {params});
+    return this.http.get<any>(VersionEnum.V1 + (params?.api || Api.HR.EXPORT), {
+      params,
+    });
   }
 }

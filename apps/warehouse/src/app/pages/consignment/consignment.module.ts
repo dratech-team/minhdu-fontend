@@ -1,25 +1,25 @@
-import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {CommonModule, DatePipe} from '@angular/common';
-import {ComponentsModule} from '@minhdu-fontend/components';
-import {MatSelectModule} from '@angular/material/select';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {AkitaNgEffectsModule} from '@datorama/akita-ng-effects';
-import {ConsignmentService} from './services';
-import {ConsignmentEffect} from './state/consignment.effect';
-import {CategoryService} from '../warehouse/services';
-import {NgxCurrencyModule} from 'ngx-currency';
-import {customCurrencyMaskConfig} from '@minhdu-fontend/config';
-import {MatExpansionModule} from '@angular/material/expansion';
-import {MatRadioModule} from '@angular/material/radio';
-import {NzTableModule} from 'ng-zorro-antd/table';
-import {NzModalModule} from 'ng-zorro-antd/modal';
-import {NzSelectModule} from 'ng-zorro-antd/select';
-import {NzInputModule} from 'ng-zorro-antd/input';
-import {NzButtonModule} from 'ng-zorro-antd/button';
-import {ConsignmentComponent} from "./container";
-import {ConsignmentDialogComponent} from "./components/consignment-dialog/consignment-dialog.component";
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule, DatePipe } from '@angular/common';
+import { ComponentsModule } from '@minhdu-fontend/components';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
+import { ConsignmentService } from './services';
+import { ConsignmentEffect } from './state/consignment.effect';
+import { CategoryService } from '../warehouse/services';
+import { NgxCurrencyModule } from 'ngx-currency';
+import { customCurrencyMaskConfig } from '@minhdu-fontend/config';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatRadioModule } from '@angular/material/radio';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { ConsignmentComponent } from './container';
+import { ConsignmentDialogComponent } from './components/consignment-dialog/consignment-dialog.component';
 
 @NgModule({
   imports: [
@@ -38,20 +38,10 @@ import {ConsignmentDialogComponent} from "./components/consignment-dialog/consig
     NzSelectModule,
     NzInputModule,
     NzButtonModule,
-    FormsModule
+    FormsModule,
   ],
-  declarations: [
-    ConsignmentComponent,
-    ConsignmentDialogComponent
-  ],
-  exports: [
-    ConsignmentComponent
-  ],
-  providers: [
-    DatePipe,
-    CategoryService,
-    ConsignmentService
-  ]
+  declarations: [ConsignmentComponent, ConsignmentDialogComponent],
+  exports: [ConsignmentComponent],
+  providers: [DatePipe, CategoryService, ConsignmentService],
 })
-export class ConsignmentModule {
-}
+export class ConsignmentModule {}

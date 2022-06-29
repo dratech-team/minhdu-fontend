@@ -29,9 +29,13 @@ export class PayrollService extends BaseService<PayrollEntity> {
     return super.getOne(props.id);
   }
 
-  paginationPayroll(params?: any): Observable<ResponsePaginateOvertimePayroll<PayrollEntity>> {
-    return this.http.get<ResponsePaginateOvertimePayroll<PayrollEntity>>(VersionEnum.V2 + Api.HR.PAYROLL.PAYROLL,
-      { params });
+  paginationPayroll(
+    params?: any
+  ): Observable<ResponsePaginateOvertimePayroll<PayrollEntity>> {
+    return this.http.get<ResponsePaginateOvertimePayroll<PayrollEntity>>(
+      VersionEnum.V2 + Api.HR.PAYROLL.PAYROLL,
+      { params }
+    );
   }
 
   update(props: UpdatePayrollDto): Observable<PayrollEntity> {
@@ -39,7 +43,10 @@ export class PayrollService extends BaseService<PayrollEntity> {
   }
 
   confirm(props: ConfirmPayrollDto): Observable<PayrollEntity> {
-    return this.http.patch<PayrollEntity>(VersionEnum.V2 + Api.HR.PAYROLL.CONFIRM_PAYROLL + `/${props.id}`, props.data);
+    return this.http.patch<PayrollEntity>(
+      VersionEnum.V2 + Api.HR.PAYROLL.CONFIRM_PAYROLL + `/${props.id}`,
+      props.data
+    );
   }
 
   delete(id: number, params?: any): Observable<void> {
@@ -48,15 +55,24 @@ export class PayrollService extends BaseService<PayrollEntity> {
 
   scanHoliday(PayrollId: number): Observable<PayrollEntity> {
     return this.http.get<PayrollEntity>(
-      VersionEnum.V2 + Api.HR.PAYROLL.PAYROLL + `/${PayrollId}/` + Api.HR.PAYROLL.GENERATE_HOLIDAY
+      VersionEnum.V2 +
+        Api.HR.PAYROLL.PAYROLL +
+        `/${PayrollId}/` +
+        Api.HR.PAYROLL.GENERATE_HOLIDAY
     );
   }
 
   cancelConfirm(id: number, body?: any): Observable<any> {
-    return this.http.patch<any>(VersionEnum.V2 + Api.HR.PAYROLL.CANCEL_CONFIRM + `/${id}`, body);
+    return this.http.patch<any>(
+      VersionEnum.V2 + Api.HR.PAYROLL.CANCEL_CONFIRM + `/${id}`,
+      body
+    );
   }
 
   restore(id: number, body?: any): Observable<ResponseMessageEntity> {
-    return this.http.patch<ResponseMessageEntity>(VersionEnum.V2 + Api.HR.PAYROLL.RESTORE_PAYROLL + `/${id}`, body);
+    return this.http.patch<ResponseMessageEntity>(
+      VersionEnum.V2 + Api.HR.PAYROLL.RESTORE_PAYROLL + `/${id}`,
+      body
+    );
   }
 }

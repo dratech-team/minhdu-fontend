@@ -1,67 +1,84 @@
 <div class="d-flex row mx-auto mt-2 h-100" style="width: 95%">
   <div class="col-9 border shadow p-2" style="height: 78vh">
     <div class="h-50">
-      <div class="font-weight-bold mb-1 font-lg" style="color:#6f42c1 ">Tháng lương</div>
+      <div class="font-weight-bold mb-1 font-lg" style="color: #6f42c1">
+        Tháng lương
+      </div>
       <nz-table class="border">
         <thead>
-        <tr>
-          <th nzWidth="100px">STT</th>
-          <th>Hạng</th>
-          <th>Chuyên cần</th>
-          <th>Hệ số</th>
-          <th>Số tháng</th>
-          <th>Tháng thưởng</th>
-        </tr>
+          <tr>
+            <th nzWidth="100px">STT</th>
+            <th>Hạng</th>
+            <th>Chuyên cần</th>
+            <th>Hệ số</th>
+            <th>Số tháng</th>
+            <th>Tháng thưởng</th>
+          </tr>
         </thead>
-        <tbody>
-        </tbody>
+        <tbody></tbody>
       </nz-table>
     </div>
     <div class="h-50">
-      <div class="font-weight-bold mb-1 font-lg" style="color:#6f42c1 ">Giá tiền</div>
+      <div class="font-weight-bold mb-1 font-lg" style="color: #6f42c1">
+        Giá tiền
+      </div>
       <nz-table class="mt-2 border">
         <thead>
-        <tr>
-          <th nzWidth="100px">STT</th>
-          <th>Số tháng</th>
-          <th>Đơn giá</th>
-          <th>Hệ số</th>
-          <th>Tổng tiền</th>
-        </tr>
+          <tr>
+            <th nzWidth="100px">STT</th>
+            <th>Số tháng</th>
+            <th>Đơn giá</th>
+            <th>Hệ số</th>
+            <th>Tổng tiền</th>
+          </tr>
         </thead>
-        <tbody>
-        </tbody>
+        <tbody></tbody>
       </nz-table>
     </div>
-
   </div>
-  <form [formGroup]="formGroup" class="col-3 d-flex flex-column ">
+  <form [formGroup]="formGroup" class="col-3 d-flex flex-column">
     <div class="p-4 border shadow" style="height: 70vh; overflow-y: scroll">
       <div>
-        <div class="font-weight-bold" style="color:#6f42c1">Thưởng</div>
+        <div class="font-weight-bold" style="color: #6f42c1">Thưởng</div>
         <div class="mt-2">
-          <div class="font-weight-bold">Loại thưởng <span class="star">*</span></div>
+          <div class="font-weight-bold">
+            Loại thưởng <span class="star">*</span>
+          </div>
           <nz-select style="width: 100%" formControlName="bonusType">
-            <nz-option *ngFor="let item of bonusConstant" [nzValue]="item.value" [nzLabel]="item.name"></nz-option>
+            <nz-option
+              *ngFor="let item of bonusConstant"
+              [nzValue]="item.value"
+              [nzLabel]="item.name"
+            ></nz-option>
           </nz-select>
         </div>
         <div class="mt-2">
           <div class="font-weight-bold">Đơn vị <span class="star">*</span></div>
           <nz-select style="width: 100%" formControlName="unit">
-            <nz-option *ngFor="let item of bonusUnitConstant" [nzValue]="item.value" [nzLabel]="item.name"></nz-option>
+            <nz-option
+              *ngFor="let item of bonusUnitConstant"
+              [nzValue]="item.value"
+              [nzLabel]="item.name"
+            ></nz-option>
           </nz-select>
         </div>
         <div class="mt-2">
           <div class="font-weight-bold">Hệ số <span class="star">*</span></div>
-          <input nz-input formControlName="rate" type="text" [min]="1">
+          <input nz-input formControlName="rate" type="text" [min]="1" />
         </div>
         <div class="mt-2">
           <div class="font-weight-bold">Số tiền<span class="star">*</span></div>
-          <input nz-input formControlName="price" type="text" currencyMask [options]="{ suffix: ' đ' }">
+          <input
+            nz-input
+            formControlName="price"
+            type="text"
+            currencyMask
+            [options]="{ suffix: ' đ' }"
+          />
         </div>
       </div>
       <div class="mt-3">
-        <div class="font-weight-bold" style="color:#6f42c1">Xếp hạng</div>
+        <div class="font-weight-bold" style="color: #6f42c1">Xếp hạng</div>
         <div class="mt-2">
           <div class="font-weight-bold">Hạng <span class="star">*</span></div>
           <nz-select style="width: 100%" formControlName="rating">
@@ -69,27 +86,53 @@
           </nz-select>
         </div>
         <div class="mt-2">
-          <div class="font-weight-bold">Chuyên cần <span class="star">*</span></div>
-          <input nz-input formControlName="diligent" [maxlength]="2" type="text">
+          <div class="font-weight-bold">
+            Chuyên cần <span class="star">*</span>
+          </div>
+          <input
+            nz-input
+            formControlName="diligent"
+            [maxlength]="2"
+            type="text"
+          />
         </div>
       </div>
       <div class="mt-3">
-        <div class="font-weight-bold" style="color:#6f42c1">Thời gian làm việc</div>
-        <div class="mt-2">
-          <div class="font-weight-bold">Từ tháng <span class="star">*</span></div>
-          <input nz-input formControlName="from" [min]="1" type="number">
+        <div class="font-weight-bold" style="color: #6f42c1">
+          Thời gian làm việc
         </div>
         <div class="mt-2">
-          <div class="font-weight-bold">Đến tháng <span class="star">*</span></div>
-          <input nz-input formControlName="to" [min]="1" type="number">
+          <div class="font-weight-bold">
+            Từ tháng <span class="star">*</span>
+          </div>
+          <input nz-input formControlName="from" [min]="1" type="number" />
+        </div>
+        <div class="mt-2">
+          <div class="font-weight-bold">
+            Đến tháng <span class="star">*</span>
+          </div>
+          <input nz-input formControlName="to" [min]="1" type="number" />
         </div>
       </div>
     </div>
     <div class="mt-3 d-flex">
-      <button nz-button nzType="default" class="mr-2 shadow" (click)="onCancel()">Huỷ</button>
-      <button nz-button nzType="primary"
-              [nzLoading]="(added$|async) === false"
-              class="shadow" (click)="onSubmit()">Xác nhận</button>
+      <button
+        nz-button
+        nzType="default"
+        class="mr-2 shadow"
+        (click)="onCancel()"
+      >
+        Huỷ
+      </button>
+      <button
+        nz-button
+        nzType="primary"
+        [nzLoading]="(added$ | async) === false"
+        class="shadow"
+        (click)="onSubmit()"
+      >
+        Xác nhận
+      </button>
     </div>
   </form>
 </div>

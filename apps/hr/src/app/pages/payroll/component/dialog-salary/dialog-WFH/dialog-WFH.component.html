@@ -1,63 +1,98 @@
-<div class='px-2  main-popup'>
-  <div mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='../../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+<div class="px-2 main-popup">
+  <div mat-dialog-close class="close-popup">
+    <span class="mr-1"> close</span>
+    <div class="x-popup">
+      <img src="../../../../../../assets/img/share/x2-lg.svg" alt="cancel" />
     </div>
   </div>
   <div class="font-weight-bold font-xl mb-4">Chú thích ngày</div>
   <mat-dialog-content style="width: 300px">
-    <form [formGroup]='formGroup' (submit)='onSubmit()'>
+    <form [formGroup]="formGroup" (submit)="onSubmit()">
       <div>
-        <div class='row mb-3'>
-          <div [formGroup]='formGroup' class='col-12'>
-            <span class='title-item'>Tiêu đề</span><span class='star'>*</span>
-            <input class='form-control' type="text" formControlName='title'>
+        <div class="row mb-3">
+          <div [formGroup]="formGroup" class="col-12">
+            <span class="title-item">Tiêu đề</span><span class="star">*</span>
+            <input class="form-control" type="text" formControlName="title" />
           </div>
         </div>
-        <div class='row mb-3'>
-          <div [formGroup]='formGroup' class='col-12'>
-            <span class='title-item'>Ngày</span><span class='star'>*</span>
+        <div class="row mb-3">
+          <div [formGroup]="formGroup" class="col-12">
+            <span class="title-item">Ngày</span><span class="star">*</span>
             <mat-form-field
-              *ngIf='!data?.isUpdate else inputDatetime'
-              appearance='fill'>
+              *ngIf="!data?.isUpdate; else inputDatetime"
+              appearance="fill"
+            >
               <mat-label>Chọn từ ngày đến ngày</mat-label>
-              <mat-date-range-input [formGroup]='formGroup' [rangePicker]='picker'
-                                    [min]='firstDayInMonth' [max]='lastDayInMonth'>
-                <input matStartDate formControlName='startedAt' placeholder='ngày bắt đầu'>
-                <input matEndDate formControlName='endedAt' placeholder='ngày kết thúc'>
+              <mat-date-range-input
+                [formGroup]="formGroup"
+                [rangePicker]="picker"
+                [min]="firstDayInMonth"
+                [max]="lastDayInMonth"
+              >
+                <input
+                  matStartDate
+                  formControlName="startedAt"
+                  placeholder="ngày bắt đầu"
+                />
+                <input
+                  matEndDate
+                  formControlName="endedAt"
+                  placeholder="ngày kết thúc"
+                />
               </mat-date-range-input>
-              <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
               <mat-date-range-picker #picker></mat-date-range-picker>
               <div
-                *ngIf='submitted && checkValid.startedAt.errors?.required && checkValid.endedAt.errors?.required '
-                style='width: 100%;
-                   margin-top: 0.25rem;
-                   font-size: 80%;
-                   color: #f86c6b'>
+                *ngIf="
+                  submitted &&
+                  checkValid.startedAt.errors?.required &&
+                  checkValid.endedAt.errors?.required
+                "
+                style="
+                  width: 100%;
+                  margin-top: 0.25rem;
+                  font-size: 80%;
+                  color: #f86c6b;
+                "
+              >
                 <div>Chưa chọn từ ngày đến ngày</div>
               </div>
             </mat-form-field>
             <ng-template #inputDatetime>
-              <input class='form-control' type="date" formControlName='datetime'>
+              <input
+                class="form-control"
+                type="date"
+                formControlName="datetime"
+              />
             </ng-template>
-
           </div>
         </div>
-        <div class='row mb-3'>
-          <div [formGroup]='formGroup' class='col-12'>
-            <span class='title-item'>Chú thích</span>
-            <input class='form-control' placeholder='Nhập chú thích ' formControlName='note'>
+        <div class="row mb-3">
+          <div [formGroup]="formGroup" class="col-12">
+            <span class="title-item">Chú thích</span>
+            <input
+              class="form-control"
+              placeholder="Nhập chú thích "
+              formControlName="note"
+            />
           </div>
         </div>
       </div>
-      <div class=' row '>
-        <button class='btn btn-ok ml-2'>Lưu</button>
-        <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
+      <div class="row">
+        <button class="btn btn-ok ml-2">Lưu</button>
+        <button
+          type="button"
+          class="btn award"
+          data-toggle="tooltip"
+          data-placement="left"
+          title="xóa"
+        >
           ?
         </button>
       </div>
     </form>
   </mat-dialog-content>
 </div>
-

@@ -4,8 +4,8 @@ import {
   LoadOneSalarySettingDto,
   RemoveSettingSalary,
   SearchSalarySettingDto,
-  UpdateSalarySettingDto
-} from "../dto";
+  UpdateSalarySettingDto,
+} from '../dto';
 
 const addOne = createAction(
   '[SETTING_SALARY] Add One',
@@ -37,4 +37,11 @@ const error = createAction(
   props<{ error: string }>()
 );
 
-export const SettingSalaryActions = { addOne, loadAll, getOne, update, remove, error };
+export const SettingSalaryActions = {
+  addOne,
+  loadAll,
+  getOne,
+  update,
+  remove,
+  error,
+};

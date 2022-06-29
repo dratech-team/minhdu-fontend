@@ -1,32 +1,36 @@
-<mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
-<div class='main-content'>
-  <div class='row h3 ml-3'>Hồ sơ nhân viên</div>
-  <div class='d-flex align-items-center justify-content-between '>
-    <div class='d-flex'>
+<mat-spinner *ngIf="adding$ | async" class="loading"></mat-spinner>
+<div class="main-content">
+  <div class="row h3 ml-3">Hồ sơ nhân viên</div>
+  <div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex">
       <div class="ml-3" [formGroup]="formGroup">
-        <div class="font-weight-bold">
-          Tình trạng nhân viên
-        </div>
-        <mat-select class='form-control  border px-2' style='width:200px' formControlName="status">
-          <mat-option *ngFor='let item of empStatusContain' [value]='item.value'>{{item.name}}</mat-option>
+        <div class="font-weight-bold">Tình trạng nhân viên</div>
+        <mat-select
+          class="form-control border px-2"
+          style="width: 200px"
+          formControlName="status"
+        >
+          <mat-option
+            *ngFor="let item of empStatusContain"
+            [value]="item.value"
+            >{{ item.name }}</mat-option
+          >
         </mat-select>
       </div>
       <div class="ml-2" [formGroup]="formGroup">
-        <div class="font-weight-bold">
-          Chi nhánh
-        </div>
+        <div class="font-weight-bold">Chi nhánh</div>
         <nz-select
           nzShowSearch
           nzAllowClear
           style="width: 230px"
-          formControlName='branch'
-          nzPlaceHolder='Chọn đơn vị'
-          [compareWith]='compareFN'
+          formControlName="branch"
+          nzPlaceHolder="Chọn đơn vị"
+          [compareWith]="compareFN"
         >
           <nz-option
-            *ngFor='let branch of branches$ | async'
-            [nzLabel]='branch.name'
-            [nzValue]='branch'
+            *ngFor="let branch of branches$ | async"
+            [nzLabel]="branch.name"
+            [nzValue]="branch"
           >
           </nz-option>
         </nz-select>
@@ -34,291 +38,403 @@
       <div class="ml-3">
         <div class="font-weight-bold">Phòng ban</div>
         <div class="d-flex">
-          <div style='width: fit-content'>
-            <mat-select class='form-control  border px-2' style='width:200px' [formControl]='categoryControl'>
-              <mat-option [value]='""'>Tất cả</mat-option>
-              <mat-option *ngFor='let item of categories$ | async' [value]='item.id'>{{item.name}}</mat-option>
+          <div style="width: fit-content">
+            <mat-select
+              class="form-control border px-2"
+              style="width: 200px"
+              [formControl]="categoryControl"
+            >
+              <mat-option [value]="''">Tất cả</mat-option>
+              <mat-option
+                *ngFor="let item of categories$ | async"
+                [value]="item.id"
+                >{{ item.name }}</mat-option
+              >
             </mat-select>
           </div>
         </div>
       </div>
     </div>
     <div>
-      <button *ngIf='formGroup.value.status === 0'
-              (click)='add()' class='mr-2 btn btn-primary'>Thêm
+      <button
+        *ngIf="formGroup.value.status === 0"
+        (click)="add()"
+        class="mr-2 btn btn-primary"
+      >
+        Thêm
       </button>
-      <button class='btn btn-primary mr-4' (click)='printEmployee()'>Xuất</button>
+      <button class="btn btn-primary mr-4" (click)="printEmployee()">
+        Xuất
+      </button>
     </div>
   </div>
-  <div class='mx-auto' style='width: 98%'>
-    <div class='my-5'>
-      <div class='font-weight-bold mb-2'> Tổng: {{(total$|async)}}</div>
-      <div class='table-scroll mx-auto'
-           (scroll)='onScrollX($event)'
-           [scrollLeft]='(scrollX$ | async)'
-           #tableEmployee
-           infiniteScroll
-           [alwaysCallback]='false'
-           [infiniteScrollDistance]='1'
-           [infiniteScrollThrottle]='0'
-           [scrollWindow]='false'
-           (scrolled)='onScroll()'
+  <div class="mx-auto" style="width: 98%">
+    <div class="my-5">
+      <div class="font-weight-bold mb-2">Tổng: {{ total$ | async }}</div>
+      <div
+        class="table-scroll mx-auto"
+        (scroll)="onScrollX($event)"
+        [scrollLeft]="scrollX$ | async"
+        #tableEmployee
+        infiniteScroll
+        [alwaysCallback]="false"
+        [infiniteScrollDistance]="1"
+        [infiniteScrollThrottle]="0"
+        [scrollWindow]="false"
+        (scrolled)="onScroll()"
       >
-        <table matSort
-               (matSortChange)='sortEmployee($event)'
-               [formGroup]='formGroup'
-               class='main-table'
-               style='width: 3200px '>
+        <table
+          matSort
+          (matSortChange)="sortEmployee($event)"
+          [formGroup]="formGroup"
+          class="main-table"
+          style="width: 3200px"
+        >
           <thead>
-          <tr>
-            <th style='background:white'>
-              <div mat-sort-header='{{sortEnum.STT}}' class='border-top text-center'>STT</div>
-              <input class=' text-center' type='text' disabled>
-            </th>
-            <!--            <th style='background:white'>-->
-            <!--              <div mat-sort-header='{{sortEnum.STT}}' class='border-top text-center'>Sort</div>-->
-            <!--              <input class=' text-center' type='text' disabled>-->
-            <!--            </th>-->
-            <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" style='background:white'>
-              <div class='border-top text-center'>Mã nhân viên</div>
-              <input class='form-control text-center' type='search'>
-
-            </th>
-            <th style='background:white'>
-              <div mat-sort-header='{{sortEnum.NAME}}' class='border-top text-center'>Tên nhân viên</div>
-              <input class='form-control text-center' type='search' formControlName='name' placeholder='Trần Gia Hiệu'>
-            </th>
-            <th>
-              <div class='border-top text-center'>Loại nhân viên</div>
-              <mat-select class='select border-top' style='width: 100%;' formControlName='employeeType'>
-                <mat-option value='{{employeeType.FULL_TIME}}'>Nhân viên chính thức</mat-option>
-                <mat-option value='{{employeeType.SEASONAL}}'>Nhân viên thời vụ</mat-option>
-              </mat-select>
-            </th>
-            <th width='5%'>
-              <div class='border-top text-center'>Ngày sinh</div>
-              <input class='text-center' type='date' disabled>
-            </th>
-            <th>
-              <div class='border-top text-center'>Giới tính</div>
-              <mat-select class='select border-top' style='min-width:100px' required formControlName='gender'>
-                <mat-option value='{{genderType.MALE}}'>Nam</mat-option>
-                <mat-option value='{{genderType.FEMALE}}'>Nữ</mat-option>
-                <mat-option value='{{genderType.OTHER}}'>Khác</mat-option>
-                <mat-option value=''>Mặc định</mat-option>
-              </mat-select>
-            </th>
-            <th width='5%'>
-              <div mat-sort-header='{{sortEnum.CREATE}}' class='border-top text-center'>Ngày vào làm</div>
-              <input type='date' class='border' disabled>
-            </th>
-            <th width='5%'>
-              <div class='border-top text-center'>Loại lương</div>
-              <mat-select class='select border-top' style='min-width: 170px' [value]='-1' required
-                          formControlName='flatSalary'>
-                <mat-option value='-1'>Tất cả</mat-option>
-                <mat-option value='1'>Lương cố định</mat-option>
-                <mat-option value='0'>Lương không cố định</mat-option>
-              </mat-select>
-            </th>
-            <th width='5%'>
-              <div class='border-top text-center'>Số điện thoại</div>
-              <input class='form-control text-center' (keypress)='checkInputNumber($event)' type='search'
-                     formControlName='phone'>
-            </th>
-            <th>
-              <div mat-sort-header='{{sortEnum.BRANCH}}' class='border-top text-center'>Đơn vị</div>
-              <input class='form-control' type='search' disabled>
-            </th>
-            <th>
-              <div mat-sort-header='{{sortEnum.POSITION}}' class='border-top text-center'>Chức vụ</div>
-              <nz-select
-                nzShowSearch
-                nzAllowClear
-                style='width:100%'
-                formControlName='position'
-                nzPlaceHolder='Chọn chức vụ'
-                [compareWith]='compareFN'
-              >
-                <nz-option
-                  *ngFor='let position of positions$|async'
-                  [nzLabel]='position.name'
-                  [nzValue]='position'
+            <tr>
+              <th style="background: white">
+                <div
+                  mat-sort-header="{{ sortEnum.STT }}"
+                  class="border-top text-center"
                 >
-                </nz-option>
-              </nz-select>
-            </th>
-            <th width='5%'>
-              <div class='border-top text-center'>CMND / CCCD</div>
-              <input type='search' (keypress)='checkInputNumber($event)' class='form-control text-center'
-                     formControlName='identity'>
-            </th>
-            <th>
-              <div class='border-top text-center'>Tỉnh / Thành phố</div>
-              <nz-select
-                nzShowSearch
-                nzAllowClear
-                style='width:100%'
-                formControlName='province'
-                nzPlaceHolder='Chọn tỉnh thành'
+                  STT
+                </div>
+                <input class="text-center" type="text" disabled />
+              </th>
+              <!--            <th style='background:white'>-->
+              <!--              <div mat-sort-header='{{sortEnum.STT}}' class='border-top text-center'>Sort</div>-->
+              <!--              <input class=' text-center' type='text' disabled>-->
+              <!--            </th>-->
+              <th
+                *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"
+                style="background: white"
               >
-                <nz-option
-                  *ngFor='let province of provinces$|async'
-                  [nzLabel]='province.name'
-                  [nzValue]='province'
+                <div class="border-top text-center">Mã nhân viên</div>
+                <input class="form-control text-center" type="search" />
+              </th>
+              <th style="background: white">
+                <div
+                  mat-sort-header="{{ sortEnum.NAME }}"
+                  class="border-top text-center"
                 >
-                </nz-option>
-              </nz-select>
-            </th>
-            <th width='5%'>
-              <div class='border-top text-center'>Quận / Huyện</div>
-              <nz-select
-                nzShowSearch
-                nzAllowClear
-                style='width:100%'
-                formControlName='district'
-                nzPlaceHolder='Chọn Quận/Huyện'
-              >
-                <nz-option
-                  *ngFor='let district of districts'
-                  [nzLabel]='district.name'
-                  [nzValue]='district'
+                  Tên nhân viên
+                </div>
+                <input
+                  class="form-control text-center"
+                  type="search"
+                  formControlName="name"
+                  placeholder="Trần Gia Hiệu"
+                />
+              </th>
+              <th>
+                <div class="border-top text-center">Loại nhân viên</div>
+                <mat-select
+                  class="select border-top"
+                  style="width: 100%"
+                  formControlName="employeeType"
                 >
-                </nz-option>
-              </nz-select>
-            </th>
-            <th width='7%'>
-              <div class='border-top text-center'>Phường / Xã</div>
-              <nz-select
-                nzShowSearch
-                nzAllowClear
-                style='width:100%'
-                formControlName='ward'
-                nzPlaceHolder='Chọn Quận/Huyện'
-              >
-                <nz-option
-                  *ngFor='let ward of wards'
-                  [nzLabel]='ward.name'
-                  [nzValue]='ward'
+                  <mat-option value="{{ employeeType.FULL_TIME }}"
+                    >Nhân viên chính thức</mat-option
+                  >
+                  <mat-option value="{{ employeeType.SEASONAL }}"
+                    >Nhân viên thời vụ</mat-option
+                  >
+                </mat-select>
+              </th>
+              <th width="5%">
+                <div class="border-top text-center">Ngày sinh</div>
+                <input class="text-center" type="date" disabled />
+              </th>
+              <th>
+                <div class="border-top text-center">Giới tính</div>
+                <mat-select
+                  class="select border-top"
+                  style="min-width: 100px"
+                  required
+                  formControlName="gender"
                 >
-                </nz-option>
-              </nz-select>
-            </th>
-            <th width='12%'>
-              <div class='border-top text-center'>Địa chỉ</div>
-              <input type='search' class='form-control text-center' formControlName='address'>
-            </th>
-            <th>
-              <div class='border-top text-center'>Chú thích</div>
-              <input disabled type='search'>
-            </th>
-          </tr>
+                  <mat-option value="{{ genderType.MALE }}">Nam</mat-option>
+                  <mat-option value="{{ genderType.FEMALE }}">Nữ</mat-option>
+                  <mat-option value="{{ genderType.OTHER }}">Khác</mat-option>
+                  <mat-option value="">Mặc định</mat-option>
+                </mat-select>
+              </th>
+              <th width="5%">
+                <div
+                  mat-sort-header="{{ sortEnum.CREATE }}"
+                  class="border-top text-center"
+                >
+                  Ngày vào làm
+                </div>
+                <input type="date" class="border" disabled />
+              </th>
+              <th width="5%">
+                <div class="border-top text-center">Loại lương</div>
+                <mat-select
+                  class="select border-top"
+                  style="min-width: 170px"
+                  [value]="-1"
+                  required
+                  formControlName="flatSalary"
+                >
+                  <mat-option value="-1">Tất cả</mat-option>
+                  <mat-option value="1">Lương cố định</mat-option>
+                  <mat-option value="0">Lương không cố định</mat-option>
+                </mat-select>
+              </th>
+              <th width="5%">
+                <div class="border-top text-center">Số điện thoại</div>
+                <input
+                  class="form-control text-center"
+                  (keypress)="checkInputNumber($event)"
+                  type="search"
+                  formControlName="phone"
+                />
+              </th>
+              <th>
+                <div
+                  mat-sort-header="{{ sortEnum.BRANCH }}"
+                  class="border-top text-center"
+                >
+                  Đơn vị
+                </div>
+                <input class="form-control" type="search" disabled />
+              </th>
+              <th>
+                <div
+                  mat-sort-header="{{ sortEnum.POSITION }}"
+                  class="border-top text-center"
+                >
+                  Chức vụ
+                </div>
+                <nz-select
+                  nzShowSearch
+                  nzAllowClear
+                  style="width: 100%"
+                  formControlName="position"
+                  nzPlaceHolder="Chọn chức vụ"
+                  [compareWith]="compareFN"
+                >
+                  <nz-option
+                    *ngFor="let position of positions$ | async"
+                    [nzLabel]="position.name"
+                    [nzValue]="position"
+                  >
+                  </nz-option>
+                </nz-select>
+              </th>
+              <th width="5%">
+                <div class="border-top text-center">CMND / CCCD</div>
+                <input
+                  type="search"
+                  (keypress)="checkInputNumber($event)"
+                  class="form-control text-center"
+                  formControlName="identity"
+                />
+              </th>
+              <th>
+                <div class="border-top text-center">Tỉnh / Thành phố</div>
+                <nz-select
+                  nzShowSearch
+                  nzAllowClear
+                  style="width: 100%"
+                  formControlName="province"
+                  nzPlaceHolder="Chọn tỉnh thành"
+                >
+                  <nz-option
+                    *ngFor="let province of provinces$ | async"
+                    [nzLabel]="province.name"
+                    [nzValue]="province"
+                  >
+                  </nz-option>
+                </nz-select>
+              </th>
+              <th width="5%">
+                <div class="border-top text-center">Quận / Huyện</div>
+                <nz-select
+                  nzShowSearch
+                  nzAllowClear
+                  style="width: 100%"
+                  formControlName="district"
+                  nzPlaceHolder="Chọn Quận/Huyện"
+                >
+                  <nz-option
+                    *ngFor="let district of districts"
+                    [nzLabel]="district.name"
+                    [nzValue]="district"
+                  >
+                  </nz-option>
+                </nz-select>
+              </th>
+              <th width="7%">
+                <div class="border-top text-center">Phường / Xã</div>
+                <nz-select
+                  nzShowSearch
+                  nzAllowClear
+                  style="width: 100%"
+                  formControlName="ward"
+                  nzPlaceHolder="Chọn Quận/Huyện"
+                >
+                  <nz-option
+                    *ngFor="let ward of wards"
+                    [nzLabel]="ward.name"
+                    [nzValue]="ward"
+                  >
+                  </nz-option>
+                </nz-select>
+              </th>
+              <th width="12%">
+                <div class="border-top text-center">Địa chỉ</div>
+                <input
+                  type="search"
+                  class="form-control text-center"
+                  formControlName="address"
+                />
+              </th>
+              <th>
+                <div class="border-top text-center">Chú thích</div>
+                <input disabled type="search" />
+              </th>
+            </tr>
           </thead>
-          <tbody cdkDropList (cdkDropListDropped)='onDrop($event)'>
-          <tr *ngIf='!(loaded$|async); else loaded'>
-            <th colspan='100' style="z-index: -1 !important;">
-              <ngx-skeleton-loader count='10'
-                                   appearance='line'></ngx-skeleton-loader>
-            </th>
-          </tr>
-          <ng-template #loaded>
-            <tr
-              *ngFor='let employee of employees; let i = index'
-              (contextmenu)='child.onContextMenu($event,employee)'
-              (click)='readAndUpdate(employee)'
-              cdkDrag
-            >
-              <th class='pointer ' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-                <div>{{i + 1}}</div>
-              </th>
-              <!--              <th class='pointer ' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>-->
-              <!--                <div>{{employee.stt || 'Not sorted'}}</div>-->
-              <!--              </th>-->
-              <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" class='pointer'
-                  [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-                <div>{{employee?.id}}</div>
-              </th>
-              <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-                <div>{{employee?.lastName}}</div>
-              </th>
-              <th class='pointer'>
-                <div>{{employee?.type === employeeType.FULL_TIME ? 'Nhân viên chính thức' : 'Nhân viên thời vụ' }}
-                </div>
-              </th>
-              <th class='pointer'>
-                <div>{{employee?.birthday | date:'dd/MM/yyyy'}}</div>
-              </th>
-              <th class='pointer'>
-                <div>
-                  {{
-                  employee.gender === 'MALE' ? 'Nam' :
-                    employee.gender === 'FEMALE' ? 'Nữ' :
-                      'Khác'
-                  }}
-                </div>
-              </th>
-              <th class='pointer'>
-                <div>
-                  {{employee?.createdAt ? (employee?.createdAt|date: 'dd/MM/yyyy') : 'Chưa cập nhật'}}
-                </div>
-              </th>
-              <th class='pointer'>
-                <div>
-                  {{employee?.isFlatSalary ? 'Lương cố định' : 'Lương không cố định'}}
-                </div>
-              </th>
-              <th class='pointer'>
-                <div>
-                  {{employee?.phone ? employee.phone : 'Chưa cập nhật'}}
-                </div>
-              </th>
-              <th class='pointer'>
-                <div>
-                  {{employee?.branch?.name}}
-                </div>
-              </th>
-              <th class='pointer'>
-                <div>
-                  {{employee?.position?.name}}
-                </div>
-              </th>
-              <th class='pointer'>
-                <div>
-                  {{employee?.identify ? employee.identify : 'Chưa cập nhật'}}
-                </div>
-              </th>
-              <th class='pointer'>
-                <div>
-                  {{employee?.ward?.district?.province?.name}}
-                </div>
-              </th>
-              <th class='pointer'>
-                <div>
-                  {{employee?.ward?.district?.name}}
-                </div>
-              </th>
-              <th class='pointer'>
-                <div>
-                  {{employee?.ward?.name}}
-                </div>
-              </th>
-              <th class='pointer'>
-                <div>
-                  {{employee?.address}}
-                </div>
-              </th>
-              <th class='pointer'>
-                <div>
-                  {{employee?.note}}
-                </div>
+          <tbody cdkDropList (cdkDropListDropped)="onDrop($event)">
+            <tr *ngIf="!(loaded$ | async); else loaded">
+              <th colspan="100" style="z-index: -1 !important">
+                <ngx-skeleton-loader
+                  count="10"
+                  appearance="line"
+                ></ngx-skeleton-loader>
               </th>
             </tr>
-            <tr *ngIf='employees.length === 0' style='height: 50vh'>
-              <td colspan='100' class='text-center check-content font-weight-bold font-xl relative '>
-                <span style='position: absolute; top: 50%;left: 50%;'>Hiện không có nhân viên nào !</span>
-              </td>
-            </tr>
-          </ng-template>
+            <ng-template #loaded>
+              <tr
+                *ngFor="let employee of employees; let i = index"
+                (contextmenu)="child.onContextMenu($event, employee)"
+                (click)="readAndUpdate(employee)"
+                cdkDrag
+              >
+                <th
+                  class="pointer"
+                  [ngClass]="{ odd: i % 2 === 0, even: i % 2 !== 0 }"
+                >
+                  <div>{{ i + 1 }}</div>
+                </th>
+                <!--              <th class='pointer ' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>-->
+                <!--                <div>{{employee.stt || 'Not sorted'}}</div>-->
+                <!--              </th>-->
+                <th
+                  *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"
+                  class="pointer"
+                  [ngClass]="{ odd: i % 2 === 0, even: i % 2 !== 0 }"
+                >
+                  <div>{{ employee?.id }}</div>
+                </th>
+                <th
+                  class="pointer"
+                  [ngClass]="{ odd: i % 2 === 0, even: i % 2 !== 0 }"
+                >
+                  <div>{{ employee?.lastName }}</div>
+                </th>
+                <th class="pointer">
+                  <div>
+                    {{
+                      employee?.type === employeeType.FULL_TIME
+                        ? 'Nhân viên chính thức'
+                        : 'Nhân viên thời vụ'
+                    }}
+                  </div>
+                </th>
+                <th class="pointer">
+                  <div>{{ employee?.birthday | date: 'dd/MM/yyyy' }}</div>
+                </th>
+                <th class="pointer">
+                  <div>
+                    {{
+                      employee.gender === 'MALE'
+                        ? 'Nam'
+                        : employee.gender === 'FEMALE'
+                        ? 'Nữ'
+                        : 'Khác'
+                    }}
+                  </div>
+                </th>
+                <th class="pointer">
+                  <div>
+                    {{
+                      employee?.createdAt
+                        ? (employee?.createdAt | date: 'dd/MM/yyyy')
+                        : 'Chưa cập nhật'
+                    }}
+                  </div>
+                </th>
+                <th class="pointer">
+                  <div>
+                    {{
+                      employee?.isFlatSalary
+                        ? 'Lương cố định'
+                        : 'Lương không cố định'
+                    }}
+                  </div>
+                </th>
+                <th class="pointer">
+                  <div>
+                    {{ employee?.phone ? employee.phone : 'Chưa cập nhật' }}
+                  </div>
+                </th>
+                <th class="pointer">
+                  <div>
+                    {{ employee?.branch?.name }}
+                  </div>
+                </th>
+                <th class="pointer">
+                  <div>
+                    {{ employee?.position?.name }}
+                  </div>
+                </th>
+                <th class="pointer">
+                  <div>
+                    {{
+                      employee?.identify ? employee.identify : 'Chưa cập nhật'
+                    }}
+                  </div>
+                </th>
+                <th class="pointer">
+                  <div>
+                    {{ employee?.ward?.district?.province?.name }}
+                  </div>
+                </th>
+                <th class="pointer">
+                  <div>
+                    {{ employee?.ward?.district?.name }}
+                  </div>
+                </th>
+                <th class="pointer">
+                  <div>
+                    {{ employee?.ward?.name }}
+                  </div>
+                </th>
+                <th class="pointer">
+                  <div>
+                    {{ employee?.address }}
+                  </div>
+                </th>
+                <th class="pointer">
+                  <div>
+                    {{ employee?.note }}
+                  </div>
+                </th>
+              </tr>
+              <tr *ngIf="employees.length === 0" style="height: 50vh">
+                <td
+                  colspan="100"
+                  class="text-center check-content font-weight-bold font-xl relative"
+                >
+                  <span style="position: absolute; top: 50%; left: 50%"
+                    >Hiện không có nhân viên nào !</span
+                  >
+                </td>
+              </tr>
+            </ng-template>
           </tbody>
         </table>
       </div>
@@ -327,16 +443,16 @@
 
   <app-mouse-right
     #child
-    [items]='formGroup.value.status === 1 ? [ItemContextMenu.RESTORE] : []'
-    (onAdd)='add($event)'
-    (onDel)='delete($event)'
-    (onRestore)='onRestore($event)'
-    (onUpdate)='readAndUpdate($event,true)'>
+    [items]="formGroup.value.status === 1 ? [ItemContextMenu.RESTORE] : []"
+    (onAdd)="add($event)"
+    (onDel)="delete($event)"
+    (onRestore)="onRestore($event)"
+    (onUpdate)="readAndUpdate($event, true)"
+  >
   </app-mouse-right>
 </div>
 
 <style>
-
   .table-scroll th:nth-child(3) {
     position: -webkit-sticky;
     position: sticky;
@@ -362,8 +478,7 @@
     box-sizing: border-box;
     border-radius: 4px;
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+      0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
     height: 40px;
   }
 
@@ -379,6 +494,5 @@
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
   }
 
-  .ant
-
+  .ant;
 </style>

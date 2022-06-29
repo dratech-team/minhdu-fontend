@@ -6,6 +6,6 @@
     "../../libs/employee-v2",
     "../../libs/location",
     "src/test-setup.ts",
-    "polyfills.ts",
+    "polyfills.ts"
   ]
 }

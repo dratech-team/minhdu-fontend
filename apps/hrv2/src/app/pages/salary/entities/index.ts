@@ -17,19 +17,18 @@ export * from './remote-salary.entity';
 export * from './salary.entity';
 
 export type UnionSalary =
-  SalaryEntity
+  | SalaryEntity
   | AllowanceSalaryEntity
   | OvertimeSalaryEntity
   | AbsentSalaryEntity
   | DeductionSalaryEntity
   | HolidaySalaryEntity
-  | DayOffSalaryEntity
+  | DayOffSalaryEntity;
 
-export type ExtendSalary =
-  SalaryEntity
-  & AllowanceSalaryEntity
-  & OvertimeSalaryEntity
-  & AbsentSalaryEntity
-  & DeductionSalaryEntity
-  & RemoteSalaryEntity
-  & HolidaySalaryEntity
+export type ExtendSalary = SalaryEntity &
+  AllowanceSalaryEntity &
+  OvertimeSalaryEntity &
+  AbsentSalaryEntity &
+  DeductionSalaryEntity &
+  RemoteSalaryEntity &
+  HolidaySalaryEntity;

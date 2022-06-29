@@ -1,51 +1,140 @@
 <div class="d-flex flex-column">
-  <div class="grid-container" style="max-height: 220px" *ngIf='(ui$ | async) as ui'>
-    <div nz-popover [nzPopoverContent]="selectOption" class="px-3 py-2 pointer"
-         (nzPopoverVisibleChange)="$event && onVisibleChange($event, {stt: ui.stt })">STT
+  <div
+    class="grid-container"
+    style="max-height: 220px"
+    *ngIf="ui$ | async as ui"
+  >
+    <div
+      nz-popover
+      [nzPopoverContent]="selectOption"
+      class="px-3 py-2 pointer"
+      (nzPopoverVisibleChange)="
+        $event && onVisibleChange($event, { stt: ui.stt })
+      "
+    >
+      STT
     </div>
-    <div nz-popover [nzPopoverContent]="selectOption" class="px-3 py-2 pointer"
-         (nzPopoverVisibleChange)="$event && onVisibleChange($event,{name: ui.name})">Tên khách hàng
+    <div
+      nz-popover
+      [nzPopoverContent]="selectOption"
+      class="px-3 py-2 pointer"
+      (nzPopoverVisibleChange)="
+        $event && onVisibleChange($event, { name: ui.name })
+      "
+    >
+      Tên khách hàng
     </div>
-    <div nz-popover [nzPopoverContent]="selectOption" class="px-3 py-2 pointer"
-         (nzPopoverVisibleChange)="$event && onVisibleChange($event,{phone: ui.phone})">Số điện thoại
+    <div
+      nz-popover
+      [nzPopoverContent]="selectOption"
+      class="px-3 py-2 pointer"
+      (nzPopoverVisibleChange)="
+        $event && onVisibleChange($event, { phone: ui.phone })
+      "
+    >
+      Số điện thoại
     </div>
-    <div nz-popover [nzPopoverContent]="selectOption" class="px-3 py-2 pointer"
-         (nzPopoverVisibleChange)="$event && onVisibleChange($event,{birthday: ui.birthday})">Ngày sinh
+    <div
+      nz-popover
+      [nzPopoverContent]="selectOption"
+      class="px-3 py-2 pointer"
+      (nzPopoverVisibleChange)="
+        $event && onVisibleChange($event, { birthday: ui.birthday })
+      "
+    >
+      Ngày sinh
     </div>
-    <div nz-popover [nzPopoverContent]="selectOption" class="px-3 py-2 pointer"
-         (nzPopoverVisibleChange)="$event && onVisibleChange($event,{gender: ui.gender})">Giới tính
+    <div
+      nz-popover
+      [nzPopoverContent]="selectOption"
+      class="px-3 py-2 pointer"
+      (nzPopoverVisibleChange)="
+        $event && onVisibleChange($event, { gender: ui.gender })
+      "
+    >
+      Giới tính
     </div>
-    <div nz-popover [nzPopoverContent]="selectOption" class="px-3 py-2 pointer"
-         (nzPopoverVisibleChange)="$event && onVisibleChange($event,{potential: ui.potential})">Tiềm năng
+    <div
+      nz-popover
+      [nzPopoverContent]="selectOption"
+      class="px-3 py-2 pointer"
+      (nzPopoverVisibleChange)="
+        $event && onVisibleChange($event, { potential: ui.potential })
+      "
+    >
+      Tiềm năng
     </div>
-    <div nz-popover [nzPopoverContent]="selectOption" class="px-3 py-2 pointer"
-         (nzPopoverVisibleChange)="$event && onVisibleChange($event,{resource: ui.resource})">Nguồn khách hàng
+    <div
+      nz-popover
+      [nzPopoverContent]="selectOption"
+      class="px-3 py-2 pointer"
+      (nzPopoverVisibleChange)="
+        $event && onVisibleChange($event, { resource: ui.resource })
+      "
+    >
+      Nguồn khách hàng
     </div>
-    <div nz-popover [nzPopoverContent]="selectOption" class="px-3 py-2 pointer"
-         (nzPopoverVisibleChange)="$event && onVisibleChange($event,{customerType: ui.customerType})">Loại khách hàng
+    <div
+      nz-popover
+      [nzPopoverContent]="selectOption"
+      class="px-3 py-2 pointer"
+      (nzPopoverVisibleChange)="
+        $event && onVisibleChange($event, { customerType: ui.customerType })
+      "
+    >
+      Loại khách hàng
     </div>
-    <div nz-popover [nzPopoverContent]="selectOption" class="px-3 py-2 pointer"
-         (nzPopoverVisibleChange)="$event && onVisibleChange($event,{email: ui.email})">Email
+    <div
+      nz-popover
+      [nzPopoverContent]="selectOption"
+      class="px-3 py-2 pointer"
+      (nzPopoverVisibleChange)="
+        $event && onVisibleChange($event, { email: ui.email })
+      "
+    >
+      Email
     </div>
-    <div nz-popover [nzPopoverContent]="selectOption" class="px-3 py-2 pointer"
-         (nzPopoverVisibleChange)="$event && onVisibleChange($event,{address: ui.address})">Địa chỉ
+    <div
+      nz-popover
+      [nzPopoverContent]="selectOption"
+      class="px-3 py-2 pointer"
+      (nzPopoverVisibleChange)="
+        $event && onVisibleChange($event, { address: ui.address })
+      "
+    >
+      Địa chỉ
     </div>
-    <div nz-popover [nzPopoverContent]="selectOption" class="px-3 py-2 pointer"
-         (nzPopoverVisibleChange)="$event && onVisibleChange($event,{note: ui.note})">Chú thích
+    <div
+      nz-popover
+      [nzPopoverContent]="selectOption"
+      class="px-3 py-2 pointer"
+      (nzPopoverVisibleChange)="
+        $event && onVisibleChange($event, { note: ui.note })
+      "
+    >
+      Chú thích
     </div>
   </div>
 </div>
 
-
 <ng-template #selectOption>
   <div>
     <div class="d-flex pointer">
-      <input nz-input type="checkbox" [checked]="visible('visible')"
-             (change)="onUpdateVisible()">
+      <input
+        nz-input
+        type="checkbox"
+        [checked]="visible('visible')"
+        (change)="onUpdateVisible()"
+      />
       <span class="ml-2">Hiển thị</span>
     </div>
     <div class="d-flex pointer">
-      <input nz-input type="checkbox" [checked]="visible('pinned')" (change)="onUpdatePinned()">
+      <input
+        nz-input
+        type="checkbox"
+        [checked]="visible('pinned')"
+        (change)="onUpdatePinned()"
+      />
       <span class="ml-2">Ghim</span>
     </div>
   </div>

@@ -7,132 +7,147 @@ import { HolidayService } from '../../../payroll/service/holiday.service';
 import { select, Store } from '@ngrx/store';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
-import { selectBranchHoliday, selectorHolidayTotal, selectPositionHoliday } from './holiday.selector';
-import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
+import {
+  selectBranchHoliday,
+  selectorHolidayTotal,
+  selectPositionHoliday,
+} from './holiday.selector';
+import { getSelectors } from '@minhdu-fontend/utils';
 
 @Injectable()
 export class HolidayEffect {
-
   loadAll$ = createEffect(() =>
     this.action$.pipe(
       ofType(HolidayAction.LoadAllHoliday),
-      switchMap(_ => this.holidayService.pagination()),
+      switchMap((_) => this.holidayService.pagination()),
       map((responsePagination) =>
         HolidayAction.LoadInitHolidaySuccess({
           holidays: responsePagination.data,
-          total: responsePagination.total
-        })),
+          total: responsePagination.total,
+        })
+      ),
       catchError((err) => throwError(err))
-    ));
+    )
+  );
 
   loadInit$ = createEffect(() =>
     this.action$.pipe(
       ofType(HolidayAction.LoadInit),
-      switchMap(props => this.holidayService.pagination(props.holidayDTO)),
+      switchMap((props) => this.holidayService.pagination(props.holidayDTO)),
       map((responsePagination) =>
         HolidayAction.LoadInitHolidaySuccess({
           holidays: responsePagination.data,
-          total: responsePagination.total
-        })),
+          total: responsePagination.total,
+        })
+      ),
       catchError((err) => throwError(err))
-    ));
+    )
+  );
 
   loadMore$ = createEffect(() =>
     this.action$.pipe(
       ofType(HolidayAction.LoadMoreHoliday),
       withLatestFrom(this.store.pipe(select(selectorHolidayTotal))),
       map(([props, skip]) =>
-        Object.assign(JSON.parse(JSON.stringify(props.holidayDTO)), { skip: skip })
+        Object.assign(JSON.parse(JSON.stringify(props.holidayDTO)), {
+          skip: skip,
+        })
       ),
-      switchMap(props => this.holidayService.pagination(props)),
+      switchMap((props) => this.holidayService.pagination(props)),
       map((responsePagination) => {
-          if (responsePagination.data.length === 0) {
-            this.snackBar.openFromComponent(SnackBarComponent, {
-              data: { content: 'Đã lấy hết ngày nghỉ' },
-              duration: 2500,
-              panelClass: ['background-snackbar']
-            });
-          }
-          return HolidayAction.LoadMoreHolidaySuccess({
-            holidays: responsePagination.data,
-            total: responsePagination.total
+        if (responsePagination.data.length === 0) {
+          this.snackBar.openFromComponent(SnackBarComponent, {
+            data: { content: 'Đã lấy hết ngày nghỉ' },
+            duration: 2500,
+            panelClass: ['background-snackbar'],
           });
         }
-      ),
+        return HolidayAction.LoadMoreHolidaySuccess({
+          holidays: responsePagination.data,
+          total: responsePagination.total,
+        });
+      }),
       catchError((err) => throwError(err))
-    ));
+    )
+  );
 
   addHoliday$ = createEffect(() =>
     this.action$.pipe(
       ofType(HolidayAction.AddHoliday),
-      switchMap((pram) => this.holidayService.addOne(pram.holiday).pipe(
-        map(_ => HolidayAction.LoadInit({holidayDTO:{take: 30 , skip: 0}})),
-        catchError((err) => {
+      switchMap((pram) =>
+        this.holidayService.addOne(pram.holiday).pipe(
+          map((_) =>
+            HolidayAction.LoadInit({ holidayDTO: { take: 30, skip: 0 } })
+          ),
+          catchError((err) => {
             this.store.dispatch(HolidayAction.handleHolidayError());
             return throwError(err);
-          }
+          })
         )
-      ))
-    ));
+      )
+    )
+  );
 
   updateHoliday$ = createEffect(() =>
     this.action$.pipe(
       ofType(HolidayAction.UpdateHoliday),
-      switchMap((pram) => this.holidayService.update(pram.id, pram.holiday).pipe(
-        map(_ => {
+      switchMap((pram) =>
+        this.holidayService.update(pram.id, pram.holiday).pipe(
+          map((_) => {
             if (pram.updateDetail) {
-
               return HolidayAction.getHoliday({
                 id: pram.id,
                 params: {
                   position: getSelectors(selectPositionHoliday, this.store),
-                  branch: getSelectors(selectBranchHoliday, this.store)
-                }
+                  branch: getSelectors(selectBranchHoliday, this.store),
+                },
               });
             } else {
               return HolidayAction.LoadAllHoliday();
             }
-          }
-        ))
+          })
+        )
       ),
       catchError((err) => {
-          this.store.dispatch(HolidayAction.handleHolidayError());
-          return throwError(err);
-        }
-      )
-    ));
+        this.store.dispatch(HolidayAction.handleHolidayError());
+        return throwError(err);
+      })
+    )
+  );
 
   deleteHoliday$ = createEffect(() =>
     this.action$.pipe(
       ofType(HolidayAction.DeleteHoliday),
       switchMap((pram) => {
-          return this.holidayService.delete(pram.id).pipe(
-            map(_ => HolidayAction.LoadInit({ holidayDTO: { take: 30, skip: 0 } }))
+        return this.holidayService
+          .delete(pram.id)
+          .pipe(
+            map((_) =>
+              HolidayAction.LoadInit({ holidayDTO: { take: 30, skip: 0 } })
+            )
           );
-        }
-      )
-    ));
+      })
+    )
+  );
 
   getHoliday$ = createEffect(() =>
     this.action$.pipe(
       ofType(HolidayAction.getHoliday),
       switchMap((props) => {
-          return this.holidayService.getOneHoliday(props.id, props.params);
-        }
-      ),
-      map(res => {
-          this.snackBar.open('Tải ngày lễ thành công', '', { duration: 1500 });
-          return HolidayAction.getHolidaySuccess({ holiday: res });
-        }
-      ),
-      catchError(err => throwError(err))
-    ));
+        return this.holidayService.getOneHoliday(props.id, props.params);
+      }),
+      map((res) => {
+        this.snackBar.open('Tải ngày lễ thành công', '', { duration: 1500 });
+        return HolidayAction.getHolidaySuccess({ holiday: res });
+      }),
+      catchError((err) => throwError(err))
+    )
+  );
 
   constructor(
     private readonly action$: Actions,
     private readonly holidayService: HolidayService,
     private readonly store: Store,
     private readonly snackBar: MatSnackBar
-  ) {
-  }
+  ) {}
 }

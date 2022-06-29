@@ -1,215 +1,317 @@
-<ngx-skeleton-loader *ngIf='!(loaded$ | async)  ; else payroll'
-                     count='18' appearance='line'></ngx-skeleton-loader>
+<ngx-skeleton-loader
+  *ngIf="!(loaded$ | async); else payroll"
+  count="18"
+  appearance="line"
+></ngx-skeleton-loader>
 <ng-template #payroll>
-  <div class='mt-2'>
-    <div class='font-weight-bold'>Tổng: {{total$|async}}</div>
-    <div class='table-scroll mt-2 mx-auto'
-         infiniteScroll
-         [alwaysCallback]='true'
-         [infiniteScrollDistance]='1'
-         [infiniteScrollThrottle]='10'
-         [scrollWindow]='false'
-         (scrolled)='onScroll()'>
-      <table [formGroup]='formGroup' class='mt-3' style='width: 2600px '>
+  <div class="mt-2">
+    <div class="font-weight-bold">Tổng: {{ total$ | async }}</div>
+    <div
+      class="table-scroll mt-2 mx-auto"
+      infiniteScroll
+      [alwaysCallback]="true"
+      [infiniteScrollDistance]="1"
+      [infiniteScrollThrottle]="10"
+      [scrollWindow]="false"
+      (scrolled)="onScroll()"
+    >
+      <table [formGroup]="formGroup" class="mt-3" style="width: 2600px">
         <thead>
-        <tr>
-          <th>
-            <div class='border-top text-center'>stt</div>
-            <input class='form-control text-center' type='text'>
-          </th>
-          <th>
-            <div class='border-top text-center'>Mã nhân viên</div>
-            <input class='form-control text-center' type='search' formControlName="code"
-                   (keypress)='checkInputNumber($event)'>
-          </th>
-          <th style='width: 210px'>
-            <div class='border-top text-center'>Tên nhân viên</div>
-            <input class='form-control text-center ' type='search' formControlName='name'
-                   placeholder='Trần Gia Hiệu'>
-          </th>
-          <th>
-            <div class='title-profile'>Đơn vị</div>
-            <input class='form-control' type='search' matInput disabled>
-          </th>
-          <th style='width: 210px'>
-            <div class='title-profile'>Chức vụ</div>
-            <nz-select
-              nzShowSearch
-              nzAllowClear
-              style='width:100%'
-              formControlName='position'
-              nzPlaceHolder='Chọn chức vụ'
-              [compareWith]="compareFN"
-            >
-              <nz-option
-                *ngFor='let position of positions$|async'
-                [nzLabel]='position.name'
-                [nzValue]='position'
-              >
-              </nz-option>
-            </nz-select>
-          </th>
-          <th>
-            <div class='border-top d-flex justify-content-center align-items-center'>Ngày tạo phiếu lương</div>
-            <input class='form-control text-center ' disabled>
-          </th>
-          <th>
-            <div class='border-top d-flex justify-content-center align-items-center'>Tổng ngày làm</div>
-            <input class='form-control text-center ' type='number' disabled>
-          </th>
-          <th>
-            <div class='border-top d-flex justify-content-center align-items-center'>Tổng tiền ngày làm</div>
-            <input class='form-control text-center ' type='number' disabled>
-          </th>
-          <th>
-            <div class='border-top d-flex justify-content-center align-items-center'>Tổng giờ tăng ca</div>
-            <input class='form-control text-center ' type='number' disabled>
-          </th>
-          <th>
-            <div class='border-top d-flex justify-content-center align-items-center'>Tổng tiền tăng ca</div>
-            <input class='form-control text-center ' type='number' disabled>
-          </th>
-          <th>
-            <div class='border-top d-flex justify-content-center align-items-center'>Thành tiền</div>
-            <input class='form-control text-center ' type='number' disabled>
-          </th>
-          <th>
-            <div class='border-top d-flex justify-content-center align-items-center'>Kế toán xác nhận</div>
-            <select class='select border-top' style="width: 100%" matNativeControl required
-                    formControlName='accConfirmed'>
-              <option [value]="1">Đã xác nhận</option>
-              <option [value]="0">chưa xác nhận</option>
-              <option [value]="-1">Mặc định</option>
-            </select>
-          </th>
-          <th>
-            <div class='text-center'>Quản lý xác nhận</div>
-            <select style='width: 100%' class='select border-top' matNativeControl required
-                    formControlName='manConfirmedAt'>
-              <option value='TRUE'>Đã xác nhận</option>
-              <option value='FALSE'>chưa xác nhận</option>
-              <option value=''>Mặc định</option>
-            </select>
-          </th>
-          <th>
-            <div class='border-top d-flex justify-content-center align-items-center'>Thanh toán</div>
-            <select class='select border-top ' matNativeControl required formControlName='paidAt'>
-              <option value='TRUE'>Đã Thanh toán</option>
-              <option value='FALSE'>Chưa thanh toán</option>
-              <option value=''>Mặc định</option>
-            </select>
-          </th>
-        </tr>
-        </thead>
-        <tbody *ngIf='(payroll$ | async) as payrolls'>
-        <tr *ngFor='let payroll of payrolls; let i = index'
-            (contextmenu)='child.onContextMenu($event,payroll)'>
-          <th class='pointer' (click)='readPayroll(payroll)'
-              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            <div>
-              {{i + 1}}
-            </div>
-          </th>
-          <th class='pointer' (click)='readPayroll(payroll)'
-              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            <div>
-              {{payroll.employee.id}}
-            </div>
-          </th>
-          <th class='pointer' (click)='readPayroll(payroll)'
-              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            <div>
-              {{payroll?.employee?.lastName}}
-            </div>
-          </th>
-          <th class='pointer' (click)='readPayroll(payroll)'>
-            <div>
-              {{payroll.branch}}
-            </div>
-          </th>
-          <th class='pointer' (click)='readPayroll(payroll)'
-              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            <div>
-              {{payroll.position}}
-            </div>
-          </th>
-          <th class='pointer' (click)='readPayroll(payroll)'>
-            <div>
-              {{payroll.createdAt | date:'dd-MM-yyyy'}}
-            </div>
-          </th>
-          <th class='pointer' (click)='readPayroll(payroll)'>
-            <div>
-              {{payroll.payslip?.workdays || 'Đang cập nhật'}}
-            </div>
-          </th>
-          <th class='pointer' (click)='readPayroll(payroll)'>
-            <div>
-              {{payroll?.payslip ?
-              (payroll?.payslip?.totalSalaryWorkday | number:'1.0-0') + 'đ'
-              : 'Đanbg cập nhật'}}
-            </div>
-          </th>
-          <th class='pointer' (click)='readPayroll(payroll)'>
-            <div>
-              {{payroll.payslip?.times || 'Đang cập nhật'}}
-            </div>
-          </th>
-          <th class='pointer' (click)='readPayroll(payroll)'>
-            <div>
-              {{payroll?.payslip?.totalSalaryTimes ?
-              (payroll?.payslip?.totalSalaryTimes | number:'1.0-0') + 'đ'
-              : 'Đanbg cập nhật'}}
-            </div>
-          </th>
-          <th class='pointer'
-              (click)='readPayroll(payroll)'>
-            <div>
-              {{payroll?.payslip?.total ? (payroll?.payslip?.total | number:'1.0-0') + 'đ' : 'Đang cập nhật'}}
-            </div>
-          </th>
-          <th class='pointer'>
-            <div (click)='updateConfirmPayroll(payroll.id,"accConfirmedAt")'>
+          <tr>
+            <th>
+              <div class="border-top text-center">stt</div>
+              <input class="form-control text-center" type="text" />
+            </th>
+            <th>
+              <div class="border-top text-center">Mã nhân viên</div>
               <input
-                disabled
-                type='checkbox'
-                [checked]='payroll.accConfirmedAt !== null'
-                style='pointer-events: none'
+                class="form-control text-center"
+                type="search"
+                formControlName="code"
+                (keypress)="checkInputNumber($event)"
+              />
+            </th>
+            <th style="width: 210px">
+              <div class="border-top text-center">Tên nhân viên</div>
+              <input
+                class="form-control text-center"
+                type="search"
+                formControlName="name"
+                placeholder="Trần Gia Hiệu"
+              />
+            </th>
+            <th>
+              <div class="title-profile">Đơn vị</div>
+              <input class="form-control" type="search" matInput disabled />
+            </th>
+            <th style="width: 210px">
+              <div class="title-profile">Chức vụ</div>
+              <nz-select
+                nzShowSearch
+                nzAllowClear
+                style="width: 100%"
+                formControlName="position"
+                nzPlaceHolder="Chọn chức vụ"
+                [compareWith]="compareFN"
               >
-            </div>
-          </th>
-          <th class='pointer text-center'>
-            {{payroll?.accConfirmedAt ? (payroll.accConfirmedAt|date:'dd-MM-yyyy') : 'Chưa xác nhận'}}
-          </th>
-          <th class='pointer'>
-            <div (click)='updateConfirmPayroll(payroll.id,"paidAt")'>
-              <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.paidAt !== null'>
-            </div>
-          </th>
-        </tr>
-        <tr *ngIf='payrolls.length === 0' style='height: 50vh'>
-          <td colspan='100' class='text-center check-content font-weight-bold font-xl '>
-            <span style='position: absolute ; top: 50%; left: 50%'> Hiện không có Phiếu lương nào !</span>
-          </td>
-        </tr>
+                <nz-option
+                  *ngFor="let position of positions$ | async"
+                  [nzLabel]="position.name"
+                  [nzValue]="position"
+                >
+                </nz-option>
+              </nz-select>
+            </th>
+            <th>
+              <div
+                class="border-top d-flex justify-content-center align-items-center"
+              >
+                Ngày tạo phiếu lương
+              </div>
+              <input class="form-control text-center" disabled />
+            </th>
+            <th>
+              <div
+                class="border-top d-flex justify-content-center align-items-center"
+              >
+                Tổng ngày làm
+              </div>
+              <input class="form-control text-center" type="number" disabled />
+            </th>
+            <th>
+              <div
+                class="border-top d-flex justify-content-center align-items-center"
+              >
+                Tổng tiền ngày làm
+              </div>
+              <input class="form-control text-center" type="number" disabled />
+            </th>
+            <th>
+              <div
+                class="border-top d-flex justify-content-center align-items-center"
+              >
+                Tổng giờ tăng ca
+              </div>
+              <input class="form-control text-center" type="number" disabled />
+            </th>
+            <th>
+              <div
+                class="border-top d-flex justify-content-center align-items-center"
+              >
+                Tổng tiền tăng ca
+              </div>
+              <input class="form-control text-center" type="number" disabled />
+            </th>
+            <th>
+              <div
+                class="border-top d-flex justify-content-center align-items-center"
+              >
+                Thành tiền
+              </div>
+              <input class="form-control text-center" type="number" disabled />
+            </th>
+            <th>
+              <div
+                class="border-top d-flex justify-content-center align-items-center"
+              >
+                Kế toán xác nhận
+              </div>
+              <select
+                class="select border-top"
+                style="width: 100%"
+                matNativeControl
+                required
+                formControlName="accConfirmed"
+              >
+                <option [value]="1">Đã xác nhận</option>
+                <option [value]="0">chưa xác nhận</option>
+                <option [value]="-1">Mặc định</option>
+              </select>
+            </th>
+            <th>
+              <div class="text-center">Quản lý xác nhận</div>
+              <select
+                style="width: 100%"
+                class="select border-top"
+                matNativeControl
+                required
+                formControlName="manConfirmedAt"
+              >
+                <option value="TRUE">Đã xác nhận</option>
+                <option value="FALSE">chưa xác nhận</option>
+                <option value="">Mặc định</option>
+              </select>
+            </th>
+            <th>
+              <div
+                class="border-top d-flex justify-content-center align-items-center"
+              >
+                Thanh toán
+              </div>
+              <select
+                class="select border-top"
+                matNativeControl
+                required
+                formControlName="paidAt"
+              >
+                <option value="TRUE">Đã Thanh toán</option>
+                <option value="FALSE">Chưa thanh toán</option>
+                <option value="">Mặc định</option>
+              </select>
+            </th>
+          </tr>
+        </thead>
+        <tbody *ngIf="payroll$ | async as payrolls">
+          <tr
+            *ngFor="let payroll of payrolls; let i = index"
+            (contextmenu)="child.onContextMenu($event, payroll)"
+          >
+            <th
+              class="pointer"
+              (click)="readPayroll(payroll)"
+              [ngClass]="{ odd: i % 2 === 0, even: i % 2 !== 0 }"
+            >
+              <div>
+                {{ i + 1 }}
+              </div>
+            </th>
+            <th
+              class="pointer"
+              (click)="readPayroll(payroll)"
+              [ngClass]="{ odd: i % 2 === 0, even: i % 2 !== 0 }"
+            >
+              <div>
+                {{ payroll.employee.id }}
+              </div>
+            </th>
+            <th
+              class="pointer"
+              (click)="readPayroll(payroll)"
+              [ngClass]="{ odd: i % 2 === 0, even: i % 2 !== 0 }"
+            >
+              <div>
+                {{ payroll?.employee?.lastName }}
+              </div>
+            </th>
+            <th class="pointer" (click)="readPayroll(payroll)">
+              <div>
+                {{ payroll.branch }}
+              </div>
+            </th>
+            <th
+              class="pointer"
+              (click)="readPayroll(payroll)"
+              [ngClass]="{ odd: i % 2 === 0, even: i % 2 !== 0 }"
+            >
+              <div>
+                {{ payroll.position }}
+              </div>
+            </th>
+            <th class="pointer" (click)="readPayroll(payroll)">
+              <div>
+                {{ payroll.createdAt | date: 'dd-MM-yyyy' }}
+              </div>
+            </th>
+            <th class="pointer" (click)="readPayroll(payroll)">
+              <div>
+                {{ payroll.payslip?.workdays || 'Đang cập nhật' }}
+              </div>
+            </th>
+            <th class="pointer" (click)="readPayroll(payroll)">
+              <div>
+                {{
+                  payroll?.payslip
+                    ? (payroll?.payslip?.totalSalaryWorkday | number: '1.0-0') +
+                      'đ'
+                    : 'Đanbg cập nhật'
+                }}
+              </div>
+            </th>
+            <th class="pointer" (click)="readPayroll(payroll)">
+              <div>
+                {{ payroll.payslip?.times || 'Đang cập nhật' }}
+              </div>
+            </th>
+            <th class="pointer" (click)="readPayroll(payroll)">
+              <div>
+                {{
+                  payroll?.payslip?.totalSalaryTimes
+                    ? (payroll?.payslip?.totalSalaryTimes | number: '1.0-0') +
+                      'đ'
+                    : 'Đanbg cập nhật'
+                }}
+              </div>
+            </th>
+            <th class="pointer" (click)="readPayroll(payroll)">
+              <div>
+                {{
+                  payroll?.payslip?.total
+                    ? (payroll?.payslip?.total | number: '1.0-0') + 'đ'
+                    : 'Đang cập nhật'
+                }}
+              </div>
+            </th>
+            <th class="pointer">
+              <div (click)="updateConfirmPayroll(payroll.id, 'accConfirmedAt')">
+                <input
+                  disabled
+                  type="checkbox"
+                  [checked]="payroll.accConfirmedAt !== null"
+                  style="pointer-events: none"
+                />
+              </div>
+            </th>
+            <th class="pointer text-center">
+              {{
+                payroll?.accConfirmedAt
+                  ? (payroll.accConfirmedAt | date: 'dd-MM-yyyy')
+                  : 'Chưa xác nhận'
+              }}
+            </th>
+            <th class="pointer">
+              <div (click)="updateConfirmPayroll(payroll.id, 'paidAt')">
+                <input
+                  style="pointer-events: none"
+                  disabled
+                  type="checkbox"
+                  [checked]="payroll.paidAt !== null"
+                />
+              </div>
+            </th>
+          </tr>
+          <tr *ngIf="payrolls.length === 0" style="height: 50vh">
+            <td
+              colspan="100"
+              class="text-center check-content font-weight-bold font-xl"
+            >
+              <span style="position: absolute; top: 50%; left: 50%">
+                Hiện không có Phiếu lương nào !</span
+              >
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
   </div>
 
   <app-mouse-right
-    [items]='[ItemContextMenu.PAYROLL, ItemContextMenu.RESTORE, ItemContextMenu.HISTORY_PAYROLL, ItemContextMenu.PRINT]'
+    [items]="[
+      ItemContextMenu.PAYROLL,
+      ItemContextMenu.RESTORE,
+      ItemContextMenu.HISTORY_PAYROLL,
+      ItemContextMenu.PRINT
+    ]"
     #child
-    (onAdd)='addPayroll($event)'
-    (onDel)='deletePayroll($event)'
-    (onRestore)='restorePayroll($event)'
-    (onHisPayroll)='historyPayroll($event)'
+    (onAdd)="addPayroll($event)"
+    (onDel)="deletePayroll($event)"
+    (onRestore)="restorePayroll($event)"
+    (onHisPayroll)="historyPayroll($event)"
     (onPrint)="onPrint($event)"
-    (onDetail)='readPayroll($event)'>
+    (onDetail)="readPayroll($event)"
+  >
   </app-mouse-right>
 </ng-template>
 <style>
-
   .table-scroll th:nth-child(3) {
     position: -webkit-sticky;
     position: sticky;

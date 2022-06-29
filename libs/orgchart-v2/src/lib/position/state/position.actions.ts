@@ -1,14 +1,11 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
-import {AddPositionDto} from "../dto";
-import {SearchPositionDto} from "../dto";
-import {LoadOnePositionDto} from "../dto";
-import {UpdatePositionDto} from "../dto";
-import {RemovePositionDto} from "../dto";
+import { AddPositionDto } from '../dto';
+import { SearchPositionDto } from '../dto';
+import { LoadOnePositionDto } from '../dto';
+import { UpdatePositionDto } from '../dto';
+import { RemovePositionDto } from '../dto';
 
-const addOne = createAction(
-  '[POSITION] Add One',
-  props<AddPositionDto>()
-);
+const addOne = createAction('[POSITION] Add One', props<AddPositionDto>());
 
 const loadAll = createAction(
   '[POSITION] Load All',
@@ -20,20 +17,11 @@ const loadOne = createAction(
   props<LoadOnePositionDto>()
 );
 
-const update = createAction(
-  '[POSITION] Update',
-  props<UpdatePositionDto>()
-);
+const update = createAction('[POSITION] Update', props<UpdatePositionDto>());
 
-const remove = createAction(
-  '[POSITION] Remove',
-  props<RemovePositionDto>()
-);
+const remove = createAction('[POSITION] Remove', props<RemovePositionDto>());
 
-const error = createAction(
-  '[POSITION] Error',
-  props<{ error: string }>()
-);
+const error = createAction('[POSITION] Error', props<{ error: string }>());
 export const PositionActions = {
   addOne,
   loadAll,

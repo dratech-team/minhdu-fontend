@@ -20,8 +20,8 @@ export interface BaseCustomerEntity extends BaseEntity {
   readonly mst?: string;
   readonly type?: CustomerType;
   readonly resource?: CustomerResource;
-  readonly gender?: Gender
-  readonly  isPotential?: boolean;
-  readonly  note?: string;
-  readonly  debt?: number;
+  readonly gender?: Gender;
+  readonly isPotential?: boolean;
+  readonly note?: string;
+  readonly debt?: number;
 }

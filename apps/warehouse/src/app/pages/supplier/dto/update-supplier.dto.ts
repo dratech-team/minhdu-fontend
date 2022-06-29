@@ -1,8 +1,6 @@
-import {BaseUpdateDto} from '@minhdu-fontend/base-dto';
-import {BaseSupplierEntity} from "../bases";
+import { BaseUpdateDto } from '@minhdu-fontend/base-dto';
+import { BaseSupplierEntity } from '../bases';
 
-export interface BaseUpdateSupplierDto extends  BaseSupplierEntity{
+export interface BaseUpdateSupplierDto extends BaseSupplierEntity {}
 
-}
-
-export type UpdateSupplierDto = BaseUpdateDto<BaseUpdateSupplierDto>
+export type UpdateSupplierDto = BaseUpdateDto<BaseUpdateSupplierDto>;

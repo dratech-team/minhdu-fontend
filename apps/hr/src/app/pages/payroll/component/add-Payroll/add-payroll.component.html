@@ -1,27 +1,35 @@
-<mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
-<div class='main-popup'>
-  <div mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='./assets/img/share/x2-lg.svg' alt='cancel'>
+<mat-spinner *ngIf="adding$ | async" class="loading"></mat-spinner>
+<div class="main-popup">
+  <div mat-dialog-close class="close-popup">
+    <span class="mr-1"> close</span>
+    <div class="x-popup">
+      <img src="./assets/img/share/x2-lg.svg" alt="cancel" />
     </div>
   </div>
-  <div class='title-popup'>
-    <span>Chọn {{data.inHistory? 'Ngày': 'Tháng'}}</span>
+  <div class="title-popup">
+    <span>Chọn {{ data.inHistory ? 'Ngày' : 'Tháng' }}</span>
   </div>
-  <div class='mt-2'>
-    <form [formGroup]='formGroup'>
-      <label class='title-child'>{{data.inHistory? 'Ngày': 'Tháng'}}</label>
-      <input *ngIf='data.inHistory else month' type='date' min="2021-01" class='form-control' formControlName='generate'>
+  <div class="mt-2">
+    <form [formGroup]="formGroup">
+      <label class="title-child">{{ data.inHistory ? 'Ngày' : 'Tháng' }}</label>
+      <input
+        *ngIf="data.inHistory; else month"
+        type="date"
+        min="2021-01"
+        class="form-control"
+        formControlName="generate"
+      />
       <ng-template #month>
-        <input type='month' min="2021-01" class='form-control' formControlName='generate'>
+        <input
+          type="month"
+          min="2021-01"
+          class="form-control"
+          formControlName="generate"
+        />
       </ng-template>
     </form>
-    <div class='mt-4 ' mat-dialog-actions>
-      <button class='btn btn-dark ml-2'  (click)='submit()'>Đồng ý</button>
+    <div class="mt-4" mat-dialog-actions>
+      <button class="btn btn-dark ml-2" (click)="submit()">Đồng ý</button>
     </div>
   </div>
 </div>
-
-
-

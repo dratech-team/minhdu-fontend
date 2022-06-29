@@ -3,17 +3,19 @@
   <nz-step nzTitle="Chọn nhân viên"></nz-step>
 </nz-steps>
 <ng-template [ngIf]="stepIndex === 0">
-  <form [formGroup]='formGroup'>
-    <div class='col-12 mt-3'>
-      <label class="font-weight-bold">Tên danh mục</label><span class='star'>*</span>
-      <input type='text' nz-input formControlName='name'>
-      <div *ngIf='checkValid.name.errors' class='invalid-feedback'>
+  <form [formGroup]="formGroup">
+    <div class="col-12 mt-3">
+      <label class="font-weight-bold">Tên danh mục</label
+      ><span class="star">*</span>
+      <input type="text" nz-input formControlName="name" />
+      <div *ngIf="checkValid.name.errors" class="invalid-feedback">
         <div>Chưa nhập Tên danh mục</div>
       </div>
     </div>
-    <div class='col-12 mt-2 d-flex flex-column'>
+    <div class="col-12 mt-2 d-flex flex-column">
       <div>
-        <span class='ml-1 font-weight-bold'>Đơn vị</span><span class='star'>*</span>
+        <span class="ml-1 font-weight-bold">Đơn vị</span
+        ><span class="star">*</span>
       </div>
       <div>
         <nz-select
@@ -21,32 +23,51 @@
           formControlName="branch"
           [compareWith]="compareFn"
         >
-          <nz-option *ngFor="let item of branches$|async" [nzValue]="item" [nzLabel]="item.name"></nz-option>
+          <nz-option
+            *ngFor="let item of branches$ | async"
+            [nzValue]="item"
+            [nzLabel]="item.name"
+          ></nz-option>
         </nz-select>
       </div>
     </div>
-    <div class='col-12 mt-2'>
+    <div class="col-12 mt-2">
       <label>Chú thích</label>
-      <input type='text' nz-input formControlName='note'>
+      <input type="text" nz-input formControlName="note" />
     </div>
   </form>
 </ng-template>
 <ng-template [ngIf]="stepIndex === 1">
-  <minhdu-fontend-pick-employee [formGroup]="formGroup"></minhdu-fontend-pick-employee>
+  <minhdu-fontend-pick-employee
+    [formGroup]="formGroup"
+  ></minhdu-fontend-pick-employee>
 </ng-template>
-<div class="mt-2 ml-2" >
-  <button nz-button nzType="default" (click)="move('pre')" *ngIf="stepIndex > 0">
+<div class="mt-2 ml-2">
+  <button
+    nz-button
+    nzType="default"
+    (click)="move('pre')"
+    *ngIf="stepIndex > 0"
+  >
     <span>Trở lại</span>
   </button>
-  <button class="ml-2" nz-button nzType="default" (click)="move('next')" *ngIf="stepIndex < 1">
+  <button
+    class="ml-2"
+    nz-button
+    nzType="default"
+    (click)="move('next')"
+    *ngIf="stepIndex < 1"
+  >
     <span>Tiếp theo</span>
   </button>
-  <button class="ml-2"
-          nz-button
-          nzType="primary"
-          [nzLoading]="loading$ | async"
-          (click)="onSubmit()"
-          *ngIf="stepIndex === 1 || data?.update">
+  <button
+    class="ml-2"
+    nz-button
+    nzType="primary"
+    [nzLoading]="loading$ | async"
+    (click)="onSubmit()"
+    *ngIf="stepIndex === 1 || data?.update"
+  >
     <span>Xác nhận</span>
   </button>
 </div>

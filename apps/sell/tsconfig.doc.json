@@ -5,6 +5,6 @@
     "../../libs/employee",
     "../../libs/employee-v2",
     "src/test-setup.ts",
-    "polyfills.ts",
+    "polyfills.ts"
   ]
 }

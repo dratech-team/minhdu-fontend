@@ -1,8 +1,8 @@
-import {BaseUpdateDto} from "@minhdu-fontend/base-dto";
-import {BaseSettingRankEntity} from "../../bases/base-setting-rank.entity";
+import { BaseUpdateDto } from '@minhdu-fontend/base-dto';
+import { BaseSettingRankEntity } from '../../bases/base-setting-rank.entity';
 
 export interface BaseUpdateSettingRankDto extends BaseSettingRankEntity {
-  yearBonusSettingIds: number []
+  yearBonusSettingIds: number[];
 }
 
-export type UpdateSettingRankDto = BaseUpdateDto<BaseUpdateSettingRankDto>
+export type UpdateSettingRankDto = BaseUpdateDto<BaseUpdateSettingRankDto>;

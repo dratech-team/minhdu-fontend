@@ -1,9 +1,9 @@
-import {createAction, props} from '@datorama/akita-ng-effects';
-import {AddSettingRankDto} from "../../dto/setting-rank/add-setting-rank.dto";
-import {SearchSettingRankDto} from "../../dto/setting-rank/search-setting-rank.dto";
-import {LoadOneSettingRankDto} from "../../dto/setting-rank/load-one-setting-rank.dto";
-import {UpdateSettingRankDto} from "../../dto/setting-rank/update-setting-rank.dto";
-import {RemoveSettingRankDto} from "../../dto/setting-rank/remove-setting-rank.dto";
+import { createAction, props } from '@datorama/akita-ng-effects';
+import { AddSettingRankDto } from '../../dto/setting-rank/add-setting-rank.dto';
+import { SearchSettingRankDto } from '../../dto/setting-rank/search-setting-rank.dto';
+import { LoadOneSettingRankDto } from '../../dto/setting-rank/load-one-setting-rank.dto';
+import { UpdateSettingRankDto } from '../../dto/setting-rank/update-setting-rank.dto';
+import { RemoveSettingRankDto } from '../../dto/setting-rank/remove-setting-rank.dto';
 
 const addOne = createAction(
   '[SETTING_RANK] Add One',
@@ -30,10 +30,7 @@ const remove = createAction(
   props<RemoveSettingRankDto>()
 );
 
-const error = createAction(
-  '[SETTING_RANK] Error',
-  props<{ error: string }>()
-);
+const error = createAction('[SETTING_RANK] Error', props<{ error: string }>());
 
 export const SettingRankActions = {
   addOne,

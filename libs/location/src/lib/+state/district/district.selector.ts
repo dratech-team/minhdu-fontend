@@ -6,25 +6,26 @@ import * as fromDistrict from './district.reducer';
 
 export const SelectorDistrictState = createFeatureSelector<DistrictState>(
   FeatureName.DISTRICT
-)
-export const getSelectedDistrictId = (state: District) => state.id
+);
+export const getSelectedDistrictId = (state: District) => state.id;
 export const getAllDistrict = createSelector(
   SelectorDistrictState,
   fromDistrict.selectAll
-)
+);
 export const selectorDistrictEntities = createSelector(
   SelectorDistrictState,
   fromDistrict.selectEntities
-)
-export const selectDistrictByProvinceId = (provinceId : number) => createSelector(
-  getAllDistrict,
-  (districtEntities) => districtEntities.filter(district => district.provinceId === provinceId)
-)
+);
+export const selectDistrictByProvinceId = (provinceId: number) =>
+  createSelector(getAllDistrict, (districtEntities) =>
+    districtEntities.filter((district) => district.provinceId === provinceId)
+  );
 
-export const selectDistrictById = (id : number) => createSelector(
-  selectorDistrictEntities,
-  (districtEntities) => districtEntities[id]
-)
+export const selectDistrictById = (id: number) =>
+  createSelector(
+    selectorDistrictEntities,
+    (districtEntities) => districtEntities[id]
+  );
 export const selectedDistrictLoaded = createSelector(
   SelectorDistrictState,
   (state) => state.loaded

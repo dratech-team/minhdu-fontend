@@ -1,4 +1,4 @@
-export enum TypeProductEnum{
+export enum TypeProductEnum {
   HSD = 'HSD',
-  NORMAL = 'NORMAL'
+  NORMAL = 'NORMAL',
 }

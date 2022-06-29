@@ -7,24 +7,25 @@ import { throwError } from 'rxjs';
 
 @Injectable()
 export class NationEffect {
-  loadNations$ = createEffect(()=>
-  this.action.pipe(
-    ofType(NationAction.loadAllNation),
-    switchMap(_ => this.nationService.getAll()),
-    map((props) => NationAction.loadAllNationsSuccess({nations :props})),
-    catchError(err=> throwError(err))
-  ))
-  getNation$ = createEffect(()=>
+  loadNations$ = createEffect(() =>
+    this.action.pipe(
+      ofType(NationAction.loadAllNation),
+      switchMap((_) => this.nationService.getAll()),
+      map((props) => NationAction.loadAllNationsSuccess({ nations: props })),
+      catchError((err) => throwError(err))
+    )
+  );
+  getNation$ = createEffect(() =>
     this.action.pipe(
       ofType(NationAction.getNation),
-      switchMap(props => this.nationService.getOne(props.idNation)),
-      map((props) => NationAction.getNationSuccess({nation :props})),
-      catchError(err=> throwError(err))
-    ))
+      switchMap((props) => this.nationService.getOne(props.idNation)),
+      map((props) => NationAction.getNationSuccess({ nation: props })),
+      catchError((err) => throwError(err))
+    )
+  );
 
   constructor(
-    private  readonly action : Actions,
-    private  readonly nationService : NationService,
-  ) {
-  }
+    private readonly action: Actions,
+    private readonly nationService: NationService
+  ) {}
 }

@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { select, Store } from '@ngrx/store';
@@ -17,7 +21,7 @@ import { IncubatorFactoryStore } from '../../state/incubator-factory.store';
 import { IncubatorFactoryQuery } from '../../state/incubator-factory.query';
 
 @Component({
-  templateUrl: 'add-egg.component.html'
+  templateUrl: 'add-egg.component.html',
 })
 export class AddEggComponent implements OnInit {
   eggType$ = this.eggTypeQuery.selectAll();
@@ -36,30 +40,32 @@ export class AddEggComponent implements OnInit {
     private readonly eggQuery: IncubatorFactoryQuery,
     private readonly action$: Actions,
     private readonly eggStore: IncubatorFactoryStore
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-
     this.storeNgrx.dispatch(OrgchartActions.init());
     this.action$.dispatch(EggTypeActions.loadAll());
 
     this.formGroup = this.formBuilder.group({
       amount: ['', Validators.required],
       eggType: ['', Validators.required],
-      createdAt: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), Validators.required],
-      branch: ['', Validators.required]
+      createdAt: [
+        this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+        Validators.required,
+      ],
+      branch: ['', Validators.required],
     });
 
     this.branches$ = searchAndAddAutocomplete(
-      this.formGroup.get('branches')?.valueChanges.pipe(startWith('')) || of(''),
+      this.formGroup.get('branches')?.valueChanges.pipe(startWith('')) ||
+        of(''),
       this.branches$
     );
   }
 
   onSelectBranch(branch: Branch) {
     if (branch) {
-      this.eggStore.update(state => ({ ...state, branchId: branch.id }));
+      this.eggStore.update((state) => ({ ...state, branchId: branch.id }));
     }
   }
 
@@ -76,12 +82,14 @@ export class AddEggComponent implements OnInit {
     // if (!this.branchId) {
     //   return this.snackbar.open('Chưa chọn đơn vị', '', { duration: 1500 });
     // }
-    this.action$.dispatch(IncubatorFactoryActions.addEgg({
-      branchId: this.eggQuery.getValue().branchId,
-      createdAt: new Date(),
-      amount: value.amount,
-      eggTypeId: value.eggType
-    }));
+    this.action$.dispatch(
+      IncubatorFactoryActions.addEgg({
+        branchId: this.eggQuery.getValue().branchId,
+        createdAt: new Date(),
+        amount: value.amount,
+        eggTypeId: value.eggType,
+      })
+    );
     this.dialogRef.close();
   }
 }

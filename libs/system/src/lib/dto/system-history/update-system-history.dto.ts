@@ -1,7 +1,6 @@
-import {BaseAccountEntity} from "../../base/base-account.entity";
-import {BaseUpdateDto} from "@minhdu-fontend/base-dto";
+import { BaseAccountEntity } from '../../base/base-account.entity';
+import { BaseUpdateDto } from '@minhdu-fontend/base-dto';
 
-export interface BaseUpdateSystemHistory extends BaseAccountEntity{
-}
+export interface BaseUpdateSystemHistory extends BaseAccountEntity {}
 
-export type UpdateSystemHistoryDto = BaseUpdateDto<BaseUpdateSystemHistory>
+export type UpdateSystemHistoryDto = BaseUpdateDto<BaseUpdateSystemHistory>;

@@ -1,60 +1,71 @@
-import {Component, Input, OnInit} from "@angular/core";
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
-import {Actions} from "@datorama/akita-ng-effects";
-import {BranchActions, BranchEntity, BranchQuery} from "@minhdu-fontend/orgchart-v2";
-import {BaseAddBranchDto, BaseUpdateBranchDto} from "../../../../../../../../libs/orgchart-v2/src/lib/branch/dto";
-import {NzModalRef} from "ng-zorro-antd/modal";
+import { Component, Input, OnInit } from '@angular/core';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { Actions } from '@datorama/akita-ng-effects';
+import {
+  BranchActions,
+  BranchEntity,
+  BranchQuery,
+} from '@minhdu-fontend/orgchart-v2';
+import {
+  BaseAddBranchDto,
+  BaseUpdateBranchDto,
+} from '../../../../../../../../libs/orgchart-v2/src/lib/branch/dto';
+import { NzModalRef } from 'ng-zorro-antd/modal';
 
 @Component({
-  templateUrl: 'modal-branch.component.html'
+  templateUrl: 'modal-branch.component.html',
 })
 export class ModalBranchComponent implements OnInit {
-  @Input() data?: { update?: { branch: BranchEntity } }
+  @Input() data?: { update?: { branch: BranchEntity } };
 
-  loading$ = this.branchQuery.select(state => state.loading)
+  loading$ = this.branchQuery.select((state) => state.loading);
 
-  formGroup!: UntypedFormGroup
-  submitted = false
+  formGroup!: UntypedFormGroup;
+  submitted = false;
 
   constructor(
     private readonly formBuilder: UntypedFormBuilder,
     private readonly action: Actions,
     private readonly branchQuery: BranchQuery,
-    private readonly modalRef: NzModalRef,
-  ) {
-  }
+    private readonly modalRef: NzModalRef
+  ) {}
 
   ngOnInit() {
-    const branch = this.data?.update?.branch
+    const branch = this.data?.update?.branch;
     this.formGroup = this.formBuilder.group({
       name: [branch?.name, Validators.required],
       phone: [branch?.phone],
       address: [branch?.address],
       status: [branch?.status],
-    })
+    });
   }
 
   onSubmit() {
-    this.submitted = true
+    this.submitted = true;
     if (this.formGroup.invalid) {
-      return
+      return;
     }
-    const branch = this.mapBranch(this.formGroup.value)
+    const branch = this.mapBranch(this.formGroup.value);
 
     this.action.dispatch(
       this.data?.update
-        ? BranchActions.update({id: this.data.update.branch.id, updates: branch})
-        : BranchActions.addOne({body: branch})
-    )
+        ? BranchActions.update({
+            id: this.data.update.branch.id,
+            updates: branch,
+          })
+        : BranchActions.addOne({ body: branch })
+    );
 
-    this.loading$.subscribe(loading => {
+    this.loading$.subscribe((loading) => {
       if (loading === false) {
-        this.modalRef.close()
+        this.modalRef.close();
       }
-    })
-
+    });
   }
-
 
   get checkValid() {
     return this.formGroup.controls;
@@ -65,7 +76,7 @@ export class ModalBranchComponent implements OnInit {
       name: value.name,
       phone: value?.phone,
       address: value?.address,
-      status: value?.status
-    }
+      status: value?.status,
+    };
   }
 }

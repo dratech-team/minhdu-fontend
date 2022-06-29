@@ -1,18 +1,15 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {Api} from '@minhdu-fontend/constants';
-import {Department} from '@minhdu-fontend/data-models';
-import {BaseService} from '@minhdu-fontend/service';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Api } from '@minhdu-fontend/constants';
+import { Department } from '@minhdu-fontend/data-models';
+import { BaseService } from '@minhdu-fontend/service';
 
 @Injectable()
 export class DepartmentService extends BaseService<Department> {
-  constructor(
-    public readonly http: HttpClient
-  ) {
+  constructor(public readonly http: HttpClient) {
     super(Api.HR.EMPLOYEE.DEPARTMENT, http);
   }
-
 
   addOne(props: any): Observable<Department> {
     return super.addOne(props);

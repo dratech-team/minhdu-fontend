@@ -1,4 +1,4 @@
-export enum SortSettingSalaryEnum{
+export enum SortSettingSalaryEnum {
   TITLE = 'TITLE',
   PRICE = 'PRICE',
   UNIT = 'UNIT',

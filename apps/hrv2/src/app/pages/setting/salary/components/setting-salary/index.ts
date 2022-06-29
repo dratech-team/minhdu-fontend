@@ -1,1 +1,1 @@
-export * from './modal-setting-salary.component'
+export * from './modal-setting-salary.component';

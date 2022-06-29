@@ -1,5 +1,9 @@
 import { createAction, props } from '@ngrx/store';
-import { AddCommodityDto, SearchCommodityDto, UpdateCommodityDto } from '../dto';
+import {
+  AddCommodityDto,
+  SearchCommodityDto,
+  UpdateCommodityDto,
+} from '../dto';
 import { CommodityEntity } from '../entities';
 
 export const addOne = createAction(
@@ -24,7 +28,7 @@ export const update = createAction(
 
 export const remove = createAction(
   '[COMMODITY] Remove',
-  props<{ id: number, inOrder?: { orderId: number } }>()
+  props<{ id: number; inOrder?: { orderId: number } }>()
 );
 
 export const resetStateCommodityNewAdd = createAction(
@@ -33,6 +37,14 @@ export const resetStateCommodityNewAdd = createAction(
 
 export const error = createAction(
   '[COMMODITY] Error',
-  props<{error: string}>()
+  props<{ error: string }>()
 );
-export const CommodityAction = { addOne, loadAll, getOne, update, remove, resetStateCommodityNewAdd, error };
+export const CommodityAction = {
+  addOne,
+  loadAll,
+  getOne,
+  update,
+  remove,
+  resetStateCommodityNewAdd,
+  error,
+};

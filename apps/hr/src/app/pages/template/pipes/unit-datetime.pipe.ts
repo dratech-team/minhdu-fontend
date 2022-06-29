@@ -3,10 +3,13 @@ import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
 import { UnitSalaryConstant } from '../constants/unit-salary.constant';
 
 @Pipe({
-  name: 'unitdatetimepipe'
+  name: 'unitdatetimepipe',
 })
 export class UnitDatetimePipe implements PipeTransform {
   transform(unit: DatetimeUnitEnum): string {
-    return UnitSalaryConstant.find(e => e.value === unit)?.name || 'UnitDateTime không xác định';
+    return (
+      UnitSalaryConstant.find((e) => e.value === unit)?.name ||
+      'UnitDateTime không xác định'
+    );
   }
 }

@@ -1,50 +1,76 @@
-<div class='main-popup px-5 py-3 ' style='width: 400px'>
-  <div mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+<div class="main-popup px-5 py-3" style="width: 400px">
+  <div mat-dialog-close class="close-popup">
+    <span class="mr-1"> close</span>
+    <div class="x-popup">
+      <img src="../../../../../assets/img/share/x2-lg.svg" alt="cancel" />
     </div>
   </div>
-  <div class='title-popup row'>
-    <span *ngIf='!data?.isUpdate else title '>Thêm Đơn vị</span>
+  <div class="title-popup row">
+    <span *ngIf="!data?.isUpdate; else title">Thêm Đơn vị</span>
     <ng-template #title>
       <span>Sửa đơn vị</span>
     </ng-template>
   </div>
-  <form class='mt-4 ' [formGroup]='formGroup'>
-    <div class='main-popup'>
-      <div class='row mt-2'>
-        <span class='ml-1 title-item'>Tên đơn vị</span> <span class='star'>*</span>
-        <input type='text' class='form-control mt-1' formControlName='branch'
-               [ngClass]="{ 'is-invalid': submitted && checkValid.branch.errors?.required }">
-        <div *ngIf='submitted && checkValid.branch.errors?.required' class='invalid-feedback'>
+  <form class="mt-4" [formGroup]="formGroup">
+    <div class="main-popup">
+      <div class="row mt-2">
+        <span class="ml-1 title-item">Tên đơn vị</span>
+        <span class="star">*</span>
+        <input
+          type="text"
+          class="form-control mt-1"
+          formControlName="branch"
+          [ngClass]="{
+            'is-invalid': submitted && checkValid.branch.errors?.required
+          }"
+        />
+        <div
+          *ngIf="submitted && checkValid.branch.errors?.required"
+          class="invalid-feedback"
+        >
           <div>Chưa nhập Tên đơn vị</div>
         </div>
       </div>
-      <div class='row mt-2 d-flex flex-column'>
-        <div><span class='ml-1 title-item'>Danh sách chức vụ</span></div>
+      <div class="row mt-2 d-flex flex-column">
+        <div><span class="ml-1 title-item">Danh sách chức vụ</span></div>
         <div>
-          <input class='form-control ' type='text' matInput [formControl]='positions' [matAutocomplete]='position'
-                 style='width: 100%'
-                 #positionInput>
-          <mat-autocomplete #position='matAutocomplete'>
-            <mat-option *ngFor='let position of positions$ | async'
-                        [value]='!position.id ? positionInput.value : position.name '
-                        (onSelectionChange)='onCreatePosition($event, position,positionInput)'
+          <input
+            class="form-control"
+            type="text"
+            matInput
+            [formControl]="positions"
+            [matAutocomplete]="position"
+            style="width: 100%"
+            #positionInput
+          />
+          <mat-autocomplete #position="matAutocomplete">
+            <mat-option
+              *ngFor="let position of positions$ | async"
+              [value]="!position.id ? positionInput.value : position.name"
+              (onSelectionChange)="
+                onCreatePosition($event, position, positionInput)
+              "
             >
-              {{position.name}}
+              {{ position.name }}
             </mat-option>
           </mat-autocomplete>
-          <div *ngIf="positionSelected.length > 0" class="border p-1 mt-1 " style="height: 120px ; overflow-y: scroll">
-            <mat-chip-list >
+          <div
+            *ngIf="positionSelected.length > 0"
+            class="border p-1 mt-1"
+            style="height: 120px; overflow-y: scroll"
+          >
+            <mat-chip-list>
               <mat-chip
-                *ngFor='let position of positionSelected'
-                [selectable]='true'
-                [removable]='true'
-                (removed)='removePosition(position)'>
-                {{position.name}}
-                <button class='btn' matChipRemove *ngIf='true'>
-                  <mat-icon style='position: absolute; top:4px ; right: 5px'>cancel</mat-icon>
+                *ngFor="let position of positionSelected"
+                [selectable]="true"
+                [removable]="true"
+                (removed)="removePosition(position)"
+              >
+                {{ position.name }}
+                <button class="btn" matChipRemove *ngIf="true">
+                  <mat-icon style="position: absolute; top: 4px; right: 5px"
+                    >cancel</mat-icon
+                  >
                 </button>
               </mat-chip>
             </mat-chip-list>
@@ -52,8 +78,8 @@
         </div>
       </div>
     </div>
-    <div class='row mt-4'>
-      <button class='btn btn-primary' (click)='onsubmit()'>Lưu</button>
+    <div class="row mt-4">
+      <button class="btn btn-primary" (click)="onsubmit()">Lưu</button>
     </div>
   </form>
 </div>

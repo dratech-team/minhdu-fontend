@@ -1,10 +1,18 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {ControlContainer, FormBuilder, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
+import {
+  ControlContainer,
+  FormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityUnit, CustomerType } from '@minhdu-fontend/enums';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { debounceTime } from 'rxjs/operators';
-import { CommodityAction, CommodityQuery } from '../../../pages/commodity/+state';
+import {
+  CommodityAction,
+  CommodityQuery,
+} from '../../../pages/commodity/+state';
 import { CommodityDialogComponent } from '../../../pages/commodity/component';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CommodityEntity } from '../../../pages/commodity/entities';
@@ -12,7 +20,7 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-pick-commodity',
-  templateUrl: 'pick-commodity.component.html'
+  templateUrl: 'pick-commodity.component.html',
 })
 export class PickCommodityComponent implements OnInit {
   @Input() data: any;
@@ -29,7 +37,7 @@ export class PickCommodityComponent implements OnInit {
   formGroupCommodity = new UntypedFormGroup({
     code: new UntypedFormControl(''),
     name: new UntypedFormControl(''),
-    unit: new UntypedFormControl('')
+    unit: new UntypedFormControl(''),
   });
   indeterminate = false;
   listOfCurrentPageData: readonly CommodityEntity[] = [];
@@ -42,22 +50,25 @@ export class PickCommodityComponent implements OnInit {
     private readonly commodityQuery: CommodityQuery,
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
-    private modalRef: NzModalRef,
-  ) {
-  }
+    private modalRef: NzModalRef
+  ) {}
 
   ngOnInit(): void {
     this.formGroup.get('commodityIds')?.value?.forEach((id: number) => {
       this.setOfCheckedId.add(id);
     });
     this.actions$.dispatch(
-      CommodityAction.loadAll({ search: { take: this.pageSize, skip: this.pageIndex } })
+      CommodityAction.loadAll({
+        search: { take: this.pageSize, skip: this.pageIndex },
+      })
     );
-    this.formGroupCommodity.valueChanges.pipe(debounceTime(2000)).subscribe((val) => {
-      this.actions$.dispatch(
-        CommodityAction.loadAll({ search: this.commodity(val) })
-      );
-    });
+    this.formGroupCommodity.valueChanges
+      .pipe(debounceTime(2000))
+      .subscribe((val) => {
+        this.actions$.dispatch(
+          CommodityAction.loadAll({ search: this.commodity(val) })
+        );
+      });
   }
 
   commodity(val: any, isScroll?: boolean) {
@@ -66,22 +77,23 @@ export class PickCommodityComponent implements OnInit {
       skip: isScroll ? this.commodityQuery.getCount() : this.pageIndex,
       name: val.name,
       code: val.code,
-      unit: val.unit
+      unit: val.unit,
     };
   }
 
   addCommodity() {
-    this.modal.create({
-      nzTitle: 'Thêm hàng hoá',
-      nzContent: CommodityDialogComponent,
-      nzFooter: []
-    }).afterClose.subscribe((value => {
-    }));
+    this.modal
+      .create({
+        nzTitle: 'Thêm hàng hoá',
+        nzContent: CommodityDialogComponent,
+        nzFooter: [],
+      })
+      .afterClose.subscribe((value) => {});
   }
 
   deleteCommodity($event: any) {
     const dialogRef = this.dialog.open(DialogDeleteComponent, {
-      width: 'fit-content'
+      width: 'fit-content',
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
@@ -95,9 +107,9 @@ export class PickCommodityComponent implements OnInit {
       nzTitle: 'Cập nhật hàngh hoá',
       nzContent: CommodityDialogComponent,
       nzComponentParams: {
-        data: { commodity, isUpdate: true }
+        data: { commodity, isUpdate: true },
       },
-      nzFooter: null
+      nzFooter: null,
     });
   }
 
@@ -106,7 +118,10 @@ export class PickCommodityComponent implements OnInit {
     if (index * this.pageSizeTable >= count) {
       const val = this.formGroupCommodity.value;
       this.actions$.dispatch(
-        CommodityAction.loadAll({ search: this.commodity(val, true), isPaginate: true })
+        CommodityAction.loadAll({
+          search: this.commodity(val, true),
+          isPaginate: true,
+        })
       );
     }
   }
@@ -117,9 +132,13 @@ export class PickCommodityComponent implements OnInit {
   }
 
   onAllChecked(checked: boolean): void {
-    this.listOfCurrentPageData.forEach(({ id }) => this.updateCheckedSet(id, checked));
+    this.listOfCurrentPageData.forEach(({ id }) =>
+      this.updateCheckedSet(id, checked)
+    );
     this.refreshCheckedStatus();
-    this.formGroup.get('commodityIds')?.setValue(Array.from(this.setOfCheckedId));
+    this.formGroup
+      .get('commodityIds')
+      ?.setValue(Array.from(this.setOfCheckedId));
   }
 
   updateCheckedSet(id: number, checked: boolean): void {
@@ -128,21 +147,32 @@ export class PickCommodityComponent implements OnInit {
     } else {
       this.setOfCheckedId.delete(id);
     }
-    this.formGroup.get('commodityIds')?.setValue(Array.from(this.setOfCheckedId));
+    this.formGroup
+      .get('commodityIds')
+      ?.setValue(Array.from(this.setOfCheckedId));
   }
 
   refreshCheckedStatus(): void {
-    this.checked = this.listOfCurrentPageData.every(({ id }) => this.setOfCheckedId.has(id));
-    this.indeterminate = this.listOfCurrentPageData.some(({ id }) => this.setOfCheckedId.has(id)) && !this.checked;
+    this.checked = this.listOfCurrentPageData.every(({ id }) =>
+      this.setOfCheckedId.has(id)
+    );
+    this.indeterminate =
+      this.listOfCurrentPageData.some(({ id }) =>
+        this.setOfCheckedId.has(id)
+      ) && !this.checked;
   }
 
   onItemChecked(id: number, checked: boolean): void {
     this.updateCheckedSet(id, checked);
     this.refreshCheckedStatus();
-    this.formGroup.get('commodityIds')?.setValue(Array.from(this.setOfCheckedId));
+    this.formGroup
+      .get('commodityIds')
+      ?.setValue(Array.from(this.setOfCheckedId));
   }
 
-  onCurrentPageDataChange(listOfCurrentPageData: readonly CommodityEntity[]): void {
+  onCurrentPageDataChange(
+    listOfCurrentPageData: readonly CommodityEntity[]
+  ): void {
     this.listOfCurrentPageData = listOfCurrentPageData;
     this.refreshCheckedStatus();
   }

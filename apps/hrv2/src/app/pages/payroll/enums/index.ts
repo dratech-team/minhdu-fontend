@@ -1,2 +1,2 @@
-export * from './confirm.status'
-export * from './paid.status'
+export * from './confirm.status';
+export * from './paid.status';

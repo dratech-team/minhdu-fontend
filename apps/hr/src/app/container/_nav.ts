@@ -1,4 +1,4 @@
-import {INavData} from '@coreui/angular';
+import { INavData } from '@coreui/angular';
 
 export const navItems: INavData[] = [
   {
@@ -7,12 +7,12 @@ export const navItems: INavData[] = [
     icon: '',
     badge: {
       variant: 'info',
-      text: 'NEW'
-    }
+      text: 'NEW',
+    },
   },
   {
     title: true,
-    name: 'Nhân sự'
+    name: 'Nhân sự',
   },
   {
     name: 'Hồ sơ',
@@ -21,7 +21,7 @@ export const navItems: INavData[] = [
   },
   {
     title: true,
-    name: 'Lương bổng'
+    name: 'Lương bổng',
   },
   {
     name: 'Phiếu lương',
@@ -30,7 +30,7 @@ export const navItems: INavData[] = [
   },
   {
     title: true,
-    name: 'Thiết lập'
+    name: 'Thiết lập',
   },
   {
     name: 'Thiết lập lương',
@@ -49,7 +49,7 @@ export const navItems: INavData[] = [
   },
   {
     title: true,
-    name: 'Tổ chức'
+    name: 'Tổ chức',
   },
   {
     name: 'Đơn vị',
@@ -63,7 +63,7 @@ export const navItems: INavData[] = [
   },
   {
     title: true,
-    name: 'Hệ thống'
+    name: 'Hệ thống',
   },
   {
     name: 'Lịch sử hệ thống',
@@ -77,11 +77,11 @@ export const navItems: INavData[] = [
   },
   {
     title: true,
-    name: 'Xếp hạng'
+    name: 'Xếp hạng',
   },
   {
     name: 'Xếp hạng cuối năm',
     url: '/xep-hang',
     icon: 'cil-lock-locked',
-  }
+  },
 ];

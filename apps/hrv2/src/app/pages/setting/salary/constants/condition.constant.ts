@@ -1,4 +1,4 @@
-import {ConditionEnum} from "../enums/condition.enum";
+import { ConditionEnum } from '../enums/condition.enum';
 
 export const ConditionConstant = [
   {
@@ -24,5 +24,5 @@ export const ConditionConstant = [
   {
     name: 'Không bằng',
     value: ConditionEnum.NOT_EQUAL,
-  }
-]
+  },
+];

@@ -5,7 +5,7 @@ import { BillQuery } from '../../+state/bill.query';
 import { Actions } from '@datorama/akita-ng-effects';
 
 @Component({
-  templateUrl: 'bill.component.html'
+  templateUrl: 'bill.component.html',
 })
 export class BillComponent implements OnInit {
   Bills$ = this.billQuery.selectAll();
@@ -15,19 +15,14 @@ export class BillComponent implements OnInit {
 
   constructor(
     private readonly actions$: Actions,
-    private readonly billQuery: BillQuery,
-  ) {
-  }
+    private readonly billQuery: BillQuery
+  ) {}
 
   ngOnInit() {
     this.actions$.dispatch(BillAction.loadAll({ take: 30, skip: 0 }));
   }
 
-  onScroll() {
+  onScroll() {}
 
-  }
-
-  detailOrder() {
-
-  }
+  detailOrder() {}
 }

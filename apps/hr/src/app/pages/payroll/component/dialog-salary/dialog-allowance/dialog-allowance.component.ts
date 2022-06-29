@@ -1,20 +1,32 @@
-import {DatePipe} from '@angular/common';
-import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {ConvertBooleanFrontEnd, DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {select, Store} from '@ngrx/store';
-import {isEqualDatetime} from 'libs/utils/daytime.until';
-import {PayrollAction} from '../../../+state/payroll/payroll.action';
-import {selectedAddedPayroll} from '../../../+state/payroll/payroll.selector';
-import {ShowAlertComponent} from '../../../../../../../../../libs/components/src/lib/show-alert/show-alert.component';
-import {AppState} from '../../../../../reducers';
-import {SalaryService} from '../../../service/salary.service';
-import {SalaryPayroll} from '@minhdu-fontend/data-models';
+import { DatePipe } from '@angular/common';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+} from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import {
+  ConvertBooleanFrontEnd,
+  DatetimeUnitEnum,
+  SalaryTypeEnum,
+} from '@minhdu-fontend/enums';
+import { select, Store } from '@ngrx/store';
+import { isEqualDatetime } from 'libs/utils/daytime.until';
+import { PayrollAction } from '../../../+state/payroll/payroll.action';
+import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
+import { ShowAlertComponent } from '../../../../../../../../../libs/components/src/lib/show-alert/show-alert.component';
+import { AppState } from '../../../../../reducers';
+import { SalaryService } from '../../../service/salary.service';
+import { SalaryPayroll } from '@minhdu-fontend/data-models';
 
 @Component({
-  templateUrl: 'dialog-allowance.component.html'
+  templateUrl: 'dialog-allowance.component.html',
 })
 export class DialogAllowanceComponent implements OnInit {
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
@@ -37,8 +49,7 @@ export class DialogAllowanceComponent implements OnInit {
     private readonly snackbar: MatSnackBar,
     private readonly dialogRef: MatDialogRef<DialogAllowanceComponent>,
     @Inject(MAT_DIALOG_DATA) public data?: any
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     if (
@@ -47,11 +58,13 @@ export class DialogAllowanceComponent implements OnInit {
     ) {
       this.isAllDay = false;
     }
-    if(this.data.updateMultiple){
-      this.salariesSelected = this.data.salariesSelected
+    if (this.data.updateMultiple) {
+      this.salariesSelected = this.data.salariesSelected;
     }
-    if (this.data?.salary?.unit === DatetimeUnitEnum.DAY
-      && this.data?.salary?.datetime) {
+    if (
+      this.data?.salary?.unit === DatetimeUnitEnum.DAY &&
+      this.data?.salary?.datetime
+    ) {
       this.isApprentice = true;
     }
     if (this.data.isUpdate) {
@@ -63,13 +76,13 @@ export class DialogAllowanceComponent implements OnInit {
         datetime: [
           this.data.salary.unit === DatetimeUnitEnum.DAY
             ? this.datePipe.transform(this.data.salary.datetime, 'yyyy-MM-dd')
-            : this.datePipe.transform(this.data.salary.datetime, 'yyyy-MM')
+            : this.datePipe.transform(this.data.salary.datetime, 'yyyy-MM'),
         ],
         times: [this.data.salary.times],
         // start: [this.data.salary.allowance.start],
         // end: [this.data.salary.allowance?.end],
         type: [this.data.type, Validators.required],
-        rate: [this.data.salary.rate ? this.data.salary.rate : 1]
+        rate: [this.data.salary.rate ? this.data.salary.rate : 1],
       });
     } else {
       this.formGroup = this.formBuilder.group({
@@ -77,19 +90,24 @@ export class DialogAllowanceComponent implements OnInit {
         unit: ['', Validators.required],
         price: ['', Validators.required],
         note: [],
-        datetime: [this.datePipe.transform(this.data.payroll.createdAt, 'yyyy-MM')],
+        datetime: [
+          this.datePipe.transform(this.data.payroll.createdAt, 'yyyy-MM'),
+        ],
         times: [1],
         // start: [],
         // end: [],
-        rate: [1]
+        rate: [1],
       });
     }
-    this.formGroup.get('unit')?.valueChanges.subscribe(unit => {
+    this.formGroup.get('unit')?.valueChanges.subscribe((unit) => {
       if (unit === DatetimeUnitEnum.DAY) {
         this.formGroup.get('datetime')?.setValue('');
       } else if (unit === DatetimeUnitEnum.MONTH) {
-        this.formGroup.get('datetime')?.patchValue(
-          this.datePipe.transform(this.data.payroll.createdAt, 'yyyy-MM'));
+        this.formGroup
+          .get('datetime')
+          ?.patchValue(
+            this.datePipe.transform(this.data.payroll.createdAt, 'yyyy-MM')
+          );
       }
     });
   }
@@ -99,7 +117,11 @@ export class DialogAllowanceComponent implements OnInit {
       return false;
     }
     {
-      return isEqualDatetime(this.data?.payroll?.employee?.workedAt, this.data?.payroll?.createdAt, 'month');
+      return isEqualDatetime(
+        this.data?.payroll?.employee?.workedAt,
+        this.data?.payroll?.createdAt,
+        'month'
+      );
     }
   }
 
@@ -133,14 +155,16 @@ export class DialogAllowanceComponent implements OnInit {
       unit: value.unit ? value.unit : undefined,
       payrollId: this.data.isUpdate
         ? this.data.salary.id
-        : this.data.payroll.id
+        : this.data.payroll.id,
     };
-    this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
+    this.store.dispatch(
+      PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE })
+    );
     if (this.data.isUpdate) {
       if (this.data.updateMultiple) {
-        this.salaryService.updateMultipleSalaryOvertime(
-          {
-            salaryIds: this.salariesSelected.map(e => e.salary.id),
+        this.salaryService
+          .updateMultipleSalaryOvertime({
+            salaryIds: this.salariesSelected.map((e) => e.salary.id),
             title: value.title,
             price:
               typeof value.price === 'string'
@@ -151,20 +175,25 @@ export class DialogAllowanceComponent implements OnInit {
               value.unit === 'MONTH' ||
               (value.unit === DatetimeUnitEnum.DAY && value.datetime)
                 ? new Date(value.datetime)
-                : undefined
-          }).subscribe(val => {
-          if (val) {
-            this.snackbar.open(val.message, '', { duration: 1500 });
-            this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
-            this.dialogRef.close({ title: value.title });
-          }
-        });
+                : undefined,
+          })
+          .subscribe((val) => {
+            if (val) {
+              this.snackbar.open(val.message, '', { duration: 1500 });
+              this.store.dispatch(
+                PayrollAction.updateStatePayroll({
+                  added: ConvertBooleanFrontEnd.FALSE,
+                })
+              );
+              this.dialogRef.close({ title: value.title });
+            }
+          });
       } else {
         this.store.dispatch(
           PayrollAction.updateSalary({
             id: this.data.salary.id,
             payrollId: this.data.salary.payrollId,
-            salary: salary
+            salary: salary,
           })
         );
       }
@@ -172,7 +201,7 @@ export class DialogAllowanceComponent implements OnInit {
       this.store.dispatch(
         PayrollAction.addSalary({
           payrollId: this.data.payroll.id,
-          salary: salary
+          salary: salary,
         })
       );
     }
@@ -193,14 +222,15 @@ export class DialogAllowanceComponent implements OnInit {
         width: 'fit-content',
         disableClose: true,
         data: {
-          content: 'Tính từ ngày chỉ được sử dụng cho phụ cấp sau khi thử việc'
-        }
+          content: 'Tính từ ngày chỉ được sử dụng cho phụ cấp sau khi thử việc',
+        },
       });
       this.isApprentice = true;
-      this.formGroup.get('datetime')?.setValue(
-        this.datePipe.transform(
-          this.data?.payroll?.createdAt, 'yyyy-MM-dd'
-        ));
+      this.formGroup
+        .get('datetime')
+        ?.setValue(
+          this.datePipe.transform(this.data?.payroll?.createdAt, 'yyyy-MM-dd')
+        );
     }
   }
 

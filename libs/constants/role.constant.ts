@@ -3,31 +3,31 @@ import { Role } from '../enums/hr/role.enum';
 export const roleAppHR = [
   {
     name: 'Quản trị viên',
-    role: Role.ADMIN
+    role: Role.ADMIN,
   },
   {
     name: 'Kế toán trưởng',
-    role: Role.CHIEF_ACCOUNTANT
+    role: Role.CHIEF_ACCOUNTANT,
   },
   {
     name: ' Kế toán quỹ',
-    role: Role.ACCOUNTANT_CASH_FUND
+    role: Role.ACCOUNTANT_CASH_FUND,
   },
   {
     name: 'Kế toán MODERATION',
-    role: Role.ACCOUNTANT_MODERATION
+    role: Role.ACCOUNTANT_MODERATION,
   },
   {
     name: 'Quản lý nhân sự',
-    role: Role.HUMAN_RESOURCE
+    role: Role.HUMAN_RESOURCE,
   },
   {
     name: 'Kế toán trại',
-    role: Role.CAMP_ACCOUNTING
+    role: Role.CAMP_ACCOUNTING,
   },
   {
     name: 'Quản lý trại',
-    role: Role.CAMP_MANAGER
+    role: Role.CAMP_MANAGER,
   },
   {
     name: 'Giám đốc trại',
@@ -45,26 +45,26 @@ export const roleAppHR = [
     name: 'Không có chức vụ',
     role: Role.NONE,
   },
-]
+];
 export const roleAppSell = [
   {
     name: 'Quản trị viên',
-    role: Role.ADMIN
+    role: Role.ADMIN,
   },
   {
     name: 'Bán hàng',
-    role: Role.SALESMAN
+    role: Role.SALESMAN,
   },
   {
     name: 'Bán trứng',
-    role: Role.SALESMAN_EGG
+    role: Role.SALESMAN_EGG,
   },
   {
     name: 'Xuất nhập khẩu',
-    role: Role.IMPORTER_EXPORTER
+    role: Role.IMPORTER_EXPORTER,
   },
   {
     name: 'Không có chức vụ',
     role: Role.NONE,
   },
-]
+];

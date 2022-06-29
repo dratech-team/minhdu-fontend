@@ -12,14 +12,13 @@ export class IncubatorFactoryEffect {
     private readonly action$: Actions,
     private readonly service: IncubatorFactoryService,
     private readonly store: IncubatorFactoryStore
-  ) {
-  }
+  ) {}
 
   @Effect()
   addEgg$ = this.action$.pipe(
     ofType(IncubatorFactoryActions.addEgg),
-    switchMap(props => this.service.addOne(props)),
-    switchMap(data => this.service.getOne(data.id)),
+    switchMap((props) => this.service.addOne(props)),
+    switchMap((data) => this.service.getOne(data.id)),
     tap((data) => {
       this.store.upsert(data?.id, data);
     }),
@@ -29,7 +28,7 @@ export class IncubatorFactoryEffect {
   @Effect()
   loadIncubatorFactory$ = this.action$.pipe(
     ofType(IncubatorFactoryActions.loadAll),
-    switchMap(props => this.service.pagination(props)),
+    switchMap((props) => this.service.pagination(props)),
     map(({ data }) => {
       return data.map((incubator) => {
         // const amountAdded = incubator.eggs.filter(egg => egg.type.added).map(a => a.amount).reduce((a, b) => a + b, 0);

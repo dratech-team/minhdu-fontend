@@ -1,10 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-
 @Component({
-  templateUrl: 'pick-day-to-day.component.html'
+  templateUrl: 'pick-day-to-day.component.html',
 })
 export class PickDayToDayComponent implements OnInit {
   formGroup!: UntypedFormGroup;
@@ -12,13 +15,12 @@ export class PickDayToDayComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: UntypedFormBuilder
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.formGroup = this.formBuilder.group({
       startedAt: [Validators.required],
-      endedAt: [Validators.required]
+      endedAt: [Validators.required],
     });
   }
 
@@ -26,7 +28,7 @@ export class PickDayToDayComponent implements OnInit {
     const val = this.formGroup.value;
     return {
       startedAt: new Date(val.startedAt),
-      endedAt: new Date(val.endedAt)
+      endedAt: new Date(val.endedAt),
     };
   }
 
@@ -35,7 +37,7 @@ export class PickDayToDayComponent implements OnInit {
     return {
       startedAt: new Date(val.startedAt),
       endedAt: new Date(val.endedAt),
-      print: true
+      print: true,
     };
   }
 }

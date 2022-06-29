@@ -1,3 +1,3 @@
-import {BaseLoadOneDto, BaseRemoveDto} from "@minhdu-fontend/base-dto";
+import { BaseLoadOneDto, BaseRemoveDto } from '@minhdu-fontend/base-dto';
 
-export type LoadOnePaymentDto = BaseLoadOneDto
+export type LoadOnePaymentDto = BaseLoadOneDto;

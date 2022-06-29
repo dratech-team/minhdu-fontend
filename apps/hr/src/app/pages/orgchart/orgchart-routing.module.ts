@@ -4,26 +4,23 @@ import { PositionContainer } from './container/position/position.container';
 import { BranchContainer } from './container/branch/branch.container';
 import { DetailBranchContainer } from './container/detail-branch/detail-branch.container';
 
-
 const routes: Routes = [
   {
     path: 'chuc-vu',
-    component: PositionContainer
+    component: PositionContainer,
   },
   {
     path: 'don-vi',
-    component: BranchContainer
+    component: BranchContainer,
   },
   {
     path: 'chi-tiet-don-vi/:id',
-    component: DetailBranchContainer
-  }
+    component: DetailBranchContainer,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-
-export class OrgchartRoutingModule {
-}
+export class OrgchartRoutingModule {}

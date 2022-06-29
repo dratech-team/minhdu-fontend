@@ -1,4 +1,4 @@
-export enum  MenuHrEnum {
+export enum MenuHrEnum {
   DASHBOARD = 'DASHBOARD',
   EMPLOYEE = 'EMPLOYEE',
   PAYROLL = 'PAYROLL',

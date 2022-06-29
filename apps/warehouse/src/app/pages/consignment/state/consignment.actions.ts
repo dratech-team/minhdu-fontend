@@ -1,5 +1,9 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
-import {AddConsignmentDto, SearchConsignmentDto, UpdateConsignmentDto} from '../dto';
+import {
+  AddConsignmentDto,
+  SearchConsignmentDto,
+  UpdateConsignmentDto,
+} from '../dto';
 import { ConsignmentEntity } from '../entities';
 
 const addOne = createAction(
@@ -27,9 +31,13 @@ const remove = createAction(
   props<{ id: ConsignmentEntity['id'] }>()
 );
 
-const error = createAction(
-  '[CONSIGNMENT] Error',
-  props<{ error: string }>()
-);
+const error = createAction('[CONSIGNMENT] Error', props<{ error: string }>());
 
-export const ConsignmentActions = { addOne, loadAll, getOne, update, remove, error };
+export const ConsignmentActions = {
+  addOne,
+  loadAll,
+  getOne,
+  update,
+  remove,
+  error,
+};

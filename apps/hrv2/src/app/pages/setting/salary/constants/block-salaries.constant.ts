@@ -1,75 +1,75 @@
-import {PriceType, SalaryTypeEnum} from "../enums";
-import {recipesConstant, recipesConstantOvertime} from "./recipes.constant";
-import {DatetimeUnitEnum, EmployeeType} from "@minhdu-fontend/enums";
-import {UnitDatetimeConstant} from "./unit-datetime.constant";
-import {EmployeeTypeConstant} from "./employee-type.constant";
-import {ReferenceOvertimeConstant} from "./reference-overtime.constant";
-import {NzDateMode} from "ng-zorro-antd/date-picker";
+import { PriceType, SalaryTypeEnum } from '../enums';
+import { recipesConstant, recipesConstantOvertime } from './recipes.constant';
+import { DatetimeUnitEnum, EmployeeType } from '@minhdu-fontend/enums';
+import { UnitDatetimeConstant } from './unit-datetime.constant';
+import { EmployeeTypeConstant } from './employee-type.constant';
+import { ReferenceOvertimeConstant } from './reference-overtime.constant';
+import { NzDateMode } from 'ng-zorro-antd/date-picker';
 
 interface BlockSalary {
-  title: string,
-  type: SalaryTypeEnum,
+  title: string;
+  type: SalaryTypeEnum;
   rate?: {
-    disabled?: boolean,
-    show?: boolean
-  }
+    disabled?: boolean;
+    show?: boolean;
+  };
   unit?: {
     units: {
-      name: string,
-      value: DatetimeUnitEnum,
-    }[],
-    disabled?: boolean
-  },
+      name: string;
+      value: DatetimeUnitEnum;
+    }[];
+    disabled?: boolean;
+  };
   datetime?: {
-    type: NzDateMode
-    disabled?: boolean,
-    show?: boolean
-  },
+    type: NzDateMode;
+    disabled?: boolean;
+    show?: boolean;
+  };
   rangeDay?: {
-    type: NzDateMode
-    disabled?: boolean,
-    show?: boolean
-  },
+    type: NzDateMode;
+    disabled?: boolean;
+    show?: boolean;
+  };
   constraintHoliday?: {
-    disabled?: boolean,
-    show?: boolean
-  },
+    disabled?: boolean;
+    show?: boolean;
+  };
   constraintOvertime?: {
-    disabled?: boolean,
-    show?: boolean
-  }
+    disabled?: boolean;
+    show?: boolean;
+  };
   recipesConstant?: {
-    name: string,
-    value: PriceType
-  }[],
+    name: string;
+    value: PriceType;
+  }[];
   employeeConstant?: {
-    name: string,
-    value: EmployeeType
-  }[],
+    name: string;
+    value: EmployeeType;
+  }[];
   price?: {
-    disabled?: boolean,
-    show?: boolean
-  }
+    disabled?: boolean;
+    show?: boolean;
+  };
   insurance?: {
-    disabled?: boolean,
-    show?: boolean
-  }
+    disabled?: boolean;
+    show?: boolean;
+  };
   branch?: {
-    disabled?: boolean,
-    show: boolean
-  },
+    disabled?: boolean;
+    show: boolean;
+  };
   position?: {
-    disabled?: boolean,
-    show: boolean
-  },
+    disabled?: boolean;
+    show: boolean;
+  };
   hasConstraints?: {
-    disabled?: boolean,
-    show: boolean
-  },
+    disabled?: boolean;
+    show: boolean;
+  };
   employeeType?: {
-    disabled?: boolean,
-    show: boolean
-  }
+    disabled?: boolean;
+    show: boolean;
+  };
 }
 
 export const blockSalariesConstant: BlockSalary[] = [
@@ -78,44 +78,44 @@ export const blockSalariesConstant: BlockSalary[] = [
     type: SalaryTypeEnum.BASIC,
     constraintHoliday: {
       disabled: false,
-      show: false
+      show: false,
     },
     insurance: {
       show: true,
-      disabled: false
+      disabled: false,
     },
     rate: {
       disabled: false,
-      show: true
+      show: true,
     },
     price: {
       disabled: false,
-      show: true
+      show: true,
     },
     employeeType: {
       disabled: false,
-      show: true
-    }
+      show: true,
+    },
   },
   {
     title: 'Phụ cấp lương',
     type: SalaryTypeEnum.STAY,
     constraintHoliday: {
       disabled: false,
-      show: false
+      show: false,
     },
     rate: {
       disabled: false,
-      show: true
+      show: true,
     },
     price: {
       disabled: false,
-      show: true
+      show: true,
     },
     employeeType: {
       disabled: false,
-      show: true
-    }
+      show: true,
+    },
   },
   {
     title: 'Loại vắng',
@@ -123,30 +123,32 @@ export const blockSalariesConstant: BlockSalary[] = [
     recipesConstant: recipesConstant,
     constraintHoliday: {
       disabled: false,
-      show: true
+      show: true,
     },
     constraintOvertime: {
       disabled: false,
-      show: true
+      show: true,
     },
     unit: {
-      units: UnitDatetimeConstant.filter(item => item.salaryType.includes(SalaryTypeEnum.ABSENT)),
+      units: UnitDatetimeConstant.filter((item) =>
+        item.salaryType.includes(SalaryTypeEnum.ABSENT)
+      ),
     },
     rate: {
       disabled: false,
-      show: true
+      show: true,
     },
     price: {
       disabled: false,
-      show: true
+      show: true,
     },
     employeeType: {
       disabled: false,
-      show: true
+      show: true,
     },
     hasConstraints: {
       disabled: true,
-      show: true
+      show: true,
     },
   },
   {
@@ -154,16 +156,18 @@ export const blockSalariesConstant: BlockSalary[] = [
     type: SalaryTypeEnum.OVERTIME,
     employeeConstant: EmployeeTypeConstant,
     unit: {
-      units: UnitDatetimeConstant.filter(item => item.salaryType.includes(SalaryTypeEnum.OVERTIME)),
+      units: UnitDatetimeConstant.filter((item) =>
+        item.salaryType.includes(SalaryTypeEnum.OVERTIME)
+      ),
     },
     recipesConstant: recipesConstantOvertime,
     rate: {
       disabled: false,
-      show: true
+      show: true,
     },
     price: {
       disabled: false,
-      show: true
+      show: true,
     },
     branch: {
       disabled: false,
@@ -175,33 +179,35 @@ export const blockSalariesConstant: BlockSalary[] = [
     },
     hasConstraints: {
       disabled: true,
-      show: true
+      show: true,
     },
     employeeType: {
       disabled: false,
-      show: true
-    }
+      show: true,
+    },
   },
   {
     title: 'Ngày lễ',
     type: SalaryTypeEnum.HOLIDAY,
     recipesConstant: recipesConstant,
     unit: {
-      units: UnitDatetimeConstant.filter(item => item.salaryType.includes(SalaryTypeEnum.HOLIDAY)),
-      disabled: true
+      units: UnitDatetimeConstant.filter((item) =>
+        item.salaryType.includes(SalaryTypeEnum.HOLIDAY)
+      ),
+      disabled: true,
     },
     rangeDay: {
       type: 'date',
       disabled: false,
-      show: true
+      show: true,
     },
     rate: {
       disabled: false,
-      show: true
+      show: true,
     },
     price: {
       disabled: false,
-      show: true
+      show: true,
     },
     branch: {
       disabled: false,
@@ -213,11 +219,11 @@ export const blockSalariesConstant: BlockSalary[] = [
     },
     employeeType: {
       disabled: false,
-      show: true
+      show: true,
     },
     hasConstraints: {
       disabled: true,
-      show: true
+      show: true,
     },
   },
 ];

@@ -1,4 +1,4 @@
-@import "~@coreui/coreui-pro/scss/coreui";
+@import '~@coreui/coreui-pro/scss/coreui';
 
 body {
   margin: 0 !important;
@@ -48,7 +48,7 @@ app-dashboard {
 }
 
 .no-underline {
-  text-decoration: none !important
+  text-decoration: none !important;
 }
 
 .ngx-charts-outer {
@@ -74,7 +74,6 @@ app-dashboard {
 }
 
 .contain-detail {
-
 }
 
 .required {
@@ -96,7 +95,7 @@ app-dashboard {
 .label-input {
   font-size: 16px;
   line-height: 19px;
-  color: #3C3B54;
+  color: #3c3b54;
 }
 
 .star {
@@ -120,7 +119,7 @@ app-dashboard {
   font-size: 16px;
   line-height: 19px;
   text-align: center;
-  background: #EBEBEB;
+  background: #ebebeb;
   border-radius: 4px;
 }
 
@@ -128,7 +127,7 @@ app-dashboard {
   font-weight: 300;
   font-size: 16px;
   line-height: 19px;
-  color: #3C3B54;
+  color: #3c3b54;
   vertical-align: inherit !important;
 }
 
@@ -136,7 +135,7 @@ app-dashboard {
   font-weight: 500;
   font-size: 20px;
   line-height: 24px;
-  color: #80828B;
+  color: #80828b;
 }
 
 .btn-ok {
@@ -148,7 +147,7 @@ app-dashboard {
   line-height: 19px;
   text-align: center;
   color: #ffffff;
-  background: #3C3B54;
+  background: #3c3b54;
   border-radius: 4px;
 }
 
@@ -158,7 +157,7 @@ app-dashboard {
 
 .main-popup .close-popup {
   font-size: 16px;
-  color: #7749F8;
+  color: #7749f8;
   display: flex;
   align-items: center;
   position: absolute;
@@ -176,41 +175,41 @@ app-dashboard {
   align-content: center;
   width: 14px;
   height: 14px;
-  border: solid 1px #7749F8;
+  border: solid 1px #7749f8;
   border-radius: 50%;
-  background: #7749F8;
+  background: #7749f8;
 }
 
 .color-delete {
-  color: #EB5757 !important;
+  color: #eb5757 !important;
 }
 
 .background-delete {
-  background: #EB5757 !important;
+  background: #eb5757 !important;
 }
 
 .success {
-  background: #B5EEBB;
+  background: #b5eebb;
 }
 
 .fail {
-  background: #EEB5B5;
+  background: #eeb5b5;
 }
 
 .attention {
-  background: #EDEEB5;
+  background: #edeeb5;
 }
 
 .btn-print {
-  border: solid 1px #95AAF8;
-  background: #95AAF8;
+  border: solid 1px #95aaf8;
+  background: #95aaf8;
   border-radius: 32px;
 }
 
 .title-input {
   font-size: 16px;
   line-height: 19px;
-  color: #3C3B54;
+  color: #3c3b54;
 }
 
 .share-table {
@@ -219,7 +218,7 @@ app-dashboard {
 
 .title-child {
   font-size: 16px;
-  color: #3C3B54;
+  color: #3c3b54;
   line-height: 19px;
 }
 
@@ -232,7 +231,7 @@ app-dashboard {
 }
 
 .btn-edit {
-  border: solid 1px #80828B;
+  border: solid 1px #80828b;
   border-radius: 20%;
 }
 
@@ -263,7 +262,8 @@ table {
   width: 100%;
 }
 
-td, th {
+td,
+th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
@@ -293,9 +293,9 @@ tr:nth-child(even) {
   cursor: pointer;
   display: flex;
   margin-right: 10px;
-  background: #4B3880;
+  background: #4b3880;
   padding: 4px;
-  border: solid 1px #4B3880;
+  border: solid 1px #4b3880;
   border-radius: 4px;
 }
 
@@ -304,10 +304,10 @@ tr:nth-child(even) {
   cursor: pointer;
   font-size: 12px;
   line-height: 28px;
-  color: #7749F8
+  color: #7749f8;
 }
 
-.main-content{
+.main-content {
   min-height: 79vh;
 }
-@import "scss/custom-scroll-table";
+@import 'scss/custom-scroll-table';

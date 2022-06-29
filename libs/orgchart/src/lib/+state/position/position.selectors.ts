@@ -1,9 +1,12 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { POSITION_FEATURE_KEY, positionAdapter, positionState } from './position.reducer';
+import {
+  POSITION_FEATURE_KEY,
+  positionAdapter,
+  positionState,
+} from './position.reducer';
 
-export const getPositionState = createFeatureSelector<positionState>(
-  POSITION_FEATURE_KEY
-);
+export const getPositionState =
+  createFeatureSelector<positionState>(POSITION_FEATURE_KEY);
 
 const { selectAll } = positionAdapter.getSelectors();
 

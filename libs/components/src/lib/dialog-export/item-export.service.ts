@@ -5,10 +5,9 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ItemExportService {
-  constructor(public readonly http: HttpClient) {
-  }
+  constructor(public readonly http: HttpClient) {}
 
   getItemExport(params?: any): Observable<any[]> {
-    return this.http.get<any>(params?.api || Api.HR.EXPORT,{params});
+    return this.http.get<any>(params?.api || Api.HR.EXPORT, { params });
   }
 }

@@ -1,15 +1,15 @@
-import {MenuWarehouseEum} from "@minhdu-fontend/enums";
+import { MenuWarehouseEum } from '@minhdu-fontend/enums';
 
 interface menuWarehouse {
-  name: string,
-  icon: string,
-  state: MenuWarehouseEum,
-  href: string,
+  name: string;
+  icon: string;
+  state: MenuWarehouseEum;
+  href: string;
   children?: {
-    name: string,
-    icon: string,
-    href: string
-  }[]
+    name: string;
+    icon: string;
+    href: string;
+  }[];
 }
 
 export const MenuWarehouseConstant: menuWarehouse[] = [
@@ -17,37 +17,36 @@ export const MenuWarehouseConstant: menuWarehouse[] = [
     name: 'Tổng quan',
     icon: '/assets/icon/menu/clipboard2.svg',
     state: MenuWarehouseEum.DASHBOARD,
-    href: ''
+    href: '',
   },
   {
     name: 'Sản phẩm',
     icon: '/assets/icon/menu/box.svg',
     state: MenuWarehouseEum.PRODUCT,
-    href: 'san-pham'
+    href: 'san-pham',
   },
   {
     name: 'Tồn kho',
     icon: '/assets/icon/menu/box.svg',
     state: MenuWarehouseEum.CONTAINER,
-    href: 'ton-kho'
+    href: 'ton-kho',
   },
   {
     name: 'Phiếu xuất nhập kho',
     icon: '/assets/icon/menu/box.svg',
     state: MenuWarehouseEum.IOI_RECEIPT,
-    href: 'phieu-xuat-nhap-kho'
+    href: 'phieu-xuat-nhap-kho',
   },
   {
     name: 'Quản lý thu chi',
     icon: '/assets/icon/menu/wallet2.svg',
     state: MenuWarehouseEum.REVENUE,
-    href: 'quan-ly-thu-chi'
+    href: 'quan-ly-thu-chi',
   },
   {
     name: 'Lịch sử hệ thống',
     icon: '/assets/icon/menu/card-list.svg',
     state: MenuWarehouseEum.ACCOUNT_MANAGEMENT,
-    href: 'he-thong'
+    href: 'he-thong',
   },
-]
-
+];

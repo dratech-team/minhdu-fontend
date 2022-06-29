@@ -1,8 +1,7 @@
-import {RateConditionEntity} from "../entities/rate-condition.entity";
+import { RateConditionEntity } from '../entities/rate-condition.entity';
 
 export interface ModalRateConditionData {
   update?: {
-    rateCondition: RateConditionEntity
-  }
+    rateCondition: RateConditionEntity;
+  };
 }
-

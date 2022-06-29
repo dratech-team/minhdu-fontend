@@ -1,28 +1,28 @@
-import {RelationshipEnum} from "@minhdu-fontend/enums";
+import { RelationshipEnum } from '@minhdu-fontend/enums';
 
 export const RelationshipConstant = [
   {
     name: 'Cha',
-    value: RelationshipEnum.FATHER
+    value: RelationshipEnum.FATHER,
   },
   {
     name: 'Mẹ',
-    value: RelationshipEnum.MOTHER
+    value: RelationshipEnum.MOTHER,
   },
   {
     name: 'Vợ',
-    value: RelationshipEnum.WIFE
+    value: RelationshipEnum.WIFE,
   },
   {
     name: 'Chồng',
-    value: RelationshipEnum.HUSBAND
+    value: RelationshipEnum.HUSBAND,
   },
   {
     name: 'Con trai',
-    value: RelationshipEnum.SON
+    value: RelationshipEnum.SON,
   },
   {
     name: 'Con gái',
-    value: RelationshipEnum.DAUGHTER
+    value: RelationshipEnum.DAUGHTER,
   },
-]
+];

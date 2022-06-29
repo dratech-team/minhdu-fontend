@@ -2,19 +2,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { OverviewHrComponent } from './containers/overview/overview-hr.component';
 
-
 const routes: Routes = [
   {
     path: '',
-    component: OverviewHrComponent
-  }
-
+    component: OverviewHrComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-
-export class OverviewHrRoutingModule {
-}
+export class OverviewHrRoutingModule {}

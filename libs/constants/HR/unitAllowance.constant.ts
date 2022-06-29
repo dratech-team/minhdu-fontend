@@ -3,14 +3,14 @@ import { DatetimeUnitEnum } from '../../enums';
 export const UnitAllowanceConstant = [
   {
     name: 'Ngày',
-    type: DatetimeUnitEnum.DAY
+    type: DatetimeUnitEnum.DAY,
   },
   {
     name: 'Tháng',
-    type: DatetimeUnitEnum.MONTH
+    type: DatetimeUnitEnum.MONTH,
   },
   {
     name: 'Tất cả',
-    type: ''
-  }
+    type: '',
+  },
 ];

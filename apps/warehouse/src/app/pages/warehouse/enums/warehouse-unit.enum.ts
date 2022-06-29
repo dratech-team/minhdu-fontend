@@ -3,5 +3,5 @@ export enum WarehouseUnitEnum {
   KG = 'KG',
   BAO = 'BAO',
   VIEN = 'VIEN',
-  OTHER = 'OTHER'
+  OTHER = 'OTHER',
 }
