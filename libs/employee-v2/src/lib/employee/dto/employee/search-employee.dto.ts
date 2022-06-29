@@ -1,7 +1,6 @@
 import { BaseEmployeeEntity } from '../../base';
 import { BaseSearchDto } from '@minhdu-fontend/base-dto';
-import { EmployeeStatusEnum, EmployeeType } from '@minhdu-fontend/enums';
-import { FlatSalaryTypeEnum } from '../../../../../../../apps/hrv2/src/app/pages/employee/enums/flat-salary-type.enum';
+import { EmployeeStatusEnum, EmployeeType, FlatSalaryTypeEnum } from '@minhdu-fontend/enums';
 import { NzTableSortOrder } from 'ng-zorro-antd/table';
 
 export interface BaseSearchEmployeeDto extends BaseEmployeeEntity {

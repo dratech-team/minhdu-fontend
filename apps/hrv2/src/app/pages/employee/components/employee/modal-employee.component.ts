@@ -1,10 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
-import { EmployeeType, RecipeType } from '@minhdu-fontend/enums';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { EmployeeType, FlatSalaryTypeEnum, RecipeType } from '@minhdu-fontend/enums';
 import { DatePipe } from '@angular/common';
 import { checkInputNumber } from '@minhdu-fontend/utils';
 import { RecipeTypesConstant } from '@minhdu-fontend/constants';
@@ -17,21 +13,20 @@ import {
   BranchQuery,
   DepartmentActions,
   DepartmentQuery,
-  PositionEntity,
+  PositionEntity
 } from '@minhdu-fontend/orgchart-v2';
 import { Actions } from '@datorama/akita-ng-effects';
 import { EmployeeActions, EmployeeQuery } from '@minhdu-fontend/employee-v2';
 import { FlatSalaryTypeConstant } from '../../constants/flat-salary-type.constant';
-import { FlatSalaryTypeEnum } from '../../enums/flat-salary-type.enum';
 import { ModalEmployeeData } from '../../data/modal-employee.data';
 import { EmployeeTypeConstant } from '../../constants/employee-type.constant';
 import {
   BaseAddEmployeeDto,
-  BaseUpdateEmployeeDto,
+  BaseUpdateEmployeeDto
 } from '../../../../../../../../libs/employee-v2/src/lib/employee/dto/employee';
 
 @Component({
-  templateUrl: 'modal-employee.component.html',
+  templateUrl: 'modal-employee.component.html'
 })
 export class ModalEmployeeComponent implements OnInit {
   @Input() data!: ModalEmployeeData;
@@ -70,7 +65,8 @@ export class ModalEmployeeComponent implements OnInit {
     private readonly message: NzMessageService,
     private readonly modalRef: NzModalRef,
     private readonly departmentQuery: DepartmentQuery
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.actions$.dispatch(BranchActions.loadAll({}));
@@ -85,7 +81,7 @@ export class ModalEmployeeComponent implements OnInit {
       idCardAt: [
         employeeInit?.idCardAt
           ? this.datePipe.transform(employeeInit.idCardAt, 'yyyy-MM-dd')
-          : '',
+          : ''
       ],
       email: [employeeInit?.email],
       workday: [employeeInit?.workday],
@@ -95,18 +91,18 @@ export class ModalEmployeeComponent implements OnInit {
       workedAt: [
         employeeInit?.workedAt
           ? this.datePipe.transform(employeeInit.workedAt, 'yyyy-MM-dd')
-          : '',
+          : ''
       ],
       createdAt: [
         employeeInit?.createdAt
           ? this.datePipe.transform(employeeInit.createdAt, 'yyyy-MM-dd')
           : '',
-        Validators.required,
+        Validators.required
       ],
       isFlatSalary: [
         employeeInit?.isFlatSalary
           ? FlatSalaryTypeEnum.FLAT_SALARY
-          : FlatSalaryTypeEnum.NOT_FLAT_SALARY,
+          : FlatSalaryTypeEnum.NOT_FLAT_SALARY
       ],
       lastName: [employeeInit?.lastName, Validators.required],
       address: [employeeInit?.address, Validators.required],
@@ -115,7 +111,7 @@ export class ModalEmployeeComponent implements OnInit {
         employeeInit?.birthday
           ? this.datePipe.transform(employeeInit.birthday, 'yyyy-MM-dd')
           : '',
-        Validators.required,
+        Validators.required
       ],
       ethnicity: [employeeInit?.ethnicity],
       religion: [employeeInit?.religion],
@@ -126,30 +122,30 @@ export class ModalEmployeeComponent implements OnInit {
       recipeType: [employeeInit?.recipeType || this.recipeType.CT2],
       type: [
         employeeInit ? employeeInit.type : EmployeeType.FULL_TIME,
-        Validators.required,
+        Validators.required
       ],
       category: [employeeInit?.category],
       province: [employeeInit?.ward?.district?.province, Validators.required],
       district: [employeeInit?.ward?.district, Validators.required],
       ward: [employeeInit?.ward, Validators.required],
       branch: [employeeInit?.branch, Validators.required],
-      position: [employeeInit?.position, Validators.required],
+      position: [employeeInit?.position, Validators.required]
     });
 
     this.formGroup
       .get('branch')
       ?.valueChanges.subscribe((val: BranchEntity) => {
-        if (val.positions) {
-          this.formGroup.get('position')?.setValue('');
-          this.lstPosition = val.positions;
-        }
-      });
+      if (val.positions) {
+        this.formGroup.get('position')?.setValue('');
+        this.lstPosition = val.positions;
+      }
+    });
 
     this.formGroup
       .get('position')
       ?.valueChanges.subscribe((val: PositionEntity) => {
-        this.formGroup.get('workday')?.patchValue(val.workday);
-      });
+      this.formGroup.get('workday')?.patchValue(val.workday);
+    });
 
     this.formGroup.get('type')?.valueChanges.subscribe((val) => {
       if (val === EmployeeType.SEASONAL) {
@@ -178,9 +174,9 @@ export class ModalEmployeeComponent implements OnInit {
     this.actions$.dispatch(
       this.data.update
         ? EmployeeActions.update({
-            id: this.data.update.employee.id,
-            updates: employee as BaseUpdateEmployeeDto,
-          })
+          id: this.data.update.employee.id,
+          updates: employee as BaseUpdateEmployeeDto
+        })
         : EmployeeActions.addOne({ body: employee as BaseAddEmployeeDto })
     );
 
@@ -233,13 +229,13 @@ export class ModalEmployeeComponent implements OnInit {
           : undefined,
         expiredAt: value.expiredAtContract
           ? new Date(value.expiredAtContract)
-          : undefined,
+          : undefined
       },
       categoryId: value.category,
       phone: value.phone,
       workPhone: value.workPhone,
       mst: value.mst,
-      bhyt: value.bhyt,
+      bhyt: value.bhyt
     };
   }
 }

@@ -3,18 +3,15 @@ import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   EmployeeStatusEnum,
+  FlatSalaryTypeEnum,
   Gender,
   ItemContextMenu,
   ModeEnum,
   Role,
-  sortEmployeeTypeEnum,
+  sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
 import { catchError, debounceTime } from 'rxjs/operators';
-import {
-  Api,
-  EmployeeStatusConstant,
-  GenderTypeConstant,
-} from '@minhdu-fontend/constants';
+import { Api, EmployeeStatusConstant, GenderTypeConstant } from '@minhdu-fontend/constants';
 import { throwError } from 'rxjs';
 import { District, Employee, Sort, Ward } from '@minhdu-fontend/data-models';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -28,18 +25,17 @@ import {
   EmployeeQuery,
   EmployeeService,
   EmployeeStore,
-  SearchEmployeeDto,
+  SearchEmployeeDto
 } from '@minhdu-fontend/employee-v2';
 import { EmployeeTypeConstant } from '../../constants/employee-type.constant';
 import { FlatSalaryTypeConstant } from '../../constants/flat-salary-type.constant';
 import { ProvinceService } from '@minhdu-fontend/location';
-import { FlatSalaryTypeEnum } from '../../enums/flat-salary-type.enum';
 import {
   BranchActions,
   BranchQuery,
   DepartmentActions,
   DepartmentQuery,
-  PositionQuery,
+  PositionQuery
 } from '@minhdu-fontend/orgchart-v2';
 import { ModalEmployeeComponent } from '../../components/employee/modal-employee.component';
 import { ModalEmployeeData } from '../../data/modal-employee.data';
@@ -48,16 +44,13 @@ import {
   ModalAlertComponent,
   ModalDatePickerComponent,
   ModalExportExcelComponent,
-  ModalExportExcelData,
+  ModalExportExcelData
 } from '@minhdu-fontend/components';
-import {
-  ModalAlertEntity,
-  ModalDatePickerEntity,
-} from '@minhdu-fontend/base-entity';
+import { ModalAlertEntity, ModalDatePickerEntity } from '@minhdu-fontend/base-entity';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 
 @Component({
-  templateUrl: 'employee.component.html',
+  templateUrl: 'employee.component.html'
 })
 export class EmployeeComponent implements OnInit {
   total$ = this.employeeQuery.select((state) => state.total);
@@ -90,7 +83,7 @@ export class EmployeeComponent implements OnInit {
   empStatusEnum = EmployeeStatusEnum;
   valueSort = {
     orderBy: this.stateEmployee.orderBy,
-    orderType: this.stateEmployee.orderType,
+    orderType: this.stateEmployee.orderType
   };
 
   departmentControl = new UntypedFormControl(
@@ -109,7 +102,7 @@ export class EmployeeComponent implements OnInit {
     position: new UntypedFormControl(this.stateEmployee.position || ''),
     branch: new UntypedFormControl(this.stateEmployee.branch || ''),
     type: new UntypedFormControl(this.stateEmployee.type),
-    status: new UntypedFormControl(this.stateEmployee.status),
+    status: new UntypedFormControl(this.stateEmployee.status)
   });
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
@@ -189,10 +182,10 @@ export class EmployeeComponent implements OnInit {
       nzContent: ModalEmployeeComponent,
       nzComponentParams: <{ data: ModalEmployeeData }>{
         data: {
-          add: employeeInit,
-        },
+          add: employeeInit
+        }
       },
-      nzFooter: [],
+      nzFooter: []
     });
   }
 
@@ -208,23 +201,23 @@ export class EmployeeComponent implements OnInit {
         nzComponentParams: <{ data: ModalDatePickerEntity }>{
           data: {
             type: 'date',
-            dateInit: new Date(),
-          },
+            dateInit: new Date()
+          }
         },
-        nzFooter: [],
+        nzFooter: []
       })
       .afterClose.subscribe((val) => {
-        if (val) {
-          this.actions$.dispatch(
-            this.formGroup.value.status === EmployeeStatusEnum.NOT_ACTIVE
-              ? EmployeeActions.remove({ id: employee.id })
-              : EmployeeActions.leave({
-                  id: employee.id,
-                  body: { leftAt: new Date(val) },
-                })
-          );
-        }
-      });
+      if (val) {
+        this.actions$.dispatch(
+          this.formGroup.value.status === EmployeeStatusEnum.NOT_ACTIVE
+            ? EmployeeActions.remove({ id: employee.id })
+            : EmployeeActions.leave({
+              id: employee.id,
+              body: { leftAt: new Date(val) }
+            })
+        );
+      }
+    });
   }
 
   mapEmployeeDto(val: any, isPagination: boolean): SearchEmployeeDto {
@@ -234,7 +227,7 @@ export class EmployeeComponent implements OnInit {
         JSON.parse(JSON.stringify(val)),
         { department: this.departmentControl.value },
         this.valueSort
-      ),
+      )
     }));
     return {
       search: {
@@ -255,9 +248,9 @@ export class EmployeeComponent implements OnInit {
           ? this.departmentControl.value.id
           : '',
         orderBy: this.valueSort?.orderBy || '',
-        orderType: this.valueSort?.orderType || '',
+        orderType: this.valueSort?.orderType || ''
       },
-      isPaginate: isPagination,
+      isPaginate: isPagination
     };
   }
 
@@ -275,15 +268,13 @@ export class EmployeeComponent implements OnInit {
       nzComponentParams: <{ data: ModalEmployeeData }>{
         data: {
           update: {
-            employee,
-          },
-        },
+            employee
+          }
+        }
       },
-      nzFooter: [],
+      nzFooter: []
     });
   }
-
-  onPermanentlyDeleted($event: any) {}
 
   onPrint() {
     this.modal.create({
@@ -297,14 +288,14 @@ export class EmployeeComponent implements OnInit {
             {},
             _.omit(this.mapEmployeeDto(this.formGroup.value, false).search, [
               'take',
-              'skip',
+              'skip'
             ]),
             { exportType: 'EMPLOYEES' }
           ),
-          api: Api.HR.EMPLOYEE.EMPLOYEE_EXPORT,
-        },
+          api: Api.HR.EMPLOYEE.EMPLOYEE_EXPORT
+        }
       },
-      nzFooter: [],
+      nzFooter: []
     });
   }
 
@@ -315,28 +306,28 @@ export class EmployeeComponent implements OnInit {
         nzContent: ModalAlertComponent,
         nzComponentParams: <{ data: ModalAlertEntity }>{
           data: {
-            description: `Bạn có chắc chắn muốn khôi phục cho nhân viên ${employee.lastName}`,
-          },
+            description: `Bạn có chắc chắn muốn khôi phục cho nhân viên ${employee.lastName}`
+          }
         },
-        nzFooter: [],
+        nzFooter: []
       })
       .afterClose.subscribe((val) => {
-        if (val) {
-          this.actions$.dispatch(
-            EmployeeActions.leave({
-              id: employee.id,
-              body: { leftAt: '' },
-            })
-          );
-        }
-      });
+      if (val) {
+        this.actions$.dispatch(
+          EmployeeActions.leave({
+            id: employee.id,
+            body: { leftAt: '' }
+          })
+        );
+      }
+    });
   }
 
   onDrop(event: CdkDragDrop<Employee[]>) {
     moveItemInArray(this.employees, event.previousIndex, event.currentIndex);
     const sort = this.employees.map((employee, i) => ({
       id: employee.id,
-      stt: i + 1,
+      stt: i + 1
     }));
     this.employeeService
       .sort({ sort: sort })
