@@ -6,7 +6,6 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { CommodityTemplateService } from '../services';
 import { CommodityTemplateStore } from './commodity-template.store';
 import { CommodityTemplateActions } from './commodity-template.action';
-import { SearchCommodityTemplateDto } from '../dto/search-commodity-template.dto';
 import { UpdateCommodityTemplateDto } from '../dto/update-commodity-template.dto';
 
 @Injectable()
@@ -16,7 +15,8 @@ export class CommodityTemplateEffect {
     private readonly service: CommodityTemplateService,
     private readonly store: CommodityTemplateStore,
     private readonly message: NzMessageService
-  ) {}
+  ) {
+  }
 
   @Effect()
   addOne$ = this.action$.pipe(
@@ -24,21 +24,21 @@ export class CommodityTemplateEffect {
     switchMap((props) => {
       this.store.update((state) => ({
         ...state,
-        added: false,
+        added: false
       }));
       return this.service.addOne(props).pipe(
         tap((res) => {
           this.store.update((state) => ({
             ...state,
             added: true,
-            total: state.total + 1,
+            total: state.total + 1
           }));
           this.store.upsert(res.id, res);
         }),
         catchError((err) => {
           this.store.update((state) => ({
             ...state,
-            added: true,
+            added: true
           }));
           return of(CommodityTemplateActions.error(err));
         })
@@ -53,7 +53,7 @@ export class CommodityTemplateEffect {
       this.store.update((state) =>
         Object.assign(
           {
-            ...state,
+            ...state
           },
           props.isPaginate ? { loadMore: true } : { loading: true }
         )
@@ -64,14 +64,11 @@ export class CommodityTemplateEffect {
             Object.assign(
               {
                 ...state,
-                total: res.total,
+                total: res.total
               },
               props.isPaginate ? { loadMore: false } : { loading: false }
             )
           );
-          if (res.data.length === 0) {
-            this.message.warning('Đã lấy hết bảng mẫu');
-          }
           if (props.isPaginate) {
             this.store.add(res.data);
           } else {
@@ -82,7 +79,7 @@ export class CommodityTemplateEffect {
           this.store.update((state) =>
             Object.assign(
               {
-                ...state,
+                ...state
               },
               props.isPaginate ? { loadMore: false } : { loading: false }
             )
@@ -114,20 +111,20 @@ export class CommodityTemplateEffect {
     switchMap((props: UpdateCommodityTemplateDto) => {
       this.store.update((state) => ({
         ...state,
-        added: false,
+        added: false
       }));
       return this.service.update(props).pipe(
         tap((res) => {
           this.store.update((state) => ({
             ...state,
-            added: true,
+            added: true
           }));
           this.store.update(res?.id, res);
         }),
         catchError((err) => {
           this.store.update((state) => ({
             ...state,
-            added: null,
+            added: null
           }));
           return of(CommodityTemplateActions.error(err));
         })
@@ -144,7 +141,7 @@ export class CommodityTemplateEffect {
           this.message.success('Xoá bản mẫu thành công');
           this.store.update((state) => ({
             ...state,
-            total: state.total - 1,
+            total: state.total - 1
           }));
           this.store.remove(props?.id);
         }),

@@ -4,10 +4,7 @@ import { RouteActions } from './route.Actions';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { RouteService } from '../service';
 import { of } from 'rxjs';
-import {
-  getCommodityTotal,
-  getTotalCommodity,
-} from '../../../../../../../libs/utils/sell.ultil';
+import { getCommodityTotal, getTotalCommodity } from '../../../../../../../libs/utils/sell.ultil';
 import { RouteStore } from './route.store';
 import { RouteQuery } from './route.query';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -21,7 +18,8 @@ export class RouteEffect {
     private readonly routeStore: RouteStore,
     private readonly routeService: RouteService,
     private readonly message: NzMessageService
-  ) {}
+  ) {
+  }
 
   @Effect()
   addRoute$ = this.action.pipe(
@@ -29,7 +27,7 @@ export class RouteEffect {
     switchMap((props) => {
       this.routeStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.routeService.addOne(props).pipe(
         tap((res) => {
@@ -39,7 +37,7 @@ export class RouteEffect {
           this.routeStore.update((state) => ({
             ...state,
             loading: false,
-            total: state.total + 1,
+            total: state.total + 1
           }));
           this.routeStore.add(
             Object.assign(res, { orders, expand: expanedAll })
@@ -48,7 +46,7 @@ export class RouteEffect {
         catchError((err) => {
           this.routeStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(RouteActions.error(err));
         })
@@ -62,7 +60,7 @@ export class RouteEffect {
     switchMap((props) => {
       this.routeStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       if (props.params.orderType) {
         props.params.orderType =
@@ -84,17 +82,15 @@ export class RouteEffect {
             this.routeStore.update((state) => ({
               ...state,
               loading: false,
-              total: response.total,
+              total: response.total
             }));
-            if (response.data.length === 0) {
-              this.message.success('Đã lấy hết tuyến đường');
-            } else {
+            if (response.data.length) {
               const routes = response.data.map((route) => {
                 const orders = this.handelOrder(route.orders);
                 return Object.assign(route, {
                   totalCommodityUniq: this.totalCommodityUniq(route.orders),
                   orders: orders,
-                  expand: expanedAll,
+                  expand: expanedAll
                 });
               });
               if (props.isPagination) {
@@ -107,7 +103,7 @@ export class RouteEffect {
           catchError((err) => {
             this.routeStore.update((state) => ({
               ...state,
-              loading: undefined,
+              loading: undefined
             }));
             return of(RouteActions.error(err));
           })
@@ -125,7 +121,7 @@ export class RouteEffect {
             route.id,
             Object.assign(route, {
               totalCommodityUniq: this.totalCommodityUniq(route.orders),
-              orders: this.handelOrder(route.orders),
+              orders: this.handelOrder(route.orders)
             })
           );
         }),
@@ -140,14 +136,14 @@ export class RouteEffect {
     switchMap((props) => {
       this.routeStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.routeService.update(props).pipe(
         map((route) => {
           const expanedAll = this.routeQuery.getValue().expandedAll;
           this.routeStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           this.message.success('Cập nhật thành công');
           return this.routeStore.update(
@@ -155,14 +151,14 @@ export class RouteEffect {
             Object.assign(route, {
               totalCommodityUniq: this.totalCommodityUniq(route.orders),
               orders: this.handelOrder(route.orders),
-              expand: expanedAll,
+              expand: expanedAll
             })
           );
         }),
         catchError((err) => {
           this.routeStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(RouteActions.error(err));
         })
@@ -176,14 +172,14 @@ export class RouteEffect {
     switchMap((props) => {
       this.routeStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.routeService.delete(props.idRoute).pipe(
         map((_) => {
           this.routeStore.update((state) => ({
             ...state,
             loading: false,
-            total: state.total - 1,
+            total: state.total - 1
           }));
           this.message.success('Xoá tuyến đường thành công');
           return this.routeStore.remove(props.idRoute);
@@ -191,7 +187,7 @@ export class RouteEffect {
         catchError((err) => {
           this.routeStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(RouteActions.error(err));
         })
@@ -210,7 +206,7 @@ export class RouteEffect {
             route.id,
             Object.assign(route, {
               totalCommodityUniq: this.totalCommodityUniq(route.orders),
-              orders: this.handelOrder(route.orders),
+              orders: this.handelOrder(route.orders)
             })
           );
         }),
@@ -224,7 +220,7 @@ export class RouteEffect {
       Object.assign(order, {
         commodityTotal: getCommodityTotal(order.commodities),
         totalCommodity: getTotalCommodity(order.commodities),
-        expand: false,
+        expand: false
       })
     );
   }

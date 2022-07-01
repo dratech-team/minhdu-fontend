@@ -44,11 +44,6 @@ export class CustomerEffect {
             loading: false,
             total: response.total,
           }));
-          if (response.data.length === 0) {
-            this.message.warning('Đã lấy hết khách hàng');
-          } else {
-            this.message.success('Tải danh sách khách hàng thành công!!');
-          }
           if (props.isPaginate) {
             this.customerStore.add(response.data);
           } else {
@@ -181,9 +176,6 @@ export class CustomerEffect {
         )
         .pipe(
           tap((res) => {
-            if (res.data.length === 0) {
-              this.message.warning('Đã lấy hết đơn hàng');
-            }
             if (props?.isPagination) {
               if (props.typeOrder === 'delivering') {
                 this.customerStore.update(props.params.customerId, {
