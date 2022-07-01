@@ -25,7 +25,6 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { PositionComponent } from './position/containers/position/position.component';
 import { ModalPositionComponent } from './position/components/modal-position/modal-position.component';
 import { BranchComponent } from './branch/containers/branch/branch.component';
-import { ContextMenuModule } from 'ngx-contextmenu';
 import { ModalBranchComponent } from './branch/components/modal-branch/modal-branch.component';
 import { DetailBranchComponent } from './branch/containers/detail-branch/detail-branch.component';
 import { AllowanceBranchComponent } from './branch/components/modal-allowance-branch/allowance-branch.component';
@@ -54,7 +53,6 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
     MatIconModule,
     OrgchartV2Module,
     NzStepsModule,
-    ContextMenuModule,
     NzDatePickerModule,
   ],
   declarations: [

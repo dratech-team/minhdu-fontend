@@ -78,7 +78,7 @@ export class CommodityTemplateComponent implements OnInit {
   onAdd() {
     this.modal.create({
       nzWidth: '35vw',
-      nzTitle: 'Tạo bảng mẫu hàng hoá',
+      nzTitle: 'Tạo dòng gà',
       nzContent: ModalCommodityTemplateComponent,
       nzFooter: [],
     });

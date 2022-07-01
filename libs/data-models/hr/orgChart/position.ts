@@ -1,6 +1,6 @@
-import { Branch, Department } from '../../index';
+import { Branch } from './branch';
 import { BaseOrgChart } from './base-org-chart';
-import { RecipeType } from '../../../enums';
+
 export interface Position extends BaseOrgChart {
   code: string;
   workday?: number;

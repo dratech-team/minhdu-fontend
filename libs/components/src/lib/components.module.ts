@@ -9,13 +9,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
-import {
-  MAT_SNACK_BAR_DEFAULT_OPTIONS,
-  MatSnackBarModule,
-} from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { ContextMenuModule } from 'ngx-contextmenu';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { PieChartComponent } from './chart/pie-chart/pie-chart-component';
 import { StakedVerticalChartComponent } from './chart/staked-vertical-bar-chart/staked-vertical-chart.component';
@@ -26,7 +22,6 @@ import { DialogDeleteComponent } from './dialog-delete/dialog-delete.component';
 import { DialogExportComponent } from './dialog-export/dialog-export.component';
 import { DialogSharedComponent } from './dialog-shared/dialog-shared.component';
 import { InputCurrencyDirective } from './directive/input-currency.directive';
-import { MouseRightChipPositionComponent } from './mouse-right-position-of-branch/mouse-right-chip-position.component';
 import { MouseRightComponent } from './mouse-right/mouse-right.component';
 import { PickLocationComponent } from './pick-location/pick-location.component';
 import { NotEmptyPipe } from './pipes/notEmty.pipe';
@@ -66,42 +61,51 @@ import { RoundingNumberPipe } from './pipes/rounding-number.pipe';
 import { ModalExportExcelComponent } from './modal-export/modal-export-excel.component';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { ConvertMinutePipe } from './pipes/convert-minute.pipe';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+
+const NzModules = [
+  NzSelectModule,
+  NzPopoverModule,
+  NzInputModule,
+  NzCollapseModule,
+  NzDatePickerModule,
+  NzPopoverModule,
+  NzCollapseModule,
+  NzTypographyModule,
+  NzWaveModule,
+  NzButtonModule,
+  NzRadioModule,
+  NzTableModule,
+  NzDropDownModule
+];
+
+const MatModules = [
+  MatSnackBarModule,
+  MatMenuModule,
+  MatCheckboxModule,
+  MatDialogModule,
+  MatSelectModule,
+  MatAutocompleteModule,
+  MatInputModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatExpansionModule,
+  MatRadioModule,
+  MatProgressSpinnerModule
+];
 
 @NgModule({
   imports: [
-    MatSnackBarModule,
     CommonModule,
     RouterModule,
-    MatMenuModule,
-    ContextMenuModule.forRoot({ useBootstrap4: true, autoFocus: true }),
-    FormsModule,
-    MatCheckboxModule,
-    MatDialogModule,
-    InfiniteScrollModule,
     ReactiveFormsModule,
+    FormsModule,
+    InfiniteScrollModule,
     NgxChartsModule,
-    MatSelectModule,
-    MatAutocompleteModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
     BsDatepickerModule.forRoot(),
     NgxSkeletonLoaderModule,
-    NzSelectModule,
-    NzPopoverModule,
-    NzInputModule,
-    NzCollapseModule,
-    MatExpansionModule,
-    MatRadioModule,
-    NzDatePickerModule,
-    NzPopoverModule,
-    NzCollapseModule,
-    NzTypographyModule,
-    NzWaveModule,
-    NzButtonModule,
-    NzRadioModule,
-    MatProgressSpinnerModule,
-    NzTableModule,
+    NzModules,
+    MatModules
   ],
   declarations: [
     SwimLaneChartComponent,
@@ -119,7 +123,6 @@ import { ConvertMinutePipe } from './pipes/convert-minute.pipe';
     TransformUnitPipe,
     TransformConstantPipe,
     DialogSharedComponent,
-    MouseRightChipPositionComponent,
     DialogExportComponent,
     DialogDatePickerComponent,
     FilterDayPipe,
@@ -137,7 +140,7 @@ import { ConvertMinutePipe } from './pipes/convert-minute.pipe';
     TotalPricePipe,
     RoundingNumberPipe,
     ModalExportExcelComponent,
-    ConvertMinutePipe,
+    ConvertMinutePipe
   ],
   exports: [
     SwimLaneChartComponent,
@@ -155,7 +158,6 @@ import { ConvertMinutePipe } from './pipes/convert-minute.pipe';
     TransformUnitPipe,
     TransformConstantPipe,
     DialogSharedComponent,
-    MouseRightChipPositionComponent,
     DialogExportComponent,
     DialogDatePickerComponent,
     FilterDayPipe,
@@ -172,12 +174,13 @@ import { ConvertMinutePipe } from './pipes/convert-minute.pipe';
     TotalPricePipe,
     RoundingNumberPipe,
     ModalExportExcelComponent,
-    ConvertMinutePipe,
+    ConvertMinutePipe
   ],
   providers: [
     DecimalPipe,
     MatDatepickerModule,
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
-  ],
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }
+  ]
 })
-export class ComponentsModule {}
+export class ComponentsModule {
+}

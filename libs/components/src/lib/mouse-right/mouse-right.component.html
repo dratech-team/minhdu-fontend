@@ -1,120 +1,105 @@
-<context-menu>
-  <ng-template
-    *ngIf="items?.includes(ItemContextMenu.ADD_ORDER)"
-    contextMenuItem
-    let-item
-    (execute)="addOrder($event.item)"
-  >
-    Thêm đơn hàng
-  </ng-template>
-  <ng-template contextMenuItem let-item (execute)="add($event.item)">
-    Thêm
-  </ng-template>
-  <ng-template
-    *ngIf="!items?.includes(ItemContextMenu.CANCEL_ORDER)"
-    contextMenuItem
-    let-item
-    (execute)="delete($event.item)"
-  >
-    Xóa
-  </ng-template>
-  <ng-template contextMenuItem let-item (execute)="update($event.item)">
-    Sửa
-  </ng-template>
-  <ng-template
-    *ngIf="items?.includes(ItemContextMenu.CANCEL_ORDER)"
-    contextMenuItem
-    let-item
-    (execute)="cancel($event.item)"
-  >
-    Huỷ đơn hàng
-  </ng-template>
-  <ng-template
-    *ngIf="items?.includes(ItemContextMenu.PERMANENTLY)"
-    contextMenuItem
-    let-item
-    (execute)="permanentlyDeleted($event.item)"
-  >
-    Xóa vĩnh viễn
-  </ng-template>
-  <ng-template
-    *ngIf="items?.includes(ItemContextMenu.RESTORE)"
-    contextMenuItem
-    let-item
-    (execute)="restore($event.item)"
-  >
-    Khôi phục
-  </ng-template>
-  <ng-template
-    *ngIf="items?.includes(ItemContextMenu.DETAIL)"
-    contextMenuItem
-    let-item
-    (execute)="readAndUpdate($event.item)"
-  >
-    Xem chi tiết
-  </ng-template>
-  <ng-template
-    *ngIf="items?.includes(ItemContextMenu.PAYMENT)"
-    contextMenuItem
-    let-item
-    (execute)="onPayment($event.item)"
-  >
-    Thanh toán
-  </ng-template>
-  <ng-template
-    *ngIf="items?.includes(ItemContextMenu.ENDED_AT)"
-    contextMenuItem
-    let-item
-    (execute)="onDelivered($event.item)"
-  >
-    Ngày giao hàng
-  </ng-template>
-  <ng-template
-    *ngIf="items?.includes(ItemContextMenu.HISTORY_PAYROLL)"
-    contextMenuItem
-    let-item
-    (execute)="onHistoryPayroll($event.item)"
-  >
-    Lịch sử lương
-  </ng-template>
-  <ng-template
-    *ngIf="items?.includes(ItemContextMenu.PROFILE)"
-    contextMenuItem
-    let-item
-    (execute)="onEmployee($event.item)"
-  >
-    Hồ sơ
-  </ng-template>
-  <ng-template
-    *ngIf="items?.includes(ItemContextMenu.PAYROLL)"
-    contextMenuItem
-    let-item
-    (execute)="payroll($event.item)"
-  >
-    Bảng lương
-  </ng-template>
-  <ng-template
-    *ngIf="items?.includes(ItemContextMenu.OVERTIME)"
-    contextMenuItem
-    let-item
-    (execute)="overtime($event.item)"
-  >
-    Bảng tăng ca
-  </ng-template>
-  <ng-template
-    *ngIf="items?.includes(ItemContextMenu.POSITIONS)"
-    contextMenuItem
-    let-item
-    (execute)="onListPosition($event.item)"
-  >
-    Danh sách chức vụ
-  </ng-template>
-  <ng-template
-    *ngIf="items?.includes(ItemContextMenu.PRINT)"
-    contextMenuItem
-    let-item
-    (execute)="print($event.item)"
-  >
-    In
-  </ng-template>
-</context-menu>
+<nz-dropdown-menu #menu='nzDropdownMenu'>
+  <ul nz-menu>
+    <li
+      nz-menu-item
+      *ngIf='items?.includes(ItemContextMenu.ADD_ORDER)'
+      (click)='add()'
+    >
+      Thêm
+    </li>
+    <li
+      nz-menu-item
+      *ngIf='!items?.includes(ItemContextMenu.CANCEL_ORDER)'
+      (click)='delete()'
+    >
+      Xóa
+    </li>
+    <li nz-menu-item (click)='update()'>
+      Sửa
+    </li>
+    <li
+      nz-menu-item
+      *ngIf='items?.includes(ItemContextMenu.CANCEL_ORDER)'
+      (click)='cancel()'
+    >
+      Huỷ đơn hàng
+    </li>
+    <li
+      nz-menu-item
+      *ngIf='items?.includes(ItemContextMenu.PERMANENTLY)'
+      (click)='permanentlyDeleted()'
+    >
+      Xóa vĩnh viễn
+    </li>
+    <li
+      *ngIf='items?.includes(ItemContextMenu.RESTORE)'
+      nz-menu-item
+      (click)='restore()'
+    >
+      Khôi phục
+    </li>
+    <li
+      *ngIf='items?.includes(ItemContextMenu.DETAIL)'
+      nz-menu-item
+      (click)='readAndUpdate()'
+    >
+      Xem chi tiết
+    </li>
+    <li
+      *ngIf='items?.includes(ItemContextMenu.PAYMENT)'
+      nz-menu-item
+      (click)='onPayment()'
+    >
+      Thanh toán
+    </li>
+    <li
+      *ngIf='items?.includes(ItemContextMenu.ENDED_AT)'
+      nz-menu-item
+      (click)='onDelivered()'
+    >
+      Ngày giao hàng
+    </li>
+    <li
+      *ngIf='items?.includes(ItemContextMenu.HISTORY_PAYROLL)'
+      nz-menu-item
+      (click)='onHistoryPayroll()'
+    >
+      Lịch sử lương
+    </li>
+    <li
+      *ngIf='items?.includes(ItemContextMenu.PROFILE)'
+      nz-menu-item
+      (click)='onEmployee()'
+    >
+      Hồ sơ
+    </li>
+    <li
+      *ngIf='items?.includes(ItemContextMenu.PAYROLL)'
+      nz-menu-item
+      (click)='payroll()'
+    >
+      Bảng lương
+    </li>
+    <li
+      *ngIf='items?.includes(ItemContextMenu.OVERTIME)'
+      nz-menu-item
+      (click)='overtime()'
+    >
+      Bảng tăng ca
+    </li>
+    <li
+      *ngIf='items?.includes(ItemContextMenu.POSITIONS)'
+      nz-menu-item
+      (click)='onListPosition()'
+    >
+      Danh sách chức vụ
+    </li>
+    <li
+      *ngIf='items?.includes(ItemContextMenu.PRINT)'
+      nz-menu-item
+      (click)='print()'
+    >
+      In
+    </li>
+  </ul>
+</nz-dropdown-menu>

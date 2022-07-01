@@ -1,26 +1,21 @@
 import {
   Component,
-  DoCheck,
   EventEmitter,
   Input,
   IterableDiffers,
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
+  SimpleChanges
 } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Employee } from '@minhdu-fontend/data-models';
-import {
-  pickAll,
-  pickOne,
-  someComplete,
-} from '../../../../utils/pick-item.ultil';
+import { pickOne, someComplete } from '@minhdu-fontend/utils';
 
 @Component({
   selector: 'app-table-employee-selected',
-  templateUrl: './table-employee-selected.component.html',
+  templateUrl: './table-employee-selected.component.html'
 })
 export class TableEmployeeSelectedComponent implements OnInit, OnChanges {
   @Input() employees: Employee[] = [];

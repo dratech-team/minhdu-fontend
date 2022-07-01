@@ -73,7 +73,6 @@
     "moment": "^2.29.1",
     "ng-zorro-antd": "^12.0.0",
     "ngx-bootstrap": "8.0.0",
-    "ngx-contextmenu": "^6.0.0",
     "ngx-currency": "^2.5.3",
     "ngx-infinite-scroll": "^10.0.1",
     "ngx-perfect-scrollbar": "9.0.0",

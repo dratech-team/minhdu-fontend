@@ -32,7 +32,6 @@ import { SalaryComponent } from './container/salary/salary.component';
 import { SystemModule } from '@minhdu-fontend/system';
 import { TransformBlockSalaryPipe } from './pipes/transform-block-salary.pipe';
 import { DetailHoliday } from './container/detail-holiday/detail-holiday';
-import { ContextMenuModule } from 'ngx-contextmenu';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
@@ -73,7 +72,6 @@ import { UnitDatetimePipe } from './pipes/unit-datetime.pipe';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     SystemModule,
-    ContextMenuModule,
     NzMessageModule,
     NzSelectModule,
     NzRadioModule,
