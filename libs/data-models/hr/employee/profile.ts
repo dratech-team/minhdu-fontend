@@ -1,11 +1,11 @@
 import { Ward } from '../../address/ward';
-import { Gender } from '../../../enums';
+import { GenderTypeEnum } from '../../../enums';
 
 export interface Profile {
   id: number;
   firstName: string;
   lastName: string;
-  gender: Gender;
+  gender: GenderTypeEnum;
   phone: string;
   birthday: Date;
   identify: string;

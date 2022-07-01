@@ -1,43 +1,40 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Api, GenderTypeConstant } from '@minhdu-fontend/constants';
 import {
-  CustomerEnum,
+  CustomerResource,
   CustomerType,
+  GenderTypeEnum,
   ItemContextMenu,
+  SortTypeCustomerEnum
 } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
-import {
-  ModalExportExcelComponent,
-  ModalExportExcelData,
-} from '@minhdu-fontend/components';
-import { debounceTime, map, tap } from 'rxjs/operators';
+import { ModalExportExcelComponent, ModalExportExcelData } from '@minhdu-fontend/components';
+import { debounceTime, tap } from 'rxjs/operators';
 import { CustomerActions, CustomerQuery, CustomerStore } from '../../+state';
 import { CustomerModalComponent, PaymentModalComponent } from '../../component';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { RadiosStatusRouteConstant } from '../../enums/gender.constant';
-import {
-  CustomerConstant,
-  PotentialsConstant,
-  ResourcesConstant,
-} from '../../constants';
+import { RadiosStatusRouteConstant } from '../../constants/gender.constant';
+import { CustomerConstant, PotentialsConstant, ResourcesConstant } from '../../constants';
 import { Sort } from '@minhdu-fontend/data-models';
 import { OrderActions } from '../../../order/+state';
 import * as _ from 'lodash';
 import { OrderEntity } from '../../../order/enitities/order.entity';
 import { CustomerEntity } from '../../entities';
 import { ModalAddOrUpdatePayment } from '../../data/modal-payment.data';
+import { PotentialEnum } from '../../enums';
 
 @Component({
-  templateUrl: 'customer.component.html',
+  templateUrl: 'customer.component.html'
 })
 export class CustomerComponent implements OnInit {
-  customers$ = this.customerQuery
-    .selectAll()
-    .pipe(map((customers) => JSON.parse(JSON.stringify(customers))));
+  orders?: OrderEntity;
+  valueSort?: Sort;
+
+  customers$ = this.customerQuery.selectAll();
   loading$ = this.customerQuery.selectLoading();
   total$ = this.customerQuery.select((state) => state.total);
   ui$ = this.customerQuery.select((state) => state.ui);
@@ -45,26 +42,25 @@ export class CustomerComponent implements OnInit {
 
   pageSize = 25;
   pageIndexInit = 0;
-  customerType = CustomerType;
-  ItemContextMenu = ItemContextMenu;
-  orders?: OrderEntity;
-  sortCustomerEnum = CustomerEnum;
-  radiosGender = RadiosStatusRouteConstant;
-  potentialsConstant = PotentialsConstant;
-  resourcesConstant = ResourcesConstant;
-  customerConstant = CustomerConstant;
-  genderConstant = GenderTypeConstant;
   pageSizeTable = 10;
-  valueSort?: Sort;
   visible = false;
-  stateSearch = this.customerQuery.getValue().search;
+  search = this.customerQuery.getValue().search;
 
-  formGroup = new UntypedFormGroup({
-    resource: new UntypedFormControl(this.stateSearch.resource),
-    isPotential: new UntypedFormControl(this.stateSearch.isPotential),
-    type: new UntypedFormControl(this.stateSearch.type),
-    gender: new UntypedFormControl(this.stateSearch.gender),
-    search: new UntypedFormControl(this.stateSearch.search),
+  CustomerType = CustomerType;
+  ItemContextMenu = ItemContextMenu;
+  SortTypeCustomerEnum = SortTypeCustomerEnum;
+  RadiosStatusRouteConstant = RadiosStatusRouteConstant;
+  PotentialsConstant = PotentialsConstant;
+  ResourcesConstant = ResourcesConstant;
+  CustomerConstant = CustomerConstant;
+  GenderTypeConstant = GenderTypeConstant;
+
+  formGroup = new FormGroup({
+    search: new FormControl<string>(''),
+    gender: new FormControl<GenderTypeEnum>(GenderTypeEnum.ALL),
+    isPotential: new FormControl<PotentialEnum>(PotentialEnum.ALL),
+    resource: new FormControl<CustomerResource>(CustomerResource.ALL),
+    type: new FormControl<CustomerType>(CustomerType.ALL)
   });
 
   constructor(
@@ -76,12 +72,13 @@ export class CustomerComponent implements OnInit {
     private readonly exportService: ExportService,
     private readonly modal: NzModalService,
     private readonly viewContentRef: ViewContainerRef
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.actions$.dispatch(
       CustomerActions.loadAll({
-        search: this.mapCustomer(this.formGroup.value, false),
+        search: this.mapCustomer(this.formGroup.value, false)
       })
     );
     this.formGroup.valueChanges
@@ -100,8 +97,8 @@ export class CustomerComponent implements OnInit {
     this.router
       .navigate(['/don-hang/them-don-hang'], {
         queryParams: {
-          customerId: $event.id,
-        },
+          customerId: $event.id
+        }
       })
       .then();
   }
@@ -113,14 +110,14 @@ export class CustomerComponent implements OnInit {
       nzViewContainerRef: this.viewContentRef,
       nzFooter: [],
       nzWidth: '65vw',
-      nzMaskClosable: false,
+      nzMaskClosable: false
     });
   }
 
   mapCustomer(val: any, isPagination: boolean) {
     this.customerStore.update((state) => ({
       ...state,
-      search: val,
+      search: val
     }));
     if (this.valueSort?.orderType) {
       Object.assign(val, this.valueSort);
@@ -130,7 +127,7 @@ export class CustomerComponent implements OnInit {
     }
     return Object.assign({}, val, {
       take: this.pageSize,
-      skip: isPagination ? this.customerQuery.getCount() : 0,
+      skip: isPagination ? this.customerQuery.getCount() : 0
     });
   }
 
@@ -138,8 +135,8 @@ export class CustomerComponent implements OnInit {
     this.router
       .navigate(['khach-hang/chi-tiet-khach-hang', $event.id], {
         queryParams: {
-          isUpdate: isUpdate,
-        },
+          isUpdate: isUpdate
+        }
       })
       .then();
   }
@@ -149,7 +146,7 @@ export class CustomerComponent implements OnInit {
       nzTitle: 'Xoá khách hàng',
       nzContent: `Bạn có chắc chắn muốn xoá khác hàng ${customer.lastName}`,
       nzOnOk: () =>
-        this.actions$.dispatch(CustomerActions.remove({ id: customer.id })),
+        this.actions$.dispatch(CustomerActions.remove({ id: customer.id }))
     });
   }
 
@@ -162,17 +159,17 @@ export class CustomerComponent implements OnInit {
         nzComponentParams: <{ data: ModalAddOrUpdatePayment }>{
           data: {
             add: {
-              customer: customer,
-            },
-          },
+              customer: customer
+            }
+          }
         },
-        nzFooter: [],
+        nzFooter: []
       })
       .afterClose.subscribe((val) => {
-        if (val) {
-          this.actions$.dispatch(CustomerActions.loadOne({ id: customer.id }));
-        }
-      });
+      if (val) {
+        this.actions$.dispatch(CustomerActions.loadOne({ id: customer.id }));
+      }
+    });
   }
 
   printCustomer() {
@@ -187,14 +184,14 @@ export class CustomerComponent implements OnInit {
             {},
             _.omit(this.mapCustomer(this.formGroup.value, false), [
               'take',
-              'skip',
+              'skip'
             ]),
             { exportType: 'CUSTOMER' }
           ),
-          api: Api.HR.EMPLOYEE.EMPLOYEE_EXPORT,
-        },
+          api: Api.HR.EMPLOYEE.EMPLOYEE_EXPORT
+        }
       },
-      nzFooter: [],
+      nzFooter: []
     });
   }
 
@@ -205,7 +202,7 @@ export class CustomerComponent implements OnInit {
       this.actions$.dispatch(
         CustomerActions.loadAll({
           search: this.mapCustomer(value, true),
-          isPaginate: true,
+          isPaginate: true
         })
       );
     }
@@ -215,7 +212,7 @@ export class CustomerComponent implements OnInit {
     this.valueSort = sort;
     this.actions$.dispatch(
       OrderActions.loadAll({
-        param: this.mapCustomer(this.formGroup.value, false),
+        param: this.mapCustomer(this.formGroup.value, false)
       })
     );
   }

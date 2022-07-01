@@ -1,11 +1,11 @@
-import { EmployeeStatusEnum, EmployeeType, FlatSalaryTypeEnum, Gender } from '@minhdu-fontend/enums';
+import { EmployeeStatusEnum, EmployeeType, FlatSalaryTypeEnum, GenderTypeEnum } from '@minhdu-fontend/enums';
 import { BranchEntity, DepartmentEntity, PositionEntity } from '@minhdu-fontend/orgchart-v2';
 import { District, Province, Ward } from '@minhdu-fontend/data-models';
 import { NzTableSortOrder } from 'ng-zorro-antd/table';
 
 export interface SearchEmployeeStateEntity {
   readonly name: string;
-  readonly gender: Gender;
+  readonly gender: GenderTypeEnum;
   readonly province: Province;
   readonly district: District;
   readonly ward: Ward;

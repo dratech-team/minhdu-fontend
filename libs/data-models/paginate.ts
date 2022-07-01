@@ -1,4 +1,4 @@
-import { Gender } from '../enums';
+import { GenderTypeEnum } from '../enums';
 import { totalSalary } from './hr/salary/salary';
 
 export interface ResponsePaginate<T> {
@@ -29,5 +29,5 @@ export interface RequestPaginate {
   position?: string;
   department?: string;
   branch?: string;
-  gender?: Gender;
+  gender?: GenderTypeEnum;
 }

@@ -1,16 +1,8 @@
-import {
-  Degree,
-  Position,
-  Relative,
-  SalaryHistory,
-  Ward,
-  WorkHistory,
-} from '@minhdu-fontend/data-models';
-import { ContractsEnum, Gender } from '@minhdu-fontend/enums';
+import { Degree, Position, Relative, SalaryHistory, Ward, WorkHistory } from '@minhdu-fontend/data-models';
 import { Payroll } from 'apps/hr/src/app/pages/payroll/+state/payroll/payroll.interface';
 import { Branch } from '../orgChart/branch';
 import { Contracts } from './contracts';
-import { RecipeType, EmployeeType } from '../../../enums';
+import { EmployeeType, GenderTypeEnum, RecipeType } from '../../../enums';
 import { Salary } from '../salary/salary';
 import { Category } from './category';
 
@@ -20,7 +12,7 @@ export interface Employee {
   code: string;
   lastName: string;
   avt?: string;
-  gender: Gender;
+  gender: GenderTypeEnum;
   phone?: string;
   workPhone?: string;
   birthday: Date;

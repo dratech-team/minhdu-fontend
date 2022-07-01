@@ -1,4 +1,4 @@
-export enum CustomerEnum {
+export enum SortTypeCustomerEnum {
   NAME = 'NAME',
   GENDER = 'GENDER',
   IS_POTENTIAL = 'IS_POTENTIAL',

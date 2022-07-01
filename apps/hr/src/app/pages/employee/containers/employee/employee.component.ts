@@ -24,7 +24,7 @@ import {
   EmployeeStatusEnum,
   EmployeeType,
   FlatSalary,
-  Gender,
+  GenderTypeEnum,
   ItemContextMenu,
   ModeEnum,
   Role,
@@ -91,7 +91,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   pageSize = 35;
   pageIndexInit = 0;
   searchType = SearchEmployeeType;
-  genderType = Gender;
+  genderType = GenderTypeEnum;
   flatSalary = FlatSalary;
   convertBoolean = ConvertBoolean;
   ItemContextMenu = ItemContextMenu;

@@ -22,7 +22,7 @@
         header="Giới tính"
         [controlName]="'gender'"
         [active]="true"
-        [radios]="radiosGender"
+        [radios]="RadiosStatusRouteConstant"
       >
       </minhdu-fontend-collapse-radios>
     </div>
@@ -32,7 +32,7 @@
         header="Tiềm năng"
         [controlName]="'isPotential'"
         [active]="true"
-        [radios]="potentialsConstant"
+        [radios]="PotentialsConstant"
       >
       </minhdu-fontend-collapse-radios>
     </div>
@@ -42,7 +42,7 @@
         header="Nguồn khác hàng"
         [controlName]="'resource'"
         [active]="true"
-        [radios]="resourcesConstant"
+        [radios]="ResourcesConstant"
       >
       </minhdu-fontend-collapse-radios>
     </div>
@@ -52,14 +52,14 @@
         header="Loại khách hàng"
         [controlName]="'type'"
         [active]="true"
-        [radios]="customerConstant"
+        [radios]="CustomerConstant"
       >
       </minhdu-fontend-collapse-radios>
     </div>
   </div>
   <div class="ml-3" style="width: 76vw">
     <div class="d-flex justify-content-between mt-3">
-      <div class="h3">Hồ sơ khách hàng</div>
+      <div class="h3">Danh sách khách hàng</div>
       <div class="ml-3 d-flex">
         <button (click)="add()" class="mr-2" nz-button nzType="primary">
           Thêm
@@ -89,7 +89,7 @@
       <nz-table
         #tableCustomer
         nzSize="middle"
-        [nzData]="customers$ | async"
+        [nzData]="(customers$ | async) || []"
         [nzScroll]="{ x: '2300px', y: '59vh' }"
         [nzShowPagination]="true"
         (nzPageIndexChange)="onPagination($event)"
@@ -112,7 +112,7 @@
               [nzLeft]="ui.name?.pinned || false"
               [nzSortFn]="true"
               (nzSortOrderChange)="
-                onSort({ orderBy: sortCustomerEnum.NAME, orderType: $event })
+                onSort({ orderBy: SortTypeCustomerEnum.NAME, orderType: $event })
               "
             >
               Tên khách hàng
@@ -137,7 +137,7 @@
               [nzLeft]="ui.gender?.pinned || false"
               [nzSortFn]="true"
               (nzSortOrderChange)="
-                onSort({ orderBy: sortCustomerEnum.GENDER, orderType: $event })
+                onSort({ orderBy: SortTypeCustomerEnum.GENDER, orderType: $event })
               "
             >
               Giới tính
@@ -149,7 +149,7 @@
               [nzSortFn]="true"
               (nzSortOrderChange)="
                 onSort({
-                  orderBy: sortCustomerEnum.IS_POTENTIAL,
+                  orderBy: SortTypeCustomerEnum.IS_POTENTIAL,
                   orderType: $event
                 })
               "
@@ -167,7 +167,7 @@
               [nzSortFn]="true"
               (nzSortOrderChange)="
                 onSort({
-                  orderBy: sortCustomerEnum.RESOURCE,
+                  orderBy: SortTypeCustomerEnum.RESOURCE,
                   orderType: $event
                 })
               "
@@ -181,7 +181,7 @@
               [nzSortFn]="true"
               (nzSortOrderChange)="
                 onSort({
-                  orderBy: sortCustomerEnum.CUSTOMER_TYPE,
+                  orderBy: SortTypeCustomerEnum.CUSTOMER_TYPE,
                   orderType: $event
                 })
               "
@@ -236,7 +236,7 @@
                 *ngIf="ui.gender?.visible"
                 [nzLeft]="ui.gender?.pinned || false"
               >
-                {{ customer?.gender | transformconstant: genderConstant }}
+                {{ customer?.gender | transformconstant: GenderTypeConstant }}
               </td>
               <td
                 *ngIf="ui.potential?.visible"
@@ -256,13 +256,13 @@
                 *ngIf="ui.resource?.visible"
                 [nzLeft]="ui.resource?.pinned || false"
               >
-                {{ customer?.resource | transformconstant: resourcesConstant }}
+                {{ customer?.resource | transformconstant: ResourcesConstant }}
               </td>
               <td
                 *ngIf="ui.customerType?.visible"
                 [nzLeft]="ui.customerType?.pinned || false"
               >
-                {{ customer?.type | transformconstant: customerConstant }}
+                {{ customer?.type | transformconstant: CustomerConstant }}
               </td>
               <td
                 *ngIf="ui.email?.visible"

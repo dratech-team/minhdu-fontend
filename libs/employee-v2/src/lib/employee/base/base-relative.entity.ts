@@ -1,6 +1,6 @@
 import {
   ConvertBoolean,
-  Gender,
+  GenderTypeEnum,
   RelationshipEnum,
 } from '@minhdu-fontend/enums';
 import { Profile, Ward } from '@minhdu-fontend/data-models';
@@ -20,7 +20,7 @@ export interface BaseRelativeEntity extends BaseEntity {
   address?: string;
   identify?: string;
   idCardAt?: Date;
-  gender?: Gender;
+  gender?: GenderTypeEnum;
   note?: string;
   email?: string;
   employeeId: number;

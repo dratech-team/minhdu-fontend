@@ -22,7 +22,7 @@ import {
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
-  Gender,
+  GenderTypeEnum,
   ItemContextMenu,
   SalaryTypeEnum,
   SearchTypeEnum,
@@ -83,7 +83,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
   unitAbsent = UnitAbsentConstant;
   isEventSearch = false;
   searchTypeConstant = SearchTypeConstant;
-  genderType = Gender;
+  genderType = GenderTypeEnum;
   unit = DatetimeUnitEnum;
   salariesSelected: SalaryPayroll[] = [];
   salaries: SalaryPayroll[] = [];

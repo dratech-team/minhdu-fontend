@@ -22,7 +22,7 @@ import {
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
-  Gender,
+  GenderTypeEnum,
   ItemContextMenu,
   SalaryTypeEnum,
   SearchTypeEnum,
@@ -83,7 +83,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
   pageSize = 30;
   pageIndex = 0;
   pageIndexInit = 0;
-  genderType = Gender;
+  genderType = GenderTypeEnum;
   unit = DatetimeUnitEnum;
   salariesSelected: Array<SalaryPayroll> = [];
   salaries: Array<SalaryPayroll> = [];

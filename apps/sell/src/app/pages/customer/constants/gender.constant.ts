@@ -1,13 +1,13 @@
-import { Gender } from '@minhdu-fontend/enums';
+import { GenderTypeEnum } from '@minhdu-fontend/enums';
 
 export const RadiosStatusRouteConstant = [
   {
     name: 'Nam',
-    value: Gender.MALE,
+    value: GenderTypeEnum.MALE,
   },
   {
     name: 'Nữ',
-    value: Gender.FEMALE,
+    value: GenderTypeEnum.FEMALE,
   },
   {
     name: 'Tất cả',

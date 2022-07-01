@@ -22,7 +22,7 @@ import {
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
-  Gender,
+  GenderTypeEnum,
   ItemContextMenu,
   SalaryTypeEnum,
   SearchTypeEnum,
@@ -92,7 +92,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
   totalSalaryStay$ = this.store.select(selectedTotalPayroll);
   searchTypeConstant = SearchTypeConstant;
   loaded$ = this.store.select(selectedLoadedPayroll);
-  genderType = Gender;
+  genderType = GenderTypeEnum;
   unit = DatetimeUnitEnum;
   payrollStay$ = this.store.pipe(select(selectorAllPayroll));
   salariesSelected: SalaryPayroll[] = [];

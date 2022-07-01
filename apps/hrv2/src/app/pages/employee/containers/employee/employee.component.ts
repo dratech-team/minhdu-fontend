@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   EmployeeStatusEnum,
   FlatSalaryTypeEnum,
-  Gender,
+  GenderTypeEnum,
   ItemContextMenu,
   ModeEnum,
   Role,
@@ -78,7 +78,7 @@ export class EmployeeComponent implements OnInit {
   roleEnum = Role;
   modeEnum = ModeEnum;
   role = window.localStorage.getItem('role');
-  genderType = Gender;
+  genderType = GenderTypeEnum;
   ItemContextMenu = ItemContextMenu;
   empStatusEnum = EmployeeStatusEnum;
   valueSort = {

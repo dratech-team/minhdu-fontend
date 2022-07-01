@@ -1,4 +1,4 @@
-import { Gender, SalaryTypeEnum } from '../../../enums';
+import { GenderTypeEnum, SalaryTypeEnum } from '../../../enums';
 import { Salary } from './salary';
 import { Position } from '../orgChart/position';
 import { Branch } from '../orgChart/branch';
@@ -18,7 +18,7 @@ export interface employee {
   lastName: string;
   title: string;
   type: SalaryTypeEnum;
-  gender: Gender;
+  gender: GenderTypeEnum;
   payrollId: number;
   salaries: Salary[];
   position: Position;

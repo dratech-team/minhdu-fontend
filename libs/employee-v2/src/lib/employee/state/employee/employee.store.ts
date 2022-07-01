@@ -1,7 +1,7 @@
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { EmployeeEntity } from '../../entities';
 import { Injectable } from '@angular/core';
-import { EmployeeStatusEnum, EmployeeType, FlatSalaryTypeEnum, Gender } from '@minhdu-fontend/enums';
+import { EmployeeStatusEnum, EmployeeType, FlatSalaryTypeEnum, GenderTypeEnum } from '@minhdu-fontend/enums';
 import { SearchEmployeeStateEntity } from '../../entities/search-employee-state.entity';
 
 export interface EmployeeState extends EntityState<EmployeeEntity> {
@@ -21,7 +21,7 @@ export function createInitialState(): EmployeeState {
       identify: '',
       address: '',
       status: EmployeeStatusEnum.IS_ACTIVE,
-      gender: Gender.ALL,
+      gender: GenderTypeEnum.ALL,
       flatSalary: FlatSalaryTypeEnum.ALL,
       type: EmployeeType.FULL_TIME
     }

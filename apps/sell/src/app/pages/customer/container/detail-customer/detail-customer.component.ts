@@ -41,8 +41,7 @@ export class DetailCustomerComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly customerQuery: CustomerQuery,
     private readonly dialog: MatDialog,
-    private readonly modal: NzModalService,
-    private readonly viewContentRef: ViewContainerRef
+    private readonly modal: NzModalService
   ) {}
 
   ngOnInit() {

@@ -5,7 +5,7 @@ import {
   CustomerEntity,
   CustomerVisibleEntity,
 } from '../entities';
-import { CustomerResource, CustomerType, Gender } from '@minhdu-fontend/enums';
+import { CustomerResource, CustomerType, GenderTypeEnum } from '@minhdu-fontend/enums';
 import { updateStateUiUtil } from '../../../utils/update-state-ui.util';
 import { StorageName } from '@minhdu-fontend/constants';
 
@@ -27,7 +27,7 @@ function createInitState(): CustomerState {
       resource: CustomerResource.ALL,
       isPotential: -1,
       type: CustomerType.ALL,
-      gender: Gender.ALL,
+      gender: GenderTypeEnum.ALL,
       search: '',
     },
     ui: {

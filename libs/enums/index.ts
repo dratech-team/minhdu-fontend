@@ -31,7 +31,7 @@ export * from './sell/status-route';
 export * from './sell/page-type.enum';
 export * from './sell/sort-route.enum';
 export * from './sell/order.enum';
-export * from './sell/customer.enum';
+export * from './sell/sortTypeCustomerEnum';
 
 // modal-department
 export * from './warehouse/medicine/medicine-unit.enum';

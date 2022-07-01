@@ -1,4 +1,4 @@
-import { CustomerResource, CustomerType, Gender } from '@minhdu-fontend/enums';
+import { CustomerResource, CustomerType, GenderTypeEnum } from '@minhdu-fontend/enums';
 import { BaseEntity } from '@minhdu-fontend/base-entity';
 
 export interface BaseCustomerEntity extends BaseEntity {
@@ -20,7 +20,7 @@ export interface BaseCustomerEntity extends BaseEntity {
   readonly mst?: string;
   readonly type?: CustomerType;
   readonly resource?: CustomerResource;
-  readonly gender?: Gender;
+  readonly gender?: GenderTypeEnum;
   readonly isPotential?: boolean;
   readonly note?: string;
   readonly debt?: number;

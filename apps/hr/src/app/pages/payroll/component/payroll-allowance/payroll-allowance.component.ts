@@ -10,7 +10,7 @@ import {
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
-  Gender,
+  GenderTypeEnum,
   ItemContextMenu,
   SalaryTypeEnum,
   SearchTypeEnum,
@@ -85,7 +85,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
   salaries: SalaryPayroll[] = [];
   searchTypeConstant = SearchTypeConstant;
   ItemContextMenu = ItemContextMenu;
-  genderType = Gender;
+  genderType = GenderTypeEnum;
   unit = DatetimeUnitEnum;
   unitAllowance = UnitAllowanceConstant;
   isEventSearch = false;
