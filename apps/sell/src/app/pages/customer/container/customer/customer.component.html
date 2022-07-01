@@ -61,7 +61,7 @@
     <div class="d-flex justify-content-between mt-3">
       <div class="h3">Danh sách khách hàng</div>
       <div class="ml-3 d-flex">
-        <button (click)="add()" class="mr-2" nz-button nzType="primary">
+        <button (click)="onAdd()" class="mr-2" nz-button nzType="primary">
           Thêm
         </button>
         <button (click)="printCustomer()" nz-button nzType="default">
@@ -212,8 +212,15 @@
             <tr
               class="pointer"
               (click)="readAndUpdate(customer, false)"
-              (contextmenu)="child.onContextMenu($event, customer)"
+              (contextmenu)="onContextMenu($event, menu)"
             >
+              <nz-dropdown-menu #menu='nzDropdownMenu'>
+                <ul class='context-menu' nz-menu *ngFor='let item of menus'>
+                  <li nz-menu-item (click)='item.click(customer)'>
+                    {{item.title}}
+                  </li>
+                </ul>
+              </nz-dropdown-menu>
               <td *ngIf="ui.stt?.visible" [nzLeft]="ui.stt?.pinned || false">
                 {{ i + 1 + (tableCustomer.nzPageIndex - 1) * 10 }}
               </td>
@@ -299,13 +306,3 @@
   <minhdu-fontend-pinned-customer></minhdu-fontend-pinned-customer>
 </ng-template>
 
-<app-mouse-right
-  #child
-  [items]="[ItemContextMenu.PAYMENT, ItemContextMenu.ADD_ORDER]"
-  (onAddOrder)="addOrder($event)"
-  (onAdd)="add()"
-  (onDel)="deleteCustomer($event)"
-  (onPay)="onPayment($event)"
-  (onUpdate)="readAndUpdate($event, true)"
->
-</app-mouse-right>

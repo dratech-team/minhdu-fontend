@@ -9,7 +9,11 @@ export enum ItemContextMenu {
   PAYROLL = 'PAYROLL',
   OVERTIME = 'OVERTIME',
   POSITIONS = 'POSITIONS',
-  ADD_ORDER = 'ADD_ORDER',
-  CANCEL_ORDER = 'CANCEL_ORDER',
+  DELETE = 'DELETE',
+  CANCEL = 'CANCEL',
   PRINT = 'PRINT',
 }
+
+export enum ItemContextSubMenu {
+
+};

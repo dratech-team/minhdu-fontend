@@ -1,17 +1,9 @@
 <nz-dropdown-menu #menu='nzDropdownMenu'>
   <ul nz-menu>
-    <li
-      nz-menu-item
-      *ngIf='items?.includes(ItemContextMenu.ADD_ORDER)'
-      (click)='add()'
-    >
+    <li nz-menu-item (click)='add()'>
       Thêm
     </li>
-    <li
-      nz-menu-item
-      *ngIf='!items?.includes(ItemContextMenu.CANCEL_ORDER)'
-      (click)='delete()'
-    >
+    <li nz-menu-item (click)='delete()'>
       Xóa
     </li>
     <li nz-menu-item (click)='update()'>
@@ -19,10 +11,10 @@
     </li>
     <li
       nz-menu-item
-      *ngIf='items?.includes(ItemContextMenu.CANCEL_ORDER)'
+      *ngIf='items?.includes(ItemContextMenu.CANCEL)'
       (click)='cancel()'
     >
-      Huỷ đơn hàng
+      Huỷ
     </li>
     <li
       nz-menu-item
@@ -39,11 +31,14 @@
       Khôi phục
     </li>
     <li
+      nz-submenu
       *ngIf='items?.includes(ItemContextMenu.DETAIL)'
-      nz-menu-item
-      (click)='readAndUpdate()'
+      nzTitle='Đi đến'
     >
-      Xem chi tiết
+      <ul>
+        <li nz-menu-item>3rd menu item</li>
+        <li nz-menu-item>4th menu item</li>
+      </ul>
     </li>
     <li
       *ngIf='items?.includes(ItemContextMenu.PAYMENT)'
@@ -64,7 +59,7 @@
       nz-menu-item
       (click)='onHistoryPayroll()'
     >
-      Lịch sử lương
+      Lịch sử
     </li>
     <li
       *ngIf='items?.includes(ItemContextMenu.PROFILE)'
@@ -103,3 +98,4 @@
     </li>
   </ul>
 </nz-dropdown-menu>
+

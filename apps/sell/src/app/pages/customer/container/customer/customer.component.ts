@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -19,18 +19,20 @@ import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { RadiosStatusRouteConstant } from '../../constants/gender.constant';
 import { CustomerConstant, PotentialsConstant, ResourcesConstant } from '../../constants';
-import { Sort } from '@minhdu-fontend/data-models';
+import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
 import { OrderActions } from '../../../order/+state';
 import * as _ from 'lodash';
 import { OrderEntity } from '../../../order/enitities/order.entity';
 import { CustomerEntity } from '../../entities';
 import { ModalAddOrUpdatePayment } from '../../data/modal-payment.data';
 import { PotentialEnum } from '../../enums';
+import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
 
 @Component({
   templateUrl: 'customer.component.html'
 })
 export class CustomerComponent implements OnInit {
+  @ViewChild('menu') menu: any;
   orders?: OrderEntity;
   valueSort?: Sort;
 
@@ -71,7 +73,8 @@ export class CustomerComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly exportService: ExportService,
     private readonly modal: NzModalService,
-    private readonly viewContentRef: ViewContainerRef
+    private readonly viewContentRef: ViewContainerRef,
+    private readonly nzContextMenuService: NzContextMenuService
   ) {
   }
 
@@ -93,6 +96,12 @@ export class CustomerComponent implements OnInit {
       .subscribe();
   }
 
+  public onContextMenu($event: MouseEvent, item: any): void {
+    this.nzContextMenuService.create($event, item);
+    $event.preventDefault();
+    $event.stopPropagation();
+  }
+
   addOrder($event?: any) {
     this.router
       .navigate(['/don-hang/them-don-hang'], {
@@ -103,7 +112,7 @@ export class CustomerComponent implements OnInit {
       .then();
   }
 
-  add() {
+  onAdd() {
     this.modal.create({
       nzTitle: 'Thêm khách hàng',
       nzContent: CustomerModalComponent,
@@ -216,4 +225,19 @@ export class CustomerComponent implements OnInit {
       })
     );
   }
+
+  menus: ContextMenuEntity[] = [
+    {
+      title: 'Thêm',
+      click: () => this.onAdd(),
+    },
+    {
+      title: 'Sửa',
+      click: (data: any) => this.readAndUpdate(data, true),
+    },
+    {
+      title: 'Xoá',
+      click: (data: any) => this.deleteCustomer(data),
+    }
+  ];
 }

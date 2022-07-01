@@ -41,6 +41,7 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { PaymentEffect } from '../payment/payment';
 import { PaymentModule } from '../payment/payment.module';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 @NgModule({
   imports: [
@@ -83,7 +84,8 @@ import { PaymentModule } from '../payment/payment.module';
     NzSelectModule,
     NzStepsModule,
     NzDatePickerModule,
-    PaymentModule
+    PaymentModule,
+    NzDropDownModule
   ],
   declarations: [
     CustomerComponent,

@@ -10,6 +10,10 @@ body {
   display: none;
 }
 
+.context-menu {
+  width: 150px !important;
+}
+
 .example {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -34,6 +38,7 @@ app-dashboard {
   height: fit-content !important;
   min-height: auto !important;
 }
+
 .chart-legend {
   position: absolute;
   bottom: 0px;
@@ -317,6 +322,7 @@ table thead tr th {
   background: #dddddd !important;
   font-weight: 700 !important;
 }
+
 .ant-table .ant-table-small {
   float: right;
   width: 60%;
