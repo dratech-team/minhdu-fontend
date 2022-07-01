@@ -5,34 +5,23 @@ import { OrderEffect } from './+state';
 import { MatInputModule } from '@angular/material/input';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ComponentsModule } from '@minhdu-fontend/components';
-import { OrderComponent } from './container';
-import { DetailOrderComponent } from './container';
-import { OrderDialogComponent } from './component';
+import { AddOrderComponent, DetailOrderComponent, OrderComponent, PaymentHistoryComponent } from './container';
+import { OrderDialogComponent, TableRouteComponent, VisibleOrderComponent } from './component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogModule,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommodityModule } from '../commodity/commodity.module';
-import { AddOrderComponent } from './container';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { SharedModule } from '../../shared/shared.module';
-import { PaymentHistoryComponent } from './container';
-import { TableRouteComponent } from './component';
-import {
-  MAT_SNACK_BAR_DEFAULT_OPTIONS,
-  MatSnackBarModule,
-} from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
 import { CustomerEffect } from '../customer/+state';
-import { CommodityEffect } from '../commodity/+state';
+import { CommodityEffect } from '../commodity/state';
 import { RouteEffect } from '../route/+state';
 import { MatSortModule } from '@angular/material/sort';
 import { NzModalModule } from 'ng-zorro-antd/modal';
@@ -44,10 +33,11 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
-import { VisibleOrderComponent } from './component';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { OrderService } from './service';
-import { ModalUpdateClosedCommodityComponent } from '../commodity/component/modal-update-closed-commodity/modal-update-closed-commodity.component';
+import {
+  ModalUpdateClosedCommodityComponent
+} from '../commodity/component/modal-update-closed-commodity/modal-update-closed-commodity.component';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 @NgModule({
@@ -56,7 +46,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
       OrderEffect,
       CustomerEffect,
       CommodityEffect,
-      RouteEffect,
+      RouteEffect
     ]),
     MatSnackBarModule,
     ReactiveFormsModule,
@@ -88,7 +78,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
     NzRadioModule,
     NzStepsModule,
     MatDatepickerModule,
-    NzSpinModule,
+    NzSpinModule
   ],
   declarations: [
     TableRouteComponent,
@@ -98,15 +88,16 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
     OrderDialogComponent,
     AddOrderComponent,
     VisibleOrderComponent,
-    ModalUpdateClosedCommodityComponent,
+    ModalUpdateClosedCommodityComponent
   ],
   providers: [
     { provide: MatDialogRef, useValue: {} },
     { provide: MAT_DIALOG_DATA, useValue: {} },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     DatePipe,
-    OrderService,
+    OrderService
   ],
-  exports: [],
+  exports: []
 })
-export class OrderModule {}
+export class OrderModule {
+}

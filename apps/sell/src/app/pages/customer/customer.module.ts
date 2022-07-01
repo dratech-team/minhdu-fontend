@@ -21,7 +21,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { OrderEffect } from '../order/+state';
-import { CommodityEffect } from '../commodity/+state';
+import { CommodityEffect } from '../commodity/state';
 import { RouteEffect } from '../route/+state';
 import { MatSortModule } from '@angular/material/sort';
 import { NzModalModule } from 'ng-zorro-antd/modal';

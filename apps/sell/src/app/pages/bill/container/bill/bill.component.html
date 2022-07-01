@@ -79,7 +79,7 @@
       [infiniteScrollThrottle]="10"
       [scrollWindow]="false"
       (scrolled)="onScroll()"
-      *ngIf="Bills$ | async as bills"
+      *ngIf="bills$ | async as bills"
     >
       <div
         class="row-content"

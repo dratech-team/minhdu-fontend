@@ -15,7 +15,7 @@ import { CustomerStore } from '../../customer/+state';
 import { OrderEntity } from '../enitities/order.entity';
 import { AddOrderDto, UpdateOrderDto } from '../dto';
 import { arrayAdd, arrayRemove, arrayUpdate } from '@datorama/akita';
-import { CommodityStore } from '../../commodity/+state';
+import { CommodityStore } from '../../commodity/state';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable()
@@ -31,7 +31,8 @@ export class OrderEffect {
     private readonly router: Router,
     private readonly customerStore: CustomerStore,
     private readonly commodityStore: CommodityStore
-  ) {}
+  ) {
+  }
 
   @Effect()
   addOrder$ = this.actions$.pipe(
@@ -39,7 +40,7 @@ export class OrderEffect {
     switchMap((props: AddOrderDto) => {
       this.orderStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.orderService.addOne(props).pipe(
         map((res) => {
@@ -51,16 +52,16 @@ export class OrderEffect {
             totalCommodity:
               res.commodities.length > 0
                 ? state.totalCommodity +
-                  res.commodities.reduce((a, b) => a + b.amount, 0)
+                res.commodities.reduce((a, b) => a + b.amount, 0)
                 : state.totalCommodity,
             commodityUniq:
               res.commodities?.length > 0
                 ? this.handleCommodityUniq(
-                    state.commodityUniq,
-                    res.commodities,
-                    'add'
-                  )
-                : state.commodityUniq,
+                  state.commodityUniq,
+                  res.commodities,
+                  'add'
+                )
+                : state.commodityUniq
           }));
           res.expand = this.orderQuery.getValue().expandedAll || false;
           this.message.success('Thêm đơn hàng thành công');
@@ -70,7 +71,7 @@ export class OrderEffect {
         catchError((err) => {
           this.orderStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(OrderActions.error(err));
         })
@@ -84,11 +85,11 @@ export class OrderEffect {
     switchMap((props) => {
       this.orderStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       if (props.param?.orderType) {
         Object.assign(props.param, {
-          orderType: props.param?.orderType === 'ascend' ? 'asc' : 'des',
+          orderType: props.param?.orderType === 'ascend' ? 'asc' : 'des'
         });
       }
       return this.orderService
@@ -111,7 +112,7 @@ export class OrderEffect {
                 (x, y) => x + y.amount,
                 0
               ),
-              commodityUniq: response.commodityUniq,
+              commodityUniq: response.commodityUniq
             }));
             if (!response.data.length) {
               if (!props.isPagination) {
@@ -123,7 +124,7 @@ export class OrderEffect {
                   expand: expanedAll,
                   totalcommodity: (order.totalCommodity = getTotalCommodity(
                     order.commodities
-                  )),
+                  ))
                 })
               );
               if (props.isPagination) {
@@ -136,7 +137,7 @@ export class OrderEffect {
           catchError((err) => {
             this.orderStore.update((state) => ({
               ...state,
-              loading: undefined,
+              loading: undefined
             }));
             return of(OrderActions.error(err));
           })
@@ -163,7 +164,7 @@ export class OrderEffect {
     switchMap((props: UpdateOrderDto) => {
       this.orderStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.orderService.update(props).pipe(
         map((response) => {
@@ -171,7 +172,7 @@ export class OrderEffect {
           if (orderBefore)
             this.orderStore.update((state) => ({
               ...state,
-              loading: false,
+              loading: false
             }));
           if (response.deliveredAt) {
             console.log(response);
@@ -179,11 +180,11 @@ export class OrderEffect {
               return {
                 debt: entity.debt
                   ? entity.debt +
-                    response.paymentTotal -
-                    response.commodityTotal
+                  response.paymentTotal -
+                  response.commodityTotal
                   : entity.debt,
                 delivering: arrayRemove(entity.delivering, response.id),
-                delivered: arrayAdd(entity.delivered, response),
+                delivered: arrayAdd(entity.delivered, response)
               };
             });
           }
@@ -198,7 +199,7 @@ export class OrderEffect {
         catchError((err) => {
           this.orderStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(OrderActions.error(err));
         })
@@ -219,7 +220,7 @@ export class OrderEffect {
               debt: entity.debt
                 ? entity.debt + (res.paymentTotal - res.commodityTotal)
                 : entity.debt,
-              delivered: arrayUpdate(entity.delivered, res.id, res),
+              delivered: arrayUpdate(entity.delivered, res.id, res)
             };
           });
         }),
@@ -245,7 +246,7 @@ export class OrderEffect {
     switchMap((props) => {
       this.orderStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.orderService.delete(props.id).pipe(
         map((_) => {
@@ -259,23 +260,23 @@ export class OrderEffect {
               totalCommodity:
                 orderDelete.commodities?.length > 0
                   ? state.totalCommodity -
-                    orderDelete.commodities.reduce((a, b) => a + b.amount, 0)
+                  orderDelete.commodities.reduce((a, b) => a + b.amount, 0)
                   : state.commodityUniq,
               commodityUniq:
                 orderDelete.commodities?.length > 0
                   ? this.handleCommodityUniq(
-                      state.commodityUniq,
-                      orderDelete.commodities,
-                      'delete'
-                    )
-                  : state.commodityUniq,
+                    state.commodityUniq,
+                    orderDelete.commodities,
+                    'delete'
+                  )
+                  : state.commodityUniq
             }));
           this.orderStore.remove(props.id);
         }),
         catchError((err) => {
           this.orderStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(OrderActions.error(err));
         })
@@ -290,7 +291,7 @@ export class OrderEffect {
       this.orderService.cancelOrder(prop.orderId).pipe(
         map((res) => {
           this.customerStore.update(res.customerId, ({ delivering }) => ({
-            delivering: arrayRemove(delivering, res.id),
+            delivering: arrayRemove(delivering, res.id)
           }));
           this.message.success('Huỷ đơn hàng thành công');
           this.orderStore.remove(res.id);
@@ -318,7 +319,7 @@ export class OrderEffect {
             result.push({
               name: value.name,
               code: value.code,
-              amount: value.amount,
+              amount: value.amount
             });
           }
           break;

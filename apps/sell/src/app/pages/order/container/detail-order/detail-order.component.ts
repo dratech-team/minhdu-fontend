@@ -4,16 +4,12 @@ import { CommodityUnit, PaymentType } from '@minhdu-fontend/enums';
 import { OrderActions, OrderQuery } from '../../+state';
 import { OrderDialogComponent } from '../../component';
 import { MatDialog } from '@angular/material/dialog';
-import { CommodityAction, CommodityQuery } from '../../../commodity/+state';
+import { CommodityAction, CommodityQuery } from '../../../commodity/state';
 import { CommodityDialogComponent } from '../../../commodity/component';
 import { PickCommodityComponent } from '../../../../shared/components/pick-commodity/pick-commodity.component';
-import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared';
 import { OrderHistoryService } from '../../service';
-import {
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -22,10 +18,12 @@ import { CommodityEntity } from '../../../commodity/entities';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { OrderEntity } from '../../enitities/order.entity';
 import { ModalAlertEntity } from '@minhdu-fontend/base-entity';
-import { ModalUpdateClosedCommodityComponent } from '../../../commodity/component/modal-update-closed-commodity/modal-update-closed-commodity.component';
+import {
+  ModalUpdateClosedCommodityComponent
+} from '../../../commodity/component/modal-update-closed-commodity/modal-update-closed-commodity.component';
 
 @Component({
-  templateUrl: 'detail-order.component.html',
+  templateUrl: 'detail-order.component.html'
 })
 export class DetailOrderComponent implements OnInit {
   order$ = this.orderQuery.selectEntity(this.getOrderId);
@@ -36,7 +34,7 @@ export class DetailOrderComponent implements OnInit {
 
   formOrderHistory = new UntypedFormGroup({
     content: new UntypedFormControl(''),
-    commodity: new UntypedFormControl(''),
+    commodity: new UntypedFormControl('')
   });
 
   constructor(
@@ -50,7 +48,8 @@ export class DetailOrderComponent implements OnInit {
     private readonly modal: NzModalService,
     private readonly viewContentRef: ViewContainerRef,
     private readonly formBuilder: UntypedFormBuilder
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.actions$.dispatch(OrderActions.loadOne({ id: this.getOrderId }));
@@ -84,11 +83,11 @@ export class DetailOrderComponent implements OnInit {
         nzContent: OrderDialogComponent,
         nzViewContainerRef: this.viewContentRef,
         nzComponentParams: {
-          data: { order: order, tab: 0, isUpdate: true },
+          data: { order: order, tab: 0, isUpdate: true }
         },
         nzFooter: [],
         nzWidth: '65vw',
-        nzMaskClosable: false,
+        nzMaskClosable: false
       });
     } else {
       this.modal
@@ -97,23 +96,23 @@ export class DetailOrderComponent implements OnInit {
           nzContent: PickCommodityComponent,
           nzComponentParams: {
             data: { type: 'DIALOG' },
-            formGroup: this.formBuilder.group({ customerIds: [] }),
+            formGroup: this.formBuilder.group({ customerIds: [] })
           },
           nzWidth: '70vw',
-          nzFooter: [],
+          nzFooter: []
         })
         .afterClose.subscribe((value) => {
-          if (value) {
-            this.actions$.dispatch(
-              OrderActions.update({
-                id: order.id,
-                updates: {
-                  commodityIds: Array.from(value),
-                },
-              })
-            );
-          }
-        });
+        if (value) {
+          this.actions$.dispatch(
+            OrderActions.update({
+              id: order.id,
+              updates: {
+                commodityIds: Array.from(value)
+              }
+            })
+          );
+        }
+      });
     }
   }
 
@@ -126,9 +125,9 @@ export class DetailOrderComponent implements OnInit {
       nzTitle: 'Cập nhật hàng hoá',
       nzContent: CommodityDialogComponent,
       nzComponentParams: {
-        data: { commodity, isUpdate: true },
+        data: { commodity, isUpdate: true }
       },
-      nzFooter: [],
+      nzFooter: []
     });
   }
 
@@ -138,8 +137,8 @@ export class DetailOrderComponent implements OnInit {
         width: 'fit-content',
         data: {
           title: 'Xoá hàng hoá',
-          description: `Bạn có chắc chắn muốn xoá hàng hoá ${commodity.name}`,
-        },
+          description: `Bạn có chắc chắn muốn xoá hàng hoá ${commodity.name}`
+        }
       })
       .afterClosed()
       .subscribe((val) => {
@@ -148,7 +147,7 @@ export class DetailOrderComponent implements OnInit {
             this.actions$.dispatch(
               CommodityAction.remove({
                 id: commodity.id,
-                inOrder: { orderId: commodity.orderId },
+                inOrder: { orderId: commodity.orderId }
               })
             );
         }
@@ -168,25 +167,25 @@ export class DetailOrderComponent implements OnInit {
           data: {
             description: `Bạn có chắc chắn muốn ${
               (commodity.closed ? 'bỏ chốt ' : 'chốt ') + commodity.name
-            }`,
-          },
+            }`
+          }
         },
-        nzFooter: [],
+        nzFooter: []
       })
       .afterClose.subscribe((val) => {
-        if (val) {
-          this.actions$.dispatch(
-            CommodityAction.update({
-              id: commodity.id,
-              updates: {
-                histored: val.save,
-                orderId: orderId,
-                closed: !commodity.closed,
-              },
-            })
-          );
-        }
-      });
+      if (val) {
+        this.actions$.dispatch(
+          CommodityAction.update({
+            id: commodity.id,
+            updates: {
+              histored: val.save,
+              orderId: orderId,
+              closed: !commodity.closed
+            }
+          })
+        );
+      }
+    });
   }
 
   loadMoreOrderHistory() {
@@ -196,7 +195,7 @@ export class DetailOrderComponent implements OnInit {
         take: 10,
         orderId: this.getOrderId,
         content: this.formOrderHistory.value.content,
-        commodity: this.formOrderHistory.value.commodity,
+        commodity: this.formOrderHistory.value.commodity
       })
       .subscribe((val) => {
         if (val.data.length > 0) {
@@ -217,7 +216,7 @@ export class DetailOrderComponent implements OnInit {
         skip: 0,
         orderId: this.getOrderId,
         commodity: search ? search.commodity : '',
-        content: search ? search.content : '',
+        content: search ? search.content : ''
       })
       .subscribe((val) => {
         if (val) {
@@ -240,7 +239,7 @@ export class DetailOrderComponent implements OnInit {
               this.router.navigate(['don-hang']).then();
             }
           });
-      },
+      }
     });
   }
 }

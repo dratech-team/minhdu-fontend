@@ -1,18 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {
-  ControlContainer,
-  FormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
-} from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityUnit, CustomerType } from '@minhdu-fontend/enums';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { debounceTime } from 'rxjs/operators';
-import {
-  CommodityAction,
-  CommodityQuery,
-} from '../../../pages/commodity/+state';
+import { CommodityAction, CommodityQuery } from '../../../pages/commodity/state';
 import { CommodityDialogComponent } from '../../../pages/commodity/component';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CommodityEntity } from '../../../pages/commodity/entities';
@@ -20,7 +12,7 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-pick-commodity',
-  templateUrl: 'pick-commodity.component.html',
+  templateUrl: 'pick-commodity.component.html'
 })
 export class PickCommodityComponent implements OnInit {
   @Input() data: any;
@@ -37,7 +29,7 @@ export class PickCommodityComponent implements OnInit {
   formGroupCommodity = new UntypedFormGroup({
     code: new UntypedFormControl(''),
     name: new UntypedFormControl(''),
-    unit: new UntypedFormControl(''),
+    unit: new UntypedFormControl('')
   });
   indeterminate = false;
   listOfCurrentPageData: readonly CommodityEntity[] = [];
@@ -51,7 +43,8 @@ export class PickCommodityComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
     private modalRef: NzModalRef
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.formGroup.get('commodityIds')?.value?.forEach((id: number) => {
@@ -59,7 +52,7 @@ export class PickCommodityComponent implements OnInit {
     });
     this.actions$.dispatch(
       CommodityAction.loadAll({
-        search: { take: this.pageSize, skip: this.pageIndex },
+        search: { take: this.pageSize, skip: this.pageIndex }
       })
     );
     this.formGroupCommodity.valueChanges
@@ -77,7 +70,7 @@ export class PickCommodityComponent implements OnInit {
       skip: isScroll ? this.commodityQuery.getCount() : this.pageIndex,
       name: val.name,
       code: val.code,
-      unit: val.unit,
+      unit: val.unit
     };
   }
 
@@ -86,14 +79,15 @@ export class PickCommodityComponent implements OnInit {
       .create({
         nzTitle: 'Thêm hàng hoá',
         nzContent: CommodityDialogComponent,
-        nzFooter: [],
+        nzFooter: []
       })
-      .afterClose.subscribe((value) => {});
+      .afterClose.subscribe((value) => {
+    });
   }
 
   deleteCommodity($event: any) {
     const dialogRef = this.dialog.open(DialogDeleteComponent, {
-      width: 'fit-content',
+      width: 'fit-content'
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
@@ -107,9 +101,9 @@ export class PickCommodityComponent implements OnInit {
       nzTitle: 'Cập nhật hàngh hoá',
       nzContent: CommodityDialogComponent,
       nzComponentParams: {
-        data: { commodity, isUpdate: true },
+        data: { commodity, isUpdate: true }
       },
-      nzFooter: null,
+      nzFooter: null
     });
   }
 
@@ -120,7 +114,7 @@ export class PickCommodityComponent implements OnInit {
       this.actions$.dispatch(
         CommodityAction.loadAll({
           search: this.commodity(val, true),
-          isPaginate: true,
+          isPaginate: true
         })
       );
     }

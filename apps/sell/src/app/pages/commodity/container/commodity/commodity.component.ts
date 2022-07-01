@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommodityAction, CommodityQuery } from '../../+state';
+import { CommodityAction, CommodityQuery } from '../../state';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityDialogComponent } from '../../component';
 import { CommodityUnit } from '@minhdu-fontend/enums';
@@ -8,7 +8,7 @@ import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Actions } from '@datorama/akita-ng-effects';
 
 @Component({
-  templateUrl: 'commodity.component.html',
+  templateUrl: 'commodity.component.html'
 })
 export class CommodityComponent implements OnInit {
   commodities$ = this.commodityQuery.selectAll();
@@ -19,14 +19,15 @@ export class CommodityComponent implements OnInit {
   formGroup = new UntypedFormGroup({
     name: new UntypedFormControl(''),
     code: new UntypedFormControl(''),
-    unit: new UntypedFormControl(''),
+    unit: new UntypedFormControl('')
   });
 
   constructor(
     private readonly actions$: Actions,
     private readonly commodityQuery: CommodityQuery,
     private readonly dialog: MatDialog
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.actions$.dispatch(
@@ -36,18 +37,17 @@ export class CommodityComponent implements OnInit {
 
   add() {
     this.dialog.open(CommodityDialogComponent, {
-      width: '30%',
+      width: '30%'
     });
   }
 
   onScroll() {
-    const val = this.formGroup.value;
     this.actions$.dispatch(
       CommodityAction.loadAll({
         search: {
           take: this.pageSize,
-          skip: this.commodityQuery.getCount(),
-        },
+          skip: this.commodityQuery.getCount()
+        }
       })
     );
   }
@@ -60,6 +60,4 @@ export class CommodityComponent implements OnInit {
       }
     });
   }
-
-  UpdateCommodity($event: any) {}
 }
