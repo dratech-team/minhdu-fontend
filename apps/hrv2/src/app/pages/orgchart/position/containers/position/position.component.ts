@@ -34,7 +34,7 @@ export class PositionComponent implements OnInit {
 
   stateSearch = this.positionQuery.getValue().search;
   itemContextMenu = ItemContextMenu;
-  filterType = FilterTypeEnum;
+  FilterTypeEnum = FilterTypeEnum;
   modeEnum = ModeEnum;
   formGroup = new UntypedFormGroup({
     search: new UntypedFormControl(this.stateSearch.search),
@@ -134,20 +134,20 @@ export class PositionComponent implements OnInit {
     this.router.navigate(['nhan-vien']).then();
   }
 
-  onPayroll(
-    position: PositionEntity,
-    filterType: FilterTypeEnum,
-    branch?: BranchEntity
+  /// FIXME: Check event again
+  onRoute(
+    event: any,
+    type?: FilterTypeEnum,
   ) {
     this.payrollStore.update((state) => ({
       ...state,
       search: Object.assign(
         JSON.parse(JSON.stringify(state.search)),
         {
-          position: position,
-          filterType: filterType,
+          position: event?.position,
+          filterType: type,
         },
-        branch ? { branch: branch } : {}
+         { branch: event?.branch }
       ),
     }));
     this.router.navigate(['phieu-luong']).then();
