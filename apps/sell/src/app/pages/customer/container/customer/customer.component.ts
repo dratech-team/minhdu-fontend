@@ -111,20 +111,6 @@ export class CustomerComponent implements OnInit {
       .subscribe();
   }
 
-  public onContextMenu($event: MouseEvent, item: any): void {
-    this.nzContextMenuService.create($event, item);
-    $event.preventDefault();
-    $event.stopPropagation();
-  }
-
-  addOrder($event?: any) {
-    this.router.navigate(['/don-hang/them-don-hang'], {
-      queryParams: {
-        customerId: $event.id
-      }
-    }).then();
-  }
-
   onAdd() {
     this.modal.create({
       nzTitle: 'Thêm khách hàng',
@@ -165,7 +151,15 @@ export class CustomerComponent implements OnInit {
     });
   }
 
-  onPayment(customer: CustomerEntity) {
+  public addOrder($event?: any) {
+    this.router.navigate(['/don-hang/them-don-hang'], {
+      queryParams: {
+        customerId: $event.id
+      }
+    }).then();
+  }
+
+  public onPayment(customer: CustomerEntity) {
     this.modal.create({
       nzWidth: '70vw',
       nzTitle: 'Thanh toán',
@@ -185,7 +179,7 @@ export class CustomerComponent implements OnInit {
     });
   }
 
-  printCustomer() {
+  public printCustomer() {
     this.modal.create({
       nzTitle: 'Xuất danh sách khách hàng',
       nzWidth: 'fit-content',
@@ -208,7 +202,13 @@ export class CustomerComponent implements OnInit {
     });
   }
 
-  onPagination(pageIndex: number) {
+  public onContextMenu($event: MouseEvent, item: any): void {
+    this.nzContextMenuService.create($event, item);
+    $event.preventDefault();
+    $event.stopPropagation();
+  }
+
+  public onPagination(pageIndex: number) {
     const value = this.formGroup.value;
     const count = this.customerQuery.getCount();
     if (pageIndex * this.pageSizeTable >= count) {
@@ -221,7 +221,7 @@ export class CustomerComponent implements OnInit {
     }
   }
 
-  onSort(sort: Sort) {
+  public onSort(sort: Sort) {
     this.valueSort = sort;
     this.actions$.dispatch(
       OrderActions.loadAll({
