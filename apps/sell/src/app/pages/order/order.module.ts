@@ -39,6 +39,7 @@ import {
   ModalUpdateClosedCommodityComponent
 } from '../commodity/component/modal-update-closed-commodity/modal-update-closed-commodity.component';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 @NgModule({
   imports: [
@@ -78,7 +79,8 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
     NzRadioModule,
     NzStepsModule,
     MatDatepickerModule,
-    NzSpinModule
+    NzSpinModule,
+    NzDropDownModule
   ],
   declarations: [
     TableRouteComponent,

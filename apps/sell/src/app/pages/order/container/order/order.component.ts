@@ -2,39 +2,25 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import {
-  Api,
-  CurrenciesConstant,
-  PaginationDto,
-} from '@minhdu-fontend/constants';
-import {
-  ConvertBoolean,
-  ItemContextMenu,
-  OrderEnum,
-  PaidType,
-  PaymentType,
-  StatusOrder,
-} from '@minhdu-fontend/enums';
-import { ExportService } from '@minhdu-fontend/service';
+import { Api, PaginationDto } from '@minhdu-fontend/constants';
+import { ConvertBoolean, ItemContextMenu, OrderEnum, PaidType, PaymentType } from '@minhdu-fontend/enums';
 import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { debounceTime, map, tap } from 'rxjs/operators';
 import { OrderActions, OrderQuery, OrderStore } from '../../+state';
 import { Actions } from '@datorama/akita-ng-effects';
-import { Sort } from '@minhdu-fontend/data-models';
+import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { OrderDialogComponent } from '../../component';
 import * as _ from 'lodash';
 import { OrderEntity } from '../../enitities/order.entity';
 import { radiosStatusOrderConstant } from '../../constants';
 import { WidthConstant } from '../../../../shared/constants';
-import {
-  ModalExportExcelComponent,
-  ModalExportExcelData,
-} from '@minhdu-fontend/components';
+import { ModalExportExcelComponent, ModalExportExcelData } from '@minhdu-fontend/components';
 import { DatePipe } from '@angular/common';
+import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
 
 @Component({
-  templateUrl: 'order.component.html',
+  templateUrl: 'order.component.html'
 })
 export class OrderComponent implements OnInit {
   ui$ = this.orderQuery.select((state) => state.ui);
@@ -57,8 +43,6 @@ export class OrderComponent implements OnInit {
   radios = radiosStatusOrderConstant;
   ItemContextMenu = ItemContextMenu;
   paidType = PaidType;
-  statusOrder = StatusOrder;
-  currenciesConstant = CurrenciesConstant;
   convertBoolean = ConvertBoolean;
   payType = PaymentType;
   pageSize = 25;
@@ -66,28 +50,45 @@ export class OrderComponent implements OnInit {
   sortOrderEnum = OrderEnum;
   visible = false;
   pageSizeTable = 10;
-  expanedAll$ = this.orderQuery.select((state) => state.expandedAll);
-  stateSearch = this.orderQuery.getValue().search;
+  expandedAll$ = this.orderQuery.select((state) => state.expandedAll);
+  search = this.orderQuery.getValue().search;
   valueSort?: Sort;
   widthConstant = WidthConstant;
+  menus: ContextMenuEntity[] = [
+    {
+      title: 'Thêm',
+      click: () => this.onAdd()
+    },
+    {
+      title: 'Sửa',
+      click: (data: any) => this.onDetail(data.id, true)
+    },
+    {
+      title: 'Xoá',
+      click: (data: any) => this.onRemove(data)
+    },
+    {
+      title: 'Huỷ',
+      click: (data: OrderEntity) => this.onCancel(data)
+    },
+    {
+      title: 'Đã giao',
+      click: (data: any) => this.onDelivery(data)
+    }
+  ];
+
   formGroup = new UntypedFormGroup({
-    search: new UntypedFormControl(this.stateSearch.search),
-    // paidType: new FormControl(this.stateSearch.paidType),
-    // customer: new FormControl(this.stateSearch.customer),
-    status: new UntypedFormControl(this.stateSearch.status),
-    // explain: new FormControl(this.stateSearch.explain),
-    endedAt_start: new UntypedFormControl(this.stateSearch.endedAt_start),
-    endedAt_end: new UntypedFormControl(this.stateSearch.endedAt_end),
-    startedAt_end: new UntypedFormControl(this.stateSearch.startedAt_start),
-    startedAt_start: new UntypedFormControl(this.stateSearch.startedAt_end),
+    search: new UntypedFormControl(this.search.search),
+    status: new UntypedFormControl(this.search.status),
+    endedAt_start: new UntypedFormControl(this.search.endedAt_start),
+    endedAt_end: new UntypedFormControl(this.search.endedAt_end),
+    startedAt_end: new UntypedFormControl(this.search.startedAt_start),
+    startedAt_start: new UntypedFormControl(this.search.startedAt_end),
     deliveredAt_start: new UntypedFormControl(
-      this.stateSearch.deliveredAt_start
+      this.search.deliveredAt_start
     ),
-    deliveredAt_end: new UntypedFormControl(this.stateSearch.deliveredAt_end),
-    // commodityTotal: new FormControl(this.stateSearch.commodityTotal),
-    // province: new FormControl(this.stateSearch.province),
-    // bsx: new FormControl(this.stateSearch.bsx),
-    commodity: new UntypedFormControl(this.stateSearch.commodity),
+    deliveredAt_end: new UntypedFormControl(this.search.deliveredAt_end),
+    commodity: new UntypedFormControl(this.search.commodity)
   });
 
   constructor(
@@ -98,8 +99,9 @@ export class OrderComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly modal: NzModalService,
-    private readonly exportService: ExportService
-  ) {}
+    private readonly nzContextMenuService: NzContextMenuService
+  ) {
+  }
 
   ngOnInit() {
     this.formGroup.valueChanges
@@ -114,33 +116,33 @@ export class OrderComponent implements OnInit {
       .subscribe();
   }
 
-  onAdd() {
+  public onAdd() {
     this.modal.create({
       nzTitle: 'Thêm đơn hàng',
       nzContent: OrderDialogComponent,
       nzWidth: '80vw',
-      nzFooter: [],
+      nzFooter: []
     });
   }
 
-  onDetail(id: number, isUpdate: boolean) {
+  public onDetail(id: number, isUpdate: boolean) {
     this.router
       .navigate(['don-hang/chi-tiet-don-hang', id], {
         queryParams: {
-          isUpdate: isUpdate,
-        },
+          isUpdate: isUpdate
+        }
       })
       .then();
   }
 
-  onUpdate($event: any) {
+  public onDelivery($event: any) {
     this.dialog
       .open(DialogDatePickerComponent, {
         width: 'fit-content',
         data: {
           titlePopup: 'Xác Nhận ngày giao hàng',
-          title: 'Ngày xác nhận',
-        },
+          title: 'Ngày xác nhận'
+        }
       })
       .afterClosed()
       .subscribe((val: any) => {
@@ -149,15 +151,15 @@ export class OrderComponent implements OnInit {
             OrderActions.update({
               id: $event.id,
               updates: {
-                deliveredAt: val.day,
-              },
+                deliveredAt: val.day
+              }
             })
           );
         }
       });
   }
 
-  onCancel($event: OrderEntity) {
+  public onCancel($event: OrderEntity) {
     this.modal.warning({
       nzTitle: 'Huỷ đơn hàng',
       nzContent: 'Bạn có chắc chắn muốn huỷ đơn hàng này không',
@@ -166,53 +168,59 @@ export class OrderComponent implements OnInit {
         this.actions$.dispatch(
           OrderActions.cancelOrder({ orderId: $event.id })
         );
-      },
+      }
     });
   }
 
-  onDelete($event: any) {
+  public onRemove($event: any) {
     this.modal.warning({
       nzTitle: 'Xoá đơn hàng',
       nzContent: `Bạn có chắc chắn muốn xoá đơn hàng này vĩnh viễn`,
       nzOnOk: () =>
-        this.actions$.dispatch(OrderActions.remove({ id: $event.id })),
+        this.actions$.dispatch(OrderActions.remove({ id: $event.id }))
     });
   }
 
-  onPagination(pageIndex: number) {
+   public onContextMenu($event: MouseEvent, item: any): void {
+    this.nzContextMenuService.create($event, item);
+    $event.preventDefault();
+    $event.stopPropagation();
+  }
+
+  public onPagination(pageIndex: number) {
     const value = this.formGroup.value;
     const count = this.orderQuery.getCount();
     if (pageIndex * this.pageSizeTable >= count) {
       this.actions$.dispatch(
         OrderActions.loadAll({
           param: this.mapOrder(value, true),
-          isPagination: true,
+          isPagination: true
         })
       );
     }
   }
 
-  onPickDeliveryDay($event: any) {
+  public onPickDeliveryDay($event: any) {
     this.formGroup
       .get('deliveredAt_start')
       ?.setValue($event.start, { emitEvent: false });
     this.formGroup.get('deliveredAt_end')?.setValue($event.end);
   }
 
-  onPickCreatedAt($event: any) {
+  public onPickCreatedAt($event: any) {
     this.formGroup
       .get('startedAt_start')
       ?.setValue($event.start, { emitEvent: false });
     this.formGroup.get('startedAt_end')?.setValue($event.end);
   }
 
-  onPickEndedAt($event: any) {
+  public onPickEndedAt($event: any) {
     this.formGroup.get('endedAt_start')?.setValue($event.start),
       { emitEvent: false };
     this.formGroup.get('endedAt_end')?.setValue($event.end);
   }
 
-  onExpandAll() {
+  public onExpandAll() {
     const expanedAll = this.orderQuery.getValue().expandedAll;
     this.orderQuery.getAll().forEach((order: OrderEntity) => {
       this.orderStore.update(order.id, { expand: !expanedAll });
@@ -220,34 +228,16 @@ export class OrderComponent implements OnInit {
     this.orderStore.update((state) => ({ ...state, expandedAll: !expanedAll }));
   }
 
-  onSort(sort: Sort) {
+  public onSort(sort: Sort) {
     this.valueSort = sort;
     this.actions$.dispatch(
       OrderActions.loadAll({
-        param: this.mapOrder(this.formGroup.value),
+        param: this.mapOrder(this.formGroup.value)
       })
     );
   }
 
-  mapOrder(dataFG: any, isPagination?: boolean) {
-    this.orderStore.update((state) => ({
-      ...state,
-      search: dataFG,
-    }));
-    const value = Object.assign(JSON.parse(JSON.stringify(dataFG)), {
-      skip: isPagination ? this.orderQuery.getCount() : PaginationDto.skip,
-      take: this.pageSize,
-    });
-    return Object.assign(
-      {},
-      value?.status !== 1
-        ? _.omit(value, ['deliveredAt_end', 'deliveredAt_start'])
-        : value,
-      this.valueSort?.orderType ? this.valueSort : {}
-    );
-  }
-
-  onPrint() {
+  public onPrint() {
     this.modal.create({
       nzTitle: 'Xuất danh sách đơn hàng',
       nzWidth: 'fit-content',
@@ -268,16 +258,34 @@ export class OrderComponent implements OnInit {
             {},
             _.omit(this.mapOrder(this.formGroup.value, false), [
               'take',
-              'skip',
+              'skip'
             ]),
             { exportType: 'ORDER' }
           ),
           api: Api.SELL.ORDER.ORDER_EXPORT,
           selectDatetime: true,
-          typeDate: 'RANGE_DATETIME',
-        },
+          typeDate: 'RANGE_DATETIME'
+        }
       },
-      nzFooter: [],
+      nzFooter: []
     });
+  }
+
+  private mapOrder(dataFG: any, isPagination?: boolean) {
+    this.orderStore.update((state) => ({
+      ...state,
+      search: dataFG
+    }));
+    const value = Object.assign(JSON.parse(JSON.stringify(dataFG)), {
+      skip: isPagination ? this.orderQuery.getCount() : PaginationDto.skip,
+      take: this.pageSize
+    });
+    return Object.assign(
+      {},
+      value?.status !== 1
+        ? _.omit(value, ['deliveredAt_end', 'deliveredAt_start'])
+        : value,
+      this.valueSort?.orderType ? this.valueSort : {}
+    );
   }
 }
