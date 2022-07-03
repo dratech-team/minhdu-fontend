@@ -27,6 +27,7 @@ import { CustomerEntity } from '../../entities';
 import { ModalAddOrUpdatePayment } from '../../data/modal-payment.data';
 import { PotentialEnum } from '../../enums';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
+import { ModalCustomerData } from '../../data/modal-customer.data';
 
 @Component({
   templateUrl: 'customer.component.html'
@@ -47,6 +48,20 @@ export class CustomerComponent implements OnInit {
   pageSizeTable = 10;
   visible = false;
   search = this.customerQuery.getValue().search;
+  menus: ContextMenuEntity[] = [
+    {
+      title: 'Thêm',
+      click: () => this.onAdd()
+    },
+    {
+      title: 'Sửa',
+      click: (data: any) => this.onUpdate(data)
+    },
+    {
+      title: 'Xoá',
+      click: (data: any) => this.onRemove(data)
+    }
+  ];
 
   CustomerType = CustomerType;
   ItemContextMenu = ItemContextMenu;
@@ -103,13 +118,11 @@ export class CustomerComponent implements OnInit {
   }
 
   addOrder($event?: any) {
-    this.router
-      .navigate(['/don-hang/them-don-hang'], {
-        queryParams: {
-          customerId: $event.id
-        }
-      })
-      .then();
+    this.router.navigate(['/don-hang/them-don-hang'], {
+      queryParams: {
+        customerId: $event.id
+      }
+    }).then();
   }
 
   onAdd() {
@@ -123,58 +136,49 @@ export class CustomerComponent implements OnInit {
     });
   }
 
-  mapCustomer(val: any, isPagination: boolean) {
-    this.customerStore.update((state) => ({
-      ...state,
-      search: val
-    }));
-    if (this.valueSort?.orderType) {
-      Object.assign(val, this.valueSort);
-    } else {
-      delete val.orderBy;
-      delete val.orderType;
-    }
-    return Object.assign({}, val, {
-      take: this.pageSize,
-      skip: isPagination ? this.customerQuery.getCount() : 0
-    });
-  }
-
-  readAndUpdate($event?: any, isUpdate?: boolean) {
+  onDetail(customer: CustomerEntity) {
     this.router
-      .navigate(['khach-hang/chi-tiet-khach-hang', $event.id], {
-        queryParams: {
-          isUpdate: isUpdate
-        }
-      })
+      .navigate(['khach-hang/chi-tiet-khach-hang', customer.id])
       .then();
   }
 
-  deleteCustomer(customer: CustomerEntity) {
+  onUpdate(customer: CustomerEntity) {
+    this.modal.create({
+      nzWidth: '65vw',
+      nzTitle: 'Sửa khách hàng',
+      nzContent: CustomerModalComponent,
+      nzComponentParams: <{ data?: ModalCustomerData }>{
+        data: { update: { customer } }
+      },
+      nzFooter: []
+    });
+  }
+
+  onRemove(customer: CustomerEntity) {
     this.modal.warning({
       nzTitle: 'Xoá khách hàng',
       nzContent: `Bạn có chắc chắn muốn xoá khác hàng ${customer.lastName}`,
-      nzOnOk: () =>
-        this.actions$.dispatch(CustomerActions.remove({ id: customer.id }))
+      nzOnOk: () => {
+        return this.actions$.dispatch(CustomerActions.remove({ id: customer.id }));
+      }
+
     });
   }
 
   onPayment(customer: CustomerEntity) {
-    this.modal
-      .create({
-        nzWidth: '70vw',
-        nzTitle: 'Thanh toán',
-        nzContent: PaymentModalComponent,
-        nzComponentParams: <{ data: ModalAddOrUpdatePayment }>{
-          data: {
-            add: {
-              customer: customer
-            }
+    this.modal.create({
+      nzWidth: '70vw',
+      nzTitle: 'Thanh toán',
+      nzContent: PaymentModalComponent,
+      nzComponentParams: <{ data: ModalAddOrUpdatePayment }>{
+        data: {
+          add: {
+            customer: customer
           }
-        },
-        nzFooter: []
-      })
-      .afterClose.subscribe((val) => {
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe((val) => {
       if (val) {
         this.actions$.dispatch(CustomerActions.loadOne({ id: customer.id }));
       }
@@ -226,18 +230,20 @@ export class CustomerComponent implements OnInit {
     );
   }
 
-  menus: ContextMenuEntity[] = [
-    {
-      title: 'Thêm',
-      click: () => this.onAdd(),
-    },
-    {
-      title: 'Sửa',
-      click: (data: any) => this.readAndUpdate(data, true),
-    },
-    {
-      title: 'Xoá',
-      click: (data: any) => this.deleteCustomer(data),
+  private mapCustomer(val: any, isPagination: boolean) {
+    this.customerStore.update((state) => ({
+      ...state,
+      search: val
+    }));
+    if (this.valueSort?.orderType) {
+      Object.assign(val, this.valueSort);
+    } else {
+      delete val.orderBy;
+      delete val.orderType;
     }
-  ];
+    return Object.assign({}, val, {
+      take: this.pageSize,
+      skip: isPagination ? this.customerQuery.getCount() : 0
+    });
+  }
 }

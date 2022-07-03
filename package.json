@@ -94,10 +94,10 @@
     "@ngrx/store-devtools": "14.0.0",
     "@nrwl/cli": "14.4.0-beta.1",
     "@nrwl/cypress": "14.4.0-beta.1",
-    "@nrwl/eslint-plugin-nx": "14.4.0-beta.1",
+    "@nrwl/eslint-plugin-nx": "^14.4.0",
     "@nrwl/jest": "14.4.0-beta.1",
     "@nrwl/linter": "14.4.0-beta.1",
-    "@nrwl/nx-cloud": "14.1.2",
+    "@nrwl/nx-cloud": "^14.2.0",
     "@nrwl/workspace": "14.4.0-beta.1",
     "@types/jest": "26.0.8",
     "@types/lodash": "^4.14.173",
@@ -116,6 +116,6 @@
     "ts-jest": "26.5.5",
     "ts-node": "~9.1.1",
     "typescript": "4.7.4",
-    "nx": "14.4.0-beta.1"
+    "nx": "^14.4.0"
   }
 }

@@ -5,9 +5,7 @@ import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { BaseSearchCustomerDto, CustomerEntity } from '../entities';
-import { AddCustomerDto } from '../dto';
-import { UpdateCustomerDto } from '../dto';
-import { SearchCustomerDto } from '../dto';
+import { AddCustomerDto, UpdateCustomerDto } from '../dto';
 
 @Injectable({ providedIn: 'root' })
 export class CustomerService extends BaseService<CustomerEntity> {
