@@ -7,7 +7,7 @@ import { Actions } from '@datorama/akita-ng-effects';
 import { CommodityEntity } from '../../../pages/commodity/entities';
 import { OrderEntity } from '../../../pages/order/enitities/order.entity';
 import { PaginationDto } from '@minhdu-fontend/constants';
-import { OrderEnum } from '@minhdu-fontend/enums';
+import { SortTypeOrderEnum } from '@minhdu-fontend/enums';
 import { SearchOrderDto } from '../../../pages/order/dto';
 
 @Component({
@@ -16,7 +16,7 @@ import { SearchOrderDto } from '../../../pages/order/dto';
   styleUrls: ['pick-route.component.scss'],
 })
 export class PickOrderComponent implements OnInit {
-  @Input() columns!: OrderEnum[];
+  @Input() columns!: SortTypeOrderEnum[];
   @Input() formGroup!: UntypedFormGroup;
   @Input() pickOne = false;
   @Input() customerId?: number;
@@ -28,7 +28,7 @@ export class PickOrderComponent implements OnInit {
   orders: OrderEntity[] = [];
   paidType = PaidType;
   pageSizeTable = 7;
-  orderEnum = OrderEnum;
+  orderEnum = SortTypeOrderEnum;
   setOfCheckedOrder = new Set<OrderEntity>();
   setOfCheckedCommodity = new Set<CommodityEntity>();
   formGroupTable = new UntypedFormGroup({

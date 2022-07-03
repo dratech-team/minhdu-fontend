@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Api, PaginationDto } from '@minhdu-fontend/constants';
-import { ConvertBoolean, ItemContextMenu, OrderEnum, PaidType, PaymentType } from '@minhdu-fontend/enums';
+import { ConvertBoolean, ItemContextMenu, PaidType, PaymentType, SortTypeOrderEnum } from '@minhdu-fontend/enums';
 import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { debounceTime, map, tap } from 'rxjs/operators';
 import { OrderActions, OrderQuery, OrderStore } from '../../+state';
@@ -18,12 +18,17 @@ import { WidthConstant } from '../../../../shared/constants';
 import { ModalExportExcelComponent, ModalExportExcelData } from '@minhdu-fontend/components';
 import { DatePipe } from '@angular/common';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
+import { OrderStatusEnum } from '../../enums';
+import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 
 @Component({
   templateUrl: 'order.component.html'
 })
 export class OrderComponent implements OnInit {
+  valueSort?: Sort;
+
   ui$ = this.orderQuery.select((state) => state.ui);
+  expandedAll$ = this.orderQuery.select((state) => state.expandedAll);
   orders$ = this.orderQuery
     .selectAll()
     .pipe(map((value) => JSON.parse(JSON.stringify(value))));
@@ -41,19 +46,21 @@ export class OrderComponent implements OnInit {
   );
 
   radios = radiosStatusOrderConstant;
+
   ItemContextMenu = ItemContextMenu;
-  paidType = PaidType;
-  convertBoolean = ConvertBoolean;
-  payType = PaymentType;
+  PaidType = PaidType;
+  ConvertBoolean = ConvertBoolean;
+  PaymentType = PaymentType;
+  SortTypeOrderEnum = SortTypeOrderEnum;
+  widthConstant = WidthConstant;
+
   pageSize = 25;
   pageIndexInit = 0;
-  sortOrderEnum = OrderEnum;
   visible = false;
   pageSizeTable = 10;
-  expandedAll$ = this.orderQuery.select((state) => state.expandedAll);
   search = this.orderQuery.getValue().search;
-  valueSort?: Sort;
-  widthConstant = WidthConstant;
+
+
   menus: ContextMenuEntity[] = [
     {
       title: 'Thêm',
@@ -77,18 +84,16 @@ export class OrderComponent implements OnInit {
     }
   ];
 
-  formGroup = new UntypedFormGroup({
-    search: new UntypedFormControl(this.search.search),
-    status: new UntypedFormControl(this.search.status),
-    endedAt_start: new UntypedFormControl(this.search.endedAt_start),
-    endedAt_end: new UntypedFormControl(this.search.endedAt_end),
-    startedAt_end: new UntypedFormControl(this.search.startedAt_start),
-    startedAt_start: new UntypedFormControl(this.search.startedAt_end),
-    deliveredAt_start: new UntypedFormControl(
-      this.search.deliveredAt_start
-    ),
-    deliveredAt_end: new UntypedFormControl(this.search.deliveredAt_end),
-    commodity: new UntypedFormControl(this.search.commodity)
+  formGroup = new FormGroup({
+    search: new FormControl<string>(''),
+    status: new FormControl<OrderStatusEnum>(OrderStatusEnum.ALL),
+    endedAt_start: new FormControl<Date | null>(null),
+    endedAt_end: new FormControl<Date | null>(null),
+    startedAt_end: new FormControl<Date>(getFirstDayInMonth(new Date())),
+    startedAt_start: new FormControl<Date>(getLastDayInMonth(new Date())),
+    deliveredAt_start: new FormControl<Date | null>(null),
+    deliveredAt_end: new FormControl<Date | null>(null),
+    commodity: new FormControl(this.search.commodity)
   });
 
   constructor(
@@ -106,7 +111,6 @@ export class OrderComponent implements OnInit {
   ngOnInit() {
     this.formGroup.valueChanges
       .pipe(
-        debounceTime(1000),
         tap((val: any) => {
           this.actions$.dispatch(
             OrderActions.loadAll({ param: this.mapOrder(val) })
@@ -181,7 +185,7 @@ export class OrderComponent implements OnInit {
     });
   }
 
-   public onContextMenu($event: MouseEvent, item: any): void {
+  public onContextMenu($event: MouseEvent, item: any): void {
     this.nzContextMenuService.create($event, item);
     $event.preventDefault();
     $event.stopPropagation();
@@ -221,11 +225,11 @@ export class OrderComponent implements OnInit {
   }
 
   public onExpandAll() {
-    const expanedAll = this.orderQuery.getValue().expandedAll;
+    const expandedAll = this.orderQuery.getValue().expandedAll;
     this.orderQuery.getAll().forEach((order: OrderEntity) => {
-      this.orderStore.update(order.id, { expand: !expanedAll });
+      this.orderStore.update(order.id, { expand: !expandedAll });
     });
-    this.orderStore.update((state) => ({ ...state, expandedAll: !expanedAll }));
+    this.orderStore.update((state) => ({ ...state, expandedAll: !expandedAll }));
   }
 
   public onSort(sort: Sort) {

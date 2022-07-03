@@ -151,7 +151,7 @@
             [nzLeft]='ui.endedAt?.pinned || false'
             class='text-center font-weight-bold'
             (nzSortOrderChange)='
-                onSort({ orderBy: sortOrderEnum.END, orderType: $event })
+                onSort({ orderBy: SortTypeOrderEnum.END, orderType: $event })
               '
             [nzSortFn]='true'
           >
@@ -162,7 +162,7 @@
             [nzLeft]='ui.customer?.pinned || false'
             [nzSortFn]='true'
             (nzSortOrderChange)='
-                onSort({ orderBy: sortOrderEnum.CUSTOMER, orderType: $event })
+                onSort({ orderBy: SortTypeOrderEnum.CUSTOMER, orderType: $event })
               '
             class='text-center font-weight-bold'
           >
@@ -174,7 +174,7 @@
             class='text-center font-weight-bold'
             [nzSortFn]='true'
             (nzSortOrderChange)='
-                onSort({ orderBy: sortOrderEnum.PROVINCE, orderType: $event })
+                onSort({ orderBy: SortTypeOrderEnum.PROVINCE, orderType: $event })
               '
           >
             Điểm đến
@@ -185,7 +185,7 @@
             class='text-center font-weight-bold'
             [nzSortFn]='true'
             (nzSortOrderChange)='
-                onSort({ orderBy: sortOrderEnum.CREATED_AT, orderType: $event })
+                onSort({ orderBy: SortTypeOrderEnum.CREATED_AT, orderType: $event })
               '
           >
             Ngày tạo

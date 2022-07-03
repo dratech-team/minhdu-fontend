@@ -1,9 +1,5 @@
-import { AddRouteDto } from '../dto/add-route.dto';
+import { AddRouteDto, CancelDto, SearchRouteDto, UpdateRouteDto } from '../dto';
 import { createAction, props } from '@datorama/akita-ng-effects';
-import { UpdateRouteDto } from '../dto/update-route.dto';
-import { SearchRouteDto } from '../dto/search-route.dto';
-import { CancelDto } from '../dto/cancel-commodity.dto';
-import { UpdateCustomerDto } from '../../customer/dto';
 
 const addOne = createAction('[ROUTE] Add One', props<AddRouteDto>());
 
@@ -32,5 +28,5 @@ export const RouteActions = {
   update,
   remove,
   cancel,
-  error,
+  error
 };

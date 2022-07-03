@@ -30,7 +30,7 @@ export * from './sell/overview.enum';
 export * from './sell/status-route';
 export * from './sell/page-type.enum';
 export * from './sell/sort-route.enum';
-export * from './sell/order.enum';
+export * from './sell/sortTypeOrderEnum';
 export * from './sell/sortTypeCustomerEnum';
 
 // modal-department

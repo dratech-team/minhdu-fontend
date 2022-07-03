@@ -10,7 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { UpdateTypeEnum } from '../../enums/update-type.enum';
-import { OrderEnum } from '@minhdu-fontend/enums';
+import { SortTypeOrderEnum } from '@minhdu-fontend/enums';
 import { OrderEntity } from '../../../order/enitities/order.entity';
 import { CommodityEntity } from '../../../commodity/entities';
 
@@ -21,7 +21,7 @@ export class RouteDialogComponent implements OnInit {
   @Input() data?: any;
   loading$ = this.routeQuery.select((state) => state.loading);
 
-  orderEnum = OrderEnum;
+  orderEnum = SortTypeOrderEnum;
   submitted = false;
   isSelectAll = false;
   stepIndex = 0;

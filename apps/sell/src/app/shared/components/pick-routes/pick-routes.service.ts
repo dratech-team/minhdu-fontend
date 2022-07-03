@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { RouteActions } from '../../../pages/route/+state/route.Actions';
+import { RouteActions, RouteQuery } from '../../../pages/route/+state';
 import { Actions } from '@datorama/akita-ng-effects';
-import { RouteQuery } from '../../../pages/route/+state/route.query';
 
 @Injectable({ providedIn: 'root' })
 export class PickRoutesService {
@@ -10,7 +9,8 @@ export class PickRoutesService {
   constructor(
     private readonly actions$: Actions,
     private readonly routeQuery: RouteQuery
-  ) {}
+  ) {
+  }
 
   loadInit() {
     return this.actions$.dispatch(
@@ -19,11 +19,10 @@ export class PickRoutesService {
   }
 
   scrollRoutes(val: any) {
-    const skip = this.routeQuery.getCount();
     return this.actions$.dispatch(
       RouteActions.loadAll({
         params: { take: 30, skip: this.routeQuery.getCount() },
-        isPagination: true,
+        isPagination: true
       })
     );
   }

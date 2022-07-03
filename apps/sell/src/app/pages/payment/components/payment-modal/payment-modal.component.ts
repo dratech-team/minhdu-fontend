@@ -4,7 +4,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { OrderEnum, PaymentType } from '@minhdu-fontend/enums';
+import { SortTypeOrderEnum, PaymentType } from '@minhdu-fontend/enums';
 import { DatePipe } from '@angular/common';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -29,7 +29,7 @@ export class PaymentModalComponent implements OnInit {
   );
   formGroup!: UntypedFormGroup;
   indexStep = 0;
-  orderEnum = OrderEnum;
+  orderEnum = SortTypeOrderEnum;
 
   constructor(
     public datePipe: DatePipe,

@@ -1,4 +1,4 @@
-export enum OrderEnum {
+export enum SortTypeOrderEnum {
   END = 'END',
   CUSTOMER = 'CUSTOMER',
   CREATED_AT = 'CREATED_AT',
