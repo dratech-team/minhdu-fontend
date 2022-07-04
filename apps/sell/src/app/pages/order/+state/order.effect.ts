@@ -175,7 +175,6 @@ export class OrderEffect {
               loading: false
             }));
           if (response.deliveredAt) {
-            console.log(response);
             this.customerStore.update(response.customerId, (entity) => {
               return {
                 debt: entity.debt

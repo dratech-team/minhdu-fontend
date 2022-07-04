@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Api, PaginationDto } from '@minhdu-fontend/constants';
 import { ConvertBoolean, ItemContextMenu, PaidType, PaymentType, SortTypeOrderEnum } from '@minhdu-fontend/enums';
 import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
-import { debounceTime, map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { OrderActions, OrderQuery, OrderStore } from '../../+state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
@@ -68,7 +67,7 @@ export class OrderComponent implements OnInit {
     },
     {
       title: 'Sửa',
-      click: (data: any) => this.onDetail(data.id, true)
+      click: (data: OrderEntity) => this.onUpdate(data)
     },
     {
       title: 'Xoá',
@@ -93,7 +92,7 @@ export class OrderComponent implements OnInit {
     startedAt_start: new FormControl<Date>(getLastDayInMonth(new Date())),
     deliveredAt_start: new FormControl<Date | null>(null),
     deliveredAt_end: new FormControl<Date | null>(null),
-    commodity: new FormControl(this.search.commodity)
+    commodity: new FormControl('')
   });
 
   constructor(
@@ -101,7 +100,6 @@ export class OrderComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly orderQuery: OrderQuery,
     private readonly orderStore: OrderStore,
-    private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly modal: NzModalService,
     private readonly nzContextMenuService: NzContextMenuService
@@ -139,49 +137,58 @@ export class OrderComponent implements OnInit {
       .then();
   }
 
-  public onDelivery($event: any) {
-    this.dialog
-      .open(DialogDatePickerComponent, {
-        width: 'fit-content',
-        data: {
-          titlePopup: 'Xác Nhận ngày giao hàng',
-          title: 'Ngày xác nhận'
-        }
-      })
-      .afterClosed()
-      .subscribe((val: any) => {
-        if (val) {
-          this.actions$.dispatch(
-            OrderActions.update({
-              id: $event.id,
-              updates: {
-                deliveredAt: val.day
-              }
-            })
-          );
-        }
-      });
+  public onUpdate(order: OrderEntity) {
+    this.modal.create({
+      nzTitle: 'Sửa đơn hàng',
+      nzContent: OrderDialogComponent,
+      nzComponentParams: {
+        data: { order: order, tab: 0, isUpdate: true }
+      },
+      nzFooter: [],
+      nzWidth: '65vw',
+      nzMaskClosable: false
+    });
   }
 
-  public onCancel($event: OrderEntity) {
-    this.modal.warning({
-      nzTitle: 'Huỷ đơn hàng',
-      nzContent: 'Bạn có chắc chắn muốn huỷ đơn hàng này không',
-      nzOkDanger: true,
-      nzOnOk: () => {
+  public onDelivery(order: OrderEntity) {
+    this.modal.create({
+      nzTitle: 'Xác nhận ngày giao hàng',
+      nzContent: DialogDatePickerComponent,
+      nzMaskClosable: false,
+      nzFooter: []
+    }).afterClose.subscribe((res: { date: Date }) => {
+      if (res) {
         this.actions$.dispatch(
-          OrderActions.cancelOrder({ orderId: $event.id })
+          OrderActions.update({
+            id: order.id,
+            updates: {
+              deliveredAt: res.date
+            }
+          })
         );
       }
     });
   }
 
-  public onRemove($event: any) {
+  public onCancel(order: OrderEntity) {
+    this.modal.warning({
+      nzTitle: 'Huỷ đơn hàng',
+      nzContent: `Bạn có chắc chắn muốn huỷ đơn hàng đến ${order.province.name} của khách hàng ${order.customer.lastName} không`,
+      nzOkDanger: true,
+      nzOnOk: () => {
+        this.actions$.dispatch(
+          OrderActions.cancelOrder({ orderId: order.id })
+        );
+      }
+    });
+  }
+
+  public onRemove(order: OrderEntity) {
     this.modal.warning({
       nzTitle: 'Xoá đơn hàng',
-      nzContent: `Bạn có chắc chắn muốn xoá đơn hàng này vĩnh viễn`,
+      nzContent: `Bạn có chắc chắn muốn xoá đơn hàng đến ${order.province.name} của khách hàng ${order.customer.lastName} vĩnh viễn không?`,
       nzOnOk: () =>
-        this.actions$.dispatch(OrderActions.remove({ id: $event.id }))
+        this.actions$.dispatch(OrderActions.remove({ id: order.id }))
     });
   }
 

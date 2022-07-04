@@ -80,7 +80,6 @@ export class PaymentModalComponent implements OnInit {
   }
 
   move(type: 'next' | 'previous'): any {
-    console.log(this.formGroup.value);
     if (this.formGroup.invalid) {
       return;
     }

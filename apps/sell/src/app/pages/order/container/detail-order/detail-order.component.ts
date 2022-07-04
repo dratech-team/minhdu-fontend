@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommodityUnit, PaymentType } from '@minhdu-fontend/enums';
 import { OrderActions, OrderQuery } from '../../+state';
@@ -46,7 +46,6 @@ export class DetailOrderComponent implements OnInit {
     private readonly router: Router,
     private readonly orderHistoryService: OrderHistoryService,
     private readonly modal: NzModalService,
-    private readonly viewContentRef: ViewContainerRef,
     private readonly formBuilder: UntypedFormBuilder
   ) {
   }
@@ -81,7 +80,6 @@ export class DetailOrderComponent implements OnInit {
       this.modal.create({
         nzTitle: 'Sửa đơn hàng',
         nzContent: OrderDialogComponent,
-        nzViewContainerRef: this.viewContentRef,
         nzComponentParams: {
           data: { order: order, tab: 0, isUpdate: true }
         },

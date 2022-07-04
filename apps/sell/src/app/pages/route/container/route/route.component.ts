@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Api } from '@minhdu-fontend/constants';
 import { SortRouteEnum } from '@minhdu-fontend/enums';
@@ -21,7 +20,7 @@ import * as _ from 'lodash';
 import { RadiosStatusRouteConstant } from '../../constants';
 
 @Component({
-  templateUrl: 'route.component.html',
+  templateUrl: 'route.component.html'
 })
 export class RouteComponent implements OnInit {
   expandAll$ = this.routeQuery.select((state) => state.expandedAll);
@@ -46,7 +45,7 @@ export class RouteComponent implements OnInit {
     startedAt_end: new UntypedFormControl(this.stateSearch.startedAt_end),
     endedAt_start: new UntypedFormControl(this.stateSearch.endedAt_start),
     endedAt_end: new UntypedFormControl(this.stateSearch.endedAt_end),
-    status: new UntypedFormControl(this.stateSearch.status),
+    status: new UntypedFormControl(this.stateSearch.status)
   });
 
   valueSort?: Sort;
@@ -56,11 +55,11 @@ export class RouteComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly routeQuery: RouteQuery,
     private readonly routeStore: RouteStore,
-    private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly datePipe: DatePipe,
     private readonly modal: NzModalService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.formGroup.valueChanges
@@ -80,7 +79,7 @@ export class RouteComponent implements OnInit {
       nzWidth: 'fit-content',
       nzTitle: 'Cập nhật tuyến đường',
       nzContent: RouteDialogComponent,
-      nzFooter: [],
+      nzFooter: []
     });
   }
 
@@ -90,33 +89,29 @@ export class RouteComponent implements OnInit {
       nzContent: `Bạn có chắc chắn muốn xoá tuyến đường ${route.name} này không`,
       nzOkDanger: true,
       nzOnOk: () =>
-        this.actions$.dispatch(RouteActions.remove({ idRoute: route.id })),
+        this.actions$.dispatch(RouteActions.remove({ idRoute: route.id }))
     });
   }
 
-  onEnd(event: RouteEntity) {
-    this.dialog
-      .open(DialogDatePickerComponent, {
-        width: 'fit-content',
-        data: {
-          titlePopup: 'Xác nhận giao hàng',
-          title: 'Ngày giao hàng',
-        },
-      })
-      .afterClosed()
-      .subscribe((val) => {
-        if (val) {
-          this.actions$.dispatch(
-            RouteActions.update({ id: event.id, updates: { endedAt: val.day } })
-          );
-        }
-      });
+  onEnd(route: RouteEntity) {
+    this.modal.create({
+      nzTitle: 'Xác nhận giao hàng',
+      nzContent: DialogDatePickerComponent,
+      nzMaskClosable: false,
+      nzFooter: []
+    }).afterClose.subscribe((res: { date: Date }) => {
+      if (res) {
+        this.actions$.dispatch(
+          RouteActions.update({ id: route.id, updates: { endedAt: res.date } })
+        );
+      }
+    });
   }
 
   onDetail(id: number, isUpdate: boolean) {
     this.router
       .navigate(['tuyen-duong/chi-tiet-tuyen-duong', id], {
-        queryParams: { isUpdate },
+        queryParams: { isUpdate }
       })
       .then();
   }
@@ -142,7 +137,7 @@ export class RouteComponent implements OnInit {
       this.actions$.dispatch(
         RouteActions.loadAll({
           params: this.mapRoute(value, true),
-          isPagination: true,
+          isPagination: true
         })
       );
     }
@@ -160,7 +155,7 @@ export class RouteComponent implements OnInit {
     this.valueSort = sort;
     this.actions$.dispatch(
       OrderActions.loadAll({
-        param: this.mapRoute(this.formGroup.value),
+        param: this.mapRoute(this.formGroup.value)
       })
     );
   }
@@ -168,7 +163,7 @@ export class RouteComponent implements OnInit {
   mapRoute(val: any, isPagination?: boolean) {
     this.routeStore.update((state) => ({
       ...state,
-      search: val,
+      search: val
     }));
     if (!val.endedAt_start || !val.endedAt_end) {
       delete val.endedAt_end;
@@ -182,28 +177,30 @@ export class RouteComponent implements OnInit {
     }
     return Object.assign(val, {
       skip: isPagination ? this.routeQuery.getCount() : 0,
-      take: this.pageSize,
+      take: this.pageSize
     });
   }
 
   printRouter() {
     const value = this.formGroup.value;
-    this.dialog.open(DialogExportComponent, {
-      width: 'fit-content',
-      data: {
-        filename:
-          'Danh sách tuyến đường từ ngày ' +
-          this.datePipe.transform(value.startedAt_start, 'dd-MM-yyyy') +
-          ' đến ngày ' +
-          this.datePipe.transform(value.endedAt_end, 'dd-MM-yyyy'),
-        title: 'Xuât bảng Tuyến đường',
-        params: Object.assign(_.omit(value, ['take', 'skip']), {
-          exportType: 'ROUTE',
-        }),
-        api: Api.SELL.ROUTE.ROUTE_EXPORT,
-        selectDatetime: true,
-        typeDate: 'RANGE_DATETIME',
-      },
+    this.modal.create({
+      nzContent: DialogExportComponent,
+      nzComponentParams: {
+        data: {
+          filename:
+            'Danh sách tuyến đường từ ngày ' +
+            this.datePipe.transform(value.startedAt_start, 'dd-MM-yyyy') +
+            ' đến ngày ' +
+            this.datePipe.transform(value.endedAt_end, 'dd-MM-yyyy'),
+          title: 'Xuât bảng Tuyến đường',
+          params: Object.assign(_.omit(value, ['take', 'skip']), {
+            exportType: 'ROUTE'
+          }),
+          api: Api.SELL.ROUTE.ROUTE_EXPORT,
+          selectDatetime: true,
+          typeDate: 'RANGE_DATETIME'
+        }
+      }
     });
   }
 

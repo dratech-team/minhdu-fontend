@@ -3,7 +3,6 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { PaymentType } from '@minhdu-fontend/enums';
 import { OrderActions, OrderQuery } from '../../+state';
 import { DatePipe } from '@angular/common';
-import { CustomerEntity } from '../../../customer/entities';
 import { CommodityQuery } from '../../../commodity/state';
 import { CustomerQuery } from '../../../customer/+state';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -20,7 +19,6 @@ export class OrderDialogComponent implements OnInit {
   formGroup!: UntypedFormGroup;
   submitted = false;
   routes: number[] = [];
-  customers: CustomerEntity[] = [];
   districtId!: number;
   provinceId!: number;
   stepIndex = 0;
@@ -39,40 +37,26 @@ export class OrderDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.data?.isUpdate) {
-      this.formGroup = this.formBuilder.group({
-        createdAt: [
-          this.datePipe.transform(this.data.order.createdAt, 'yyyy-MM-dd'),
-          Validators.required
-        ],
-        endedAt: [
-          this.datePipe.transform(this.data.order?.endedAt, 'yyyy-MM-dd')
-        ],
-        deliveredAt: [
-          this.datePipe.transform(this.data.order?.deliveredAt, 'yyyy-MM-dd')
-        ],
-        explain: [this.data.order?.explain],
-        province: [this.data.order.province, Validators.required],
-        district: [this.data.order?.district],
-        ward: [this.data.order?.ward],
-        customerId: [this.data.order.customerId],
-        commodityIds: [
-          this.data.order?.commodities.map((val: CommodityEntity) => val.id)
-        ]
-      });
-    } else {
-      this.formGroup = this.formBuilder.group({
-        createdAt: ['', Validators.required],
-        deliveredAt: [],
-        endedAt: [],
-        explain: [],
-        province: ['', Validators.required],
-        district: [],
-        ward: [],
-        customerId: [this.data?.customerId || ''],
-        commodityIds: [[]]
-      });
-    }
+    this.formGroup = this.formBuilder.group({
+      createdAt: [
+        this.datePipe.transform(this.data?.order?.createdAt, 'yyyy-MM-dd'),
+        Validators.required
+      ],
+      endedAt: this.data?.order?.endedAt
+        ? [this.datePipe.transform(this.data.order.endedAt, 'yyyy-MM-dd')]
+        : [],
+      deliveredAt: this.data?.order?.deliveredAt
+        ? [this.datePipe.transform(this.data?.order?.deliveredAt, 'yyyy-MM-dd')]
+        : [],
+      explain: [this.data?.order?.explain],
+      province: [this.data?.order?.province, Validators.required],
+      district: [this.data?.order?.district],
+      ward: [this.data?.order?.ward],
+      customerId: [this.data?.order?.customerId],
+      commodityIds: [
+        this.data.order?.commodities?.map((val: CommodityEntity) => val?.id)
+      ]
+    });
   }
 
   get checkValid() {

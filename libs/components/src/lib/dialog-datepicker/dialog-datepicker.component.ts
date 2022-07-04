@@ -1,37 +1,20 @@
-import { Component, EventEmitter, Inject, Output } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Store } from '@ngrx/store';
-import { DatePipe } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NzModalRef } from 'ng-zorro-antd/modal';
 
 @Component({
-  templateUrl: 'dialog-datapicker.html',
+  templateUrl: 'dialog-datepicker.component.html'
 })
 export class DialogDatePickerComponent {
-  formGroup!: UntypedFormGroup;
   submitted = false;
+  formGroup = new FormGroup({
+    date: new FormControl<Date | null>(null, { validators: [Validators.required] })
+  });
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private readonly formBuilder: UntypedFormBuilder,
-    private readonly store: Store,
-    private readonly datePipe: DatePipe,
-    private readonly dialogRef: MatDialogRef<DialogDatePickerComponent>
-  ) {}
-
-  ngOnInit() {
-    this.formGroup = this.formBuilder.group({
-      day: [
-        this.datePipe.transform(
-          this.data?.dayInit ? this.data.dayInit : new Date(),
-          'yyyy-MM-dd'
-        ),
-      ],
-    });
+  constructor(public readonly nzModalRef: NzModalRef<DialogDatePickerComponent>) {
   }
 
-  get f() {
-    return this.formGroup.controls;
+  ngOnInit() {
   }
 
   onSubmit(): any {
@@ -39,6 +22,6 @@ export class DialogDatePickerComponent {
     if (this.formGroup.invalid) {
       return;
     }
-    this.dialogRef.close({ day: this.formGroup.value.day });
+    this.nzModalRef.close(this.formGroup.value);
   }
 }
