@@ -9,7 +9,7 @@ import { CommodityDialogComponent } from '../../../commodity/component';
 import { PickCommodityComponent } from '../../../../shared/components/pick-commodity/pick-commodity.component';
 import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared';
 import { OrderHistoryService } from '../../service';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -32,9 +32,9 @@ export class DetailOrderComponent implements OnInit {
   orderHistories: OrderHistoryEntity[] = [];
   loading$ = new BehaviorSubject<boolean>(false);
 
-  formOrderHistory = new UntypedFormGroup({
-    content: new UntypedFormControl(''),
-    commodity: new UntypedFormControl('')
+  formGroup = new FormGroup({
+    content: new FormControl<string>(''),
+    commodity: new FormControl<string>('')
   });
 
   constructor(
@@ -64,7 +64,7 @@ export class DetailOrderComponent implements OnInit {
       }
     });
 
-    this.formOrderHistory.valueChanges
+    this.formGroup.valueChanges
       .pipe(debounceTime(1500))
       .subscribe((val) => {
         this.loadInitOrderHistory(val);
@@ -186,28 +186,19 @@ export class DetailOrderComponent implements OnInit {
     });
   }
 
-  loadMoreOrderHistory() {
-    this.orderHistoryService
-      .pagination({
-        skip: this.orderHistories.length,
-        take: 10,
-        orderId: this.getOrderId,
-        content: this.formOrderHistory.value.content,
-        commodity: this.formOrderHistory.value.commodity
-      })
-      .subscribe((res) => {
-        if (res.data.length > 0) {
-          this.orderHistories = this.orderHistories.concat(res.data);
-        }
-      });
-  }
-
   refreshOrderHistory() {
     this.loading$.next(true);
     this.loadInitOrderHistory();
   }
 
   loadInitOrderHistory(search?: any) {
+    console.log({
+      take: 20,
+      skip: 0,
+      orderId: +this.getOrderId,
+      commodity: search ? search.commodity : '',
+      content: search ? search.content : ''
+    });
     this.orderHistoryService
       .pagination({
         take: 20,

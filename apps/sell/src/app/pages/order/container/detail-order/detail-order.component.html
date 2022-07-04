@@ -160,11 +160,7 @@
                 <td class='text-center'>{{ commodity.name }}</td>
                 <!--              <th class='text-center'>{{commodity.unit === commodityUnit.KG ? 'Kilogam' : 'Con'}} </th>-->
                 <td class='text-center'>
-                  {{
-                  commodity.price
-                    | number: '1.0-0'
-                    | notEmpty: 'Theo thời giá'
-                  }}
+                  {{commodity.price | pricecommodity}}
                 </td>
                 <td class='text-center'>{{ commodity.amount }}</td>
                 <td class='text-center'>{{ commodity.gift || '0' }}</td>
@@ -271,42 +267,41 @@
             [nzScroll]="{ y: '300px' }"
             [nzShowPagination]='false'
             nzSize='middle'
-            [formGroup]='formOrderHistory'
+            [formGroup]='formGroup'
           >
             <thead>
             <tr>
-              <th class='text-center border-top'>
-                <div>
-                  <div>Thời gian</div>
-                  <input nz-input type='search' disabled />
-                </div>
+              <th class='text-center'>
+                Thời gian chốt đơn
               </th>
-              <th class='text-center border-top'>
-                <div>
-                  <div>Loại gà</div>
-                  <input nz-input type='search' formControlName='commodity' />
-                </div>
+              <th class='text-center'>
+                Loại gà
               </th>
-              <th class='text-center border-top'>
-                <div>
-                  <div>Nội dung</div>
-                  <input nz-input type='search' formControlName='content' />
-                </div>
+              <th class='text-center'>
+                Đơn giá
+              </th>
+              <th class='text-center'>
+                Số lượng
+              </th>
+              <th class='text-center'>
+                Tặng
+              </th>
+              <th class='text-center'>
+                Mua thêm
               </th>
             </tr>
             </thead>
             <tbody>
-            <ng-template
-              ngFor
-              let-orderHistory
-              [ngForOf]='tableOrderHistory.data'
-            >
+            <ng-template ngFor let-orderHistory [ngForOf]='tableOrderHistory.data'>
               <tr class='pointer'>
                 <td>
-                  {{ orderHistory.timestamp | date: 'hh:mm:ss - dd/MM/yyyy' }}
+                  {{ (orderHistory.confirmedAt | date: 'hh:mm:ss - dd/MM/yyyy') || 'Huỷ chốt đơn'}}
                 </td>
-                <td>{{ orderHistory.type }}</td>
-                <td>{{ orderHistory.note }}</td>
+                <td>{{ orderHistory.commodity.name }}</td>
+                <td>{{ orderHistory.price | pricecommodity}}</td>
+                <td>{{ orderHistory.amount }}</td>
+                <td>{{ orderHistory.gift }}</td>
+                <td>{{ orderHistory.more }}</td>
               </tr>
             </ng-template>
             </tbody>

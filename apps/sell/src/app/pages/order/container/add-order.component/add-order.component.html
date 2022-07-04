@@ -247,11 +247,7 @@
                     <td class="text-center">{{ commodity.code }}</td>
                     <td class="text-center">{{ commodity.name }}</td>
                     <td class="text-center">
-                      {{
-                        commodity.price
-                          | number: '1.0-0'
-                          | notEmpty: 'Theo thời giá'
-                      }}
+                      {{commodity.price | pricecommodity}}
                     </td>
                     <td class="text-center">
                       {{ commodity.amount | number: '1.0-0' }}

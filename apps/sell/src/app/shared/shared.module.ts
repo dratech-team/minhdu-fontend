@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PickOrderComponent } from './components/pick-order/pick-order.component';
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DecimalPipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -29,6 +29,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { PriceCommodityPipe } from './pipe/price-commodity.pipe';
 
 @NgModule({
   imports: [
@@ -63,15 +64,17 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
     PickOrderComponent,
     PickCommodityComponent,
     PickCustomerComponent,
-    PickRoutesComponent
+    PickRoutesComponent,
+    PriceCommodityPipe
   ],
-  providers: [DecimalPipe, PickCommodityService, PickRoutesService],
+  providers: [DecimalPipe, PickCommodityService, PickRoutesService, CurrencyPipe],
   exports: [
     TableOrdersComponent,
     PickCommodityComponent,
     PickOrderComponent,
     PickCustomerComponent,
-    PickRoutesComponent
+    PickRoutesComponent,
+    PriceCommodityPipe
   ]
 })
 export class SharedModule {
