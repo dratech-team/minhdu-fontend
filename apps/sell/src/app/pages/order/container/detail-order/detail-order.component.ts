@@ -176,7 +176,7 @@ export class DetailOrderComponent implements OnInit {
           CommodityAction.update({
             id: commodity.id,
             updates: {
-              histored: val.save,
+              logged: val.save,
               orderId: orderId,
               closed: !commodity.closed
             }
@@ -195,9 +195,9 @@ export class DetailOrderComponent implements OnInit {
         content: this.formOrderHistory.value.content,
         commodity: this.formOrderHistory.value.commodity
       })
-      .subscribe((val) => {
-        if (val.data.length > 0) {
-          this.orderHistories = this.orderHistories.concat(val.data);
+      .subscribe((res) => {
+        if (res.data.length > 0) {
+          this.orderHistories = this.orderHistories.concat(res.data);
         }
       });
   }
@@ -210,15 +210,15 @@ export class DetailOrderComponent implements OnInit {
   loadInitOrderHistory(search?: any) {
     this.orderHistoryService
       .pagination({
-        take: 6,
+        take: 20,
         skip: 0,
         orderId: this.getOrderId,
         commodity: search ? search.commodity : '',
         content: search ? search.content : ''
       })
-      .subscribe((val) => {
-        if (val) {
-          this.orderHistories = val.data;
+      .subscribe((res) => {
+        if (res) {
+          this.orderHistories = res.data;
           this.loading$.next(false);
         }
       });

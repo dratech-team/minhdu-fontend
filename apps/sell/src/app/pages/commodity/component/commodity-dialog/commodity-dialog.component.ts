@@ -77,7 +77,7 @@ export class CommodityDialogComponent implements OnInit {
           .afterClosed()
           .subscribe((val) => {
             if (val) {
-              Object.assign(commodity, { histored: true });
+              Object.assign(commodity, { logged: true });
             }
             Object.assign(commodity, {
               closed: this.data.commodity.closed || false,
