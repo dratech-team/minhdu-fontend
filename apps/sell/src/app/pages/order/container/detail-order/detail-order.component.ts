@@ -170,13 +170,13 @@ export class DetailOrderComponent implements OnInit {
         },
         nzFooter: []
       })
-      .afterClose.subscribe((val) => {
-      if (val) {
+      .afterClose.subscribe((res) => {
+      if (res) {
         this.actions$.dispatch(
           CommodityAction.update({
             id: commodity.id,
             updates: {
-              logged: val.save,
+              logged: res.save,
               orderId: orderId,
               closed: !commodity.closed
             }
