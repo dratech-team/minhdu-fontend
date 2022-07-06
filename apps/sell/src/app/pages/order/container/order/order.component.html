@@ -251,8 +251,8 @@
             *ngIf='ui$ | async as ui'
           >
             <nz-dropdown-menu #menu='nzDropdownMenu'>
-              <ul class='context-menu' nz-menu *ngFor='let item of menus'>
-                <li nz-menu-item (click)='item.click(order)'>
+              <ul class='context-menu' nz-menu>
+                <li nz-menu-item *ngFor='let item of menus' (click)='item.click(order)'>
                   {{item.title}}
                 </li>
               </ul>

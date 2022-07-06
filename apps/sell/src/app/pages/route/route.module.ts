@@ -33,6 +33,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouteService } from './service';
 import { RouteMiddleware } from './middlewares/route.middleware';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @NgModule({
   imports: [
@@ -66,7 +68,9 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
     NzInputModule,
     NzButtonModule,
     NzPopoverModule,
-    NzSpinModule
+    NzSpinModule,
+    NzDropDownModule,
+    NzIconModule
   ],
   declarations: [
     RouteComponent,

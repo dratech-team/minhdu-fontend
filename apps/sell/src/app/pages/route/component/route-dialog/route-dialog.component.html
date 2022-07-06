@@ -3,7 +3,7 @@
     <nz-steps nzSize="small" [nzCurrent]="stepIndex">
       <nz-step nzTitle="Thông tin tuyến đường"></nz-step>
       <nz-step
-        *ngIf="!data?.isUpdate || data?.updateType !== updateTypeEnum.INFO"
+        *ngIf="!data?.isUpdate || data?.updateType !== updateTypeEnum.GENERAL"
         nzTitle="Chọn đơn hàng"
       ></nz-step>
     </nz-steps>
@@ -122,7 +122,7 @@
       </div>
     </ng-template>
     <ng-template
-      [ngIf]="stepIndex === 1 && data?.updateType !== updateTypeEnum.INFO"
+      [ngIf]="stepIndex === 1 && data?.updateType !== updateTypeEnum.GENERAL"
     >
       <div class="pt-2" style="max-width: 80vw">
         <minhdu-fontend-pick-order
@@ -156,7 +156,7 @@
       nz-button
       nzType="primary"
       (click)="next()"
-      *ngIf="stepIndex < 1 && data?.updateType !== updateTypeEnum.INFO"
+      *ngIf="stepIndex < 1 && data?.updateType !== updateTypeEnum.GENERAL"
     >
       <span>Tiếp theo</span>
     </button>

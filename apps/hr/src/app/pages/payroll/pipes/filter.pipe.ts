@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Salary } from '@minhdu-fontend/data-models';
-import { sortDatetime } from '../../../../../../../libs/utils/daytime.until';
+import { sortDatetime } from '@minhdu-fontend/utils';
 
 @Pipe({
   name: 'filterTypeSalary',

@@ -9,7 +9,7 @@ import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalRef } from 'ng-zorro-antd/modal';
-import { UpdateTypeEnum } from '../../enums/update-type.enum';
+import { UpdaterRouteTypeEnum } from '../../enums/updater-route-type.enum';
 import { SortTypeOrderEnum } from '@minhdu-fontend/enums';
 import { OrderEntity } from '../../../order/enitities/order.entity';
 import { CommodityEntity } from '../../../commodity/entities';
@@ -25,7 +25,7 @@ export class RouteDialogComponent implements OnInit {
   submitted = false;
   isSelectAll = false;
   stepIndex = 0;
-  updateTypeEnum = UpdateTypeEnum;
+  updateTypeEnum = UpdaterRouteTypeEnum;
   formGroup!: UntypedFormGroup;
 
   constructor(
@@ -44,7 +44,7 @@ export class RouteDialogComponent implements OnInit {
       added: null,
     }));
 
-    if (this.data?.updateType === UpdateTypeEnum.ORDER) {
+    if (this.data?.updateType === UpdaterRouteTypeEnum.ORDER) {
       this.stepIndex = 1;
     }
 

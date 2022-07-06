@@ -22,7 +22,7 @@ export class RouteEffect {
   }
 
   @Effect()
-  addRoute$ = this.action.pipe(
+  addOne$ = this.action.pipe(
     ofType(RouteActions.addOne),
     switchMap((props) => {
       this.routeStore.update((state) => ({
@@ -112,7 +112,7 @@ export class RouteEffect {
   );
 
   @Effect()
-  getOne$ = this.action.pipe(
+  loadOne$ = this.action.pipe(
     ofType(RouteActions.loadOne),
     switchMap((props) =>
       this.routeService.getOne(props.id).pipe(

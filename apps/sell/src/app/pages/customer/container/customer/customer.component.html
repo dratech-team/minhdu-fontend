@@ -215,8 +215,8 @@
             (contextmenu)='onContextMenu($event, menu)'
           >
             <nz-dropdown-menu #menu='nzDropdownMenu'>
-              <ul class='context-menu' nz-menu *ngFor='let item of menus'>
-                <li nz-menu-item (click)='item.click(customer)'>
+              <ul class='context-menu' nz-menu>
+                <li nz-menu-item *ngFor='let item of menus' (click)='item.click(customer)'>
                   {{item.title}}
                 </li>
               </ul>

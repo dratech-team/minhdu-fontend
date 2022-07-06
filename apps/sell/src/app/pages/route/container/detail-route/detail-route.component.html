@@ -1,264 +1,269 @@
-<div class="animated fadeIn container mb-3" style="min-height: 80vh !important">
-  <div class="row">
-    <div class="mt-5 d-flex justify-content-between w-100">
-      <div class="main-title mr-5" style="font-size: 20px">
+<div
+  class='animated fadeIn container mb-3'
+  style='min-height: 80vh !important'
+  *ngIf='route$ | async as route'
+>
+  <div class='row'>
+    <div class='mt-5 d-flex justify-content-between w-100'>
+      <div class='main-title mr-5' style='font-size: 20px'>
         Chi tiết tuyến đường
       </div>
-      <div class="mr-5">
-        <button nz-button nzDanger (click)="onRemove(route)">Huỷ</button>
+      <div class='mr-5'>
+        <button nz-button nzType="primary" nzDanger (click)='onRemove(route)'>Huỷ tuyến đường</button>
       </div>
     </div>
   </div>
-  <div class="row mt-5" style="color: #80828b">
-    <div class="col-12">
-      <div class="row d-flex align-items-center">
-        <div class="col-2 align-items-center title-table">Thông tin chung</div>
+  <div class='row mt-5' style='color: #80828b'>
+    <div class='col-12'>
+      <div class='row d-flex align-items-center'>
+        <div class='col-2 align-items-center title-table'>Thông tin chung</div>
         <button
-          data-toggle="tooltip"
-          data-placement="top"
-          title=" chỉnh sửa "
-          class="edit animated"
-          (click)="updateRoute(route, updateTypeEnum.INFO)"
+          data-toggle='tooltip'
+          data-placement='top'
+          title=' chỉnh sửa '
+          class='edit animated'
+          (click)='onUpdate(route, updateTypeEnum.GENERAL)'
         >
           <img
-            style="height: 15px"
-            src="/assets/icon/share/pencil-fill.svg"
-            alt="edit icon"
+            style='height: 15px'
+            src='/assets/icon/share/pencil-fill.svg'
+            alt='edit icon'
           />
         </button>
       </div>
-      <div class="row mt-3">
-        <div class="col-6 form-group">
-          <div class="row ml-1 align-items-center">
-            <div class="col-md-4 py-2 title-detail">
+      <div class='row mt-3'>
+        <div class='col-6 form-group'>
+          <div class='row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-detail'>
               <span>Tên Tuyến đường:</span>
             </div>
-            <div class="col-md-8 py-2 border-bottom">
-              <span class="title-detail" style="color: #3c3b54">
+            <div class='col-md-8 py-2 border-bottom'>
+              <span class='title-detail' style='color: #3c3b54'>
                 {{ route?.name }}
               </span>
             </div>
           </div>
-          <div class="row ml-1 align-items-center">
-            <div class="col-md-4 py-2 title-detail">
+          <div class='row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-detail'>
               <span>Ngày bắt đầu:</span>
             </div>
-            <div class="col-md-8 py-2 border-bottom">
-              <span class="title-detail" style="color: #3c3b54">
+            <div class='col-md-8 py-2 border-bottom'>
+              <span class='title-detail' style='color: #3c3b54'>
                 {{ (route?.startedAt | date: 'dd/MM/yyyy') || 'Chưa cập nhật' }}
               </span>
             </div>
           </div>
-          <div class="row ml-1 align-items-center">
-            <div class="col-md-4 py-2 title-detail">
+          <div class='row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-detail'>
               <span>Hoàn tất:</span>
             </div>
-            <div class="col-md-7 py-2 border-bottom">
-              <span class="title-detail" style="color: #3c3b54">
+            <div class='col-md-7 py-2 border-bottom'>
+              <span class='title-detail' style='color: #3c3b54'>
                 {{ (route?.endedAt | date: 'dd/MM/yyyy') || 'Chưa cập nhật' }}
               </span>
             </div>
-            <div class="col-md-1">
+            <div class='col-md-1'>
               <button
-                data-toggle="tooltip"
-                data-placement="top"
-                title=" chỉnh sửa "
-                class="edit animated"
-                (click)="completeRoute(route)"
+                data-toggle='tooltip'
+                data-placement='top'
+                title='Chỉnh sửa'
+                class='edit animated'
+                (click)='onComplete(route)'
               >
-                <img
-                  style="height: 15px"
-                  src="/assets/icon/share/pencil-fill.svg"
-                  alt="edit icon"
-                />
+                <i nz-icon nzType='check-circle' nzTheme='outline'></i>
               </button>
             </div>
           </div>
-          <div class="row ml-1 align-items-center">
-            <div class="col-md-4 py-2 title-detail">
+          <div class='row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-detail'>
               <span>Tên tài xế:</span>
             </div>
-            <div class="col-md-8 py-2 border-bottom">
-              <span class="title-detail" style="color: #3c3b54">
+            <div class='col-md-8 py-2 border-bottom'>
+              <span class='title-detail' style='color: #3c3b54'>
                 {{ route?.driver || 'chưa cập nhật' }}
               </span>
             </div>
           </div>
-          <div class="row ml-1 align-items-center">
-            <div class="col-md-4 py-2 title-detail">
+          <div class='row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-detail'>
               <span>Tên nhà xe:</span>
             </div>
-            <div class="col-md-8 py-2 border-bottom">
-              <span class="title-detail" style="color: #3c3b54">
+            <div class='col-md-8 py-2 border-bottom'>
+              <span class='title-detail' style='color: #3c3b54'>
                 {{ route?.garage || 'Chưa cập nhật' }}
               </span>
             </div>
           </div>
-          <div class="row ml-1 align-items-center">
-            <div class="col-md-4 py-2 title-detail">
+          <div class='row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-detail'>
               <span>Biển số xe:</span>
             </div>
-            <div class="col-md-8 py-2 border-bottom">
-              <span class="title-detail">
+            <div class='col-md-8 py-2 border-bottom'>
+              <span class='title-detail'>
                 {{ route?.bsx }}
               </span>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-12 mt-5">
-        <div class="row d-flex justify-content-between">
-          <div class="row align-items-center title-table ml-2">Đơn hàng</div>
+      <div class='col-12 mt-5'>
+        <div class='row d-flex justify-content-between'>
+          <div class='row align-items-center title-table ml-2'>Đơn hàng</div>
           <button
             nz-button
-            nzType="primary"
-            class="mr-3"
-            (click)="updateRoute(route, updateTypeEnum.ORDER)"
+            nzType='primary'
+            nzGhost
+            class='mr-3'
+            (click)='onUpdate(route, updateTypeEnum.ORDER)'
           >
             Thêm đơn hàng
           </button>
         </div>
-        <div class="mt-3 mb-5">
+        <div class='mt-3 mb-5'>
           <nz-table
             #nestedTable
-            [nzLoading]="!route.orders"
-            nzSize="middle"
+            [nzLoading]='!route.orders?.length'
+            nzSize='middle'
             [nzScroll]="{ y: '500px' }"
-            [nzData]="route.orders"
-            [nzShowPagination]="false"
+            [nzData]='route.orders'
+            [nzShowPagination]='false'
           >
             <thead>
-              <tr>
-                <th nzWidth="30px"></th>
-                <th>Khách hàng</th>
-                <th>Ngày tạo</th>
-                <th>Điểm đến</th>
-                <th>Diễn giải</th>
-                <th>Tổng số lượng</th>
-                <th>Đã nhận hàng</th>
-                <th>Huỷ</th>
-              </tr>
+            <tr>
+              <th nzWidth='30px'></th>
+              <th>Khách hàng</th>
+              <th>Ngày tạo</th>
+              <th>Điểm đến</th>
+              <th>Diễn giải</th>
+              <th>Tổng số lượng</th>
+              <th>Đã nhận hàng</th>
+              <th>Huỷ đơn hàng</th>
+            </tr>
             </thead>
             <tbody>
-              <ng-template ngFor let-order [ngForOf]="nestedTable.data">
-                <tr (click)="detailOrder(order.id)">
-                  <td
-                    (click)="$event.stopPropagation()"
-                    [(nzExpand)]="order.expand"
-                  ></td>
-                  <td class="pointer" (click)="detailOrder(order.id)">
-                    {{ order?.customer?.lastName || 'Đang cập nhật' }}
-                  </td>
-                  <td class="pointer">
-                    {{
-                      (order?.createdAt | date: 'dd/MM/yyyy') ||
-                        ' Đang cập nhật'
-                    }}
-                  </td>
-                  <td class="pointer">
-                    {{ order?.ward?.name }}
-                  </td>
-                  <td class="pointer">
-                    {{ order.explain }}
-                  </td>
-                  <td class="pointer" style="color: red">
-                    {{ order.totalCommodity | number: '1.0-0' | notEmpty: '0' }}
-                  </td>
-                  <td>
-                    <div
-                      style="color: red"
-                      *ngIf="order.deliveredAt; else btnDelivered"
-                    >
-                      {{ order.deliveredAt | date: 'dd-MM-yyyy' }}
-                    </div>
-                    <ng-template #btnDelivered>
-                      <button
-                        (click)="updateOrder(order); $event.stopPropagation()"
-                        nz-button
-                        nzType="primary"
-                      >
-                        Nhận hàng
-                      </button>
-                    </ng-template>
-                  </td>
-                  <td class="pointer">
-                    <div
-                      class="d-flex justify-content-center align-items-center"
-                    >
-                      <button
-                        nz-button
-                        nzType="default"
-                        (click)="cancelOrder(order); $event.stopPropagation()"
-                      >
-                        huỷ
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr [nzExpand]="order.expand ? order.expand : false">
-                  <nz-table
-                    #innerTable
-                    [nzData]="order.commodities"
-                    nzSize="small"
-                    [nzShowPagination]="false"
+            <ng-template ngFor let-order [ngForOf]='nestedTable.data'>
+              <tr (click)='onRoute(order.id)'>
+                <td
+                  (click)='$event.stopPropagation()'
+                  [(nzExpand)]='order.expand'
+                ></td>
+                <td class='pointer'>
+                  {{ order?.customer?.lastName || 'Đang cập nhật' }}
+                </td>
+                <td class='pointer'>
+                  {{
+                  (order?.createdAt | date: 'dd/MM/yyyy') ||
+                  ' Đang cập nhật'
+                  }}
+                </td>
+                <td class='pointer'>
+                  {{ order?.ward?.name }}
+                </td>
+                <td class='pointer'>
+                  {{ order.explain }}
+                </td>
+                <td class='pointer' style='color: red'>
+                  {{ order.totalCommodity | number: '1.0-0' | notEmpty: '0' }}
+                </td>
+                <td>
+                  <div
+                    style='color: red'
+                    *ngIf='order.deliveredAt; else btnDelivered'
                   >
-                    <thead>
-                      <tr>
-                        <th class="text-center">Hàng hoá</th>
-                        <th class="text-center">Số lượng</th>
-                        <th class="text-center">Giá</th>
-                        <th class="text-center">Huỷ</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let commodity of innerTable.data">
-                        <td class="text-center">{{ commodity.name }}</td>
-                        <td class="text-center">
-                          {{ commodity.amount | number: '1.0-0' }}
-                        </td>
-                        <td class="text-center">
-                          {{ commodity.price | number: '1.0-0' }}đ
-                        </td>
-                        <td class="text-center">
-                          <div
-                            *ngIf="commodity.routeId === route.id; else bsx"
-                            class="d-flex justify-content-center align-items-center"
-                          >
-                            <button
-                              nz-button
-                              nzType="default"
-                              (click)="cancelCommodity(commodity)"
-                            >
-                              Huỷ
-                            </button>
-                          </div>
-                          <ng-template #bsx>
-                            <a
-                              *ngIf="commodity.route"
-                              [routerLink]="[
+                    {{ order.deliveredAt | date: 'dd-MM-yyyy' }}
+                  </div>
+                  <ng-template #btnDelivered>
+                    <button
+                      nz-button
+                      nzType='primary'
+                      nzGhost
+                      (click)='onCompleteOrder(order); $event.stopPropagation()'
+                    >
+                      Nhận hàng
+                    </button>
+                  </ng-template>
+                </td>
+                <td class='pointer'>
+                  <div
+                    class='d-flex justify-content-center align-items-center'
+                  >
+                    <button
+                      nz-button
+                      nzType="primary"
+                      nzDanger
+                      (click)='onCancelOrder(order); $event.stopPropagation()'
+                    >
+                      Huỷ
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr [nzExpand]='order.expand ? order.expand : false'>
+                <nz-table
+                  #innerTable
+                  [nzData]='order.commodities'
+                  nzSize='small'
+                  [nzShowPagination]='false'
+                >
+            <thead>
+            <tr>
+              <th class='text-center'>Hàng hoá</th>
+              <th class='text-center'>Số lượng</th>
+              <th class='text-center'>Giá</th>
+              <th class='text-center'>Huỷ hàng hoá</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor='let commodity of innerTable.data'>
+              <td class='text-center'>{{ commodity.name }}</td>
+              <td class='text-center'>
+                {{ commodity.amount | number: '1.0-0' }}
+              </td>
+              <td class='text-center'>
+                {{ commodity.price | number: '1.0-0' }}đ
+              </td>
+              <td class='text-center'>
+                <div
+                  *ngIf='commodity.routeId ===  commodity?.route?.id; else bsx'
+                  class='d-flex justify-content-center align-items-center'
+                >
+                  <button
+                    nz-button
+                    nzType="primary"
+                    nzDanger
+                    (click)='onCancelCommodity(commodity)'
+                  >
+                    Huỷ
+                  </button>
+                </div>
+                <ng-template #bsx>
+                  <a
+                    *ngIf='commodity.route'
+                    [routerLink]="[
                                 '/tuyen-duong/chi-tiet-tuyen-duong/',
                                 commodity?.route?.id
                               ]"
-                              target="_blank"
-                            >
-                              {{ commodity?.route?.bsx }}
-                            </a>
-                            <button
-                              nz-button
-                              nzType="primary"
-                              *ngIf="!commodity.route"
-                              (click)="addCommodityInRoute(commodity)"
-                            >
-                              Thêm
-                            </button>
-                          </ng-template>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </nz-table>
-                </tr>
-              </ng-template>
+                    target='_blank'
+                  >
+                    {{ commodity?.route?.bsx }}
+                  </a>
+                  <button
+                    nz-button
+                    nzType='primary'
+                    nzGhost
+                    *ngIf='!commodity.route'
+                    (click)='onAddCommodity(commodity)'
+                  >
+                    Thêm
+                  </button>
+                </ng-template>
+              </td>
+            </tr>
             </tbody>
+          </nz-table>
+          </tr>
+          </ng-template>
+          </tbody>
           </nz-table>
         </div>
       </div>
