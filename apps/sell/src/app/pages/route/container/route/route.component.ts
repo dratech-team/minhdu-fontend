@@ -31,7 +31,8 @@ export class RouteComponent implements OnInit {
     .pipe(map((routes) => JSON.parse(JSON.stringify(routes))));
   loading$ = this.routeQuery.selectLoading();
   total$ = this.routeQuery.select((state) => state.total);
-  deleted$ = this.routeQuery.select((state) => state.deleted);
+  count$ = this.routeQuery.selectCount();
+  remain$ = this.routeQuery.select((state) => state.remain);
   ui$ = this.routeQuery.select((state) => state.ui);
 
   pageSize = 30;
@@ -188,17 +189,10 @@ export class RouteComponent implements OnInit {
     this.formGroup.get('endedAt_end')?.setValue($event.end);
   }
 
-  public onPagination(pageIndex: number) {
-    const value = this.formGroup.value;
-    const count = this.routeQuery.getCount();
-    if (pageIndex * this.pageSizeTable >= count) {
-      this.actions$.dispatch(
-        RouteActions.loadAll({
-          params: this.mapRoute(value, true),
-          isPagination: true
-        })
-      );
-    }
+  public onLoadMore() {
+    this.actions$.dispatch(
+      RouteActions.loadAll(this.mapRoute(this.formGroup.value, true))
+    );
   }
 
   public onExpandAll() {

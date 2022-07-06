@@ -7,15 +7,17 @@ import { updateStateUiUtil } from '../../../utils/update-state-ui.util';
 import { StorageName } from '@minhdu-fontend/constants';
 
 export interface RouteState extends EntityState<RouteEntity> {
-  loading?: boolean;
-  total: number;
-  expandedAll: boolean;
-  search: SearchRouteDto;
+  readonly loading?: boolean;
+  readonly total: number;
+  readonly remain: number;
+  readonly expandedAll: boolean;
+  readonly search: SearchRouteDto;
   readonly ui?: routeVisibleEntity;
 }
 
 export const createInitialState = () => ({
   total: 0,
+  remain: 0,
   expandedAll: false,
   search: {
     search: '',

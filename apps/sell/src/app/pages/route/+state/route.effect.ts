@@ -76,21 +76,21 @@ export class RouteEffect {
           )
         )
         .pipe(
-          map((response) => {
-            const expanedAll = this.routeQuery.getValue().expandedAll;
+          map((res) => {
+            const expandedAll = this.routeQuery.getValue().expandedAll;
 
             this.routeStore.update((state) => ({
               ...state,
               loading: false,
-              total: response.total
+              total: res.total
             }));
-            if (response.data.length) {
-              const routes = response.data.map((route) => {
+            if (res.data.length) {
+              const routes = res.data.map((route) => {
                 const orders = this.handelOrder(route.orders);
                 return Object.assign(route, {
                   totalCommodityUniq: this.totalCommodityUniq(route.orders),
                   orders: orders,
-                  expand: expanedAll
+                  expand: expandedAll
                 });
               });
               if (props.isPagination) {
@@ -98,6 +98,10 @@ export class RouteEffect {
               } else {
                 this.routeStore.set(routes);
               }
+              this.routeStore.update(state => ({
+                ...state,
+                remain: res.total - this.routeQuery.getCount()
+              }));
             }
           }),
           catchError((err) => {
