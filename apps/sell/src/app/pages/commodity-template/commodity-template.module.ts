@@ -13,6 +13,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { ModalCommodityTemplateComponent } from './components/modal-commodity-template/modal-commodity-template.component';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     NzButtonModule,
     NzTableModule,
     NzInputModule,
+    NzDropDownModule
   ],
 
   declarations: [CommodityTemplateComponent, ModalCommodityTemplateComponent],

@@ -21,7 +21,7 @@
       <div class='font-xl font-weight-bold'>Quản lý dòng gà</div>
       <div>
         <div>
-          <button nz-button nzType='primary' class='ml-2' (click)='onAdd()'>
+          <button nz-button nzType='primary' nzGhost class='ml-2' (click)='onAdd()'>
             Thêm
           </button>
         </div>
@@ -50,10 +50,17 @@
         </thead>
         <tbody>
         <tr class='pointer'
-          *ngFor='let template of tableTemplate.data; let i = index'
-          (click)='onUpdate(template)'
-          (contextmenu)='child.onContextMenu($event, template)'
+            *ngFor='let template of tableTemplate.data; let i = index'
+            (click)='onUpdate(template)'
+            (contextmenu)='onContextMenu($event, menu)'
         >
+          <nz-dropdown-menu #menu='nzDropdownMenu'>
+            <ul class='context-menu' nz-menu>
+              <li nz-menu-item *ngFor='let item of menus' (click)='item.click(template)'>
+                {{item.title}}
+              </li>
+            </ul>
+          </nz-dropdown-menu>
           <td nzLeft>{{ i + 1 + (tableTemplate.nzPageIndex - 1) * 10 }}</td>
           <td>{{ template.code }}</td>
           <td>{{ template.name }}</td>
@@ -63,9 +70,3 @@
     </div>
   </div>
 </div>
-<app-mouse-right
-  #child
-  (onAdd)='onAdd()'
-  (onUpdate)='onUpdate($event)'
-  (onDel)='onDelete($event)'
-></app-mouse-right>

@@ -11,11 +11,15 @@ import { CommodityTemplateQuery } from '../state/commodity-template.query';
 import { CommodityTemplateStore } from '../state/commodity-template.store';
 import { CommodityTemplateEntity } from '../entities';
 import { CommodityTemplateActions } from '../state/commodity-template.action';
-import { ModalCommodityTemplateComponent } from '../components/modal-commodity-template/modal-commodity-template.component';
+import {
+  ModalCommodityTemplateComponent
+} from '../components/modal-commodity-template/modal-commodity-template.component';
 import { DataModalCommodityTemplateData } from '../data/data-modal-commodity-template.data';
+import { ContextMenuEntity } from '@minhdu-fontend/data-models';
+import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
 
 @Component({
-  templateUrl: 'commodity-template.component.html',
+  templateUrl: 'commodity-template.component.html'
 })
 export class CommodityTemplateComponent implements OnInit {
   templates$ = this.query.selectAll();
@@ -24,12 +28,27 @@ export class CommodityTemplateComponent implements OnInit {
   count$ = this.query.selectCount();
 
   stateSearch = this.query.getValue().search;
+
   pageSizeTable = 10;
   panelOpenState = false;
   visible = false;
+  menus: ContextMenuEntity[] = [
+    {
+      title: 'Thêm',
+      click: () => this.onAdd()
+    },
+    {
+      title: 'Sửa',
+      click: (data: CommodityTemplateEntity) => this.onUpdate(data)
+    },
+    {
+      title: 'Xoá',
+      click: (data: any) => this.onRemove(data)
+    }
+  ];
 
   formGroup = new UntypedFormGroup({
-    search: new UntypedFormControl(''),
+    search: new UntypedFormControl('')
   });
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
@@ -39,8 +58,10 @@ export class CommodityTemplateComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
-    private readonly store: CommodityTemplateStore
-  ) {}
+    private readonly store: CommodityTemplateStore,
+    private readonly nzContextMenuService: NzContextMenuService
+  ) {
+  }
 
   ngOnInit() {
     this.onLoad(false);
@@ -59,7 +80,7 @@ export class CommodityTemplateComponent implements OnInit {
     this.actions$.dispatch(
       CommodityTemplateActions.loadAll({
         search: this.mapTemplate(this.formGroup.value, isPaginate),
-        isPaginate: isPaginate,
+        isPaginate: isPaginate
       })
     );
   }
@@ -67,11 +88,11 @@ export class CommodityTemplateComponent implements OnInit {
   mapTemplate(dataFG: any, isPagination: boolean) {
     this.store.update((state) => ({
       ...state,
-      search: dataFG,
+      search: dataFG
     }));
     return Object.assign({}, dataFG, {
       take: PaginationDto.take,
-      skip: isPagination ? this.query.getCount() : PaginationDto.skip,
+      skip: isPagination ? this.query.getCount() : PaginationDto.skip
     });
   }
 
@@ -80,44 +101,50 @@ export class CommodityTemplateComponent implements OnInit {
       nzWidth: '35vw',
       nzTitle: 'Tạo dòng gà',
       nzContent: ModalCommodityTemplateComponent,
-      nzFooter: [],
+      nzFooter: []
     });
   }
 
   onUpdate(template: CommodityTemplateEntity) {
     this.modal.create({
       nzWidth: '35vw',
-      nzTitle: 'Tạo bản mẫu lương',
+      nzTitle: 'Cập nhật giống gà',
       nzContent: ModalCommodityTemplateComponent,
       nzComponentParams: <{ data?: DataModalCommodityTemplateData }>{
         data: {
           update: {
-            template: template,
-          },
-        },
+            template: template
+          }
+        }
       },
-      nzFooter: [],
+      nzFooter: []
     });
   }
 
-  onDelete(template: CommodityTemplateEntity) {
+  onRemove(template: CommodityTemplateEntity) {
     this.modal
       .create({
-        nzTitle: `Xoá Bản mẫu ${template.name}`,
+        nzTitle: `Xoá giống gà ${template.name}`,
         nzContent: ModalAlertComponent,
         nzComponentParams: <{ data: ModalAlertEntity }>{
           data: {
-            description: `bạn có chắc chắn muốn xoá bản mẫu ${template.name} này không ?`,
-          },
+            description: `bạn có chắc chắn muốn xoá giống gà ${template.name} này không?`
+          }
         },
-        nzFooter: [],
+        nzFooter: []
       })
       .afterClose.subscribe((val) => {
-        if (val) {
-          this.actions$.dispatch(
-            CommodityTemplateActions.remove({ id: template.id })
-          );
-        }
-      });
+      if (val) {
+        this.actions$.dispatch(
+          CommodityTemplateActions.remove({ id: template.id })
+        );
+      }
+    });
+  }
+
+  public onContextMenu($event: MouseEvent, item: any): void {
+    this.nzContextMenuService.create($event, item);
+    $event.preventDefault();
+    $event.stopPropagation();
   }
 }

@@ -45,6 +45,7 @@ import { CommodityTemplateModule } from './pages/commodity-template/commodity-te
 import { RouteModule } from './pages/route/route.module';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
 import { AccountEffects } from '../../../../libs/system/src/lib/state/account-management/account.effects';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
 registerLocaleData(localeVi);
 
@@ -82,6 +83,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
     CommodityTemplateModule,
     RouteModule,
     AuthModule,
+    NzButtonModule
   ],
   declarations: [PickMenuComponent, AppComponent, SellLayoutComponent],
   providers: [
