@@ -1,4 +1,3 @@
-<nz-spin *ngIf='(deleted$ | async) === false' class='position-center'></nz-spin>
 <div class='d-flex'>
   <div
     class='d-flex flex-column ml-3 border p-2'
@@ -89,12 +88,11 @@
       <nz-table
         #tableCustomer
         nzSize='middle'
+        nzShowPagination="false"
         [nzData]='(customers$ | async) || []'
         [nzScroll]="{ x: '2300px', y: '59vh' }"
-        [nzShowPagination]='true'
-        (nzPageIndexChange)='onPagination($event)'
         [nzPageSize]='pageSizeTable'
-        [nzLoading]='loading$ | async'
+        [nzLoading]="(loading$ | async) && (total$ | async) === 0"
         *ngIf='ui$ | async as ui'
       >
         <thead>
@@ -293,6 +291,29 @@
             </td>
             <td *ngIf='ui.note?.visible' [nzLeft]='ui.note?.pinned || false'>
               {{ customer?.note | existpipe }}
+            </td>
+          </tr>
+          <tr
+            *ngIf="
+              ((count$ | async) || 0) < ((total$ | async) || 0) &&
+              (total$ | async) !== 0
+            "
+          >
+            <td colspan="17">
+              <div
+                class="w-100 d-flex justify-content-start"
+                style="position: relative"
+              >
+                <button
+                  (click)="onLoadMore()"
+                  style="position: sticky; left: 45vw"
+                  nz-button
+                  nzType="primary"
+                  [nzLoading]="loading$ | async"
+                >
+                  Tải thêm {{ remain$ | async }} nhân viên
+                </button>
+              </div>
             </td>
           </tr>
         </ng-template>

@@ -1,26 +1,24 @@
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
-import {
-  BaseSearchCustomerDto,
-  CustomerEntity,
-  CustomerVisibleEntity,
-} from '../entities';
+import { BaseSearchCustomerDto, CustomerEntity, CustomerVisibleEntity } from '../entities';
 import { CustomerResource, CustomerType, GenderTypeEnum } from '@minhdu-fontend/enums';
 import { updateStateUiUtil } from '../../../utils/update-state-ui.util';
 import { StorageName } from '@minhdu-fontend/constants';
 
 export interface CustomerState extends EntityState<CustomerEntity> {
-  loading?: boolean;
-  total: number;
-  deliveredLoading: boolean;
-  deliveringLoading: boolean;
-  search: Partial<BaseSearchCustomerDto>;
-  ui: CustomerVisibleEntity;
+  readonly loading?: boolean;
+  readonly total: number;
+  readonly remain: number;
+  readonly deliveredLoading: boolean;
+  readonly deliveringLoading: boolean;
+  readonly search: Partial<BaseSearchCustomerDto>;
+  readonly ui: CustomerVisibleEntity;
 }
 
 function createInitState(): CustomerState {
   return {
     total: 0,
+    remain: 0,
     deliveredLoading: true,
     deliveringLoading: true,
     search: {
@@ -28,54 +26,54 @@ function createInitState(): CustomerState {
       isPotential: -1,
       type: CustomerType.ALL,
       gender: GenderTypeEnum.ALL,
-      search: '',
+      search: ''
     },
     ui: {
       stt: {
         pinned: true,
-        visible: true,
+        visible: true
       },
       name: {
         pinned: true,
-        visible: true,
+        visible: true
       },
       phone: {
         pinned: false,
-        visible: true,
+        visible: true
       },
       birthday: {
         pinned: false,
-        visible: true,
+        visible: true
       },
       gender: {
         pinned: false,
-        visible: true,
+        visible: true
       },
       resource: {
         pinned: false,
-        visible: true,
+        visible: true
       },
       potential: {
         pinned: false,
-        visible: true,
+        visible: true
       },
       customerType: {
         pinned: false,
-        visible: true,
+        visible: true
       },
       email: {
         pinned: false,
-        visible: true,
+        visible: true
       },
       address: {
         pinned: false,
-        visible: true,
+        visible: true
       },
       note: {
         pinned: false,
-        visible: true,
-      },
-    },
+        visible: true
+      }
+    }
   };
 }
 
@@ -95,10 +93,10 @@ export class CustomerStore extends EntityStore<CustomerState> {
         ...state,
         ui: state.ui
           ? Object.assign(
-              JSON.parse(JSON.stringify(state.ui)),
-              updateStateUiUtil<CustomerVisibleEntity>(newState, type)
-            )
-          : state.ui,
+            JSON.parse(JSON.stringify(state.ui)),
+            updateStateUiUtil<CustomerVisibleEntity>(newState, type)
+          )
+          : state.ui
       };
     });
   }

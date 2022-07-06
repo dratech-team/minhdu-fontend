@@ -41,7 +41,8 @@ export class CustomerComponent implements OnInit {
   loading$ = this.customerQuery.selectLoading();
   total$ = this.customerQuery.select((state) => state.total);
   ui$ = this.customerQuery.select((state) => state.ui);
-  deleted$ = this.customerQuery.select((state) => state.deleted);
+  remain$ = this.customerQuery.select((state) => state.remain);
+  count$ = this.customerQuery.selectCount();
 
   pageSize = 25;
   pageIndexInit = 0;
@@ -208,17 +209,10 @@ export class CustomerComponent implements OnInit {
     $event.stopPropagation();
   }
 
-  public onPagination(pageIndex: number) {
-    const value = this.formGroup.value;
-    const count = this.customerQuery.getCount();
-    if (pageIndex * this.pageSizeTable >= count) {
-      this.actions$.dispatch(
-        CustomerActions.loadAll({
-          search: this.mapCustomer(value, true),
-          isPaginate: true
-        })
-      );
-    }
+  onLoadMore() {
+    this.actions$.dispatch(
+      OrderActions.loadAll(this.mapCustomer(this.formGroup.value, true))
+    );
   }
 
   public onSort(sort: Sort) {
