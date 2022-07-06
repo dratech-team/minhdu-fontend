@@ -38,11 +38,11 @@ export class CustomerComponent implements OnInit {
   valueSort?: Sort;
 
   customers$ = this.customerQuery.selectAll();
-  loading$ = this.customerQuery.selectLoading();
   total$ = this.customerQuery.select((state) => state.total);
-  ui$ = this.customerQuery.select((state) => state.ui);
-  remain$ = this.customerQuery.select((state) => state.remain);
   count$ = this.customerQuery.selectCount();
+  remain$ = this.customerQuery.select((state) => state.remain);
+  loading$ = this.customerQuery.selectLoading();
+  ui$ = this.customerQuery.select((state) => state.ui);
 
   pageSize = 25;
   pageIndexInit = 0;
@@ -209,7 +209,7 @@ export class CustomerComponent implements OnInit {
     $event.stopPropagation();
   }
 
-  onLoadMore() {
+  public onLoadMore() {
     this.actions$.dispatch(
       OrderActions.loadAll(this.mapCustomer(this.formGroup.value, true))
     );

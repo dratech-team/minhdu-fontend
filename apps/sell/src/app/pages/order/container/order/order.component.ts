@@ -32,7 +32,9 @@ export class OrderComponent implements OnInit {
     .selectAll()
     .pipe(map((value) => JSON.parse(JSON.stringify(value))));
   loading$ = this.orderQuery.selectLoading();
-  totalOrder$ = this.orderQuery.select((state) => state.total);
+  total$ = this.orderQuery.select((state) => state.total);
+  count$ = this.orderQuery.selectCount();
+  remain$ = this.orderQuery.select((state) => state.remain);
   commodityUniq$ = this.orderQuery.select((state) => state.commodityUniq);
   totalCommodity$ = this.orderQuery.select((state) => state.totalCommodity);
   commodities$ = this.orderQuery.selectAll().pipe(
@@ -198,17 +200,10 @@ export class OrderComponent implements OnInit {
     $event.stopPropagation();
   }
 
-  public onPagination(pageIndex: number) {
-    const value = this.formGroup.value;
-    const count = this.orderQuery.getCount();
-    if (pageIndex * this.pageSizeTable >= count) {
-      this.actions$.dispatch(
-        OrderActions.loadAll({
-          param: this.mapOrder(value, true),
-          isPagination: true
-        })
-      );
-    }
+  public onLoadMore() {
+    this.actions$.dispatch(
+      OrderActions.loadAll(this.mapOrder(this.formGroup.value, true))
+    );
   }
 
   public onPickDeliveryDay($event: any) {

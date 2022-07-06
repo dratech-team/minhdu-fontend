@@ -102,27 +102,27 @@ export class OrderEffect {
           )
         )
         .pipe(
-          map((response) => {
-            const expanedAll = this.orderQuery.getValue().expandedAll;
+          map((res) => {
+            const expandedAll = this.orderQuery.getValue().expandedAll;
             this.orderStore.update((state) => ({
               ...state,
               loading: false,
-              total: response.total,
-              totalCommodity: response.commodityUniq.reduce(
+              total: res.total,
+              totalCommodity: res.commodityUniq.reduce(
                 (x, y) => x + y.amount,
                 0
               ),
-              commodityUniq: response.commodityUniq
+              commodityUniq: res.commodityUniq
             }));
-            if (!response.data.length) {
+            if (!res.data.length) {
               if (!props.isPagination) {
-                this.orderStore.set(response.data);
+                this.orderStore.set(res.data);
               }
             } else {
-              const data = response.data.map((order: OrderEntity) =>
+              const data = res.data.map((order: OrderEntity) =>
                 Object.assign(order, {
-                  expand: expanedAll,
-                  totalcommodity: (order.totalCommodity = getTotalCommodity(
+                  expand: expandedAll,
+                  totalCommodity: (order.totalCommodity = getTotalCommodity(
                     order.commodities
                   ))
                 })
@@ -132,6 +132,10 @@ export class OrderEffect {
               } else {
                 this.orderStore.set(data);
               }
+              this.customerStore.update(state => ({
+                ...state,
+                remain: res.total - this.orderQuery.getCount()
+              }));
             }
           }),
           catchError((err) => {

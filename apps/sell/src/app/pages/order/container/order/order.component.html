@@ -98,7 +98,7 @@
       <div class='d-flex mb-2'>
         <div class='mr-2'>
           <span class='font-weight-bold'>Tổng đơn hàng:</span>
-          {{ (totalOrder$ | async) || 0 | number: '1.0-0' }}
+          {{ (total$ | async) || 0 | number: '1.0-0' }}
         </div>
         <div class='d-flex'>
           <div>
@@ -121,11 +121,10 @@
         [nzScroll]="{ x: '2000px', y: '58vh' }"
         nzSize='middle'
         [nzPageSize]='pageSizeTable'
-        [nzLoading]='loading$ | async'
+        [nzLoading]="(loading$ | async) && (total$ | async) === 0"
         [nzData]='(orders$ | async) || []'
-        nzShowPagination='true'
+        nzShowPagination='false'
         [formGroup]='formGroup'
-        (nzPageIndexChange)='onPagination($event)'
       >
         <thead>
         <tr *ngIf='ui$ | async as ui'>
@@ -391,6 +390,29 @@
         </tr>
         </tbody>
       </nz-table>
+      </tr>
+      <tr
+        *ngIf="
+              ((count$ | async) || 0) < ((total$ | async) || 0) &&
+              (total$ | async) !== 0
+            "
+      >
+        <td colspan="17">
+          <div
+            class="w-100 d-flex justify-content-start"
+            style="position: relative"
+          >
+            <button
+              (click)="onLoadMore()"
+              style="position: sticky; left: 45vw"
+              nz-button
+              nzType="primary"
+              [nzLoading]="loading$ | async"
+            >
+              Tải thêm {{ remain$ | async }} nhân viên
+            </button>
+          </div>
+        </td>
       </tr>
       </ng-template>
       </tbody>
