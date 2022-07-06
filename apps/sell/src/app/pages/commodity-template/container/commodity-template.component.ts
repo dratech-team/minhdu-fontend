@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { debounceTime } from 'rxjs/operators';
 import { PaginationDto } from '@minhdu-fontend/constants';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -17,6 +16,7 @@ import {
 import { DataModalCommodityTemplateData } from '../data/data-modal-commodity-template.data';
 import { ContextMenuEntity } from '@minhdu-fontend/data-models';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
+import { OrderActions } from '../../order/+state';
 
 @Component({
   templateUrl: 'commodity-template.component.html'
@@ -26,6 +26,7 @@ export class CommodityTemplateComponent implements OnInit {
   loading$ = this.query.select((state) => state.loading);
   total$ = this.query.select((state) => state.total);
   count$ = this.query.selectCount();
+  remain$ = this.query.select(state => state.remain);
 
   stateSearch = this.query.getValue().search;
 
@@ -47,8 +48,8 @@ export class CommodityTemplateComponent implements OnInit {
     }
   ];
 
-  formGroup = new UntypedFormGroup({
-    search: new UntypedFormControl('')
+  formGroup = new FormGroup({
+    search: new FormControl<string>('')
   });
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
@@ -64,36 +65,20 @@ export class CommodityTemplateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.onLoad(false);
-    this.formGroup.valueChanges.pipe(debounceTime(1000)).subscribe((_) => {
-      this.onLoad(false);
+    this.formGroup.valueChanges.subscribe((_) => {
+      this.actions$.dispatch(
+        CommodityTemplateActions.loadAll({
+          search: this.mapTemplate(this.formGroup.value, false),
+          isPaginate: false
+        })
+      );
     });
   }
 
-  onPagination(pageIndex: number) {
-    if (pageIndex * this.pageSizeTable >= this.query.getCount()) {
-      this.onLoad(true);
-    }
-  }
-
-  onLoad(isPaginate: boolean) {
+  public onLoadMore() {
     this.actions$.dispatch(
-      CommodityTemplateActions.loadAll({
-        search: this.mapTemplate(this.formGroup.value, isPaginate),
-        isPaginate: isPaginate
-      })
+      OrderActions.loadAll(this.mapTemplate(this.formGroup.value, true))
     );
-  }
-
-  mapTemplate(dataFG: any, isPagination: boolean) {
-    this.store.update((state) => ({
-      ...state,
-      search: dataFG
-    }));
-    return Object.assign({}, dataFG, {
-      take: PaginationDto.take,
-      skip: isPagination ? this.query.getCount() : PaginationDto.skip
-    });
   }
 
   onAdd() {
@@ -146,5 +131,16 @@ export class CommodityTemplateComponent implements OnInit {
     this.nzContextMenuService.create($event, item);
     $event.preventDefault();
     $event.stopPropagation();
+  }
+
+  private mapTemplate(dataFG: any, isPagination: boolean) {
+    this.store.update((state) => ({
+      ...state,
+      search: dataFG
+    }));
+    return Object.assign({}, dataFG, {
+      take: PaginationDto.take,
+      skip: isPagination ? this.query.getCount() : PaginationDto.skip
+    });
   }
 }

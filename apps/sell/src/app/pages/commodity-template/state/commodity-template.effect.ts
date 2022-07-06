@@ -7,6 +7,7 @@ import { CommodityTemplateService } from '../services';
 import { CommodityTemplateStore } from './commodity-template.store';
 import { CommodityTemplateActions } from './commodity-template.action';
 import { UpdateCommodityTemplateDto } from '../dto/update-commodity-template.dto';
+import { CommodityTemplateQuery } from './commodity-template.query';
 
 @Injectable()
 export class CommodityTemplateEffect {
@@ -14,6 +15,7 @@ export class CommodityTemplateEffect {
     private readonly action$: Actions,
     private readonly service: CommodityTemplateService,
     private readonly store: CommodityTemplateStore,
+    private readonly query: CommodityTemplateQuery,
     private readonly message: NzMessageService
   ) {
   }
@@ -22,24 +24,11 @@ export class CommodityTemplateEffect {
   addOne$ = this.action$.pipe(
     ofType(CommodityTemplateActions.addOne),
     switchMap((props) => {
-      this.store.update((state) => ({
-        ...state,
-        added: false
-      }));
       return this.service.addOne(props).pipe(
         tap((res) => {
-          this.store.update((state) => ({
-            ...state,
-            added: true,
-            total: state.total + 1
-          }));
           this.store.upsert(res.id, res);
         }),
         catchError((err) => {
-          this.store.update((state) => ({
-            ...state,
-            added: true
-          }));
           return of(CommodityTemplateActions.error(err));
         })
       );
@@ -50,40 +39,22 @@ export class CommodityTemplateEffect {
   loadAll$ = this.action$.pipe(
     ofType(CommodityTemplateActions.loadAll),
     switchMap((props) => {
-      this.store.update((state) =>
-        Object.assign(
-          {
-            ...state
-          },
-          props.isPaginate ? { loadMore: true } : { loading: true }
-        )
-      );
+      this.store.update((state) => ({ ...state, loading: true }));
       return this.service.pagination(props).pipe(
         tap((res) => {
-          this.store.update((state) =>
-            Object.assign(
-              {
-                ...state,
-                total: res.total
-              },
-              props.isPaginate ? { loadMore: false } : { loading: false }
-            )
-          );
+          this.store.update((state) => ({ ...state, loading: false }));
           if (props.isPaginate) {
             this.store.add(res.data);
           } else {
             this.store.set(res.data);
           }
+          this.store.update(state => ({
+            ...state,
+            remain: res.total - this.query.getCount()
+          }));
         }),
         catchError((err) => {
-          this.store.update((state) =>
-            Object.assign(
-              {
-                ...state
-              },
-              props.isPaginate ? { loadMore: false } : { loading: false }
-            )
-          );
+          this.store.update((state) => ({ ...state, loading: false }));
           return of(CommodityTemplateActions.error(err));
         })
       );
@@ -109,23 +80,11 @@ export class CommodityTemplateEffect {
   update$ = this.action$.pipe(
     ofType(CommodityTemplateActions.update),
     switchMap((props: UpdateCommodityTemplateDto) => {
-      this.store.update((state) => ({
-        ...state,
-        added: false
-      }));
       return this.service.update(props).pipe(
         tap((res) => {
-          this.store.update((state) => ({
-            ...state,
-            added: true
-          }));
           this.store.update(res?.id, res);
         }),
         catchError((err) => {
-          this.store.update((state) => ({
-            ...state,
-            added: null
-          }));
           return of(CommodityTemplateActions.error(err));
         })
       );

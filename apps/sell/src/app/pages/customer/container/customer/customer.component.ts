@@ -12,7 +12,7 @@ import {
 } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { ModalExportExcelComponent, ModalExportExcelData } from '@minhdu-fontend/components';
-import { debounceTime, tap } from 'rxjs/operators';
+import { startWith, tap } from 'rxjs/operators';
 import { CustomerActions, CustomerQuery, CustomerStore } from '../../+state';
 import { CustomerModalComponent, PaymentModalComponent } from '../../component';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -95,14 +95,8 @@ export class CustomerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(
-      CustomerActions.loadAll({
-        search: this.mapCustomer(this.formGroup.value, false)
-      })
-    );
     this.formGroup.valueChanges
       .pipe(
-        debounceTime(1000),
         tap((val) => {
           this.actions$.dispatch(
             CustomerActions.loadAll({ search: this.mapCustomer(val, false) })

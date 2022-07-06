@@ -7,24 +7,20 @@ import { CommodityTemplateEntity } from '../entities';
 export interface CommodityTemplateState
   extends EntityState<CommodityTemplateEntity> {
   loading: boolean;
-  loadMore: boolean;
-  added: boolean | null;
   total: number;
+  remain: number;
   search: Partial<BaseSearchCommodityTemplateDto>;
-  deleted: boolean | null;
 }
 
 function createInitState(): CommodityTemplateState {
   return {
     loading: true,
-    loadMore: false,
-    added: null,
     total: 0,
+    remain: 0,
     search: {
       name: '',
       code: '',
     },
-    deleted: null,
   };
 }
 

@@ -34,11 +34,10 @@
       <nz-table
         #tableTemplate
         *ngIf='templates$ | async as templates'
-        [nzScroll]="{ x: '', y: '58vh' }"
         nzSize='middle'
-        (nzPageIndexChange)='onPagination($event)'
-        [nzPageSize]='pageSizeTable'
-        [nzLoading]='loading$ | async'
+        nzShowPagination='false'
+        [nzScroll]="{ x: '', y: '58vh' }"
+        [nzLoading]='(loading$ | async) && (total$ | async) === 0'
         [nzData]='templates'
       >
         <thead>
@@ -64,6 +63,29 @@
           <td nzLeft>{{ i + 1 + (tableTemplate.nzPageIndex - 1) * 10 }}</td>
           <td>{{ template.code }}</td>
           <td>{{ template.name }}</td>
+        </tr>
+        <tr
+          *ngIf="
+              ((count$ | async) || 0) < ((total$ | async) || 0) &&
+              (total$ | async) !== 0
+            "
+        >
+          <td colspan="17">
+            <div
+              class="w-100 d-flex justify-content-start"
+              style="position: relative"
+            >
+              <button
+                (click)="onLoadMore()"
+                style="position: sticky; left: 45vw"
+                nz-button
+                nzType="primary"
+                [nzLoading]="loading$ | async"
+              >
+                Tải thêm {{ remain$ | async }} giống gà
+              </button>
+            </div>
+          </td>
         </tr>
         </tbody>
       </nz-table>

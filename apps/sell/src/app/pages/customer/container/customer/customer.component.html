@@ -87,13 +87,13 @@
       </div>
       <nz-table
         #tableCustomer
+        *ngIf='ui$ | async as ui'
         nzSize='middle'
         nzShowPagination="false"
         [nzData]='(customers$ | async) || []'
         [nzScroll]="{ x: '2300px', y: '59vh' }"
         [nzPageSize]='pageSizeTable'
         [nzLoading]="(loading$ | async) && (total$ | async) === 0"
-        *ngIf='ui$ | async as ui'
       >
         <thead>
         <tr>
