@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -8,6 +8,7 @@ import {
   CustomerType,
   GenderTypeEnum,
   ItemContextMenu,
+  ModeEnum,
   SortTypeCustomerEnum
 } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
@@ -20,7 +21,6 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { RadiosStatusRouteConstant } from '../../constants/gender.constant';
 import { CustomerConstant, PotentialsConstant, ResourcesConstant } from '../../constants';
 import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
-import { OrderActions } from '../../../order/+state';
 import * as _ from 'lodash';
 import { OrderEntity } from '../../../order/enitities/order.entity';
 import { CustomerEntity } from '../../entities';
@@ -28,25 +28,23 @@ import { ModalAddOrUpdatePayment } from '../../data/modal-payment.data';
 import { PotentialEnum } from '../../enums';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
 import { ModalCustomerData } from '../../data/modal-customer.data';
+import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 
 @Component({
   templateUrl: 'customer.component.html'
 })
 export class CustomerComponent implements OnInit {
-  @ViewChild('menu') menu: any;
   orders?: OrderEntity;
   valueSort?: Sort;
 
-  customers$ = this.customerQuery.selectAll();
   total$ = this.customerQuery.select((state) => state.total);
   count$ = this.customerQuery.selectCount();
   remain$ = this.customerQuery.select((state) => state.remain);
   loading$ = this.customerQuery.selectLoading();
   ui$ = this.customerQuery.select((state) => state.ui);
+  account$ = this.accountQuery.selectCurrentUser();
+  customers$ = this.customerQuery.selectAll();
 
-  pageSize = 25;
-  pageIndexInit = 0;
-  pageSizeTable = 10;
   visible = false;
   search = this.customerQuery.getValue().search;
   menus: ContextMenuEntity[] = [
@@ -65,6 +63,7 @@ export class CustomerComponent implements OnInit {
   ];
 
   CustomerType = CustomerType;
+  ModeEnum = ModeEnum;
   ItemContextMenu = ItemContextMenu;
   SortTypeCustomerEnum = SortTypeCustomerEnum;
   RadiosStatusRouteConstant = RadiosStatusRouteConstant;
@@ -84,6 +83,7 @@ export class CustomerComponent implements OnInit {
   constructor(
     private readonly actions$: Actions,
     private readonly customerQuery: CustomerQuery,
+    private readonly accountQuery: AccountQuery,
     private readonly customerStore: CustomerStore,
     private readonly router: Router,
     private readonly dialog: MatDialog,
@@ -97,9 +97,10 @@ export class CustomerComponent implements OnInit {
   ngOnInit() {
     this.formGroup.valueChanges
       .pipe(
+        startWith(''),
         tap((val) => {
           this.actions$.dispatch(
-            CustomerActions.loadAll({ search: this.mapCustomer(val, false) })
+            CustomerActions.loadAll({ search: this.mapCustomer(val), isPaginate: false })
           );
         })
       )
@@ -184,7 +185,7 @@ export class CustomerComponent implements OnInit {
           filename: 'Danh sách khách hàng',
           params: Object.assign(
             {},
-            _.omit(this.mapCustomer(this.formGroup.value, false), [
+            _.omit(this.mapCustomer(this.formGroup.value), [
               'take',
               'skip'
             ]),
@@ -205,33 +206,28 @@ export class CustomerComponent implements OnInit {
 
   public onLoadMore() {
     this.actions$.dispatch(
-      OrderActions.loadAll(this.mapCustomer(this.formGroup.value, true))
+      CustomerActions.loadAll({ search: this.mapCustomer(this.formGroup.value), isPaginate: true })
     );
   }
 
   public onSort(sort: Sort) {
     this.valueSort = sort;
     this.actions$.dispatch(
-      OrderActions.loadAll({
-        param: this.mapCustomer(this.formGroup.value, false)
-      })
+      CustomerActions.loadAll({ search: this.mapCustomer(this.formGroup.value), isPaginate: true })
     );
   }
 
-  private mapCustomer(val: any, isPagination: boolean) {
+  private mapCustomer(search: any) {
     this.customerStore.update((state) => ({
       ...state,
-      search: val
+      search: search
     }));
     if (this.valueSort?.orderType) {
-      Object.assign(val, this.valueSort);
+      Object.assign(search, this.valueSort);
     } else {
-      delete val.orderBy;
-      delete val.orderType;
+      delete search.orderBy;
+      delete search.orderType;
     }
-    return Object.assign({}, val, {
-      take: this.pageSize,
-      skip: isPagination ? this.customerQuery.getCount() : 0
-    });
+    return search;
   }
 }

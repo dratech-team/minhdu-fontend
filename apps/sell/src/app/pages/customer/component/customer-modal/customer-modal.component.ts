@@ -1,9 +1,5 @@
 import { Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
 import { CustomerActions, CustomerQuery } from '../../+state';
@@ -14,12 +10,12 @@ import { BaseAddCustomer, BaseUpdateCustomerDto } from '../../dto';
 import { ModalCustomerData } from '../../data/modal-customer.data';
 
 @Component({
-  templateUrl: 'customer-modal.component.html',
+  templateUrl: 'customer-modal.component.html'
 })
 export class CustomerModalComponent implements OnInit {
   @Input() data?: ModalCustomerData;
 
-  loading$ = this.customerQuery.select((state) => state.loading);
+  loading$ = this.customerQuery.selectLoading();
 
   customerConstant = CustomerConstant.filter(
     (item) => item.value !== CustomerType.ALL
@@ -42,7 +38,8 @@ export class CustomerModalComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly customerQuery: CustomerQuery,
     private readonly modalRef: NzModalRef
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     const customer = this.data?.update?.customer;
@@ -55,7 +52,7 @@ export class CustomerModalComponent implements OnInit {
       idCardAt: [
         customer?.idCardAt
           ? this.datePipe.transform(customer.idCardAt, 'yyyy-MM-dd')
-          : '',
+          : ''
       ],
       email: [customer?.email],
       phone: [customer?.phone, Validators.required],
@@ -65,7 +62,7 @@ export class CustomerModalComponent implements OnInit {
       birthday: [
         customer?.birthday
           ? this.datePipe.transform(customer.birthday, 'yyyy-MM-dd')
-          : '',
+          : ''
       ],
       ethnicity: [customer?.ethnicity],
       religion: [customer?.religion],
@@ -74,7 +71,7 @@ export class CustomerModalComponent implements OnInit {
       isPotential: [customer?.isPotential],
       province: [customer?.province, Validators.required],
       district: [customer?.district],
-      ward: [customer?.ward],
+      ward: [customer?.ward]
     });
   }
 
@@ -91,9 +88,9 @@ export class CustomerModalComponent implements OnInit {
     this.actions$.dispatch(
       this.data?.update
         ? CustomerActions.update({
-            id: this.data.update.customer.id,
-            updates: customer,
-          })
+          id: this.data.update.customer.id,
+          updates: customer
+        })
         : CustomerActions.addOne({ body: customer })
     );
     this.loading$.subscribe((loading) => {
@@ -128,7 +125,7 @@ export class CustomerModalComponent implements OnInit {
       ethnicity: value?.ethnicity,
       religion: value?.religion,
       isPotential: value?.isPotential,
-      type: value.type,
+      type: value.type
     };
   }
 }

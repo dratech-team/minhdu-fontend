@@ -10,6 +10,7 @@ import { OrderService } from '../../order/service';
 import { AddCustomerDto, SearchCustomerDto } from '../dto';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PaginationDto } from '@minhdu-fontend/constants';
 
 @Injectable()
 export class CustomerEffect {
@@ -33,18 +34,18 @@ export class CustomerEffect {
         loading: true
       }));
       const params = Object.assign(
+        {},
         props.search,
         props.search?.orderType
           ? { orderType: props.search.orderType === 'ascend' ? 'asc' : 'desc' }
-          : {}
+          : {},
+        {
+          take: PaginationDto.take,
+          skip: this.customerQuery.getCount()
+        }
       );
       return this.customerService.pagination(params).pipe(
         map((res) => {
-          this.customerStore.update((state) => ({
-            ...state,
-            loading: false,
-            total: res.total
-          }));
           if (props.isPaginate) {
             this.customerStore.add(res.data);
           } else {
@@ -52,6 +53,8 @@ export class CustomerEffect {
           }
           this.customerStore.update(state => ({
             ...state,
+            loading: false,
+            total: res.total,
             remain: res.total - this.customerQuery.getCount()
           }));
         }),
@@ -77,7 +80,6 @@ export class CustomerEffect {
       }));
       return this.customerService.addOne(props).pipe(
         tap((res) => {
-          this.message.success('Thêm khác hành thành công');
           this.customerStore.update((state) => ({
             ...state,
             loading: false
@@ -87,7 +89,8 @@ export class CustomerEffect {
         catchError((err) => {
           this.customerStore.update((state) => ({
             ...state,
-            loading: undefined
+            loading: undefined,
+            total: state.total - 1
           }));
           return of(CustomerActions.error(err));
         })
