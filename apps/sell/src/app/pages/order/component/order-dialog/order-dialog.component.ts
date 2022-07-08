@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentType } from '@minhdu-fontend/enums';
 import { OrderActions, OrderQuery } from '../../+state';
 import { DatePipe } from '@angular/common';
@@ -32,7 +32,7 @@ export class OrderDialogComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly commodityQuery: CommodityQuery,
     private readonly customerQuery: CustomerQuery,
-    private readonly formBuilder: UntypedFormBuilder,
+    private readonly formBuilder: FormBuilder,
     private readonly datePipe: DatePipe,
     private readonly orderQuery: OrderQuery,
     private readonly modalRef: NzModalRef,

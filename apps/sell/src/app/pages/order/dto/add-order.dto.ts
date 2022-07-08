@@ -1,5 +1,5 @@
-import { BaseOrderEntity } from '../enitities/base-order.entity';
-import { CommodityEntity } from '../../commodity/entities/commodity.entity';
+import { BaseOrderEntity } from '../enitities';
+import { CommodityEntity } from '../../commodity/entities';
 import { BaseAddDto } from '@minhdu-fontend/base-dto';
 
 export interface BaseAddOrderDto extends Partial<BaseOrderEntity> {

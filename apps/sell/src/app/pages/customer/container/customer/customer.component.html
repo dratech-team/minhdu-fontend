@@ -57,258 +57,261 @@
     </div>
   </div>
   <div class='ml-3' style='width: 80%'>
-    <div class='d-flex justify-content-end mt-1'>
-      <div class='ml-3 d-flex'>
-        <button nz-button nzGhost nzType='primary' class='mr-2' (click)='onAdd()'>
-          Thêm
-        </button>
-        <button nz-button nzGhost nzType='primary' (click)='printCustomer()'>
-          Xuất
-        </button>
-        <button
-          class='ml-2'
-          nz-button
-          nzType='dashed'
-          nz-popover
-          nzPopoverTitle='Thêm cột'
-          [(nzPopoverVisible)]='visible'
-          nzPopoverPlacement='bottomRight'
-          [nzPopoverContent]='pinColumn'
-          nzPopoverTrigger='click'
-        >
-          Ghim
-        </button>
-      </div>
-    </div>
-    <div>
+    <div class='d-flex justify-content-between align-items-end m-2'>
       <div>
-        <span class='font-weight-bold'>Tổng khách hàng:</span>
+        <span class='font-weight-bold'>Tổng:</span>
         {{ total$ | async }}
       </div>
-      <nz-table
-        #customerTable
-        *ngIf='ui$ | async as ui'
-        [nzFrontPagination]='false'
-        [nzShowPagination]='false'
-        [nzData]='(customers$ | async) || []'
-        [nzScroll]="{ x: '2300px', y: '65vh' }"
-        [nzLoading]='(loading$ | async) && (total$ | async) === 0'
-      >
-        <thead>
-        <tr>
-          <th
-            *ngIf='ui.stt?.visible'
-            [nzLeft]='ui.stt?.pinned || false'
-            nzWidth='60px'
+      <div class='d-flex pr-2'>
+        <div>
+          <button nz-button nzGhost nzType='primary' (click)='onAdd()'>
+            Thêm
+          </button>
+        </div>
+        <div>
+          <button nz-button nzGhost nzType='primary' (click)='printCustomer()'>
+            Xuất
+          </button>
+        </div>
+        <div>
+          <button
+            nz-button
+            nzType='dashed'
+            nz-popover
+            nzPopoverTitle='Thêm cột'
+            [(nzPopoverVisible)]='visible'
+            nzPopoverPlacement='bottomRight'
+            [nzPopoverContent]='pinColumn'
+            nzPopoverTrigger='click'
           >
-            STT
-          </th>
-          <th
-            *ngIf='(account$ | async)?.mode === ModeEnum.INFO'
-            [nzLeft]='ui.stt?.pinned || false'
-            nzWidth='60px'
-          >
-            ID
-          </th>
-          <th
-            *ngIf='ui.name?.visible'
-            [nzLeft]='ui.name?.pinned || false'
-            [nzSortFn]='true'
-            (nzSortOrderChange)='
+            Ghim
+          </button>
+        </div>
+      </div>
+    </div>
+    <nz-table
+      #customerTable
+      *ngIf='ui$ | async as ui'
+      [nzFrontPagination]='false'
+      [nzShowPagination]='false'
+      [nzData]='(customers$ | async) || []'
+      [nzScroll]="{ x: '2300px', y: '65vh' }"
+      [nzLoading]='(loading$ | async) && (total$ | async) === 0'
+    >
+      <thead>
+      <tr>
+        <th
+          *ngIf='ui.stt?.visible'
+          [nzLeft]='ui.stt?.pinned || false'
+          nzWidth='60px'
+        >
+          STT
+        </th>
+        <th
+          *ngIf='(account$ | async)?.mode === ModeEnum.INFO'
+          [nzLeft]='ui.stt?.pinned || false'
+          nzWidth='60px'
+        >
+          ID
+        </th>
+        <th
+          *ngIf='ui.name?.visible'
+          [nzLeft]='ui.name?.pinned || false'
+          [nzSortFn]='true'
+          (nzSortOrderChange)='
                 onSort({ orderBy: SortTypeCustomerEnum.NAME, orderType: $event })
               '
-          >
-            Tên khách hàng
-          </th>
-          <th
-            *ngIf='ui.phone?.visible'
-            [nzLeft]='ui.phone?.pinned || false'
-          >
-            Số điện thoại
-          </th>
-          <th
-            *ngIf='ui.birthday?.visible'
-            [nzLeft]='ui.birthday?.pinned || false'
-          >
-            Ngày sinh
-          </th>
-          <th
-            *ngIf='ui.gender?.visible'
-            [nzLeft]='ui.gender?.pinned || false'
-            [nzSortFn]='true'
-            (nzSortOrderChange)='
+        >
+          Tên khách hàng
+        </th>
+        <th
+          *ngIf='ui.phone?.visible'
+          [nzLeft]='ui.phone?.pinned || false'
+        >
+          Số điện thoại
+        </th>
+        <th
+          *ngIf='ui.birthday?.visible'
+          [nzLeft]='ui.birthday?.pinned || false'
+        >
+          Ngày sinh
+        </th>
+        <th
+          *ngIf='ui.gender?.visible'
+          [nzLeft]='ui.gender?.pinned || false'
+          [nzSortFn]='true'
+          (nzSortOrderChange)='
                 onSort({ orderBy: SortTypeCustomerEnum.GENDER, orderType: $event })
               '
-          >
-            Giới tính
-          </th>
-          <th
-            *ngIf='ui.potential?.visible'
-            [nzLeft]='ui.potential?.pinned || false'
-            [nzSortFn]='true'
-            (nzSortOrderChange)='
+        >
+          Giới tính
+        </th>
+        <th
+          *ngIf='ui.potential?.visible'
+          [nzLeft]='ui.potential?.pinned || false'
+          [nzSortFn]='true'
+          (nzSortOrderChange)='
                 onSort({
                   orderBy: SortTypeCustomerEnum.IS_POTENTIAL,
                   orderType: $event
                 })
               '
-          >
-            Tiềm năng
-          </th>
-          <th
-            *ngIf='ui.resource?.visible'
-            [nzLeft]='ui.resource?.pinned || false'
-            [nzSortFn]='true'
-            (nzSortOrderChange)='
+        >
+          Tiềm năng
+        </th>
+        <th
+          *ngIf='ui.resource?.visible'
+          [nzLeft]='ui.resource?.pinned || false'
+          [nzSortFn]='true'
+          (nzSortOrderChange)='
                 onSort({
                   orderBy: SortTypeCustomerEnum.RESOURCE,
                   orderType: $event
                 })
               '
-          >
-            Nguồn khách hàng
-          </th>
-          <th
-            *ngIf='ui.customerType?.visible'
-            [nzLeft]='ui.customerType?.pinned || false'
-            [nzSortFn]='true'
-            (nzSortOrderChange)='
+        >
+          Nguồn khách hàng
+        </th>
+        <th
+          *ngIf='ui.customerType?.visible'
+          [nzLeft]='ui.customerType?.pinned || false'
+          [nzSortFn]='true'
+          (nzSortOrderChange)='
                 onSort({
                   orderBy: SortTypeCustomerEnum.CUSTOMER_TYPE,
                   orderType: $event
                 })
               '
-          >
-            Loại khách hàng
-          </th>
-          <th *ngIf='ui.email?.visible' [nzLeft]='ui.email?.pinned || false'>
-            Email
-          </th>
-          <th
-            *ngIf='ui.address?.visible'
-            [nzLeft]='ui.address?.pinned || false'
-          >
-            Địa chỉ
-          </th>
-          <th *ngIf='ui.note?.visible' [nzLeft]='ui.note?.pinned || false'>
-            Chú thích
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr
-          class='pointer'
-          (click)='onDetail(customer)'
-          (contextmenu)='onContextMenu($event, menu)'
-          *ngFor='let customer of customerTable.data; let i = index'
         >
-          <nz-dropdown-menu #menu='nzDropdownMenu'>
-            <ul class='context-menu' nz-menu>
-              <li nz-menu-item *ngFor='let item of menus' (click)='item.click(customer)'>
-                {{item.title}}
-              </li>
-            </ul>
-          </nz-dropdown-menu>
-          <td
-            *ngIf='ui.stt?.visible' [nzLeft]='ui.stt?.pinned || false'
+          Loại khách hàng
+        </th>
+        <th *ngIf='ui.email?.visible' [nzLeft]='ui.email?.pinned || false'>
+          Email
+        </th>
+        <th
+          *ngIf='ui.address?.visible'
+          [nzLeft]='ui.address?.pinned || false'
+        >
+          Địa chỉ
+        </th>
+        <th *ngIf='ui.note?.visible' [nzLeft]='ui.note?.pinned || false'>
+          Chú thích
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr
+        class='pointer'
+        (click)='onDetail(customer)'
+        (contextmenu)='onContextMenu($event, menu)'
+        *ngFor='let customer of customerTable.data; let i = index'
+      >
+        <nz-dropdown-menu #menu='nzDropdownMenu'>
+          <ul class='context-menu' nz-menu>
+            <li nz-menu-item *ngFor='let item of menus' (click)='item.click(customer)'>
+              {{item.title}}
+            </li>
+          </ul>
+        </nz-dropdown-menu>
+        <td
+          *ngIf='ui.stt?.visible' [nzLeft]='ui.stt?.pinned || false'
+        >
+          {{ i + 1 }}
+        </td>
+        <td
+          *ngIf='(account$ | async)?.mode === ModeEnum.INFO'
+          [nzLeft]='ui.stt?.pinned || false'
+        >
+          {{ customer.id }}
+        </td>
+        <td *ngIf='ui.name?.visible' [nzLeft]='ui.name?.pinned || false'>
+          {{ customer?.lastName }}
+        </td>
+        <td
+          *ngIf='ui.phone?.visible'
+          [nzLeft]='ui.phone?.pinned || false'
+        >
+          {{ customer?.phone | existpipe }}
+        </td>
+        <td
+          *ngIf='ui.birthday?.visible'
+          [nzLeft]='ui.birthday?.pinned || false'
+        >
+          {{ customer?.birthday | existpipe }}
+        </td>
+        <td
+          *ngIf='ui.gender?.visible'
+          [nzLeft]='ui.gender?.pinned || false'
+        >
+          {{ customer?.gender | transformconstant: GenderTypeConstant }}
+        </td>
+        <td
+          *ngIf='ui.potential?.visible'
+          [nzLeft]='ui.potential?.pinned || false'
+        >
+          <input
+            type='checkbox'
+            [disabled]='true'
+            [checked]='customer.isPotential'
+          />
+        </td>
+        <td
+          *ngIf='ui.resource?.visible'
+          [nzLeft]='ui.resource?.pinned || false'
+        >
+          {{ customer?.resource | transformconstant: ResourcesConstant }}
+        </td>
+        <td
+          *ngIf='ui.customerType?.visible'
+          [nzLeft]='ui.customerType?.pinned || false'
+        >
+          {{ customer?.type | transformconstant: CustomerConstant }}
+        </td>
+        <td
+          *ngIf='ui.email?.visible'
+          [nzLeft]='ui.email?.pinned || false'
+        >
+          {{ customer?.email | existpipe }}
+        </td>
+        <td
+          *ngIf='ui.address?.visible'
+          [nzLeft]='ui.address?.pinned || false'
+        >
+          {{
+          (customer?.address || '') +
+          ' ' +
+          (customer.ward?.name || '') +
+          ' ' +
+          (customer.district?.name || '') +
+          ' ' +
+          customer.province.name
+          }}
+        </td>
+        <td *ngIf='ui.note?.visible' [nzLeft]='ui.note?.pinned || false'>
+          {{ customer?.note | existpipe }}
+        </td>
+      </tr>
+      <tr *ngIf='(remain$ | async)'>
+        <td colspan='10'>
+          <div
+            class='w-100 d-flex justify-content-start'
+            style='position: relative'
           >
-            {{ i + 1 }}
-          </td>
-          <td
-            *ngIf='(account$ | async)?.mode === ModeEnum.INFO'
-            [nzLeft]='ui.stt?.pinned || false'
-          >
-            {{ customer.id }}
-          </td>
-          <td *ngIf='ui.name?.visible' [nzLeft]='ui.name?.pinned || false'>
-            {{ customer?.lastName }}
-          </td>
-          <td
-            *ngIf='ui.phone?.visible'
-            [nzLeft]='ui.phone?.pinned || false'
-          >
-            {{ customer?.phone | existpipe }}
-          </td>
-          <td
-            *ngIf='ui.birthday?.visible'
-            [nzLeft]='ui.birthday?.pinned || false'
-          >
-            {{ customer?.birthday | existpipe }}
-          </td>
-          <td
-            *ngIf='ui.gender?.visible'
-            [nzLeft]='ui.gender?.pinned || false'
-          >
-            {{ customer?.gender | transformconstant: GenderTypeConstant }}
-          </td>
-          <td
-            *ngIf='ui.potential?.visible'
-            [nzLeft]='ui.potential?.pinned || false'
-          >
-            <input
-              type='checkbox'
-              [disabled]='true'
-              [checked]='customer.isPotential'
-            />
-          </td>
-          <td
-            *ngIf='ui.resource?.visible'
-            [nzLeft]='ui.resource?.pinned || false'
-          >
-            {{ customer?.resource | transformconstant: ResourcesConstant }}
-          </td>
-          <td
-            *ngIf='ui.customerType?.visible'
-            [nzLeft]='ui.customerType?.pinned || false'
-          >
-            {{ customer?.type | transformconstant: CustomerConstant }}
-          </td>
-          <td
-            *ngIf='ui.email?.visible'
-            [nzLeft]='ui.email?.pinned || false'
-          >
-            {{ customer?.email | existpipe }}
-          </td>
-          <td
-            *ngIf='ui.address?.visible'
-            [nzLeft]='ui.address?.pinned || false'
-          >
-            {{
-            (customer?.address || '') +
-            ' ' +
-            (customer.ward?.name || '') +
-            ' ' +
-            (customer.district?.name || '') +
-            ' ' +
-            customer.province.name
-            }}
-          </td>
-          <td *ngIf='ui.note?.visible' [nzLeft]='ui.note?.pinned || false'>
-            {{ customer?.note | existpipe }}
-          </td>
-        </tr>
-        <tr *ngIf='(remain$ | async)'>
-          <td colspan='10'>
-            <div
-              class='w-100 d-flex justify-content-start'
-              style='position: relative'
+            <button
+              nz-button
+              nzGhost
+              nzType='primary'
+              style='position: sticky; left: 45vw'
+              [nzLoading]='loading$ | async'
+              (click)='onLoadMore()'
             >
-              <button
-                nz-button
-                nzGhost
-                nzType='primary'
-                style='position: sticky; left: 45vw'
-                [nzLoading]='loading$ | async'
-                (click)='onLoadMore()'
-              >
-                Tải thêm {{ remain$ | async }} khách hàng
-              </button>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </nz-table>
-    </div>
+              Tải thêm {{ remain$ | async }} khách hàng
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
   </div>
 </div>
 

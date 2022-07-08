@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { AddOrderComponent, DetailOrderComponent, OrderComponent, PaymentHistoryComponent } from './container';
-import { OrderDialogComponent, TableRouteComponent, VisibleOrderComponent } from './component';
+import { OrderDialogComponent, VisibleOrderComponent } from './component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
@@ -40,7 +40,6 @@ import {
 } from '../commodity/component/modal-update-closed-commodity/modal-update-closed-commodity.component';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { PriceCommodityPipe } from '../../shared/pipe/price-commodity.pipe';
 
 @NgModule({
   imports: [
@@ -81,10 +80,9 @@ import { PriceCommodityPipe } from '../../shared/pipe/price-commodity.pipe';
     NzStepsModule,
     MatDatepickerModule,
     NzSpinModule,
-    NzDropDownModule,
+    NzDropDownModule
   ],
   declarations: [
-    TableRouteComponent,
     PaymentHistoryComponent,
     OrderComponent,
     DetailOrderComponent,
@@ -98,7 +96,7 @@ import { PriceCommodityPipe } from '../../shared/pipe/price-commodity.pipe';
     { provide: MAT_DIALOG_DATA, useValue: {} },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     DatePipe,
-    OrderService,
+    OrderService
   ],
   exports: []
 })
