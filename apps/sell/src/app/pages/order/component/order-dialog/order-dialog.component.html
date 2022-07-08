@@ -72,8 +72,8 @@
 </ng-template>
 <ng-template [ngIf]="stepIndex === 1">
   <div class="pt-2">
-    <app-pick-customer [pickOne]="true" [formGroup]="formGroup">
-    </app-pick-customer>
+    <select-customer [pickOne]="true" [formGroup]="formGroup">
+    </select-customer>
   </div>
 </ng-template>
 <ng-template [ngIf]="stepIndex === 2">

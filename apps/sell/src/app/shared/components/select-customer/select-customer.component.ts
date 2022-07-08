@@ -10,7 +10,7 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { CustomerConstant, ResourcesConstant } from '../../../pages/customer/constants';
 
 @Component({
-  selector: 'app-pick-customer',
+  selector: 'select-customer',
   templateUrl: 'select-customer.component.html'
 })
 export class SelectCustomerComponent implements OnInit {
