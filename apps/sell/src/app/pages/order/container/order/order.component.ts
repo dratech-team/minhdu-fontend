@@ -28,15 +28,15 @@ export class OrderComponent implements OnInit {
 
   ui$ = this.orderQuery.select((state) => state.ui);
   expandedAll$ = this.orderQuery.select((state) => state.expandedAll);
-  orders$ = this.orderQuery
-    .selectAll()
-    .pipe(map((value) => JSON.parse(JSON.stringify(value))));
   loading$ = this.orderQuery.selectLoading();
   total$ = this.orderQuery.select((state) => state.total);
   count$ = this.orderQuery.selectCount();
   remain$ = this.orderQuery.select((state) => state.remain);
   commodityUniq$ = this.orderQuery.select((state) => state.commodityUniq);
   totalCommodity$ = this.orderQuery.select((state) => state.totalCommodity);
+  orders$ = this.orderQuery
+    .selectAll()
+    .pipe(map((value) => JSON.parse(JSON.stringify(value))));
   commodities$ = this.orderQuery.selectAll().pipe(
     map((orders) => {
       return _.uniqBy(

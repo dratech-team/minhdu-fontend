@@ -81,10 +81,11 @@
     <div class='d-flex mb-2'>
       <nz-table
         #tableRoute
+        nzSize='middle'
         *ngIf='ui$ | async as ui'
         [nzLoading]='(loading$ | async) && (total$ | async) === 0'
         [nzScroll]="{ x: '2000px', y: '60vh' }"
-        nzSize='default'
+        [nzFrontPagination]='false'
         [nzShowPagination]='false'
         [nzData]='routes$ | async'
       >

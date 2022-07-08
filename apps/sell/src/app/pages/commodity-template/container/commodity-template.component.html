@@ -30,9 +30,10 @@
     <div>
       <nz-table
         #tableTemplate
-        *ngIf='templates$ | async as templates'
         nzSize='middle'
-        nzShowPagination='false'
+        *ngIf='templates$ | async as templates'
+        [nzFrontPagination]='false'
+        [nzShowPagination]='false'
         [nzScroll]="{ x: '', y: '58vh' }"
         [nzLoading]='(loading$ | async) && (total$ | async) === 0'
         [nzData]='templates'

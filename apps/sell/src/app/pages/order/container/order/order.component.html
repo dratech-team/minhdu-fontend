@@ -134,9 +134,9 @@
       <nz-table
         #tableOrder
         nzSize='middle'
-        nzShowPagination='false'
-        nzFrontPagination='false'
-        [nzScroll]="{ x: '2000px', y: '58vh' }"
+        [nzFrontPagination]='false'
+        [nzShowPagination]='false'
+        [nzScroll]="{ x: '2300px', y: '65vh' }"
         [nzLoading]='(loading$ | async) && (total$ | async) === 0'
         [nzData]='(orders$ | async) || []'
         [formGroup]='formGroup'
