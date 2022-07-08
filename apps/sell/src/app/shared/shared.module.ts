@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PickOrderComponent } from './components/pick-order/pick-order.component';
+import { SelectOrderComponent } from './components/select-order/select-order.component';
 import { CommonModule, CurrencyPipe, DecimalPipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
@@ -60,7 +60,7 @@ import { OrderListComponent } from './components/order-list/order-list.component
   ],
   declarations: [
     OrderListComponent,
-    PickOrderComponent,
+    SelectOrderComponent,
     SelectCommodityComponent,
     SelectCustomerComponent,
     SelectRouteComponent,
@@ -70,7 +70,7 @@ import { OrderListComponent } from './components/order-list/order-list.component
   exports: [
     OrderListComponent,
     SelectCommodityComponent,
-    PickOrderComponent,
+    SelectOrderComponent,
     SelectCustomerComponent,
     SelectRouteComponent,
     PriceCommodityPipe

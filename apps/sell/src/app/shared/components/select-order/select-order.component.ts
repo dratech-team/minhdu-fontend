@@ -11,11 +11,11 @@ import { SortTypeOrderEnum } from '@minhdu-fontend/enums';
 import { SearchOrderDto } from '../../../pages/order/dto';
 
 @Component({
-  selector: 'minhdu-fontend-pick-order',
-  templateUrl: 'pick-order.component.html',
-  styleUrls: ['pick-route.component.scss'],
+  selector: 'select-order',
+  templateUrl: 'select-order.component.html',
+  styleUrls: ['select-order.component.scss'],
 })
-export class PickOrderComponent implements OnInit {
+export class SelectOrderComponent implements OnInit {
   @Input() columns!: SortTypeOrderEnum[];
   @Input() formGroup!: UntypedFormGroup;
   @Input() pickOne = false;
