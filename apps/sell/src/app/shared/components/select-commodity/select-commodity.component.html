@@ -9,7 +9,7 @@
       nz-button
       nzType='primary'
       nzGhost
-      (click)='addCommodity()'
+      (click)='onAdd()'
     >
       Thêm
     </button>
@@ -18,12 +18,11 @@
     <nz-table
       #tableCommodity
       nzSize='small'
+      [nzFrontPagination]='false'
+      [nzShowPagination]='false'
       [nzData]='(commodities$ | async) || []'
       [formGroup]='formGroupCommodity'
-      [nzPageSize]='pageSizeTable'
       [nzScroll]="{ x: '1800px', y: '50vh' }"
-      (nzPageIndexChange)='onPagination($event)'
-      (nzCurrentPageDataChange)='onCurrentPageDataChange($event)'
     >
       <thead>
       <tr>
@@ -34,6 +33,14 @@
           [nzIndeterminate]='indeterminate'
           (nzCheckedChange)='onAllChecked($event)'
         ></th>
+        <th nzWidth='50px'>
+          <div>STT</div>
+          <input nz-input type='text' disabled />
+        </th>
+        <th nzWidth='50px' *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>
+          <div>ID</div>
+          <input nz-input type='text' disabled />
+        </th>
         <th nzWidth='120px'>
           <div>Mã hàng</div>
           <input nz-input type='text' formControlName='code' />
@@ -85,6 +92,8 @@
             [nzChecked]='setOfCheckedId.has(commodity.id)'
             (nzCheckedChange)='onItemChecked(commodity.id, $event)'
           ></td>
+          <td>{{ i + 1 }}</td>
+          <td *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>{{ commodity.id }}</td>
           <td>{{ commodity.code }}</td>
           <td>{{ commodity.name }}</td>
           <td>{{ commodity.price | number: '1.0' | notEmpty: '0' }} đ</td>
@@ -94,9 +103,28 @@
           <td>
             {{ commodity?.more?.price | number: '1.0' | notEmpty: '0' }} đ
           </td>
-          <td>{{ commodity.unit === commodityUnit.KG ? 'KG' : 'Con' }}</td>
+          <td>{{ commodity.unit === CommodityUnit.KG ? 'KG' : 'Con' }}</td>
         </tr>
       </ng-template>
+      <tr *ngIf='(remain$ | async)'>
+        <td colspan='5'>
+          <div
+            class='w-100 d-flex justify-content-start'
+            style='position: relative'
+          >
+            <button
+              nz-button
+              nzGhost
+              nzType='primary'
+              style='position: sticky; left: 45vw'
+              [nzLoading]='loading$ | async'
+              (click)='onLoadMore()'
+            >
+              Tải thêm {{ remain$ | async }} mặt hàng
+            </button>
+          </div>
+        </td>
+      </tr>
       </tbody>
     </nz-table>
   </div>
@@ -112,7 +140,7 @@
 </div>
 <app-mouse-right
   #child
-  (onAdd)='addCommodity()'
-  (onDel)='deleteCommodity($event)'
-  (onUpdate)='updateCommodity($event)'
+  (onAdd)='onAdd()'
+  (onDel)='onRemove($event)'
+  (onUpdate)='onUpdate($event)'
 ></app-mouse-right>

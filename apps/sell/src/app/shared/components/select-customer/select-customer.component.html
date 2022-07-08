@@ -10,7 +10,7 @@
       nz-button
       nzType='primary'
       nzGhost
-      (click)='addCustomer()'
+      (click)='onAdd()'
     >
       Thêm
     </button>
@@ -18,12 +18,12 @@
   <div class='mt-2'>
     <nz-table
       #tablePickCustomer
+      nzSize='middle'
+      [nzFrontPagination]='false'
+      [nzShowPagination]='false'
       [formGroup]='formGroupCustomer'
       [nzData]='customers'
-      [nzScroll]="{ y: '500px' }"
-      [nzPageSize]='pageSizeTable'
-      (nzPageIndexChange)='onPagination($event)'
-      nzSize='middle'
+      [nzScroll]="{ y: '50vh' }"
     >
       <thead>
       <tr>
@@ -38,6 +38,12 @@
           >
           </mat-checkbox>
           <input disabled *ngIf='pickOne' />
+        </th>
+        <th nzWidth='50px' *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>
+          STT
+        </th>
+        <th nzWidth='50px' *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>
+          ID
         </th>
         <th>
           <div>Tên Khách hàng</div>
@@ -56,11 +62,11 @@
           <div>Loại khách hàng</div>
           <nz-select style='width: 100%' formControlName='type'>
             <nz-option
-              nzValue='{{ customerType.RETAIL }}'
+              nzValue='{{ CustomerType.RETAIL }}'
               nzLabel='Bán lẻ'
             ></nz-option>
             <nz-option
-              nzValue='{{ customerType.AGENCY }}'
+              nzValue='{{ CustomerType.AGENCY }}'
               nzLabel='Đại lý'
             ></nz-option>
             <nz-option nzValue='' nzLabel='tất cả'></nz-option>
@@ -73,7 +79,12 @@
       </tr>
       </thead>
       <tbody [formGroup]='formGroup'>
-      <ng-template ngFor let-customer [ngForOf]='tablePickCustomer.data'>
+      <ng-template
+        ngFor
+        let-customer
+        [ngForOf]='tablePickCustomer.data'
+        let-i='index'
+      >
         <tr>
           <td class='py-2' *ngIf='pickOne; else pickAll'>
             <input
@@ -83,6 +94,8 @@
               value='{{ customer.id }}'
             />
           </td>
+          <td>{{ i + 1 }}</td>
+          <td *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>{{ customer.id }}</td>
           <ng-template #pickAll>
             <td>
               <mat-checkbox
@@ -97,16 +110,34 @@
           <td class='pointer'>{{ customer.lastName }}</td>
           <td class='pointer'>{{ customer.phone }}</td>
           <td>
-            {{ customer?.type | transformconstant: CustomerTypeConstant }}
+            {{ customer?.type | transformconstant: CustomerConstant }}
           </td>
           <td>
             {{
-            customer?.resource
-              | transformconstant: customerResourcesConstant
+            customer?.resource | transformconstant: ResourcesConstant
             }}
           </td>
         </tr>
       </ng-template>
+      <tr *ngIf='(remain$ | async)'>
+        <td colspan='5'>
+          <div
+            class='w-100 d-flex justify-content-start'
+            style='position: relative'
+          >
+            <button
+              nz-button
+              nzGhost
+              nzType='primary'
+              style='position: sticky; left: 45vw'
+              [nzLoading]='loading$ | async'
+              (click)='onLoadMore()'
+            >
+              Tải thêm {{ remain$ | async }} khách hàng
+            </button>
+          </div>
+        </td>
+      </tr>
       </tbody>
     </nz-table>
   </div>

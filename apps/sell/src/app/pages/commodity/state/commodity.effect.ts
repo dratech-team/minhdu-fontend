@@ -7,8 +7,8 @@ import { of } from 'rxjs';
 import { OrderActions } from '../../order/+state';
 import { CommodityQuery } from './commodity.query';
 import { CommodityStore } from './commodity.store';
-import { SearchCommodityDto } from '../dto';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { PaginationDto } from '@minhdu-fontend/constants';
 
 @Injectable()
 export class CommodityEffect {
@@ -18,7 +18,8 @@ export class CommodityEffect {
     private readonly commodityStore: CommodityStore,
     private readonly message: NzMessageService,
     private readonly commodityService: CommodityService
-  ) {}
+  ) {
+  }
 
   @Effect()
   addOne$ = this.actions$.pipe(
@@ -26,13 +27,13 @@ export class CommodityEffect {
     switchMap((props) => {
       this.commodityStore.update((state) => ({
         ...state,
-        added: false,
+        loading: true
       }));
       return this.commodityService.addOne(props).pipe(
         map((commodity) => {
           this.commodityStore.update((state) => ({
             ...state,
-            added: true,
+            loading: false
           }));
           this.message.success('Thêm hàng hóa thành công');
           this.commodityStore.add(commodity);
@@ -40,7 +41,7 @@ export class CommodityEffect {
         catchError((err) => {
           this.commodityStore.update((state) => ({
             ...state,
-            added: null,
+            loading: null
           }));
           return of(CommodityAction.error(err));
         })
@@ -54,33 +55,31 @@ export class CommodityEffect {
     switchMap((props) => {
       this.commodityStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
-      return this.commodityService
-        .pagination(props.search as SearchCommodityDto)
+      const param = Object.assign(props, Object.assign(props.search, {
+        take: PaginationDto.take,
+        skip: this.commodityQuery.getCount()
+      }));
+      return this.commodityService.pagination(param)
         .pipe(
-          map((ResponsePaginate) => {
+          map((res) => {
+            if (props?.isPaginate) {
+              this.commodityStore.add(res.data);
+            } else {
+              this.commodityStore.set(res.data);
+            }
             this.commodityStore.update((state) => ({
               ...state,
               loading: false,
+              total: res.total,
+              remain: res.total - this.commodityQuery.getCount()
             }));
-            if (ResponsePaginate.data.length === 0) {
-              this.message.warning('Đã lấy hết hàng hoá');
-            }
-            this.commodityStore.update((state) => ({
-              ...state,
-              total: ResponsePaginate.total,
-            }));
-            if (props?.isPaginate) {
-              this.commodityStore.add(ResponsePaginate.data);
-            } else {
-              this.commodityStore.set(ResponsePaginate.data);
-            }
           }),
           catchError((err) => {
             this.commodityStore.update((state) => ({
               ...state,
-              loading: false,
+              loading: false
             }));
             return of(CommodityAction.error(err));
           })
@@ -89,7 +88,7 @@ export class CommodityEffect {
   );
 
   @Effect()
-  getCommodity$ = this.actions$.pipe(
+  getOne$ = this.actions$.pipe(
     ofType(CommodityAction.getOne),
     switchMap((props) =>
       this.commodityService.getOne(props.id).pipe(
@@ -102,18 +101,18 @@ export class CommodityEffect {
   );
 
   @Effect()
-  updateCommodity$ = this.actions$.pipe(
+  updateOne$ = this.actions$.pipe(
     ofType(CommodityAction.update),
     switchMap((props) => {
       this.commodityStore.update((state) => ({
         ...state,
-        added: false,
+        loading: true
       }));
       return this.commodityService.update(props).pipe(
         map((commodity) => {
           this.commodityStore.update((state) => ({
             ...state,
-            added: true,
+            loading: false
           }));
           this.message.success('Cập nhật hóa thành công');
           if (props.updates?.orderId) {
@@ -126,7 +125,7 @@ export class CommodityEffect {
         catchError((err) => {
           this.commodityStore.update((state) => ({
             ...state,
-            added: null,
+            loading: null
           }));
           return of(CommodityAction.error(err));
         })

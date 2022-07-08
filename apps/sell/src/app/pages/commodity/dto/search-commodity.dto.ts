@@ -1,8 +1,7 @@
 import { BaseSearchDto } from '@minhdu-fontend/base-dto';
 import { BaseCommodityEntity } from '../entities';
 
-export interface BaseSearchCommodityDto
-  extends Partial<Omit<BaseCommodityEntity, 'id'>> {
+export interface BaseSearchCommodityDto extends Partial<Omit<BaseCommodityEntity, 'id'>> {
   readonly closed?: boolean;
 }
 

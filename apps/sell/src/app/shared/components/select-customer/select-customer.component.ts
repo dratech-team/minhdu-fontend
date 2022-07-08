@@ -2,12 +2,14 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewContainerRef } from
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { CustomerEntity } from '../../../pages/customer/entities';
-import { CustomerType } from '@minhdu-fontend/enums';
+import { CustomerType, ModeEnum } from '@minhdu-fontend/enums';
 import { CustomerModalComponent } from '../../../pages/customer/component';
 import { CustomerActions, CustomerQuery } from '../../../pages/customer/+state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { CustomerConstant, ResourcesConstant } from '../../../pages/customer/constants';
+import { AccountQuery } from '../../../../../../../libs/system/src/lib/state/account-management/account.query';
+import { PaginationDto } from '@minhdu-fontend/constants';
 
 @Component({
   selector: 'select-customer',
@@ -21,16 +23,18 @@ export class SelectCustomerComponent implements OnInit {
   @Output() checkEvent = new EventEmitter<number[]>();
   @Input() data!: any;
 
+  account$ = this.accountQuery.selectCurrentUser();
+  remain$ = this.customerQuery.select(state => state.remain);
+  loading$ = this.customerQuery.selectLoading();
   customers$ = this.customerQuery.selectAll();
 
-  customerResourcesConstant = ResourcesConstant;
-  CustomerTypeConstant = CustomerConstant;
-  customerType = CustomerType;
-  pageSize = 30;
-  pageIndexInit = 0;
-  pageSizeTable = 5;
   isSelectAll = false;
   customerIds: number[] = [];
+
+  ResourcesConstant = ResourcesConstant;
+  CustomerConstant = CustomerConstant;
+  CustomerType = CustomerType;
+  ModeEnum = ModeEnum;
 
   formGroupCustomer = new UntypedFormGroup({
     name: new UntypedFormControl(''),
@@ -40,10 +44,11 @@ export class SelectCustomerComponent implements OnInit {
 
   constructor(
     private readonly actions$: Actions,
-    private readonly customerQuery: CustomerQuery,
     private readonly modal: NzModalService,
     private readonly viewContentRef: ViewContainerRef,
-    private readonly modalRef: NzModalRef
+    private readonly modalRef: NzModalRef,
+    private readonly customerQuery: CustomerQuery,
+    private readonly accountQuery: AccountQuery
   ) {
   }
 
@@ -61,37 +66,35 @@ export class SelectCustomerComponent implements OnInit {
         debounceTime(1000),
         tap((value) => {
           this.actions$.dispatch(
-            CustomerActions.loadAll({ search: this.customer(value) })
+            CustomerActions.loadAll({ search: this.mapToCustomer(value) })
           );
         })
       )
       .subscribe();
   }
 
-  onPagination(pageIndex: number) {
-    const count = this.customerQuery.getCount();
+  onAdd() {
+    this.modal.create({
+      nzTitle: 'Thêm khách hàng',
+      nzContent: CustomerModalComponent,
+      nzViewContainerRef: this.viewContentRef,
+      nzFooter: null,
+      nzWidth: '65vw',
+      nzMaskClosable: false
+    });
+  }
+
+  public onLoadMore() {
     const val = this.formGroupCustomer.value;
-    if (pageIndex * this.pageSizeTable >= count) {
-      this.actions$.dispatch(
-        CustomerActions.loadAll({
-          search: this.customer(val, true),
-          isPaginate: true
-        })
-      );
-    }
+    this.actions$.dispatch(
+      CustomerActions.loadAll({
+        search: this.mapToCustomer(val, true),
+        isPaginate: true
+      })
+    );
   }
 
-  customer(val: any, isScroll?: boolean) {
-    return {
-      skip: isScroll ? this.customerQuery.getCount() : 0,
-      take: this.pageSize,
-      lastName: val.name.trim(),
-      type: val.type,
-      resource: val.resource
-    };
-  }
-
-  updateAllSelect(id: number) {
+  public updateAllSelect(id: number) {
     const index = this.customerIds.indexOf(id);
     if (index > -1) {
       this.customerIds.splice(index, 1);
@@ -104,7 +107,7 @@ export class SelectCustomerComponent implements OnInit {
     this.checkEvent.emit(this.customerIds);
   }
 
-  someComplete(): boolean {
+  public someComplete(): boolean {
     if (this.customers == null) {
       return false;
     }
@@ -114,7 +117,7 @@ export class SelectCustomerComponent implements OnInit {
     );
   }
 
-  setAll(select: boolean) {
+  public setAll(select: boolean) {
     this.isSelectAll = select;
     if (this.customers == null) {
       return;
@@ -134,18 +137,17 @@ export class SelectCustomerComponent implements OnInit {
     this.checkEvent.emit(this.customerIds);
   }
 
-  closeDialog() {
+  public closeDialog() {
     this.modalRef.close(this.formGroupCustomer.value);
   }
 
-  addCustomer() {
-    this.modal.create({
-      nzTitle: 'Thêm khách hàng',
-      nzContent: CustomerModalComponent,
-      nzViewContainerRef: this.viewContentRef,
-      nzFooter: null,
-      nzWidth: '65vw',
-      nzMaskClosable: false
-    });
+  private mapToCustomer(val: any, isScroll?: boolean) {
+    return {
+      skip: isScroll ? this.customerQuery.getCount() : 0,
+      take: PaginationDto.take,
+      lastName: val.name.trim(),
+      type: val.type,
+      resource: val.resource
+    };
   }
 }

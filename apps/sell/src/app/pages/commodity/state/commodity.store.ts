@@ -4,15 +4,14 @@ import { CommodityEntity } from '../entities';
 import { StorageName } from '@minhdu-fontend/constants';
 
 export interface CommodityState extends EntityState<CommodityEntity> {
-  loading: boolean;
-  added: boolean | null;
   readonly total: number;
+  readonly remain: number;
 }
 
 export const createInitialState = () => ({
-  loading: true,
+  loading: false,
   total: 0,
-  added: null,
+  remain: 0
 });
 
 @Injectable({ providedIn: 'root' })
