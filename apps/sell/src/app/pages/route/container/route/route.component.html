@@ -147,10 +147,6 @@
           >
             Tên Tài xế
           </th>
-          <!--          <th *ngIf="ui.customer.visible" [nzLeft]='ui.customer?.pinned||false'-->
-          <!--              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.CUSTOMER ,orderType:$event})'>-->
-          <!--            Khách hàng-->
-          <!--          </th>-->
           <th
             *ngIf='ui.bsx.visible'
             [nzLeft]='ui.bsx?.pinned || false'
@@ -230,14 +226,6 @@
             >
               {{ route?.driver || route?.employee?.lastName }}
             </td>
-            <!--            <td *ngIf="ui.customer.visible" [nzLeft]='ui.customer?.pinned||false'-->
-            <!--                (click)='onDetail(route.id, false)'>-->
-            <!--              <div class=' d-flex align-items-center justify-content-center pointer ' [ngClass]='{-->
-            <!--              "border-top": route.orders.length > 1 && index  !== 0-->
-            <!--              }' *ngFor='let order of route.orders; let index = index'>-->
-            <!--                {{order.customer.lastName}}-->
-            <!--              </div>-->
-            <!--            </td>-->
             <td
               *ngIf='ui.bsx.visible'
               [nzLeft]='ui.bsx?.pinned || false'
@@ -273,55 +261,55 @@
               nzSize='small'
               [nzShowPagination]='false'
             >
-        <thead>
-        <tr>
-          <th class='text-center'>Tên khách hàng</th>
-          <th class='text-center'>Ngày tạo</th>
-          <th class='text-center'>Điểm đến</th>
-          <th class='text-center'>Tiền hàng</th>
-          <th class='text-center'>Tổng hàng hoá</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor='let order of innerTable.data'>
-          <td>{{ order.customer.lastName }}</td>
-          <td>{{ order.createdAt | date: 'dd-MM-yyyy' }}</td>
-          <td>
-            {{ order?.province?.name }} -
-            {{ order?.district?.name }} - {{ order?.ward?.name }}
-          </td>
-          <td>{{ order?.commodityTotal | number: '1.0-0' }} đ</td>
-          <td>{{ order?.totalCommodity | number: '1.0-0' }}</td>
-        </tr>
-        </tbody>
-      </nz-table>
-      </tr>
-      <tr
-        *ngIf='
-              ((count$ | async) || 0) < ((total$ | async) || 0) &&
-              (total$ | async) !== 0
-            '
-      >
-        <td colspan='17'>
-          <div
-            class='w-100 d-flex justify-content-start'
-            style='position: relative'
+              <thead>
+                <tr>
+                  <th class='text-center'>Tên khách hàng</th>
+                  <th class='text-center'>Ngày tạo</th>
+                  <th class='text-center'>Điểm đến</th>
+                  <th class='text-center'>Tiền hàng</th>
+                  <th class='text-center'>Tổng hàng hoá</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor='let order of innerTable.data'>
+                  <td>{{ order.customer.lastName }}</td>
+                  <td>{{ order.createdAt | date: 'dd-MM-yyyy' }}</td>
+                  <td>
+                    {{ order?.province?.name }} -
+                    {{ order?.district?.name }} - {{ order?.ward?.name }}
+                  </td>
+                  <td>{{ order?.commodityTotal | number: '1.0-0' }} đ</td>
+                  <td>{{ order?.totalCommodity | number: '1.0-0' }}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </tr>
+          <tr
+            *ngIf='
+                  ((count$ | async) || 0) < ((total$ | async) || 0) &&
+                  (total$ | async) !== 0
+                '
           >
-            <button
-              (click)='onLoadMore()'
-              style='position: sticky; left: 45vw'
-              nz-button
-              nzType='primary'
-              [nzLoading]='loading$ | async'
-            >
-              Tải thêm {{ remain$ | async }} tuyến đường
-            </button>
-          </div>
-        </td>
-      </tr>
-      </ng-template>
+            <td colspan='17'>
+              <div
+                class='w-100 d-flex justify-content-start'
+                style='position: relative'
+              >
+                <button
+                  (click)='onLoadMore()'
+                  style='position: sticky; left: 45vw'
+                  nz-button
+                  nzType='primary'
+                  [nzLoading]='loading$ | async'
+                >
+                  Tải thêm {{ remain$ | async }} tuyến đường
+                </button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
       </tbody>
-      </nz-table>
+    </nz-table>
     </div>
   </div>
 </div>
