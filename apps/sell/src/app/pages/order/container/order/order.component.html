@@ -1,7 +1,7 @@
-<div class='d-flex'>
+<div class='d-flex container'>
   <div
-    class='d-flex flex-column ml-3 border p-2'
-    style='height: 80vh; width: 280px; overflow-y: scroll'
+    class='d-flex flex-column border'
+    style='height: 80vh; width: 18%; overflow-y: scroll; padding: 10px'
   >
     <nz-collapse>
       <nz-collapse-panel nzHeader='Tìm kiếm' nzActive='true'>
@@ -71,29 +71,41 @@
       </nz-collapse-panel>
     </nz-collapse>
   </div>
-  <div class='ml-2' style='width: 76vw'>
-    <div class='d-flex justify-content-between mb-2'>
-      <div class='h3'>Danh sách đơn hàng</div>
-      <div class='d-flex justify-content-between'>
-        <button (click)='onAdd()' nz-button nzType='primary'>Thêm</button>
-        <button (click)='onPrint()' class='ml-2' nz-button nzType='primary'>
+  <div class='ml-3' style='width: 80%'>
+    <div class='d-flex justify-content-end mt-1'>
+      <div class='ml-3 d-flex'>
+        <button
+          nz-button
+          nzGhost
+          nzType='primary'
+          (click)='onAdd()'
+        >
+          Thêm
+        </button>
+        <button
+          class='ml-2'
+          nzGhost
+          nz-button
+          nzType='primary'
+          (click)='onPrint()'
+        >
           Xuất
         </button>
         <button
           class='ml-2'
           nz-button
+          nzType='dashed'
           nz-popover
           nzPopoverTitle='Thêm cột'
-          [(nzPopoverVisible)]='visible'
           nzPopoverPlacement='bottomRight'
-          [nzPopoverContent]='pinColumn'
           nzPopoverTrigger='click'
+          [(nzPopoverVisible)]='visible'
+          [nzPopoverContent]='pinColumn'
         >
           Ghim
         </button>
       </div>
     </div>
-
     <div>
       <div class='d-flex mb-2'>
         <div class='mr-2'>
@@ -115,15 +127,14 @@
           </div>
         </div>
       </div>
-
       <nz-table
         #tableOrder
-        [nzScroll]="{ x: '2000px', y: '58vh' }"
         nzSize='middle'
-        [nzPageSize]='pageSizeTable'
-        [nzLoading]="(loading$ | async) && (total$ | async) === 0"
-        [nzData]='(orders$ | async) || []'
         nzShowPagination='false'
+        nzFrontPagination='false'
+        [nzScroll]="{ x: '2000px', y: '58vh' }"
+        [nzLoading]='(loading$ | async) && (total$ | async) === 0'
+        [nzData]='(orders$ | async) || []'
         [formGroup]='formGroup'
       >
         <thead>
@@ -392,22 +403,23 @@
       </nz-table>
       </tr>
       <tr
-        *ngIf="
+        *ngIf='
               ((count$ | async) || 0) < ((total$ | async) || 0) &&
               (total$ | async) !== 0
-            "
+            '
       >
-        <td colspan="17">
+        <td colspan='17'>
           <div
-            class="w-100 d-flex justify-content-start"
-            style="position: relative"
+            class='w-100 d-flex justify-content-start'
+            style='position: relative'
           >
             <button
-              (click)="onLoadMore()"
-              style="position: sticky; left: 45vw"
               nz-button
-              nzType="primary"
-              [nzLoading]="loading$ | async"
+              style='position: sticky; left: 45vw'
+              nzGhost
+              nzType='primary'
+              (click)='onLoadMore()'
+              [nzLoading]='loading$ | async'
             >
               Tải thêm {{ remain$ | async }} nhân viên
             </button>

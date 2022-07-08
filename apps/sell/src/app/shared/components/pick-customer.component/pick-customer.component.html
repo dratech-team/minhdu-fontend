@@ -1,115 +1,125 @@
-<div class="main-popup">
-  <div mat-dialog-close class="close-popup" *ngIf="closeable">
-    <span class="mr-1"> close</span>
-    <div class="x-popup">
-      <img src="assets/icon/share/x2-lg.svg" alt="cancel" />
+<div class='main-popup'>
+  <div mat-dialog-close class='close-popup' *ngIf='closeable'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='assets/icon/share/x2-lg.svg' alt='cancel' />
     </div>
   </div>
-  <button nz-button nzType="primary" (click)="addCustomer()">
-    Thêm khách hàng
-  </button>
-  <div class="mt-2">
+  <div class='d-flex justify-content-end'>
+    <button
+      nz-button
+      nzType='primary'
+      nzGhost
+      (click)='addCustomer()'
+    >
+      Thêm
+    </button>
+  </div>
+  <div class='mt-2'>
     <nz-table
       #tablePickCustomer
-      [formGroup]="formGroupCustomer"
-      [nzData]="customers"
+      [formGroup]='formGroupCustomer'
+      [nzData]='customers'
       [nzScroll]="{ y: '500px' }"
-      [nzPageSize]="pageSizeTable"
-      (nzPageIndexChange)="onPagination($event)"
-      nzSize="middle"
+      [nzPageSize]='pageSizeTable'
+      (nzPageIndexChange)='onPagination($event)'
+      nzSize='middle'
     >
       <thead>
-        <tr>
-          <th>
-            <div>Tất cả</div>
-            <mat-checkbox
-              *ngIf="!pickOne"
-              class="example-margin m-auto"
-              [checked]="isSelectAll"
-              [indeterminate]="someComplete()"
-              (change)="setAll($event.checked)"
-            >
-            </mat-checkbox>
-            <input disabled *ngIf="pickOne" />
-          </th>
-          <th>
-            <div>Tên Khách hàng</div>
-            <input
-              nz-input
-              type="search"
-              placeholder="tran gia hieu"
-              formControlName="name"
-            />
-          </th>
-          <th>
-            <div>Số điện thoại</div>
-            <input disabled type="search" nz-input />
-          </th>
-          <th>
-            <div>Loại khách hàng</div>
-            <nz-select style="width: 100%" formControlName="type">
-              <nz-option
-                nzValue="{{ customerType.RETAIL }}"
-                nzLabel="Bán lẻ"
-              ></nz-option>
-              <nz-option
-                nzValue="{{ customerType.AGENCY }}"
-                nzLabel="Đại lý"
-              ></nz-option>
-              <nz-option nzValue="" nzLabel="tất cả"></nz-option>
-            </nz-select>
-          </th>
-          <th>
-            <div>Nguồn khách hàng</div>
-            <input disabled nz-input />
-          </th>
-        </tr>
+      <tr>
+        <th>
+          <div>Tất cả</div>
+          <mat-checkbox
+            *ngIf='!pickOne'
+            class='example-margin m-auto'
+            [checked]='isSelectAll'
+            [indeterminate]='someComplete()'
+            (change)='setAll($event.checked)'
+          >
+          </mat-checkbox>
+          <input disabled *ngIf='pickOne' />
+        </th>
+        <th>
+          <div>Tên Khách hàng</div>
+          <input
+            nz-input
+            type='search'
+            placeholder='tran gia hieu'
+            formControlName='name'
+          />
+        </th>
+        <th>
+          <div>Số điện thoại</div>
+          <input disabled type='search' nz-input />
+        </th>
+        <th>
+          <div>Loại khách hàng</div>
+          <nz-select style='width: 100%' formControlName='type'>
+            <nz-option
+              nzValue='{{ customerType.RETAIL }}'
+              nzLabel='Bán lẻ'
+            ></nz-option>
+            <nz-option
+              nzValue='{{ customerType.AGENCY }}'
+              nzLabel='Đại lý'
+            ></nz-option>
+            <nz-option nzValue='' nzLabel='tất cả'></nz-option>
+          </nz-select>
+        </th>
+        <th>
+          <div>Nguồn khách hàng</div>
+          <input disabled nz-input />
+        </th>
+      </tr>
       </thead>
-      <tbody [formGroup]="formGroup">
-        <ng-template ngFor let-customer [ngForOf]="tablePickCustomer.data">
-          <tr>
-            <td class="py-2" *ngIf="pickOne; else pickAll">
-              <input
-                type="radio"
-                formControlName="customerId"
-                name="customerId"
-                value="{{ customer.id }}"
-              />
-            </td>
-            <ng-template #pickAll>
-              <td>
-                <mat-checkbox
-                  *ngIf="!pickOne"
-                  class="checkID"
-                  [checked]="customerIds.includes(customer.id)"
-                  (change)="updateAllSelect(customer.id)"
-                >
-                </mat-checkbox>
-              </td>
-            </ng-template>
-            <td class="pointer">{{ customer.lastName }}</td>
-            <td class="pointer">{{ customer.phone }}</td>
+      <tbody [formGroup]='formGroup'>
+      <ng-template ngFor let-customer [ngForOf]='tablePickCustomer.data'>
+        <tr>
+          <td class='py-2' *ngIf='pickOne; else pickAll'>
+            <input
+              type='radio'
+              formControlName='customerId'
+              name='customerId'
+              value='{{ customer.id }}'
+            />
+          </td>
+          <ng-template #pickAll>
             <td>
-              {{ customer?.type | transformconstant: CustomerTypeConstant }}
+              <mat-checkbox
+                *ngIf='!pickOne'
+                class='checkID'
+                [checked]='customerIds.includes(customer.id)'
+                (change)='updateAllSelect(customer.id)'
+              >
+              </mat-checkbox>
             </td>
-            <td>
-              {{
-                customer?.resource
-                  | transformconstant: customerResourcesConstant
-              }}
-            </td>
-          </tr>
-        </ng-template>
+          </ng-template>
+          <td class='pointer'>{{ customer.lastName }}</td>
+          <td class='pointer'>{{ customer.phone }}</td>
+          <td>
+            {{ customer?.type | transformconstant: CustomerTypeConstant }}
+          </td>
+          <td>
+            {{
+            customer?.resource
+              | transformconstant: customerResourcesConstant
+            }}
+          </td>
+        </tr>
+      </ng-template>
       </tbody>
     </nz-table>
   </div>
-  <button
-    *ngIf="data?.isDialog"
-    nz-button
-    nzType="primary"
-    (click)="closeDialog()"
-    mat-dialog-close
-  >
-    xác nhận
-  </button>
+  <div>
+    <button
+      class='justify-content-end'
+      *ngIf='data?.isDialog'
+      nz-button
+      nzType='primary'
+      (click)='closeDialog()'
+      mat-dialog-close
+    >
+      xác nhận
+    </button>
+  </div>
 </div>

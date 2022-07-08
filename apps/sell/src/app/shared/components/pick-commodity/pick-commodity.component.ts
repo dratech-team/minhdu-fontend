@@ -18,6 +18,7 @@ export class PickCommodityComponent implements OnInit {
   @Input() data: any;
   @Input() formGroup!: UntypedFormGroup;
   @Input() pickPOne: boolean | undefined;
+
   setOfCheckedId = new Set<number>();
   commodityUnit = CommodityUnit;
   customerType = CustomerType;

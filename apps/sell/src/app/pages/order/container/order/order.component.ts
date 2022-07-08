@@ -125,7 +125,7 @@ export class OrderComponent implements OnInit {
       nzTitle: 'Thêm đơn hàng',
       nzContent: OrderDialogComponent,
       nzWidth: '80vw',
-      nzFooter: []
+      nzFooter: null
     });
   }
 
@@ -221,8 +221,7 @@ export class OrderComponent implements OnInit {
   }
 
   public onPickEndedAt($event: any) {
-    this.formGroup.get('endedAt_start')?.setValue($event.start),
-      { emitEvent: false };
+    this.formGroup.get('endedAt_start')?.setValue($event.start, { emitEvent: false });
     this.formGroup.get('endedAt_end')?.setValue($event.end);
   }
 

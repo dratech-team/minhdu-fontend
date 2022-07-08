@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { PaymentType } from '@minhdu-fontend/enums';
 import { OrderActions, OrderQuery } from '../../+state';
 import { DatePipe } from '@angular/common';
@@ -15,14 +15,18 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 })
 export class OrderDialogComponent implements OnInit {
   @Input() data: any;
-  payType = PaymentType;
-  formGroup!: UntypedFormGroup;
-  submitted = false;
-  routes: number[] = [];
+
+  formGroup!: FormGroup;
   districtId!: number;
   provinceId!: number;
+
+  loading$ = this.orderQuery.selectLoading();
+
+  submitted = false;
+  routes: number[] = [];
   stepIndex = 0;
-  loading$ = this.orderQuery.select((state) => state.loading);
+
+  PaymentType = PaymentType;
 
   constructor(
     private readonly actions$: Actions,
@@ -54,7 +58,7 @@ export class OrderDialogComponent implements OnInit {
       ward: [this.data?.order?.ward],
       customerId: [this.data?.order?.customerId],
       commodityIds: [
-        this.data.order?.commodities?.map((val: CommodityEntity) => val?.id)
+        this.data?.order?.commodities?.map((val: CommodityEntity) => val?.id)
       ]
     });
   }
@@ -101,7 +105,7 @@ export class OrderDialogComponent implements OnInit {
       this.actions$.dispatch(OrderActions.addOne({ body: order }));
     }
     this.loading$.subscribe((loading) => {
-      if (loading === false) {
+      if (!loading) {
         this.modalRef.close();
       }
     });

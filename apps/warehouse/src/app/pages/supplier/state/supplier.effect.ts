@@ -26,9 +26,6 @@ export class SupplierEffect {
       }));
       return this.service.pagination(props).pipe(
         tap((res) => {
-          if (res.data.length === 0) {
-            this.message.info('Đã lấy hết nhà cung cấp');
-          }
           this.supplierStore.update((state) => ({
             ...state,
             total: res.total,

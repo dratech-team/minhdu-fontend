@@ -29,14 +29,15 @@ import {
   templateUrl: 'pick-customer.component.html',
 })
 export class PickCustomerComponent implements OnInit {
-  customers$ = this.customerQuery.selectAll();
   @Input() customers: CustomerEntity[] = [];
   @Input() pickOne = false;
   @Input() formGroup!: UntypedFormGroup;
   @Input() closeable = false;
   @Output() checkEvent = new EventEmitter<number[]>();
   @Input() data!: any;
-  resourceType = CustomerResource;
+
+  customers$ = this.customerQuery.selectAll();
+
   customerResourcesConstant = ResourcesConstant;
   CustomerTypeConstant = CustomerConstant;
   customerType = CustomerType;
@@ -45,6 +46,7 @@ export class PickCustomerComponent implements OnInit {
   pageSizeTable = 5;
   isSelectAll = false;
   customerIds: number[] = [];
+
   formGroupCustomer = new UntypedFormGroup({
     name: new UntypedFormControl(''),
     type: new UntypedFormControl(''),

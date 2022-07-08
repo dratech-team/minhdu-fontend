@@ -57,9 +57,6 @@ export class ProductEffect {
             ...state,
             loading: false,
           }));
-          if (res.data.length === 0) {
-            this.message.warning('Đã lấy hết hàng hoá');
-          }
           if (props.isPaginate) {
             this.productStore.add(res.data);
           } else {
