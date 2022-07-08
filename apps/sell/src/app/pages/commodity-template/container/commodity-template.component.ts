@@ -17,18 +17,19 @@ import { DataModalCommodityTemplateData } from '../data/data-modal-commodity-tem
 import { ContextMenuEntity } from '@minhdu-fontend/data-models';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
 import { OrderActions } from '../../order/+state';
+import { startWith } from 'rxjs/operators';
 
 @Component({
   templateUrl: 'commodity-template.component.html'
 })
 export class CommodityTemplateComponent implements OnInit {
-  templates$ = this.query.selectAll();
-  loading$ = this.query.select((state) => state.loading);
-  total$ = this.query.select((state) => state.total);
+  loading$ = this.query.selectLoading();
   count$ = this.query.selectCount();
+  total$ = this.query.select((state) => state.total);
   remain$ = this.query.select(state => state.remain);
+  templates$ = this.query.selectAll();
 
-  stateSearch = this.query.getValue().search;
+  search = this.query.getValue().search;
 
   pageSizeTable = 10;
   panelOpenState = false;
@@ -65,20 +66,16 @@ export class CommodityTemplateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.formGroup.valueChanges.subscribe((_) => {
-      this.actions$.dispatch(
-        CommodityTemplateActions.loadAll({
-          search: this.mapTemplate(this.formGroup.value, false),
-          isPaginate: false
-        })
-      );
-    });
-  }
-
-  public onLoadMore() {
-    this.actions$.dispatch(
-      OrderActions.loadAll(this.mapTemplate(this.formGroup.value, true))
-    );
+    this.formGroup.valueChanges
+      .pipe(startWith(''))
+      .subscribe((_) => {
+        this.actions$.dispatch(
+          CommodityTemplateActions.loadAll({
+            search: this.mapTemplate(this.formGroup.value, false),
+            isPaginate: false
+          })
+        );
+      });
   }
 
   onAdd() {
@@ -125,6 +122,12 @@ export class CommodityTemplateComponent implements OnInit {
         );
       }
     });
+  }
+
+  public onLoadMore() {
+    this.actions$.dispatch(
+      OrderActions.loadAll(this.mapTemplate(this.formGroup.value, true))
+    );
   }
 
   public onContextMenu($event: MouseEvent, item: any): void {
