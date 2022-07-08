@@ -2,7 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Api, PaginationDto } from '@minhdu-fontend/constants';
-import { ConvertBoolean, ItemContextMenu, PaidType, PaymentType, SortTypeOrderEnum } from '@minhdu-fontend/enums';
+import {
+  ConvertBoolean,
+  ItemContextMenu,
+  ModeEnum,
+  PaidType,
+  PaymentType,
+  SortTypeOrderEnum
+} from '@minhdu-fontend/enums';
 import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { map, tap } from 'rxjs/operators';
 import { OrderActions, OrderQuery, OrderStore } from '../../+state';
@@ -19,6 +26,7 @@ import { DatePipe } from '@angular/common';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
 import { OrderStatusEnum } from '../../enums';
 import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
+import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 
 @Component({
   templateUrl: 'order.component.html'
@@ -26,6 +34,7 @@ import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 export class OrderComponent implements OnInit {
   valueSort?: Sort;
 
+  account$ = this.accountQuery.selectCurrentUser();
   ui$ = this.orderQuery.select((state) => state.ui);
   expandedAll$ = this.orderQuery.select((state) => state.expandedAll);
   loading$ = this.orderQuery.selectLoading();
@@ -48,6 +57,7 @@ export class OrderComponent implements OnInit {
 
   radios = radiosStatusOrderConstant;
 
+  ModeEnum = ModeEnum;
   ItemContextMenu = ItemContextMenu;
   PaidType = PaidType;
   ConvertBoolean = ConvertBoolean;
@@ -100,11 +110,12 @@ export class OrderComponent implements OnInit {
   constructor(
     private readonly datePipe: DatePipe,
     private readonly actions$: Actions,
-    private readonly orderQuery: OrderQuery,
-    private readonly orderStore: OrderStore,
     private readonly router: Router,
     private readonly modal: NzModalService,
-    private readonly nzContextMenuService: NzContextMenuService
+    private readonly nzContextMenuService: NzContextMenuService,
+    private readonly orderStore: OrderStore,
+    private readonly orderQuery: OrderQuery,
+    private readonly accountQuery: AccountQuery
   ) {
   }
 

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Api } from '@minhdu-fontend/constants';
-import { SortRouteEnum } from '@minhdu-fontend/enums';
+import { ModeEnum, SortRouteEnum } from '@minhdu-fontend/enums';
 import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
 import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
-import { debounceTime, map, tap } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 import { RouteActions, RouteQuery, RouteStore } from '../../+state';
 import { RouteEntity } from '../../entities';
 import { RouteDialogComponent } from '../../component';
@@ -20,24 +20,26 @@ import * as _ from 'lodash';
 import { RadiosStatusRouteConstant } from '../../constants';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
 import { UpdaterRouteTypeEnum } from '../../enums/updater-route-type.enum';
+import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 
 @Component({
   templateUrl: 'route.component.html'
 })
 export class RouteComponent implements OnInit {
-  expandAll$ = this.routeQuery.select((state) => state.expandedAll);
-  routes$ = this.routeQuery
-    .selectAll()
-    .pipe(map((routes) => JSON.parse(JSON.stringify(routes))));
+  valueSort?: Sort;
+
+  account$ = this.accountQuery.selectCurrentUser();
   loading$ = this.routeQuery.selectLoading();
   total$ = this.routeQuery.select((state) => state.total);
   count$ = this.routeQuery.selectCount();
   remain$ = this.routeQuery.select((state) => state.remain);
   ui$ = this.routeQuery.select((state) => state.ui);
+  expandAll$ = this.routeQuery.select((state) => state.expandedAll);
+  routes$ = this.routeQuery
+    .selectAll()
+    .pipe(map((routes) => JSON.parse(JSON.stringify(routes))));
 
-  pageSize = 30;
-  pageIndexInit = 0;
-  pageSizeTable = 10;
+  visible = false;
   menus: ContextMenuEntity[] = [
     {
       title: 'Thêm',
@@ -53,45 +55,41 @@ export class RouteComponent implements OnInit {
     }
   ];
 
-  ItemContextMenu = ItemContextMenu;
   radios = RadiosStatusRouteConstant;
+  ItemContextMenu = ItemContextMenu;
   SortRouteEnum = SortRouteEnum;
+  ModeEnum = ModeEnum;
 
   search = this.routeQuery.getValue().search;
-  formGroup = new UntypedFormGroup({
-    search: new UntypedFormControl(this.search.search),
-    startedAt_start: new UntypedFormControl(this.search.startedAt_start),
-    startedAt_end: new UntypedFormControl(this.search.startedAt_end),
-    endedAt_start: new UntypedFormControl(this.search.endedAt_start),
-    endedAt_end: new UntypedFormControl(this.search.endedAt_end),
-    status: new UntypedFormControl(this.search.status)
+  formGroup = new FormGroup({
+    search: new FormControl(this.search.search),
+    startedAt_start: new FormControl(this.search.startedAt_start),
+    startedAt_end: new FormControl(this.search.startedAt_end),
+    endedAt_start: new FormControl(this.search.endedAt_start),
+    endedAt_end: new FormControl(this.search.endedAt_end),
+    status: new FormControl(this.search.status)
   });
-
-  valueSort?: Sort;
-  visible = false;
 
   constructor(
     private readonly actions$: Actions,
-    private readonly routeQuery: RouteQuery,
-    private readonly routeStore: RouteStore,
     private readonly router: Router,
     private readonly datePipe: DatePipe,
     private readonly modal: NzModalService,
-    private readonly nzContextMenuService: NzContextMenuService
+    private readonly nzContextMenuService: NzContextMenuService,
+    private readonly routeStore: RouteStore,
+    private readonly routeQuery: RouteQuery,
+    private readonly accountQuery: AccountQuery
   ) {
   }
 
   ngOnInit() {
     this.formGroup.valueChanges
-      .pipe(
-        debounceTime(1000),
-        tap((val) => {
-          this.actions$.dispatch(
-            RouteActions.loadAll({ params: this.mapRoute(val) })
-          );
-        })
-      )
-      .subscribe();
+      .pipe(debounceTime(500))
+      .subscribe((route) => {
+        this.actions$.dispatch(
+          RouteActions.loadAll({ params: this.mapRoute(route) })
+        );
+      });
   }
 
   onAdd() {
@@ -191,7 +189,7 @@ export class RouteComponent implements OnInit {
 
   public onLoadMore() {
     this.actions$.dispatch(
-      RouteActions.loadAll(this.mapRoute(this.formGroup.value, true))
+      RouteActions.loadAll({ params: this.mapRoute(this.formGroup.value), isPagination: true })
     );
   }
 
@@ -216,7 +214,7 @@ export class RouteComponent implements OnInit {
     return moment(date).isAfter(new Date(), 'day');
   }
 
-  private mapRoute(val: any, isPagination?: boolean) {
+  private mapRoute(val: any) {
     this.routeStore.update((state) => ({
       ...state,
       search: val
@@ -231,9 +229,6 @@ export class RouteComponent implements OnInit {
       delete val.orderType;
       delete val.orderBy;
     }
-    return Object.assign(val, {
-      skip: isPagination ? this.routeQuery.getCount() : 0,
-      take: this.pageSize
-    });
+    return val;
   }
 }

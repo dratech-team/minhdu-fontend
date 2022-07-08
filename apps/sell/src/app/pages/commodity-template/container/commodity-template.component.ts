@@ -18,11 +18,14 @@ import { ContextMenuEntity } from '@minhdu-fontend/data-models';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
 import { OrderActions } from '../../order/+state';
 import { startWith } from 'rxjs/operators';
+import { AccountQuery } from '../../../../../../../libs/system/src/lib/state/account-management/account.query';
+import { ModeEnum } from '@minhdu-fontend/enums';
 
 @Component({
   templateUrl: 'commodity-template.component.html'
 })
 export class CommodityTemplateComponent implements OnInit {
+  account$ = this.accountQuery.selectCurrentUser();
   loading$ = this.query.selectLoading();
   count$ = this.query.selectCount();
   total$ = this.query.select((state) => state.total);
@@ -31,8 +34,6 @@ export class CommodityTemplateComponent implements OnInit {
 
   search = this.query.getValue().search;
 
-  pageSizeTable = 10;
-  panelOpenState = false;
   visible = false;
   menus: ContextMenuEntity[] = [
     {
@@ -49,6 +50,8 @@ export class CommodityTemplateComponent implements OnInit {
     }
   ];
 
+  ModeEnum = ModeEnum;
+
   formGroup = new FormGroup({
     search: new FormControl<string>('')
   });
@@ -56,12 +59,13 @@ export class CommodityTemplateComponent implements OnInit {
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
-    private readonly query: CommodityTemplateQuery,
     private readonly actions$: Actions,
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
+    private readonly nzContextMenuService: NzContextMenuService,
     private readonly store: CommodityTemplateStore,
-    private readonly nzContextMenuService: NzContextMenuService
+    private readonly query: CommodityTemplateQuery,
+    private readonly accountQuery: AccountQuery,
   ) {
   }
 

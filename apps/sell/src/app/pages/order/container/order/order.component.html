@@ -161,6 +161,13 @@
             STT
           </th>
           <th
+            nzWidth='50px'
+            *ngIf='(account$ | async)?.mode === ModeEnum.INFO'
+            class='text-center font-weight-bold'
+          >
+            ID
+          </th>
+          <th
             *ngIf='ui.endedAt.visible'
             [nzLeft]='ui.endedAt?.pinned || false'
             class='text-center font-weight-bold'
@@ -282,7 +289,13 @@
               [nzLeft]='ui.stt?.pinned || false'
               class='text-center'
             >
-              {{ i + 1 + (tableOrder.nzPageIndex - 1) * 10 }}
+              {{ i + 1 }}
+            </td>
+            <td
+              *ngIf='(account$ | async)?.mode === ModeEnum.INFO'
+              class='text-center'
+            >
+              {{ order.id }}
             </td>
             <td
               *ngIf='ui.endedAt.visible'

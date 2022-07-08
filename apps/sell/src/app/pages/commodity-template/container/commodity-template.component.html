@@ -40,8 +40,11 @@
       >
         <thead>
         <tr>
-          <th nzLeft nzWidth='60px'>STT</th>
-          <th>Mã</th>
+          <th nzLeft nzWidth='50px'>STT</th>
+          <th nzWidth='50px' *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>
+            ID
+          </th>
+          <th nzWidth='200px'>Mã</th>
           <th>Tên loại gà</th>
         </tr>
         </thead>
@@ -58,7 +61,8 @@
               </li>
             </ul>
           </nz-dropdown-menu>
-          <td nzLeft>{{ i + 1 + (tableTemplate.nzPageIndex - 1) * 10 }}</td>
+          <td nzLeft>{{ i + 1}}</td>
+          <td *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>{{template.id}}</td>
           <td>{{ template.code }}</td>
           <td>{{ template.name }}</td>
         </tr>

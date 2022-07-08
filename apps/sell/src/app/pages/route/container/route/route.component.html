@@ -108,6 +108,12 @@
             STT
           </th>
           <th
+            *ngIf='(account$ | async)?.mode === ModeEnum.INFO'
+            nzWidth='70px'
+          >
+            ID
+          </th>
+          <th
             *ngIf='ui.name.visible'
             [nzLeft]='ui.name?.pinned || false'
             [nzSortFn]='true'
@@ -196,7 +202,12 @@
               [nzLeft]='ui.stt?.pinned || false'
               (click)='onDetail(route.id)'
             >
-              {{ i + 1 + (tableRoute.nzPageIndex - 1) * 10 }}
+              {{ i + 1 }}
+            </td>
+            <td
+              *ngIf='(account$ | async)?.mode === ModeEnum.INFO'
+            >
+              {{ route.id }}
             </td>
             <td
               *ngIf='ui.name.visible'
@@ -261,55 +272,55 @@
               nzSize='small'
               [nzShowPagination]='false'
             >
-              <thead>
-                <tr>
-                  <th class='text-center'>Tên khách hàng</th>
-                  <th class='text-center'>Ngày tạo</th>
-                  <th class='text-center'>Điểm đến</th>
-                  <th class='text-center'>Tiền hàng</th>
-                  <th class='text-center'>Tổng hàng hoá</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor='let order of innerTable.data'>
-                  <td>{{ order.customer.lastName }}</td>
-                  <td>{{ order.createdAt | date: 'dd-MM-yyyy' }}</td>
-                  <td>
-                    {{ order?.province?.name }} -
-                    {{ order?.district?.name }} - {{ order?.ward?.name }}
-                  </td>
-                  <td>{{ order?.commodityTotal | number: '1.0-0' }} đ</td>
-                  <td>{{ order?.totalCommodity | number: '1.0-0' }}</td>
-                </tr>
-              </tbody>
-            </nz-table>
-          </tr>
-          <tr
-            *ngIf='
+        <thead>
+        <tr>
+          <th class='text-center'>Tên khách hàng</th>
+          <th class='text-center'>Ngày tạo</th>
+          <th class='text-center'>Điểm đến</th>
+          <th class='text-center'>Tiền hàng</th>
+          <th class='text-center'>Tổng hàng hoá</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor='let order of innerTable.data'>
+          <td>{{ order.customer.lastName }}</td>
+          <td>{{ order.createdAt | date: 'dd-MM-yyyy' }}</td>
+          <td>
+            {{ order?.province?.name }} -
+            {{ order?.district?.name }} - {{ order?.ward?.name }}
+          </td>
+          <td>{{ order?.commodityTotal | number: '1.0-0' }} đ</td>
+          <td>{{ order?.totalCommodity | number: '1.0-0' }}</td>
+        </tr>
+        </tbody>
+      </nz-table>
+      </tr>
+      <tr
+        *ngIf='
                   ((count$ | async) || 0) < ((total$ | async) || 0) &&
                   (total$ | async) !== 0
                 '
+      >
+        <td colspan='17'>
+          <div
+            class='w-100 d-flex justify-content-start'
+            style='position: relative'
           >
-            <td colspan='17'>
-              <div
-                class='w-100 d-flex justify-content-start'
-                style='position: relative'
-              >
-                <button
-                  (click)='onLoadMore()'
-                  style='position: sticky; left: 45vw'
-                  nz-button
-                  nzType='primary'
-                  [nzLoading]='loading$ | async'
-                >
-                  Tải thêm {{ remain$ | async }} tuyến đường
-                </button>
-              </div>
-            </td>
-          </tr>
-        </ng-template>
+            <button
+              (click)='onLoadMore()'
+              style='position: sticky; left: 45vw'
+              nz-button
+              nzType='primary'
+              [nzLoading]='loading$ | async'
+            >
+              Tải thêm {{ remain$ | async }} tuyến đường
+            </button>
+          </div>
+        </td>
+      </tr>
+      </ng-template>
       </tbody>
-    </nz-table>
+      </nz-table>
     </div>
   </div>
 </div>

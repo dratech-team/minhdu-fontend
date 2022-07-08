@@ -9,6 +9,7 @@ import { RouteStore } from './route.store';
 import { RouteQuery } from './route.query';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { OrderEntity } from '../../order/enitities/order.entity';
+import { PaginationDto } from '@minhdu-fontend/constants';
 
 @Injectable()
 export class RouteEffect {
@@ -32,7 +33,7 @@ export class RouteEffect {
       return this.routeService.addOne(props).pipe(
         tap((res) => {
           this.message.success('Thêm tuyến đường thành công');
-          const expanedAll = this.routeQuery.getValue().expandedAll;
+          const expandedAll = this.routeQuery.getValue().expandedAll;
           const orders = this.handelOrder(res.orders);
           this.routeStore.update((state) => ({
             ...state,
@@ -40,7 +41,7 @@ export class RouteEffect {
             total: state.total + 1
           }));
           this.routeStore.add(
-            Object.assign(res, { orders, expand: expanedAll })
+            Object.assign(res, { orders, expand: expandedAll })
           );
         }),
         catchError((err) => {
@@ -66,15 +67,18 @@ export class RouteEffect {
         props.params.orderType =
           props.params.orderType === 'ascend' ? 'asc' : 'des';
       }
-      return this.routeService
-        .pagination(
-          Object.assign(
-            props.params,
-            props.params?.status === null || props.params?.status === undefined
-              ? { status: 0 }
-              : {}
-          )
+      return this.routeService.pagination(
+        Object.assign(
+          props.params,
+          props.params?.status === null || props.params?.status === undefined
+            ? { status: 0 }
+            : {},
+          {
+            take: PaginationDto.take,
+            skip: this.routeQuery.getCount()
+          }
         )
+      )
         .pipe(
           map((res) => {
             const expandedAll = this.routeQuery.getValue().expandedAll;
