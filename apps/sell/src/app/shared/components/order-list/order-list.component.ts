@@ -16,10 +16,10 @@ import { ModalDatePickerComponent } from '@minhdu-fontend/components';
 import { ModalDatePickerEntity } from '@minhdu-fontend/base-entity';
 
 @Component({
-  selector: 'app-table-order',
-  templateUrl: 'table-orders.component.html'
+  selector: 'order-list',
+  templateUrl: 'order-list.component.html'
 })
-export class TableOrdersComponent implements OnInit {
+export class OrderListComponent implements OnInit {
   @Input() orders!: OrderEntity[];
   @Input() delivered: boolean = false;
   @Input() loading$!: Observable<boolean>;

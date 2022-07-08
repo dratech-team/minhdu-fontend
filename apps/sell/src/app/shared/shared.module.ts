@@ -13,7 +13,6 @@ import { ComponentsModule } from '@minhdu-fontend/components';
 import { MatInputModule } from '@angular/material/input';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { TableOrdersComponent } from './components/table-orders/table-orders.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
@@ -29,6 +28,7 @@ import { SelectCommodityComponent } from './components/select-commodity/select-c
 import { SelectCustomerComponent } from './components/select-customer/select-customer.component';
 import { SelectRouteComponent } from './components/select-route/select-route.component';
 import { SelectRouteService } from './components/select-route/select-route.service';
+import { OrderListComponent } from './components/order-list/order-list.component';
 
 @NgModule({
   imports: [
@@ -59,7 +59,7 @@ import { SelectRouteService } from './components/select-route/select-route.servi
     NzDatePickerModule
   ],
   declarations: [
-    TableOrdersComponent,
+    OrderListComponent,
     PickOrderComponent,
     SelectCommodityComponent,
     SelectCustomerComponent,
@@ -68,7 +68,7 @@ import { SelectRouteService } from './components/select-route/select-route.servi
   ],
   providers: [DecimalPipe, SelectRouteService, CurrencyPipe],
   exports: [
-    TableOrdersComponent,
+    OrderListComponent,
     SelectCommodityComponent,
     PickOrderComponent,
     SelectCustomerComponent,

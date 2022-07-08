@@ -326,13 +326,13 @@
           Thêm đơn hàng
         </button>
       </div>
-      <app-table-order
+      <order-list
         [delivered]='false'
         [loading$]='deliveringLoading$'
         [customerId]='getId'
         [orders]='delivering$ | async | notEmpty: []'
       >
-      </app-table-order>
+      </order-list>
     </div>
     <div class='col-12 mt-5'>
       <div class='row d-flex align-items-center'>
@@ -340,12 +340,12 @@
           Đơn hàng đã giao
         </div>
       </div>
-      <app-table-order
+      <order-list
         [delivered]='true'
         [loading$]='deliveredLoading$'
         [customerId]='getId'
         [orders]='delivered$ | async | notEmpty: []'
-      ></app-table-order>
+      ></order-list>
     </div>
     <div class='col-12 mt-5'>
       <div class='row d-flex align-items-center'>
