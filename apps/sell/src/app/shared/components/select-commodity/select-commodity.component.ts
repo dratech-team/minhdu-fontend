@@ -11,10 +11,10 @@ import { CommodityEntity } from '../../../pages/commodity/entities';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
-  selector: 'app-pick-commodity',
-  templateUrl: 'pick-commodity.component.html'
+  selector: 'select-commodity',
+  templateUrl: 'select-commodity.component.html'
 })
-export class PickCommodityComponent implements OnInit {
+export class SelectCommodityComponent implements OnInit {
   @Input() data: any;
   @Input() formGroup!: UntypedFormGroup;
   @Input() pickPOne: boolean | undefined;

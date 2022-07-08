@@ -131,7 +131,7 @@ export class OrderComponent implements OnInit {
       .subscribe();
   }
 
-  public onAdd() {
+  onAdd() {
     this.modal.create({
       nzTitle: 'Thêm đơn hàng',
       nzContent: OrderDialogComponent,
@@ -140,7 +140,7 @@ export class OrderComponent implements OnInit {
     });
   }
 
-  public onDetail(id: number, isUpdate: boolean) {
+  onDetail(id: number, isUpdate: boolean) {
     this.router
       .navigate(['don-hang/chi-tiet-don-hang', id], {
         queryParams: {
@@ -150,7 +150,7 @@ export class OrderComponent implements OnInit {
       .then();
   }
 
-  public onUpdate(order: OrderEntity) {
+  onUpdate(order: OrderEntity) {
     this.modal.create({
       nzTitle: 'Sửa đơn hàng',
       nzContent: OrderDialogComponent,

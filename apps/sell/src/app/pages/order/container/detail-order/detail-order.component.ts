@@ -6,7 +6,6 @@ import { OrderDialogComponent } from '../../component';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityAction, CommodityQuery } from '../../../commodity/state';
 import { CommodityDialogComponent } from '../../../commodity/component';
-import { PickCommodityComponent } from '../../../../shared/components/pick-commodity/pick-commodity.component';
 import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared';
 import { OrderHistoryService } from '../../service';
 import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
@@ -21,6 +20,9 @@ import { ModalAlertEntity } from '@minhdu-fontend/base-entity';
 import {
   ModalUpdateClosedCommodityComponent
 } from '../../../commodity/component/modal-update-closed-commodity/modal-update-closed-commodity.component';
+import {
+  SelectCommodityComponent
+} from 'apps/sell/src/app/shared/components/select-commodity/select-commodity.component';
 
 @Component({
   templateUrl: 'detail-order.component.html'
@@ -91,7 +93,7 @@ export class DetailOrderComponent implements OnInit {
       this.modal
         .create({
           nzTitle: 'Chọn hàng hoá',
-          nzContent: PickCommodityComponent,
+          nzContent: SelectCommodityComponent,
           nzComponentParams: {
             data: { type: 'DIALOG' },
             formGroup: this.formBuilder.group({ customerIds: [] })

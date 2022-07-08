@@ -10,11 +10,9 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { OrderEffect } from '../pages/order/+state';
 import { ComponentsModule } from '@minhdu-fontend/components';
-import { PickCommodityComponent } from './components/pick-commodity/pick-commodity.component';
 import { PickCustomerComponent } from './components/pick-customer.component/pick-customer.component';
 import { MatInputModule } from '@angular/material/input';
 import { PickRoutesComponent } from './components/pick-routes/pick-routes.component';
-import { PickCommodityService } from './components/pick-commodity/pick-commodity.service';
 import { PickRoutesService } from './components/pick-routes/pick-routes.service';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
@@ -30,6 +28,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { PriceCommodityPipe } from './pipe/price-commodity.pipe';
+import { SelectCommodityComponent } from './components/select-commodity/select-commodity.component';
 
 @NgModule({
   imports: [
@@ -62,15 +61,15 @@ import { PriceCommodityPipe } from './pipe/price-commodity.pipe';
   declarations: [
     TableOrdersComponent,
     PickOrderComponent,
-    PickCommodityComponent,
+    SelectCommodityComponent,
     PickCustomerComponent,
     PickRoutesComponent,
     PriceCommodityPipe
   ],
-  providers: [DecimalPipe, PickCommodityService, PickRoutesService, CurrencyPipe],
+  providers: [DecimalPipe, PickRoutesService, CurrencyPipe],
   exports: [
     TableOrdersComponent,
-    PickCommodityComponent,
+    SelectCommodityComponent,
     PickOrderComponent,
     PickCustomerComponent,
     PickRoutesComponent,

@@ -12,7 +12,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { PickCommodityService } from '../../shared/components/pick-commodity/pick-commodity.service';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { customCurrencyMaskConfig } from '@minhdu-fontend/config';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -44,7 +43,7 @@ import { CommodityTemplateEffect } from '../commodity-template/state/commodity-t
     CommodityDialogComponent,
     DetailCommodityComponent
   ],
-  providers: [DatePipe, PickCommodityService, CommodityService]
+  providers: [DatePipe, CommodityService]
 })
 export class CommodityModule {
 }

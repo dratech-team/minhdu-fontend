@@ -1,36 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CommodityUnit, CustomerResource, CustomerType, PaymentType } from '@minhdu-fontend/enums';
 import {
-  CommodityUnit,
-  CustomerResource,
-  CustomerType,
-  PaymentType,
-} from '@minhdu-fontend/enums';
-import { PickCommodityComponent } from 'apps/sell/src/app/shared/components/pick-commodity/pick-commodity.component';
-import { PickCustomerComponent } from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
-import { OrderActions } from '../../+state/order.actions';
-import { CustomerEntity } from '../../../customer/entities/customer.entity';
+  PickCustomerComponent
+} from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
+import { OrderActions, OrderQuery } from '../../+state';
+import { CustomerEntity } from '../../../customer/entities';
 import { DatePipe } from '@angular/common';
 import { Actions } from '@datorama/akita-ng-effects';
-import { CustomerQuery } from '../../../customer/+state/customer.query';
-import { AddOrderDto, BaseAddOrderDto } from '../../dto/add-order.dto';
-import { CommodityEntity } from '../../../commodity/entities/commodity.entity';
-import { CustomerActions } from '../../../customer/+state/customer.actions';
-import { OrderQuery } from '../../+state/order.query';
+import { CustomerActions, CustomerQuery } from '../../../customer/+state';
+import { CommodityEntity } from '../../../commodity/entities';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { SelectCommodityComponent } from '../../../../shared/components/select-commodity/select-commodity.component';
 
 @Component({
-  templateUrl: 'add-order.component.html',
+  templateUrl: 'add-order.component.html'
 })
 export class AddOrderComponent implements OnInit {
-  customers: CustomerEntity[] = [];
   commodityUnit = CommodityUnit;
   commoditiesPicked: CommodityEntity[] = [];
   numberChars = new RegExp('[^0-9]', 'g');
@@ -53,7 +42,8 @@ export class AddOrderComponent implements OnInit {
     private readonly orderQuery: OrderQuery,
     private readonly snackbar: MatSnackBar,
     private readonly modal: NzModalService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.route.queryParams.subscribe((param) => {
@@ -70,13 +60,13 @@ export class AddOrderComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       createdAt: [
         this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-        Validators.required,
+        Validators.required
       ],
       endedAt: [],
       explain: [''],
       province: ['', Validators.required],
       district: [],
-      ward: [],
+      ward: []
     });
   }
 
@@ -86,8 +76,8 @@ export class AddOrderComponent implements OnInit {
         width: '70vw',
         data: {
           pickOne: true,
-          customerInit: this.customerPicked,
-        },
+          customerInit: this.customerPicked
+        }
       })
       .afterClosed()
       .subscribe((val) => {
@@ -100,30 +90,26 @@ export class AddOrderComponent implements OnInit {
       });
   }
 
-  deleteCustomerId() {
-    this.customerPicked = undefined;
-  }
-
   pickCommodities() {
     this.modal
       .create({
         nzTitle: 'Chon đơn hàng',
-        nzContent: PickCommodityComponent,
+        nzContent: SelectCommodityComponent,
         nzWidth: '70vw',
         nzComponentParams: {
           data: {
             pickMore: true,
             type: 'DIALOG',
-            commoditiesPicked: this.commoditiesPicked,
-          },
+            commoditiesPicked: this.commoditiesPicked
+          }
         },
-        nzFooter: null,
+        nzFooter: null
       })
       .afterClose.subscribe((val) => {
-        if (val) {
-          this.commoditiesPicked = val;
-        }
-      });
+      if (val) {
+        this.commoditiesPicked = val;
+      }
+    });
   }
 
   deleteCommodity(commodity: CommodityEntity) {
@@ -158,7 +144,7 @@ export class AddOrderComponent implements OnInit {
       districtId: val?.district?.id,
       provinceId: val.province.id,
       customerId: this.customerId,
-      commodityIds: this.commoditiesPicked.map((item) => item.id),
+      commodityIds: this.commoditiesPicked.map((item) => item.id)
     };
     this.actions$.dispatch(OrderActions.addOne({ body: order }));
   }
