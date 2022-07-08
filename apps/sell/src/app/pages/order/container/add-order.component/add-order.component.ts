@@ -3,9 +3,6 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommodityUnit, CustomerResource, CustomerType, PaymentType } from '@minhdu-fontend/enums';
-import {
-  PickCustomerComponent
-} from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
 import { OrderActions, OrderQuery } from '../../+state';
 import { CustomerEntity } from '../../../customer/entities';
 import { DatePipe } from '@angular/common';
@@ -15,6 +12,7 @@ import { CommodityEntity } from '../../../commodity/entities';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { SelectCommodityComponent } from '../../../../shared/components/select-commodity/select-commodity.component';
+import { SelectCustomerComponent } from 'apps/sell/src/app/shared/components/select-customer/select-customer.component';
 
 @Component({
   templateUrl: 'add-order.component.html'
@@ -72,7 +70,7 @@ export class AddOrderComponent implements OnInit {
 
   pickCustomer() {
     this.dialog
-      .open(PickCustomerComponent, {
+      .open(SelectCustomerComponent, {
         width: '70vw',
         data: {
           pickOne: true,

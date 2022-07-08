@@ -1,34 +1,19 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  ViewContainerRef,
-} from '@angular/core';
-import {
-  ControlContainer,
-  UntypedFormControl,
-  UntypedFormGroup,
-} from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output, ViewContainerRef } from '@angular/core';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { CustomerEntity } from '../../../pages/customer/entities';
-import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
+import { CustomerType } from '@minhdu-fontend/enums';
 import { CustomerModalComponent } from '../../../pages/customer/component';
-import { CustomerActions } from '../../../pages/customer/+state';
-import { CustomerQuery } from '../../../pages/customer/+state';
+import { CustomerActions, CustomerQuery } from '../../../pages/customer/+state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import {
-  CustomerConstant,
-  ResourcesConstant,
-} from '../../../pages/customer/constants';
+import { CustomerConstant, ResourcesConstant } from '../../../pages/customer/constants';
 
 @Component({
   selector: 'app-pick-customer',
-  templateUrl: 'pick-customer.component.html',
+  templateUrl: 'select-customer.component.html'
 })
-export class PickCustomerComponent implements OnInit {
+export class SelectCustomerComponent implements OnInit {
   @Input() customers: CustomerEntity[] = [];
   @Input() pickOne = false;
   @Input() formGroup!: UntypedFormGroup;
@@ -50,7 +35,7 @@ export class PickCustomerComponent implements OnInit {
   formGroupCustomer = new UntypedFormGroup({
     name: new UntypedFormControl(''),
     type: new UntypedFormControl(''),
-    resource: new UntypedFormControl(''),
+    resource: new UntypedFormControl('')
   });
 
   constructor(
@@ -59,7 +44,8 @@ export class PickCustomerComponent implements OnInit {
     private readonly modal: NzModalService,
     private readonly viewContentRef: ViewContainerRef,
     private readonly modalRef: NzModalRef
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     if (this.customers.length === 0) {
@@ -89,7 +75,7 @@ export class PickCustomerComponent implements OnInit {
       this.actions$.dispatch(
         CustomerActions.loadAll({
           search: this.customer(val, true),
-          isPaginate: true,
+          isPaginate: true
         })
       );
     }
@@ -101,7 +87,7 @@ export class PickCustomerComponent implements OnInit {
       take: this.pageSize,
       lastName: val.name.trim(),
       type: val.type,
-      resource: val.resource,
+      resource: val.resource
     };
   }
 
@@ -124,7 +110,7 @@ export class PickCustomerComponent implements OnInit {
     }
     return (
       this.customers.filter((e) => this.customerIds.includes(e.id)).length >
-        0 && !this.isSelectAll
+      0 && !this.isSelectAll
     );
   }
 
@@ -159,7 +145,7 @@ export class PickCustomerComponent implements OnInit {
       nzViewContainerRef: this.viewContentRef,
       nzFooter: null,
       nzWidth: '65vw',
-      nzMaskClosable: false,
+      nzMaskClosable: false
     });
   }
 }

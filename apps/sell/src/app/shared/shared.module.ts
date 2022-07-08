@@ -10,7 +10,6 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { OrderEffect } from '../pages/order/+state';
 import { ComponentsModule } from '@minhdu-fontend/components';
-import { PickCustomerComponent } from './components/pick-customer.component/pick-customer.component';
 import { MatInputModule } from '@angular/material/input';
 import { PickRoutesComponent } from './components/pick-routes/pick-routes.component';
 import { PickRoutesService } from './components/pick-routes/pick-routes.service';
@@ -29,6 +28,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { PriceCommodityPipe } from './pipe/price-commodity.pipe';
 import { SelectCommodityComponent } from './components/select-commodity/select-commodity.component';
+import { SelectCustomerComponent } from './components/select-customer/select-customer.component';
 
 @NgModule({
   imports: [
@@ -62,7 +62,7 @@ import { SelectCommodityComponent } from './components/select-commodity/select-c
     TableOrdersComponent,
     PickOrderComponent,
     SelectCommodityComponent,
-    PickCustomerComponent,
+    SelectCustomerComponent,
     PickRoutesComponent,
     PriceCommodityPipe
   ],
@@ -71,7 +71,7 @@ import { SelectCommodityComponent } from './components/select-commodity/select-c
     TableOrdersComponent,
     SelectCommodityComponent,
     PickOrderComponent,
-    PickCustomerComponent,
+    SelectCustomerComponent,
     PickRoutesComponent,
     PriceCommodityPipe
   ]
