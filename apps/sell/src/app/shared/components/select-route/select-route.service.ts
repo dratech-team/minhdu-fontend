@@ -3,7 +3,7 @@ import { RouteActions, RouteQuery } from '../../../pages/route/+state';
 import { Actions } from '@datorama/akita-ng-effects';
 
 @Injectable({ providedIn: 'root' })
-export class PickRoutesService {
+export class SelectRouteService {
   Routes$ = this.routeQuery.selectAll();
 
   constructor(

@@ -11,8 +11,6 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { OrderEffect } from '../pages/order/+state';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { MatInputModule } from '@angular/material/input';
-import { PickRoutesComponent } from './components/pick-routes/pick-routes.component';
-import { PickRoutesService } from './components/pick-routes/pick-routes.service';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { TableOrdersComponent } from './components/table-orders/table-orders.component';
@@ -29,6 +27,8 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { PriceCommodityPipe } from './pipe/price-commodity.pipe';
 import { SelectCommodityComponent } from './components/select-commodity/select-commodity.component';
 import { SelectCustomerComponent } from './components/select-customer/select-customer.component';
+import { SelectRouteComponent } from './components/select-route/select-route.component';
+import { SelectRouteService } from './components/select-route/select-route.service';
 
 @NgModule({
   imports: [
@@ -63,16 +63,16 @@ import { SelectCustomerComponent } from './components/select-customer/select-cus
     PickOrderComponent,
     SelectCommodityComponent,
     SelectCustomerComponent,
-    PickRoutesComponent,
+    SelectRouteComponent,
     PriceCommodityPipe
   ],
-  providers: [DecimalPipe, PickRoutesService, CurrencyPipe],
+  providers: [DecimalPipe, SelectRouteService, CurrencyPipe],
   exports: [
     TableOrdersComponent,
     SelectCommodityComponent,
     PickOrderComponent,
     SelectCustomerComponent,
-    PickRoutesComponent,
+    SelectRouteComponent,
     PriceCommodityPipe
   ]
 })

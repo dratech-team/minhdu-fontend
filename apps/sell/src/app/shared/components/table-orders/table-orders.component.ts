@@ -3,11 +3,11 @@ import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { PaidType } from 'libs/enums/paidType.enum';
 import { Router } from '@angular/router';
 import { OrderEntity } from '../../../pages/order/enitities/order.entity';
-import { OrderActions } from '../../../pages/order/+state/order.actions';
+import { OrderActions } from '../../../pages/order/+state';
 import { MatDialog } from '@angular/material/dialog';
 import { debounceTime, tap } from 'rxjs/operators';
 import { ConvertBoolean, StatusOrder } from '@minhdu-fontend/enums';
-import { DialogSharedComponent } from '../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import { DialogSharedComponent } from '../../../../../../../libs/components/src/lib/dialog-shared';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CustomerActions } from '../../../pages/customer/+state';
 import { Observable } from 'rxjs';
@@ -17,7 +17,7 @@ import { ModalDatePickerEntity } from '@minhdu-fontend/base-entity';
 
 @Component({
   selector: 'app-table-order',
-  templateUrl: 'table-orders.component.html',
+  templateUrl: 'table-orders.component.html'
 })
 export class TableOrdersComponent implements OnInit {
   @Input() orders!: OrderEntity[];
@@ -28,7 +28,7 @@ export class TableOrdersComponent implements OnInit {
   formGroup = new UntypedFormGroup({
     createdAt: new UntypedFormControl(''),
     ward: new UntypedFormControl(''),
-    explain: new UntypedFormControl(''),
+    explain: new UntypedFormControl('')
   });
   paidType = PaidType;
   pageSize = 10;
@@ -41,7 +41,8 @@ export class TableOrdersComponent implements OnInit {
     private readonly router: Router,
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.formGroup.valueChanges
@@ -52,16 +53,16 @@ export class TableOrdersComponent implements OnInit {
             this.actions$.dispatch(
               CustomerActions.loadOrder({
                 params: Object.assign({}, this.mapOrders(val, true), {
-                  hiddenDebt: StatusOrder.ALL,
+                  hiddenDebt: StatusOrder.ALL
                 }),
-                typeOrder: 'delivered',
+                typeOrder: 'delivered'
               })
             );
           } else {
             this.actions$.dispatch(
               CustomerActions.loadOrder({
                 params: this.mapOrders(val),
-                typeOrder: 'delivering',
+                typeOrder: 'delivering'
               })
             );
           }
@@ -77,10 +78,10 @@ export class TableOrdersComponent implements OnInit {
         this.actions$.dispatch(
           CustomerActions.loadOrder({
             params: Object.assign({}, this.mapOrders(val, true), {
-              hiddenDebt: StatusOrder.ALL,
+              hiddenDebt: StatusOrder.ALL
             }),
             typeOrder: 'delivered',
-            isPagination: true,
+            isPagination: true
           })
         );
       } else {
@@ -88,7 +89,7 @@ export class TableOrdersComponent implements OnInit {
           CustomerActions.loadOrder({
             params: this.mapOrders(val, true),
             typeOrder: 'delivering',
-            isPagination: true,
+            isPagination: true
           })
         );
       }
@@ -105,7 +106,7 @@ export class TableOrdersComponent implements OnInit {
       createdAt: val.createdAt,
       ward: val.ward,
       explain: val.explain,
-      customerId: this.customerId ? this.customerId : '',
+      customerId: this.customerId ? this.customerId : ''
     };
   }
 
@@ -117,7 +118,7 @@ export class TableOrdersComponent implements OnInit {
     this.actions$.dispatch(
       OrderActions.hide({
         id: order.id,
-        hide: { hide: !order.hiddenDebt },
+        hide: { hide: !order.hiddenDebt }
       })
     );
   }
@@ -132,8 +133,8 @@ export class TableOrdersComponent implements OnInit {
         }
           ${order?.district ? order.district.name : ''} ${
           order?.province?.name
-        }`,
-      },
+        }`
+      }
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -150,22 +151,22 @@ export class TableOrdersComponent implements OnInit {
         nzComponentParams: <{ data: ModalDatePickerEntity }>{
           data: {
             type: 'date',
-            dateInit: new Date(),
-          },
+            dateInit: new Date()
+          }
         },
-        nzFooter: [],
+        nzFooter: []
       })
       .afterClose.subscribe((val) => {
-        if (val) {
-          this.actions$.dispatch(
-            OrderActions.update({
-              id: order.id,
-              updates: {
-                deliveredAt: new Date(val),
-              },
-            })
-          );
-        }
-      });
+      if (val) {
+        this.actions$.dispatch(
+          OrderActions.update({
+            id: order.id,
+            updates: {
+              deliveredAt: new Date(val)
+            }
+          })
+        );
+      }
+    });
   }
 }

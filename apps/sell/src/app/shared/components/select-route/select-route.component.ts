@@ -1,28 +1,17 @@
-import {
-  Component,
-  EventEmitter,
-  Inject,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UntypedFormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogRef,
-} from '@angular/material/dialog';
-import { RouteEntity } from '../../../pages/route/entities/route.entity';
-import { PickRoutesService } from './pick-routes.service';
-import { RouteDialogComponent } from '../../../pages/route/component/route-dialog/route-dialog.component';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { RouteEntity } from '../../../pages/route/entities';
+import { SelectRouteService } from './select-route.service';
+import { RouteDialogComponent } from '../../../pages/route/component';
 
 @Component({
-  selector: 'app-pick-routes',
-  templateUrl: 'pick-routes.component.html',
+  selector: 'select-route',
+  templateUrl: 'select-route.component.html'
 })
-export class PickRoutesComponent implements OnInit {
+export class SelectRouteComponent implements OnInit {
   @Input() pickPOne: boolean | undefined;
   @Input() routes: RouteEntity[] = [];
   @Output() checkEvent = new EventEmitter();
@@ -37,9 +26,10 @@ export class PickRoutesComponent implements OnInit {
     private readonly store: Store,
     private readonly dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<PickRoutesComponent>,
-    private readonly service: PickRoutesService
-  ) {}
+    private dialogRef: MatDialogRef<SelectRouteComponent>,
+    private readonly service: SelectRouteService
+  ) {
+  }
 
   ngOnInit(): void {
     if (this.data.routes$) {
@@ -53,7 +43,7 @@ export class PickRoutesComponent implements OnInit {
         tap((value) => {
           const val = {
             take: this.pageSize,
-            skip: this.pageIndexInit,
+            skip: this.pageIndexInit
           };
           this.service.searchRoutes(val);
           this.assignIsSelect();
@@ -66,7 +56,7 @@ export class PickRoutesComponent implements OnInit {
     const value = this.formGroup.value;
     const val = {
       take: this.pageSize,
-      skip: this.pageIndex++,
+      skip: this.pageIndex++
     };
     this.service.scrollRoutes(val);
     this.assignIsSelect();
