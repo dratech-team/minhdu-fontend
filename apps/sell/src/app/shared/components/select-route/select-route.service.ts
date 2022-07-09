@@ -14,15 +14,15 @@ export class SelectRouteService {
 
   loadInit() {
     return this.actions$.dispatch(
-      RouteActions.loadAll({ params: { take: 30, skip: 0 } })
+      RouteActions.loadAll({ search: { take: 30, skip: 0 } })
     );
   }
 
   scrollRoutes(val: any) {
     return this.actions$.dispatch(
       RouteActions.loadAll({
-        params: { take: 30, skip: this.routeQuery.getCount() },
-        isPagination: true
+        search: { take: 30, skip: this.routeQuery.getCount() },
+        isPaginate: true
       })
     );
   }

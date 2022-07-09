@@ -5,7 +5,7 @@ const addOne = createAction('[ROUTE] Add One', props<AddRouteDto>());
 
 const loadAll = createAction(
   '[ROUTE] Load All',
-  props<{ params: SearchRouteDto; isPagination?: boolean }>()
+  props<SearchRouteDto>()
 );
 
 const loadOne = createAction('[ROUTE] Load One', props<{ id: number }>());

@@ -87,7 +87,7 @@ export class RouteComponent implements OnInit {
       .pipe(debounceTime(500))
       .subscribe((route) => {
         this.actions$.dispatch(
-          RouteActions.loadAll({ params: this.mapRoute(route) })
+          RouteActions.loadAll({ search: this.mapRoute(route) })
         );
       });
   }
@@ -189,7 +189,7 @@ export class RouteComponent implements OnInit {
 
   public onLoadMore() {
     this.actions$.dispatch(
-      RouteActions.loadAll({ params: this.mapRoute(this.formGroup.value), isPagination: true })
+      RouteActions.loadAll({ search: this.mapRoute(this.formGroup.value), isPaginate: true })
     );
   }
 

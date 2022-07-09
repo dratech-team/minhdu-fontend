@@ -63,19 +63,19 @@ export class RouteEffect {
         ...state,
         loading: true
       }));
-      if (props.params.orderType) {
-        props.params.orderType =
-          props.params.orderType === 'ascend' ? 'asc' : 'des';
+      if (props.search.orderType) {
+        props.search.orderType =
+          props.search.orderType === 'ascend' ? 'asc' : 'des';
       }
       return this.routeService.pagination(
         Object.assign(
-          props.params,
-          props.params?.status === null || props.params?.status === undefined
+          props.search,
+          props.search?.status === null || props.search?.status === undefined
             ? { status: 0 }
             : {},
           {
             take: PaginationDto.take,
-            skip: props.isPagination ? this.routeQuery.getCount() : 0
+            skip: props.isPaginate ? this.routeQuery.getCount() : 0
           }
         )
       )
@@ -97,7 +97,7 @@ export class RouteEffect {
                   expand: expandedAll
                 });
               });
-              if (props.isPagination) {
+              if (props.isPaginate) {
                 this.routeStore.add(routes);
               } else {
                 this.routeStore.set(routes);
