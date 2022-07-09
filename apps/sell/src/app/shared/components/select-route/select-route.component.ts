@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UntypedFormGroup } from '@angular/forms';
-import { debounceTime, tap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RouteEntity } from '../../../pages/route/entities';
-import { SelectRouteService } from './select-route.service';
 import { RouteDialogComponent } from '../../../pages/route/component';
+import { RouteActions, RouteQuery } from '../../../pages/route/+state';
+import { Actions } from '@datorama/akita-ng-effects';
 
 @Component({
   selector: 'select-route',
@@ -15,19 +15,23 @@ export class SelectRouteComponent implements OnInit {
   @Input() pickPOne: boolean | undefined;
   @Input() routes: RouteEntity[] = [];
   @Output() checkEvent = new EventEmitter();
+
   pageIndex = 1;
   pageSize = 30;
   pageIndexInit = 0;
   isSelectAll = false;
   routeIds: number[] = [];
+
   formGroup = new UntypedFormGroup({});
 
   constructor(
+    private readonly actions$: Actions,
     private readonly store: Store,
     private readonly dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<SelectRouteComponent>,
-    private readonly service: SelectRouteService
+    @Inject(MAT_DIALOG_DATA)
+    public readonly data: any,
+    private readonly dialogRef: MatDialogRef<SelectRouteComponent>,
+    private readonly routeQuery: RouteQuery
   ) {
   }
 
@@ -37,33 +41,24 @@ export class SelectRouteComponent implements OnInit {
         (val: RouteEntity[]) => (this.routes = JSON.parse(JSON.stringify(val)))
       );
     }
-    this.formGroup.valueChanges
-      .pipe(
-        debounceTime(1000),
-        tap((value) => {
-          const val = {
-            take: this.pageSize,
-            skip: this.pageIndexInit
-          };
-          this.service.searchRoutes(val);
-          this.assignIsSelect();
-        })
-      )
-      .subscribe();
+    this.formGroup.valueChanges.subscribe(formGroup => {
+      this.actions$.dispatch(RouteActions.loadAll(formGroup));
+    });
   }
 
   onScroll() {
     const value = this.formGroup.value;
-    const val = {
-      take: this.pageSize,
-      skip: this.pageIndex++
-    };
-    this.service.scrollRoutes(val);
+    this.actions$.dispatch(
+      RouteActions.loadAll({
+        search: value,
+        isPaginate: true
+      })
+    );
     this.assignIsSelect();
   }
 
   assignIsSelect() {
-    this.service.routes().subscribe((val) => {
+    this.routeQuery.selectAll().subscribe((val) => {
       this.routes = JSON.parse(JSON.stringify(val));
       this.routes.forEach((e) => (e.isSelect = this.isSelectAll));
     });

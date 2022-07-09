@@ -27,7 +27,6 @@ import { PriceCommodityPipe } from './pipe/price-commodity.pipe';
 import { SelectCommodityComponent } from './components/select-commodity/select-commodity.component';
 import { SelectCustomerComponent } from './components/select-customer/select-customer.component';
 import { SelectRouteComponent } from './components/select-route/select-route.component';
-import { SelectRouteService } from './components/select-route/select-route.service';
 import { OrderListComponent } from './components/order-list/order-list.component';
 
 @NgModule({
@@ -66,7 +65,7 @@ import { OrderListComponent } from './components/order-list/order-list.component
     SelectRouteComponent,
     PriceCommodityPipe
   ],
-  providers: [DecimalPipe, SelectRouteService, CurrencyPipe],
+  providers: [DecimalPipe, CurrencyPipe],
   exports: [
     OrderListComponent,
     SelectCommodityComponent,
