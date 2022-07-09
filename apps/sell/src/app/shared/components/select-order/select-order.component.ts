@@ -74,11 +74,11 @@ export class SelectOrderComponent implements OnInit {
   onLoad(pagination: boolean) {
     this.actions$.dispatch(
       OrderActions.loadAll({
-        param: this.mapOrder(
+        search: this.mapOrder(
           this.formGroupTable.value,
           pagination
         ) as BaseSearchOrderDto,
-        isPagination: pagination,
+        isPaginate: pagination,
       })
     );
   }

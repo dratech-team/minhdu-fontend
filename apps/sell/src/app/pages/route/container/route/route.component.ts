@@ -205,7 +205,8 @@ export class RouteComponent implements OnInit {
     this.valueSort = sort;
     this.actions$.dispatch(
       OrderActions.loadAll({
-        param: this.mapRoute(this.formGroup.value)
+        search: this.mapRoute(this.formGroup.value),
+        isPaginate: false
       })
     );
   }

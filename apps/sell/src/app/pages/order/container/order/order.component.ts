@@ -124,7 +124,7 @@ export class OrderComponent implements OnInit {
       .pipe(
         tap((val: any) => {
           this.actions$.dispatch(
-            OrderActions.loadAll({ param: this.mapOrder(val) })
+            OrderActions.loadAll({ search: this.mapOrder(val), isPaginate: false })
           );
         })
       )
@@ -248,7 +248,8 @@ export class OrderComponent implements OnInit {
     this.valueSort = sort;
     this.actions$.dispatch(
       OrderActions.loadAll({
-        param: this.mapOrder(this.formGroup.value)
+        search: this.mapOrder(this.formGroup.value),
+        isPaginate: true
       })
     );
   }

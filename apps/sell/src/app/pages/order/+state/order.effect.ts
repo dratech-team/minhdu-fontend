@@ -14,6 +14,7 @@ import { CommodityEntity, CommodityUniq } from '../../commodity/entities';
 import { OrderEntity } from '../enitities/order.entity';
 import { AddOrderDto, UpdateOrderDto } from '../dto';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { PaginationDto } from '@minhdu-fontend/constants';
 
 @Injectable()
 export class OrderEffect {
@@ -82,62 +83,55 @@ export class OrderEffect {
         ...state,
         loading: true
       }));
-      if (props.param?.orderType) {
-        Object.assign(props, Object.assign(props.param, {
-          orderType: props.param?.orderType === 'ascend' ? 'asc' : 'des'
+      if (props.search?.orderType) {
+        Object.assign(props, Object.assign(props.search, {
+          orderType: props.search?.orderType === 'ascend' ? 'asc' : 'des'
         }));
       }
-
-      console.log(Object.assign(
-        props.param,
-        props.param?.status === undefined || props.param?.status === null
+      const search = Object.assign(
+        props.search,
+        props.search?.status === undefined || props.search?.status === null
           ? { status: 0 }
-          : {}
-      ));
-      return this.orderService.pagination(
-        Object.assign(
-          props.param,
-          props.param?.status === undefined || props.param?.status === null
-            ? { status: 0 }
-            : {}
-        )
-      )
-        .pipe(
-          map((res) => {
-            const expandedAll = this.orderQuery.getValue().expandedAll;
-            const data = res.data.map((order: OrderEntity) =>
-              Object.assign(order, {
+          : {},
+        { take: PaginationDto.take, skip: this.orderQuery.getCount() }
+      );
+      return this.orderService.pagination(search).pipe(
+        map((res) => {
+          const expandedAll = this.orderQuery.getValue().expandedAll;
+          const data = res.data.map((order: OrderEntity) => {
+              return Object.assign(order, {
                 expand: expandedAll,
                 totalCommodity: (order.totalCommodity = getTotalCommodity(
                   order.commodities
                 ))
-              })
-            );
-            if (props.isPagination) {
-              this.orderStore.add(data);
-            } else {
-              this.orderStore.set(data);
+              });
             }
-            this.orderStore.update(state => ({
-              ...state,
-              loading: false,
-              remain: res.total - this.orderQuery.getCount(),
-              total: res.total,
-              totalCommodity: res.commodityUniq.reduce(
-                (x, y) => x + y.amount,
-                0
-              ),
-              commodityUniq: res.commodityUniq
-            }));
-          }),
-          catchError((err) => {
-            this.orderStore.update((state) => ({
-              ...state,
-              loading: undefined
-            }));
-            return of(OrderActions.error(err));
-          })
-        );
+          );
+          if (props.isPaginate) {
+            this.orderStore.add(data);
+          } else {
+            this.orderStore.set(data);
+          }
+          this.orderStore.update(state => ({
+            ...state,
+            loading: false,
+            remain: res.total - this.orderQuery.getCount(),
+            total: res.total,
+            totalCommodity: res.commodityUniq.reduce(
+              (x, y) => x + y.amount,
+              0
+            ),
+            commodityUniq: res.commodityUniq
+          }));
+        }),
+        catchError((err) => {
+          this.orderStore.update((state) => ({
+            ...state,
+            loading: undefined
+          }));
+          return of(OrderActions.error(err));
+        })
+      );
     })
   );
 
