@@ -93,7 +93,7 @@ export class OrderEffect {
         props.search?.status === undefined || props.search?.status === null
           ? { status: 0 }
           : {},
-        { take: PaginationDto.take, skip: this.orderQuery.getCount() }
+        { take: PaginationDto.take, skip: props.isPaginate ? this.orderQuery.getCount() : 0 }
       );
       return this.orderService.pagination(search).pipe(
         map((res) => {

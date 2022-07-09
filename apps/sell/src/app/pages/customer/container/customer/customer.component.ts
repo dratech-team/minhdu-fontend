@@ -13,7 +13,6 @@ import {
 } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { ModalExportExcelComponent, ModalExportExcelData } from '@minhdu-fontend/components';
-import { startWith, tap } from 'rxjs/operators';
 import { CustomerActions, CustomerQuery, CustomerStore } from '../../+state';
 import { CustomerModalComponent, PaymentModalComponent } from '../../component';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -29,6 +28,7 @@ import { PotentialEnum } from '../../enums';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
 import { ModalCustomerData } from '../../data/modal-customer.data';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
+import { startWith } from 'rxjs/operators';
 
 @Component({
   templateUrl: 'customer.component.html'
@@ -96,15 +96,13 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup.valueChanges
-      .pipe(
-        startWith(''),
-        tap((val) => {
-          this.actions$.dispatch(
-            CustomerActions.loadAll({ search: this.mapCustomer(val), isPaginate: false })
-          );
-        })
-      )
-      .subscribe();
+      .pipe(startWith(this.formGroup.value))
+      .subscribe((formGroup) => {
+        console.log('formGroup ', formGroup);
+        this.actions$.dispatch(
+          CustomerActions.loadAll({ search: this.mapCustomer(formGroup), isPaginate: false })
+        );
+      });
   }
 
   onAdd() {

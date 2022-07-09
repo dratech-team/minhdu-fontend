@@ -59,7 +59,7 @@ export class CommodityEffect {
       }));
       const param = Object.assign(props, Object.assign(props.search, {
         take: PaginationDto.take,
-        skip: this.commodityQuery.getCount()
+        skip: props.isPaginate ? this.commodityQuery.getCount() : 0
       }));
       return this.commodityService.pagination(param)
         .pipe(

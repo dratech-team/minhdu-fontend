@@ -41,11 +41,12 @@ export class CustomerEffect {
           : {},
         {
           take: PaginationDto.take,
-          skip: this.customerQuery.getCount()
+          skip: props.isPaginate ? this.customerQuery.getCount() : 0
         }
       );
       return this.customerService.pagination(params).pipe(
         map((res) => {
+          console.log(res.data);
           if (props.isPaginate) {
             this.customerStore.add(res.data);
           } else {

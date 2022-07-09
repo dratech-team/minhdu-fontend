@@ -75,7 +75,7 @@ export class RouteEffect {
             : {},
           {
             take: PaginationDto.take,
-            skip: this.routeQuery.getCount()
+            skip: props.isPagination ? this.routeQuery.getCount() : 0
           }
         )
       )
