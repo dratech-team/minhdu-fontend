@@ -7,13 +7,14 @@ import { Actions } from '@datorama/akita-ng-effects';
 import { CommodityEntity } from '../../../pages/commodity/entities';
 import { OrderEntity } from '../../../pages/order/enitities/order.entity';
 import { PaginationDto } from '@minhdu-fontend/constants';
-import { SortTypeOrderEnum } from '@minhdu-fontend/enums';
+import { ModeEnum, SortTypeOrderEnum } from '@minhdu-fontend/enums';
 import { BaseSearchOrderDto } from '../../../pages/order/dto';
+import { AccountQuery } from '../../../../../../../libs/system/src/lib/state/account-management/account.query';
 
 @Component({
   selector: 'select-order',
   templateUrl: 'select-order.component.html',
-  styleUrls: ['select-order.component.scss'],
+  styleUrls: ['select-order.component.scss']
 })
 export class SelectOrderComponent implements OnInit {
   @Input() columns!: SortTypeOrderEnum[];
@@ -22,32 +23,37 @@ export class SelectOrderComponent implements OnInit {
   @Input() customerId?: number;
   @Input() disableReselect = false;
 
+  account$ = this.accountQuery.selectCurrentUser();
   total$ = this.orderQuery.selectCount();
+  remain$ = this.orderQuery.select(state => state.remain);
   loading$ = this.orderQuery.select((state) => state.loading);
 
   orders: OrderEntity[] = [];
-  paidType = PaidType;
-  pageSizeTable = 7;
-  orderEnum = SortTypeOrderEnum;
+  eventSearch = true;
+  checked = false;
+  indeterminate = false;
   setOfCheckedOrder = new Set<OrderEntity>();
   setOfCheckedCommodity = new Set<CommodityEntity>();
+
+  ModeEnum = ModeEnum;
+  PaidType = PaidType;
+  SortTypeOrderEnum = SortTypeOrderEnum;
+
   formGroupTable = new UntypedFormGroup({
     filterRoute: new UntypedFormControl(false),
     customer: new UntypedFormControl(''),
     startedAt: new UntypedFormControl([
       getFirstDayInMonth(new Date()),
-      getLastDayInMonth(new Date()),
+      getLastDayInMonth(new Date())
     ]),
     paidType: new UntypedFormControl(''),
-    explain: new UntypedFormControl(''),
+    explain: new UntypedFormControl('')
   });
-  eventSearch = true;
-  checked = false;
-  indeterminate = false;
 
   constructor(
     private readonly actions$: Actions,
-    private readonly orderQuery: OrderQuery
+    private readonly orderQuery: OrderQuery,
+    private readonly accountQuery: AccountQuery
   ) {
     this.orderQuery.selectAll().subscribe((val) => {
       this.orders = JSON.parse(JSON.stringify(val));
@@ -64,11 +70,8 @@ export class SelectOrderComponent implements OnInit {
     });
   }
 
-  onPagination(pageIndex: number) {
-    const count = this.orderQuery.getCount();
-    if (pageIndex * this.pageSizeTable >= count) {
-      this.onLoad(true);
-    }
+  onLoadMore() {
+    this.onLoad(true);
   }
 
   onLoad(pagination: boolean) {
@@ -78,7 +81,7 @@ export class SelectOrderComponent implements OnInit {
           this.formGroupTable.value,
           pagination
         ) as BaseSearchOrderDto,
-        isPaginate: pagination,
+        isPaginate: pagination
       })
     );
   }
@@ -146,7 +149,7 @@ export class SelectOrderComponent implements OnInit {
         : getFirstDayInMonth(new Date()),
       startedAt_end: val.startedAt
         ? val.startedAt[1]
-        : getLastDayInMonth(new Date()),
+        : getLastDayInMonth(new Date())
     };
     return Object.assign(
       {},

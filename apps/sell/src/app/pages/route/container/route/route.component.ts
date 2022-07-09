@@ -87,7 +87,7 @@ export class RouteComponent implements OnInit {
       .pipe(debounceTime(500))
       .subscribe((route) => {
         this.actions$.dispatch(
-          RouteActions.loadAll({ search: this.mapRoute(route) })
+          RouteActions.loadAll({ search: this.mapRoute(route), isPaginate: false })
         );
       });
   }
@@ -194,11 +194,11 @@ export class RouteComponent implements OnInit {
   }
 
   public onExpandAll() {
-    const expanedAll = this.routeQuery.getValue().expandedAll;
+    const expandedAll = this.routeQuery.getValue().expandedAll;
     this.routeQuery.getAll().forEach((route: RouteEntity) => {
-      this.routeStore.update(route.id, { expand: !expanedAll });
+      this.routeStore.update(route.id, { expand: !expandedAll });
     });
-    this.routeStore.update((state) => ({ ...state, expandedAll: !expanedAll }));
+    this.routeStore.update((state) => ({ ...state, expandedAll: !expandedAll }));
   }
 
   public onSort(sort: Sort) {

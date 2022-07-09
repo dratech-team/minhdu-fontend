@@ -295,11 +295,9 @@
         </tbody>
       </nz-table>
       </tr>
+      </ng-template>
       <tr
-        *ngIf='
-                  ((count$ | async) || 0) < ((total$ | async) || 0) &&
-                  (total$ | async) !== 0
-                '
+        *ngIf='remain$ | async'
       >
         <td colspan='17'>
           <div
@@ -307,10 +305,11 @@
             style='position: relative'
           >
             <button
-              (click)='onLoadMore()'
-              style='position: sticky; left: 45vw'
               nz-button
+              nzGhost
+              style='position: sticky; left: 45vw'
               nzType='primary'
+              (click)='onLoadMore()'
               [nzLoading]='loading$ | async'
             >
               Tải thêm {{ remain$ | async }} tuyến đường
@@ -318,7 +317,6 @@
           </div>
         </td>
       </tr>
-      </ng-template>
       </tbody>
       </nz-table>
     </div>

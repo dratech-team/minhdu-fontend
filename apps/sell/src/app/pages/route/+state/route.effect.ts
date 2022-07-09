@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { RouteActions } from './route.Actions';
+import { RouteActions } from './route.actions';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { RouteService } from '../service';
 import { of } from 'rxjs';
@@ -67,55 +67,54 @@ export class RouteEffect {
         props.search.orderType =
           props.search.orderType === 'ascend' ? 'asc' : 'des';
       }
-      return this.routeService.pagination(
-        Object.assign(
-          props.search,
-          props.search?.status === null || props.search?.status === undefined
-            ? { status: 0 }
-            : {},
-          {
-            take: PaginationDto.take,
-            skip: props.isPaginate ? this.routeQuery.getCount() : 0
-          }
-        )
-      )
-        .pipe(
-          map((res) => {
-            const expandedAll = this.routeQuery.getValue().expandedAll;
+      const search = Object.assign(
+        {},
+        props.search,
+        props.search?.status === null || props.search?.status === undefined
+          ? { status: 0 }
+          : {},
+        {
+          take: PaginationDto.take,
+          skip: props.isPaginate ? this.routeQuery.getCount() : 0
+        }
+      );
+      return this.routeService.pagination(search).pipe(
+        map((res) => {
+          const expandedAll = this.routeQuery.getValue().expandedAll;
 
-            this.routeStore.update((state) => ({
-              ...state,
-              loading: false,
-              total: res.total
-            }));
-            if (res.data.length) {
-              const routes = res.data.map((route) => {
-                const orders = this.handelOrder(route.orders);
-                return Object.assign(route, {
-                  totalCommodityUniq: this.totalCommodityUniq(route.orders),
-                  orders: orders,
-                  expand: expandedAll
-                });
+          this.routeStore.update((state) => ({
+            ...state,
+            loading: false,
+            total: res.total
+          }));
+          if (res.data.length) {
+            const routes = res.data.map((route) => {
+              const orders = this.handelOrder(route.orders);
+              return Object.assign(route, {
+                totalCommodityUniq: this.totalCommodityUniq(route.orders),
+                orders: orders,
+                expand: expandedAll
               });
-              if (props.isPaginate) {
-                this.routeStore.add(routes);
-              } else {
-                this.routeStore.set(routes);
-              }
-              this.routeStore.update(state => ({
-                ...state,
-                remain: res.total - this.routeQuery.getCount()
-              }));
+            });
+            if (props.isPaginate) {
+              this.routeStore.add(routes);
+            } else {
+              this.routeStore.set(routes);
             }
-          }),
-          catchError((err) => {
-            this.routeStore.update((state) => ({
+            this.routeStore.update(state => ({
               ...state,
-              loading: undefined
+              remain: res.total - this.routeQuery.getCount()
             }));
-            return of(RouteActions.error(err));
-          })
-        );
+          }
+        }),
+        catchError((err) => {
+          this.routeStore.update((state) => ({
+            ...state,
+            loading: undefined
+          }));
+          return of(RouteActions.error(err));
+        })
+      );
     })
   );
 
