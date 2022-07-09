@@ -4,7 +4,12 @@
   *ngIf='order$ | async as order'
 >
   <div class='d-flex justify-content-end mr-3'>
-    <button nz-button nzDanger (click)='onDelete(order)'>
+    <button
+      nz-button
+      nzType='primary'
+      nzDanger
+      (click)='onDelete(order)'
+    >
       Xoá
     </button>
   </div>
@@ -315,6 +320,9 @@
               <th class='text-center'>
                 Mua thêm
               </th>
+              <th class='text-center'>
+                Xoá
+              </th>
             </tr>
             </thead>
             <tbody>
@@ -334,6 +342,16 @@
                 <td>{{ orderHistory.amount }}</td>
                 <td>{{ orderHistory.gift }}</td>
                 <td>{{ orderHistory.more }}</td>
+                <td>
+                  <button
+                    nz-button
+                    nzDanger
+                    nzType='primary'
+                    (click)='onRemoveOrderHistory(orderHistory)'
+                  >
+                    Xoá
+                  </button>
+                </td>
               </tr>
             </ng-template>
             </tbody>

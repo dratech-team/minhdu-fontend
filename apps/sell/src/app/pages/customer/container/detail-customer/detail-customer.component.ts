@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
-import { DevelopmentComponent, DialogDeleteComponent } from '@minhdu-fontend/components';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DevelopmentComponent } from '@minhdu-fontend/components';
 import { ConvertBoolean, PaidType, StatusOrder } from '@minhdu-fontend/enums';
-import { CustomerActions, CustomerQuery } from '../../+state';
+import { CustomerActions, CustomerQuery, CustomerStore } from '../../+state';
 import { CustomerEntity } from '../../entities';
 import { CustomerModalComponent, PaymentModalComponent } from '../../component';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -12,12 +12,15 @@ import { OrderDialogComponent } from '../../../order/component';
 import { OrderEntity } from '../../../order/enitities/order.entity';
 import { ModalCustomerData } from '../../data/modal-customer.data';
 import { ModalAddOrUpdatePayment } from '../../data/modal-payment.data';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   templateUrl: 'detail-customer.component.html',
   styleUrls: ['detail-customer.component.scss']
 })
-export class DetailCustomerComponent implements OnInit {
+export class DetailCustomerComponent implements OnInit, OnDestroy {
+  subject = new Subject<void>();
   customer$ = this.customerQuery.selectEntity(this.getId);
   delivered$ = this.customerQuery.selectDelivered(this.getId);
   delivering$ = this.customerQuery.selectDelivering(this.getId);
@@ -38,10 +41,12 @@ export class DetailCustomerComponent implements OnInit {
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
     private readonly actions$: Actions,
-    private readonly customerQuery: CustomerQuery,
     private readonly dialog: MatDialog,
-    private readonly modal: NzModalService
+    private readonly modal: NzModalService,
+    private readonly customerStore: CustomerStore,
+    private readonly customerQuery: CustomerQuery
   ) {
   }
 
@@ -101,13 +106,17 @@ export class DetailCustomerComponent implements OnInit {
     });
   }
 
-  onRemove(id: any) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent, {
-      width: '25%'
-    });
-    dialogRef.afterClosed().subscribe((val) => {
-      if (val) {
-        this.actions$.dispatch(CustomerActions.remove({ id: id }));
+  onRemove(customer: CustomerEntity) {
+    this.modal.create({
+      nzTitle: 'Xoá khách hàng',
+      nzContent: `Bạn có chắc chắn muốn xoá khách hàng ${customer.lastName} ra khỏi danh sách? Điều này sẽ làm mất đi toàn bộ dữ liệu về khách hàng này, vì vậy bạn hãy cân nhắc trước khi thực hiện nhé!!!`,
+      nzOnOk: () => {
+        this.actions$.dispatch(CustomerActions.remove({ id: customer.id }));
+        this.customerQuery.select().pipe(takeUntil(this.subject)).subscribe((state) => {
+          if (!state.error && !state.loading) {
+            this.router.navigate(['khach-hang']).then();
+          }
+        });
       }
     });
   }
@@ -136,5 +145,10 @@ export class DetailCustomerComponent implements OnInit {
 
   development() {
     this.dialog.open(DevelopmentComponent, { width: '25%' });
+  }
+
+  ngOnDestroy() {
+    this.subject.next();
+    this.subject.complete();
   }
 }

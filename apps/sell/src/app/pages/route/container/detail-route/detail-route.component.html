@@ -118,11 +118,11 @@
         <div class='mt-3 mb-5'>
           <nz-table
             #nestedTable
-            [nzLoading]='!route.orders?.length'
             nzSize='middle'
+            [nzShowPagination]='false'
+            [nzFrontPagination]='false'
             [nzScroll]="{ y: '500px' }"
             [nzData]='route.orders'
-            [nzShowPagination]='false'
           >
             <thead>
             <tr>

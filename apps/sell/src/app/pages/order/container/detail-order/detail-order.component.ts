@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommodityUnit, ModeEnum, PaymentType } from '@minhdu-fontend/enums';
 import { OrderActions, OrderQuery } from '../../+state';
@@ -9,7 +9,7 @@ import { CommodityDialogComponent } from '../../../commodity/component';
 import { OrderHistoryService } from '../../service';
 import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Actions } from '@datorama/akita-ng-effects';
 import { OrderHistoryEntity } from '../../enitities';
 import { CommodityEntity } from '../../../commodity/entities';
@@ -23,11 +23,14 @@ import {
   SelectCommodityComponent
 } from 'apps/sell/src/app/shared/components/select-commodity/select-commodity.component';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   templateUrl: 'detail-order.component.html'
 })
-export class DetailOrderComponent implements OnInit {
+export class DetailOrderComponent implements OnInit, OnDestroy {
+  orderHistorySub = new Subject();
+
   order$ = this.orderQuery.selectEntity(this.getOrderId);
   loading$ = new BehaviorSubject<boolean>(false);
   account$ = this.accountQuery.selectCurrentUser();
@@ -49,6 +52,7 @@ export class DetailOrderComponent implements OnInit {
     private readonly router: Router,
     private readonly orderHistoryService: OrderHistoryService,
     private readonly modal: NzModalService,
+    private readonly message: NzMessageService,
     private readonly formBuilder: UntypedFormBuilder,
     private readonly orderQuery: OrderQuery,
     private readonly accountQuery: AccountQuery
@@ -123,6 +127,23 @@ export class DetailOrderComponent implements OnInit {
     }
   }
 
+  onDelete($event: any) {
+    this.modal.warning({
+      nzTitle: 'Xoá đơn hàng',
+      nzContent: `Bạn có chắc chắn muốn xoá đơn hàng này vĩnh viễn`,
+      nzOnOk: () => {
+        this.actions$.dispatch(OrderActions.remove({ id: $event.id }));
+        this.orderQuery
+          .select((state) => state.deleted)
+          .subscribe((val) => {
+            if (val) {
+              this.router.navigate(['don-hang']).then();
+            }
+          });
+      }
+    });
+  }
+
   public onUpdateCommodity(orderId: number, commodity: CommodityEntity) {
     this.modal.create({
       nzTitle: 'Cập nhật hàng hoá',
@@ -151,11 +172,7 @@ export class DetailOrderComponent implements OnInit {
     });
   }
 
-  onRoute(id: number) {
-    this.router.navigate(['khach-hang/chi-tiet-khach-hang', id]).then();
-  }
-
-  closingCommodity(commodity: CommodityEntity, orderId: number) {
+  public closingCommodity(commodity: CommodityEntity, orderId: number) {
     this.modal
       .create({
         nzTitle: 'Chốt hàng hoá',
@@ -185,12 +202,16 @@ export class DetailOrderComponent implements OnInit {
     });
   }
 
-  refreshOrderHistory() {
+  public onRoute(id: number) {
+    this.router.navigate(['khach-hang/chi-tiet-khach-hang', id]).then();
+  }
+
+  public refreshOrderHistory() {
     this.loading$.next(true);
     this.loadInitOrderHistory();
   }
 
-  loadInitOrderHistory(search?: any) {
+  public loadInitOrderHistory(search?: any) {
     this.orderHistoryService.pagination({
       take: 20,
       skip: 0,
@@ -205,20 +226,22 @@ export class DetailOrderComponent implements OnInit {
     });
   }
 
-  onDelete($event: any) {
-    this.modal.warning({
-      nzTitle: 'Xoá đơn hàng',
-      nzContent: `Bạn có chắc chắn muốn xoá đơn hàng này vĩnh viễn`,
+  public onRemoveOrderHistory(orderHistory: OrderHistoryEntity) {
+    this.modal.create({
+      nzTitle: 'Xoá lịch sử chốt đơn',
+      nzContent: `Bạn có chắc chắn chắn muốn xoá mục lịch sử này không?`,
       nzOnOk: () => {
-        this.actions$.dispatch(OrderActions.remove({ id: $event.id }));
-        this.orderQuery
-          .select((state) => state.deleted)
-          .subscribe((val) => {
-            if (val) {
-              this.router.navigate(['don-hang']).then();
-            }
-          });
+        this.orderHistoryService.delete(orderHistory.id).subscribe((res) => {
+          this.message.success('Xoá thành công!');
+          this.refreshOrderHistory();
+        });
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.orderHistorySub.next();
+    this.orderHistorySub.complete();
+    this.orderHistorySub.unsubscribe();
   }
 }

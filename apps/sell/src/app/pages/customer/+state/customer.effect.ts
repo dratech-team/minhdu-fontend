@@ -46,7 +46,6 @@ export class CustomerEffect {
       );
       return this.customerService.pagination(params).pipe(
         map((res) => {
-          console.log(res.data);
           if (props.isPaginate) {
             this.customerStore.add(res.data);
           } else {
@@ -150,7 +149,8 @@ export class CustomerEffect {
           this.customerStore.update((state) => ({
             ...state,
             total: state.total - 1,
-            loading: false
+            loading: false,
+            error: null
           }));
           this.message.success('Xoá khách hàng thành công');
           return this.customerStore.remove(props.id);
@@ -158,7 +158,8 @@ export class CustomerEffect {
         catchError((err) => {
           this.customerStore.update((state) => ({
             ...state,
-            loading: undefined
+            loading: undefined,
+            error: err
           }));
           return of(CustomerActions.error(err));
         })
