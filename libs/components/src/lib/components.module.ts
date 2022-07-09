@@ -1,4 +1,4 @@
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -20,7 +20,7 @@ import { DevelopmentComponent } from './development/development.component';
 import { DialogDatePickerComponent } from './dialog-datepicker/dialog-datepicker.component';
 import { DialogDeleteComponent } from './dialog-delete/dialog-delete.component';
 import { DialogExportComponent } from './dialog-export/dialog-export.component';
-import { DialogSharedComponent } from './dialog-shared/dialog-shared.component';
+import { DialogSharedComponent } from './dialog-shared';
 import { InputCurrencyDirective } from './directive/input-currency.directive';
 import { MouseRightComponent } from './mouse-right/mouse-right.component';
 import { PickLocationComponent } from './pick-location/pick-location.component';
@@ -62,6 +62,8 @@ import { ModalExportExcelComponent } from './modal-export/modal-export-excel.com
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { ConvertMinutePipe } from './pipes/convert-minute.pipe';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 const NzModules = [
   NzSelectModule,
@@ -105,7 +107,9 @@ const MatModules = [
     BsDatepickerModule.forRoot(),
     NgxSkeletonLoaderModule,
     NzModules,
-    MatModules
+    MatModules,
+    TooltipModule,
+    NzSkeletonModule
   ],
   declarations: [
     SwimLaneChartComponent,
@@ -177,6 +181,7 @@ const MatModules = [
     ConvertMinutePipe
   ],
   providers: [
+    DatePipe,
     DecimalPipe,
     MatDatepickerModule,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }

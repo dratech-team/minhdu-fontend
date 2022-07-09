@@ -1,21 +1,23 @@
 <div class='d-flex container'>
   <div
-    class='d-flex flex-column border ng-star-inserted'
-    style='height: 80vh; width: 18%; overflow-y: scroll; padding: 10px'
+    class='d-flex flex-column p-2 border ng-star-inserted'
+    style='height: 80vh; overflow-y: auto'
   >
-    <nz-collapse>
-      <nz-collapse-panel nzHeader='Tìm kiếm' nzActive='true'>
-        <div [formGroup]='formGroup'>
-          <input
-            nz-input
-            class='form-control'
-            type='search'
-            formControlName='search'
-          />
-        </div>
-      </nz-collapse-panel>
-    </nz-collapse>
-    <div class='mt-2'>
+    <div class='mb-2'>
+      <nz-collapse>
+        <nz-collapse-panel nzHeader='Tìm kiếm' nzActive='true'>
+          <div [formGroup]='formGroup'>
+            <input
+              nz-input
+              class='form-control'
+              type='search'
+              formControlName='search'
+            />
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
+    <div class='mb-2'>
       <minhdu-fontend-collapse-radios
         [active]='true'
         [formGroup]='formGroup'
@@ -25,7 +27,7 @@
       >
       </minhdu-fontend-collapse-radios>
     </div>
-    <div class='mt-2'>
+    <div class='mb-2'>
       <minhdu-fontend-collapse-datepicker
         [rangeDayInit]='{
           start: search.startedAt_start,
@@ -35,7 +37,7 @@
         (onPicker)='onPickCreatedAt($event)'
       ></minhdu-fontend-collapse-datepicker>
     </div>
-    <div class='mt-2'>
+    <div class='mb-2'>
       <minhdu-fontend-collapse-datepicker
         [title]="'Ngày hẹn giao'"
         [rangeDayInit]='{
@@ -45,7 +47,7 @@
         (onPicker)='onPickEndedAt($event)'
       ></minhdu-fontend-collapse-datepicker>
     </div>
-    <div class='mt-2' *ngIf="formGroup.get('status')?.value === 1">
+    <div class='mb-2' *ngIf="formGroup.get('status')?.value === 1">
       <minhdu-fontend-collapse-datepicker
         [rangeDayInit]='{
           start: search.deliveredAt_start,
@@ -55,21 +57,23 @@
         (onPicker)='onPickDeliveryDay($event)'
       ></minhdu-fontend-collapse-datepicker>
     </div>
-    <nz-collapse class='mt-2'>
-      <nz-collapse-panel nzHeader='Hàng hoá' nzActive='false'>
-        <div [formGroup]='formGroup'>
-          <nz-radio-group formControlName='commodity'>
-            <label
-              nz-radio
-              *ngFor='let item of commodities$ | async'
-              [nzValue]='item.name'
-            >{{ item.name }}</label
-            >
-            <label nz-radio [nzValue]="''">Tất cả</label>
-          </nz-radio-group>
-        </div>
-      </nz-collapse-panel>
-    </nz-collapse>
+    <div class='mb-2'>
+      <nz-collapse>
+        <nz-collapse-panel nzHeader='Hàng hoá' nzActive='false'>
+          <div [formGroup]='formGroup'>
+            <nz-radio-group formControlName='commodity'>
+              <label
+                nz-radio
+                *ngFor='let item of commodities$ | async'
+                [nzValue]='item.name'
+              >{{ item.name }}</label
+              >
+              <label nz-radio [nzValue]="''">Tất cả</label>
+            </nz-radio-group>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
   </div>
   <div class='ml-3' style='width: 80%'>
     <div class='d-flex justify-content-between align-items-end m-2'>

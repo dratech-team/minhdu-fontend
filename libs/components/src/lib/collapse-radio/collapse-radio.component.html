@@ -1,10 +1,10 @@
-<nz-collapse class="mt-2">
-  <nz-collapse-panel nzHeader="{{ header }}" nzActive="{{ active }}">
-    <div [formGroup]="formGroup">
-      <nz-radio-group [formControlName]="controlName">
-        <label *ngFor="let radio of radios" nz-radio [nzValue]="radio.value">{{
+<nz-collapse>
+  <nz-collapse-panel nzHeader='{{ header }}' nzActive='{{ active }}'>
+    <div [formGroup]='formGroup'>
+      <nz-radio-group [formControlName]='controlName'>
+        <label *ngFor='let radio of radios' nz-radio [nzValue]='radio.value'>{{
           radio.name
-        }}</label>
+          }}</label>
       </nz-radio-group>
     </div>
   </nz-collapse-panel>
