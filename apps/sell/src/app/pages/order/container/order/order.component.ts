@@ -11,7 +11,7 @@ import {
   SortTypeOrderEnum
 } from '@minhdu-fontend/enums';
 import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
-import { map, tap } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 import { OrderActions, OrderQuery, OrderStore } from '../../+state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
@@ -120,15 +120,13 @@ export class OrderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.formGroup.valueChanges
-      .pipe(
-        tap((val: any) => {
-          this.actions$.dispatch(
-            OrderActions.loadAll({ search: this.mapOrder(val), isPaginate: false })
-          );
-        })
-      )
-      .subscribe();
+    this.formGroup.valueChanges.pipe(
+      debounceTime(500)
+    ).subscribe((order) => {
+      this.actions$.dispatch(
+        OrderActions.loadAll({ search: this.mapOrder(order), isPaginate: false })
+      );
+    });
   }
 
   onAdd() {
@@ -160,6 +158,15 @@ export class OrderComponent implements OnInit {
       nzFooter: [],
       nzWidth: '65vw',
       nzMaskClosable: false
+    });
+  }
+
+  onRemove(order: OrderEntity) {
+    this.modal.warning({
+      nzTitle: 'Xoá đơn hàng',
+      nzContent: `Bạn có chắc chắn muốn xoá đơn hàng đến ${order.province.name} của khách hàng ${order.customer.lastName} vĩnh viễn không?`,
+      nzOnOk: () =>
+        this.actions$.dispatch(OrderActions.remove({ id: order.id }))
     });
   }
 
@@ -196,18 +203,9 @@ export class OrderComponent implements OnInit {
     });
   }
 
-  public onRemove(order: OrderEntity) {
-    this.modal.warning({
-      nzTitle: 'Xoá đơn hàng',
-      nzContent: `Bạn có chắc chắn muốn xoá đơn hàng đến ${order.province.name} của khách hàng ${order.customer.lastName} vĩnh viễn không?`,
-      nzOnOk: () =>
-        this.actions$.dispatch(OrderActions.remove({ id: order.id }))
-    });
-  }
-
   public onLoadMore() {
     this.actions$.dispatch(
-      OrderActions.loadAll(this.mapOrder(this.formGroup.value))
+      OrderActions.loadAll({ search: this.mapOrder(this.formGroup.value), isPaginate: true })
     );
   }
 
