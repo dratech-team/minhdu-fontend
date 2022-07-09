@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommodityUnit, PaymentType } from '@minhdu-fontend/enums';
+import { CommodityUnit, ModeEnum, PaymentType } from '@minhdu-fontend/enums';
 import { OrderActions, OrderQuery } from '../../+state';
 import { OrderDialogComponent } from '../../component';
 import { MatDialog } from '@angular/material/dialog';
-import { CommodityAction, CommodityQuery } from '../../../commodity/state';
+import { CommodityAction } from '../../../commodity/state';
 import { CommodityDialogComponent } from '../../../commodity/component';
-import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared';
 import { OrderHistoryService } from '../../service';
 import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
@@ -23,16 +22,20 @@ import {
 import {
   SelectCommodityComponent
 } from 'apps/sell/src/app/shared/components/select-commodity/select-commodity.component';
+import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 
 @Component({
   templateUrl: 'detail-order.component.html'
 })
 export class DetailOrderComponent implements OnInit {
   order$ = this.orderQuery.selectEntity(this.getOrderId);
-  payType = PaymentType;
-  commodityUnit = CommodityUnit;
-  orderHistories: OrderHistoryEntity[] = [];
   loading$ = new BehaviorSubject<boolean>(false);
+  account$ = this.accountQuery.selectCurrentUser();
+
+  ModeEnum = ModeEnum;
+  PaymentType = PaymentType;
+  CommodityUnit = CommodityUnit;
+  orderHistories: OrderHistoryEntity[] = [];
 
   formGroup = new FormGroup({
     content: new FormControl<string>(''),
@@ -41,14 +44,14 @@ export class DetailOrderComponent implements OnInit {
 
   constructor(
     private readonly actions$: Actions,
-    private readonly orderQuery: OrderQuery,
-    private readonly commodityQuery: CommodityQuery,
     private readonly activatedRoute: ActivatedRoute,
     private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly orderHistoryService: OrderHistoryService,
     private readonly modal: NzModalService,
-    private readonly formBuilder: UntypedFormBuilder
+    private readonly formBuilder: UntypedFormBuilder,
+    private readonly orderQuery: OrderQuery,
+    private readonly accountQuery: AccountQuery
   ) {
   }
 
@@ -61,7 +64,7 @@ export class DetailOrderComponent implements OnInit {
       if (param.isUpdate === 'true') {
         const order = this.orderQuery.getEntity(this.getOrderId);
         if (order) {
-          this.updateOrder(order, 'GENERAL');
+          this.onUpdate(order, 'GENERAL');
         }
       }
     });
@@ -77,7 +80,11 @@ export class DetailOrderComponent implements OnInit {
     return this.activatedRoute.snapshot.params.id;
   }
 
-  updateOrder(order: OrderEntity, type?: 'GENERAL' | 'COMMODITY') {
+  onDetail(id: number) {
+    this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id]).then();
+  }
+
+  onUpdate(order: OrderEntity, type?: 'GENERAL' | 'COMMODITY') {
     if (type === 'GENERAL') {
       this.modal.create({
         nzTitle: 'Sửa đơn hàng',
@@ -116,11 +123,7 @@ export class DetailOrderComponent implements OnInit {
     }
   }
 
-  detailRoute(id: number) {
-    this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id]).then();
-  }
-
-  updateCommodity(orderId: number, commodity: CommodityEntity) {
+  public onUpdateCommodity(orderId: number, commodity: CommodityEntity) {
     this.modal.create({
       nzTitle: 'Cập nhật hàng hoá',
       nzContent: CommodityDialogComponent,
@@ -131,27 +134,21 @@ export class DetailOrderComponent implements OnInit {
     });
   }
 
-  deleteCommodity(commodity: CommodityEntity) {
-    this.dialog
-      .open(DialogSharedComponent, {
-        width: 'fit-content',
-        data: {
-          title: 'Xoá hàng hoá',
-          description: `Bạn có chắc chắn muốn xoá hàng hoá ${commodity.name}`
+  public onRemoveCommodity(commodity: CommodityEntity) {
+    this.modal.warning({
+      nzTitle: 'Xoá đơn hàng',
+      nzContent: `Bạn có chắc chắn muốn xoá hàng hoá ${commodity.name}?`,
+      nzOnOk: () => {
+        if (commodity.orderId) {
+          this.actions$.dispatch(
+            CommodityAction.remove({
+              id: commodity.id,
+              inOrder: { orderId: commodity.orderId }
+            })
+          );
         }
-      })
-      .afterClosed()
-      .subscribe((val) => {
-        if (val) {
-          if (commodity.orderId)
-            this.actions$.dispatch(
-              CommodityAction.remove({
-                id: commodity.id,
-                inOrder: { orderId: commodity.orderId }
-              })
-            );
-        }
-      });
+      }
+    });
   }
 
   onRoute(id: number) {
@@ -194,27 +191,18 @@ export class DetailOrderComponent implements OnInit {
   }
 
   loadInitOrderHistory(search?: any) {
-    console.log({
+    this.orderHistoryService.pagination({
       take: 20,
       skip: 0,
-      orderId: +this.getOrderId,
+      orderId: this.getOrderId,
       commodity: search ? search.commodity : '',
       content: search ? search.content : ''
+    }).subscribe((res) => {
+      if (res) {
+        this.orderHistories = res.data;
+        this.loading$.next(false);
+      }
     });
-    this.orderHistoryService
-      .pagination({
-        take: 20,
-        skip: 0,
-        orderId: this.getOrderId,
-        commodity: search ? search.commodity : '',
-        content: search ? search.content : ''
-      })
-      .subscribe((res) => {
-        if (res) {
-          this.orderHistories = res.data;
-          this.loading$.next(false);
-        }
-      });
   }
 
   onDelete($event: any) {

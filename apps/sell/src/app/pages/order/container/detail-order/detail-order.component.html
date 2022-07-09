@@ -1,22 +1,16 @@
 <mat-spinner *ngIf='loading$ | async' class='loading'></mat-spinner>
 <div
-  class='animated fadeIn container mb-3'
-  style='min-height: 80vh !important'
+  class='animated fadeIn container mb-3 ng-star-inserted'
   *ngIf='order$ | async as order'
 >
-  <div class='row'>
-    <div class='mt-5 d-flex justify-content-between w-100'>
-      <div class='main-title mr-5' style='font-size: 20px'>
-        Chi tiết đơn hàng
-      </div>
-      <div>
-        <button nz-button nzDanger class='mr-5' (click)='onDelete(order)'>
-          Huỷ
-        </button>
-      </div>
+  <div class='mt-4 d-flex justify-content-end'>
+    <div>
+      <button nz-button nzDanger class='mr-5' (click)='onDelete(order)'>
+        Xoá
+      </button>
     </div>
   </div>
-  <div class='row mt-5' style='color: #80828b'>
+  <div class='row mt-2'>
     <div class='col-12'>
       <div class='row d-flex align-items-center'>
         <div class='col-2 align-items-center title-table'>Thông tin chung</div>
@@ -25,7 +19,7 @@
           data-placement='top'
           title=' chỉnh sửa '
           class='edit'
-          (click)="updateOrder(order, 'GENERAL')"
+          (click)="onUpdate(order, 'GENERAL')"
         >
           <img
             style='height: 15px'
@@ -43,7 +37,6 @@
             <div class='col-md-8 py-2 border-bottom'>
               <span
                 class='contain-detail pointer'
-                style='color: #3c3b54'
                 (click)='onRoute(order.customer.id)'
               >
                 {{ order.customer.lastName }}
@@ -119,46 +112,59 @@
         <div class='col-6 form-group'></div>
       </div>
       <div class='col-12 mt-5'>
-        <div class='d-flex align-items-center justify-content-between mb-2'>
-          <div class='row align-items-center title-table ml-1'>Hàng hoá</div>
+        <div class='d-flex align-items-center justify-content-between'>
+          <div class='row align-items-center title-table'>Hàng hoá</div>
           <button
             nz-button
+            nzGhost
             nzType='primary'
-            (click)="updateOrder(order, 'COMMODITY')"
+            (click)="onUpdate(order, 'COMMODITY')"
           >
             Thêm
           </button>
         </div>
-        <div class='mt-3'>
+        <div class='mt-3 w-100'>
           <nz-table
             #tableCommodity
+            class='mt-3'
+            nzSize='middle'
             [nzData]='order.commodities'
             [nzScroll]="{ y: '300px' }"
             [nzShowPagination]='false'
-            nzSize='middle'
-            class='mt-3'
+            [nzFrontPagination]='false'
           >
             <thead>
             <tr>
-              <th class='text-center'>Mã hàng hóa</th>
+              <th
+                class='text-center'
+                nzWidth='60px'
+                *ngIf='(account$ | async)?.mode === ModeEnum.INFO'
+              >
+                ID
+              </th>
+              <th class='text-center' nzWidth='80px'>MHH</th>
               <th class='text-center'>Tên hàng hóa</th>
-              <!--              <th class='text-center'>Đơn vị</th>-->
               <th class='text-center'>Đơn giá</th>
-              <th class='text-center'>Số lượng</th>
+              <th class='text-center' nzWidth='70px'>SL</th>
               <th class='text-center'>Tặng</th>
               <th class='text-center'>Số lượng mua thêm</th>
               <th class='text-center'>Đơn giá mua thêm</th>
-              <th class='text-center'>Chốt đơn</th>
-              <th class='text-center'>Sửa</th>
-              <th class='text-center'>Xóa</th>
+              <th class='text-center' nzWidth='90px'>Chốt đơn</th>
+              <th class='text-center' nzWidth='70px'>Sửa</th>
+              <th class='text-center' nzWidth='70px'>Xóa</th>
             </tr>
             </thead>
             <tbody>
             <ng-template ngFor let-commodity [ngForOf]='tableCommodity.data'>
               <tr>
+                <td
+                  class='text-center'
+                  *ngIf='(account$ | async)?.mode === ModeEnum.INFO'
+                >
+                  {{commodity.id}}
+                </td>
                 <td class='text-center'>{{ commodity.code }}</td>
                 <td class='text-center'>{{ commodity.name }}</td>
-                <!--              <th class='text-center'>{{commodity.unit === commodityUnit.KG ? 'Kilogam' : 'Con'}} </th>-->
                 <td class='text-center'>
                   {{commodity.price | pricecommodity}}
                 </td>
@@ -187,7 +193,7 @@
                   <button
                     nz-button
                     nzType='primary'
-                    (click)='updateCommodity(order.id, commodity)'
+                    (click)='onUpdateCommodity(order.id, commodity)'
                   >
                     Sửa
                   </button>
@@ -195,8 +201,9 @@
                 <td class='text-center'>
                   <button
                     nz-button
-                    nzType='default'
-                    (click)='deleteCommodity(commodity)'
+                    nzType='primary'
+                    nzDanger
+                    (click)='onRemoveCommodity(commodity)'
                   >
                     Xóa
                   </button>
@@ -208,7 +215,7 @@
         </div>
       </div>
       <div class='col-12 mt-5'>
-        <div class='row align-items-center title-table mr-4'>Tuyến đường</div>
+        <div class='row align-items-center title-table'>Tuyến đường</div>
         <nz-table
           class='mt-3'
           #tableRoute
@@ -219,6 +226,13 @@
         >
           <thead>
           <tr>
+            <th
+              class='text-center'
+              nzWidth='60px'
+              *ngIf='(account$ | async)?.mode === ModeEnum.INFO'
+            >
+              ID
+            </th>
             <th class='text-center'>Tên tuyến đường</th>
             <th class='text-center'>Ngày bắt đầu</th>
             <th class='text-center'>Ngày kết thúc</th>
@@ -229,7 +243,13 @@
           </thead>
           <tbody>
           <ng-template ngFor let-route [ngForOf]='tableRoute.data'>
-            <tr (click)='detailRoute(route.id)'>
+            <tr (click)='onDetail(route.id)'>
+              <td
+                class='text-center'
+                *ngIf='(account$ | async)?.mode === ModeEnum.INFO'
+              >
+                {{route.id}}
+              </td>
               <td class='text-center pointer'>{{ route.name }}</td>
               <td class='text-center pointer'>
                 {{ route.startedAt | date: 'dd/MM/yyyy' }}
@@ -245,24 +265,25 @@
           </tbody>
         </nz-table>
       </div>
-      <div class='col-12 my-5'>
-        <div class='row d-flex align-items-center mb-3'>
-          <div class='row align-items-center title-table mr-4'>
+      <div class='col-12 mt-5'>
+        <div class='d-flex d-flex align-items-center justify-content-between'>
+          <div class='row align-items-center title-table'>
             Lịch sử chốt đơn
           </div>
-        </div>
-        <div class='d-flex justify-content-end'>
-          <img
-            (click)='refreshOrderHistory()'
-            class='border'
-            width='20px'
-            src='assets/icon/share/arrow-clockwise.svg'
-            alt='refresh'
-          />
+          <div>
+            <img
+              (click)='refreshOrderHistory()'
+              class='border '
+              width='20px'
+              src='assets/icon/share/arrow-clockwise.svg'
+              alt='refresh'
+            />
+          </div>
         </div>
         <div>
           <nz-table
             #tableOrderHistory
+            class='mt-3'
             [nzData]='orderHistories'
             [nzScroll]="{ y: '300px' }"
             [nzShowPagination]='false'
@@ -271,6 +292,13 @@
           >
             <thead>
             <tr>
+              <th
+                class='text-center'
+                nzWidth='60px'
+                *ngIf='(account$ | async)?.mode === ModeEnum.INFO'
+              >
+                ID
+              </th>
               <th class='text-center'>
                 Thời gian chốt đơn
               </th>
@@ -294,6 +322,12 @@
             <tbody>
             <ng-template ngFor let-orderHistory [ngForOf]='tableOrderHistory.data'>
               <tr class='pointer'>
+                <td
+                  class='text-center'
+                  *ngIf='(account$ | async)?.mode === ModeEnum.INFO'
+                >
+                  {{orderHistory.id}}
+                </td>
                 <td>
                   {{ (orderHistory.confirmedAt | date: 'hh:mm:ss - dd/MM/yyyy') || 'Huỷ chốt đơn'}}
                 </td>
