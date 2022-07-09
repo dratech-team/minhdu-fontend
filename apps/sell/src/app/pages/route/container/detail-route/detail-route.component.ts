@@ -17,9 +17,11 @@ import { ModalDatePickerEntity } from '@minhdu-fontend/base-entity';
 import { map } from 'rxjs/operators';
 
 @Component({
-  templateUrl: 'detail-route.component.html'
+  templateUrl: 'detail-route.component.html',
+  styleUrls: ['detail-route.component.scss']
 })
 export class DetailRouteComponent implements OnInit {
+  loading$ = this.routeQuery.selectLoading();
   route$ = this.routeQuery.selectEntity(this.routeId)
     .pipe(map(route => {
       if (route) {
@@ -27,7 +29,7 @@ export class DetailRouteComponent implements OnInit {
       }
     }));
 
-  payType = PaymentType;
+  PaymentType = PaymentType;
   updateTypeEnum = UpdaterRouteTypeEnum;
 
   constructor(

@@ -1,14 +1,12 @@
 <mat-spinner *ngIf='loading$ | async' class='loading'></mat-spinner>
 <div
-  class='animated fadeIn container mb-3 ng-star-inserted'
+  class='animated fadeIn container mt-4  mb-3'
   *ngIf='order$ | async as order'
 >
-  <div class='mt-4 d-flex justify-content-end'>
-    <div>
-      <button nz-button nzDanger class='mr-5' (click)='onDelete(order)'>
-        Xoá
-      </button>
-    </div>
+  <div class='d-flex justify-content-end mr-3'>
+    <button nz-button nzDanger (click)='onDelete(order)'>
+      Xoá
+    </button>
   </div>
   <div class='row mt-2'>
     <div class='col-12'>

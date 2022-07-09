@@ -1,19 +1,15 @@
+<nz-skeleton *ngIf='loading$ | async' class='loading'></nz-skeleton>
+
 <div
-  class='animated fadeIn container mb-3'
-  style='min-height: 80vh !important'
+  class='animated fadeIn container'
   *ngIf='route$ | async as route'
 >
-  <div class='row'>
-    <div class='mt-5 d-flex justify-content-between w-100'>
-      <div class='main-title mr-5' style='font-size: 20px'>
-        Chi tiết tuyến đường
-      </div>
-      <div class='mr-5'>
-        <button nz-button nzType="primary" nzDanger (click)='onRemove(route)'>Huỷ tuyến đường</button>
-      </div>
-    </div>
+  <div class='mt-4 mr-3 d-flex justify-content-end'>
+    <button nz-button nzGhost nzType='primary' nzDanger (click)='onRemove(route)'>
+      Xoá
+    </button>
   </div>
-  <div class='row mt-5' style='color: #80828b'>
+  <div class='row mt-2'>
     <div class='col-12'>
       <div class='row d-flex align-items-center'>
         <div class='col-2 align-items-center title-table'>Thông tin chung</div>
@@ -48,7 +44,7 @@
               <span>Ngày bắt đầu:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom'>
-              <span class='title-detail' style='color: #3c3b54'>
+              <span class='title-detail'>
                 {{ (route?.startedAt | date: 'dd/MM/yyyy') || 'Chưa cập nhật' }}
               </span>
             </div>
@@ -89,7 +85,7 @@
               <span>Tên nhà xe:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom'>
-              <span class='title-detail' style='color: #3c3b54'>
+              <span class='title-detail'>
                 {{ route?.garage || 'Chưa cập nhật' }}
               </span>
             </div>
@@ -108,7 +104,7 @@
       </div>
       <div class='col-12 mt-5'>
         <div class='row d-flex justify-content-between'>
-          <div class='row align-items-center title-table ml-2'>Đơn hàng</div>
+          <div class='row align-items-center title-table'>Đơn hàng</div>
           <button
             nz-button
             nzType='primary'
@@ -189,7 +185,7 @@
                   >
                     <button
                       nz-button
-                      nzType="primary"
+                      nzType='primary'
                       nzDanger
                       (click)='onCancelOrder(order); $event.stopPropagation()'
                     >
@@ -229,7 +225,7 @@
                 >
                   <button
                     nz-button
-                    nzType="primary"
+                    nzType='primary'
                     nzDanger
                     (click)='onCancelCommodity(commodity)'
                   >
@@ -270,8 +266,3 @@
     </div>
   </div>
 </div>
-<style>
-  th {
-    padding: 5px !important;
-  }
-</style>

@@ -35,6 +35,7 @@ import { RouteMiddleware } from './middlewares/route.middleware';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 @NgModule({
   imports: [
@@ -70,7 +71,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     NzPopoverModule,
     NzSpinModule,
     NzDropDownModule,
-    NzIconModule
+    NzIconModule,
+    NzSkeletonModule
   ],
   declarations: [
     RouteComponent,
