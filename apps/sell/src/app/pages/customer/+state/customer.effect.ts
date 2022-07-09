@@ -178,33 +178,33 @@ export class CustomerEffect {
       }));
       return this.orderService
         .pagination(
-          Object.assign(props.params, {
+          Object.assign(props.search, {
             status: props.typeOrder === 'delivered' ? 1 : 0
           })
         )
         .pipe(
           tap((res) => {
-            if (props?.isPagination) {
+            if (props?.isPaginate) {
               if (props.typeOrder === 'delivering') {
-                this.customerStore.update(props.params.customerId, {
+                this.customerStore.update(props.search.customerId, {
                   delivering: this.customerQuery
-                    .getEntity(props.params.customerId)
+                    .getEntity(props.search.customerId)
                     ?.delivering.concat(res.data)
                 });
               } else {
-                this.customerStore.update(props.params.customerId, {
+                this.customerStore.update(props.search.customerId, {
                   delivered: this.customerQuery
-                    .getEntity(props.params.customerId)
+                    .getEntity(props.search.customerId)
                     ?.delivered.concat(res.data)
                 });
               }
             } else {
               if (props.typeOrder === 'delivering') {
-                this.customerStore.update(props.params.customerId, {
+                this.customerStore.update(props.search.customerId, {
                   delivering: res.data
                 });
               } else {
-                this.customerStore.update(props.params.customerId, {
+                this.customerStore.update(props.search.customerId, {
                   delivered: res.data
                 });
               }

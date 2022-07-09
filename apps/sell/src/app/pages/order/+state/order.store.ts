@@ -2,7 +2,7 @@ import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
 import { CommodityUniq } from '../../commodity/entities';
 import { OrderVisibleEntity } from '../enitities';
-import { SearchOrderDto } from '../dto';
+import { BaseSearchOrderDto } from '../dto';
 import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 import { updateStateUiUtil } from '../../../utils/update-state-ui.util';
 import { OrderEntity } from '../enitities/order.entity';
@@ -17,7 +17,7 @@ export interface OrderState extends EntityState<OrderEntity> {
   readonly commodityUniq: CommodityUniq[];
   readonly totalCommodity: number;
   readonly ui?: OrderVisibleEntity;
-  readonly search: SearchOrderDto;
+  readonly search: BaseSearchOrderDto;
 }
 
 function createInitState(): OrderState {

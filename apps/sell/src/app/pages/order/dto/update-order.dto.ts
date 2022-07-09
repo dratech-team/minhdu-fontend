@@ -1,4 +1,4 @@
-import { CommodityEntity } from '../../commodity/entities/commodity.entity';
+import { CommodityEntity } from '../../commodity/entities';
 import { OrderEntity } from '../enitities/order.entity';
 import { BaseOrderEntity } from '../enitities';
 import { BaseUpdateDto } from '@minhdu-fontend/base-dto';

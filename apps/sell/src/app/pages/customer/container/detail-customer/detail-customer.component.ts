@@ -49,13 +49,13 @@ export class DetailCustomerComponent implements OnInit {
     this.actions$.dispatch(CustomerActions.loadOne({ id: this.getId }));
     this.actions$.dispatch(
       CustomerActions.loadOrder({
-        params: { take: 20, skip: 0, customerId: +this.getId },
+        search: { take: 20, skip: 0, customerId: +this.getId },
         typeOrder: 'delivering'
       })
     );
     this.actions$.dispatch(
       CustomerActions.loadOrder({
-        params: {
+        search: {
           take: 20,
           skip: 0,
           customerId: +this.getId,

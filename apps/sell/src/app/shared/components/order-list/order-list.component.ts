@@ -52,7 +52,7 @@ export class OrderListComponent implements OnInit {
           if (this.delivered) {
             this.actions$.dispatch(
               CustomerActions.loadOrder({
-                params: Object.assign({}, this.mapOrders(val, true), {
+                search: Object.assign({}, this.mapOrders(val, true), {
                   hiddenDebt: StatusOrder.ALL
                 }),
                 typeOrder: 'delivered'
@@ -61,7 +61,7 @@ export class OrderListComponent implements OnInit {
           } else {
             this.actions$.dispatch(
               CustomerActions.loadOrder({
-                params: this.mapOrders(val),
+                search: this.mapOrders(val),
                 typeOrder: 'delivering'
               })
             );
@@ -77,19 +77,19 @@ export class OrderListComponent implements OnInit {
       if (this.delivered) {
         this.actions$.dispatch(
           CustomerActions.loadOrder({
-            params: Object.assign({}, this.mapOrders(val, true), {
+            search: Object.assign({}, this.mapOrders(val, true), {
               hiddenDebt: StatusOrder.ALL
             }),
             typeOrder: 'delivered',
-            isPagination: true
+            isPaginate: true
           })
         );
       } else {
         this.actions$.dispatch(
           CustomerActions.loadOrder({
-            params: this.mapOrders(val, true),
+            search: this.mapOrders(val, true),
             typeOrder: 'delivering',
-            isPagination: true
+            isPaginate: true
           })
         );
       }

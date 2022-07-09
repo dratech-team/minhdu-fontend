@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Api, PaginationDto } from '@minhdu-fontend/constants';
+import { Api } from '@minhdu-fontend/constants';
 import {
   ConvertBoolean,
   ItemContextMenu,
@@ -205,16 +205,16 @@ export class OrderComponent implements OnInit {
     });
   }
 
+  public onLoadMore() {
+    this.actions$.dispatch(
+      OrderActions.loadAll(this.mapOrder(this.formGroup.value))
+    );
+  }
+
   public onContextMenu($event: MouseEvent, item: any): void {
     this.nzContextMenuService.create($event, item);
     $event.preventDefault();
     $event.stopPropagation();
-  }
-
-  public onLoadMore() {
-    this.actions$.dispatch(
-      OrderActions.loadAll(this.mapOrder(this.formGroup.value, true))
-    );
   }
 
   public onPickDeliveryDay($event: any) {
@@ -272,7 +272,7 @@ export class OrderComponent implements OnInit {
             )}`,
           params: Object.assign(
             {},
-            _.omit(this.mapOrder(this.formGroup.value, false), [
+            _.omit(this.mapOrder(this.formGroup.value), [
               'take',
               'skip'
             ]),
@@ -287,20 +287,12 @@ export class OrderComponent implements OnInit {
     });
   }
 
-  private mapOrder(dataFG: any, isPagination?: boolean) {
-    this.orderStore.update((state) => ({
-      ...state,
-      search: dataFG
-    }));
-    const value = Object.assign(JSON.parse(JSON.stringify(dataFG)), {
-      skip: isPagination ? this.orderQuery.getCount() : PaginationDto.skip,
-      take: this.pageSize
-    });
+  private mapOrder(dataFG: any) {
     return Object.assign(
       {},
-      value?.status !== 1
-        ? _.omit(value, ['deliveredAt_end', 'deliveredAt_start'])
-        : value,
+      dataFG?.status !== 1
+        ? _.omit(dataFG, ['deliveredAt_end', 'deliveredAt_start'])
+        : dataFG,
       this.valueSort?.orderType ? this.valueSort : {}
     );
   }

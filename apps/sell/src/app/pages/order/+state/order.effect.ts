@@ -83,19 +83,25 @@ export class OrderEffect {
         loading: true
       }));
       if (props.param?.orderType) {
-        Object.assign(props.param, {
+        Object.assign(props, Object.assign(props.param, {
           orderType: props.param?.orderType === 'ascend' ? 'asc' : 'des'
-        });
+        }));
       }
-      console.log( props.param)
+
+      console.log(Object.assign(
+        props.param,
+        props.param?.status === undefined || props.param?.status === null
+          ? { status: 0 }
+          : {}
+      ));
       return this.orderService.pagination(
-          Object.assign(
-            props.param,
-            props.param?.status === undefined || props.param?.status === null
-              ? { status: 0 }
-              : {}
-          )
+        Object.assign(
+          props.param,
+          props.param?.status === undefined || props.param?.status === null
+            ? { status: 0 }
+            : {}
         )
+      )
         .pipe(
           map((res) => {
             const expandedAll = this.orderQuery.getValue().expandedAll;

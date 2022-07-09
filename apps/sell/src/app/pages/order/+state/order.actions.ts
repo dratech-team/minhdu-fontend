@@ -5,7 +5,7 @@ import {
   BaseAddOrderDto,
   LoadOneOrderDto,
   RemoveOrderDto,
-  SearchOrderDto,
+  BaseSearchOrderDto,
   UpdateOrderDto,
 } from '../dto';
 import { OrderEntity } from '../enitities/order.entity';
@@ -14,7 +14,7 @@ const addOne = createAction('[ORDER] Add One', props<AddOrderDto>());
 
 const loadAll = createAction(
   '[ORDER] Load Init',
-  props<{ param: SearchOrderDto; isPagination?: boolean }>()
+  props<{ param: BaseSearchOrderDto; isPagination?: boolean }>()
 );
 
 const loadOne = createAction('[ORDER] Load One', props<LoadOneOrderDto>());

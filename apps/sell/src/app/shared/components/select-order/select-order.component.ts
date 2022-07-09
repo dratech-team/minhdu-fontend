@@ -8,7 +8,7 @@ import { CommodityEntity } from '../../../pages/commodity/entities';
 import { OrderEntity } from '../../../pages/order/enitities/order.entity';
 import { PaginationDto } from '@minhdu-fontend/constants';
 import { SortTypeOrderEnum } from '@minhdu-fontend/enums';
-import { SearchOrderDto } from '../../../pages/order/dto';
+import { BaseSearchOrderDto } from '../../../pages/order/dto';
 
 @Component({
   selector: 'select-order',
@@ -77,7 +77,7 @@ export class SelectOrderComponent implements OnInit {
         param: this.mapOrder(
           this.formGroupTable.value,
           pagination
-        ) as SearchOrderDto,
+        ) as BaseSearchOrderDto,
         isPagination: pagination,
       })
     );

@@ -5,7 +5,7 @@ import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { Update } from '@ngrx/entity';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
-import { AddOrderDto, SearchOrderDto, UpdateOrderDto } from '../dto';
+import { AddOrderDto, BaseSearchOrderDto, UpdateOrderDto } from '../dto';
 import { CommodityUniq } from '../../commodity/entities';
 import { OrderEntity } from '../enitities/order.entity';
 
@@ -20,7 +20,7 @@ export class OrderService extends BaseService<OrderEntity> {
   }
 
   pagination(
-    params?: SearchOrderDto
+    params?: BaseSearchOrderDto
   ): Observable<
     ResponsePaginate<OrderEntity> & { commodityUniq: CommodityUniq[] }
   > {
