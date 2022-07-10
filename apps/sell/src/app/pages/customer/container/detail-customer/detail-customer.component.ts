@@ -122,21 +122,19 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   }
 
   onPayment(customer: CustomerEntity) {
-    this.modal
-      .create({
-        nzWidth: '70vw',
-        nzTitle: 'Thanh toán',
-        nzContent: PaymentModalComponent,
-        nzComponentParams: <{ data: ModalAddOrUpdatePayment }>{
-          data: {
-            add: {
-              customer: customer
-            }
+    this.modal.create({
+      nzWidth: '70vw',
+      nzTitle: 'Thanh toán',
+      nzContent: PaymentModalComponent,
+      nzComponentParams: <{ data: ModalAddOrUpdatePayment }>{
+        data: {
+          add: {
+            customer: customer
           }
-        },
-        nzFooter: []
-      })
-      .afterClose.subscribe((val) => {
+        }
+      },
+      nzFooter: []
+    }).afterClose.subscribe((val) => {
       if (val) {
         this.actions$.dispatch(CustomerActions.loadOne({ id: this.getId }));
       }
