@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouteEntity } from '../../entities';
 import { MatDialog } from '@angular/material/dialog';
-import { RouteDialogComponent } from '../../component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteActions, RouteQuery } from '../../+state';
 import { PaymentType } from '@minhdu-fontend/enums';
@@ -15,6 +13,8 @@ import { OrderEntity } from '../../../order/enitities/order.entity';
 import { ModalDatePickerComponent } from '@minhdu-fontend/components';
 import { ModalDatePickerEntity } from '@minhdu-fontend/base-entity';
 import { map } from 'rxjs/operators';
+import { RouterConstants } from '../../../../shared/constants';
+import { RouteComponentService } from '../../shared';
 
 @Component({
   templateUrl: 'detail-route.component.html',
@@ -30,14 +30,15 @@ export class DetailRouteComponent implements OnInit {
     }));
 
   PaymentType = PaymentType;
-  updateTypeEnum = UpdaterRouteTypeEnum;
+  UpdaterRouteTypeEnum = UpdaterRouteTypeEnum;
 
   constructor(
+    public readonly routeComponentService: RouteComponentService,
     private readonly actions$: Actions,
-    private readonly routeQuery: RouteQuery,
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
+    private readonly routeQuery: RouteQuery,
     private readonly modal: NzModalService
   ) {
   }
@@ -48,61 +49,6 @@ export class DetailRouteComponent implements OnInit {
 
   get routeId(): number {
     return this.activatedRoute.snapshot.params.id;
-  }
-
-  onUpdate(route: RouteEntity, updateType: UpdaterRouteTypeEnum) {
-    this.modal.create({
-      nzWidth: 'fit-content',
-      nzTitle: 'Cập nhật tuyến đường',
-      nzContent: RouteDialogComponent,
-      nzComponentParams: <{ data?: any }>{
-        data: { route: route, updateType: updateType, isUpdate: true }
-      },
-      nzFooter: []
-    });
-  }
-
-  onRemove(route: RouteEntity) {
-    this.modal.warning({
-      nzTitle: 'Xoá tuyến đương',
-      nzContent: `Bạn có chắc chắn muốn huỷ tuyến đường ${route.name} này không`,
-      nzOkDanger: true,
-      nzOnOk: () => {
-        this.actions$.dispatch(RouteActions.remove({ idRoute: route.id }));
-        this.routeQuery
-          .select((state) => state.deleted)
-          .subscribe((val) => {
-            if (val) {
-              this.router.navigate(['tuyen-duong']).then();
-            }
-          });
-      }
-    });
-  }
-
-  onComplete(route: RouteEntity) {
-    this.modal
-      .create({
-        nzTitle: 'Hoàn tất tuyến đường',
-        nzContent: ModalDatePickerComponent,
-        nzComponentParams: <{ data: ModalDatePickerEntity }>{
-          data: {
-            type: 'date',
-            dateInit: route.endedAt
-          }
-        },
-        nzFooter: []
-      })
-      .afterClose.subscribe((val) => {
-      if (val) {
-        this.actions$.dispatch(
-          RouteActions.update({
-            updates: { endedAt: new Date(val) },
-            id: route.id
-          })
-        );
-      }
-    });
   }
 
   public onAddCommodity(commodity: CommodityEntity) {
@@ -192,6 +138,6 @@ export class DetailRouteComponent implements OnInit {
   }
 
   public onRoute(orderId: number) {
-    this.router.navigate(['don-hang/chi-tiet-don-hang', orderId]).then();
+    this.router.navigate([RouterConstants.ORDER.DETAIL, orderId]).then();
   }
 }

@@ -23,7 +23,7 @@
               nz-button
               nzType='primary'
               nzDanger
-              (click)='onRemove(customer)'
+              (click)='customerComponentService.onRemove(customer)'
             >
               Xóa Khách hàng
             </button>
@@ -54,7 +54,7 @@
         <button
           nz-button
           nzType='primary'
-          (click)='onPayment(customer)'
+          (click)='customerComponentService.onPayment(customer)'
         >
           Thanh toán
         </button>
@@ -74,7 +74,7 @@
           data-placement='top'
           title='chỉnh sửa'
           class='edit animated'
-          (click)='onUpdate(customer)'
+          (click)='customerComponentService.onUpdate(customer)'
         >
           <img
             style='height: 15px'

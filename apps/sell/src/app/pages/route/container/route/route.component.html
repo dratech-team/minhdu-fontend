@@ -55,7 +55,7 @@
       </div>
       <div class='d-flex pr-2'>
         <div>
-          <button nz-button nzGhost nzType='primary' (click)='onAdd()'>
+          <button nz-button nzGhost nzType='primary' (click)='routeComponentService.onAdd()'>
             Thêm
           </button>
         </div>
@@ -188,6 +188,7 @@
           <tr
             (contextmenu)='onContextMenu($event, menu)'
             class='pointer'
+            (click)='routeComponentService.onDetail(route.id)'
           >
             <nz-dropdown-menu #menu='nzDropdownMenu'>
               <ul class='context-menu' nz-menu>
@@ -200,7 +201,6 @@
             <td
               *ngIf='ui.stt.visible'
               [nzLeft]='ui.stt?.pinned || false'
-              (click)='onDetail(route.id)'
             >
               {{ i + 1 }}
             </td>
@@ -212,49 +212,42 @@
             <td
               *ngIf='ui.name.visible'
               [nzLeft]='ui.name?.pinned || false'
-              (click)='onDetail(route.id)'
             >
               {{ route?.name || 'Chưa cập nhật' }}
             </td>
             <td
               *ngIf='ui.startedAt.visible'
               [nzLeft]='ui.startedAt?.pinned || false'
-              (click)='onDetail(route.id)'
             >
               {{ (route?.startedAt | date: 'dd/MM/yyyy') || 'Chưa cập nhật' }}
             </td>
             <td
               *ngIf='ui.endedAt.visible'
               [nzLeft]='ui.endedAt?.pinned || false'
-              (click)='onDetail(route.id)'
             >
               {{ (route?.endedAt | date: 'dd/MM/yyyy') || 'Chưa cập nhật' }}
             </td>
             <td
               *ngIf='ui.driver.visible'
               [nzLeft]='ui.driver?.pinned || false'
-              (click)='onDetail(route.id)'
             >
               {{ route?.driver || route?.employee?.lastName }}
             </td>
             <td
               *ngIf='ui.bsx.visible'
               [nzLeft]='ui.bsx?.pinned || false'
-              (click)='onDetail(route.id)'
             >
               {{ route?.bsx || 'Chưa cập nhật' }}
             </td>
             <td
               *ngIf='ui.garage.visible'
               [nzLeft]='ui.garage?.pinned || false'
-              (click)='onDetail(route.id)'
             >
               {{ route?.garage || 'Chưa cập nhật' }}
             </td>
             <td
               *ngIf='ui.status.visible'
               [nzLeft]='ui.status?.pinned || false'
-              (click)='onDetail(route.id)'
             >
               {{
               !route.endedAt

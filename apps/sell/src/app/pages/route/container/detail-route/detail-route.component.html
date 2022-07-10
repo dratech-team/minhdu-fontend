@@ -5,7 +5,7 @@
   *ngIf='route$ | async as route'
 >
   <div class='mt-4 mr-3 d-flex justify-content-end'>
-    <button nz-button nzGhost nzType='primary' nzDanger (click)='onRemove(route)'>
+    <button nz-button nzGhost nzType='primary' nzDanger (click)='routeComponentService.onRemove(route)'>
       Xoá
     </button>
   </div>
@@ -18,7 +18,7 @@
           data-placement='top'
           title=' chỉnh sửa '
           class='edit animated'
-          (click)='onUpdate(route, updateTypeEnum.GENERAL)'
+          (click)='routeComponentService.onUpdate(route, UpdaterRouteTypeEnum.GENERAL)'
         >
           <img
             style='height: 15px'
@@ -64,7 +64,7 @@
                 data-placement='top'
                 title='Chỉnh sửa'
                 class='edit animated'
-                (click)='onComplete(route)'
+                (click)='routeComponentService.onComplete(route)'
               >
                 <i nz-icon nzType='check-circle' nzTheme='outline'></i>
               </button>
@@ -110,7 +110,7 @@
             nzType='primary'
             nzGhost
             class='mr-3'
-            (click)='onUpdate(route, updateTypeEnum.ORDER)'
+            (click)='routeComponentService.onUpdate(route, UpdaterRouteTypeEnum.ORDER)'
           >
             Thêm đơn hàng
           </button>

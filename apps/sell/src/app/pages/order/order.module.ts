@@ -40,7 +40,7 @@ import {
 } from '../commodity/component/modal-update-closed-commodity/modal-update-closed-commodity.component';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { OrderComponentService } from './container/shared/order.component.service';
+import { OrderComponentService } from './shared';
 
 @NgModule({
   imports: [

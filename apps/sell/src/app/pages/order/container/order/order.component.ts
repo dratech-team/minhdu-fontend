@@ -25,7 +25,7 @@ import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
 import { OrderStatusEnum } from '../../enums';
 import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
-import { OrderComponentService } from '../shared/order.component.service';
+import { OrderComponentService } from '../../shared';
 
 @Component({
   templateUrl: 'order.component.html'

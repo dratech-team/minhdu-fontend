@@ -42,6 +42,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { PaymentEffect } from '../payment/payment';
 import { PaymentModule } from '../payment/payment.module';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { CustomerComponentService } from './shared';
 
 @NgModule({
   imports: [
@@ -96,6 +97,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
   providers: [
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     DatePipe,
+    CustomerComponentService,
     CustomerService,
     PaymentService,
     OrderService

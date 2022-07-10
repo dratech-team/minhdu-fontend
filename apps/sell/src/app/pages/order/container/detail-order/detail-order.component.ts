@@ -20,7 +20,7 @@ import {
 } from '../../../commodity/component/modal-update-closed-commodity/modal-update-closed-commodity.component';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { OrderComponentService } from '../shared/order.component.service';
+import { OrderComponentService } from '../../shared';
 
 @Component({
   templateUrl: 'detail-order.component.html'

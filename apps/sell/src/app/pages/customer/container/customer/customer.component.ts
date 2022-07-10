@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -14,7 +14,6 @@ import {
 import { ExportService } from '@minhdu-fontend/service';
 import { ModalExportExcelComponent, ModalExportExcelData } from '@minhdu-fontend/components';
 import { CustomerActions, CustomerQuery, CustomerStore } from '../../+state';
-import { CustomerModalComponent, PaymentModalComponent } from '../../component';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { RadiosStatusRouteConstant } from '../../constants/gender.constant';
@@ -23,12 +22,11 @@ import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
 import * as _ from 'lodash';
 import { OrderEntity } from '../../../order/enitities/order.entity';
 import { CustomerEntity } from '../../entities';
-import { ModalAddOrUpdatePayment } from '../../data/modal-payment.data';
 import { PotentialEnum } from '../../enums';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
-import { ModalCustomerData } from '../../data/modal-customer.data';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { startWith } from 'rxjs/operators';
+import { CustomerComponentService } from '../../shared';
 
 @Component({
   templateUrl: 'customer.component.html'
@@ -50,15 +48,19 @@ export class CustomerComponent implements OnInit {
   menus: ContextMenuEntity[] = [
     {
       title: 'Thêm',
-      click: () => this.onAdd()
+      click: () => this.customerComponentService.onAdd()
     },
     {
       title: 'Sửa',
-      click: (data: any) => this.onUpdate(data)
+      click: (data: CustomerEntity) => this.customerComponentService.onUpdate(data)
     },
     {
       title: 'Xoá',
-      click: (data: any) => this.onRemove(data)
+      click: (data: CustomerEntity) => this.customerComponentService.onRemove(data)
+    },
+    {
+      title: 'Thanh toán',
+      click: (data: CustomerEntity) => this.customerComponentService.onPayment(data)
     }
   ];
 
@@ -81,6 +83,7 @@ export class CustomerComponent implements OnInit {
   });
 
   constructor(
+    public readonly customerComponentService: CustomerComponentService,
     private readonly actions$: Actions,
     private readonly customerQuery: CustomerQuery,
     private readonly accountQuery: AccountQuery,
@@ -89,7 +92,6 @@ export class CustomerComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly exportService: ExportService,
     private readonly modal: NzModalService,
-    private readonly viewContentRef: ViewContainerRef,
     private readonly nzContextMenuService: NzContextMenuService
   ) {
   }
@@ -105,46 +107,6 @@ export class CustomerComponent implements OnInit {
       });
   }
 
-  onAdd() {
-    this.modal.create({
-      nzTitle: 'Thêm khách hàng',
-      nzContent: CustomerModalComponent,
-      nzViewContainerRef: this.viewContentRef,
-      nzFooter: [],
-      nzWidth: '65vw',
-      nzMaskClosable: false
-    });
-  }
-
-  onDetail(customer: CustomerEntity) {
-    this.router
-      .navigate(['khach-hang/chi-tiet-khach-hang', customer.id])
-      .then();
-  }
-
-  onUpdate(customer: CustomerEntity) {
-    this.modal.create({
-      nzWidth: '65vw',
-      nzTitle: 'Sửa khách hàng',
-      nzContent: CustomerModalComponent,
-      nzComponentParams: <{ data?: ModalCustomerData }>{
-        data: { update: { customer } }
-      },
-      nzFooter: []
-    });
-  }
-
-  onRemove(customer: CustomerEntity) {
-    this.modal.warning({
-      nzTitle: 'Xoá khách hàng',
-      nzContent: `Bạn có chắc chắn muốn xoá khác hàng ${customer.lastName}`,
-      nzOnOk: () => {
-        return this.actions$.dispatch(CustomerActions.remove({ id: customer.id }));
-      }
-
-    });
-  }
-
   public addOrder($event?: any) {
     this.router.navigate(['/don-hang/them-don-hang'], {
       queryParams: {
@@ -153,27 +115,7 @@ export class CustomerComponent implements OnInit {
     }).then();
   }
 
-  public onPayment(customer: CustomerEntity) {
-    this.modal.create({
-      nzWidth: '70vw',
-      nzTitle: 'Thanh toán',
-      nzContent: PaymentModalComponent,
-      nzComponentParams: <{ data: ModalAddOrUpdatePayment }>{
-        data: {
-          add: {
-            customer: customer
-          }
-        }
-      },
-      nzFooter: []
-    }).afterClose.subscribe((val) => {
-      if (val) {
-        this.actions$.dispatch(CustomerActions.loadOne({ id: customer.id }));
-      }
-    });
-  }
-
-  public printCustomer() {
+  public onExport() {
     this.modal.create({
       nzTitle: 'Xuất danh sách khách hàng',
       nzWidth: 'fit-content',

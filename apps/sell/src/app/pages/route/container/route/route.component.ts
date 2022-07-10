@@ -9,7 +9,6 @@ import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
 import { debounceTime, map } from 'rxjs/operators';
 import { RouteActions, RouteQuery, RouteStore } from '../../+state';
 import { RouteEntity } from '../../entities';
-import { RouteDialogComponent } from '../../component';
 import { Actions } from '@datorama/akita-ng-effects';
 import { DatePipe } from '@angular/common';
 import { OrderActions } from '../../../order/+state';
@@ -21,6 +20,7 @@ import { RadiosStatusRouteConstant } from '../../constants';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
 import { UpdaterRouteTypeEnum } from '../../enums/updater-route-type.enum';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
+import { RouteComponentService } from '../../shared';
 
 @Component({
   templateUrl: 'route.component.html'
@@ -43,15 +43,15 @@ export class RouteComponent implements OnInit {
   menus: ContextMenuEntity[] = [
     {
       title: 'Thêm',
-      click: () => this.onAdd()
+      click: () => this.routeComponentService.onAdd()
     },
     {
       title: 'Sửa',
-      click: (data: any) => this.onUpdate(data.id, data)
+      click: (data: RouteEntity) => this.routeComponentService.onUpdate(data, UpdaterRouteTypeEnum.GENERAL)
     },
     {
       title: 'Xoá',
-      click: (data: any) => this.onRemove(data)
+      click: (data: RouteEntity) => this.routeComponentService.onRemove(data)
     }
   ];
 
@@ -71,6 +71,7 @@ export class RouteComponent implements OnInit {
   });
 
   constructor(
+    public readonly routeComponentService: RouteComponentService,
     private readonly actions$: Actions,
     private readonly router: Router,
     private readonly datePipe: DatePipe,
@@ -90,43 +91,6 @@ export class RouteComponent implements OnInit {
           RouteActions.loadAll({ search: this.mapRoute(route), isPaginate: false })
         );
       });
-  }
-
-  onAdd() {
-    this.modal.create({
-      nzWidth: 'fit-content',
-      nzTitle: 'Cập nhật tuyến đường',
-      nzContent: RouteDialogComponent,
-      nzFooter: []
-    });
-  }
-
-  onDetail(id: number) {
-    this.router
-      .navigate(['tuyen-duong/chi-tiet-tuyen-duong', id])
-      .then();
-  }
-
-  onUpdate(id: number, route: RouteEntity) {
-    return this.modal.create({
-      nzWidth: 'fit-content',
-      nzTitle: 'Cập nhật tuyến đường',
-      nzContent: RouteDialogComponent,
-      nzComponentParams: <{ data?: any }>{
-        data: { route: route, updateType: UpdaterRouteTypeEnum.GENERAL }
-      },
-      nzFooter: []
-    });
-  }
-
-  onRemove(route: RouteEntity) {
-    this.modal.warning({
-      nzTitle: 'Xoá tuyến đương',
-      nzContent: `Bạn có chắc chắn muốn xoá tuyến đường ${route.name} này không`,
-      nzOkDanger: true,
-      nzOnOk: () =>
-        this.actions$.dispatch(RouteActions.remove({ idRoute: route.id }))
-    });
   }
 
   onExport() {
