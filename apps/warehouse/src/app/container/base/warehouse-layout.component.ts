@@ -20,7 +20,7 @@ import { AccountQuery } from '../../../../../../libs/system/src/lib/state/accoun
   templateUrl: './warehouse-layout.component.html',
   styleUrls: ['./warehouse-layout.component.scss'],
 })
-export class WarehouseLayoutComponent implements OnInit, AfterContentChecked {
+export class WarehouseLayoutComponent implements OnInit {
   role = localStorage.getItem('role');
   roleEnum = Role;
   menuWarehouse = MenuWarehouseConstant;
