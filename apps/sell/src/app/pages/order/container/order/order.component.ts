@@ -197,7 +197,7 @@ export class OrderComponent implements OnInit {
       nzOkDanger: true,
       nzOnOk: () => {
         this.actions$.dispatch(
-          OrderActions.cancelOrder({ orderId: order.id })
+          OrderActions.cancel({ orderId: order.id })
         );
       }
     });

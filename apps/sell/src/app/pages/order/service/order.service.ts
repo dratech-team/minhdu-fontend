@@ -21,9 +21,7 @@ export class OrderService extends BaseService<OrderEntity> {
 
   pagination(
     params?: BaseSearchOrderDto
-  ): Observable<
-    ResponsePaginate<OrderEntity> & { commodityUniq: CommodityUniq[] }
-  > {
+  ): Observable<ResponsePaginate<OrderEntity> & { commodityUniq: CommodityUniq[] }> {
     return super.pagination(params);
   }
 
@@ -39,7 +37,7 @@ export class OrderService extends BaseService<OrderEntity> {
     return super.update(updateDto.id, updateDto.updates);
   }
 
-  updateHide(id: any, body: any): Observable<OrderEntity> {
+  hide(id: any, body: any): Observable<OrderEntity> {
     return this.http.patch<OrderEntity>(this.url + '/hide' + `/${id}`, body);
   }
 
@@ -47,11 +45,15 @@ export class OrderService extends BaseService<OrderEntity> {
     return super.delete(id);
   }
 
-  cancelOrder(id: OrderEntity['id']): Observable<OrderEntity> {
+  cancel(id: OrderEntity['id']): Observable<OrderEntity> {
     return this.http.delete<OrderEntity>(this.url + `/${id}` + '/cancel');
   }
 
-  orderhistory(): Observable<any> {
+  restore(id: OrderEntity['id']): Observable<OrderEntity> {
+    return this.http.patch<OrderEntity>(this.url + `/${id}` + '/restore', null);
+  }
+
+  orderHistory(): Observable<any> {
     return this.http.get('');
   }
 }

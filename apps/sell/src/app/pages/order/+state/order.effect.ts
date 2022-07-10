@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
 import { OrderService } from '../service';
 import { OrderActions } from './order.actions';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
 import { Router } from '@angular/router';
@@ -197,10 +197,10 @@ export class OrderEffect {
   );
 
   @Effect()
-  updateHide$ = this.actions$.pipe(
+  hide$ = this.actions$.pipe(
     ofType(OrderActions.hide),
     switchMap((props) =>
-      this.orderService.updateHide(props.id, props.hide).pipe(
+      this.orderService.hide(props.id, props.hide).pipe(
         map((res) => {
           this.message.success('Cập nhật thành công');
           this.orderStore.update(res.id, res);
@@ -230,7 +230,7 @@ export class OrderEffect {
   );
 
   @Effect()
-  delete$ = this.actions$.pipe(
+  remove$ = this.actions$.pipe(
     ofType(OrderActions.remove),
     switchMap((props) => {
       this.orderStore.update((state) => ({
@@ -275,13 +275,10 @@ export class OrderEffect {
 
   @Effect()
   cancel$ = this.actions$.pipe(
-    ofType(OrderActions.cancelOrder),
+    ofType(OrderActions.cancel),
     switchMap((prop) =>
-      this.orderService.cancelOrder(prop.orderId).pipe(
+      this.orderService.cancel(prop.orderId).pipe(
         map((res) => {
-          // this.customerStore.update(res.customerId, ({ delivering }) => ({
-          //   delivering: arrayRemove(delivering, res.id)
-          // }));
           this.message.success('Huỷ đơn hàng thành công');
           this.orderStore.remove(res.id);
         }),
@@ -289,8 +286,22 @@ export class OrderEffect {
       )
     )
   );
+  @Effect()
 
-  handleCommodityUniq(
+  restore$ = this.actions$.pipe(
+    ofType(OrderActions.restore),
+    switchMap((props) => {
+      return this.orderService.restore(props.id).pipe(
+        tap((res) => {
+          this.message.success('Khôi phục đơn hàng thành công');
+          this.orderStore.update(res.id, { deliveredAt: null });
+        }),
+        catchError((err) => of(OrderActions.error(err)))
+      );
+    })
+  );
+
+  private handleCommodityUniq(
     commoditiesUniq: CommodityUniq[],
     commodities: CommodityEntity[],
     action: 'delete' | 'add'

@@ -10,7 +10,7 @@ export interface BaseOrderEntity extends BaseEntity {
   createdAt: Date;
   commodityTotal: number;
   paymentTotal: number;
-  deliveredAt?: Date;
+  deliveredAt?: Date | null;
   commodities: CommodityEntity[];
   currency: CurrencyUnit;
   routes: RouteEntity[];

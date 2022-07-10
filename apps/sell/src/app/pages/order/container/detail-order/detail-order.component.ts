@@ -127,16 +127,33 @@ export class DetailOrderComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDelete($event: any) {
+  onDelete(order: OrderEntity) {
     this.modal.warning({
       nzTitle: 'Xoá đơn hàng',
       nzContent: `Bạn có chắc chắn muốn xoá đơn hàng này vĩnh viễn`,
       nzOnOk: () => {
-        this.actions$.dispatch(OrderActions.remove({ id: $event.id }));
+        this.actions$.dispatch(OrderActions.remove({ id: order.id }));
         this.orderQuery
           .select((state) => state.deleted)
-          .subscribe((val) => {
-            if (val) {
+          .subscribe((error: string) => {
+            if (error) {
+              this.router.navigate(['don-hang']).then();
+            }
+          });
+      }
+    });
+  }
+
+  onRestore(order: OrderEntity) {
+    this.modal.warning({
+      nzTitle: 'Bạn có chắc chắn muốn khôi phục đơn hàng?',
+      nzContent: `Sau khi khôi phục đơn hàng của khách hàng ${order.customer.lastName}. Mọi thao tác trên đơn hàng này sẽ được khôi phục..!!`,
+      nzOnOk: () => {
+        this.actions$.dispatch(OrderActions.restore({ id: order.id }));
+        this.orderQuery
+          .select((state) => state.deleted)
+          .subscribe((error: string) => {
+            if (error) {
               this.router.navigate(['don-hang']).then();
             }
           });

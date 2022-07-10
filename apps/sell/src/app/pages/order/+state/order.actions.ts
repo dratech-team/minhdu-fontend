@@ -21,9 +21,14 @@ const payment = createAction(
 
 const remove = createAction('[ORDER] Remove', props<RemoveOrderDto>());
 
-const cancelOrder = createAction(
+const cancel = createAction(
   '[ORDER] Cancel',
   props<{ orderId: number }>()
+);
+
+const restore = createAction(
+  '[ORDER] Restore',
+  props<{ id: number }>()
 );
 
 const error = createAction('[ORDER] Error', props<{ error: string }>());
@@ -36,6 +41,7 @@ export const OrderActions = {
   hide,
   payment,
   remove,
-  cancelOrder,
+  cancel,
+  restore,
   error
 };

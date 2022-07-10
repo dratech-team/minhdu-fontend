@@ -4,14 +4,27 @@
   *ngIf='order$ | async as order'
 >
   <div class='d-flex justify-content-end mr-3'>
-    <button
-      nz-button
-      nzType='primary'
-      nzDanger
-      (click)='onDelete(order)'
-    >
-      Xoá
-    </button>
+    <div>
+      <button
+        class='mr-2'
+        nz-button
+        nzGhost
+        nzType='primary'
+        (click)='onRestore(order)'
+      >
+        Khôi phục
+      </button>
+    </div>
+    <div>
+      <button
+        nz-button
+        nzType='primary'
+        nzDanger
+        (click)='onDelete(order)'
+      >
+        Xoá
+      </button>
+    </div>
   </div>
   <div class='row mt-2'>
     <div class='col-12'>
