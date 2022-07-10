@@ -64,12 +64,8 @@ export class OrderComponent implements OnInit {
   SortTypeOrderEnum = SortTypeOrderEnum;
   widthConstant = WidthConstant;
 
-  pageSize = 25;
-  pageIndexInit = 0;
   visible = false;
-  pageSizeTable = 10;
   search = this.orderQuery.getValue().search;
-
 
   menus: ContextMenuEntity[] = [
     {
