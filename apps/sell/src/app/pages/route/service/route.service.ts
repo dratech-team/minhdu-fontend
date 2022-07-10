@@ -5,10 +5,7 @@ import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { RouteEntity } from '../entities';
-import { AddRouteDto } from '../dto';
-import { UpdateRouteDto } from '../dto';
-import { CancelDto } from '../dto';
-import { VersionEnum } from '@minhdu-fontend/enums';
+import { AddRouteDto, CancelDto, UpdateRouteDto } from '../dto';
 
 @Injectable({ providedIn: 'root' })
 export class RouteService extends BaseService<RouteEntity> {

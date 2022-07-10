@@ -1,1 +1,2 @@
-export * from './bill/bill.entity';
+export * from './base-bill.entity';
+export * from './bill.entity';

@@ -9,8 +9,8 @@ import { Actions } from '@datorama/akita-ng-effects';
 export class BillComponent implements OnInit {
   bills$ = this.billQuery.selectAll();
 
-  currencyUnit = CurrencyUnit;
-  payType = PaymentType;
+  CurrencyUnit = CurrencyUnit;
+  PaymentType = PaymentType;
 
   constructor(
     private readonly actions$: Actions,

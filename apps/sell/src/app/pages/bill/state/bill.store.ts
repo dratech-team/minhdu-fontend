@@ -1,9 +1,9 @@
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
-import { Bill } from '../entities';
+import { BillEntity } from '../entities';
 import { StorageName } from '@minhdu-fontend/constants';
 
-export interface BillState extends EntityState<Bill> {
+export interface BillState extends EntityState<BillEntity> {
   readonly loading: boolean;
 }
 

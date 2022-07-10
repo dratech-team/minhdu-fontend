@@ -46,20 +46,20 @@
       <div class="border-start title-header default">
         <div class="title-profile">Đơn vị tiền</div>
         <select class="select" matNativeControl required [disabled]="true">
-          <option value="{{ currencyUnit.VND }}">VND</option>
-          <option value="{{ currencyUnit.CNY }}">Nhân dân tệ</option>
-          <option value="{{ currencyUnit.EUR }}">Euro</option>
-          <option value="{{ currencyUnit.GBP }}">Bảng anh</option>
-          <option value="{{ currencyUnit.MMK }}">Kyat</option>
-          <option value="{{ currencyUnit.MYR }}">Ringgit</option>
-          <option value="{{ currencyUnit.USD }}">Đô la</option>
+          <option value="{{ CurrencyUnit.VND }}">VND</option>
+          <option value="{{ CurrencyUnit.CNY }}">Nhân dân tệ</option>
+          <option value="{{ CurrencyUnit.EUR }}">Euro</option>
+          <option value="{{ CurrencyUnit.GBP }}">Bảng anh</option>
+          <option value="{{ CurrencyUnit.MMK }}">Kyat</option>
+          <option value="{{ CurrencyUnit.MYR }}">Ringgit</option>
+          <option value="{{ CurrencyUnit.USD }}">Đô la</option>
         </select>
       </div>
       <div class="border-start title-header default">
         <div class="title-profile">Loại thanh toán</div>
         <select class="select" matNativeControl required [disabled]="true">
-          <option value="{{ payType.CASH }}">Tiền mặt</option>
-          <option value="{{ payType.TRANSFER }}">Chuyển khoản</option>
+          <option value="{{ PaymentType.CASH }}">Tiền mặt</option>
+          <option value="{{ PaymentType.TRANSFER }}">Chuyển khoản</option>
         </select>
       </div>
       <div class="border-start title-header default">
@@ -113,61 +113,61 @@
         </div>
         <div
           class="content-profile default pointer"
-          *ngIf="bill?.currency === currencyUnit.VND"
+          *ngIf="bill?.currency === CurrencyUnit.VND"
         >
           Việt nam dồng
         </div>
         <div
           class="content-profile default pointer"
-          *ngIf="bill?.currency === currencyUnit.USD"
+          *ngIf="bill?.currency === CurrencyUnit.USD"
         >
           Đô la mỹ
         </div>
         <div
           class="content-profile default pointer"
-          *ngIf="bill?.currency === currencyUnit.MYR"
+          *ngIf="bill?.currency === CurrencyUnit.MYR"
         >
           Ringgit
         </div>
         <div
           class="content-profile default pointer"
-          *ngIf="bill?.currency === currencyUnit.MMK"
+          *ngIf="bill?.currency === CurrencyUnit.MMK"
         >
           Kyat
         </div>
         <div
           class="content-profile default pointer"
-          *ngIf="bill?.currency === currencyUnit.JPY"
+          *ngIf="bill?.currency === CurrencyUnit.JPY"
         >
           Yên Nhật
         </div>
         <div
           class="content-profile default pointer"
-          *ngIf="bill?.currency === currencyUnit.GBP"
+          *ngIf="bill?.currency === CurrencyUnit.GBP"
         >
           Bảng anh
         </div>
         <div
           class="content-profile default pointer"
-          *ngIf="bill?.currency === currencyUnit.EUR"
+          *ngIf="bill?.currency === CurrencyUnit.EUR"
         >
           Euro
         </div>
         <div
           class="content-profile default pointer"
-          *ngIf="bill?.currency === currencyUnit.CNY"
+          *ngIf="bill?.currency === CurrencyUnit.CNY"
         >
           Nhân dân tệ
         </div>
         <div
           class="content-profile default pointer"
-          *ngIf="bill?.payType === payType.CASH"
+          *ngIf="bill?.payType === PaymentType.CASH"
         >
           Tiền mặt
         </div>
         <div
           class="content-profile default pointer"
-          *ngIf="bill?.payType === payType.TRANSFER"
+          *ngIf="bill?.payType === PaymentType.TRANSFER"
         >
           Chuyển khoản
         </div>

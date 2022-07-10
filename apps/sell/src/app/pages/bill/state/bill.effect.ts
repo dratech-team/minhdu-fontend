@@ -19,7 +19,7 @@ export class BillEffect {
     ofType(BillAction.loadAll),
     switchMap((props) => this.billService.pagination(props)),
     tap((response) => {
-      this.billStore.add(response.data);
+      return this.billStore.set(response.data);
     }),
     catchError((err) => throwError(err))
   );

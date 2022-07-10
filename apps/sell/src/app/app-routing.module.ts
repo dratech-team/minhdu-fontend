@@ -38,7 +38,7 @@ const routes: Routes = [
       },
       /**
        * @deprecated
-       * hàng hoá không cần page riêng để hiển thiị
+       * hàng hoá chưa cần page riêng để hiển thiị
        * */
       {
         path: 'hang-hoa',

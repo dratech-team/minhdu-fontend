@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
-import { PaymentModalComponent } from './components/payment-modal/payment-modal.component';
-import { TablePaymentComponent } from './components/table-payment/table-payment.component';
+import { PaymentModalComponent, TablePaymentComponent } from './components';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { CommonModule } from '@angular/common';
 import { NzTableModule } from 'ng-zorro-antd/table';
@@ -27,9 +26,10 @@ import { AuthModule } from '@minhdu-fontend/auth';
     ComponentsModule,
     NzButtonModule,
     NgxCurrencyModule,
-    AuthModule,
+    AuthModule
   ],
   exports: [TablePaymentComponent],
-  declarations: [PaymentModalComponent, TablePaymentComponent],
+  declarations: [PaymentModalComponent, TablePaymentComponent]
 })
-export class PaymentModule {}
+export class PaymentModule {
+}
