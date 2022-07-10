@@ -40,6 +40,7 @@ import {
 } from '../commodity/component/modal-update-closed-commodity/modal-update-closed-commodity.component';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { OrderComponentService } from './container/shared/order.component.service';
 
 @NgModule({
   imports: [
@@ -96,6 +97,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
     { provide: MAT_DIALOG_DATA, useValue: {} },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     DatePipe,
+    OrderComponentService,
     OrderService
   ],
   exports: []

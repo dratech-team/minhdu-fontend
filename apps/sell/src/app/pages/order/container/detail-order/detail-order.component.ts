@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommodityUnit, ModeEnum, PaymentType } from '@minhdu-fontend/enums';
 import { OrderActions, OrderQuery } from '../../+state';
-import { OrderDialogComponent } from '../../component';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityAction } from '../../../commodity/state';
 import { CommodityDialogComponent } from '../../../commodity/component';
@@ -19,11 +18,9 @@ import { ModalAlertEntity } from '@minhdu-fontend/base-entity';
 import {
   ModalUpdateClosedCommodityComponent
 } from '../../../commodity/component/modal-update-closed-commodity/modal-update-closed-commodity.component';
-import {
-  SelectCommodityComponent
-} from 'apps/sell/src/app/shared/components/select-commodity/select-commodity.component';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { OrderComponentService } from '../shared/order.component.service';
 
 @Component({
   templateUrl: 'detail-order.component.html'
@@ -53,6 +50,7 @@ export class DetailOrderComponent implements OnInit, OnDestroy {
     private readonly orderHistoryService: OrderHistoryService,
     private readonly modal: NzModalService,
     private readonly message: NzMessageService,
+    private readonly componentService: OrderComponentService,
     private readonly formBuilder: UntypedFormBuilder,
     private readonly orderQuery: OrderQuery,
     private readonly accountQuery: AccountQuery
@@ -89,76 +87,15 @@ export class DetailOrderComponent implements OnInit, OnDestroy {
   }
 
   onUpdate(order: OrderEntity, type?: 'GENERAL' | 'COMMODITY') {
-    if (type === 'GENERAL') {
-      this.modal.create({
-        nzTitle: 'Sửa đơn hàng',
-        nzContent: OrderDialogComponent,
-        nzComponentParams: {
-          data: { order: order, tab: 0, isUpdate: true }
-        },
-        nzFooter: [],
-        nzWidth: '65vw',
-        nzMaskClosable: false
-      });
-    } else {
-      this.modal
-        .create({
-          nzTitle: 'Chọn hàng hoá',
-          nzContent: SelectCommodityComponent,
-          nzComponentParams: {
-            data: { type: 'DIALOG' },
-            formGroup: this.formBuilder.group({ customerIds: [] })
-          },
-          nzWidth: '70vw',
-          nzFooter: []
-        })
-        .afterClose.subscribe((value) => {
-        if (value) {
-          this.actions$.dispatch(
-            OrderActions.update({
-              id: order.id,
-              updates: {
-                commodityIds: Array.from(value)
-              }
-            })
-          );
-        }
-      });
-    }
+    this.componentService.onUpdate(order, type);
   }
 
-  onDelete(order: OrderEntity) {
-    this.modal.warning({
-      nzTitle: 'Xoá đơn hàng',
-      nzContent: `Bạn có chắc chắn muốn xoá đơn hàng này vĩnh viễn`,
-      nzOnOk: () => {
-        this.actions$.dispatch(OrderActions.remove({ id: order.id }));
-        this.orderQuery
-          .select((state) => state.deleted)
-          .subscribe((error: string) => {
-            if (error) {
-              this.router.navigate(['don-hang']).then();
-            }
-          });
-      }
-    });
+  onRemove(order: OrderEntity) {
+    this.componentService.onRemove(order);
   }
 
   onRestore(order: OrderEntity) {
-    this.modal.warning({
-      nzTitle: 'Bạn có chắc chắn muốn khôi phục đơn hàng?',
-      nzContent: `Sau khi khôi phục đơn hàng của khách hàng ${order.customer.lastName}. Mọi thao tác trên đơn hàng này sẽ được khôi phục..!!`,
-      nzOnOk: () => {
-        this.actions$.dispatch(OrderActions.restore({ id: order.id }));
-        this.orderQuery
-          .select((state) => state.deleted)
-          .subscribe((error: string) => {
-            if (error) {
-              this.router.navigate(['don-hang']).then();
-            }
-          });
-      }
-    });
+    this.componentService.onRestore(order);
   }
 
   public onUpdateCommodity(orderId: number, commodity: CommodityEntity) {

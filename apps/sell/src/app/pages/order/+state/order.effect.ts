@@ -15,6 +15,7 @@ import { OrderEntity } from '../enitities/order.entity';
 import { AddOrderDto, UpdateOrderDto } from '../dto';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { PaginationDto } from '@minhdu-fontend/constants';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Injectable()
 export class OrderEffect {
@@ -26,7 +27,8 @@ export class OrderEffect {
     private readonly orderQuery: OrderQuery,
     private readonly orderStore: OrderStore,
     private readonly orderService: OrderService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly modal: NzModalService
   ) {
   }
 

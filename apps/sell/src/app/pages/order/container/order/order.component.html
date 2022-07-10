@@ -103,7 +103,7 @@
             nz-button
             nzGhost
             nzType='primary'
-            (click)='onAdd()'
+            (click)='orderComponentService.onAdd()'
           >
             Thêm
           </button>
@@ -271,7 +271,7 @@
         >
           <tr
             class='pointer'
-            (click)='onDetail(order.id, false)'
+            (click)='orderComponentService.onDetail(order.id)'
             (contextmenu)='onContextMenu($event, menu)'
             *ngIf='ui$ | async as ui'
           >

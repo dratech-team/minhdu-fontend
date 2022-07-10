@@ -10,13 +10,11 @@ import {
   PaymentType,
   SortTypeOrderEnum
 } from '@minhdu-fontend/enums';
-import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { debounceTime, map } from 'rxjs/operators';
 import { OrderActions, OrderQuery, OrderStore } from '../../+state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { OrderDialogComponent } from '../../component';
 import * as _ from 'lodash';
 import { OrderEntity } from '../../enitities/order.entity';
 import { radiosStatusOrderConstant } from '../../constants';
@@ -27,6 +25,7 @@ import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
 import { OrderStatusEnum } from '../../enums';
 import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
+import { OrderComponentService } from '../shared/order.component.service';
 
 @Component({
   templateUrl: 'order.component.html'
@@ -75,23 +74,27 @@ export class OrderComponent implements OnInit {
   menus: ContextMenuEntity[] = [
     {
       title: 'Thêm',
-      click: () => this.onAdd()
+      click: () => this.orderComponentService.onAdd()
     },
     {
       title: 'Sửa',
-      click: (data: OrderEntity) => this.onUpdate(data)
+      click: (data: OrderEntity) => this.orderComponentService.onUpdate(data)
     },
     {
       title: 'Xoá',
-      click: (data: any) => this.onRemove(data)
+      click: (data: any) => this.orderComponentService.onRemove(data)
     },
     {
       title: 'Huỷ',
-      click: (data: OrderEntity) => this.onCancel(data)
+      click: (data: OrderEntity) => this.orderComponentService.onCancel(data)
     },
     {
-      title: 'Đã giao',
-      click: (data: any) => this.onDelivery(data)
+      title: 'Giao hàng',
+      click: (data: any) => this.orderComponentService.onDelivery(data)
+    },
+    {
+      title: 'Khôi phục',
+      click: (data: OrderEntity) => this.orderComponentService.onRestore(data)
     }
   ];
 
@@ -108,6 +111,7 @@ export class OrderComponent implements OnInit {
   });
 
   constructor(
+    public readonly orderComponentService: OrderComponentService,
     private readonly datePipe: DatePipe,
     private readonly actions$: Actions,
     private readonly router: Router,
@@ -126,80 +130,6 @@ export class OrderComponent implements OnInit {
       this.actions$.dispatch(
         OrderActions.loadAll({ search: this.mapOrder(order), isPaginate: false })
       );
-    });
-  }
-
-  onAdd() {
-    this.modal.create({
-      nzTitle: 'Thêm đơn hàng',
-      nzContent: OrderDialogComponent,
-      nzWidth: '80vw',
-      nzFooter: null
-    });
-  }
-
-  onDetail(id: number, isUpdate: boolean) {
-    this.router
-      .navigate(['don-hang/chi-tiet-don-hang', id], {
-        queryParams: {
-          isUpdate: isUpdate
-        }
-      })
-      .then();
-  }
-
-  onUpdate(order: OrderEntity) {
-    this.modal.create({
-      nzTitle: 'Sửa đơn hàng',
-      nzContent: OrderDialogComponent,
-      nzComponentParams: {
-        data: { order: order, tab: 0, isUpdate: true }
-      },
-      nzFooter: [],
-      nzWidth: '65vw',
-      nzMaskClosable: false
-    });
-  }
-
-  onRemove(order: OrderEntity) {
-    this.modal.warning({
-      nzTitle: 'Xoá đơn hàng',
-      nzContent: `Bạn có chắc chắn muốn xoá đơn hàng đến ${order.province.name} của khách hàng ${order.customer.lastName} vĩnh viễn không?`,
-      nzOnOk: () =>
-        this.actions$.dispatch(OrderActions.remove({ id: order.id }))
-    });
-  }
-
-  public onDelivery(order: OrderEntity) {
-    this.modal.create({
-      nzTitle: 'Xác nhận ngày giao hàng',
-      nzContent: DialogDatePickerComponent,
-      nzMaskClosable: false,
-      nzFooter: []
-    }).afterClose.subscribe((res: { date: Date }) => {
-      if (res) {
-        this.actions$.dispatch(
-          OrderActions.update({
-            id: order.id,
-            updates: {
-              deliveredAt: res.date
-            }
-          })
-        );
-      }
-    });
-  }
-
-  public onCancel(order: OrderEntity) {
-    this.modal.warning({
-      nzTitle: 'Huỷ đơn hàng',
-      nzContent: `Bạn có chắc chắn muốn huỷ đơn hàng đến ${order.province.name} của khách hàng ${order.customer.lastName} không`,
-      nzOkDanger: true,
-      nzOnOk: () => {
-        this.actions$.dispatch(
-          OrderActions.cancel({ orderId: order.id })
-        );
-      }
     });
   }
 
