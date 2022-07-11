@@ -20,8 +20,9 @@
       nzSize='small'
       [nzFrontPagination]='false'
       [nzShowPagination]='false'
+      [nzLoading]='(loading$ | async) && (total$ | async) === 0'
       [nzData]='(commodities$ | async) || []'
-      [formGroup]='formGroupCommodity'
+      [formGroup]='formGroup'
       [nzScroll]="{ x: '1800px', y: '50vh' }"
     >
       <thead>
@@ -31,7 +32,7 @@
           nzLeft
           [nzChecked]='checked'
           [nzIndeterminate]='indeterminate'
-          (nzCheckedChange)='onAllChecked($event)'
+          (nzCheckedChange)='onSetAll($event)'
         ></th>
         <th nzWidth='50px'>
           <div>STT</div>
@@ -130,12 +131,11 @@
   </div>
   <button
     class='mt-1'
-    *ngIf="data?.type === 'DIALOG'"
     (click)='closeDialog()'
     nz-button
     nzType='primary'
   >
-    xác nhận
+    Xác nhận
   </button>
 </div>
 <app-mouse-right

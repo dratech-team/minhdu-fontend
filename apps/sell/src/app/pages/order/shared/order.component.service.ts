@@ -15,7 +15,7 @@ export class OrderComponentService {
   constructor(
     private readonly actions$: Actions,
     private readonly modal: NzModalService,
-    private readonly router: Router,
+    private readonly router: Router
   ) {
   }
 
@@ -48,19 +48,16 @@ export class OrderComponentService {
       this.modal.create({
         nzTitle: 'Chọn hàng hoá',
         nzContent: SelectCommodityComponent,
-        nzComponentParams: {
-          data: { type: 'DIALOG' }
-        },
+        nzComponentParams: { commodities: order.commodities },
         nzWidth: '70vw',
         nzFooter: []
-      })
-        .afterClose.subscribe((value) => {
-        if (value) {
+      }).afterClose.subscribe((commodityIds: number[]) => {
+        if (commodityIds?.length) {
           this.actions$.dispatch(
             OrderActions.update({
               id: order.id,
               updates: {
-                commodityIds: Array.from(value)
+                commodityIds: commodityIds
               }
             })
           );

@@ -1,120 +1,120 @@
 <div>
-  <form [formGroup]="formGroup" style="max-height: 50vh; overflow-y: scroll">
-    <div class="form-group">
-      <div class="row">
-        <div class="col-sm">
-          <label for="code">Mã hàng hóa<span class="star">*</span> </label>
+  <form [formGroup]='formGroup' style='max-height: 50vh; overflow-y: scroll'>
+    <div class='form-group'>
+      <div class='row'>
+        <div class='col-sm'>
+          <label for='code'>Mã hàng hóa<span class='star'>*</span> </label>
           <input
-            class="form-control"
-            id="code"
-            type="search"
+            class='form-control'
+            id='code'
+            type='search'
             matInput
-            [matAutocomplete]="code"
-            formControlName="code"
+            [matAutocomplete]='code'
+            formControlName='code'
           />
-          <mat-autocomplete #code="matAutocomplete">
+          <mat-autocomplete #code='matAutocomplete'>
             <mat-option
-              *ngFor="let commodity of commodities$ | async"
-              [value]="commodity.code"
-              (click)="selectCommodity(commodity)"
+              *ngFor='let commodity of commodities$ | async'
+              [value]='commodity.code'
+              (click)='selectCommodity(commodity)'
             >
               {{ commodity.code }}
             </mat-option>
           </mat-autocomplete>
         </div>
       </div>
-      <div class="row mt-2">
-        <div class="col-sm">
-          <label for="name">Tên hàng hóa<span class="star">*</span></label>
+      <div class='row mt-2'>
+        <div class='col-sm'>
+          <label for='name'>Tên hàng hóa<span class='star'>*</span></label>
           <input
-            class="form-control"
-            id="name"
-            type="search"
+            class='form-control'
+            id='name'
+            type='search'
             matInput
-            [matAutocomplete]="name"
-            formControlName="name"
+            [matAutocomplete]='name'
+            formControlName='name'
           />
-          <mat-autocomplete #name="matAutocomplete">
+          <mat-autocomplete #name='matAutocomplete'>
             <mat-option
-              *ngFor="let commodity of commodities$ | async"
-              [value]="commodity.name"
-              (click)="selectCommodity(commodity)"
+              *ngFor='let commodity of commodities$ | async'
+              [value]='commodity.name'
+              (click)='selectCommodity(commodity)'
             >
               {{ commodity.name }}
             </mat-option>
           </mat-autocomplete>
         </div>
       </div>
-      <div class="row mt-2">
-        <div class="col-sm">
-          <label for="price">Giá</label>
+      <div class='row mt-2'>
+        <div class='col-sm'>
+          <label for='price'>Giá</label>
           <input
-            type="text"
-            class="form-control"
-            id="price"
-            placeholder="200,000"
-            formControlName="price"
+            type='text'
+            class='form-control'
+            id='price'
+            placeholder='200,000'
+            formControlName='price'
             currencyMask
             [options]="{ suffix: ' đ' }"
           />
         </div>
       </div>
-      <div class="row mt-2">
-        <div class="col-sm">
-          <label for="amount">Số lượng<span class="star">*</span></label>
+      <div class='row mt-2'>
+        <div class='col-sm'>
+          <label for='amount'>Số lượng<span class='star'>*</span></label>
           <input
-            type="text"
-            class="form-control"
-            id="amount"
-            placeholder="1,000"
-            formControlName="amount"
+            type='text'
+            class='form-control'
+            id='amount'
+            placeholder='1,000'
+            formControlName='amount'
             currencyMask
           />
         </div>
       </div>
-      <div class="row mt-2">
-        <div class="col-sm">
-          <label for="gift">Khuyến mãi</label>
+      <div class='row mt-2'>
+        <div class='col-sm'>
+          <label for='gift'>Khuyến mãi</label>
           <input
-            type="text"
-            class="form-control"
-            id="gift"
-            placeholder="1,000"
-            formControlName="gift"
+            type='text'
+            class='form-control'
+            id='gift'
+            placeholder='1,000'
+            formControlName='gift'
             currencyMask
           />
         </div>
       </div>
-      <div class="row mt-2">
-        <div class="col-sm">
-          <label for="more">Mua thêm</label>
+      <div class='row mt-2'>
+        <div class='col-sm'>
+          <label for='more'>Mua thêm</label>
           <input
-            type="text"
-            class="form-control"
-            id="more"
-            placeholder="1,000"
-            formControlName="more"
+            type='text'
+            class='form-control'
+            id='more'
+            placeholder='1,000'
+            formControlName='more'
             currencyMask
           />
         </div>
       </div>
-      <div class="row mt-2">
-        <div class="col-sm">
-          <label for="unit">Đơn vị<span class="star">*</span></label>
-          <mat-select id="unit" class="form-control" formControlName="unit">
-            <mat-option value="{{ CommodityUnit.KG }}"> KG </mat-option>
-            <mat-option value="{{ CommodityUnit.CON }}"> Con </mat-option>
+      <div class='row mt-2'>
+        <div class='col-sm'>
+          <label for='unit'>Đơn vị<span class='star'>*</span></label>
+          <mat-select id='unit' class='form-control' formControlName='unit'>
+            <mat-option value='{{ CommodityUnit.KG }}'> KG</mat-option>
+            <mat-option value='{{ CommodityUnit.CON }}'> Con</mat-option>
           </mat-select>
         </div>
       </div>
     </div>
   </form>
-  <div class="row d-flex mt-3 justify-content-center">
+  <div class='row d-flex mt-3 justify-content-center'>
     <button
       nz-button
-      nzType="primary"
-      [nzLoading]="(added$ | async) === false"
-      (click)="onSubmit()"
+      nzType='primary'
+      [nzLoading]='(loading$ | async)'
+      (click)='onSubmit()'
     >
       Xác nhận
     </button>

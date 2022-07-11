@@ -89,21 +89,13 @@ export class AddOrderComponent implements OnInit {
   }
 
   pickCommodities() {
-    this.modal
-      .create({
-        nzTitle: 'Chon đơn hàng',
-        nzContent: SelectCommodityComponent,
-        nzWidth: '70vw',
-        nzComponentParams: {
-          data: {
-            pickMore: true,
-            type: 'DIALOG',
-            commoditiesPicked: this.commoditiesPicked
-          }
-        },
-        nzFooter: null
-      })
-      .afterClose.subscribe((val) => {
+    this.modal.create({
+      nzTitle: 'Chon đơn hàng',
+      nzContent: SelectCommodityComponent,
+      nzWidth: '70vw',
+      nzComponentParams: { commodities: this.commoditiesPicked },
+      nzFooter: null
+    }).afterClose.subscribe((val) => {
       if (val) {
         this.commoditiesPicked = val;
       }

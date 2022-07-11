@@ -31,17 +31,18 @@ export class CommodityEffect {
       }));
       return this.commodityService.addOne(props).pipe(
         map((commodity) => {
+          this.commodityStore.add(commodity);
           this.commodityStore.update((state) => ({
             ...state,
-            loading: false
+            loading: false,
+            active: commodity.id
           }));
-          this.message.success('Thêm hàng hóa thành công');
-          this.commodityStore.add(commodity);
         }),
         catchError((err) => {
           this.commodityStore.update((state) => ({
             ...state,
-            loading: null
+            loading: null,
+            error: err,
           }));
           return of(CommodityAction.error(err));
         })

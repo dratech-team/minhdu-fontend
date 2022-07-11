@@ -1,24 +1,27 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityUnit } from '@minhdu-fontend/enums';
 import { CommodityAction, CommodityQuery } from '../../state';
 import { CommodityService } from '../../service';
 import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared';
 import { Actions } from '@datorama/akita-ng-effects';
-import { NzModalRef } from 'ng-zorro-antd/modal';
 import { CommodityTemplateQuery } from '../../../commodity-template/state/commodity-template.query';
 import { CommodityTemplateActions } from '../../../commodity-template/state/commodity-template.action';
+import { NzModalRef } from 'ng-zorro-antd/modal';
 
 @Component({
   templateUrl: 'commodity-dialog.component.html'
 })
 export class CommodityDialogComponent implements OnInit {
   @Input() data: any;
+
+  loading$ = this.commodityTemplateQuery.selectLoading();
   commodities$ = this.commodityTemplateQuery.selectAll();
+
   CommodityUnit = CommodityUnit;
-  formGroup!: UntypedFormGroup;
-  added$ = this.commodityQuery.select((state) => state.added);
+
+  formGroup!: FormGroup;
 
   constructor(
     private readonly formBuilder: UntypedFormBuilder,
@@ -101,8 +104,8 @@ export class CommodityDialogComponent implements OnInit {
     } else {
       this.actions$.dispatch(CommodityAction.addOne({ body: commodity }));
     }
-    this.added$.subscribe((added) => {
-      if (added) {
+    this.commodityQuery.select().subscribe((state) => {
+      if (!(state.loading && state.error)) {
         this.modalRef.close();
       }
     });

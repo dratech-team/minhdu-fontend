@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityUnit, CustomerType, ModeEnum } from '@minhdu-fontend/enums';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -16,9 +16,7 @@ import { AccountQuery } from '../../../../../../../libs/system/src/lib/state/acc
   templateUrl: 'select-commodity.component.html'
 })
 export class SelectCommodityComponent implements OnInit {
-  @Input() data: any;
-  @Input() formGroup!: UntypedFormGroup;
-  @Input() pickPOne: boolean | undefined;
+  @Input() commodities?: CommodityEntity[];
 
   account$ = this.accountQuery.selectCurrentUser();
   loading$ = this.commodityQuery.selectLoading();
@@ -26,7 +24,7 @@ export class SelectCommodityComponent implements OnInit {
   total$ = this.commodityQuery.selectCount();
   commodities$ = this.commodityQuery.selectAll();
 
-  setOfCheckedId = new Set<number>();
+  setOfCheckedId = new Set<number>;
   listOfCurrentPageData: readonly CommodityEntity[] = [];
   indeterminate = false;
   checked = false;
@@ -35,10 +33,10 @@ export class SelectCommodityComponent implements OnInit {
   CustomerType = CustomerType;
   ModeEnum = ModeEnum;
 
-  formGroupCommodity = new UntypedFormGroup({
-    code: new UntypedFormControl(''),
-    name: new UntypedFormControl(''),
-    unit: new UntypedFormControl('')
+  formGroup = new FormGroup({
+    code: new FormControl<string>(''),
+    name: new FormControl<string>(''),
+    unit: new FormControl<CommodityUnit>(CommodityUnit.CON)
   });
 
   constructor(
@@ -52,14 +50,11 @@ export class SelectCommodityComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.formGroup.get('commodityIds')?.value?.forEach((id: number) => {
-      this.setOfCheckedId.add(id);
-    });
     this.actions$.dispatch(
       CommodityAction.loadAll({ search: {} })
     );
-    this.formGroupCommodity.valueChanges
-      .pipe(debounceTime(2000))
+    this.formGroup.valueChanges
+      .pipe(debounceTime(500))
       .subscribe((val) => {
         this.actions$.dispatch(
           CommodityAction.loadAll({ search: this.mapToCommodity(val) })
@@ -72,13 +67,14 @@ export class SelectCommodityComponent implements OnInit {
       nzTitle: 'Thêm hàng hoá',
       nzContent: CommodityDialogComponent,
       nzFooter: []
+    }).afterClose.subscribe(() => {
+      this.updateCheckedSet(this.commodityQuery.getActiveId(), true);
     });
   }
 
-
   onUpdate(commodity: CommodityEntity) {
     this.modal.create({
-      nzTitle: 'Cập nhật hàngh hoá',
+      nzTitle: 'Cập nhật hàng hoá',
       nzContent: CommodityDialogComponent,
       nzComponentParams: {
         data: { commodity, isUpdate: true }
@@ -88,10 +84,9 @@ export class SelectCommodityComponent implements OnInit {
   }
 
   onRemove($event: any) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent, {
+    this.dialog.open(DialogDeleteComponent, {
       width: 'fit-content'
-    });
-    dialogRef.afterClosed().subscribe((val) => {
+    }).afterClosed().subscribe((val) => {
       if (val) {
         this.actions$.dispatch(CommodityAction.remove({ id: $event.id }));
       }
@@ -99,28 +94,24 @@ export class SelectCommodityComponent implements OnInit {
   }
 
   public onLoadMore() {
-    const val = this.formGroupCommodity.value;
+    const value = this.formGroup.value;
     this.actions$.dispatch(
       CommodityAction.loadAll({
-        search: this.mapToCommodity(val),
+        search: this.mapToCommodity(value),
         isPaginate: true
       })
     );
   }
 
   public closeDialog() {
-    this.actions$.dispatch(CommodityAction.resetStateCommodityNewAdd());
-    this.modalRef.close(this.setOfCheckedId);
+    this.modalRef.close(Array.from(this.setOfCheckedId));
   }
 
-  public onAllChecked(checked: boolean): void {
-    this.listOfCurrentPageData.forEach(({ id }) =>
+  public onSetAll(checked: boolean): void {
+    this.commodityQuery.getAll().forEach(({ id }) =>
       this.updateCheckedSet(id, checked)
     );
     this.refreshCheckedStatus();
-    this.formGroup
-      .get('commodityIds')
-      ?.setValue(Array.from(this.setOfCheckedId));
   }
 
   public updateCheckedSet(id: number, checked: boolean): void {
@@ -129,9 +120,6 @@ export class SelectCommodityComponent implements OnInit {
     } else {
       this.setOfCheckedId.delete(id);
     }
-    this.formGroup
-      .get('commodityIds')
-      ?.setValue(Array.from(this.setOfCheckedId));
   }
 
   public refreshCheckedStatus(): void {
@@ -147,9 +135,6 @@ export class SelectCommodityComponent implements OnInit {
   public onItemChecked(id: number, checked: boolean): void {
     this.updateCheckedSet(id, checked);
     this.refreshCheckedStatus();
-    this.formGroup
-      .get('commodityIds')
-      ?.setValue(Array.from(this.setOfCheckedId));
   }
 
   public onCurrentPageDataChange(
