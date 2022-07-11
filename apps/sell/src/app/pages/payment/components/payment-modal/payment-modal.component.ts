@@ -35,7 +35,6 @@ export class PaymentModalComponent implements OnInit {
     private readonly message: NzMessageService
   ) {
   }
-
   ngOnInit() {
     const paymentHistory = this.data?.update?.payment;
     this.formGroup = this.formBuilder.group({

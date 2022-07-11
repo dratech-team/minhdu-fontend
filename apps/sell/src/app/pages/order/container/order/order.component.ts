@@ -28,7 +28,8 @@ import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/
 import { OrderComponentService } from '../../shared';
 
 @Component({
-  templateUrl: 'order.component.html'
+  templateUrl: 'order.component.html',
+  styleUrls: ['order.component.scss']
 })
 export class OrderComponent implements OnInit {
   valueSort?: Sort;

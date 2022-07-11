@@ -1,7 +1,7 @@
 <div class='d-flex container'>
   <div
     class='d-flex flex-column p-2 border ng-star-inserted'
-    style='height: 80vh; overflow-y: auto'
+    style='height: 81vh; overflow-y: auto'
   >
     <div class='mb-2'>
       <nz-collapse>
@@ -77,19 +77,19 @@
   </div>
   <div class='ml-3' style='width: 80%'>
     <div class='d-flex justify-content-between align-items-end m-2'>
-      <div class='d-flex'>
-        <div class='mr-2'>
+      <div class='d-flex ng-star-inserted' style='overflow-x: auto'>
+        <div class='commodity-total-price'>
           <span class='font-weight-bold'>Tổng đơn hàng:</span>
           {{ (total$ | async) || 0 | number: '1.0-0' }}
         </div>
-        <div class='d-flex'>
-          <div>
-            <span class='font-weight-bold'>Tổng hàng hoá:</span>
-            <span class='ml-1' style='color: red'>
+        <div class='commodity-total-price'>
+          <span class='font-weight-bold'>Tổng hàng hoá:</span>
+          <span class='ml-1' style='color: red'>
               {{ (totalCommodity$ | async) || 0 | number: '1.0-0' }}</span
-            >
-          </div>
-          <div class='ml-3' *ngFor='let item of commodityUniq$ | async'>
+          >
+        </div>
+        <div class='d-flex'>
+          <div class='commodity-total-price' *ngFor='let item of commodityUniq$ | async'>
             <span class='font-weight-bold'>Tổng {{ item.name }}: </span>
             <span class='ml-1' style='color: red'>{{
               item.amount | number: '1.0-0'
@@ -140,7 +140,7 @@
         nzSize='middle'
         [nzFrontPagination]='false'
         [nzShowPagination]='false'
-        [nzScroll]="{ x: '2300px', y: '65vh' }"
+        [nzScroll]="{ x: '2300px', y: '70vh' }"
         [nzLoading]='(loading$ | async) && (total$ | async) === 0'
         [nzData]='(orders$ | async) || []'
         [formGroup]='formGroup'
