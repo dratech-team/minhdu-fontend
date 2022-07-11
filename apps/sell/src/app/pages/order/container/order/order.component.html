@@ -421,13 +421,8 @@
       </nz-table>
       </tr>
       </ng-template>
-      <tr
-        *ngIf='
-              ((count$ | async) || 0) < ((total$ | async) || 0) &&
-              (total$ | async) !== 0
-            '
-      >
-        <td colspan='17'>
+      <tr *ngIf='remain$ | async'>
+        <td colspan='10'>
           <div
             class='w-100 d-flex justify-content-start'
             style='position: relative'
