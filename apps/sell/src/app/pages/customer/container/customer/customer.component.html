@@ -1,7 +1,7 @@
 <div class='d-flex container '>
   <div
     class='d-flex flex-column border ng-star-inserted'
-    style='height: 80vh; width: 18%; overflow-y: scroll; padding: 10px'
+    style='height: 81vh; width: 18%; overflow-y: scroll; padding: 10px'
   >
     <nz-collapse>
       <nz-collapse-panel nzHeader='Tìm kiếm' nzActive='true'>
@@ -96,7 +96,7 @@
       [nzFrontPagination]='false'
       [nzShowPagination]='false'
       [nzData]='(customers$ | async) || []'
-      [nzScroll]="{ x: '2300px', y: '65vh' }"
+      [nzScroll]="{ x: '2300px', y: '70vh' }"
       [nzLoading]='(loading$ | async) && (total$ | async) === 0'
     >
       <thead>
