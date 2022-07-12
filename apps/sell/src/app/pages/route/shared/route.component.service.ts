@@ -3,7 +3,7 @@ import { RouteEntity } from '../entities';
 import { RouteDialogComponent } from '../component';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { UpdaterRouteTypeEnum } from '../enums/updater-route-type.enum';
-import { RouteActions, RouteQuery } from '../+state';
+import { RouteActions, RouteQuery } from '../state';
 import { Router } from '@angular/router';
 import { Actions } from '@datorama/akita-ng-effects';
 import { ModalDatePickerComponent } from '@minhdu-fontend/components';

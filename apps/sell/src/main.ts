@@ -4,9 +4,9 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 import { persistState, PersistStateSelectFn } from '@datorama/akita';
 import { StorageName } from '@minhdu-fontend/constants';
-import { CustomerState } from './app/pages/customer/+state';
-import { OrderState } from './app/pages/order/+state';
-import { RouteState } from './app/pages/route/+state';
+import { CustomerState } from './app/pages/customer/state';
+import { OrderState } from './app/pages/order/state';
+import { RouteState } from './app/pages/route/state';
 
 if (environment.production) {
   enableProdMode();

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
-import { CustomerQuery } from '../../+state/customer.query';
-import { CustomerStore } from '../../+state/customer.store';
+import { CustomerQuery } from '../../state/customer.query';
+import { CustomerStore } from '../../state/customer.store';
 
 @Component({
   selector: 'minhdu-fontend-pinned-customer',

@@ -10,7 +10,7 @@ import { PaymentStore } from './payment.store';
 import { SearchPaymentDto } from '../dto/search-payment.dto';
 import { RemovePaymentDto } from '../dto/remove-payment.dto';
 import { PaginationDto } from '@minhdu-fontend/constants';
-import { CustomerActions, CustomerStore } from '../../customer/+state';
+import { CustomerActions, CustomerStore } from '../../customer/state';
 import { UpdatePaymentDto } from '../dto/update-payment.dto';
 
 @Injectable()

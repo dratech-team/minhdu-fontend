@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RouteActions, RouteQuery } from '../../+state';
+import { RouteActions, RouteQuery } from '../../state';
 import { PaymentType } from '@minhdu-fontend/enums';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CancelEnum } from '../../enums';
 import { CommodityEntity } from '../../../commodity/entities';
-import { OrderActions } from '../../../order/+state';
+import { OrderActions } from '../../../order/state';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { UpdaterRouteTypeEnum } from '../../enums/updater-route-type.enum';
 import { OrderEntity } from '../../../order/enitities/order.entity';

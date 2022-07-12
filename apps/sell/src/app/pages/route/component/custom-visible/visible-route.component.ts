@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
-import { RouteQuery, RouteStore } from '../../+state';
+import { RouteQuery, RouteStore } from '../../state';
 
 @Component({
   selector: 'minhdu-fontend-pinned-route',

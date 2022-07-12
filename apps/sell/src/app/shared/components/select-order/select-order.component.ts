@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { PaidType } from 'libs/enums/paidType.enum';
-import { OrderActions, OrderQuery } from '../../../pages/order/+state';
+import { OrderActions, OrderQuery } from '../../../pages/order/state';
 import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CommodityEntity } from '../../../pages/commodity/entities';

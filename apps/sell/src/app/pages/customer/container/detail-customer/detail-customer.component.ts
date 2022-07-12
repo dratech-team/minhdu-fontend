@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DevelopmentComponent } from '@minhdu-fontend/components';
 import { ConvertBoolean, PaidType, StatusOrder } from '@minhdu-fontend/enums';
-import { CustomerActions, CustomerQuery, CustomerStore } from '../../+state';
+import { CustomerActions, CustomerQuery, CustomerStore } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { OrderDialogComponent } from '../../../order/component';

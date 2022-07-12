@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommodityUnit, ModeEnum, PaymentType } from '@minhdu-fontend/enums';
-import { OrderActions, OrderQuery } from '../../+state';
+import { OrderActions, OrderQuery } from '../../state';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityAction, CommodityQuery } from '../../../commodity/state';
 import { CommodityDialogComponent } from '../../../commodity/component';

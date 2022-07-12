@@ -8,7 +8,7 @@ import { PaymentActions, PaymentQuery } from '../../payment';
 import { ModalAddOrUpdatePayment } from '../../../customer/data/modal-payment.data';
 import { BaseAddPaymentDto, BaseUpdatePaymentDto } from '../../dto';
 import { PayTypeConstant } from '../../constants';
-import { OrderQuery } from '../../../order/+state';
+import { OrderQuery } from '../../../order/state';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({

@@ -4,7 +4,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { RouteActions, RouteQuery, RouteStore } from '../../+state';
+import { RouteActions, RouteQuery, RouteStore } from '../../state';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Actions } from '@datorama/akita-ng-effects';

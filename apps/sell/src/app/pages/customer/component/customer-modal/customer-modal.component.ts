@@ -2,7 +2,7 @@ import { Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
-import { CustomerActions, CustomerQuery } from '../../+state';
+import { CustomerActions, CustomerQuery } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { CustomerConstant, ResourcesConstant } from '../../constants';

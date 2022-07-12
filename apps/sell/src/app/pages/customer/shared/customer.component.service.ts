@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CustomerEntity } from '../entities';
 import { CustomerModalComponent, PaymentModalComponent } from '../component';
 import { ModalCustomerData } from '../data/modal-customer.data';
-import { CustomerActions, CustomerQuery } from '../+state';
+import { CustomerActions, CustomerQuery } from '../state';
 import { ModalAddOrUpdatePayment } from '../data/modal-payment.data';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';

@@ -4,7 +4,7 @@ import { debounceTime, tap } from 'rxjs/operators';
 import { CustomerEntity } from '../../../pages/customer/entities';
 import { CustomerType, ModeEnum } from '@minhdu-fontend/enums';
 import { CustomerModalComponent } from '../../../pages/customer/component';
-import { CustomerActions, CustomerQuery } from '../../../pages/customer/+state';
+import { CustomerActions, CustomerQuery } from '../../../pages/customer/state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { CustomerConstant, ResourcesConstant } from '../../../pages/customer/constants';

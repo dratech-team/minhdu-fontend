@@ -11,7 +11,7 @@ import {
   SortTypeOrderEnum
 } from '@minhdu-fontend/enums';
 import { debounceTime, map, startWith } from 'rxjs/operators';
-import { OrderActions, OrderQuery, OrderStore } from '../../+state';
+import { OrderActions, OrderQuery, OrderStore } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
 import { NzModalService } from 'ng-zorro-antd/modal';

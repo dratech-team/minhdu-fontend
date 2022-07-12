@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { getTotalCommodity } from '../../../../../../../libs/utils/sell.ultil';
 import { OrderQuery } from './order.query';
 import { OrderStore } from './order.store';
-import { RouteActions } from '../../route/+state';
+import { RouteActions } from '../../route/state';
 import { CommodityEntity, CommodityUniq } from '../../commodity/entities';
 import { OrderEntity } from '../enitities/order.entity';
 import { AddOrderDto, UpdateOrderDto } from '../dto';

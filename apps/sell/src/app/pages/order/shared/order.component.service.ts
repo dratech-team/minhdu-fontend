@@ -3,7 +3,7 @@ import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { OrderDialogComponent } from '../component';
 import { SelectCommodityComponent } from '../../../shared/components';
-import { OrderActions } from '../+state';
+import { OrderActions } from '../state';
 import { OrderEntity } from '../enitities/order.entity';
 import {
   DialogDatePickerComponent

@@ -13,7 +13,7 @@ import {
 } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { ModalExportExcelComponent, ModalExportExcelData } from '@minhdu-fontend/components';
-import { CustomerActions, CustomerQuery, CustomerStore } from '../../+state';
+import { CustomerActions, CustomerQuery, CustomerStore } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { CustomerConstant, PotentialsConstant, ResourcesConstant } from '../../constants';

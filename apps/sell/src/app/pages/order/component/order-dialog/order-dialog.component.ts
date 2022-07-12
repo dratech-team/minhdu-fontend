@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PaymentType } from '@minhdu-fontend/enums';
-import { OrderActions, OrderQuery } from '../../+state';
+import { OrderActions, OrderQuery } from '../../state';
 import { DatePipe } from '@angular/common';
 import { CommodityQuery } from '../../../commodity/state';
-import { CustomerQuery } from '../../../customer/+state';
+import { CustomerQuery } from '../../../customer/state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';

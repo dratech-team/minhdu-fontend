@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
-import { OrderQuery, OrderStore } from '../../+state';
+import { OrderQuery, OrderStore } from '../../state';
 
 @Component({
   selector: 'minhdu-fontend-pin-column-order',

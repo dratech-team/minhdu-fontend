@@ -3,11 +3,11 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommodityUnit, CustomerResource, CustomerType, PaymentType } from '@minhdu-fontend/enums';
-import { OrderActions, OrderQuery } from '../../+state';
+import { OrderActions, OrderQuery } from '../../state';
 import { CustomerEntity } from '../../../customer/entities';
 import { DatePipe } from '@angular/common';
 import { Actions } from '@datorama/akita-ng-effects';
-import { CustomerActions, CustomerQuery } from '../../../customer/+state';
+import { CustomerActions, CustomerQuery } from '../../../customer/state';
 import { CommodityEntity } from '../../../commodity/entities';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NzModalService } from 'ng-zorro-antd/modal';
