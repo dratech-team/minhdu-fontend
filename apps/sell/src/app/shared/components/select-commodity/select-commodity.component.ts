@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityUnit, CustomerType, ModeEnum } from '@minhdu-fontend/enums';
@@ -10,6 +10,7 @@ import { Actions } from '@datorama/akita-ng-effects';
 import { CommodityEntity } from '../../../pages/commodity/entities';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { AccountQuery } from '../../../../../../../libs/system/src/lib/state/account-management/account.query';
+import { OrderDialogComponent } from '../../../pages/order/component';
 
 @Component({
   selector: 'select-commodity',
@@ -17,6 +18,7 @@ import { AccountQuery } from '../../../../../../../libs/system/src/lib/state/acc
 })
 export class SelectCommodityComponent implements OnInit {
   @Input() commodities?: CommodityEntity[];
+  @Output() onChange = new EventEmitter<number[]>();
 
   account$ = this.accountQuery.selectCurrentUser();
   loading$ = this.commodityQuery.selectLoading();
@@ -25,7 +27,7 @@ export class SelectCommodityComponent implements OnInit {
   commodities$ = this.commodityQuery.selectAll();
 
   setOfCheckedId = new Set<number>;
-  listOfCurrentPageData: readonly CommodityEntity[] = [];
+  listOfCurrentPageData: CommodityEntity[] = [];
   indeterminate = false;
   checked = false;
 
@@ -43,7 +45,7 @@ export class SelectCommodityComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
-    private readonly modalRef: NzModalRef,
+    private readonly modalRef: NzModalRef<OrderDialogComponent>,
     private readonly commodityQuery: CommodityQuery,
     private readonly accountQuery: AccountQuery
   ) {
@@ -103,14 +105,16 @@ export class SelectCommodityComponent implements OnInit {
     );
   }
 
-  public closeDialog() {
-    this.modalRef.close(Array.from(this.setOfCheckedId));
-  }
-
   public onSetAll(checked: boolean): void {
-    this.commodityQuery.getAll().forEach(({ id }) =>
-      this.updateCheckedSet(id, checked)
-    );
+    const commodityIds = this.commodityQuery.getAll().map(commodity => commodity.id);
+    if (checked) {
+      this.setOfCheckedId = new Set(commodityIds);
+      this.onChange.emit(commodityIds);
+    } else {
+      this.setOfCheckedId.clear();
+      this.onChange.emit([]);
+    }
+
     this.refreshCheckedStatus();
   }
 
@@ -120,6 +124,7 @@ export class SelectCommodityComponent implements OnInit {
     } else {
       this.setOfCheckedId.delete(id);
     }
+    this.onChange.emit(Array.from(this.setOfCheckedId));
   }
 
   public refreshCheckedStatus(): void {
@@ -137,10 +142,8 @@ export class SelectCommodityComponent implements OnInit {
     this.refreshCheckedStatus();
   }
 
-  public onCurrentPageDataChange(
-    listOfCurrentPageData: readonly CommodityEntity[]
-  ): void {
-    this.listOfCurrentPageData = listOfCurrentPageData;
+  public onCurrentPageDataChange(commodities: CommodityEntity[]): void {
+    this.listOfCurrentPageData = commodities;
     this.refreshCheckedStatus();
   }
 

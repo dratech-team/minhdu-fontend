@@ -28,6 +28,7 @@ import { SelectCommodityComponent } from './components/select-commodity/select-c
 import { SelectCustomerComponent } from './components/select-customer/select-customer.component';
 import { SelectRouteComponent } from './components/select-route/select-route.component';
 import { OrderListComponent } from './components/order-list/order-list.component';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 @NgModule({
   imports: [
@@ -55,7 +56,8 @@ import { OrderListComponent } from './components/order-list/order-list.component
     NzInputModule,
     NzSelectModule,
     NzRadioModule,
-    NzDatePickerModule
+    NzDatePickerModule,
+    NzModalModule
   ],
   declarations: [
     OrderListComponent,

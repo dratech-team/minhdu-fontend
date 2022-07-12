@@ -1,14 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PaymentType } from '@minhdu-fontend/enums';
 import { OrderActions, OrderQuery } from '../../+state';
 import { DatePipe } from '@angular/common';
 import { CommodityQuery } from '../../../commodity/state';
 import { CustomerQuery } from '../../../customer/+state';
 import { Actions } from '@datorama/akita-ng-effects';
-import { CommodityEntity } from '../../../commodity/entities';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { District, Province, Ward } from '@minhdu-fontend/data-models';
 
 @Component({
   templateUrl: 'order-dialog.component.html'
@@ -41,25 +41,28 @@ export class OrderDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.formGroup = this.formBuilder.group({
-      createdAt: [
+    this.formGroup = new FormGroup({
+      createdAt: new FormControl(
         this.datePipe.transform(this.data?.order?.createdAt, 'yyyy-MM-dd'),
-        Validators.required
-      ],
+        { validators: Validators.required }
+      ),
       endedAt: this.data?.order?.endedAt
-        ? [this.datePipe.transform(this.data.order.endedAt, 'yyyy-MM-dd')]
-        : [],
+        ? new FormControl<string | null>(
+          this.datePipe.transform(this.data?.order?.endedAt, 'yyyy-MM-dd'),
+          { validators: Validators.required }
+        )
+        : new FormControl(),
       deliveredAt: this.data?.order?.deliveredAt
-        ? [this.datePipe.transform(this.data?.order?.deliveredAt, 'yyyy-MM-dd')]
-        : [],
-      explain: [this.data?.order?.explain],
-      province: [this.data?.order?.province, Validators.required],
-      district: [this.data?.order?.district],
-      ward: [this.data?.order?.ward],
-      customerId: [this.data?.order?.customerId],
-      commodityIds: [
-        this.data?.order?.commodities?.map((val: CommodityEntity) => val?.id)
-      ]
+        ? new FormControl<string | null>(
+          this.datePipe.transform(this.data?.order?.deliveredAt, 'yyyy-MM-dd'),
+          { validators: Validators.required }
+        )
+        : new FormControl(),
+      explain: new FormControl<string | null>(this.data?.order?.explain),
+      province: new FormControl<Province | null>(this.data?.order?.province, { validators: Validators.required }),
+      district: new FormControl<District | null>(this.data?.order?.district),
+      ward: new FormControl<Ward | null>(this.data?.order?.ward),
+      customerId: new FormControl<number | null>(this.data?.order?.customerId)
     });
   }
 
@@ -67,16 +70,20 @@ export class OrderDialogComponent implements OnInit {
     return this.formGroup.controls;
   }
 
+  onChangeCommodity(commodityIds: number[]) {
+    this.formGroup.setControl('commodityIds', new FormControl(commodityIds));
+  }
+
   onSubmit(): any {
-    if (!this.data?.isUpdate) {
-      if (this.formGroup.value.commodityIds.length == 0) {
-        return this.message.warning('Chưa chọn hàng hoá');
-      }
-    }
     const val = this.formGroup.value;
+
+    if (val.commodityIds.length == 0) {
+      return this.message.warning('Chưa chọn hàng hoá');
+    }
+
     const order = {
       customerId: val.customerId,
-      commodityIds: Array.from<number>(val.commodityIds),
+      commodityIds: val.commodityIds,
       wardId: val?.ward?.id,
       districtId: val?.district?.id,
       provinceId: val.province.id,
@@ -102,10 +109,11 @@ export class OrderDialogComponent implements OnInit {
         })
       );
     } else {
+      console.log('add adsd', order);
       this.actions$.dispatch(OrderActions.addOne({ body: order }));
     }
-    this.loading$.subscribe((loading) => {
-      if (!loading) {
+    this.orderQuery.select().subscribe((state) => {
+      if (!(state.loading && state.error)) {
         this.modalRef.close();
       }
     });

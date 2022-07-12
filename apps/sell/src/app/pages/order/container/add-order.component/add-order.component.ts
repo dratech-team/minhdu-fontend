@@ -11,8 +11,7 @@ import { CustomerActions, CustomerQuery } from '../../../customer/+state';
 import { CommodityEntity } from '../../../commodity/entities';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { SelectCommodityComponent } from '../../../../shared/components/select-commodity/select-commodity.component';
-import { SelectCustomerComponent } from 'apps/sell/src/app/shared/components/select-customer/select-customer.component';
+import { SelectCommodityComponent, SelectCustomerComponent } from '../../../../shared/components';
 
 @Component({
   templateUrl: 'add-order.component.html'

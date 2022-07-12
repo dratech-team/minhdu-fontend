@@ -50,19 +50,22 @@ export class OrderComponentService {
         nzContent: SelectCommodityComponent,
         nzComponentParams: { commodities: order.commodities },
         nzWidth: '70vw',
-        nzFooter: []
-      }).afterClose.subscribe((commodityIds: number[]) => {
-        if (commodityIds?.length) {
-          this.actions$.dispatch(
-            OrderActions.update({
-              id: order.id,
-              updates: {
-                commodityIds: commodityIds
-              }
-            })
-          );
+        nzOnOk: (res) => {
+          console.log(res)
         }
-      });
+      })
+      //   .afterClose.subscribe((commodityIds: number[]) => {
+      //   if (commodityIds?.length) {
+      //     this.actions$.dispatch(
+      //       OrderActions.update({
+      //         id: order.id,
+      //         updates: {
+      //           commodityIds: commodityIds
+      //         }
+      //       })
+      //     );
+      //   }
+      // });
     }
   }
 
