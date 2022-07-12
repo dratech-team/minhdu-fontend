@@ -23,7 +23,7 @@ import { DialogExportComponent } from './dialog-export/dialog-export.component';
 import { DialogSharedComponent } from './dialog-shared';
 import { InputCurrencyDirective } from './directive/input-currency.directive';
 import { MouseRightComponent } from './mouse-right/mouse-right.component';
-import { PickLocationComponent } from './pick-location/pick-location.component';
+import { PlaceSelectorComponent } from './pick-location/place-selector.component';
 import { NotEmptyPipe } from './pipes/notEmty.pipe';
 import { SearchEmployeePipe } from './pipes/searchEmployee.pipe';
 import { TransformUnitPipe } from './pipes/transform-unit.pipe';
@@ -122,7 +122,7 @@ const MatModules = [
     InputCurrencyDirective,
     PieChartComponent,
     StakedVerticalChartComponent,
-    PickLocationComponent,
+    PlaceSelectorComponent,
     ShowAlertComponent,
     TransformUnitPipe,
     TransformConstantPipe,
@@ -157,7 +157,7 @@ const MatModules = [
     InputCurrencyDirective,
     PieChartComponent,
     StakedVerticalChartComponent,
-    PickLocationComponent,
+    PlaceSelectorComponent,
     ShowAlertComponent,
     TransformUnitPipe,
     TransformConstantPipe,

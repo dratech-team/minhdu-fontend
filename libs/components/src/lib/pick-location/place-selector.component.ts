@@ -1,22 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { District, Province, Ward } from '@minhdu-fontend/data-models';
-import {
-  ControlContainer,
-  UntypedFormControl,
-  UntypedFormGroup,
-} from '@angular/forms';
+import { ControlContainer, UntypedFormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
-import {
-  DistrictService,
-  ProvinceService,
-  WardService,
-} from '@minhdu-fontend/location';
+import { DistrictService, ProvinceService, WardService } from '@minhdu-fontend/location';
 
 @Component({
   selector: 'place-selector',
-  templateUrl: 'pick-location.component.html',
+  templateUrl: 'place-selector.component.html'
 })
-export class PickLocationComponent implements OnInit {
+export class PlaceSelectorComponent implements OnInit {
   @Input() form: any;
   @Input() submitting!: boolean;
   @Input() isRequiredWard = true;
@@ -39,7 +31,8 @@ export class PickLocationComponent implements OnInit {
     readonly provinceService: ProvinceService,
     readonly districtService: DistrictService,
     readonly wardService: WardService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.formGroup = <UntypedFormGroup>this.controlContainer.control;
