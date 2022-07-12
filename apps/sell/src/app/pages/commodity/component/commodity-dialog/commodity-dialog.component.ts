@@ -55,7 +55,7 @@ export class CommodityDialogComponent implements OnInit {
     this.formGroup.get('name')?.patchValue(commodity.name);
   }
 
-  onSubmit() {
+  onSubmit(logged: boolean) {
     const value = this.formGroup.value;
     const commodity = {
       code: value.code,
@@ -68,31 +68,19 @@ export class CommodityDialogComponent implements OnInit {
     };
     if (this.data?.isUpdate) {
       if (this.data?.commodity?.orderId) {
-        this.dialog
-          .open(DialogSharedComponent, {
-            width: 'fit-content',
-            data: {
-              title: 'Lịch sử cập nhât hàng hoá',
-              description:
-                'bạn có muốn ghi lại lịch sử chỉnh sửa cho đơn hàng này ko'
-            }
+        if (logged) {
+          Object.assign(commodity, { logged: true });
+        }
+        Object.assign(commodity, {
+          closed: this.data.commodity.closed || false,
+          orderId: this.data.commodity?.orderId
+        });
+        this.actions$.dispatch(
+          CommodityAction.update({
+            id: this.data.commodity.id,
+            updates: commodity
           })
-          .afterClosed()
-          .subscribe((val) => {
-            if (val) {
-              Object.assign(commodity, { logged: true });
-            }
-            Object.assign(commodity, {
-              closed: this.data.commodity.closed || false,
-              orderId: this.data.commodity?.orderId
-            });
-            this.actions$.dispatch(
-              CommodityAction.update({
-                id: this.data.commodity.id,
-                updates: commodity
-              })
-            );
-          });
+        );
       } else {
         this.actions$.dispatch(
           CommodityAction.update({
