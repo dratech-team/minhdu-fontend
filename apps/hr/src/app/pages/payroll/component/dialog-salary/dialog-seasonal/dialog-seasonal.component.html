@@ -1,141 +1,201 @@
-<div class='px-5  main-popup'>
-  <div mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='../../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+<div class="px-5 main-popup">
+  <div mat-dialog-close class="close-popup">
+    <span class="mr-1"> close</span>
+    <div class="x-popup">
+      <img src="../../../../../../assets/img/share/x2-lg.svg" alt="cancel" />
     </div>
   </div>
-  <div class=' mb-3 title-popup'>
+  <div class="mb-3 title-popup">
     <span> Lương công nhật</span>
   </div>
-  <mat-dialog-content style='max-height: 40vh'>
-    <form [formGroup]='formGroup' >
-      <div class='form-group' style='min-width: 400px'>
+  <mat-dialog-content style="max-height: 40vh">
+    <form [formGroup]="formGroup">
+      <div class="form-group" style="min-width: 400px">
         <div>
-          <div  *ngIf='!data.isUpdate; else titleSalary'>
-            <div class=' title-item mb-1'>
+          <div *ngIf="!data.isUpdate; else titleSalary">
+            <div class="title-item mb-1">
               <span>Loại lương</span>
-              <span class='star'>*</span>
+              <span class="star">*</span>
             </div>
-            <div class=' mb-3' [formGroup]='formGroup'>
-              <mat-select class='form-control' formControlName='unit'
-                          [ngClass]="{ 'is-invalid': submitted && f.unit.errors }">
-                <mat-option value='{{datetime.DAY}}'> Ngày</mat-option>
-                <mat-option value='{{datetime.HOUR}}'> Giờ</mat-option>
+            <div class="mb-3" [formGroup]="formGroup">
+              <mat-select
+                class="form-control"
+                formControlName="unit"
+                [ngClass]="{ 'is-invalid': submitted && f.unit.errors }"
+              >
+                <mat-option value="{{ datetime.DAY }}"> Ngày</mat-option>
+                <mat-option value="{{ datetime.HOUR }}"> Giờ</mat-option>
               </mat-select>
-              <div *ngIf='submitted && f.unit.errors?.required' class='invalid-feedback'>
+              <div
+                *ngIf="submitted && f.unit.errors?.required"
+                class="invalid-feedback"
+              >
                 <div>Chưa chọn loại lương</div>
               </div>
             </div>
           </div>
-          <ng-template  #titleSalary>
-            <div  class='mb-3'>
-              <div class='mb-1 title-item'>
+          <ng-template #titleSalary>
+            <div class="mb-3">
+              <div class="mb-1 title-item">
                 <span>Loại lương</span>
               </div>
-              <div class='form-control' style='background: #dddddd' >
-                <span>{{this.data.salary.title}}</span>
+              <div class="form-control" style="background: #dddddd">
+                <span>{{ this.data.salary.title }}</span>
               </div>
             </div>
           </ng-template>
-          <div class='mb-3' *ngIf='!data.isUpdate && this.formGroup.value.unit !== "DAY"'>
-            <div class='mb-1 title-item'>
-              <span>Loại tăng ca </span><span class='star'>*</span>
+          <div
+            class="mb-3"
+            *ngIf="!data.isUpdate && this.formGroup.value.unit !== 'DAY'"
+          >
+            <div class="mb-1 title-item">
+              <span>Loại tăng ca </span><span class="star">*</span>
             </div>
-            <input class='form-control  ' type='text' matInput [formControl]='titleOvertimes'
-                   [matAutocomplete]='titleOvertime'>
-            <mat-autocomplete #titleOvertime='matAutocomplete'>
-              <mat-option *ngFor='let templateOvertime of templateOvertime$ | async'
-                          [value]='templateOvertime.title'
-                          (click)='pickOverTime(templateOvertime)'
-                          (onSelectionChange)='pickOverTime(templateOvertime)'>
-                {{templateOvertime.title}}
+            <input
+              class="form-control"
+              type="text"
+              matInput
+              [formControl]="titleOvertimes"
+              [matAutocomplete]="titleOvertime"
+            />
+            <mat-autocomplete #titleOvertime="matAutocomplete">
+              <mat-option
+                *ngFor="let templateOvertime of templateOvertime$ | async"
+                [value]="templateOvertime.title"
+                (click)="pickOverTime(templateOvertime)"
+                (onSelectionChange)="pickOverTime(templateOvertime)"
+              >
+                {{ templateOvertime.title }}
               </mat-option>
             </mat-autocomplete>
           </div>
         </div>
         <div>
-          <div class=' title-item mb-1'>
-          <span>
-            {{this.formGroup.value.unit === datetime.DAY
-            ? 'Tổng ngày làm'
-            : 'Tổng giờ làm'
-            }}
-          </span>
-            <span class='star'>*</span>
+          <div class="title-item mb-1">
+            <span>
+              {{
+                this.formGroup.value.unit === datetime.DAY
+                  ? 'Tổng ngày làm'
+                  : 'Tổng giờ làm'
+              }}
+            </span>
+            <span class="star">*</span>
           </div>
-          <div>
-          </div>
-          <div class=' mb-3' [formGroup]='formGroup'>
-            <input class='form-control' type='text' formControlName='times'
-                   [ngClass]="{ 'is-invalid': submitted && f.times.errors }">
-            <div *ngIf='submitted && f.times.errors?.required' class='invalid-feedback'>
+          <div></div>
+          <div class="mb-3" [formGroup]="formGroup">
+            <input
+              class="form-control"
+              type="text"
+              formControlName="times"
+              [ngClass]="{ 'is-invalid': submitted && f.times.errors }"
+            />
+            <div
+              *ngIf="submitted && f.times.errors?.required"
+              class="invalid-feedback"
+            >
               <div>
-                {{this.formGroup.value.unit === datetime.DAY
-                ? 'Chưa nhập số ngày'
-                : 'Chưa nhập số giờ'
+                {{
+                  this.formGroup.value.unit === datetime.DAY
+                    ? 'Chưa nhập số ngày'
+                    : 'Chưa nhập số giờ'
                 }}
               </div>
             </div>
           </div>
         </div>
-        <div *ngIf='this.formGroup.value.unit === datetime.HOUR'>
-          <div class=' title-item mb-1'>
+        <div *ngIf="this.formGroup.value.unit === datetime.HOUR">
+          <div class="title-item mb-1">
             <span>Ngày</span>
-            <span class='star'>*</span>
+            <span class="star">*</span>
           </div>
-          <div  class=' mb-3' [formGroup]='formGroup' >
-            <input  class='form-control' type='date'   formControlName='datetime'
-                    min='{{firstDayInMonth}}' max='{{lastDayInMonth}}'>
+          <div class="mb-3" [formGroup]="formGroup">
+            <input
+              class="form-control"
+              type="date"
+              formControlName="datetime"
+              min="{{ firstDayInMonth }}"
+              max="{{ lastDayInMonth }}"
+            />
           </div>
         </div>
-        <div *ngIf='this.formGroup.value.unit === datetime.HOUR'>
-          <div class=' title-item mb-1'>
+        <div *ngIf="this.formGroup.value.unit === datetime.HOUR">
+          <div class="title-item mb-1">
             <span>Hệ số</span>
-            <span class='star'>*</span>
+            <span class="star">*</span>
           </div>
-          <div  class=' mb-3' [formGroup]='formGroup'>
+          <div class="mb-3" [formGroup]="formGroup">
             <input
-              style='pointer-events: none; background: #dddddd'
-              class='form-control' type='text'  formControlName='rate'>
+              style="pointer-events: none; background: #dddddd"
+              class="form-control"
+              type="text"
+              formControlName="rate"
+            />
           </div>
         </div>
         <div>
-          <div class=' title-item mb-1'>
+          <div class="title-item mb-1">
             <span>Đơn giá</span>
-            <span class='star'>*</span>
+            <span class="star">*</span>
           </div>
-          <div class=' mb-3' [formGroup]='formGroup'>
-            <input [ngStyle]='{
-          "pointer-events": this.formGroup.value.unit === datetime.HOUR ?"none": "auto",
-          "background":this.formGroup.value.unit === datetime.HOUR ?"#dddddd": "current"
-          }' class='form-control' type='text'  formControlName='price' inputCurrency
-                   [ngClass]="{ 'is-invalid': submitted && f.price.errors }">
-            <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
+          <div class="mb-3" [formGroup]="formGroup">
+            <input
+              [ngStyle]="{
+                'pointer-events':
+                  this.formGroup.value.unit === datetime.HOUR ? 'none' : 'auto',
+                background:
+                  this.formGroup.value.unit === datetime.HOUR
+                    ? '#dddddd'
+                    : 'current'
+              }"
+              class="form-control"
+              type="text"
+              formControlName="price"
+              inputCurrency
+              [ngClass]="{ 'is-invalid': submitted && f.price.errors }"
+            />
+            <div
+              *ngIf="submitted && f.price.errors?.required"
+              class="invalid-feedback"
+            >
               <div>Chưa nhập mức lương</div>
             </div>
           </div>
         </div>
-        <div *ngIf='this.formGroup.value.unit === datetime.HOUR'>
-          <div class=' d-flex align-items-center title-item mb-2'>
+        <div *ngIf="this.formGroup.value.unit === datetime.HOUR">
+          <div class="d-flex align-items-center title-item mb-2">
             <span>Phụ cấp tăng ca:</span>
-            <input type='checkbox' [checked]='onAllowanceOvertime' class='ml-2' (click)='checkAllowanceOvertime()'>
+            <input
+              type="checkbox"
+              [checked]="onAllowanceOvertime"
+              class="ml-2"
+              (click)="checkAllowanceOvertime()"
+            />
           </div>
-          <div class='allowance-overtime p-2 border' *ngIf='onAllowanceOvertime'>
-            <div class=' mb-2'>
-              <span class='title-item mb-2'>Tiêu đề phụ cấp tăng ca</span>
+          <div
+            class="allowance-overtime p-2 border"
+            *ngIf="onAllowanceOvertime"
+          >
+            <div class="mb-2">
+              <span class="title-item mb-2">Tiêu đề phụ cấp tăng ca</span>
             </div>
-            <div class=' mb-3' [formGroup]='formGroup'>
-              <input type='text' class='form-control  px-1'
-                     formControlName='titleAllowance'>
+            <div class="mb-3" [formGroup]="formGroup">
+              <input
+                type="text"
+                class="form-control px-1"
+                formControlName="titleAllowance"
+              />
             </div>
-            <div class=''>
-              <div class=' title-item mb-1'>
+            <div class="">
+              <div class="title-item mb-1">
                 <span>Mức Phụ cấp tăng ca</span>
               </div>
-              <div class=' mb-3' [formGroup]='formGroup'>
-                <input type='text' class='form-control  px-1'
-                       formControlName='priceAllowance' inputCurrency>
+              <div class="mb-3" [formGroup]="formGroup">
+                <input
+                  type="text"
+                  class="form-control px-1"
+                  formControlName="priceAllowance"
+                  inputCurrency
+                />
               </div>
             </div>
           </div>
@@ -143,9 +203,15 @@
       </div>
     </form>
   </mat-dialog-content>
-  <div class='mt-2 row'>
-    <button class='btn btn-ok ' (click)='onSubmit()' >Lưu</button>
-    <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
+  <div class="mt-2 row">
+    <button class="btn btn-ok" (click)="onSubmit()">Lưu</button>
+    <button
+      type="button"
+      class="btn award"
+      data-toggle="tooltip"
+      data-placement="left"
+      title="xóa"
+    >
       ?
     </button>
   </div>

@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from '@minhdu-fontend/service';
-import { ReqOvertime, TemplateOvertime } from '../+state/template-overtime/template-overtime.interface';
+import {
+  ReqOvertime,
+  TemplateOvertime,
+} from '../+state/template-overtime/template-overtime.interface';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 
-@Injectable({providedIn:'root'})
-export class TemplateOvertimeService extends BaseService<TemplateOvertime>{
-  constructor(
-    public readonly http: HttpClient,
-  ) {
-    super(Api.HR.TEMPLATE.OVERTIME_TEMPLATE,http)
+@Injectable({ providedIn: 'root' })
+export class TemplateOvertimeService extends BaseService<TemplateOvertime> {
+  constructor(public readonly http: HttpClient) {
+    super(Api.HR.TEMPLATE.OVERTIME_TEMPLATE, http);
   }
   pagination(params?: any): Observable<ResponsePaginate<TemplateOvertime>> {
     return super.pagination(params);

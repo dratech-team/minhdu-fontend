@@ -1,5 +1,5 @@
-export  enum PaymentType {
-  TRANSFER= 'TRANSFER',
+export enum PaymentType {
+  TRANSFER = 'TRANSFER',
   CASH = 'CASH',
-  ALL = ''
+  ALL = '',
 }

@@ -1,8 +1,8 @@
-import {BaseAddDto} from "@minhdu-fontend/base-dto";
-import {DegreeEntity} from "../../entities/degree.entity";
+import { BaseAddDto } from '@minhdu-fontend/base-dto';
+import { DegreeEntity } from '../../entities/degree.entity';
 
 export interface BaseAddDegreeDto extends Omit<DegreeEntity, 'id'> {
-  employeeId: number
+  employeeId: number;
 }
 
-export type AddDegreeDto = BaseAddDto<BaseAddDegreeDto>
+export type AddDegreeDto = BaseAddDto<BaseAddDegreeDto>;

@@ -1,13 +1,16 @@
-import {SalarySettingEntity} from "../entities";
-import {RequireOnlyOne} from "../../../../../shared/types";
+import { SalarySettingEntity } from '../entities';
+import { RequireOnlyOne } from '../../../../../shared/types';
 
 export interface ModalSettingSalaryData {
   add?: {
-    template?: SalarySettingEntity
-  }
+    template?: SalarySettingEntity;
+  };
   update?: {
-    template: SalarySettingEntity
-  }
+    template: SalarySettingEntity;
+  };
 }
 
-export type AddOrUpdateSettingSalary = RequireOnlyOne<ModalSettingSalaryData, 'add' | 'update'>
+export type AddOrUpdateSettingSalary = RequireOnlyOne<
+  ModalSettingSalaryData,
+  'add' | 'update'
+>;

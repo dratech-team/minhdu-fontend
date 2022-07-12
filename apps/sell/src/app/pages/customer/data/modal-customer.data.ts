@@ -1,7 +1,7 @@
-import {CustomerEntity} from "../entities";
+import { CustomerEntity } from '../entities';
 
-export interface ModalCustomerData{
+export interface ModalCustomerData {
   update?: {
-    customer: CustomerEntity
-  }
+    customer: CustomerEntity;
+  };
 }

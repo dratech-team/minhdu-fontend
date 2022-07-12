@@ -1,5 +1,4 @@
 export interface Statistical {
-  name: string,
-  value: number
+  name: string;
+  value: number;
 }
-

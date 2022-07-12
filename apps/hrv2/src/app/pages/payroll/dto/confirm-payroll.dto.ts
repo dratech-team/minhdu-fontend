@@ -1,4 +1,4 @@
 export interface ConfirmPayrollDto {
   id: number;
-  data: { datetime?: Date | null }
+  data: { datetime?: Date | null };
 }

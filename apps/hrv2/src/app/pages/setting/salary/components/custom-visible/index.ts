@@ -1,1 +1,1 @@
-export * from './visible-salary-setting.component'
+export * from './visible-salary-setting.component';

@@ -1,14 +1,16 @@
+import { PotentialEnum } from '../enums';
+
 export const PotentialsConstant = [
   {
     name: 'Tìm năng',
-    value: 1
+    value: PotentialEnum.POTENTIAL
   },
   {
     name: 'Không tìm năng',
-    value: 0
+    value: PotentialEnum.UN_POTENTIAL
   },
   {
     name: 'Tất cả',
-    value: -1
+    value: PotentialEnum.ALL
   }
 ];

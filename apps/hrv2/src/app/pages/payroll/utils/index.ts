@@ -1,1 +1,1 @@
-export * from './trasnFormSalaryType.util'
+export * from './trasnFormSalaryType.util';

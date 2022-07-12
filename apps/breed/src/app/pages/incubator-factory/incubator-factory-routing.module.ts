@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {IncubatorFactoryComponent} from "./containers/incubator-factory.component";
+import { IncubatorFactoryComponent } from './containers/incubator-factory.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: IncubatorFactoryComponent
+    component: IncubatorFactoryComponent,
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class IncubatorFactoryRoutingModule {
-}
+export class IncubatorFactoryRoutingModule {}

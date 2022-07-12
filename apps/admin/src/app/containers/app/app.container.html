@@ -1,16 +1,19 @@
-<div  style='  width: 100vw;height: 100vh;' class='main-app d-flex justify-content-center align-items-center'>
+<div
+  style="width: 100vw; height: 100vh"
+  class="main-app d-flex justify-content-center align-items-center"
+>
   <div
-    style='background-image: url("/assets/img/signin_bg.jpg")'
-    class='back-ground-app w-100 h-100 d-flex justify-content-center align-items-center'
-  >
-  </div>
-  <div style='z-index: 2 ; min-width: 500px' class=' grid-container '>
-    <a   *ngFor='let item of(appMinhDuConstant$|async) '
-       class='app-icon d-flex flex-column justify-content-center align-items-center'
-         href='{{item.link}}'
-      >
-      <img alt='' style='width: 100px ; height: 100px' src="{{item.icon}}"/>
-      <span class='text-white font-weight-bold font-lg'>{{item.name}}</span>
+    style="background-image: url('/assets/img/signin_bg.jpg')"
+    class="back-ground-app w-100 h-100 d-flex justify-content-center align-items-center"
+  ></div>
+  <div style="z-index: 2; min-width: 500px" class="grid-container">
+    <a
+      *ngFor="let item of(appMinhDuConstant$|async) "
+      class="app-icon d-flex flex-column justify-content-center align-items-center"
+      href="{{item.link}}"
+    >
+      <img alt="" style="width: 100px; height: 100px" src="{{item.icon}}" />
+      <span class="text-white font-weight-bold font-lg">{{item.name}}</span>
     </a>
   </div>
 </div>

@@ -4,5 +4,5 @@ export enum App {
   WAREHOUSE = 'WAREHOUSE',
   HR = 'HR',
   ADMIN = 'ADMIN',
-  UNKNOWN ='UNKNOWN',
+  UNKNOWN = 'UNKNOWN',
 }

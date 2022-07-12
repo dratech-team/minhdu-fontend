@@ -1,2 +1,2 @@
-export * from './filter.pipe'
-export * from './datetime.pipe'
+export * from './filter.pipe';
+export * from './datetime.pipe';

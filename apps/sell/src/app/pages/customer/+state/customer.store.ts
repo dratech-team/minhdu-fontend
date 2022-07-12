@@ -1,34 +1,31 @@
-import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
-import {Injectable} from '@angular/core';
-import {BaseSearchCustomerDto, CustomerEntity, CustomerVisibleEntity} from '../entities';
-import {CustomerResource, CustomerType, Gender} from '@minhdu-fontend/enums';
-import {updateStateUiUtil} from '../../../utils/update-state-ui.util';
-import {StorageName} from "@minhdu-fontend/constants";
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { Injectable } from '@angular/core';
+import { BaseSearchCustomerDto, CustomerEntity, CustomerVisibleEntity } from '../entities';
+import { CustomerResource, CustomerType, GenderTypeEnum } from '@minhdu-fontend/enums';
+import { updateStateUiUtil } from '../../../utils/update-state-ui.util';
+import { StorageName } from '@minhdu-fontend/constants';
 
 export interface CustomerState extends EntityState<CustomerEntity> {
-  loading: boolean;
-  added: boolean | null;
-  total: number
-  deleted: boolean | null
-  deliveredLoading: boolean;
-  deliveringLoading: boolean;
-  search: Partial<BaseSearchCustomerDto>;
-  ui: CustomerVisibleEntity
+  readonly loading?: boolean;
+  readonly total: number;
+  readonly remain: number;
+  readonly deliveredLoading: boolean;
+  readonly deliveringLoading: boolean;
+  readonly search: Partial<BaseSearchCustomerDto>;
+  readonly ui: CustomerVisibleEntity;
 }
 
 function createInitState(): CustomerState {
   return {
-    loading: true,
-    added: null,
     total: 0,
+    remain: 0,
     deliveredLoading: true,
     deliveringLoading: true,
-    deleted: null,
     search: {
       resource: CustomerResource.ALL,
       isPotential: -1,
       type: CustomerType.ALL,
-      gender: Gender.ALL,
+      gender: GenderTypeEnum.ALL,
       search: ''
     },
     ui: {
@@ -80,18 +77,26 @@ function createInitState(): CustomerState {
   };
 }
 
-@Injectable({providedIn: 'root'})
-@StoreConfig({name: StorageName.CUSTOMER})
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: StorageName.CUSTOMER })
 export class CustomerStore extends EntityStore<CustomerState> {
   constructor() {
     super(createInitState());
   }
 
-  updateUI(newState: Partial<CustomerVisibleEntity>, type: 'visible' | 'pinned') {
-    return this.update(state => {
+  updateUI(
+    newState: Partial<CustomerVisibleEntity>,
+    type: 'visible' | 'pinned'
+  ) {
+    return this.update((state) => {
       return {
         ...state,
-        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), updateStateUiUtil<CustomerVisibleEntity>(newState, type)) : state.ui
+        ui: state.ui
+          ? Object.assign(
+            JSON.parse(JSON.stringify(state.ui)),
+            updateStateUiUtil<CustomerVisibleEntity>(newState, type)
+          )
+          : state.ui
       };
     });
   }

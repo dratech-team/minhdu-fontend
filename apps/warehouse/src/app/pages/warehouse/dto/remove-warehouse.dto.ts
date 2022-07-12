@@ -1,3 +1,3 @@
 import { BaseRemoveDto } from '@minhdu-fontend/base-dto';
 
-export type RemoveWarehouseDto = BaseRemoveDto
+export type RemoveWarehouseDto = BaseRemoveDto;

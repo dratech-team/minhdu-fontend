@@ -32,14 +32,13 @@ import { SalaryComponent } from './container/salary/salary.component';
 import { SystemModule } from '@minhdu-fontend/system';
 import { TransformBlockSalaryPipe } from './pipes/transform-block-salary.pipe';
 import { DetailHoliday } from './container/detail-holiday/detail-holiday';
-import { ContextMenuModule } from 'ngx-contextmenu';
 import { NzMessageModule } from 'ng-zorro-antd/message';
-import {NzSelectModule} from "ng-zorro-antd/select";
-import {NzRadioModule} from "ng-zorro-antd/radio";
-import {NzInputModule} from "ng-zorro-antd/input";
-import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
-import {NzTypographyModule} from "ng-zorro-antd/typography";
-import {NgxCurrencyModule} from "ngx-currency";
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NgxCurrencyModule } from 'ngx-currency';
 import { UnitDatetimePipe } from './pipes/unit-datetime.pipe';
 
 @NgModule({
@@ -52,7 +51,10 @@ import { UnitDatetimePipe } from './pipes/unit-datetime.pipe';
     MatDialogModule,
     EffectsModule,
     InfiniteScrollModule,
-    StoreModule.forFeature(FeatureName.TEMPLATE_OVERTIME, templateOvertimeReducer),
+    StoreModule.forFeature(
+      FeatureName.TEMPLATE_OVERTIME,
+      templateOvertimeReducer
+    ),
     StoreModule.forFeature(FeatureName.TEMPLATE_SALARY, templateSalaryReducer),
     EffectsModule.forFeature([TemplateOvertimeEffect, TemplateSalaryEffect]),
     CommonModule,
@@ -70,14 +72,13 @@ import { UnitDatetimePipe } from './pipes/unit-datetime.pipe';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     SystemModule,
-    ContextMenuModule,
     NzMessageModule,
     NzSelectModule,
     NzRadioModule,
     NzInputModule,
     NzCheckboxModule,
     NzTypographyModule,
-    NgxCurrencyModule
+    NgxCurrencyModule,
   ],
   declarations: [
     TemplateOvertimeComponent,
@@ -88,8 +89,7 @@ import { UnitDatetimePipe } from './pipes/unit-datetime.pipe';
     DialogHolidayComponent,
     TransformBlockSalaryPipe,
     UnitDatetimePipe,
-    DetailHoliday
-  ]
+    DetailHoliday,
+  ],
 })
-export class TemplateModule {
-}
+export class TemplateModule {}

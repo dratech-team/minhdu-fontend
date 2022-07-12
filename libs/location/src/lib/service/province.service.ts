@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from '@minhdu-fontend/service';
-import {  Province } from '@minhdu-fontend/data-models';
+import { Province } from '@minhdu-fontend/data-models';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 
-@Injectable({providedIn: "root"})
+@Injectable({ providedIn: 'root' })
 export class ProvinceService extends BaseService<Province> {
-  constructor(
-    public readonly http: HttpClient
-  ) {
+  constructor(public readonly http: HttpClient) {
     super(Api.LOCATION.PROVINCE, http);
   }
 

@@ -1,46 +1,55 @@
-<div class='px-2'>
+<div class="px-2">
   <nz-steps [nzCurrent]="indexStep">
-    <nz-step *ngIf="data?.update?.multiple" nzTitle="Nhân viên đã chọn"></nz-step>
+    <nz-step
+      *ngIf="data?.update?.multiple"
+      nzTitle="Nhân viên đã chọn"
+    ></nz-step>
     <nz-step nzTitle="Bảng khấu trừ"></nz-step>
   </nz-steps>
   <ng-template [ngIf]="indexStep === 0">
-    <form [formGroup]='formGroup' class="px-2 pt-2" style="max-height: 40vh; overflow-y: scroll">
-      <div class='mb-3'>
-        <span class='font-weight-bold'>Tiêu đề</span><span class='star'>*</span>
-        <input class="mt-1" nz-input formControlName="title">
-        <div *ngIf='checkValid.title.errors?.required' class='invalid-feedback'>
+    <form
+      [formGroup]="formGroup"
+      class="px-2 pt-2"
+      style="max-height: 40vh; overflow-y: scroll"
+    >
+      <div class="mb-3">
+        <span class="font-weight-bold">Tiêu đề</span><span class="star">*</span>
+        <input class="mt-1" nz-input formControlName="title" />
+        <div *ngIf="checkValid.title.errors?.required" class="invalid-feedback">
           <div>Chưa nhập tiêu đề</div>
         </div>
       </div>
-      <div class='mb-3'>
-        <span class='font-weight-bold'>Đơn giá</span><span class='star'>*</span>
+      <div class="mb-3">
+        <span class="font-weight-bold">Đơn giá</span><span class="star">*</span>
         <input
           nz-input
           class="mt-1"
           type="text"
           currencyMask
           [options]="{ suffix: ' đ' }"
-          formControlName="price">
-        <div *ngIf='checkValid.price.errors?.required' class='invalid-feedback'>
+          formControlName="price"
+        />
+        <div *ngIf="checkValid.price.errors?.required" class="invalid-feedback">
           <div>Chưa nhập đơn giá</div>
         </div>
       </div>
-      <div class='mb-3'>
-        <span class='font-weight-bold'>Chú thích</span>
-        <input nz-input placeholder='Nhập chú thích ' formControlName='note'>
+      <div class="mb-3">
+        <span class="font-weight-bold">Chú thích</span>
+        <input nz-input placeholder="Nhập chú thích " formControlName="note" />
       </div>
     </form>
   </ng-template>
-  <ng-template [ngIf]="indexStep === 1 && data.add">
+  <ng-template [ngIf]="indexStep === 1 && data.add?.payroll">
     <minhdu-fontend-select-payroll
-      [employeeType]="employeeType.EMPLOYEE_FULL_TIME"
+      [employeeType]="employeeType.FULL_TIME"
       [formGroup]="formGroup"
-      [createdAt]="data.add.payroll.createdAt"
+      [createdAt]="data.add?.payroll?.createdAt || today"
     >
     </minhdu-fontend-select-payroll>
   </ng-template>
+
   <ng-template [ngIf]="indexStep === 1 && data.update">
-    <div *ngIf="data.update.multiple else alert">
+    <div *ngIf="data.update.multiple; else alert">
       <minhdu-fontend-table-salaries-selected
         [formGroup]="formGroup"
         [salaries]="data.update?.multiple?.salaries || []"
@@ -58,15 +67,32 @@
   </ng-template>
 
   <div class="steps-action">
-    <button class="ml-2" nz-button nzType="default" (click)="move('previous')" *ngIf="indexStep > 0">
+    <button
+      class="ml-2"
+      nz-button
+      nzType="default"
+      (click)="move('previous')"
+      *ngIf="indexStep > 0"
+    >
       <span>Trở lại</span>
     </button>
-    <button class="ml-2" nz-button nzType="default" (click)="move('next')" *ngIf="indexStep < 1">
+    <button
+      class="ml-2"
+      nz-button
+      nzType="default"
+      (click)="move('next')"
+      *ngIf="indexStep < 1"
+    >
       <span>Tiếp theo</span>
     </button>
-    <button class="ml-2" nz-button nzType="primary" [nzLoading]="submitting" (click)="onSubmit()">
+    <button
+      class="ml-2"
+      nz-button
+      nzType="primary"
+      [nzLoading]="submitting"
+      (click)="onSubmit()"
+    >
       <span>Xác nhận</span>
     </button>
   </div>
 </div>
-

@@ -15,5 +15,5 @@ export enum SalaryTypeEnum {
   PART_TIME = 'PART_TIME',
   BASIC_TRUST_MANAGER = 'BASIC_TRUST_MANAGER',
   WFH = 'WFH',
-  HOLIDAY = 'HOLIDAY'
+  HOLIDAY = 'HOLIDAY',
 }

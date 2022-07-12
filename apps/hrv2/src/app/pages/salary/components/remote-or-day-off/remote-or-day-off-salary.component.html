@@ -1,68 +1,90 @@
 <div>
-  <nz-steps [nzCurrent]='indexStep'>
-    <nz-step [nzTitle]="data.type === salaryTypeEnum.WFH ? 'WFH': 'Không đi làm'"></nz-step>
-    <nz-step nzTitle='Chọn nhân viên'></nz-step>
+  <nz-steps [nzCurrent]="indexStep">
+    <nz-step
+      [nzTitle]="data.type === salaryTypeEnum.WFH ? 'WFH' : 'Không đi làm'"
+    ></nz-step>
+    <nz-step nzTitle="Chọn nhân viên"></nz-step>
   </nz-steps>
-  <ng-template [ngIf]='indexStep === 0'>
-    <form [formGroup]='formGroup'>
+  <ng-template [ngIf]="indexStep === 0">
+    <form [formGroup]="formGroup">
       <div>
-        <div class='row mb-3'>
-          <div [formGroup]='formGroup' class='col-12'>
-            <span class='font-weight-bold'>Tiêu đề</span><span class='star'>*</span>
-            <nz-select style="width: 100%" formControlName="type" *ngIf="data.type === salaryTypeEnum.WFH else title">
-              <nz-option *ngFor="let item of remoteConstant" [nzValue]="item.value" [nzLabel]="item.name"></nz-option>
+        <div class="row mb-3">
+          <div [formGroup]="formGroup" class="col-12">
+            <span class="font-weight-bold">Tiêu đề</span
+            ><span class="star">*</span>
+            <nz-select
+              style="width: 100%"
+              formControlName="type"
+              *ngIf="data.type === salaryTypeEnum.WFH; else title"
+            >
+              <nz-option
+                *ngFor="let item of remoteConstant"
+                [nzValue]="item.value"
+                [nzLabel]="item.name"
+              ></nz-option>
             </nz-select>
             <ng-template #title>
-              <input nz-input placeholder="Không đi làm" disabled>
+              <input nz-input placeholder="Không đi làm" disabled />
             </ng-template>
           </div>
         </div>
-        <div class='mb-3'>
-          <span class='font-weight-bold'>Đơn vị</span><span class='star'>*</span>
-          <nz-select formControlName='unit' style='width: 100%' nzDisabled>
-            <nz-option *ngFor='let item of unitConstant' [nzValue]='item.value' [nzLabel]='item.name'></nz-option>
-          </nz-select>
-        </div>
-        <div class='mb-3'>
-          <span class='font-weight-bold'>Buổi</span><span class='star'>*</span>
-          <nz-select class='mt-1' style='width: 100%' formControlName='partial'>
+        <div class="mb-3">
+          <span class="font-weight-bold">Đơn vị</span
+          ><span class="star">*</span>
+          <nz-select formControlName="unit" style="width: 100%" nzDisabled>
             <nz-option
-              *ngFor='let item of titleSession|partialday: datetimeUnit.DAY'
-              [nzValue]='item.value'
-              [nzLabel]='item.name'
+              *ngFor="let item of unitConstant"
+              [nzValue]="item.value"
+              [nzLabel]="item.name"
             ></nz-option>
           </nz-select>
-          <div *ngIf='checkValid.partial.errors ' class='invalid-feedback'>
+        </div>
+        <div class="mb-3">
+          <span class="font-weight-bold">Buổi</span><span class="star">*</span>
+          <nz-select class="mt-1" style="width: 100%" formControlName="partial">
+            <nz-option
+              *ngFor="let item of titleSession | partialday: datetimeUnit.DAY"
+              [nzValue]="item.value"
+              [nzLabel]="item.name"
+            ></nz-option>
+          </nz-select>
+          <div *ngIf="checkValid.partial.errors" class="invalid-feedback">
             <div>Chưa chọn buổi khấu trừ</div>
           </div>
         </div>
-        <div class='row mb-3'>
-          <div [formGroup]='formGroup' class='col-12'>
-            <div class="font-weight-bold">Từ ngày đến ngày <span class="star">*</span></div>
+        <div class="row mb-3">
+          <div [formGroup]="formGroup" class="col-12">
+            <div class="font-weight-bold">
+              Từ ngày đến ngày <span class="star">*</span>
+            </div>
             <nz-range-picker
               nzFormat="dd-MM-yyyy"
               class="mt-1"
               formControlName="rangeDay"
               [nzDisabledDate]="disableApprenticeDate"
             ></nz-range-picker>
-            <div *ngIf='checkValid.rangeDay.errors ' class='invalid-feedback'>
+            <div *ngIf="checkValid.rangeDay.errors" class="invalid-feedback">
               <div>Chưa chọn từ ngày đến ngày</div>
             </div>
           </div>
         </div>
-        <div class='row mb-3'>
-          <div [formGroup]='formGroup' class='col-12'>
-            <span class='font-weight-bold'>Chú thích</span>
-            <input class='form-control' placeholder='Nhập chú thích ' formControlName='note'>
+        <div class="row mb-3">
+          <div [formGroup]="formGroup" class="col-12">
+            <span class="font-weight-bold">Chú thích</span>
+            <input
+              class="form-control"
+              placeholder="Nhập chú thích "
+              formControlName="note"
+            />
           </div>
         </div>
       </div>
     </form>
   </ng-template>
-  <ng-template [ngIf]='indexStep=== 1'>
-    <div *ngIf="data.add else alert">
+  <ng-template [ngIf]="indexStep === 1">
+    <div *ngIf="data.add; else alert">
       <minhdu-fontend-select-payroll
-        [employeeType]="employeeType.EMPLOYEE_FULL_TIME"
+        [employeeType]="employeeType.FULL_TIME"
         [formGroup]="formGroup"
         [createdAt]="data.add.payroll.createdAt"
       >
@@ -76,20 +98,33 @@
         chỉ được cật nhật lương cho nhân viên hiện tại
       </div>
     </ng-template>
-
   </ng-template>
   <div>
-    <button class="mr-2" nz-button nzType='default' (click)="move('previous')" *ngIf='indexStep > 0'>
+    <button
+      class="mr-2"
+      nz-button
+      nzType="default"
+      (click)="move('previous')"
+      *ngIf="indexStep > 0"
+    >
       <span>Trở lại</span>
     </button>
-    <button class="mr-2" nz-button nzType='default' (click)='move("next")' *ngIf='indexStep < 1'>
+    <button
+      class="mr-2"
+      nz-button
+      nzType="default"
+      (click)="move('next')"
+      *ngIf="indexStep < 1"
+    >
       <span>Tiếp theo</span>
     </button>
-    <button nz-button nzType='primary'
-            [nzLoading]="submitting"
-            (click)='onSubmit()'>
+    <button
+      nz-button
+      nzType="primary"
+      [nzLoading]="submitting"
+      (click)="onSubmit()"
+    >
       <span>Xác nhận</span>
     </button>
   </div>
 </div>
-

@@ -1,19 +1,20 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {Api} from '@minhdu-fontend/constants';
-import {Employee, ResponsePaginate, Salary} from '@minhdu-fontend/data-models';
-import {BaseService} from 'libs/service/base.service';
-import {VersionEnum} from "@minhdu-fontend/enums";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Api } from '@minhdu-fontend/constants';
+import {
+  Employee,
+  ResponsePaginate,
+  Salary,
+} from '@minhdu-fontend/data-models';
+import { BaseService } from 'libs/service/base.service';
+import { VersionEnum } from '@minhdu-fontend/enums';
 
-
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class EmployeeService extends BaseService<Employee> {
-  urlHistory = VersionEnum.V1 + Api.HR.EMPLOYEE.HISTORY_SALARY
+  urlHistory = VersionEnum.V1 + Api.HR.EMPLOYEE.HISTORY_SALARY;
 
-  constructor(
-    public readonly http: HttpClient
-  ) {
+  constructor(public readonly http: HttpClient) {
     super(Api.HR.EMPLOYEE.EMPLOYEE, http);
   }
 
@@ -30,7 +31,7 @@ export class EmployeeService extends BaseService<Employee> {
   }
 
   update(id: number, props: any): Observable<Employee> {
-    return super.update(id, props).pipe(val => {
+    return super.update(id, props).pipe((val) => {
       return val;
     });
   }

@@ -1,73 +1,114 @@
-<div class='px-2 py-3 main-popup'>
-  <div mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='../../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+<div class="px-2 py-3 main-popup">
+  <div mat-dialog-close class="close-popup">
+    <span class="mr-1"> close</span>
+    <div class="x-popup">
+      <img src="../../../../../../assets/img/share/x2-lg.svg" alt="cancel" />
     </div>
   </div>
   <mat-tab-group dynamicHeight [(selectedIndex)]="tabindex">
-    <mat-tab *ngIf='data.updateMultiple' label='Nhân viên đã chọn ({{salariesSelected.length}})'>
-      <app-table-salaries-selected [salaries]='salariesSelected'
-        (EmitSalariesSelected)='changeSalariesSelected($event)'>
+    <mat-tab
+      *ngIf="data.updateMultiple"
+      label="Nhân viên đã chọn ({{ salariesSelected.length }})"
+    >
+      <app-table-salaries-selected
+        [salaries]="salariesSelected"
+        (EmitSalariesSelected)="changeSalariesSelected($event)"
+      >
       </app-table-salaries-selected>
-      <button class='btn btn-primary' (click)='changeTab(1)'>Tiếp theo</button>
+      <button class="btn btn-primary" (click)="changeTab(1)">Tiếp theo</button>
     </mat-tab>
-    <mat-tab label='Phụ cấp lương'>
-      <form [formGroup]='formGroup' style='min-width: 400px'>
-        <div class='form-group' [formGroup]='formGroup'>
-          <div class=' mb-5 title-popup' *ngIf='false'>
+    <mat-tab label="Phụ cấp lương">
+      <form [formGroup]="formGroup" style="min-width: 400px">
+        <div class="form-group" [formGroup]="formGroup">
+          <div class="mb-5 title-popup" *ngIf="false">
             <span> Tiền phụ cấp chung</span>
           </div>
-          <div class='name-allowance mt-2'>
-            <div class=' title-item mb-1'>
+          <div class="name-allowance mt-2">
+            <div class="title-item mb-1">
               <span>Tiêu đề</span>
-              <span class='star'>*</span>
+              <span class="star">*</span>
             </div>
-            <div class=' mb-3' [formGroup]='formGroup'>
-              <mat-select class='form-control col' [(value)]='indexTitle' formControlName='title'
-                [ngClass]="{ 'is-invalid': submitted && checkValid.title.errors }">
-                <mat-option *ngFor='let item of (salariesStay$|async)' [value]='item.title'
-                  (click)='setPrice(item.price)'>
-                  {{item.title}}
+            <div class="mb-3" [formGroup]="formGroup">
+              <mat-select
+                class="form-control col"
+                [(value)]="indexTitle"
+                formControlName="title"
+                [ngClass]="{
+                  'is-invalid': submitted && checkValid.title.errors
+                }"
+              >
+                <mat-option
+                  *ngFor="let item of salariesStay$ | async"
+                  [value]="item.title"
+                  (click)="setPrice(item.price)"
+                >
+                  {{ item.title }}
                 </mat-option>
               </mat-select>
-              <div *ngIf='submitted && checkValid.title.errors?.required' class='invalid-feedback'>
+              <div
+                *ngIf="submitted && checkValid.title.errors?.required"
+                class="invalid-feedback"
+              >
                 <div>Chưa chọn loại phụ cấp ở lại</div>
               </div>
             </div>
           </div>
-          <div class='level-allowance'>
-            <div class=' title-item mb-1'>
+          <div class="level-allowance">
+            <div class="title-item mb-1">
               <span>Mức phụ cấp</span>
-              <span class='star'>*</span>
+              <span class="star">*</span>
             </div>
-            <div class=' mb-3' [formGroup]='formGroup'>
-              <input type='text' class='form-control' placeholder='Nhập mức phụ cấp' formControlName='price'
-                inputCurrency [ngClass]="{ 'is-invalid': submitted && checkValid.price.errors }">
-              <div *ngIf='submitted && checkValid.price.errors?.required' class='invalid-feedback'>
+            <div class="mb-3" [formGroup]="formGroup">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Nhập mức phụ cấp"
+                formControlName="price"
+                inputCurrency
+                [ngClass]="{
+                  'is-invalid': submitted && checkValid.price.errors
+                }"
+              />
+              <div
+                *ngIf="submitted && checkValid.price.errors?.required"
+                class="invalid-feedback"
+              >
                 <div>Chưa nhập mức phụ cấp</div>
               </div>
             </div>
           </div>
         </div>
-        <div class='footer-popup  '>
-          <div class='d-flex'>
-            <button *ngIf='data.updateMultiple' class='btn btn-primary mr-2 ' (click)='changeTab(0)'>trở lại</button>
-            <button class='btn btn-ok ' (click)='onSubmit()'>Lưu</button>
+        <div class="footer-popup">
+          <div class="d-flex">
+            <button
+              *ngIf="data.updateMultiple"
+              class="btn btn-primary mr-2"
+              (click)="changeTab(0)"
+            >
+              trở lại
+            </button>
+            <button class="btn btn-ok" (click)="onSubmit()">Lưu</button>
           </div>
-          <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
+          <button
+            type="button"
+            class="btn award"
+            data-toggle="tooltip"
+            data-placement="left"
+            title="xóa"
+          >
             ?
           </button>
         </div>
       </form>
     </mat-tab>
-    <mat-tab *ngIf='data?.selectEmp' class='col-12 ' label='Chọn nhân viên'>
-      <app-pick-payroll [payrollInit]="data?.payroll"
-                        [createdAt]="data.payroll?.createdAt|| data.createdAt"
-                        (EventSelectPayroll)="pickPayroll($event)">
+    <mat-tab *ngIf="data?.selectEmp" class="col-12" label="Chọn nhân viên">
+      <app-pick-payroll
+        [payrollInit]="data?.payroll"
+        [createdAt]="data.payroll?.createdAt || data.createdAt"
+        (EventSelectPayroll)="pickPayroll($event)"
+      >
       </app-pick-payroll>
-
     </mat-tab>
   </mat-tab-group>
 </div>
-<mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
+<mat-spinner *ngIf="adding$ | async" class="loading"></mat-spinner>

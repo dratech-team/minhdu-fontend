@@ -1,20 +1,20 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Api} from '@minhdu-fontend/constants';
-import {Observable} from 'rxjs';
-import {ResponsePaginate} from '@minhdu-fontend/data-models';
-import {BaseService} from '@minhdu-fontend/service';
-import {PositionEntity} from "../entities/position.entity";
-import {AddPositionDto, SearchPositionDto, UpdatePositionDto} from "../dto";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Api } from '@minhdu-fontend/constants';
+import { Observable } from 'rxjs';
+import { ResponsePaginate } from '@minhdu-fontend/data-models';
+import { BaseService } from '@minhdu-fontend/service';
+import { PositionEntity } from '../entities/position.entity';
+import { AddPositionDto, SearchPositionDto, UpdatePositionDto } from '../dto';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class PositionService extends BaseService<PositionEntity> {
-  constructor(
-    public readonly http: HttpClient
-  ) {
+  constructor(public readonly http: HttpClient) {
     super(Api.HR.EMPLOYEE.POSITION, http);
   }
-  pagination(params?: SearchPositionDto): Observable<ResponsePaginate<PositionEntity>> {
+  pagination(
+    params?: Partial<SearchPositionDto>
+  ): Observable<ResponsePaginate<PositionEntity>> {
     return super.pagination(params?.search);
   }
 
@@ -22,8 +22,7 @@ export class PositionService extends BaseService<PositionEntity> {
     return super.addOne(props.body);
   }
 
-
-  getAll(prams?:SearchPositionDto): Observable<PositionEntity[]> {
+  getAll(prams?: SearchPositionDto): Observable<PositionEntity[]> {
     return super.getAll(prams?.search);
   }
 

@@ -1,39 +1,37 @@
-import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
-import {Injectable} from '@angular/core';
-import {CommodityUniq} from '../../commodity/entities';
-import {OrderVisibleEntity} from '../enitities';
-import {SearchOrderDto} from "../dto";
-import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
-import {updateStateUiUtil} from "../../../utils/update-state-ui.util";
-import {OrderEntity} from "../enitities/order.entity";
-import {StorageName} from "@minhdu-fontend/constants";
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { Injectable } from '@angular/core';
+import { CommodityUniq } from '../../commodity/entities';
+import { OrderVisibleEntity } from '../enitities';
+import { BaseSearchOrderDto } from '../dto';
+import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
+import { updateStateUiUtil } from '../../../utils/update-state-ui.util';
+import { OrderEntity } from '../enitities/order.entity';
+import { StorageName } from '@minhdu-fontend/constants';
+import { OrderStatusEnum } from '../enums';
 
 export interface OrderState extends EntityState<OrderEntity> {
-  readonly loading: boolean
-  readonly added: boolean | null
-  readonly deleted: boolean | null
-  readonly expandedAll?: boolean
+  readonly loading?: boolean;
+  readonly expandedAll?: boolean;
   readonly total: number;
+  readonly remain: number;
   readonly commodityUniq: CommodityUniq[];
   readonly totalCommodity: number;
   readonly ui?: OrderVisibleEntity;
-  readonly search: SearchOrderDto
+  readonly search: BaseSearchOrderDto;
 }
 
 function createInitState(): OrderState {
   return {
-    loading: true,
-    added: null,
-    deleted: null,
     expandedAll: false,
     total: 0,
+    remain: 0,
     commodityUniq: [],
     totalCommodity: 0,
     search: {
       search: '',
       paidType: '',
       customer: '',
-      status: -1,
+      status: OrderStatusEnum.ALL,
       explain: '',
       startedAt_start: getFirstDayInMonth(new Date()),
       startedAt_end: getLastDayInMonth(new Date()),
@@ -128,18 +126,23 @@ function createInitState(): OrderState {
   };
 }
 
-@Injectable({providedIn: 'root'})
-@StoreConfig({name: StorageName.ORDER})
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: StorageName.ORDER })
 export class OrderStore extends EntityStore<OrderState> {
   constructor() {
     super(createInitState());
   }
 
   updateUI(newState: Partial<OrderVisibleEntity>, type: 'visible' | 'pinned') {
-    return this.update(state => {
+    return this.update((state) => {
       return {
         ...state,
-        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), updateStateUiUtil<OrderVisibleEntity>(newState, type)) : state.ui
+        ui: state.ui
+          ? Object.assign(
+            JSON.parse(JSON.stringify(state.ui)),
+            updateStateUiUtil<OrderVisibleEntity>(newState, type)
+          )
+          : state.ui
       };
     });
   }

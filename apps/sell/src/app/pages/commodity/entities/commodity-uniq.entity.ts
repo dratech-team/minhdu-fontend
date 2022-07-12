@@ -1,4 +1,3 @@
 import { BaseCommodityEntity } from './base-commodity.entity';
 
-export interface CommodityUniq extends BaseCommodityEntity {
-}
+export interface CommodityUniq extends BaseCommodityEntity {}

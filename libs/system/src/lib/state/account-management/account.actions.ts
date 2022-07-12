@@ -1,16 +1,13 @@
-import {createAction, props} from "@datorama/akita-ng-effects";
-import {AddAccountDto} from "../../dto/account/add-account.dto";
-import {SearchAccountDto} from "../../dto/account/search-account.dto";
-import {LoadOneAccountDto} from "../../dto/account/load-one-account.dto";
-import {UpdateAccountDto} from "../../dto/account/update-account.dto";
-import {RemoveAccountDto} from "../../dto/account/remove-account.dto";
-import {SignInDto} from "../../dto/account/sign-in.dto";
+import { createAction, props } from '@datorama/akita-ng-effects';
+import { AddAccountDto } from '../../dto/account/add-account.dto';
+import { SearchAccountDto } from '../../dto/account/search-account.dto';
+import { LoadOneAccountDto } from '../../dto/account/load-one-account.dto';
+import { UpdateAccountDto } from '../../dto/account/update-account.dto';
+import { RemoveAccountDto } from '../../dto/account/remove-account.dto';
+import { SignInDto } from '../../dto/account/sign-in.dto';
+import { AccountEntity } from '../../entities/account.entity';
 
-
-export const addOne = createAction(
-  '[ACCOUNT] Add One',
-  props<AddAccountDto>()
-);
+export const addOne = createAction('[ACCOUNT] Add One', props<AddAccountDto>());
 
 export const loadAll = createAction(
   '[ACCOUNT] Load All',
@@ -22,10 +19,7 @@ export const loadOne = createAction(
   props<LoadOneAccountDto>()
 );
 
-export const signIn = createAction(
-  '[ACCOUNT] Sign In',
-  props<SignInDto>()
-);
+export const signIn = createAction('[ACCOUNT] Sign In', props<SignInDto>());
 
 export const update = createAction(
   '[ACCOUNT] Update',
@@ -44,12 +38,10 @@ export const remove = createAction(
 
 export const logout = createAction(
   '[ACCOUNT] Logout',
+  props<{ id: AccountEntity['id'] }>()
 );
 
-export const error = createAction(
-  '[ACCOUNT] Error',
-  props<{err: string}>()
-);
+export const error = createAction('[ACCOUNT] Error', props<{ err: string }>());
 
 export const AccountActions = {
   addOne,
@@ -60,5 +52,5 @@ export const AccountActions = {
   updatePassword,
   remove,
   logout,
-  error
+  error,
 };

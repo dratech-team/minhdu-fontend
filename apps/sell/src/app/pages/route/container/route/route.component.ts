@@ -1,156 +1,188 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {Router} from '@angular/router';
-import {Api} from '@minhdu-fontend/constants';
-import {SortRouteEnum} from '@minhdu-fontend/enums';
-import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
-import {DialogExportComponent} from 'libs/components/src/lib/dialog-export/dialog-export.component';
-import {ItemContextMenu} from 'libs/enums/sell/page-type.enum';
-import {debounceTime, map, tap} from 'rxjs/operators';
-import {RouteActions, RouteQuery, RouteStore} from '../../+state';
-import {RouteEntity} from '../../entities';
-import {RouteDialogComponent} from '../../component';
-import {Actions} from '@datorama/akita-ng-effects';
-import {DatePipe} from '@angular/common';
-import {OrderActions} from '../../../order/+state';
-import {NzModalService} from 'ng-zorro-antd/modal';
-import {Sort} from '@minhdu-fontend/data-models';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Api } from '@minhdu-fontend/constants';
+import { ModeEnum, SortRouteEnum } from '@minhdu-fontend/enums';
+import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
+import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
+import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
+import { debounceTime, map } from 'rxjs/operators';
+import { RouteActions, RouteQuery, RouteStore } from '../../+state';
+import { RouteEntity } from '../../entities';
+import { Actions } from '@datorama/akita-ng-effects';
+import { DatePipe } from '@angular/common';
+import { OrderActions } from '../../../order/+state';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import {RadiosStatusRouteConstant} from '../../constants';
+import { RadiosStatusRouteConstant } from '../../constants';
+import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
+import { UpdaterRouteTypeEnum } from '../../enums/updater-route-type.enum';
+import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
+import { RouteComponentService } from '../../shared';
 
 @Component({
   templateUrl: 'route.component.html'
 })
 export class RouteComponent implements OnInit {
-  expandAll$ = this.routeQuery.select(state => state.expandedAll);
-  routes$ = this.routeQuery.selectAll().pipe(map(routes => JSON.parse(JSON.stringify(routes))));
+  valueSort?: Sort;
+
+  account$ = this.accountQuery.selectCurrentUser();
   loading$ = this.routeQuery.selectLoading();
-  total$ = this.routeQuery.select(state => state.total);
-  deleted$ = this.routeQuery.select(state => state.deleted);
-  ui$ = this.routeQuery.select(state => state.ui);
-  pageSize = 30;
-  pageIndexInit = 0;
-  pageSizeTable = 10;
-  ItemContextMenu = ItemContextMenu;
+  total$ = this.routeQuery.select((state) => state.total);
+  count$ = this.routeQuery.selectCount();
+  remain$ = this.routeQuery.select((state) => state.remain);
+  ui$ = this.routeQuery.select((state) => state.ui);
+  expandAll$ = this.routeQuery.select((state) => state.expandedAll);
+  routes$ = this.routeQuery
+    .selectAll()
+    .pipe(map((routes) => JSON.parse(JSON.stringify(routes))));
+
+  visible = false;
+  menus: ContextMenuEntity[] = [
+    {
+      title: 'Thêm',
+      click: () => this.routeComponentService.onAdd()
+    },
+    {
+      title: 'Sửa',
+      click: (data: RouteEntity) => this.routeComponentService.onUpdate(data, UpdaterRouteTypeEnum.GENERAL)
+    },
+    {
+      title: 'Xoá',
+      click: (data: RouteEntity) => this.routeComponentService.onRemove(data)
+    }
+  ];
+
   radios = RadiosStatusRouteConstant;
-  sortRouteEnum = SortRouteEnum;
-  stateSearch = this.routeQuery.getValue().search;
+  ItemContextMenu = ItemContextMenu;
+  SortRouteEnum = SortRouteEnum;
+  ModeEnum = ModeEnum;
+
+  search = this.routeQuery.getValue().search;
   formGroup = new FormGroup({
-    search: new FormControl(this.stateSearch.search),
-    startedAt_start: new FormControl(this.stateSearch.startedAt_start),
-    startedAt_end: new FormControl(this.stateSearch.startedAt_end),
-    endedAt_start: new FormControl(this.stateSearch.endedAt_start),
-    endedAt_end: new FormControl(this.stateSearch.endedAt_end),
-    status: new FormControl(this.stateSearch.status)
+    search: new FormControl(this.search.search),
+    startedAt_start: new FormControl(this.search.startedAt_start),
+    startedAt_end: new FormControl(this.search.startedAt_end),
+    endedAt_start: new FormControl(this.search.endedAt_start),
+    endedAt_end: new FormControl(this.search.endedAt_end),
+    status: new FormControl(this.search.status)
   });
 
-  valueSort?: Sort;
-  visible = false;
-
   constructor(
+    public readonly routeComponentService: RouteComponentService,
     private readonly actions$: Actions,
-    private readonly routeQuery: RouteQuery,
-    private readonly routeStore: RouteStore,
-    private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly datePipe: DatePipe,
-    private readonly modal: NzModalService
+    private readonly modal: NzModalService,
+    private readonly nzContextMenuService: NzContextMenuService,
+    private readonly routeStore: RouteStore,
+    private readonly routeQuery: RouteQuery,
+    private readonly accountQuery: AccountQuery
   ) {
   }
 
   ngOnInit() {
     this.formGroup.valueChanges
-      .pipe(
-        debounceTime(1000),
-        tap((val) => {
-          this.actions$.dispatch(RouteActions.loadAll({params: this.mapRoute(val)}));
-        })
-      )
-      .subscribe();
-  }
-
-  onAdd() {
-    this.modal.create({
-      nzWidth: 'fit-content',
-      nzTitle: 'Cập nhật tuyến đường',
-      nzContent: RouteDialogComponent,
-      nzFooter: []
-    });
-  }
-
-  onRemove(route: RouteEntity) {
-    this.modal.warning({
-      nzTitle: 'Xoá tuyến đương',
-      nzContent: `Bạn có chắc chắn muốn xoá tuyến đường ${route.name} này không`,
-      nzOkDanger: true,
-      nzOnOk: () => this.actions$.dispatch(RouteActions.remove({idRoute: route.id}))
-    })
-  }
-
-  onEnd(event: RouteEntity) {
-    this.dialog
-      .open(DialogDatePickerComponent, {
-        width: 'fit-content',
-        data: {
-          titlePopup: 'Xác nhận giao hàng',
-          title: 'Ngày giao hàng'
-        }
-      })
-      .afterClosed()
-      .subscribe((val) => {
-        if (val) {
-          this.actions$.dispatch(
-            RouteActions.update({id: event.id, updates: {endedAt: val.day}})
-          );
-        }
+      .pipe(debounceTime(500))
+      .subscribe((route) => {
+        this.actions$.dispatch(
+          RouteActions.loadAll({ search: this.mapRoute(route), isPaginate: false })
+        );
       });
   }
 
-  onDetail(id: number, isUpdate: boolean) {
-    this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id], {queryParams: {isUpdate}}).then();
+  onExport() {
+    const value = this.formGroup.value;
+    this.modal.create({
+      nzContent: DialogExportComponent,
+      nzComponentParams: {
+        data: {
+          filename:
+            'Danh sách tuyến đường từ ngày ' +
+            this.datePipe.transform(value.startedAt_start, 'dd-MM-yyyy') +
+            ' đến ngày ' +
+            this.datePipe.transform(value.endedAt_end, 'dd-MM-yyyy'),
+          title: 'Xuât bảng Tuyến đường',
+          params: Object.assign(_.omit(value, ['take', 'skip']), {
+            exportType: 'ROUTE'
+          }),
+          api: Api.SELL.ROUTE.ROUTE_EXPORT,
+          selectDatetime: true,
+          typeDate: 'RANGE_DATETIME'
+        }
+      }
+    });
   }
 
-  onPickStartedDay($event: any) {
-    this.formGroup.get('startedAt_start')?.setValue($event.start, {emitEvent: false});
+  public onContextMenu($event: MouseEvent, item: any): void {
+    this.nzContextMenuService.create($event, item);
+    $event.preventDefault();
+    $event.stopPropagation();
+  }
+
+  public onEnd(route: RouteEntity) {
+    this.modal.create({
+      nzTitle: 'Xác nhận giao hàng',
+      nzContent: DialogDatePickerComponent,
+      nzMaskClosable: false,
+      nzFooter: []
+    }).afterClose.subscribe((res: { date: Date }) => {
+      if (res) {
+        this.actions$.dispatch(
+          RouteActions.update({ id: route.id, updates: { endedAt: res.date } })
+        );
+      }
+    });
+  }
+
+  public onPickStartedDay($event: any) {
+    this.formGroup
+      .get('startedAt_start')
+      ?.setValue($event.start, { emitEvent: false });
     this.formGroup.get('startedAt_end')?.setValue($event.end);
   }
 
-  onPickEndedAtDay($event: any) {
-    this.formGroup.get('endedAt_start')?.setValue($event.start, {emitEvent: false});
+  public onPickEndedAtDay($event: any) {
+    this.formGroup
+      .get('endedAt_start')
+      ?.setValue($event.start, { emitEvent: false });
     this.formGroup.get('endedAt_end')?.setValue($event.end);
   }
 
-  onPagination(pageIndex: number) {
-    const value = this.formGroup.value;
-    const count = this.routeQuery.getCount();
-    if (pageIndex * this.pageSizeTable >= count) {
-      this.actions$.dispatch(RouteActions.loadAll({
-        params: this.mapRoute(value, true),
-        isPagination: true
-      }));
-    }
+  public onLoadMore() {
+    this.actions$.dispatch(
+      RouteActions.loadAll({ search: this.mapRoute(this.formGroup.value), isPaginate: true })
+    );
   }
 
-  onExpandAll() {
-    const expanedAll = this.routeQuery.getValue().expandedAll;
+  public onExpandAll() {
+    const expandedAll = this.routeQuery.getValue().expandedAll;
     this.routeQuery.getAll().forEach((route: RouteEntity) => {
-      this.routeStore.update(route.id, {expand: !expanedAll});
+      this.routeStore.update(route.id, { expand: !expandedAll });
     });
-    this.routeStore.update(state => ({...state, expandedAll: !expanedAll}));
+    this.routeStore.update((state) => ({ ...state, expandedAll: !expandedAll }));
   }
 
-  onSort(sort: Sort) {
+  public onSort(sort: Sort) {
     this.valueSort = sort;
-    this.actions$.dispatch(OrderActions.loadAll({
-      param: this.mapRoute(this.formGroup.value)
-    }));
+    this.actions$.dispatch(
+      OrderActions.loadAll({
+        search: this.mapRoute(this.formGroup.value),
+        isPaginate: false
+      })
+    );
   }
 
-  mapRoute(val: any, isPagination?: boolean) {
-    this.routeStore.update(state => ({
-      ...state, search: val
+  public compareDay(date: Date): boolean {
+    return moment(date).isAfter(new Date(), 'day');
+  }
+
+  private mapRoute(val: any) {
+    this.routeStore.update((state) => ({
+      ...state,
+      search: val
     }));
     if (!val.endedAt_start || !val.endedAt_end) {
       delete val.endedAt_end;
@@ -162,30 +194,6 @@ export class RouteComponent implements OnInit {
       delete val.orderType;
       delete val.orderBy;
     }
-    return Object.assign(val, {
-      skip: isPagination ? this.routeQuery.getCount() : 0,
-      take: this.pageSize
-    });
-  }
-
-  printRouter() {
-    const value = this.formGroup.value;
-    this.dialog.open(DialogExportComponent, {
-      width: 'fit-content',
-      data: {
-        filename: 'Danh sách tuyến đường từ ngày ' +
-          this.datePipe.transform(value.startedAt_start, 'dd-MM-yyyy') +
-          ' đến ngày ' + this.datePipe.transform(value.endedAt_end, 'dd-MM-yyyy'),
-        title: 'Xuât bảng Tuyến đường',
-        params: Object.assign(_.omit(value, ['take', 'skip']), {exportType: 'ROUTE'}),
-        api: Api.SELL.ROUTE.ROUTE_EXPORT,
-        selectDatetime: true,
-        typeDate: 'RANGE_DATETIME'
-      }
-    });
-  }
-
-  compareDay(date: Date): boolean {
-    return moment(date).isAfter(new Date(), 'day');
+    return val;
   }
 }

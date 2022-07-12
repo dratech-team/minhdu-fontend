@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { ProductEntity } from '../entities';
 import { AddProductDto, SearchProductDto } from '../dto';
-import {UpdateProductDto} from "../dto";
+import { UpdateProductDto } from '../dto';
 
 @Injectable()
 export class ProductService extends BaseService<ProductEntity> {
@@ -18,7 +18,9 @@ export class ProductService extends BaseService<ProductEntity> {
     return super.addOne(props.body);
   }
 
-  pagination(searchProductDto?: SearchProductDto): Observable<ResponsePaginate<ProductEntity>> {
+  pagination(
+    searchProductDto?: SearchProductDto
+  ): Observable<ResponsePaginate<ProductEntity>> {
     return super.pagination(searchProductDto?.search);
   }
 
@@ -30,12 +32,11 @@ export class ProductService extends BaseService<ProductEntity> {
     return super.getOne(id);
   }
 
-  update(updateDto:UpdateProductDto): Observable<ProductEntity> {
+  update(updateDto: UpdateProductDto): Observable<ProductEntity> {
     return super.update(updateDto.id, updateDto.updates);
   }
 
   delete(id: ProductEntity['id'], params?: any): Observable<void> {
     return super.delete(id, params);
   }
-
 }

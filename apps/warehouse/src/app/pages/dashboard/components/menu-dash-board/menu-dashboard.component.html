@@ -1,16 +1,19 @@
 <div
-  [style]="{'background': mainColor + '21'}"
-  class="p-4 d-flex flex-column justify-content-center align-items-center h-100">
+  [style]="{ background: mainColor + '21' }"
+  class="p-4 d-flex flex-column justify-content-center align-items-center h-100"
+>
   <div>
-    <img [src]="icon" alt="img">
+    <img [src]="icon" alt="img" />
   </div>
   <div class="mt-3 font-weight-bold">
-    <span>{{title}}</span>
+    <span>{{ title }}</span>
   </div>
   <div class="text-center mt-3 font-weight-lighter">
-    <span>{{description}}</span>
+    <span>{{ description }}</span>
   </div>
   <div class="mt-3">
-    <button (click)="onClickMenu()" nz-button nzType="primary">{{titleButton}}</button>
+    <button (click)="onClickMenu()" nz-button nzType="primary">
+      {{ titleButton }}
+    </button>
   </div>
 </div>

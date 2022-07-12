@@ -1,4 +1,4 @@
-import {FlatSalaryTypeEnum} from "../enums/flat-salary-type.enum";
+import { FlatSalaryTypeEnum } from '@minhdu-fontend/enums';
 
 export const FlatSalaryTypeConstant = [
   {
@@ -12,5 +12,5 @@ export const FlatSalaryTypeConstant = [
   {
     name: 'Tất cả',
     value: FlatSalaryTypeEnum.ALL
-  },
-]
+  }
+];

@@ -1,41 +1,44 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Store} from '@ngrx/store';
-import {Actions} from '@datorama/akita-ng-effects';
-import {SupplierActions, SupplierQuery} from '../../state';
-import {SupplierEntity} from '../../entities';
-import {NzModalRef} from "ng-zorro-antd/modal";
+import { Component, Input, OnInit } from '@angular/core';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { Actions } from '@datorama/akita-ng-effects';
+import { SupplierActions, SupplierQuery } from '../../state';
+import { SupplierEntity } from '../../entities';
+import { NzModalRef } from 'ng-zorro-antd/modal';
 
 @Component({
-  templateUrl: 'dialog-supplier.component.html'
+  templateUrl: 'dialog-supplier.component.html',
 })
 export class DialogSupplierComponent implements OnInit {
-  @Input() data?: { supplier?: SupplierEntity, isUpdate?: boolean }
-  added$ = this.supplierQuery.select(state => state.added)
-  formGroup!: FormGroup;
+  @Input() data?: { supplier?: SupplierEntity; isUpdate?: boolean };
+  loading$ = this.supplierQuery.select((state) => state.loading);
+  formGroup!: UntypedFormGroup;
   submitted = false;
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly store: Store,
     private readonly actions$: Actions,
     private readonly supplierQuery: SupplierQuery,
     private readonly modalRef: NzModalRef
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     if (this.data?.supplier) {
       this.formGroup = this.formBuilder.group({
         name: [this.data.supplier.name, Validators.required],
         phone: [this.data.supplier?.phone],
-        email: [this.data.supplier?.email]
+        email: [this.data.supplier?.email],
       });
     } else {
       this.formGroup = this.formBuilder.group({
         name: ['', Validators.required],
         phone: [],
-        email: []
+        email: [],
       });
     }
   }
@@ -49,16 +52,18 @@ export class DialogSupplierComponent implements OnInit {
     const provider: Partial<SupplierEntity> = {
       name: value.name,
       phone: value?.phone,
-      email: value?.address
+      email: value?.address,
     };
     if (this.data?.isUpdate && this.data.supplier) {
-      this.actions$.dispatch(SupplierActions.update({id: this.data.supplier.id, updates: provider}));
+      this.actions$.dispatch(
+        SupplierActions.update({ id: this.data.supplier.id, updates: provider })
+      );
     } else {
-      this.actions$.dispatch(SupplierActions.addOne({body: provider}));
+      this.actions$.dispatch(SupplierActions.addOne({ body: provider }));
     }
 
-    this.added$.subscribe(added => {
-      if (added) {
+    this.loading$.subscribe((loading) => {
+      if (loading === false) {
         this.modalRef.close();
       }
     });

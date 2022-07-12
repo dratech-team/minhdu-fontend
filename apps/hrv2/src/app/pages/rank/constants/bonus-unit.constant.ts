@@ -1,12 +1,12 @@
-import {DatetimeUnitEnum} from "@minhdu-fontend/enums";
+import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
 
 export const BonusUnitConstant = [
   {
     name: 'Tháng',
-    value: DatetimeUnitEnum.MONTH
+    value: DatetimeUnitEnum.MONTH,
   },
   {
     name: 'Giờ',
-    value: DatetimeUnitEnum.HOUR
-  }
-]
+    value: DatetimeUnitEnum.HOUR,
+  },
+];

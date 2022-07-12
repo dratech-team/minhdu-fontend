@@ -1,122 +1,144 @@
 <h2 mat-dialog-title>Thông tin bảo hiểm</h2>
-<mat-dialog-content class='mat-typography'>
-  <form [formGroup]='formGroup' (submit)='onSubmit()'>
-    <div class='form-group'>
-      <div class='row mt-3' [formGroup]='formGroup'>
-        <div class='col-sm'>
-          <label for='createdAt'>Ngày tham gia bảo hiểm</label><span class='star'>*</span>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="formGroup" (submit)="onSubmit()">
+    <div class="form-group">
+      <div class="row mt-3" [formGroup]="formGroup">
+        <div class="col-sm">
+          <label for="createdAt">Ngày tham gia bảo hiểm</label
+          ><span class="star">*</span>
           <input
-            id='createdAt'
-            type='date'
-            class='form-control'
-            formControlName='createdAt'
+            id="createdAt"
+            type="date"
+            class="form-control"
+            formControlName="createdAt"
             [ngClass]="{ 'is-invalid': submitted && f.createdAt.errors }"
-          >
-          <div *ngIf='submitted && f.createdAt.errors' class='invalid-feedback'>
+          />
+          <div *ngIf="submitted && f.createdAt.errors" class="invalid-feedback">
             <div>Chưa nhập ngày tham gia bảo hiểm</div>
           </div>
         </div>
-        <div class='col-sm'>
-           <label for='endedAt'>Ngày hết hạn </label><span class='star'>*</span>
-           <input
-             id='endedAt'
-             type='date'
-             class='form-control'
-             formControlName='endedAt'
-             [ngClass]="{ 'is-invalid': submitted && f.endedAt.errors }"
-           >
-          <div *ngIf='submitted && f.endedAt.errors' class='invalid-feedback'>
+        <div class="col-sm">
+          <label for="endedAt">Ngày hết hạn </label><span class="star">*</span>
+          <input
+            id="endedAt"
+            type="date"
+            class="form-control"
+            formControlName="endedAt"
+            [ngClass]="{ 'is-invalid': submitted && f.endedAt.errors }"
+          />
+          <div *ngIf="submitted && f.endedAt.errors" class="invalid-feedback">
             <div>Chưa nhập ngày hết hạn bảo hiểm</div>
           </div>
-         </div>
+        </div>
       </div>
-      <div class='row mt-3'  [formGroup]='formGroup'>
-        <div class='col-sm'>
-          <label for='BHYTId'>Số thẻ bảo hiểm y tế</label><span class='star'>*</span>
+      <div class="row mt-3" [formGroup]="formGroup">
+        <div class="col-sm">
+          <label for="BHYTId">Số thẻ bảo hiểm y tế</label
+          ><span class="star">*</span>
           <input
-            id='BHYTId'
-            type='number'
-            class='form-control'
-            formControlName='BHYTId'
+            id="BHYTId"
+            type="number"
+            class="form-control"
+            formControlName="BHYTId"
             [ngClass]="{ 'is-invalid': submitted && f.BHYTId.errors }"
-          >
-          <div *ngIf='submitted && f.BHYTId.errors' class='invalid-feedback'>
+          />
+          <div *ngIf="submitted && f.BHYTId.errors" class="invalid-feedback">
             <div>Chưa nhập số thẻ bảo hiểm y tế</div>
           </div>
         </div>
-        <div class='col-sm'>
-          <label for='IdBookBHXH'>Số sổ bảo hiểm xã hội</label><span class='star'>*</span>
+        <div class="col-sm">
+          <label for="IdBookBHXH">Số sổ bảo hiểm xã hội</label
+          ><span class="star">*</span>
           <input
-            id='IdBookBHXH'
-            type='number'
-            class='form-control'
-            formControlName='IdBookBHXH'
+            id="IdBookBHXH"
+            type="number"
+            class="form-control"
+            formControlName="IdBookBHXH"
             [ngClass]="{ 'is-invalid': submitted && f.IdBookBHXH.errors }"
+          />
+          <div
+            *ngIf="submitted && f.IdBookBHXH.errors"
+            class="invalid-feedback"
           >
-          <div *ngIf='submitted && f.IdBookBHXH.errors' class='invalid-feedback'>
             <div>Chưa nhập số sổ bảo hiểm xã hội</div>
           </div>
         </div>
       </div>
-      <div class='row mt-3' [formGroup]='formGroup'>
-        <div class='col-sm'>
-          <label for='provinceId'>Mã tỉnh cấp</label><span class='star'>*</span>
+      <div class="row mt-3" [formGroup]="formGroup">
+        <div class="col-sm">
+          <label for="provinceId">Mã tỉnh cấp</label><span class="star">*</span>
           <input
-            id='provinceId'
-            type='text'
-            class='form-control'
-            formControlName='provinceId'
+            id="provinceId"
+            type="text"
+            class="form-control"
+            formControlName="provinceId"
             [ngClass]="{ 'is-invalid': submitted && f.provinceId.errors }"
+          />
+          <div
+            *ngIf="submitted && f.provinceId.errors"
+            class="invalid-feedback"
           >
-          <div *ngIf='submitted && f.provinceId.errors' class='invalid-feedback'>
             <div>Chưa nhập mã tỉnh cấp</div>
           </div>
         </div>
-        <div class='col-sm'>
-          <label for='codeBHXH'>Mã sổ bảo hiểm xã hội</label><span class='star'>*</span>
+        <div class="col-sm">
+          <label for="codeBHXH">Mã sổ bảo hiểm xã hội</label
+          ><span class="star">*</span>
           <input
-            id='codeBHXH'
-            type='number'
-            class='form-control'
-            formControlName='codeBHXH'
+            id="codeBHXH"
+            type="number"
+            class="form-control"
+            formControlName="codeBHXH"
             [ngClass]="{ 'is-invalid': submitted && f.codeBHXH.errors }"
-          >
-          <div *ngIf='submitted && f.codeBHXH.errors' class='invalid-feedback'>
+          />
+          <div *ngIf="submitted && f.codeBHXH.errors" class="invalid-feedback">
             <div>Chưa nhập mã sổ bảo hiểm xã hội</div>
           </div>
         </div>
       </div>
-      <div class='row mt-3' [formGroup]='formGroup'>
-        <div class='col-sm'>
-          <label for='registerPlaceKCB'>Nơi đăng kí KCB</label><span class='star'>*</span>
+      <div class="row mt-3" [formGroup]="formGroup">
+        <div class="col-sm">
+          <label for="registerPlaceKCB">Nơi đăng kí KCB</label
+          ><span class="star">*</span>
           <input
-            id='registerPlaceKCB'
-            type='text'
-            class='form-control'
-            formControlName='registerPlaceKCB'
+            id="registerPlaceKCB"
+            type="text"
+            class="form-control"
+            formControlName="registerPlaceKCB"
             [ngClass]="{ 'is-invalid': submitted && f.registerPlaceKCB.errors }"
+          />
+          <div
+            *ngIf="submitted && f.registerPlaceKCB.errors"
+            class="invalid-feedback"
           >
-          <div *ngIf='submitted && f.registerPlaceKCB.errors' class='invalid-feedback'>
             <div>Chưa nhập nơi đăng kí KCB</div>
           </div>
         </div>
-        <div class='col-sm'>
-          <label for='registerPlaceId'>Mã số nới đăng kí KCB</label><span class='star'>*</span>
+        <div class="col-sm">
+          <label for="registerPlaceId">Mã số nới đăng kí KCB</label
+          ><span class="star">*</span>
           <input
-            id='registerPlaceId'
-            type='number'
-            class='form-control'
-            formControlName='registerPlaceId'
+            id="registerPlaceId"
+            type="number"
+            class="form-control"
+            formControlName="registerPlaceId"
             [ngClass]="{ 'is-invalid': submitted && f.registerPlaceId.errors }"
+          />
+          <div
+            *ngIf="submitted && f.registerPlaceId.errors"
+            class="invalid-feedback"
           >
-          <div *ngIf='submitted && f.registerPlaceId.errors' class='invalid-feedback'>
             <div>Chưa nhập số nơi đăng kí KCB</div>
           </div>
         </div>
       </div>
-      <div class='row d-flex mt-3 justify-content-center'>
-        <button type='button' mat-dialog-close class='btn btn-secondary'>Huỷ</button>
-        <button type='submit' mat-dialog-close  class='btn btn-dark ml-2'> Xác nhận</button>
+      <div class="row d-flex mt-3 justify-content-center">
+        <button type="button" mat-dialog-close class="btn btn-secondary">
+          Huỷ
+        </button>
+        <button type="submit" mat-dialog-close class="btn btn-dark ml-2">
+          Xác nhận
+        </button>
       </div>
     </div>
   </form>

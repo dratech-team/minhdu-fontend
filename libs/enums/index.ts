@@ -15,6 +15,7 @@ export * from './hr/type-employee';
 export * from './hr/overviewFilter.enum';
 export * from './hr/type-sort-employee';
 export * from './hr/role.enum';
+export * from './hr/flat-salary-type.enum';
 
 // sell
 export * from './sell/customer-type';
@@ -29,14 +30,13 @@ export * from './sell/overview.enum';
 export * from './sell/status-route';
 export * from './sell/page-type.enum';
 export * from './sell/sort-route.enum';
-export * from './sell/order.enum';
-export * from './sell/customer.enum';
+export * from './sell/sortTypeOrderEnum';
+export * from './sell/sortTypeCustomerEnum';
 
 // modal-department
 export * from './warehouse/medicine/medicine-unit.enum';
 export * from './warehouse/warehouse-type.enum';
 export * from './warehouse/menu-warehouse.eum';
-
 
 //common
 export * from './contracts.enum';
@@ -51,3 +51,4 @@ export * from './input-search.enum';
 export * from './paidType.enum';
 export * from './hr/employee-status.enum';
 export * from './version.enum';
+export * from './mode.enum';

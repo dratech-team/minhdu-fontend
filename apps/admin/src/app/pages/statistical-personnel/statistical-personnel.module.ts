@@ -10,7 +10,6 @@ import { ComponentsModule } from '@minhdu-fontend/components';
 import { MatNativeDateModule } from '@angular/material/core';
 import { OverviewHrModule } from '../../../../../hr/src/app/pages/overview/overview-hr.module';
 
-
 @NgModule({
   imports: [
     MatNativeDateModule,
@@ -21,13 +20,9 @@ import { OverviewHrModule } from '../../../../../hr/src/app/pages/overview/overv
     CommonModule,
     MatFormFieldModule,
     MatSelectModule,
-    OverviewHrModule
+    OverviewHrModule,
   ],
-  declarations: [
-    StatisticalPersonnelComponent
-  ],
-  exports: [
-  ],
+  declarations: [StatisticalPersonnelComponent],
+  exports: [],
 })
-export class StatisticalPersonnelModule {
-}
+export class StatisticalPersonnelModule {}

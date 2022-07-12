@@ -1,45 +1,31 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
-import {AddBranchDto} from "../dto";
-import {SearchBranchDto} from "../dto";
-import {LoadOneBranchDto} from "../dto";
-import {UpdateBranchDto} from "../dto";
-import {RemoveBranchDto} from "../dto";
-import {Salary} from "@minhdu-fontend/data-models";
-import {AllowanceSalaryEntity} from "../../../../../../apps/hrv2/src/app/pages/salary/entities";
+import {
+  AddBranchDto,
+  LoadOneBranchDto,
+  RemoveBranchDto,
+  SearchBranchDto,
+  UpdateBranchDto,
+} from '../dto';
+import { AllowanceSalaryEntity } from '../../../../../../apps/hrv2/src/app/pages/salary/entities';
 
-const addOne = createAction(
-  '[Branch] Add One',
-  props<AddBranchDto>()
-);
+const addOne = createAction('[Branch] Add One', props<AddBranchDto>());
 
 const loadAll = createAction(
   '[Branch] Load All',
-  props<SearchBranchDto>()
+  props<Partial<SearchBranchDto>>()
 );
 
-const loadOne = createAction(
-  '[Branch] Load One',
-  props<LoadOneBranchDto>()
-);
+const loadOne = createAction('[Branch] Load One', props<LoadOneBranchDto>());
 
-const update = createAction(
-  '[Branch] Update',
-  props<UpdateBranchDto>()
-);
+const update = createAction('[Branch] Update', props<UpdateBranchDto>());
 
-const remove = createAction(
-  '[Branch] Remove',
-  props<RemoveBranchDto>()
-);
+const remove = createAction('[Branch] Remove', props<RemoveBranchDto>());
 
-const error = createAction(
-  '[Branch] Error',
-  props<{ error: string }>()
-);
+const error = createAction('[Branch] Error', props<{ error: string }>());
 
 const deleteAllowance = createAction(
   '[BRANCH] Delete Allowance',
-  props<{salaryId: AllowanceSalaryEntity['id']}>()
+  props<{ salaryId: AllowanceSalaryEntity['id'] }>()
 );
 
 export const BranchActions = {
@@ -49,5 +35,5 @@ export const BranchActions = {
   update,
   remove,
   error,
-  deleteAllowance
+  deleteAllowance,
 };

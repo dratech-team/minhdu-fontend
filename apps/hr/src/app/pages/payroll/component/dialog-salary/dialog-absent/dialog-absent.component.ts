@@ -1,225 +1,368 @@
-import {DatePipe} from '@angular/common';
-import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {PartialDayEnum, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
-import {DatetimeUnitEnum, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {select, Store} from '@ngrx/store';
-import {selectedAddedPayroll, selectedAddingPayroll} from '../../../+state/payroll/payroll.selector';
-import {AppState} from '../../../../../reducers';
-import {selectorAllTemplate} from "../../../../template/+state/teamlate-salary/template-salary.selector";
-import {DisableTimeConstant, SessionConstant} from "../../../constants";
-import {referencesTypeConstant} from "../../../../template/constants/references-type.constant";
-import {TemplateSalaryAction} from "../../../../template/+state/teamlate-salary/template-salary.action";
-import {Payroll} from "../../../+state/payroll/payroll.interface";
-import {PayrollAction} from "../../../+state/payroll/payroll.action";
-import {map} from "rxjs/operators";
-import {salaryReference} from "../../../../template/enums";
-import {tranFormSalaryType} from "../../../utils";
-import {UnitSalaryConstant} from "../../../../template/constants/unit-salary.constant";
-import {SalarySetting} from "../../../../template/+state/teamlate-salary/salary-setting";
+import { DatePipe } from '@angular/common';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+} from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { PartialDayEnum } from '@minhdu-fontend/data-models';
+import {
+  DatetimeUnitEnum,
+  partialDay,
+  SalaryTypeEnum,
+} from '@minhdu-fontend/enums';
+import { select, Store } from '@ngrx/store';
+import { PayrollAction } from '../../../+state/payroll/payroll.action';
+import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
+import { AppState } from '../../../../../reducers';
+import * as moment from 'moment';
+import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 
 @Component({
-  templateUrl: 'dialog-absent.component.html'
+  templateUrl: 'dialog-absent.component.html',
 })
 export class DialogAbsentComponent implements OnInit {
-  adding$ = this.store.select(selectedAddingPayroll)
-  @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
-  templateSalary$ = this.store.select(selectorAllTemplate).pipe(
-    map(templates => {
-      templates.push({
-        id: 0,
-        title: 'Khác',
-        type: SalaryTypeEnum.ABSENT,
-        rate: 1,
-        unit: DatetimeUnitEnum.MONTH,
-        types: []
-      })
-      if (this.data?.salary) {
-        this.formGroup.get('template')?.setValue(
-          this.getTemplateSalary( templates,this.data.salary.settingId))
-      }
-      return templates
-    })
-  )
-
+  @ViewChild('titleAbsent') titleAbsent!: ElementRef;
   numberChars = new RegExp('[^0-9]', 'g');
-  salaryTypeEnum = SalaryTypeEnum;
+  type = SalaryTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
+  submitted = false;
+  selectedIndex?: number;
+  unitMinute = false;
+  unitAbsent = false;
   firstDayInMonth!: string | null;
   lastDayInMonth!: string | null;
-  salaryPayrolls: SalaryPayroll[] = [];
-  titleSession = SessionConstant
-  partialDayEnum = PartialDayEnum
-  references = referencesTypeConstant;
-  indexStep = 1;
-  disableTimeStartConstant: number [] = []
-  disableTimeEndConstant: number [] = []
-  unitConstant = UnitSalaryConstant
-  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
-    public readonly datePipe: DatePipe,
+    public datePipe: DatePipe,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
+    private readonly snackBar: MatSnackBar,
     private readonly dialogRef: MatDialogRef<DialogAbsentComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {
-      salary?: Salary,
-      multiple?: {
-        salaryPayrolls?: SalaryPayroll[]
-      },
-      payroll: Payroll
-    }
-  ) {
-  }
+    @Inject(MAT_DIALOG_DATA) public data?: any
+  ) {}
+
+  //DUMMY DATA Không thay đổi thứ tự index hiện tại -> thêm title ở cuối mảng
+  titleAbsents = [
+    { title: 'Vắng', unit: this.datetimeUnit.DAY, type: this.type.ABSENT },
+    {
+      title: 'Không đi làm',
+      unit: this.datetimeUnit.DAY,
+      type: this.type.DAY_OFF,
+    },
+    { title: 'Đi trễ', unit: this.datetimeUnit.MINUTE, type: this.type.ABSENT },
+    { title: 'Về Sớm', unit: this.datetimeUnit.MINUTE, type: this.type.ABSENT },
+    {
+      title: 'Quên bổ sung công',
+      unit: this.datetimeUnit.TIMES,
+      type: this.type.ABSENT,
+    },
+  ];
+  //Dummy data select các buổi trong ngày
+  titleSession = [
+    {
+      title: 'buổi sáng',
+      type: PartialDayEnum.MORNING,
+      times: partialDay.PARTIAL,
+    },
+    {
+      title: 'buổi chiều',
+      type: PartialDayEnum.AFTERNOON,
+      times: partialDay.PARTIAL,
+    },
+    {
+      title: 'nguyên ngày',
+      type: PartialDayEnum.ALL_DAY,
+      times: partialDay.ALL_DAY,
+    },
+  ];
 
   ngOnInit(): void {
-    this.store.dispatch(TemplateSalaryAction.loadALlTemplate({
-      salaryType: SalaryTypeEnum.ABSENT
-    }));
-    if (this.data?.multiple?.salaryPayrolls) {
-      this.salaryPayrolls = this.data.multiple.salaryPayrolls;
+    this.firstDayInMonth = this.datePipe.transform(
+      getFirstDayInMonth(new Date(this.data.payroll.createdAt)),
+      'yyyy-MM-dd'
+    );
+    this.lastDayInMonth = this.datePipe.transform(
+      getLastDayInMonth(new Date(this.data.payroll.createdAt)),
+      'yyyy-MM-dd'
+    );
+    if (this.data.isUpdate) {
+      if (this.data.salary.unit === DatetimeUnitEnum.MINUTE) {
+        this.unitMinute = true;
+      } else if (
+        this.data.salary.unit === DatetimeUnitEnum.DAY &&
+        this.data.salary.type === this.type.ABSENT
+      ) {
+        this.unitAbsent = true;
+      }
+      this.formGroup = this.formBuilder.group({
+        datetime: [
+          this.datePipe.transform(this.data.salary?.datetime, 'yyyy-MM-dd'),
+        ],
+        startedAt: [
+          this.datePipe.transform(this.data.salary?.startedAt, 'yyyy-MM-dd'),
+        ],
+        endedAt: [
+          this.datePipe.transform(this.data.salary?.endedAt, 'yyyy-MM-dd'),
+        ],
+        forgot: [this.data.salary?.forgot],
+        times: [
+          this.data.salary.unit === DatetimeUnitEnum.MINUTE
+            ? Math.floor(this.data.salary.times / 60)
+            : this.data.salary.times,
+        ],
+        unit: [this.data.salary.unit],
+        minutes: [
+          this.data.salary.unit === DatetimeUnitEnum.MINUTE
+            ? this.data.salary.times % 60
+            : undefined,
+        ],
+        note: [this.data.salary.note],
+        type: [this.data.type],
+        rate: [1],
+        partialDay: [],
+      });
+    } else {
+      this.formGroup = this.formBuilder.group({
+        datetime: [
+          this.datePipe.transform(this.data.payroll.createdAt, 'yyyy-MM-dd'),
+        ],
+        startedAt: [],
+        endedAt: [],
+        times: [],
+        minutes: [],
+        type: [this.data.type, Validators.required],
+        rate: [1, Validators.required],
+        note: [],
+        forgot: [],
+        partialDay: [],
+      });
     }
-    const salary = this.data?.salary
-    this.formGroup = this.formBuilder.group({
-      template: ['', Validators.required],
-      title: [this.data?.salary?.title],
-      rangeDay: [salary ?
-        [salary.startedAt, salary.endedAt] : []],
-      price: [this.data?.salary?.price],
-      startTime: [salary?.startedAt ? new Date(salary.startedAt) : undefined],
-      endTime: [salary?.endedAt ? new Date(salary.endedAt) : undefined],
-      note: [salary?.note],
-      rate: [1],
-      unit: [salary?.unit ? salary.unit : DatetimeUnitEnum.MONTH],
-      partialDay: [salary?.partial ? this.getPartialDay(salary.partial) : ''],
-      constraintHoliday: [],
-      constraintOvertime: [],
-      reference: []
-    });
-
-    this.formGroup.get('template')?.valueChanges.subscribe(template => {
-      if (template?.constraints) {
-        this.formGroup.get('constraintHoliday')?.setValue(
-          this.transFormConstraintType(template.constraints, SalaryTypeEnum.HOLIDAY)
-        )
-        this.formGroup.get('constraintOvertime')?.setValue(
-          this.transFormConstraintType(template.constraints, SalaryTypeEnum.OVERTIME)
-        )
-      }
-      this.formGroup.get('rate')?.setValue(template?.rate)
-      this.formGroup.get('unit')?.setValue(template?.unit)
-      this.formGroup.get('reference')?.setValue(template?.types ? salaryReference.BLOCK : salaryReference.PRICE)
-    })
-
-    this.formGroup.get('partialDay')?.valueChanges.subscribe(item => {
-      if (item.value === PartialDayEnum.CUSTOM) {
-        this.disableTimeStartConstant = [...DisableTimeConstant]
-        this.disableTimeEndConstant = [...DisableTimeConstant]
-      } else {
-        this.formGroup.get('startTime')?.setValue(item.startTime)
-        this.formGroup.get('endTime')?.setValue(item.endTime)
-      }
-    })
   }
 
   get checkValid() {
     return this.formGroup.controls;
   }
 
-  getTemplateSalary(template: SalarySetting[], id?: number,) {
-  return template.find(item => item.id === (id ? id : 0))
-  }
-
-  transFormConstraintType(constraints: SalaryTypeEnum [], salaryTypeEnum: SalaryTypeEnum): boolean {
-    return constraints.some(constraint => constraint === salaryTypeEnum)
-  }
-
-  getPartialDay(partial: PartialDayEnum) {
-    return SessionConstant.find(item => item.value === partial)
-  }
-
-
   onSubmit(): any {
+    this.submitted = true;
     if (this.formGroup.invalid) {
       return;
     }
-    const value = this.formGroup.value
-    const salary = {
-      rate: value.rate,
-      title: value.template.id === 0 ? value.title : value.template.title,
-      partial: value.template.id === 0 ? PartialDayEnum.CUSTOM : value.partialDay.value,
-      type: value.template.type,
-      startedAt: value.rangeDay[0],
-      endedAt: value.rangeDay[1],
-      startTime: value.startTime ? new Date(value.startTime) : null,
-      endTime: value.endTime ? new Date(value.endTime) : null,
-      unit: value.unit,
-      price: value.price,
-      note: value.note,
-      settingId: value.template?.id,
+    if (
+      (this.formGroup.value.unit === DatetimeUnitEnum.MINUTE ||
+        (typeof this.selectedIndex === 'number' &&
+          this.titleAbsents[this.selectedIndex]?.unit) ===
+          DatetimeUnitEnum.MINUTE) &&
+      !this.formGroup.value.times &&
+      !this.formGroup.value.minutes
+    ) {
+      return this.snackBar.open('chưa nhập Số phút', '', { duration: 2000 });
     }
-    if (this.data?.salary) {
-      Object.assign(salary, {
-        salaryIds: this.salaryPayrolls.map(salary => salary.salary.id).concat(this.data.salary.id)
-      })
-      this.store.dispatch(PayrollAction.updateSalary({
-        salary,
-        multiple: true
-      }))
-    } else {
-      Object.assign(salary , {
-        payrollIds: this.data.multiple ?
-          [this.salaryPayrolls.map(salaryPayroll => salaryPayroll.payroll.id)] :
-          [this.data.payroll.id]
-      })
-      if (this.data?.multiple) {
-        this.store.dispatch(PayrollAction.addSalary({salary: salary}))
-      } else {
-        this.store.dispatch(PayrollAction.addSalary({
-          salary: salary,
-          payrollId: this.data.payroll.id,
-          isDetailPayroll: true
-        }))
 
+    const value = this.formGroup.value;
+    const salary = {
+      title: this.data?.salary?.title,
+      type: this.data?.salary?.type
+        ? this.data.salary.type
+        : typeof this.selectedIndex === 'number'
+        ? this.titleAbsents[this.selectedIndex]?.type
+        : undefined,
+      rate: value.rate,
+      forgot: value.forgot,
+      note: value.note,
+      unit: value.unit
+        ? value.unit
+        : typeof this.selectedIndex === 'number'
+        ? this.titleAbsents[this.selectedIndex]?.unit
+        : undefined,
+      payrollId: this.data?.payroll
+        ? this.data.payroll.id
+        : this.data.salary.payrollId,
+      times: value.times,
+    };
+    if (
+      ((typeof this.selectedIndex === 'number' &&
+        this.titleAbsents[this.selectedIndex]?.unit ===
+          DatetimeUnitEnum.TIMES) ||
+        this.data?.salary?.unit === DatetimeUnitEnum.TIMES) &&
+      !value.times
+    ) {
+      return this.snackBar.open('chưa nhập Số lần', '', { duration: 2000 });
+    }
+    if (
+      typeof this.selectedIndex === 'number' &&
+      this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.MINUTE &&
+      !value.times &&
+      !value.minutes
+    ) {
+      return this.snackBar.open('chưa nhập thời gian', '', { duration: 2000 });
+    }
+
+    if (
+      value.unit === DatetimeUnitEnum.MINUTE ||
+      (typeof this.selectedIndex === 'number' &&
+        this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.MINUTE)
+    ) {
+      Object.assign(salary, {
+        datetime: new Date(value.datetime),
+        times: value.times ? value.times * 60 + value.minutes : value.minutes,
+      });
+    }
+    if (this.data.isUpdate) {
+      if (this.data.salary.unit === DatetimeUnitEnum.DAY) {
+        if (this.data.salary?.startedAt) {
+          if (
+            moment(value.startedAt).format('YYYY-MM-DD') ===
+            moment(value.endedAt).format('YYYY-MM-DD')
+          ) {
+            return this.snackBar.open(
+              'Không được sửa vắng từ ngày đến ngày thành một ngày',
+              '',
+              { duration: 1500 }
+            );
+          } else {
+            Object.assign(salary, {
+              times:
+                new Date(value.endedAt).getDate() -
+                new Date(value.startedAt).getDate() +
+                1,
+              startedAt: new Date(value.startedAt + '-00'),
+              endedAt: new Date(value.endedAt + '-00'),
+            });
+          }
+        } else {
+          Object.assign(salary, {
+            datetime: new Date(value.datetime),
+          });
+        }
+      }
+      this.store.dispatch(
+        PayrollAction.updateSalary({
+          id: this.data.salary.id,
+          payrollId: this.data.salary.payrollId,
+          salary: salary,
+        })
+      );
+    } else {
+      if (typeof this.selectedIndex !== 'number') {
+        return this.snackBar.open('Chưa chọn Loại', '', { duration: 2000 });
+      }
+      if (
+        this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.DAY &&
+        typeof value.partialDay !== 'number'
+      ) {
+        return this.snackBar.open('Chưa chọn buổi ', '', { duration: 2000 });
       }
 
+      if (
+        this.titleAbsents[this.selectedIndex].unit ===
+          DatetimeUnitEnum.MINUTE &&
+        !value.datetime
+      ) {
+        return this.snackBar.open('Chưa chọn ngày ', '', { duration: 2000 });
+      }
+      if (
+        this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.DAY &&
+        value.partialDay === 2 &&
+        (!value.startedAt || !value.endedAt)
+      ) {
+        return this.snackBar.open('Chưa chọn từ ngày đến ngày ', '', {
+          duration: 2000,
+        });
+      }
+
+      if (
+        this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.TIMES
+      ) {
+        Object.assign(salary, {
+          title: this.titleAbsents[this.selectedIndex]?.title,
+        });
+      }
+
+      if (
+        this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY
+      ) {
+        if (typeof value.partialDay !== 'number') {
+          return this.snackBar.open('chưa chọn buổi', '', { duration: 2000 });
+        }
+        if (value.partialDay === 2) {
+          if (
+            moment(value.startedAt).format('YYYY-MM-DD') ===
+            moment(value.endedAt).format('YYYY-MM-DD')
+          ) {
+            Object.assign(salary, {
+              title:
+                this.titleAbsents[this.selectedIndex]?.title +
+                ' ' +
+                this.titleSession[value.partialDay]?.title,
+              times: this.titleSession[value.partialDay].times,
+              datetime: new Date(value.startedAt + '-00'),
+            });
+          } else {
+            Object.assign(salary, {
+              title:
+                this.titleAbsents[this.selectedIndex]?.title +
+                ' ' +
+                this.titleSession[value.partialDay]?.title,
+              times:
+                this.titleSession[value.partialDay].times *
+                (new Date(value.endedAt).getDate() -
+                  new Date(value.startedAt).getDate() +
+                  1),
+              startedAt: new Date(value.startedAt + '-00'),
+              endedAt: new Date(value.endedAt + '-00'),
+            });
+          }
+        } else {
+          Object.assign(salary, {
+            title:
+              this.titleAbsents[this.selectedIndex]?.title +
+              ' ' +
+              this.titleSession[value.partialDay]?.title,
+            times: this.titleSession[value.partialDay].times,
+            datetime: new Date(value.datetime),
+          });
+        }
+      }
+      if (
+        this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.MINUTE
+      ) {
+        Object.assign(salary, {
+          title: this.titleAbsents[this.selectedIndex]?.title,
+          times: value.times ? value.times * 60 + value.minutes : value.minutes,
+        });
+      }
+      this.store.dispatch(
+        PayrollAction.addSalary({
+          payrollId: this.data.payroll.id,
+          salary: salary,
+          isDetailPayroll: true,
+        })
+      );
     }
-    this.store.pipe(select(selectedAddedPayroll)).subscribe(val => {
-      if (val) {
+    this.store.pipe(select(selectedAddedPayroll)).subscribe((added) => {
+      if (added) {
         this.dialogRef.close();
       }
     });
   }
 
-  tranFormType(salaryTypes: SalaryTypeEnum[]): string {
-    return tranFormSalaryType(salaryTypes)
-  }
-
-  changeSalariesSelected($event: SalaryPayroll[]) {
-    this.salaryPayrolls = $event;
-    this.EmitSalariesSelected.emit(this.salaryPayrolls);
-  }
-
-  pre(): void {
-    this.indexStep -= 1;
-  }
-
-  next(): void {
-    this.indexStep += 1;
-  }
-
-  onClose() {
-    this.dialogRef.close()
-  }
-
-  disabledHoursStart(): number[] {
-    return this.disableTimeStartConstant
-  }
-
-  disabledHoursEnd(): number[] {
-    return this.disableTimeEndConstant
+  onSelectAbsent(index: number) {
+    this.selectedIndex = index;
   }
 }

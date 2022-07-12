@@ -1,1 +1,1 @@
-export * from './menu-hr.enum'
+export * from './menu-hr.enum';

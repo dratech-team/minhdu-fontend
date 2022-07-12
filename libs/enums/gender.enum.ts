@@ -1,6 +1,6 @@
-export enum Gender {
+export enum GenderTypeEnum {
   MALE = 'MALE',
   FEMALE = 'FEMALE',
   OTHER = 'OTHER',
-  ALL = ''
+  ALL = '',
 }

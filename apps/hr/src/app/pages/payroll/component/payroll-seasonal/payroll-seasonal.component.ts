@@ -1,28 +1,28 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {DatetimeUnitEnum, ItemContextMenu} from '@minhdu-fontend/enums';
-import {OvertimeService} from '../../service/overtime.service';
-import {select, Store} from '@ngrx/store';
-import {selectedLoadedPayroll} from '../../+state/payroll/payroll.selector';
-import {DatePipe} from '@angular/common';
-import {AddPayrollComponent} from '../add-Payroll/add-payroll.component';
-import {DialogManConfirmedAtComponent} from '../dialog-manconfirmedAt/dialog-man-confirmed-at.component';
-import {Observable} from 'rxjs';
-import {Branch, Position} from '@minhdu-fontend/data-models';
-import {Payroll} from '../../+state/payroll/payroll.interface';
-import {checkInputNumber} from '@minhdu-fontend/utils';
-import {ExportService} from "@minhdu-fontend/service";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { UntypedFormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DatetimeUnitEnum, ItemContextMenu } from '@minhdu-fontend/enums';
+import { OvertimeService } from '../../service/overtime.service';
+import { select, Store } from '@ngrx/store';
+import { selectedLoadedPayroll } from '../../+state/payroll/payroll.selector';
+import { DatePipe } from '@angular/common';
+import { AddPayrollComponent } from '../add-Payroll/add-payroll.component';
+import { DialogManConfirmedAtComponent } from '../dialog-manconfirmedAt/dialog-man-confirmed-at.component';
+import { Observable } from 'rxjs';
+import { Branch, Position } from '@minhdu-fontend/data-models';
+import { Payroll } from '../../+state/payroll/payroll.interface';
+import { checkInputNumber } from '@minhdu-fontend/utils';
+import { ExportService } from '@minhdu-fontend/service';
 
 @Component({
   selector: 'minhdu-fontend-payroll-seasonal',
-  templateUrl: 'payroll-seasonal.component.html'
+  templateUrl: 'payroll-seasonal.component.html',
 })
 export class PayrollSeasonalComponent {
   @Input() payroll$!: Observable<Payroll[]>;
   @Input() total$!: Observable<number>;
-  @Input() formGroup!: FormGroup;
+  @Input() formGroup!: UntypedFormGroup;
   @Input() positions$!: Observable<Position[]>;
   @Input() branches$!: Observable<Branch[]>;
   @Output() EventHistoryPayroll = new EventEmitter<any>();
@@ -48,21 +48,23 @@ export class PayrollSeasonalComponent {
     private readonly dialog: MatDialog,
     private readonly store: Store,
     private readonly datePipe: DatePipe,
-    private readonly exportService: ExportService,
-  ) {
-  }
-
+    private readonly exportService: ExportService
+  ) {}
 
   onScroll() {
     this.EventScroll.emit();
   }
 
   addPayroll($event?: any): void {
-    const ref = this.dialog.open(AddPayrollComponent,
-      { width: '30%', data: { employeeId: $event?.employee?.id, addOne: true } });
-    ref.afterClosed().subscribe(val => {
+    const ref = this.dialog.open(AddPayrollComponent, {
+      width: '30%',
+      data: { employeeId: $event?.employee?.id, addOne: true },
+    });
+    ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('createdAt')?.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
+        this.formGroup
+          .get('createdAt')
+          ?.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
       }
     });
   }
@@ -86,7 +88,7 @@ export class PayrollSeasonalComponent {
   updateManConfirm(id: number, manConfirmedAt: any, createdAt?: Date) {
     this.dialog.open(DialogManConfirmedAtComponent, {
       width: 'fit-content',
-      data: { id, createdAt, manConfirmedAt: !!manConfirmedAt }
+      data: { id, createdAt, manConfirmedAt: !!manConfirmedAt },
     });
   }
 
@@ -102,7 +104,7 @@ export class PayrollSeasonalComponent {
     return checkInputNumber(event);
   }
 
-  onPrint(payroll: Payroll){
-    this.EventPrint.emit(payroll)
+  onPrint(payroll: Payroll) {
+    this.EventPrint.emit(payroll);
   }
 }

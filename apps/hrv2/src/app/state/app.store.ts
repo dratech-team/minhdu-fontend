@@ -9,7 +9,7 @@ export interface AppState extends EntityState {
 function createInitialState(): AppState {
   return {
     active: 'tong-quan',
-    appName:'Hệ thống quản lý nhân sự'
+    appName: 'Hệ thống quản lý nhân sự',
   };
 }
 

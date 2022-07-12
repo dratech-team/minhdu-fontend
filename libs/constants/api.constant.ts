@@ -2,7 +2,8 @@ export const Api = {
   HR: {
     PAYROLL: {
       PAYROLL: 'payroll',
-      CONFIRM_PAYROLL: 'payroll/payslip',
+      CONFIRM_PAYROLL: 'payroll/confirm',
+      PAYROLL_PAYSLIP: 'payroll/payslip',
       RESTORE_PAYROLL: 'payroll/restore',
       EXPORT: 'payroll/export/payroll',
       PAYROLL_CREATE: 'payroll/create',
@@ -25,8 +26,7 @@ export const Api = {
       GENERATE_HOLIDAY: 'generate-holiday',
       ITEMS_EXPORT: 'payroll/export/items',
       TEMPLATE_SALARY: 'payroll/salary/template',
-      CANCEL_CONFIRM: 'payroll/cancel-payslip'
-
+      CANCEL_CONFIRM: 'payroll/cancel-payslip',
     },
     EMPLOYEE: {
       EMPLOYEE: 'employee',
@@ -46,15 +46,16 @@ export const Api = {
     },
     TEMPLATE: {
       BASIC_TEMPLATE: 'basic-template',
-      OVERTIME_TEMPLATE: 'overtime-template'
+      OVERTIME_TEMPLATE: 'overtime-template',
     },
     SALARY_BRANCH: 'salary/branch',
-    SETTING_SALARY:'settings/salary',
-    BLOCK_SETTING_SALARY:'settings/salary-block',
-    EXPORT:'export',
+    SETTING_SALARY: 'settings/salary',
+    SETTING_RATE_CONDITION: 'settings/rate-condition',
+    BLOCK_SETTING_SALARY: 'settings/salary-block',
+    EXPORT: 'export',
     BRANCH_EXPORT: 'payroll/export/branch',
     POSITION_EXPORT: 'payroll/export/position',
-    OVERVIEW: 'overview/hr'
+    OVERVIEW: 'overview/hr',
   },
   SELL: {
     OVERVIEW: 'overview/sell',
@@ -66,32 +67,32 @@ export const Api = {
       STATISTICAL_AGENCY_PRINT: 'statistical/agency/export/print',
       STATISTICAL_PROVINCE_PRINT: 'statistical/nation/export/print',
       STATISTICAL_CHICKEN_PRINT: 'statistical/chicken/export/print',
-      STATISTICAL_CUSTOMER_PRINT: 'statistical/customer/export/print'
+      STATISTICAL_CUSTOMER_PRINT: 'statistical/customer/export/print',
     },
     CUSTOMER: {
       CUSTOMER: 'customer',
       CUSTOMER_EXPORT: 'customer/export/print',
-      PAYMENT: 'payment-history'
+      PAYMENT: 'payment-history',
     },
     ORDER: {
       ORDER: 'order',
       ORDER_HISTORY: 'order-history',
-      ORDER_EXPORT: 'order/export/print'
+      ORDER_EXPORT: 'order/export/print',
     },
     ROUTE: {
       ROUTE: 'route',
-      ROUTE_EXPORT: 'route/export/print'
+      ROUTE_EXPORT: 'route/export/print',
     },
     COMMODITY: 'commodity',
     COMMODITY_TEMPLATE: 'commodity-template',
-    BILL: 'bill'
+    BILL: 'bill',
   },
 
   LOCATION: {
     NATION: 'nation',
     PROVINCE: 'province',
     DISTRICT: 'district',
-    WARD: 'ward'
+    WARD: 'ward',
   },
 
   ORG_CHART: 'org-chart',
@@ -102,8 +103,8 @@ export const Api = {
     SUPPLIER: 'supplier',
     CONSIGNMENT: 'consignment',
     IOI_RECEIPT: 'ioi-receipt',
-    STOCK:'stock',
-    HISTORY: 'category-history'
+    STOCK: 'stock',
+    HISTORY: 'category-history',
   },
   BREED: {
     EGG_TYPE: 'egg-type',
@@ -111,10 +112,12 @@ export const Api = {
     INCUBATOR: 'incubator',
   },
   ADMIN: {
-    HR: 'admin/hr'
+    HR: 'admin/hr',
   },
   LOGGER: 'logger',
   SLACK_WEBHOOK:
     'https://hooks.slack.com/services/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',
-  AUTH: 'auth'
+  AUTH: 'auth',
+  SIGN_IN: 'auth/signin',
+  SIGN_UP: 'signup',
 };

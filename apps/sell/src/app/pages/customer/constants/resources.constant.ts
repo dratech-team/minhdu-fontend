@@ -1,24 +1,24 @@
-import {CustomerResource} from '@minhdu-fontend/enums';
+import { CustomerResource } from '@minhdu-fontend/enums';
 
 export const ResourcesConstant = [
   {
     name: 'Tra Cứu',
-    value: CustomerResource.RESEARCH
+    value: CustomerResource.RESEARCH,
   },
   {
     name: 'Giới thiệu',
-    value: CustomerResource.INTRODUCED
+    value: CustomerResource.INTRODUCED,
   },
   {
     name: 'Tự tìm',
-    value: CustomerResource.SELF_FIND
+    value: CustomerResource.SELF_FIND,
   },
   {
     name: 'Khác',
-    value: CustomerResource.OTHER
+    value: CustomerResource.OTHER,
   },
   {
     name: 'Tất cả',
-    value: CustomerResource.ALL
-  }
+    value: CustomerResource.ALL,
+  },
 ];

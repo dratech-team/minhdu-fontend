@@ -1,3 +1,4 @@
 export interface ResponseMessageEntity {
-  message: string
+  readonly message: string;
+  readonly count: number;
 }

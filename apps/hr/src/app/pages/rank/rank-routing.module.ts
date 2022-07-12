@@ -5,15 +5,12 @@ import { RankComponent } from './containers/rank/rank.component';
 const routes: Routes = [
   {
     path: '',
-    component: RankComponent
-  }
-
+    component: RankComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-
-export class RankRoutingModule {
-}
+export class RankRoutingModule {}

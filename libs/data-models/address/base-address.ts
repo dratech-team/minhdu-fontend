@@ -1,5 +1,5 @@
-export interface BaseAddress{
-  id: number,
-  code: string,
-  name: string
+export interface BaseAddress {
+  id: number;
+  code: string;
+  name: string;
 }

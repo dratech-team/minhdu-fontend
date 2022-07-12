@@ -1,8 +1,8 @@
-.assign-print{
+.assign-print {
   display: none;
 }
 @media only print {
-  #content-payroll{
+  #content-payroll {
     height: 100%;
     width: 100%;
     position: fixed;
@@ -12,31 +12,31 @@
     padding: 5px;
     line-height: 18px;
   }
-  .border-table{
+  .border-table {
     margin-top: 20px;
   }
-  #table-payroll{
+  #table-payroll {
     font-size: 18px;
     max-height: max-content !important;
     overflow: visible;
   }
-  #table-payroll-seasonal{
+  #table-payroll-seasonal {
     font-size: 18px;
     max-height: max-content !important;
     overflow: visible;
   }
-  #btn-close{
+  #btn-close {
     visibility: hidden;
   }
-  #footer{
+  #footer {
     visibility: hidden;
   }
-  .assign-print{
+  .assign-print {
     font-size: 25px;
     margin-top: 20px;
     display: flex !important;
   }
-  .header-payroll{
+  .header-payroll {
     font-size: 20px;
   }
 }

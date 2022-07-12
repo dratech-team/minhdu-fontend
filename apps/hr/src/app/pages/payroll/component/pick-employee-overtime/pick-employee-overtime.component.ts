@@ -1,26 +1,40 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Employee } from '@minhdu-fontend/data-models';
 import {
   EmployeeAction,
   selectEmployeeLoaded,
   selectorAllEmployee,
-  selectorTotalEmployee
+  selectorTotalEmployee,
 } from '@minhdu-fontend/employee';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, startWith, tap } from 'rxjs/operators';
 import { PickEmployeeService } from './pick-employee.service';
-import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import {
+  getAllPosition,
+  PositionActions,
+} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
-import { checkIsSelectAllInit, pickAll, pickOne } from '../../../../../../../../libs/utils/pick-item.ultil';
+import {
+  checkIsSelectAllInit,
+  pickAll,
+  pickOne,
+} from '../../../../../../../../libs/utils/pick-item.ultil';
 import { of } from 'rxjs';
-
 
 @Component({
   selector: 'app-pick-employee-overtime',
-  templateUrl: 'pick-employee-overtime.component.html'
+  templateUrl: 'pick-employee-overtime.component.html',
 })
 export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   @Input() checkAllowance = false;
@@ -38,10 +52,10 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   isSelectAllEmployee = false;
   isSelectAllowance = false;
   employees: Employee[] = [];
-  formGroup = new FormGroup({
-    name: new FormControl(''),
-    position: new FormControl(''),
-    code: new FormControl('')
+  formGroup = new UntypedFormGroup({
+    name: new UntypedFormControl(''),
+    position: new UntypedFormControl(''),
+    code: new UntypedFormControl(''),
   });
   positions$ = this.store.pipe(select(getAllPosition));
   isEventSearch = false;
@@ -51,8 +65,7 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
     private readonly store: Store,
     private readonly service: PickEmployeeService,
     private readonly snackBar: MatSnackBar
-  ) {
-  }
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.employeesSelected) {
@@ -62,7 +75,9 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
       } else {
         this.isSelectAllEmployee =
           this.employees !== null &&
-          this.employees.every((e) => this.employeesSelected.some(item => item.id === e.id));
+          this.employees.every((e) =>
+            this.employeesSelected.some((item) => item.id === e.id)
+          );
       }
     }
     if (changes.allowEmployeesSelected) {
@@ -71,21 +86,25 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
       } else {
         this.isSelectAllowance =
           this.employees !== null &&
-          this.employees.every((e) => this.allowEmployeesSelected.some(item => item.id === e.id));
+          this.employees.every((e) =>
+            this.allowEmployeesSelected.some((item) => item.id === e.id)
+          );
       }
     }
     const currentTemplateId = changes.search?.currentValue?.templateId;
     const previousTemplateId = changes.search?.previousValue?.templateId;
     const currentCreatedPayroll = changes.search?.currentValue?.createdPayroll;
-    const previousCreatedPayroll = changes.search?.previousValue?.createdPayroll;
+    const previousCreatedPayroll =
+      changes.search?.previousValue?.createdPayroll;
     const currentEmployeeType = changes.search?.currentValue?.templateId;
     const previousEmployeeType = changes.search?.previousValue?.templateId;
     const currentRecipeType = changes.search?.currentValue?.templateId;
-    if (currentCreatedPayroll &&
-      (currentTemplateId !== previousTemplateId
-        || currentCreatedPayroll !== previousCreatedPayroll
-        || currentEmployeeType !== previousEmployeeType
-        || currentRecipeType)
+    if (
+      currentCreatedPayroll &&
+      (currentTemplateId !== previousTemplateId ||
+        currentCreatedPayroll !== previousCreatedPayroll ||
+        currentEmployeeType !== previousEmployeeType ||
+        currentRecipeType)
     ) {
       this.employeesSelected = [];
       this.allowEmployeesSelected = [];
@@ -95,7 +114,7 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
       this.EventSelectEmployee.emit(this.employeesSelected);
       this.store.dispatch(
         EmployeeAction.loadInit({
-          employee: this.employee(this.formGroup.value)
+          employee: this.employee(this.formGroup.value),
         })
       );
     }
@@ -107,8 +126,14 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
         this.isSelectAllEmployee = false;
       }
       if (this.isEventSearch) {
-        this.isSelectAllEmployee = checkIsSelectAllInit(employees, this.employeesSelected);
-        this.isSelectAllowance = checkIsSelectAllInit(employees, this.allowEmployeesSelected);
+        this.isSelectAllEmployee = checkIsSelectAllInit(
+          employees,
+          this.employeesSelected
+        );
+        this.isSelectAllowance = checkIsSelectAllInit(
+          employees,
+          this.allowEmployeesSelected
+        );
       }
       employees.forEach((employee) => {
         if (this.isSelectAllEmployee) {
@@ -116,7 +141,9 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
             this.employeesSelected.push(employee);
           }
           if (this.isSelectAllowance) {
-            if (!this.allowEmployeesSelected.some((e) => e.id === employee.id)) {
+            if (
+              !this.allowEmployeesSelected.some((e) => e.id === employee.id)
+            ) {
               this.allowEmployeesSelected.push(employee);
             }
           }
@@ -128,7 +155,8 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
     this.store.dispatch(PositionActions.loadPosition());
 
     this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
+      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) ||
+        of(''),
       this.positions$
     );
 
@@ -137,7 +165,9 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
         debounceTime(1000),
         tap((val) => {
           this.isEventSearch = true;
-          this.store.dispatch(EmployeeAction.loadInit({ employee: this.employee(val) }));
+          this.store.dispatch(
+            EmployeeAction.loadInit({ employee: this.employee(val) })
+          );
         })
       )
       .subscribe();
@@ -145,7 +175,12 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
 
   //check-box-employee
   updateSelectEmployee(employee: Employee) {
-    const val = pickOne(employee, this.employeesSelected, this.employees, this.allowEmployeesSelected);
+    const val = pickOne(
+      employee,
+      this.employeesSelected,
+      this.employees,
+      this.allowEmployeesSelected
+    );
     this.isSelectAllEmployee = val.isSelectAll;
     this.isSelectAllowance = val.isSelectAllowance;
     this.EventSelectEmployee.emit(this.employeesSelected);
@@ -154,8 +189,9 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
 
   someCompleteEmployee(): boolean {
     return (
-      this.employees.filter((e) => this.employeesSelected.some(item => item.id === e.id)).length >
-      0 && !this.isSelectAllEmployee
+      this.employees.filter((e) =>
+        this.employeesSelected.some((item) => item.id === e.id)
+      ).length > 0 && !this.isSelectAllEmployee
     );
   }
 
@@ -169,21 +205,27 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
       this.employees,
       this.employeesSelected,
       this.allowEmployeesSelected,
-      this.isSelectAllowance);
+      this.isSelectAllowance
+    );
     this.EventSelectEmployee.emit(this.employeesSelected);
     this.EventSelectAllowance.emit(this.allowEmployeesSelected);
   }
 
   //check-box-allowance
   updateSelectAllowance(employee: Employee) {
-    this.isSelectAllowance = pickOne(employee, this.allowEmployeesSelected, this.employees).isSelectAll;
+    this.isSelectAllowance = pickOne(
+      employee,
+      this.allowEmployeesSelected,
+      this.employees
+    ).isSelectAll;
     this.EventSelectAllowance.emit(this.allowEmployeesSelected);
   }
 
   someCompleteAllowance(): boolean {
     return (
-      this.employees.filter((e) => this.allowEmployeesSelected.some(item => item.id === e.id)).length >
-      0 && !this.isSelectAllowance
+      this.employees.filter((e) =>
+        this.allowEmployeesSelected.some((item) => item.id === e.id)
+      ).length > 0 && !this.isSelectAllowance
     );
   }
 
@@ -223,7 +265,7 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
       createdPayroll: new Date(this.search.createdPayroll),
       templateId: this.search.templateId || '',
       employeeType: this.search.employeeType || '',
-      recipeType: this.search.recipeType || ''
+      recipeType: this.search.recipeType || '',
     };
   }
 }

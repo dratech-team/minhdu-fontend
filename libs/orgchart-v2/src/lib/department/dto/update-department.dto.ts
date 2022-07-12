@@ -1,8 +1,8 @@
-import {BaseDepartmentEntity} from "../bases";
-import {BaseUpdateDto} from "@minhdu-fontend/base-dto";
+import { BaseDepartmentEntity } from '../bases';
+import { BaseUpdateDto } from '@minhdu-fontend/base-dto';
 
 export interface BaseUpdateDepartmentDto extends BaseDepartmentEntity {
-  positionIds?: number [],
+  positionIds?: number[];
 }
 
-export type UpdateDepartmentDto = BaseUpdateDto<BaseUpdateDepartmentDto>
+export type UpdateDepartmentDto = BaseUpdateDto<BaseUpdateDepartmentDto>;

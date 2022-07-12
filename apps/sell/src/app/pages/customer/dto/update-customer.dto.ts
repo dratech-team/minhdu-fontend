@@ -1,6 +1,6 @@
-import {BaseCustomerEntity} from '../entities/base-customer.entity';
-import {BaseUpdateDto} from '@minhdu-fontend/base-dto';
-import {CustomerType} from "@minhdu-fontend/enums";
+import { BaseCustomerEntity } from '../entities/base-customer.entity';
+import { BaseUpdateDto } from '@minhdu-fontend/base-dto';
+import { CustomerType } from '@minhdu-fontend/enums';
 
 export interface BaseUpdateCustomerDto extends Omit<BaseCustomerEntity, 'id'> {
   readonly provinceId: number;
@@ -9,4 +9,4 @@ export interface BaseUpdateCustomerDto extends Omit<BaseCustomerEntity, 'id'> {
   readonly customerType?: CustomerType;
 }
 
-export type UpdateCustomerDto = BaseUpdateDto<BaseUpdateCustomerDto>
+export type UpdateCustomerDto = BaseUpdateDto<BaseUpdateCustomerDto>;

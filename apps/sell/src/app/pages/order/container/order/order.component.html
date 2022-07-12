@@ -1,250 +1,450 @@
-<nz-spin *ngIf="(deleted$| async) === false" class="position-center"></nz-spin>
-<div class='d-flex'>
-  <div class='d-flex flex-column ml-3 border p-2' style='height: 80vh; width:280px; overflow-y: scroll'>
-    <nz-collapse>
-      <nz-collapse-panel
-        nzHeader='Tìm kiếm'
-        nzActive='true'>
-        <div [formGroup]='formGroup'>
-          <input nz-input class='form-control' type='search' formControlName='search'>
-        </div>
-      </nz-collapse-panel>
-    </nz-collapse>
-    <div class='mt-2'>
+<div class='d-flex container'>
+  <div
+    class='d-flex flex-column p-2 border ng-star-inserted'
+    style='height: 81vh; overflow-y: auto'
+  >
+    <div class='mb-2'>
+      <nz-collapse>
+        <nz-collapse-panel nzHeader='Tìm kiếm' nzActive='true'>
+          <div [formGroup]='formGroup'>
+            <input
+              nz-input
+              class='form-control'
+              type='search'
+              formControlName='search'
+            />
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
+    <div class='mb-2'>
       <minhdu-fontend-collapse-radios
-        [active]="true"
-        [formGroup]='formGroup' [controlName]="'status'" header='Trạng thái đơn hàng'
-        [radios]='radios'>
+        [active]='true'
+        [formGroup]='formGroup'
+        [controlName]="'status'"
+        header='Trạng thái đơn hàng'
+        [radios]='radios'
+      >
       </minhdu-fontend-collapse-radios>
     </div>
-    <div class='mt-2'>
+    <div class='mb-2'>
       <minhdu-fontend-collapse-datepicker
-        [rangeDayInit]="{start: stateSearch.startedAt_start, end:stateSearch.startedAt_end}"
+        [rangeDayInit]='{
+          start: search.startedAt_start,
+          end: search.startedAt_end
+        }'
         title='Ngày tạo'
-        (onPicker)='onPickCreatedAt($event)'></minhdu-fontend-collapse-datepicker>
+        (onPicker)='onPickCreatedAt($event)'
+      ></minhdu-fontend-collapse-datepicker>
     </div>
-    <div class='mt-2'>
+    <div class='mb-2'>
       <minhdu-fontend-collapse-datepicker
         [title]="'Ngày hẹn giao'"
-        [rangeDayInit]="{start: stateSearch.endedAt_start, end: stateSearch.endedAt_end}"
-        (onPicker)='onPickEndedAt($event)'></minhdu-fontend-collapse-datepicker>
+        [rangeDayInit]='{
+          start: search.endedAt_start,
+          end: search.endedAt_end
+        }'
+        (onPicker)='onPickEndedAt($event)'
+      ></minhdu-fontend-collapse-datepicker>
     </div>
-    <div class='mt-2' *ngIf="formGroup.get('status')?.value === 1">
+    <div class='mb-2' *ngIf="formGroup.get('status')?.value === 1">
       <minhdu-fontend-collapse-datepicker
-        [rangeDayInit]="{start: stateSearch.deliveredAt_start, end: stateSearch.deliveredAt_end}"
+        [rangeDayInit]='{
+          start: search.deliveredAt_start,
+          end: search.deliveredAt_end
+        }'
         title='Ngày giao hàng'
-        (onPicker)='onPickDeliveryDay($event)'></minhdu-fontend-collapse-datepicker>
+        (onPicker)='onPickDeliveryDay($event)'
+      ></minhdu-fontend-collapse-datepicker>
     </div>
-    <nz-collapse class='mt-2'>
-      <nz-collapse-panel
-        nzHeader='Hàng hoá'
-        nzActive='false'>
-        <div [formGroup]='formGroup'>
-          <nz-radio-group formControlName='commodity'>
-            <label nz-radio *ngFor='let item of (commodities$ | async)' [nzValue]='item.name'>{{item.name}}</label>
-            <label nz-radio [nzValue]='""'>Tất cả</label>
-          </nz-radio-group>
-        </div>
-      </nz-collapse-panel>
-    </nz-collapse>
+    <div class='mb-2'>
+      <nz-collapse>
+        <nz-collapse-panel nzHeader='Hàng hoá' nzActive='false'>
+          <div [formGroup]='formGroup'>
+            <nz-radio-group formControlName='commodity'>
+              <label
+                nz-radio
+                *ngFor='let item of commodities$ | async'
+                [nzValue]='item.name'
+              >{{ item.name }}</label
+              >
+              <label nz-radio [nzValue]="''">Tất cả</label>
+            </nz-radio-group>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
   </div>
-  <div class='ml-2 ' style='width: 76vw'>
-    <div class='d-flex justify-content-between mb-2'>
-      <div class='h3'>
-        Danh sách đơn hàng
-      </div>
-      <div class='d-flex justify-content-between'>
-        <button (click)='onAdd()' nz-button nzType='primary'>Thêm</button>
-        <button (click)='onPrint()' class='ml-2' nz-button nzType='primary'>Xuất</button>
-        <button class='ml-2' nz-button nz-popover nzPopoverTitle='Thêm cột'
-                [(nzPopoverVisible)]='visible'
-                nzPopoverPlacement='bottomRight'
-                [nzPopoverContent]='pinColumn'
-                nzPopoverTrigger='click'
-        >Ghim
-        </button>
-      </div>
-    </div>
-
-    <div>
-      <div class="d-flex mb-2">
-        <div class="mr-2">
-          <span class='font-weight-bold'>Tổng đơn hàng:</span> {{(totalOrder$ | async) || 0 | number: '1.0-0'}}</div>
+  <div class='ml-3' style='width: 80%'>
+    <div class='d-flex justify-content-between align-items-end m-2'>
+      <div class='d-flex ng-star-inserted' style='overflow-x: auto'>
+        <div class='commodity-total-price'>
+          <span class='font-weight-bold'>Tổng đơn hàng:</span>
+          {{ (total$ | async) || 0 | number: '1.0-0' }}
+        </div>
+        <div class='commodity-total-price'>
+          <span class='font-weight-bold'>Tổng hàng hoá:</span>
+          <span class='ml-1' style='color: red'>
+              {{ (totalCommodity$ | async) || 0 | number: '1.0-0' }}</span
+          >
+        </div>
         <div class='d-flex'>
-          <div><span class='font-weight-bold'>Tổng hàng hoá:</span>
-            <span class='ml-1' style='color: red'> {{((totalCommodity$|async) || 0) | number:'1.0-0'}}</span>
-          </div>
-          <div class='ml-3 ' *ngFor='let item of commodityUniq$|async'>
-            <span class='font-weight-bold'>Tổng {{item.name}}: </span>
-            <span class='ml-1' style='color: red'>{{item.amount| number:'1.0-0'}}</span>
+          <div class='commodity-total-price' *ngFor='let item of commodityUniq$ | async'>
+            <span class='font-weight-bold'>Tổng {{ item.name }}: </span>
+            <span class='ml-1' style='color: red'>{{
+              item.amount | number: '1.0-0'
+              }}</span>
           </div>
         </div>
       </div>
-
+      <div class='d-flex pr-2'>
+        <div>
+          <button
+            nz-button
+            nzGhost
+            nzType='primary'
+            (click)='orderComponentService.onAdd()'
+          >
+            Thêm
+          </button>
+        </div>
+        <div>
+          <button
+            nzGhost
+            nz-button
+            nzType='primary'
+            (click)='onPrint()'
+          >
+            Xuất
+          </button>
+        </div>
+        <div>
+          <button
+            nz-button
+            nzType='dashed'
+            nz-popover
+            nzPopoverTitle='Thêm cột'
+            nzPopoverPlacement='bottomRight'
+            nzPopoverTrigger='click'
+            [(nzPopoverVisible)]='visible'
+            [nzPopoverContent]='pinColumn'
+          >
+            Ghim
+          </button>
+        </div>
+      </div>
+    </div>
+    <div>
       <nz-table
         #tableOrder
-        [nzScroll]="{ x: '2000px',y: '58vh'}"
         nzSize='middle'
-        [nzPageSize]='pageSizeTable'
-        [nzLoading]='loading$ | async'
+        [nzFrontPagination]='false'
+        [nzShowPagination]='false'
+        [nzScroll]="{ x: '2300px', y: '70vh' }"
+        [nzLoading]='(loading$ | async) && (total$ | async) === 0'
         [nzData]='(orders$ | async) || []'
-        nzShowPagination='true'
         [formGroup]='formGroup'
-        (nzPageIndexChange)='onPagination($event)'
       >
         <thead>
-        <tr *ngIf="(ui$|async) as ui">
+        <tr *ngIf='ui$ | async as ui'>
           <th nzWidth='50px' nzLeft (click)='onExpandAll()'>
-            <img *ngIf='(expanedAll$ | async) else dash_square' src='assets/icon/share/dash-square.svg'>
+            <img
+              *ngIf='expandedAll$ | async; else dash_square'
+              src='assets/icon/share/dash-square.svg'
+            />
             <ng-template #dash_square>
-              <img src='assets/icon/share/plus-square.svg'>
+              <img src='assets/icon/share/plus-square.svg' />
             </ng-template>
           </th>
-          <th nzWidth='50px' *ngIf='ui.stt?.visible' [nzLeft]='ui.stt?.pinned||false'
-              class='text-center font-weight-bold'>STT
+          <th
+            nzWidth='50px'
+            *ngIf='ui.stt?.visible'
+            [nzLeft]='ui.stt?.pinned || false'
+            class='text-center font-weight-bold'
+          >
+            STT
           </th>
-          <th *ngIf="ui.endedAt.visible" [nzLeft]='ui.endedAt?.pinned||false' class='text-center font-weight-bold'
-              (nzSortOrderChange)='onSort({orderBy:sortOrderEnum.END ,orderType:$event})'
-              [nzSortFn]='true'>
+          <th
+            nzWidth='50px'
+            *ngIf='(account$ | async)?.mode === ModeEnum.INFO'
+            class='text-center font-weight-bold'
+          >
+            ID
+          </th>
+          <th
+            *ngIf='ui.endedAt.visible'
+            [nzLeft]='ui.endedAt?.pinned || false'
+            class='text-center font-weight-bold'
+            (nzSortOrderChange)='
+                onSort({ orderBy: SortTypeOrderEnum.END, orderType: $event })
+              '
+            [nzSortFn]='true'
+          >
             Ngày hẹn giao
           </th>
-          <th *ngIf="ui.customer.visible" [nzLeft]='ui.customer?.pinned||false'
-              [nzSortFn]='true'
-              (nzSortOrderChange)='onSort({orderBy:sortOrderEnum.CUSTOMER ,orderType:$event})'
-              class='text-center font-weight-bold'>
+          <th
+            *ngIf='ui.customer.visible'
+            [nzLeft]='ui.customer?.pinned || false'
+            [nzSortFn]='true'
+            (nzSortOrderChange)='
+                onSort({ orderBy: SortTypeOrderEnum.CUSTOMER, orderType: $event })
+              '
+            class='text-center font-weight-bold'
+          >
             Khách hàng
           </th>
-          <th *ngIf="ui.destination.visible" [nzLeft]='ui.destination?.pinned||false'
-              class='text-center font-weight-bold' [nzSortFn]='true'
-              (nzSortOrderChange)='onSort({orderBy:sortOrderEnum.PROVINCE ,orderType:$event})'>
+          <th
+            *ngIf='ui.destination.visible'
+            [nzLeft]='ui.destination?.pinned || false'
+            class='text-center font-weight-bold'
+            [nzSortFn]='true'
+            (nzSortOrderChange)='
+                onSort({ orderBy: SortTypeOrderEnum.PROVINCE, orderType: $event })
+              '
+          >
             Điểm đến
           </th>
-          <th *ngIf="ui.createdAt.visible" [nzLeft]='ui.createdAt?.pinned||false'
-              class='text-center font-weight-bold' [nzSortFn]='true'
-              (nzSortOrderChange)='onSort({orderBy:sortOrderEnum.CREATED_AT ,orderType:$event})'>
+          <th
+            *ngIf='ui.createdAt.visible'
+            [nzLeft]='ui.createdAt?.pinned || false'
+            class='text-center font-weight-bold'
+            [nzSortFn]='true'
+            (nzSortOrderChange)='
+                onSort({ orderBy: SortTypeOrderEnum.CREATED_AT, orderType: $event })
+              '
+          >
             Ngày tạo
           </th>
-          <th *ngIf="ui.vans.visible" [nzLeft]='ui.vans?.pinned||false'
-              class='text-center font-weight-bold'>
+          <th
+            *ngIf='ui.vans.visible'
+            [nzLeft]='ui.vans?.pinned || false'
+            class='text-center font-weight-bold'
+          >
             Xe xuất
           </th>
-          <th [nzWidth]="widthConstant.amount" *ngIf="ui.totalCommodity.visible"
-              [nzLeft]='ui.totalCommodity?.pinned||false'
-              class='text-center font-weight-bold width-amount' style='color: red'>
+          <th
+            [nzWidth]='widthConstant.amount'
+            *ngIf='ui.totalCommodity.visible'
+            [nzLeft]='ui.totalCommodity?.pinned || false'
+            class='text-center font-weight-bold width-amount'
+            style='color: red'
+          >
             Tổng số lượng
           </th>
-          <th [nzWidth]="widthConstant.price" *ngIf="ui.commodityTotal.visible"
-              [nzLeft]='ui.commodityTotal?.pinned||false'
-              class='text-center font-weight-bold'>
+          <th
+            [nzWidth]='widthConstant.price'
+            *ngIf='ui.commodityTotal.visible'
+            [nzLeft]='ui.commodityTotal?.pinned || false'
+            class='text-center font-weight-bold'
+          >
             Tiền hàng
           </th>
-          <th *ngIf="ui.paymentTotal.visible" [nzLeft]='ui.paymentTotal?.pinned||false'
-              class='text-center font-weight-bold'>
+          <th
+            *ngIf='ui.paymentTotal.visible'
+            [nzLeft]='ui.paymentTotal?.pinned || false'
+            class='text-center font-weight-bold'
+          >
             Thanh toán
           </th>
-          <th *ngIf="ui.explain.visible" [nzLeft]='ui.explain?.pinned||false'
-              class='text-center font-weight-bold'>
+          <th
+            *ngIf='ui.explain.visible'
+            [nzLeft]='ui.explain?.pinned || false'
+            class='text-center font-weight-bold'
+          >
             Diễn giải
           </th>
-          <th *ngIf="ui.status.visible" [nzLeft]='ui.status?.pinned||false'
-              class='text-center font-weight-bold'>
+          <th
+            *ngIf='ui.status.visible'
+            [nzLeft]='ui.status?.pinned || false'
+            class='text-center font-weight-bold'
+          >
             Trạng thái đơn hàng
           </th>
         </tr>
         </thead>
         <tbody>
-        <ng-template ngFor let-order [ngForOf]='tableOrder.data' let-i='index'>
-          <tr class='pointer'
-              (click)="onDetail(order.id, false)"
-              (contextmenu)='child.onContextMenu($event, order)'
-              *ngIf="(ui$|async) as ui">
+        <ng-template
+          ngFor
+          let-order
+          [ngForOf]='tableOrder.data'
+          let-i='index'
+        >
+          <tr
+            class='pointer'
+            (click)='orderComponentService.onDetail(order.id)'
+            (contextmenu)='onContextMenu($event, menu)'
+            *ngIf='ui$ | async as ui'
+          >
+            <nz-dropdown-menu #menu='nzDropdownMenu'>
+              <ul class='context-menu' nz-menu>
+                <li nz-menu-item *ngFor='let item of menus' (click)='item.click(order)'>
+                  {{item.title}}
+                </li>
+              </ul>
+            </nz-dropdown-menu>
             <td
-              (click)="$event.stopPropagation()"
-              style='padding-left: 15px' nzLeft
-              [(nzExpand)]='order.expand'></td>
-            <td *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false'
-                class='text-center'>{{(i + 1) + ((tableOrder.nzPageIndex - 1) * 10)}}</td>
-            <td *ngIf="ui.endedAt.visible" [nzLeft]='ui.endedAt?.pinned||false'
-                nzLeft>
-              {{(order?.endedAt ? (order?.endedAt | date: 'dd/MM/yyyy') : 'Chưa cập nhật')}}
+              (click)='$event.stopPropagation()'
+              style='padding-left: 15px'
+              nzLeft
+              [(nzExpand)]='order.expand'
+            ></td>
+            <td
+              *ngIf='ui.stt.visible'
+              [nzLeft]='ui.stt?.pinned || false'
+              class='text-center'
+            >
+              {{ i + 1 }}
             </td>
-            <td *ngIf="ui.customer.visible" [nzLeft]='ui.customer?.pinned||false' class='text-center'>
-              {{order.customer?.lastName}}
+            <td
+              *ngIf='(account$ | async)?.mode === ModeEnum.INFO'
+              class='text-center'
+            >
+              {{ order.id }}
             </td>
-            <td *ngIf="ui.destination.visible" [nzLeft]='ui.destination?.pinned||false' class='text-center'>
-              {{order?.province?.name}}
-              {{order?.district?.name ? ' - ' + order?.district?.name : ''}}
-              {{order?.ward?.name ? ' - ' + order?.ward?.name : ''}}
+            <td
+              *ngIf='ui.endedAt.visible'
+              [nzLeft]='ui.endedAt?.pinned || false'
+              nzLeft
+            >
+              {{
+              order?.endedAt
+                ? (order?.endedAt | date: 'dd/MM/yyyy')
+                : 'Chưa cập nhật'
+              }}
             </td>
-            <td *ngIf="ui.createdAt.visible" [nzLeft]='ui.createdAt?.pinned||false' class='text-center'>
-              {{(order?.createdAt | date: 'dd/MM/yyyy' || 'Chưa cập nhật')}}
+            <td
+              *ngIf='ui.customer.visible'
+              [nzLeft]='ui.customer?.pinned || false'
+              class='text-center'
+            >
+              {{ order.customer?.lastName }}
             </td>
-            <td class='text-center' *ngIf="ui.vans.visible" [nzLeft]='ui.vans?.pinned||false'>
-              <div *ngIf="order?.routes?.length > 0 else notCar">
-                 <span *ngFor='let route of order?.routes'>{{route?.bsx}},
-                </span>
+            <td
+              *ngIf='ui.destination.visible'
+              [nzLeft]='ui.destination?.pinned || false'
+              class='text-center'
+            >
+              {{ order?.province?.name }}
+              {{ order?.district?.name ? ' - ' + order?.district?.name : '' }}
+              {{ order?.ward?.name ? ' - ' + order?.ward?.name : '' }}
+            </td>
+            <td
+              *ngIf='ui.createdAt.visible'
+              [nzLeft]='ui.createdAt?.pinned || false'
+              class='text-center'
+            >
+              {{ order?.createdAt | date: 'dd/MM/yyyy' || 'Chưa cập nhật' }}
+            </td>
+            <td
+              class='text-center'
+              *ngIf='ui.vans.visible'
+              [nzLeft]='ui.vans?.pinned || false'
+            >
+              <div *ngIf='order?.routes?.length > 0; else notCar'>
+                  <span *ngFor='let route of order?.routes'
+                  >{{ route?.bsx }},
+                  </span>
               </div>
               <ng-template #notCar>
-                <div class='text-center'>
-                  -
-                </div>
+                <div class='text-center'>-</div>
               </ng-template>
             </td>
-            <td *ngIf="ui.totalCommodity.visible" [nzLeft]='ui.totalCommodity?.pinned||false' class='text-center'>
-              {{order.totalCommodity| number:'1.0-0' | notEmpty:'0'}}
+            <td
+              *ngIf='ui.totalCommodity.visible'
+              [nzLeft]='ui.totalCommodity?.pinned || false'
+              class='text-center'
+            >
+              {{ order.totalCommodity | number: '1.0-0' | notEmpty: '0' }}
             </td>
-            <td *ngIf="ui.commodityTotal.visible" [nzLeft]='ui.commodityTotal?.pinned||false' class='text-center'>
-              {{order.commodityTotal | number:'1.0-0' | notEmpty:'0'}} đ
+            <td
+              *ngIf='ui.commodityTotal.visible'
+              [nzLeft]='ui.commodityTotal?.pinned || false'
+              class='text-center'
+            >
+              {{ order.commodityTotal | number: '1.0-0' | notEmpty: '0' }} đ
             </td>
-            <td *ngIf="ui.paymentTotal.visible" [nzLeft]='ui.paymentTotal?.pinned||false' class='text-center'>
-              {{order?.paymentTotal | number:'1.0-0' | notEmpty:'0'}}
+            <td
+              *ngIf='ui.paymentTotal.visible'
+              [nzLeft]='ui.paymentTotal?.pinned || false'
+              class='text-center'
+            >
+              {{ order?.paymentTotal | number: '1.0-0' | notEmpty: '0' }}
             </td>
-            <!--        <th>-->
-            <!--          {{order.currency | transform:currenciesConstant}}-->
-            <!--        </th>-->
-            <td *ngIf="ui.explain.visible" [nzLeft]='ui.explain?.pinned||false' class='text-center'>
-              {{order?.explain || 'Chưa cập nhật'}}
+            <td
+              *ngIf='ui.explain.visible'
+              [nzLeft]='ui.explain?.pinned || false'
+              class='text-center'
+            >
+              {{ order?.explain || 'Chưa cập nhật' }}
             </td>
-            <td *ngIf="ui.status.visible" [nzLeft]='ui.status?.pinned||false'
-                [ngStyle]="{'color': (!order.deliveredAt && order.routes?.length) ? '#32863d' : ''}">
-              {{(order.deliveredAt | date: 'dd/MM/YYYY') || ((!order.deliveredAt && order.routes?.length) ? 'Đang giao' : 'Chưa giao')}}
+            <td
+              *ngIf='ui.status.visible'
+              [nzLeft]='ui.status?.pinned || false'
+              [ngStyle]="{
+                  color:
+                    !order.deliveredAt && order.routes?.length ? '#32863d' : ''
+                }"
+            >
+              {{
+              (order.deliveredAt | date: 'dd/MM/YYYY') ||
+              (!order.deliveredAt && order.routes?.length
+                ? 'Đang giao'
+                : 'Chưa giao')
+              }}
             </td>
           </tr>
           <tr [nzExpand]='order.expand'>
-            <nz-table #innerTable [nzData]='order.commodities' nzSize='small' [nzShowPagination]='false'>
+            <nz-table
+              #innerTable
+              [nzData]='order.commodities'
+              nzSize='small'
+              [nzShowPagination]='false'
+            >
         <thead>
         <tr>
           <th class='text-center'>Hàng hoá</th>
-          <th class='text-center' [nzWidth]="widthConstant.amount">Số lượng</th>
-          <th class='text-center' [nzWidth]="widthConstant.price">Giá</th>
+          <th class='text-center' [nzWidth]='widthConstant.amount'>
+            Số lượng
+          </th>
+          <th class='text-center' [nzWidth]='widthConstant.price'>
+            Giá
+          </th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor='let commodity of innerTable.data'>
-          <td class='text-center'>{{commodity.name}}</td>
-          <td class='text-center'>{{commodity.amount}}</td>
-          <td class='text-center'>{{commodity.price}}</td>
+          <td class='text-center'>{{ commodity.name }}</td>
+          <td class='text-center'>{{ commodity.amount }}</td>
+          <td class='text-center'>{{ commodity.price }}</td>
         </tr>
         </tbody>
       </nz-table>
       </tr>
       </ng-template>
+      <tr *ngIf='remain$ | async'>
+        <td colspan='10'>
+          <div
+            class='w-100 d-flex justify-content-start'
+            style='position: relative'
+          >
+            <button
+              nz-button
+              style='position: sticky; left: 45vw'
+              nzGhost
+              nzType='primary'
+              (click)='onLoadMore()'
+              [nzLoading]='loading$ | async'
+            >
+              Tải thêm {{ remain$ | async }} đơn hàng
+            </button>
+          </div>
+        </td>
+      </tr>
       </tbody>
       </nz-table>
     </div>
   </div>
 </div>
-<app-mouse-right
-  #child
-  [items]='[ItemContextMenu.ENDED_AT,ItemContextMenu.CANCEL_ORDER,ItemContextMenu.PERMANENTLY]'
-  (onAdd)='onAdd()'
-  (onUpdate)='onDetail($event.id, true)'
-  (onEnd)='onUpdate($event)'
-  (onCancel)='onCancel($event)'
-  (onDelPerm)='onDelete($event)'
-></app-mouse-right>
 <ng-template #pinColumn>
   <minhdu-fontend-pin-column-order></minhdu-fontend-pin-column-order>
 </ng-template>
-
-

@@ -15,7 +15,7 @@
 
     &:not(:last-child) {
       border-right: 1px solid $border-color;
-  }
+    }
 
     &:first-child {
       border-left: 1px solid $border-color;
@@ -71,33 +71,33 @@
       margin-left: 70px;
     }
 
-  .cal-event-container {
-    display: inline-block;
+    .cal-event-container {
+      display: inline-block;
       position: absolute;
 
       &.resize-active {
         z-index: 1;
         pointer-events: none;
       }
-  }
+    }
 
-  .cal-event {
-    padding: 0 5px;
-    margin-left: 2px;
-    margin-right: 2px;
+    .cal-event {
+      padding: 0 5px;
+      margin-left: 2px;
+      margin-right: 2px;
       height: 28px;
       line-height: 28px;
-  }
+    }
 
     .cal-starts-within-week .cal-event {
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-  }
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
 
     .cal-ends-within-week .cal-event {
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-  }
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
 
     .cal-time-label-column {
       display: flex;
@@ -120,11 +120,11 @@
   }
 
   .cal-header.cal-today {
-    background-color: lighten(theme-color("success"), 25%);
+    background-color: lighten(theme-color('success'), 25%);
   }
 
   .cal-header.cal-weekend span {
-    color: theme-color("danger");
+    color: theme-color('danger');
   }
 
   .cal-event,

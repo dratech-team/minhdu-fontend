@@ -1,22 +1,29 @@
-import {DatePipe} from '@angular/common';
-import {AfterContentChecked, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {MatMenuTrigger} from '@angular/material/menu';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Api, EmployeeStatusConstant} from '@minhdu-fontend/constants';
+import { DatePipe } from '@angular/common';
+import {
+  AfterContentChecked,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Api, EmployeeStatusConstant } from '@minhdu-fontend/constants';
 import {
   EmployeeType,
   FilterTypeEnum,
   ItemContextMenu,
+  ModeEnum,
   SalaryTypeEnum,
-  sortEmployeeTypeEnum
+  sortEmployeeTypeEnum,
 } from '@minhdu-fontend/enums';
-import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
-import {select, Store} from '@ngrx/store';
-import {Observable, Subject} from 'rxjs';
-import {debounceTime, map, takeUntil} from 'rxjs/operators';
-import {PayrollAction} from '../../+state/payroll/payroll.action';
+import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { select, Store } from '@ngrx/store';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, map, takeUntil } from 'rxjs/operators';
+import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
   selectedLoadedPayroll,
@@ -24,68 +31,74 @@ import {
   selectedRangeDayPayroll,
   selectedTotalPayroll,
   selectedTypePayroll,
-  selectorAllPayroll
+  selectorAllPayroll,
 } from '../../+state/payroll/payroll.selector';
-import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
-import {getAllPosition} from '@minhdu-fontend/orgchart-position';
+import {
+  DialogDeleteComponent,
+  DialogExportComponent,
+} from '@minhdu-fontend/components';
+import { getAllPosition } from '@minhdu-fontend/orgchart-position';
 import {
   checkInputNumber,
   getFirstDayInMonth,
   getLastDayInMonth,
   getSelectors,
-  rageDaysInMonth
+  rageDaysInMonth,
 } from '@minhdu-fontend/utils';
-import {AppState} from '../../../../reducers';
-import {AddPayrollComponent} from '../../component/add-Payroll/add-payroll.component';
+import { AppState } from '../../../../reducers';
+import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
+import { DialogAllowanceMultipleComponent } from '../../component/dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
+import { DialogOvertimeMultipleComponent } from '../../component/dialog-salary/dialog-overtime-multiple/dialog-overtime-multiple.component';
+import { DialogTimekeepingComponent } from '../../component/dialog-salary/timekeeping/dialog-timekeeping.component';
+import { SelectAddMultiple } from '../../component/dialog-select-add-multiple/select-add-multiple';
+import { SelectUpdateMultiple } from '../../component/dialog-select-update-multiple/select-update-multiple';
+import { RestorePayrollComponent } from '../../component/restore-payroll/restore-payroll.component';
+import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
+import { Payroll } from '../../+state/payroll/payroll.interface';
+import { DialogCategoryComponent } from '../../../employee/components/category/dialog-category.component';
+import { CategoryService } from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
+import { MatSort } from '@angular/material/sort';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import {
-  DialogAllowanceMultipleComponent
-} from '../../component/dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
-import {
-  DialogOvertimeMultipleComponent
-} from '../../component/dialog-salary/dialog-overtime-multiple/dialog-overtime-multiple.component';
-import {DialogTimekeepingComponent} from '../../component/dialog-salary/timekeeping/dialog-timekeeping.component';
-import {SelectAddMultiple} from '../../component/dialog-select-add-multiple/select-add-multiple';
-import {SelectUpdateMultiple} from '../../component/dialog-select-update-multiple/select-update-multiple';
-import {RestorePayrollComponent} from '../../component/restore-payroll/restore-payroll.component';
-import {UpdateConfirmComponent} from '../../component/update-comfirm/update-confirm.component';
-import {Payroll} from '../../+state/payroll/payroll.interface';
-import {DialogCategoryComponent} from '../../../employee/components/category/dialog-category.component';
-import {CategoryService} from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
-import {MatSort} from '@angular/material/sort';
-import {NzMessageService} from 'ng-zorro-antd/message';
-import {Branch, Category, Position, RangeDay} from "@minhdu-fontend/data-models";
-import {Role} from "@minhdu-fontend/enums";
-import {ExportService} from "@minhdu-fontend/service";
-import {ConfirmPayrollComponent} from "../../component/confirm-payroll/confirm-payroll.component";
-import {EmployeeStatusEnum} from '@minhdu-fontend/enums';
-import {PayrollConstantV1} from "../../../../../../../../libs/constants/HR/payroll.constant-v1";
+  Branch,
+  Category,
+  Position,
+  RangeDay,
+} from '@minhdu-fontend/data-models';
+import { Role } from '@minhdu-fontend/enums';
+import { ExportService } from '@minhdu-fontend/service';
+import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm-payroll.component';
+import { EmployeeStatusEnum } from '@minhdu-fontend/enums';
+import { PayrollConstantV1 } from '../../../../../../../../libs/constants/HR/payroll.constant-v1';
 
 @Component({
-  templateUrl: 'payroll.component.html'
+  templateUrl: 'payroll.component.html',
 })
 export class PayrollComponent implements OnInit, AfterContentChecked {
   @ViewChild(MatSort) sort!: MatSort;
-  categoryControl = new FormControl('');
-  formEmpStatus = new FormControl(EmployeeStatusEnum.IS_ACTIVE)
-  formGroup = new FormGroup({
-    accConfirmed: new FormControl(-1),
-    name: new FormControl(''),
-    code: new FormControl(''),
-    paidAt: new FormControl(''),
-    accConfirmedAt: new FormControl(''),
-    manConfirmedAt: new FormControl(''),
-    position: new FormControl(
+  categoryControl = new UntypedFormControl('');
+  formEmpStatus = new UntypedFormControl(EmployeeStatusEnum.IS_ACTIVE);
+  formGroup = new UntypedFormGroup({
+    accConfirmed: new UntypedFormControl(-1),
+    name: new UntypedFormControl(''),
+    code: new UntypedFormControl(''),
+    paidAt: new UntypedFormControl(''),
+    accConfirmedAt: new UntypedFormControl(''),
+    manConfirmedAt: new UntypedFormControl(''),
+    position: new UntypedFormControl(
       getSelectors<string>(selectedPositionPayroll, this.store)
     ),
   });
-  selectPayroll = new FormControl(
+  selectPayroll = new UntypedFormControl(
     getSelectors<FilterTypeEnum>(selectedTypePayroll, this.store)
   );
   selectedPayroll: FilterTypeEnum = getSelectors<FilterTypeEnum>(
     selectedTypePayroll,
     this.store
   );
-  formCtrlBranch = new FormControl(getSelectors<Branch>(selectedBranchPayroll, this.store))
+  formCtrlBranch = new UntypedFormControl(
+    getSelectors<Branch>(selectedBranchPayroll, this.store)
+  );
   salaryType = SalaryTypeEnum;
   contextMenu!: MatMenuTrigger;
   pageSize = 30;
@@ -95,16 +108,22 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
   code?: string;
   positions$ = this.store.pipe(select(getAllPosition));
-  branches$ = this.store.pipe(select(getAllOrgchart)).pipe(map(branches => {
-    if (branches.length === 1) {
-      this.store.dispatch(PayrollAction.updateStateBranch({
-        branch: branches[0]
-      }))
-      this.categories$ = this.categoryService.getAll({branch: branches[0].name})
-      this.formCtrlBranch.patchValue(branches[0], {emitEvent: false})
-    }
-    return branches
-  }));
+  branches$ = this.store.pipe(select(getAllOrgchart)).pipe(
+    map((branches) => {
+      if (branches.length === 1) {
+        this.store.dispatch(
+          PayrollAction.updateStateBranch({
+            branch: branches[0],
+          })
+        );
+        this.categories$ = this.categoryService.getAll({
+          branch: branches[0].name,
+        });
+        this.formCtrlBranch.patchValue(branches[0], { emitEvent: false });
+      }
+      return branches;
+    })
+  );
   overtimeTitle?: string;
   allowanceTitle?: string;
   absentTitle?: string;
@@ -123,31 +142,31 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   eventExportAllowance = new Subject<boolean>();
   categories$ = new Observable<Category[]>();
   sortEnum = sortEmployeeTypeEnum;
-  role!: string | null
-  roleEnum = Role
+  role!: string | null;
+  roleEnum = Role;
   searchBranchOvertime?: Branch;
   searchBranchBasic?: Branch;
   searchBranchAllowance?: Branch;
   searchBranchStay?: Branch;
   searchBranchAbsent?: Branch;
-  selectEmpStatusOvertime?: number
-  selectEmpStatusAbsent?: number
-  selectEmpStatusBasic?: number
-  selectEmpStatusAllowance?: number
-  selectEmpStatusStay?: number
-  formCreatedAt = new FormControl(this.getRangeDay().start)
-  formRangeDay = new FormControl([
+  selectEmpStatusOvertime?: number;
+  selectEmpStatusAbsent?: number;
+  selectEmpStatusBasic?: number;
+  selectEmpStatusAllowance?: number;
+  selectEmpStatusStay?: number;
+  formCreatedAt = new UntypedFormControl(this.getRangeDay().start);
+  formRangeDay = new UntypedFormControl([
     this.getRangeDay().start,
     this.getRangeDay().end,
-  ])
+  ]);
   pickRangeDayOvertime = new Subject<boolean>();
   pickRangeDayAbsent = new Subject<boolean>();
   pickRangeDayAllowance = new Subject<boolean>();
   pickRangeDayStay = new Subject<boolean>();
   pickRangeDayBasic = new Subject<boolean>();
   empStatusContain = EmployeeStatusConstant;
-  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type : o1.type === o2.type);
-
+  compareFN = (o1: any, o2: any) =>
+    o1 && o2 ? o1 == o2.type : o1.type === o2.type;
 
   constructor(
     private readonly message: NzMessageService,
@@ -158,12 +177,11 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     private ref: ChangeDetectorRef,
     private readonly categoryService: CategoryService,
     private readonly activeRouter: ActivatedRoute,
-    private readonly exportService: ExportService,
-  ) {
-  }
+    private readonly exportService: ExportService
+  ) {}
 
   ngOnInit() {
-    this.role = window.localStorage.getItem('role')
+    this.role = window.localStorage.getItem('role');
     this.activeRouter.queryParams.subscribe((val) => {
       if (!val.titleOvertime) {
         this.loadInitPayroll();
@@ -173,7 +191,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.store.dispatch(OrgchartActions.init());
 
     this.selectPayroll.valueChanges.pipe().subscribe((val) => {
-      if (val === FilterTypeEnum.TIME_SHEET && this.formRangeDay.value?.length === 0) {
+      if (
+        val === FilterTypeEnum.TIME_SHEET &&
+        this.formRangeDay.value?.length === 0
+      ) {
         this.selectedPayroll = val;
         this.formRangeDay.reset();
         this.store.dispatch(
@@ -186,12 +207,19 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           val === FilterTypeEnum.PAYROLL ||
           val === FilterTypeEnum.TIME_SHEET
         ) {
-          this.formGroup.get('position')?.setValue(getSelectors<Position>(selectedPositionPayroll, this.store), {emitEvent: false});
-          this.formCtrlBranch.setValue(getSelectors<string>(selectedBranchPayroll, this.store),
-            {emitEvent: false});
+          this.formGroup
+            .get('position')
+            ?.setValue(
+              getSelectors<Position>(selectedPositionPayroll, this.store),
+              { emitEvent: false }
+            );
+          this.formCtrlBranch.setValue(
+            getSelectors<string>(selectedBranchPayroll, this.store),
+            { emitEvent: false }
+          );
         }
         this.selectedPayroll = val;
-        this.store.dispatch(PayrollAction.updateStatePayroll({filter: val}));
+        this.store.dispatch(PayrollAction.updateStatePayroll({ filter: val }));
       }
       if (
         val === FilterTypeEnum.PAYROLL ||
@@ -210,7 +238,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
             this.selectedPayroll === FilterTypeEnum.TIME_SHEET
           ) {
             this.message.error('Phiếu chấm công phải chọn tháng');
-            this.formCreatedAt.patchValue(this.datePipe.transform(new Date(), 'yyyy-MM'));
+            this.formCreatedAt.patchValue(
+              this.datePipe.transform(new Date(), 'yyyy-MM')
+            );
             takeUntil(this.stop$);
           } else {
             return val;
@@ -220,20 +250,22 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .pipe(debounceTime(1500))
       .subscribe((val) => {
         if (val) {
-          this.store.dispatch(PayrollAction.updateStatePosition({position: val.position}));
+          this.store.dispatch(
+            PayrollAction.updateStatePosition({ position: val.position })
+          );
           return this.loadInitPayroll();
         }
       });
 
-    this.categoryControl.valueChanges.subscribe(val => {
+    this.categoryControl.valueChanges.subscribe((val) => {
       if (val !== 0) {
         this.loadInitPayroll();
       } else {
-        this.addCategory()
+        this.addCategory();
       }
     });
 
-    this.formEmpStatus.valueChanges.subscribe(empStatus => {
+    this.formEmpStatus.valueChanges.subscribe((empStatus) => {
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
           empStatus: empStatus,
@@ -241,109 +273,119 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       );
       switch (this.selectPayroll.value) {
         case FilterTypeEnum.ABSENT:
-          this.selectEmpStatusAbsent = empStatus
+          this.selectEmpStatusAbsent = empStatus;
           break;
         case FilterTypeEnum.BASIC:
-          this.selectEmpStatusBasic = empStatus
+          this.selectEmpStatusBasic = empStatus;
           break;
         case FilterTypeEnum.STAY:
-          this.selectEmpStatusStay = empStatus
+          this.selectEmpStatusStay = empStatus;
           break;
         case FilterTypeEnum.OVERTIME:
-          this.selectEmpStatusOvertime = empStatus
+          this.selectEmpStatusOvertime = empStatus;
           break;
         case FilterTypeEnum.ALLOWANCE:
-          this.selectEmpStatusAllowance = empStatus
+          this.selectEmpStatusAllowance = empStatus;
           break;
-        default :
-          this.store.dispatch(PayrollAction.loadInit({
-            payrollDTO: this.mapPayroll(this.formGroup.value)
-          }))
+        default:
+          this.store.dispatch(
+            PayrollAction.loadInit({
+              payrollDTO: this.mapPayroll(this.formGroup.value),
+            })
+          );
       }
-    })
-    this.formCreatedAt.valueChanges.subscribe(date => {
-      this.store.dispatch(PayrollAction.updateStatePayroll({
-        rangeDay: {
-          start: getFirstDayInMonth(new Date(date)),
-          end: getLastDayInMonth(new Date(date))
-        }
-      }))
+    });
+    this.formCreatedAt.valueChanges.subscribe((date) => {
+      this.store.dispatch(
+        PayrollAction.updateStatePayroll({
+          rangeDay: {
+            start: getFirstDayInMonth(new Date(date)),
+            end: getLastDayInMonth(new Date(date)),
+          },
+        })
+      );
       switch (this.selectPayroll.value) {
         case FilterTypeEnum.BASIC:
-          this.pickRangeDayBasic.next(true)
+          this.pickRangeDayBasic.next(true);
           break;
         case FilterTypeEnum.STAY:
-          this.pickRangeDayStay.next(true)
+          this.pickRangeDayStay.next(true);
           break;
         case FilterTypeEnum.ALLOWANCE:
-          this.pickRangeDayAllowance.next(true)
+          this.pickRangeDayAllowance.next(true);
           break;
         default:
           this.daysInMonth = rageDaysInMonth(new Date(date));
-          this.store.dispatch(PayrollAction.loadInit({
-            payrollDTO: this.mapPayroll(this.formGroup.value)
-          }))
+          this.store.dispatch(
+            PayrollAction.loadInit({
+              payrollDTO: this.mapPayroll(this.formGroup.value),
+            })
+          );
       }
-    })
+    });
 
-    this.formRangeDay.valueChanges.subscribe(rangeDay => {
-      this.daysInMonth = rageDaysInMonth(new Date(rangeDay[0]))
-      this.store.dispatch(PayrollAction.updateStatePayroll({
-        rangeDay: {
-          start: rangeDay[0],
-          end: rangeDay[1],
-        }
-      }))
+    this.formRangeDay.valueChanges.subscribe((rangeDay) => {
+      this.daysInMonth = rageDaysInMonth(new Date(rangeDay[0]));
+      this.store.dispatch(
+        PayrollAction.updateStatePayroll({
+          rangeDay: {
+            start: rangeDay[0],
+            end: rangeDay[1],
+          },
+        })
+      );
       switch (this.selectPayroll.value) {
         case FilterTypeEnum.ABSENT:
-          this.pickRangeDayAbsent.next(true)
+          this.pickRangeDayAbsent.next(true);
           break;
         case FilterTypeEnum.OVERTIME:
-          this.pickRangeDayOvertime.next(true)
+          this.pickRangeDayOvertime.next(true);
           break;
       }
-    })
+    });
 
-    this.store.select(selectedRangeDayPayroll).subscribe(val => {
-      this.formRangeDay.setValue([val.start, val.end], {emitEvent: false})
-      this.formCreatedAt.setValue(val.start, {emitEvent: false})
-    })
+    this.store.select(selectedRangeDayPayroll).subscribe((val) => {
+      this.formRangeDay.setValue([val.start, val.end], { emitEvent: false });
+      this.formCreatedAt.setValue(val.start, { emitEvent: false });
+    });
 
-
-    this.formCtrlBranch.valueChanges.pipe().subscribe(branch => {
+    this.formCtrlBranch.valueChanges.pipe().subscribe((branch) => {
       if (branch) {
-        this.store.dispatch(OrgchartActions.getBranch({id: branch.id}))
+        this.store.dispatch(OrgchartActions.getBranch({ id: branch.id }));
       }
-      this.store.dispatch(PayrollAction.updateStateBranch({
-        branch: branch
-      }))
+      this.store.dispatch(
+        PayrollAction.updateStateBranch({
+          branch: branch,
+        })
+      );
       switch (this.selectPayroll.value) {
         case FilterTypeEnum.ABSENT:
-          this.searchBranchAbsent = branch
+          this.searchBranchAbsent = branch;
           break;
         case FilterTypeEnum.BASIC:
-          this.searchBranchBasic = branch
+          this.searchBranchBasic = branch;
           break;
         case FilterTypeEnum.STAY:
-          this.searchBranchStay = branch
+          this.searchBranchStay = branch;
           break;
         case FilterTypeEnum.OVERTIME:
-          this.searchBranchOvertime = branch
+          this.searchBranchOvertime = branch;
           break;
         case FilterTypeEnum.ALLOWANCE:
-          this.searchBranchAllowance = branch
+          this.searchBranchAllowance = branch;
           break;
-        default :
-          this.store.dispatch(PayrollAction.loadInit({
-            payrollDTO: this.mapPayroll(this.formGroup.value)
-          }))
+        default:
+          this.store.dispatch(
+            PayrollAction.loadInit({
+              payrollDTO: this.mapPayroll(this.formGroup.value),
+            })
+          );
       }
-      this.categories$ = this.categoryService.getAll({branch: branch})
-    })
+      this.categories$ = this.categoryService.getAll({ branch: branch });
+    });
   }
 
-  onChange(event: any) {
-  }
+  onChange(event: any) {}
 
   ngAfterContentChecked() {
     this.ref.detectChanges();
@@ -352,7 +394,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   loadInitPayroll() {
     this.store.dispatch(
       PayrollAction.loadInit({
-        payrollDTO: this.mapPayroll(this.formGroup.value)
+        payrollDTO: this.mapPayroll(this.formGroup.value),
       })
     );
   }
@@ -361,7 +403,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     const payroll = {
       skip: this.pageIndexInit,
       take: this.pageSize,
-      categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : '',
+      categoryId:
+        this.categoryControl.value !== 0 ? this.categoryControl.value : '',
       code: val.code,
       name: val.name,
       position: val.position?.name || '',
@@ -375,14 +418,13 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       accConfirmed: val.accConfirmed,
       employeeType:
         this.selectedPayroll === FilterTypeEnum.SEASONAL
-          ? EmployeeType.EMPLOYEE_SEASONAL
-          : EmployeeType.EMPLOYEE_FULL_TIME
-
+          ? EmployeeType.SEASONAL
+          : EmployeeType.FULL_TIME,
     };
     if (this.sort?.active) {
       Object.assign(payroll, {
         orderBy: this.sort.active,
-        orderType: this.sort ? this.sort.direction : ''
+        orderType: this.sort ? this.sort.direction : '',
       });
     }
     return payroll;
@@ -392,7 +434,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     const val = this.formGroup.value;
     this.store.dispatch(
       PayrollAction.loadMorePayrolls({
-        payrollDTO: this.mapPayroll(val)
+        payrollDTO: this.mapPayroll(val),
       })
     );
   }
@@ -401,7 +443,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.dialog
       .open(AddPayrollComponent, {
         width: '30%',
-        data: {employeeId: $event?.employee?.id, addOne: true}
+        data: { employeeId: $event?.employee?.id, addOne: true },
       })
       .afterClosed()
       .subscribe((val) => {
@@ -409,9 +451,12 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           this.formRangeDay.patchValue([
             getFirstDayInMonth(new Date(val)),
             getLastDayInMonth(new Date(val)),
-          ])
-          this.store.dispatch(PayrollAction.loadInit({payrollDTO: this.mapPayroll(this.formGroup.value)}
-          ))
+          ]);
+          this.store.dispatch(
+            PayrollAction.loadInit({
+              payrollDTO: this.mapPayroll(this.formGroup.value),
+            })
+          );
         }
       });
   }
@@ -419,7 +464,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   updateConfirmPayroll(id: number, type: string) {
     this.dialog.open(UpdateConfirmComponent, {
       width: '25%',
-      data: {id, type}
+      data: { id, type },
     });
   }
 
@@ -430,8 +475,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         data: {
           createdAt: this.formRangeDay.value[0],
           type: type,
-          isTimesheet: this.selectedPayroll === FilterTypeEnum.TIME_SHEET
-        }
+          isTimesheet: this.selectedPayroll === FilterTypeEnum.TIME_SHEET,
+        },
       })
       .afterClosed()
       .subscribe((val) => {
@@ -442,11 +487,11 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
               rangeDay: {
                 start: new Date(val.datetime),
                 end: new Date(val.datetime),
-              }
+              },
             })
           );
           this.eventAddOvertime.next({
-            overtimeTitle: val.title
+            overtimeTitle: val.title,
           });
           this.selectPayroll.setValue(FilterTypeEnum.OVERTIME);
         }
@@ -459,8 +504,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         width: 'fit-content',
         data: {
           createdAt: this.formRangeDay.value[0],
-          isTimesheet: this.selectedPayroll === FilterTypeEnum.TIME_SHEET
-        }
+          isTimesheet: this.selectedPayroll === FilterTypeEnum.TIME_SHEET,
+        },
       })
       .afterClosed()
       .subscribe((value) => {
@@ -468,7 +513,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           this.allowanceTitle = value.title;
           this.selectPayroll.setValue(FilterTypeEnum.ALLOWANCE);
           this.eventAddAllowance.next({
-            allowanceTitle: value.title
+            allowanceTitle: value.title,
           });
         }
       });
@@ -479,8 +524,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       width: 'fit-content',
       data: {
         createdAt: this.formRangeDay.value[0],
-        isTimesheet: this.selectedPayroll === FilterTypeEnum.TIME_SHEET
-      }
+        isTimesheet: this.selectedPayroll === FilterTypeEnum.TIME_SHEET,
+      },
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -490,12 +535,12 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
             rangeDay: {
               start: new Date(val.datetime),
               end: new Date(val.datetime),
-            }
+            },
           })
         );
         this.eventAddAbsent.next({
           datetime: val.datetime,
-          absentTitle: val.title
+          absentTitle: val.title,
         });
         this.selectPayroll.setValue(FilterTypeEnum.ABSENT);
       }
@@ -503,41 +548,50 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   updatePayroll($event: any) {
-    this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', $event.id], {
-      queryParams: {
-        isUpdate: true
-      }
-    }).then();
+    this.router
+      .navigate(['phieu-luong/chi-tiet-phieu-luong', $event.id], {
+        queryParams: {
+          isUpdate: true,
+        },
+      })
+      .then();
   }
 
   generate() {
-    this.dialog.open(AddPayrollComponent, {
-      width: '30%',
-      data: {
-        employeeType:
-          this.selectedPayroll === FilterTypeEnum.SEASONAL
-            ? EmployeeType.EMPLOYEE_SEASONAL
-            : ''
-      }
-    }).afterClosed().subscribe((val) => {
-      if (val) {
-        this.store.dispatch(PayrollAction.updateStatePayroll({
-          rangeDay: {
-            start: getFirstDayInMonth(new Date(val)),
-            end: getLastDayInMonth(new Date(val)),
-          }
-        }))
-        this.store.dispatch(PayrollAction.loadInit({
-          payrollDTO: this.mapPayroll(this.formGroup.value)
-        }))
-      }
-    });
+    this.dialog
+      .open(AddPayrollComponent, {
+        width: '30%',
+        data: {
+          employeeType:
+            this.selectedPayroll === FilterTypeEnum.SEASONAL
+              ? EmployeeType.SEASONAL
+              : '',
+        },
+      })
+      .afterClosed()
+      .subscribe((val) => {
+        if (val) {
+          this.store.dispatch(
+            PayrollAction.updateStatePayroll({
+              rangeDay: {
+                start: getFirstDayInMonth(new Date(val)),
+                end: getLastDayInMonth(new Date(val)),
+              },
+            })
+          );
+          this.store.dispatch(
+            PayrollAction.loadInit({
+              payrollDTO: this.mapPayroll(this.formGroup.value),
+            })
+          );
+        }
+      });
   }
 
   restorePayroll(payroll: Payroll) {
     this.dialog.open(RestorePayrollComponent, {
       width: 'fit-content',
-      data: {payroll: payroll}
+      data: { payroll: payroll },
     });
   }
 
@@ -545,36 +599,41 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.dialog.open(ConfirmPayrollComponent, {
       width: 'fit-content',
       data: {
-        payroll: payroll
-      }
+        payroll: payroll,
+      },
     });
   }
 
   deletePayroll(event: any) {
-    this.dialog.open(DialogDeleteComponent, {
-      width: 'fit-content'
-    }).afterClosed().subscribe((val) => {
-      if (val) {
-        this.store.dispatch(
-          PayrollAction.deletePayroll({
-            id: event.id
-          })
-        );
-      }
-    });
+    this.dialog
+      .open(DialogDeleteComponent, {
+        width: 'fit-content',
+      })
+      .afterClosed()
+      .subscribe((val) => {
+        if (val) {
+          this.store.dispatch(
+            PayrollAction.deletePayroll({
+              id: event.id,
+            })
+          );
+        }
+      });
   }
 
   historyPayroll(event: any) {
-    this.router.navigate(['phieu-luong/lich-su-luong', event.employee.id], {
-      queryParams: {
-        name: event.employee.lastName,
-        employeeType: event.employee.type
-      }
-    }).then();
+    this.router
+      .navigate(['phieu-luong/lich-su-luong', event.employee.id], {
+        queryParams: {
+          name: event.employee.lastName,
+          employeeType: event.employee.type,
+        },
+      })
+      .then();
   }
 
   openDialogAddMultiple() {
-    const ref = this.dialog.open(SelectAddMultiple, {width: 'fit-content'});
+    const ref = this.dialog.open(SelectAddMultiple, { width: 'fit-content' });
     ref.afterClosed().subscribe((val) => {
       if (val) {
         switch (val) {
@@ -597,8 +656,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .open(SelectUpdateMultiple, {
         width: 'fit-content',
         data: {
-          pageType: this.selectedPayroll
-        }
+          pageType: this.selectedPayroll,
+        },
       })
       .afterClosed()
       .subscribe((val) => {
@@ -623,7 +682,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
               this.exportTimeSheet();
               break;
             case FilterTypeEnum.SEASONAL:
-              this.exportSeasonal()
+              this.exportSeasonal();
               break;
             case FilterTypeEnum.PAYROLL:
               this.exportPayroll();
@@ -646,7 +705,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       accConfirmedAt: value.accConfirmedAt,
       exportType: FilterTypeEnum.PAYROLL,
       empStatus: this.formEmpStatus.value,
-      categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : '',
+      categoryId:
+        this.categoryControl.value !== 0 ? this.categoryControl.value : '',
       position: value.position?.name || '',
       branch: this.formCtrlBranch.value?.name || '',
       startedAt: this.formRangeDay.value[0],
@@ -655,24 +715,30 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       isConfirm: value.accConfirmedAt,
       filterType: this.selectedPayroll,
       accConfirmed: value.accConfirmed,
-      employeeType: EmployeeType.EMPLOYEE_FULL_TIME
+      employeeType: EmployeeType.FULL_TIME,
     };
     if (this.sort?.active) {
       Object.assign(payroll, {
         orderBy: this.sort.active,
-        orderType: this.sort ? this.sort.direction : ''
+        orderType: this.sort ? this.sort.direction : '',
       });
     }
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
-        filename: `Xuất bảng lương từ ngày ${this.datePipe.transform(this.formRangeDay.value[0], 'dd-MM-yyyy')} đến ngày ${this.datePipe.transform(this.formRangeDay.value[1], 'dd-MM-yyyy')}`,
+        filename: `Xuất bảng lương từ ngày ${this.datePipe.transform(
+          this.formRangeDay.value[0],
+          'dd-MM-yyyy'
+        )} đến ngày ${this.datePipe.transform(
+          this.formRangeDay.value[1],
+          'dd-MM-yyyy'
+        )}`,
         title: 'Xuât bảng lương',
         params: payroll,
         selectDatetime: true,
         api: Api.HR.PAYROLL.EXPORT,
-      }
-    })
+      },
+    });
   }
 
   exportTimeSheet() {
@@ -690,13 +756,19 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
-        filename: `Xuất bảng chấm công từ ngày ${this.datePipe.transform(this.formRangeDay.value[0], 'dd-MM-yyyy')} đến ngày ${this.datePipe.transform(this.formRangeDay.value[1], 'dd-MM-yyyy')} `,
+        filename: `Xuất bảng chấm công từ ngày ${this.datePipe.transform(
+          this.formRangeDay.value[0],
+          'dd-MM-yyyy'
+        )} đến ngày ${this.datePipe.transform(
+          this.formRangeDay.value[1],
+          'dd-MM-yyyy'
+        )} `,
         title: 'Xuât bảng chấm công',
         params: payroll,
         selectDatetime: true,
-        api: Api.HR.PAYROLL.EXPORT
-      }
-    })
+        api: Api.HR.PAYROLL.EXPORT,
+      },
+    });
   }
 
   exportSeasonal() {
@@ -709,57 +781,74 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       exportType: FilterTypeEnum.SEASONAL,
       paidAt: value.paidAt,
       accConfirmedAt: value.accConfirmedAt,
-      employeeType: EmployeeType.EMPLOYEE_SEASONAL,
+      employeeType: EmployeeType.SEASONAL,
       startedAt: this.formRangeDay.value[0],
-      endedAt: this.formRangeDay.value[1]
+      endedAt: this.formRangeDay.value[1],
     };
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
-        filename: `Xuất bản lương công nhật tháng ${this.datePipe.transform(this.formRangeDay.value[0], 'MM-yyyy')}`,
+        filename: `Xuất bản lương công nhật tháng ${this.datePipe.transform(
+          this.formRangeDay.value[0],
+          'MM-yyyy'
+        )}`,
         title: 'Xuât bảng lương công nhật',
         params: payrollSeasonal,
         selectDatetime: true,
-        api: Api.HR.PAYROLL.EXPORT
-      }
-    })
+        api: Api.HR.PAYROLL.EXPORT,
+      },
+    });
   }
 
   addCategory() {
-    this.dialog.open(DialogCategoryComponent, {width: 'fit-content'}).afterClosed()
-      .subscribe(() => this.categories$ = this.categoryService.getAll(
-        {branch: this.formCtrlBranch.value ? this.formCtrlBranch.value.name : ''}));
+    this.dialog
+      .open(DialogCategoryComponent, { width: 'fit-content' })
+      .afterClosed()
+      .subscribe(
+        () =>
+          (this.categories$ = this.categoryService.getAll({
+            branch: this.formCtrlBranch.value
+              ? this.formCtrlBranch.value.name
+              : '',
+          }))
+      );
   }
 
   updateCategory(): any {
     if (this.categoryControl.value === 0 || !this.categoryControl.value) {
       return this.message.error('Chưa chọn danh mục để sửa');
     }
-    this.dialog.open(DialogCategoryComponent, {
-      width: 'fit-content',
-      data: {categoryId: this.categoryControl.value, isUpdate: true}
-    }).afterClosed().subscribe(() => {
-      this.categories$ = this.categoryService.getAll({
-        branch: this.formCtrlBranch.value ?
-          this.formCtrlBranch.value.name : ''
+    this.dialog
+      .open(DialogCategoryComponent, {
+        width: 'fit-content',
+        data: { categoryId: this.categoryControl.value, isUpdate: true },
+      })
+      .afterClosed()
+      .subscribe(() => {
+        this.categories$ = this.categoryService.getAll({
+          branch: this.formCtrlBranch.value
+            ? this.formCtrlBranch.value.name
+            : '',
+        });
       });
-    });
   }
 
   sortPayroll(sort?: MatSort) {
     if (sort) {
       this.sort = sort;
     }
-    this.store.dispatch(PayrollAction.loadInit({
-      payrollDTO: this.mapPayroll(this.formGroup.value)
-    }));
+    this.store.dispatch(
+      PayrollAction.loadInit({
+        payrollDTO: this.mapPayroll(this.formGroup.value),
+      })
+    );
   }
 
   onSelectPosition($event: Position) {
-    this.formGroup.get('position')?.setValue($event, {emitEvent: false})
+    this.formGroup.get('position')?.setValue($event, { emitEvent: false });
   }
 
   getRangeDay(): RangeDay {
-    return getSelectors<RangeDay>(selectedRangeDayPayroll, this.store)
+    return getSelectors<RangeDay>(selectedRangeDayPayroll, this.store);
   }
 }

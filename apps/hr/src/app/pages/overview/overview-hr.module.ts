@@ -20,8 +20,6 @@ import { OverviewHrComponent } from './containers/overview/overview-hr.component
 import { StatisticalEmployeeComponent } from './components/dialog-statistical-employee/statistical-employee.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
-
-
 @NgModule({
   imports: [
     ComponentsModule,
@@ -42,15 +40,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatProgressSpinnerModule,
     OverviewHrRoutingModule,
     MatDialogModule,
-    MatDatepickerModule
+    MatDatepickerModule,
   ],
-  exports: [
-    OverviewHrComponent
-  ],
-  declarations: [
-    OverviewHrComponent,
-    StatisticalEmployeeComponent
-  ]
+  exports: [OverviewHrComponent],
+  declarations: [OverviewHrComponent, StatisticalEmployeeComponent],
 })
-export class OverviewHrModule {
-}
+export class OverviewHrModule {}

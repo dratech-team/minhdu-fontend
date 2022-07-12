@@ -5,7 +5,7 @@ import { PayrollService } from '../../service/payroll.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
-  templateUrl: 'restore-payroll.component.html'
+  templateUrl: 'restore-payroll.component.html',
 })
 export class RestorePayrollComponent {
   constructor(
@@ -14,15 +14,14 @@ export class RestorePayrollComponent {
     private readonly payrollService: PayrollService,
     private readonly message: NzMessageService,
     private readonly dialogRef: MatDialogRef<RestorePayrollComponent>
-  ) {
-  }
+  ) {}
 
   restorePayroll() {
-    this.payrollService.restorePayroll(this.data.payroll.id).subscribe(
-      res => {
+    this.payrollService
+      .restorePayroll(this.data.payroll.id)
+      .subscribe((res) => {
         this.message.success(res.message);
-      }
-    );
+      });
     this.dialogRef.close();
   }
 }

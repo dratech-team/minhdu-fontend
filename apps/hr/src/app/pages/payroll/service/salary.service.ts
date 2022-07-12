@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Api} from '@minhdu-fontend/constants';
-import {Salary} from '@minhdu-fontend/data-models';
-import {Observable} from 'rxjs';
-import {BaseService} from 'libs/service/base.service';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Api } from '@minhdu-fontend/constants';
+import { Salary } from '@minhdu-fontend/data-models';
+import { Observable } from 'rxjs';
+import { BaseService } from 'libs/service/base.service';
 
 @Injectable({ providedIn: 'root' })
 export class SalaryService extends BaseService<Salary> {
@@ -23,7 +23,7 @@ export class SalaryService extends BaseService<Salary> {
     return super.update(id, body);
   }
 
-  updateSalary (body: any): Observable<Salary>{
+  updateSalary(body: any): Observable<Salary> {
     return this.http.post<Salary>(this.url + `/multiple`, body);
   }
 
@@ -31,7 +31,7 @@ export class SalaryService extends BaseService<Salary> {
     return super.delete(id);
   }
 
-  updateMultipleSalaryOvertime(body: any): Observable<any>{
+  updateMultipleSalaryOvertime(body: any): Observable<any> {
     return this.http.patch<Observable<any>>('salary/salaries/ids', body);
   }
 }

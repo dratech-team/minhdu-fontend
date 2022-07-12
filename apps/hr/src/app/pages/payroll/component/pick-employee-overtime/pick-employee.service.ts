@@ -6,15 +6,14 @@ import { Injectable } from '@angular/core';
 export class PickEmployeeService {
   employees$ = this.store.pipe(select(selectorAllEmployee));
 
-  constructor(private readonly store: Store) {
-  }
+  constructor(private readonly store: Store) {}
 
   onInit(props?: any) {
-    this.store.dispatch(EmployeeAction.loadInit({employee:props}));
+    this.store.dispatch(EmployeeAction.loadInit({ employee: props }));
   }
 
   searchEmployees(val: any) {
-    this.store.dispatch(EmployeeAction.loadInit({employee:val}));
+    this.store.dispatch(EmployeeAction.loadInit({ employee: val }));
   }
 
   Employees() {

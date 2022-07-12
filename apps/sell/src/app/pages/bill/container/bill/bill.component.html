@@ -1,87 +1,177 @@
-<div class='main-customer' style='width: 85%; margin-left: 7%;'>
-  <div class='row h3 ml-3 mt-3'>Danh sách hóa đơn</div>
-  <div class='main-profile'>
-    <div class='header-profile mt-3 animated fadeIn'>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Khách hàng</div>
-        <input class='form-control input-profile ' [disabled]='true' type='search'>
+<div class="main-customer" style="width: 85%; margin-left: 7%">
+  <div class="row h3 ml-3 mt-3">Danh sách hóa đơn</div>
+  <div class="main-profile">
+    <div class="header-profile mt-3 animated fadeIn">
+      <div class="border-start title-header name">
+        <div class="title-profile">Khách hàng</div>
+        <input
+          class="form-control input-profile"
+          [disabled]="true"
+          type="search"
+        />
       </div>
-      <div class='border-start title-header default   '>
-        <div class='title-profile'>Thanh toán</div>
-        <input type='checkbox' class='form-control input-profile' [disabled]='true' style='margin-left: 43%'>
+      <div class="border-start title-header default">
+        <div class="title-profile">Thanh toán</div>
+        <input
+          type="checkbox"
+          class="form-control input-profile"
+          [disabled]="true"
+          style="margin-left: 43%"
+        />
       </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Ngày tạo</div>
-        <input class='form-control input-profile ' type='date' [disabled]='true'>
+      <div class="border-start title-header default">
+        <div class="title-profile">Ngày tạo</div>
+        <input
+          class="form-control input-profile"
+          type="date"
+          [disabled]="true"
+        />
       </div>
-      <div class='border-start title-header address'>
-        <div class='title-profile'>Diễn giải</div>
-        <input class='form-control input-profile ' type='text' [disabled]='true'>
+      <div class="border-start title-header address">
+        <div class="title-profile">Diễn giải</div>
+        <input
+          class="form-control input-profile"
+          type="text"
+          [disabled]="true"
+        />
       </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Công nợ</div>
-        <input class='form-control input-profile ' [disabled]='true' type='number'>
+      <div class="border-start title-header default">
+        <div class="title-profile">Công nợ</div>
+        <input
+          class="form-control input-profile"
+          [disabled]="true"
+          type="number"
+        />
       </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Đơn vị tiền</div>
-        <select class='select' matNativeControl required [disabled]='true'>
-          <option value='{{currencyUnit.VND}}'>VND</option>
-          <option value='{{currencyUnit.CNY}}'>Nhân dân tệ</option>
-          <option value='{{currencyUnit.EUR}}'>Euro</option>
-          <option value='{{currencyUnit.GBP}}'>Bảng anh</option>
-          <option value='{{currencyUnit.MMK}}'>Kyat</option>
-          <option value='{{currencyUnit.MYR}}'>Ringgit</option>
-          <option value='{{currencyUnit.USD}}'>Đô la</option>
-
+      <div class="border-start title-header default">
+        <div class="title-profile">Đơn vị tiền</div>
+        <select class="select" matNativeControl required [disabled]="true">
+          <option value="{{ CurrencyUnit.VND }}">VND</option>
+          <option value="{{ CurrencyUnit.CNY }}">Nhân dân tệ</option>
+          <option value="{{ CurrencyUnit.EUR }}">Euro</option>
+          <option value="{{ CurrencyUnit.GBP }}">Bảng anh</option>
+          <option value="{{ CurrencyUnit.MMK }}">Kyat</option>
+          <option value="{{ CurrencyUnit.MYR }}">Ringgit</option>
+          <option value="{{ CurrencyUnit.USD }}">Đô la</option>
         </select>
       </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Loại thanh toán</div>
-        <select class='select' matNativeControl required [disabled]='true'>
-          <option value='{{payType.CASH}}'>Tiền mặt</option>
-          <option value='{{payType.TRANSFER}}'>Chuyển khoản</option>
+      <div class="border-start title-header default">
+        <div class="title-profile">Loại thanh toán</div>
+        <select class="select" matNativeControl required [disabled]="true">
+          <option value="{{ PaymentType.CASH }}">Tiền mặt</option>
+          <option value="{{ PaymentType.TRANSFER }}">Chuyển khoản</option>
         </select>
       </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Tổng thanh toán</div>
-        <input class='form-control input-profile ' [disabled]='true' type='number'>
+      <div class="border-start title-header default">
+        <div class="title-profile">Tổng thanh toán</div>
+        <input
+          class="form-control input-profile"
+          [disabled]="true"
+          type="number"
+        />
       </div>
     </div>
 
-    <div class='outer   animated fadeIn' infiniteScroll [infiniteScrollDistance]='1' [infiniteScrollThrottle]='10'
-      [scrollWindow]='false' (scrolled)='onScroll()' *ngIf='(Bills$| async) as bills'>
-      <div class='row-content' *ngFor='let bill of bills' (click)='detailOrder()'>
-
-        <div class='content-profile name pointer '> {{bill?.customer?.lastName}}</div>
-        <div class='content-profile default pointer '>
-          <input type='checkbox' [checked]='bill.paidAt !== null'>
+    <div
+      class="outer animated fadeIn"
+      infiniteScroll
+      [infiniteScrollDistance]="1"
+      [infiniteScrollThrottle]="10"
+      [scrollWindow]="false"
+      (scrolled)="onScroll()"
+      *ngIf="bills$ | async as bills"
+    >
+      <div
+        class="row-content"
+        *ngFor="let bill of bills"
+        (click)="detailOrder()"
+      >
+        <div class="content-profile name pointer">
+          {{ bill?.customer?.lastName }}
         </div>
-        <div class='content-profile default pointer ' *ngIf='bill?.createdAt!== null'>
-          {{bill?.createdAt | date: 'dd/MM/yyyy'}}
+        <div class="content-profile default pointer">
+          <input type="checkbox" [checked]="bill.paidAt !== null" />
         </div>
-        <div class='content-profile default pointer ' *ngIf='bill?.createdAt=== null'>
+        <div
+          class="content-profile default pointer"
+          *ngIf="bill?.createdAt !== null"
+        >
+          {{ bill?.createdAt | date: 'dd/MM/yyyy' }}
+        </div>
+        <div
+          class="content-profile default pointer"
+          *ngIf="bill?.createdAt === null"
+        >
           Đang cập nhật
         </div>
-        <div class='content-profile address pointer '>{{bill?.explain}} </div>
-        <div class='content-profile default pointer ' style='color:#f86c6b '>
-          {{bill?.debt |number : '1.0'|notEmpty: '0'}} đ
+        <div class="content-profile address pointer">{{ bill?.explain }}</div>
+        <div class="content-profile default pointer" style="color: #f86c6b">
+          {{ bill?.debt | number: '1.0' | notEmpty: '0' }} đ
         </div>
-        <div class='content-profile default pointer ' style='color: #20c997'>
-          {{bill?.paidTotal|number : '1.0'|notEmpty: '0'}} đ
+        <div class="content-profile default pointer" style="color: #20c997">
+          {{ bill?.paidTotal | number: '1.0' | notEmpty: '0' }} đ
         </div>
-        <div class='content-profile default pointer ' *ngIf='bill?.currency=== currencyUnit.VND'> Việt nam dồng</div>
-        <div class='content-profile default pointer ' *ngIf='bill?.currency=== currencyUnit.USD'> Đô la mỹ</div>
-        <div class='content-profile default pointer ' *ngIf='bill?.currency=== currencyUnit.MYR'>Ringgit</div>
-        <div class='content-profile default pointer ' *ngIf='bill?.currency=== currencyUnit.MMK'>Kyat</div>
-        <div class='content-profile default pointer ' *ngIf='bill?.currency=== currencyUnit.JPY'>Yên Nhật</div>
-        <div class='content-profile default pointer ' *ngIf='bill?.currency=== currencyUnit.GBP'>Bảng anh</div>
-        <div class='content-profile default pointer ' *ngIf='bill?.currency=== currencyUnit.EUR'>Euro</div>
-        <div class='content-profile default pointer ' *ngIf='bill?.currency=== currencyUnit.CNY'>Nhân dân tệ</div>
-        <div class='content-profile default pointer ' *ngIf='bill?.payType=== payType.CASH'>Tiền mặt</div>
-        <div class='content-profile default pointer ' *ngIf='bill?.payType=== payType.TRANSFER'>Chuyển khoản</div>
-
+        <div
+          class="content-profile default pointer"
+          *ngIf="bill?.currency === CurrencyUnit.VND"
+        >
+          Việt nam dồng
+        </div>
+        <div
+          class="content-profile default pointer"
+          *ngIf="bill?.currency === CurrencyUnit.USD"
+        >
+          Đô la mỹ
+        </div>
+        <div
+          class="content-profile default pointer"
+          *ngIf="bill?.currency === CurrencyUnit.MYR"
+        >
+          Ringgit
+        </div>
+        <div
+          class="content-profile default pointer"
+          *ngIf="bill?.currency === CurrencyUnit.MMK"
+        >
+          Kyat
+        </div>
+        <div
+          class="content-profile default pointer"
+          *ngIf="bill?.currency === CurrencyUnit.JPY"
+        >
+          Yên Nhật
+        </div>
+        <div
+          class="content-profile default pointer"
+          *ngIf="bill?.currency === CurrencyUnit.GBP"
+        >
+          Bảng anh
+        </div>
+        <div
+          class="content-profile default pointer"
+          *ngIf="bill?.currency === CurrencyUnit.EUR"
+        >
+          Euro
+        </div>
+        <div
+          class="content-profile default pointer"
+          *ngIf="bill?.currency === CurrencyUnit.CNY"
+        >
+          Nhân dân tệ
+        </div>
+        <div
+          class="content-profile default pointer"
+          *ngIf="bill?.payType === PaymentType.CASH"
+        >
+          Tiền mặt
+        </div>
+        <div
+          class="content-profile default pointer"
+          *ngIf="bill?.payType === PaymentType.TRANSFER"
+        >
+          Chuyển khoản
+        </div>
       </div>
     </div>
   </div>
-
 </div>

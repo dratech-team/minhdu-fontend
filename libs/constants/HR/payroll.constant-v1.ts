@@ -1,6 +1,5 @@
 import { FilterTypeEnum } from '../../enums';
 
-
 export const PayrollConstantV1 = [
   {
     name: 'Bảng lương',
@@ -20,18 +19,18 @@ export const PayrollConstantV1 = [
   },
   {
     name: 'Bảng lương cơ bản',
-    value: FilterTypeEnum.BASIC
+    value: FilterTypeEnum.BASIC,
   },
   {
     name: 'Bảng phụ cấp',
-    value: FilterTypeEnum.STAY
+    value: FilterTypeEnum.STAY,
   },
   {
     name: 'Bảng phụ cấp khác',
-    value: FilterTypeEnum.ALLOWANCE
+    value: FilterTypeEnum.ALLOWANCE,
   },
   {
     name: 'Bảng khấu trừ',
-    value: FilterTypeEnum.ABSENT
+    value: FilterTypeEnum.ABSENT,
   },
-]
+];

@@ -1,6 +1,6 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
-import { ContextMenuService } from 'ngx-contextmenu';
-import { ItemContextMenu } from '../../../../enums/sell/page-type.enum';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ItemContextMenu } from '@minhdu-fontend/enums';
+import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
 
 @Component({
   selector: 'app-mouse-right',
@@ -8,8 +8,11 @@ import { ItemContextMenu } from '../../../../enums/sell/page-type.enum';
   styleUrls: ['./mouse-right.component.scss']
 })
 export class MouseRightComponent {
+  item: any;
+  @ViewChild('menu') menu: any;
+
   @Input() items?: ItemContextMenu[];
-  ItemContextMenu = ItemContextMenu;
+
   @Output() onAddOrder = new EventEmitter();
   @Output() onAdd = new EventEmitter();
   @Output() onDel = new EventEmitter();
@@ -27,79 +30,75 @@ export class MouseRightComponent {
   @Output() onCancel = new EventEmitter();
   @Output() onPrint = new EventEmitter();
 
-  constructor(private contextMenuService: ContextMenuService) {
+  ItemContextMenu = ItemContextMenu;
+
+  constructor(private readonly nzContextMenuService: NzContextMenuService) {
   }
 
   public onContextMenu($event: MouseEvent, item: any): void {
-    this.contextMenuService.show.next({
-      event: $event,
-      item: item
-    });
+    this.nzContextMenuService.create($event, this.menu);
+    this.item = item;
     $event.preventDefault();
     $event.stopPropagation();
   }
 
-  addOrder(item: any): void {
-    this.onAddOrder.emit(item);
+  add(): void {
+    this.onAdd.emit(this.item);
   }
 
-  add(item: any): void {
-    this.onAdd.emit(item);
+  delete(): void {
+    this.onDel.emit(this.item);
   }
 
-  delete(item: any): void {
-    this.onDel.emit(item);
+  update() {
+    this.onUpdate.emit(this.item);
   }
 
-  update(item: any) {
-    this.onUpdate.emit(item);
+  permanentlyDeleted(): void {
+    this.onDelPerm.emit(this.item);
   }
 
-  permanentlyDeleted(item: any): void {
-    this.onDelPerm.emit(item);
+  readAndUpdate(): void {
+    this.onDetail.emit(this.item);
   }
 
-  readAndUpdate(item: any): void {
-    this.onDetail.emit(item);
+  onPayment(): void {
+    this.onPay.emit(this.item);
   }
 
-  onPayment(item: any): void {
-    this.onPay.emit(item);
+  onDelivered() {
+    this.onEnd.emit(this.item);
   }
 
-  onDelivered(item: any) {
-    this.onEnd.emit(item);
+  restore() {
+    this.onRestore.emit(this.item);
   }
 
-  restore(item: any) {
-    this.onRestore.emit(item);
+  onHistoryPayroll() {
+    this.onHisPayroll.emit(this.item);
   }
 
-  onHistoryPayroll(item: any) {
-    this.onHisPayroll.emit(item);
+  onEmployee() {
+    this.onProfile.emit(this.item);
   }
 
-  onEmployee(item: any) {
-    this.onProfile.emit(item);
+  payroll() {
+    this.onPayroll.emit(this.item);
   }
 
-  payroll(item: any) {
-    this.onPayroll.emit(item);
+  overtime() {
+    this.onOvertime.emit(this.item);
   }
 
-  overtime(item: any) {
-    this.onOvertime.emit(item);
+  onListPosition() {
+    this.onPositions.emit(this.item);
   }
 
-  onListPosition(item: any) {
-    this.onPositions.emit(item);
+  cancel() {
+    this.onCancel.emit(this.item);
   }
 
-  cancel(item: any) {
-    this.onCancel.emit(item)
-  }
-
-  print(item: any) {
-    this.onPrint.emit(item)
+  print() {
+    this.onPrint.emit(this.item);
   }
 }

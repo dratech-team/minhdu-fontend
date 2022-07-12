@@ -1,9 +1,17 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { MethodHttp } from '../http/method.http';
 
 export class BaseMiddleware<L, A, U> implements HttpInterceptor {
-  intercept(req: HttpRequest<L | A | U>, next: HttpHandler): Observable<HttpEvent<L | A | U>> {
+  intercept(
+    req: HttpRequest<L | A | U>,
+    next: HttpHandler
+  ): Observable<HttpEvent<L | A | U>> {
     switch (req.method) {
       case MethodHttp.GET: {
         // this.getRequest(req.params.);
@@ -22,15 +30,9 @@ export class BaseMiddleware<L, A, U> implements HttpInterceptor {
     return next.handle(req);
   }
 
-  load(param: L) {
+  load(param: L) {}
 
-  }
+  update(param: U) {}
 
-  update(param: U) {
-
-  }
-
-  add(param: A) {
-
-  }
+  add(param: A) {}
 }

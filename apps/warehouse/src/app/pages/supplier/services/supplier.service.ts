@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { AddSupplierDto } from '../dto';
 import { UpdateSupplierDto } from '../dto';
-import {SearchSupplierDto} from "../dto";
+import { SearchSupplierDto } from '../dto';
 
 @Injectable()
 export class SupplierService extends BaseService<SupplierEntity> {
@@ -23,11 +23,13 @@ export class SupplierService extends BaseService<SupplierEntity> {
     return super.getAll(searchSupplierDto.search);
   }
 
-  pagination(searchSupplierDto: SearchSupplierDto): Observable<ResponsePaginate<SupplierEntity>> {
+  pagination(
+    searchSupplierDto: SearchSupplierDto
+  ): Observable<ResponsePaginate<SupplierEntity>> {
     return super.pagination(searchSupplierDto.search);
   }
 
-  update( updateSupplierDto:UpdateSupplierDto): Observable<SupplierEntity> {
+  update(updateSupplierDto: UpdateSupplierDto): Observable<SupplierEntity> {
     return super.update(updateSupplierDto.id, updateSupplierDto.updates);
   }
 

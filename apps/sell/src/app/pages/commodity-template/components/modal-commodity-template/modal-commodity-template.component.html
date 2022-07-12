@@ -1,21 +1,39 @@
-<form [formGroup]='formGroup'>
-  <div>
-    <span class='ml-1 font-weight-bold'>Tên dòng gà</span> <span class='star'>*</span>
-    <input nz-input type='text' class='mt-1' formControlName='name'
-           [ngClass]="{ 'is-invalid': checkValid.name.errors?.required }">
-    <div *ngIf='checkValid.name.errors?.required' class='invalid-feedback'>
-      <div>Chưa nhập tên dòng gà</div>
-    </div>
-  </div>
-  <div class='mt-2'>
-    <div><span class='ml-1 font-weight-bold'>Mã dòng gà</span></div>
-    <input nz-input type='text' class='mt-1' formControlName='code'
-           [ngClass]="{ 'is-invalid': checkValid.code.errors?.required }">
-    <div *ngIf='checkValid.code.errors?.required' class='invalid-feedback'>
+<form [formGroup]="formGroup">
+  <div class="mt-2">
+    <div><span class="ml-1 font-weight-bold">Mã dòng gà</span></div>
+    <input
+      nz-input
+      type="text"
+      class="mt-1"
+      formControlName="code"
+      [ngClass]="{ 'is-invalid': checkValid.code.errors?.required }"
+    />
+    <div *ngIf="checkValid.code.errors?.required" class="invalid-feedback">
       <div>Chưa nhập mã dòng gà</div>
     </div>
   </div>
-  <div class='mt-4'>
-    <button nz-button nzType="primary" [nzLoading]="(added$| async) === false" (click)='onsubmit()'>Lưu</button>
+  <div>
+    <span class="ml-1 font-weight-bold">Tên dòng gà</span>
+    <span class="star">*</span>
+    <input
+      nz-input
+      type="text"
+      class="mt-1"
+      formControlName="name"
+      [ngClass]="{ 'is-invalid': checkValid.name.errors?.required }"
+    />
+    <div *ngIf="checkValid.name.errors?.required" class="invalid-feedback">
+      <div>Chưa nhập tên dòng gà</div>
+    </div>
+  </div>
+  <div class="mt-4">
+    <button
+      nz-button
+      nzType="primary"
+      [nzLoading]="(added$ | async) === false"
+      (click)="onsubmit()"
+    >
+      Lưu
+    </button>
   </div>
 </form>

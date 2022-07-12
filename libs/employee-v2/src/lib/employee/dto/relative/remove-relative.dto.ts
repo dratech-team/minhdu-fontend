@@ -1,5 +1,5 @@
-import {BaseRemoveDto} from "@minhdu-fontend/base-dto";
+import { BaseRemoveDto } from '@minhdu-fontend/base-dto';
 
-export interface RemoveRelativeDto extends BaseRemoveDto{
-  employeeId: number
+export interface RemoveRelativeDto extends BaseRemoveDto {
+  employeeId: number;
 }

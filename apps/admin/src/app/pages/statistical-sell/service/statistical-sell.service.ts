@@ -6,8 +6,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class StatisticalSellService {
-  constructor(private readonly http: HttpClient) {
-  }
+  constructor(private readonly http: HttpClient) {}
 
   getAll(params: any): Observable<OverviewSell> {
     return this.http.get<OverviewSell>(Api.SELL.OVERVIEW, { params });

@@ -1,88 +1,121 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {select, Store} from '@ngrx/store';
-import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {TemplateSalaryAction} from '../../+state/teamlate-salary/template-salary.action';
-import {selectTemplateAdded} from '../../+state/teamlate-salary/template-salary.selector';
-import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
-import {Branch} from '@minhdu-fontend/data-models';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { select, Store } from '@ngrx/store';
+import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { TemplateSalaryAction } from '../../+state/teamlate-salary/template-salary.action';
+import { selectTemplateAdded } from '../../+state/teamlate-salary/template-salary.selector';
+import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { Branch } from '@minhdu-fontend/data-models';
 import * as lodash from 'lodash';
-import {NzMessageService} from 'ng-zorro-antd/message';
-import {DiveTypeEnum, salaryReference} from "../../enums";
-import {blockSalariesConstant} from "../../constants";
-import {SalarySetting} from "../../+state/teamlate-salary/salary-setting";
-import {recipesConstant, referencesTypeConstant} from "../../constants/references-type.constant";
-import {UnitSalaryConstant} from "../../constants/unit-salary.constant";
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { DiveTypeEnum, salaryReference } from '../../enums';
+import { blockSalariesConstant } from '../../constants';
+import { SalarySetting } from '../../+state/teamlate-salary/salary-setting';
+import {
+  recipesConstant,
+  referencesTypeConstant,
+} from '../../constants/references-type.constant';
+import { UnitSalaryConstant } from '../../constants/unit-salary.constant';
 
 @Component({
-  templateUrl: 'template-salary.component.html'
+  templateUrl: 'template-salary.component.html',
 })
 export class TemplateSalaryComponent implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart));
   numberChars = new RegExp('[^0-9]', 'g');
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   submitted = false;
   blockSalary = blockSalariesConstant;
-  unitConstant = UnitSalaryConstant
-  salaryTypeEnum = SalaryTypeEnum
-  branches = new FormControl();
+  unitConstant = UnitSalaryConstant;
+  salaryTypeEnum = SalaryTypeEnum;
+  branches = new UntypedFormControl();
   branchesSelected: Branch[] = [];
-  constraint: SalaryTypeEnum[] = []
-  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1 == o2.type || o1.type === o2.type : o1 === o2);
+  constraint: SalaryTypeEnum[] = [];
+  compareFN = (o1: any, o2: any) =>
+    o1 && o2 ? o1 == o2.type || o1.type === o2.type : o1 === o2;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { template: SalarySetting, isUpdate: boolean },
-    private readonly formBuilder: FormBuilder,
+    @Inject(MAT_DIALOG_DATA)
+    public data: { template: SalarySetting; isUpdate: boolean },
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly store: Store,
     private readonly message: NzMessageService,
-    private readonly dialogRef: MatDialogRef<TemplateSalaryComponent>,
-  ) {
-  }
+    private readonly dialogRef: MatDialogRef<TemplateSalaryComponent>
+  ) {}
 
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
-    const template = this.data?.template
+    const template = this.data?.template;
     this.formGroup = this.formBuilder.group({
-      block: [template?.type === SalaryTypeEnum.BASIC_INSURANCE ? this.blockSalary.find(block => block.type === SalaryTypeEnum.BASIC) :
-        this.blockSalary.find(block => block.type === template?.type)
-        , Validators.required],
+      block: [
+        template?.type === SalaryTypeEnum.BASIC_INSURANCE
+          ? this.blockSalary.find(
+              (block) => block.type === SalaryTypeEnum.BASIC
+            )
+          : this.blockSalary.find((block) => block.type === template?.type),
+        Validators.required,
+      ],
       price: [template?.price],
       unit: [template?.unit || DatetimeUnitEnum.MONTH],
       recipes: [template?.types ? this.getRecipes(template.types) : []],
-      reference: [template?.types?.length > 0 ? this.getReference(salaryReference.BLOCK) : this.getReference(salaryReference.PRICE)],
+      reference: [
+        template?.types?.length > 0
+          ? this.getReference(salaryReference.BLOCK)
+          : this.getReference(salaryReference.PRICE),
+      ],
       title: [template?.title, Validators.required],
       dive: [template?.workday ? DiveTypeEnum.OTHER : DiveTypeEnum.STANDARD],
       workday: [template?.workday],
       rate: [template?.rate, Validators.required],
-      constraintHoliday: [template?.constraints ? this.checkConstraint(template?.constraints, SalaryTypeEnum.HOLIDAY) : false],
-      constraintOvertime: [template?.constraints ? this.checkConstraint(template?.constraints, SalaryTypeEnum.OVERTIME) : false],
-      insurance: [template?.type === SalaryTypeEnum.BASIC_INSURANCE]
+      constraintHoliday: [
+        template?.constraints
+          ? this.checkConstraint(template?.constraints, SalaryTypeEnum.HOLIDAY)
+          : false,
+      ],
+      constraintOvertime: [
+        template?.constraints
+          ? this.checkConstraint(template?.constraints, SalaryTypeEnum.OVERTIME)
+          : false,
+      ],
+      insurance: [template?.type === SalaryTypeEnum.BASIC_INSURANCE],
     });
 
-    this.formGroup.get('block')?.valueChanges.subscribe(item => {
-      if (item.type === SalaryTypeEnum.OVERTIME || item.type === SalaryTypeEnum.HOLIDAY) {
-        this.message.info('Chức năng đang được phát triền')
-        this.formGroup.get('block')?.setValue('')
+    this.formGroup.get('block')?.valueChanges.subscribe((item) => {
+      if (
+        item.type === SalaryTypeEnum.OVERTIME ||
+        item.type === SalaryTypeEnum.HOLIDAY
+      ) {
+        this.message.info('Chức năng đang được phát triền');
+        this.formGroup.get('block')?.setValue('');
       }
-    })
+    });
   }
 
-
-  checkConstraint(constraints: SalaryTypeEnum[] | undefined, constraint: SalaryTypeEnum) {
+  checkConstraint(
+    constraints: SalaryTypeEnum[] | undefined,
+    constraint: SalaryTypeEnum
+  ) {
     if (!constraints) {
-      return false
+      return false;
     } else {
-      return constraints.some(val => val === constraint)
+      return constraints.some((val) => val === constraint);
     }
   }
 
   getReference(salaryReference: salaryReference) {
-    return referencesTypeConstant.find(referenceConstant => referenceConstant.value === salaryReference)
+    return referencesTypeConstant.find(
+      (referenceConstant) => referenceConstant.value === salaryReference
+    );
   }
 
   getRecipes(types: SalaryTypeEnum[]) {
-    return recipesConstant.filter(value => types.includes(value.value))
+    return recipesConstant.filter((value) => types.includes(value.value));
   }
 
   get checkValid() {
@@ -96,57 +129,60 @@ export class TemplateSalaryComponent implements OnInit {
     }
     const value = this.formGroup.value;
     if (value.constraintHoliday) {
-      this.constraint.push(SalaryTypeEnum.HOLIDAY)
+      this.constraint.push(SalaryTypeEnum.HOLIDAY);
     }
     if (value.constraintOvertime) {
-      this.constraint.push(SalaryTypeEnum.OVERTIME)
+      this.constraint.push(SalaryTypeEnum.OVERTIME);
     }
     const template = {
       title: value.title,
       unit: value.unit,
-      settingType: value.block.type === SalaryTypeEnum.BASIC && value.insurance ?
-        SalaryTypeEnum.BASIC_INSURANCE :
-        value.block.type,
+      settingType:
+        value.block.type === SalaryTypeEnum.BASIC && value.insurance
+          ? SalaryTypeEnum.BASIC_INSURANCE
+          : value.block.type,
       rate: value.rate,
-      price: value.price
+      price: value.price,
     };
     if (value.block.type === SalaryTypeEnum.ABSENT) {
       if (!value.reference) {
-        return this.message.warning('Chưa chọn tổng của ')
+        return this.message.warning('Chưa chọn tổng của ');
       }
       Object.assign(template, {
-        constraints: this.constraint
-      })
+        constraints: this.constraint,
+      });
       if (value.reference.value === salaryReference.PRICE) {
         if (!value.price) {
-          return this.message.warning('Chưa nhập giá tiền')
+          return this.message.warning('Chưa nhập giá tiền');
         }
         Object.assign(template, {
           workday: value.workday ? value.workday : null,
           types: null,
-        })
+        });
       } else {
         if (!value.recipes) {
-          return this.message.warning('Chưa chọn loại lương')
+          return this.message.warning('Chưa chọn loại lương');
         }
         Object.assign(template, {
           workday: value.workday ? value.workday : null,
           price: null,
           types: value.recipes.map((recipe: any) => recipe.value),
-        })
+        });
       }
     }
     if (this.data?.isUpdate) {
-      this.store.dispatch(TemplateSalaryAction.updateTemplate(
-        {
+      this.store.dispatch(
+        TemplateSalaryAction.updateTemplate({
           id: this.data.template.id,
-          template: template
-        }));
+          template: template,
+        })
+      );
     } else {
-      this.store.dispatch(TemplateSalaryAction.AddTemplate(
-        {template: template}));
+      this.store.dispatch(
+        TemplateSalaryAction.AddTemplate({ template: template })
+      );
     }
-    this.store.pipe(select(selectTemplateAdded)).subscribe(added => {
+    this.store.pipe(select(selectTemplateAdded)).subscribe((added) => {
       if (added) {
         this.dialogRef.close(template);
       }
@@ -156,5 +192,4 @@ export class TemplateSalaryComponent implements OnInit {
   removeBranchSelected(branch: Branch) {
     lodash.remove(this.branchesSelected, branch);
   }
-
 }

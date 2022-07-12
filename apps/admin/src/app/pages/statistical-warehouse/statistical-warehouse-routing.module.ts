@@ -5,14 +5,12 @@ import { StatisticalWarehouseComponent } from './container/statistical-warehouse
 const routes: Routes = [
   {
     path: '',
-    component:StatisticalWarehouseComponent
+    component: StatisticalWarehouseComponent,
   },
-
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class StatisticalWarehouseRoutingModule {
-}
+export class StatisticalWarehouseRoutingModule {}

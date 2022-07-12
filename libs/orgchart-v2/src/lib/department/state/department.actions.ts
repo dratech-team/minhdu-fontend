@@ -1,22 +1,19 @@
-import {createAction, props} from '@datorama/akita-ng-effects';
+import { createAction, props } from '@datorama/akita-ng-effects';
 import {
   AddDepartmentDto,
   LoadOneDepartmentDto,
   RemoveDepartmentDto,
   SearchDepartmentDto,
-  UpdateDepartmentDto
-} from "../dto";
-import {EmployeeEntity} from "@minhdu-fontend/employee-v2";
-import {DepartmentEntity} from "../entities/department.entity";
+  UpdateDepartmentDto,
+} from '../dto';
+import { EmployeeEntity } from '@minhdu-fontend/employee-v2';
+import { DepartmentEntity } from '../entities/department.entity';
 
-const addOne = createAction(
-  '[Department] Add One',
-  props<AddDepartmentDto>()
-);
+const addOne = createAction('[Department] Add One', props<AddDepartmentDto>());
 
 const loadAll = createAction(
   '[Department] Load All',
-  props<SearchDepartmentDto>()
+  props<Partial<SearchDepartmentDto>>()
 );
 
 const loadOne = createAction(
@@ -34,14 +31,14 @@ const remove = createAction(
   props<RemoveDepartmentDto>()
 );
 
-const error = createAction(
-  '[Department] Error',
-  props<{ error: string }>()
-);
+const error = createAction('[Department] Error', props<{ error: string }>());
 
 const removeEmployee = createAction(
   '[Department] Delete Allowance',
-  props<{ id: DepartmentEntity['id'], body: { employeeId: EmployeeEntity['id'] } }>()
+  props<{
+    id: DepartmentEntity['id'];
+    body: { employeeId: EmployeeEntity['id'] };
+  }>()
 );
 
 export const DepartmentActions = {
@@ -51,5 +48,5 @@ export const DepartmentActions = {
   update,
   remove,
   error,
-  removeEmployee
+  removeEmployee,
 };

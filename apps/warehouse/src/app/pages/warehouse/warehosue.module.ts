@@ -4,9 +4,7 @@ import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
 import { WarehouseEffect } from './state';
 
 @NgModule({
-  imports: [
-    AkitaNgEffectsModule.forFeature([WarehouseEffect])],
-  providers: [CategoryService]
+  imports: [AkitaNgEffectsModule.forFeature([WarehouseEffect])],
+  providers: [CategoryService],
 })
-export class WarehouseModule {
-}
+export class WarehouseModule {}

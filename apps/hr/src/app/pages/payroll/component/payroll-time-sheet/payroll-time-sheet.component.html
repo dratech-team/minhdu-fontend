@@ -1,177 +1,268 @@
-<div class='mt-2'>
-  <div class='font-weight-bold'>Tổng: {{total$|async}}</div>
-  <div class='table-scroll mt-2'
-       infiniteScroll
-       [alwaysCallback]='true'
-       [infiniteScrollDistance]='1'
-       [infiniteScrollThrottle]='10'
-       [scrollWindow]='false'
-       (scrolled)='onScroll()'>
-    <table matSort (matSortChange)="sortPayroll()"
-           [formGroup]='formGroup' class='main-table' style='width: 4400px'>
+<div class="mt-2">
+  <div class="font-weight-bold">Tổng: {{ total$ | async }}</div>
+  <div
+    class="table-scroll mt-2"
+    infiniteScroll
+    [alwaysCallback]="true"
+    [infiniteScrollDistance]="1"
+    [infiniteScrollThrottle]="10"
+    [scrollWindow]="false"
+    (scrolled)="onScroll()"
+  >
+    <table
+      matSort
+      (matSortChange)="sortPayroll()"
+      [formGroup]="formGroup"
+      class="main-table"
+      style="width: 4400px"
+    >
       <thead>
-      <tr>
-        <th>
-          <div mat-sort-header="{{sortEnum.STT}}" class='border-top text-center'>stt</div>
-          <input type='text' disabled>
-        </th>
-        <th>
-          <div class='border-top text-center'>Mã phiếu lương</div>
-          <input type='search' (keypress)='checkInputNumber($event)' class='form-control text-center'
-                 formControlName='code'>
-        </th>
-        <th style='width: 250px'>
-          <div mat-sort-header="{{sortEnum.NAME}}" class='border-top text-center'>Tên nhân viên</div>
-          <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='search'
-                 formControlName='name'>
-        </th>
-        <th style='width: 150px'>
-          <div class='border-top text-center'>Ngày công chuẩn</div>
-          <input class='text-center' type='search' disabled>
-        </th>
-        <th>
-          <div mat-sort-header="{{sortEnum.BRANCH}}" class='title-profile'>Đơn vị</div>
-          <input class='form-control' type='search' matInput disabled>
-          <!--            <mat-autocomplete #branch='matAutocomplete'>-->
-          <!--              <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'-->
-          <!--                          (onSelectionChange)='onSelectBranch(branch.name)'>-->
-          <!--                {{branch.name}}-->
-          <!--              </mat-option>-->
-          <!--            </mat-autocomplete>-->
-        </th>
-        <th>
-          <div mat-sort-header="{{sortEnum.POSITION}}" class=' text-center'>Chức vụ</div>
-          <nz-select
-            nzShowSearch
-            nzAllowClear
-            style='width:100%'
-            formControlName='position'
-            nzPlaceHolder='chọn chức vụ'
-            [compareWith]='compareFN'
-          >
-            <nz-option
-              *ngFor='let position of positions$|async'
-              [nzLabel]='position.name'
-              [nzValue]='position'
+        <tr>
+          <th>
+            <div
+              mat-sort-header="{{ sortEnum.STT }}"
+              class="border-top text-center"
             >
-            </nz-option>
-          </nz-select>
-        </th>
-        <th width='4%'>
-          <div class='text-center'>Ngày tạo phiếu lương</div>
-          <input class='form-control' disabled>
-        </th>
-        <th *ngFor='let item of daysInMonth'> {{item.title|date:'EEE dd/MM'}}</th>
-        <th width='3%'>
-          <div class='text-center'>Tổng công</div>
-        </th>
-        <th width='4%'>
-          <div class='text-center'>Kế toán xác nhận</div>
-          <select style='width: 100%' class='select border-top' matNativeControl required
-                  formControlName='accConfirmed'>
-            <option [value]="1">Đã xác nhận</option>
-            <option [value]="0">Chưa xác nhận</option>
-            <option [value]="-1">Tất cả</option>
-          </select>
-        </th>
-        <th width='4%'>
-          <div class='text-center'>Quản lý xác nhận</div>
-          <select style='width: 100%' class='select border-top' matNativeControl required
-                  formControlName='manConfirmedAt'>
-            <option value='TRUE'>Đã xác nhận</option>
-            <option value='FALSE'>chưa xác nhận</option>
-            <option value=''>Mặc định</option>
-          </select>
-        </th>
-      </tr>
-      </thead>
-      <tbody *ngIf='(payroll$|async) as payrolls'>
-      <tr *ngIf='!(loaded$ | async)  ; else payroll'>
-        <th colSpan="100">
-          <ngx-skeleton-loader
-            count='10' appearance='line'></ngx-skeleton-loader>
-        </th>
-      </tr>
-      <ng-template #payroll>
-        <tr *ngFor='let payroll of payrolls; let i = index'
-            (contextmenu)='child.onContextMenu($event,payroll)'>
-          <th class='pointer fixed-side text-center' (click)='readPayroll(payroll)'
-              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            <div>{{i + 1}}</div>
-          </th>
-          <th class='pointer fixed-side text-center' (click)='readPayroll(payroll)'
-              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            <div>
-              {{payroll.id}}
+              stt
             </div>
-          </th>
-          <th class='pointer text-center' (click)='readPayroll(payroll)'
-              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            <div>
-              {{payroll?.employee?.lastName}}
-            </div>
-          </th>
-          <th class='pointer fixed-side text-center ' (click)='readPayroll(payroll)'
-              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            <div>
-              {{payroll?.employee?.workday}}
-            </div>
-          </th>
-          <th class='pointer text-center' (click)='readPayroll(payroll)'>
-            <div>
-              {{payroll.branch}}
-            </div>
-          </th>
-          <th class='pointer text-center' (click)='readPayroll(payroll)'>
-            <div>
-              {{payroll.position}}
-            </div>
-          </th>
-          <th class='pointer text-center' (click)='readPayroll(payroll)'>
-            <div>
-              {{payroll.createdAt | date:'dd-MM-yyyy'}}
-            </div>
-          </th>
-          <th class='text-center' *ngFor='let item of daysInMonth ; let i = index' (click)='readPayroll(payroll)'
-              [ngStyle]='{"color": payroll.timesheet ? payroll.timesheet.datetime[i]["color"] : "black" }'>
-            <div>
-              {{payroll?.timesheet ? payroll.timesheet.datetime[i][item.key] : ''}}
-            </div>
-          </th>
-          <th class='pointer text-center' (click)='readPayroll(payroll)'>
-            <div>
-              {{payroll?.timesheet?.total}}
-            </div>
+            <input type="text" disabled />
           </th>
           <th>
-            {{payroll?.accConfirmedAt ? (payroll.accConfirmedAt|date:'dd-MM-yyyy') : 'Chưa xác nhận'}}
+            <div class="border-top text-center">Mã phiếu lương</div>
+            <input
+              type="search"
+              (keypress)="checkInputNumber($event)"
+              class="form-control text-center"
+              formControlName="code"
+            />
           </th>
-          <th class='pointer text-center'>
-            <div (click)='updateManConfirm(payroll.id,payroll.manConfirmedAt, payroll.createdAt)'>
-              <input style='pointer-events: none' disabled type='checkbox'
-                     [checked]='payroll.manConfirmedAt !== null'>
+          <th style="width: 250px">
+            <div
+              mat-sort-header="{{ sortEnum.NAME }}"
+              class="border-top text-center"
+            >
+              Tên nhân viên
             </div>
+            <input
+              class="form-control text-center"
+              placeholder="Nhập tên nhân viên"
+              type="search"
+              formControlName="name"
+            />
+          </th>
+          <th style="width: 150px">
+            <div class="border-top text-center">Ngày công chuẩn</div>
+            <input class="text-center" type="search" disabled />
+          </th>
+          <th>
+            <div mat-sort-header="{{ sortEnum.BRANCH }}" class="title-profile">
+              Đơn vị
+            </div>
+            <input class="form-control" type="search" matInput disabled />
+            <!--            <mat-autocomplete #branch='matAutocomplete'>-->
+            <!--              <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'-->
+            <!--                          (onSelectionChange)='onSelectBranch(branch.name)'>-->
+            <!--                {{branch.name}}-->
+            <!--              </mat-option>-->
+            <!--            </mat-autocomplete>-->
+          </th>
+          <th>
+            <div mat-sort-header="{{ sortEnum.POSITION }}" class="text-center">
+              Chức vụ
+            </div>
+            <nz-select
+              nzShowSearch
+              nzAllowClear
+              style="width: 100%"
+              formControlName="position"
+              nzPlaceHolder="chọn chức vụ"
+              [compareWith]="compareFN"
+            >
+              <nz-option
+                *ngFor="let position of positions$ | async"
+                [nzLabel]="position.name"
+                [nzValue]="position"
+              >
+              </nz-option>
+            </nz-select>
+          </th>
+          <th width="4%">
+            <div class="text-center">Ngày tạo phiếu lương</div>
+            <input class="form-control" disabled />
+          </th>
+          <th *ngFor="let item of daysInMonth">
+            {{ item.title | date: 'EEE dd/MM' }}
+          </th>
+          <th width="3%">
+            <div class="text-center">Tổng công</div>
+          </th>
+          <th width="4%">
+            <div class="text-center">Kế toán xác nhận</div>
+            <select
+              style="width: 100%"
+              class="select border-top"
+              matNativeControl
+              required
+              formControlName="accConfirmed"
+            >
+              <option [value]="1">Đã xác nhận</option>
+              <option [value]="0">Chưa xác nhận</option>
+              <option [value]="-1">Tất cả</option>
+            </select>
+          </th>
+          <th width="4%">
+            <div class="text-center">Quản lý xác nhận</div>
+            <select
+              style="width: 100%"
+              class="select border-top"
+              matNativeControl
+              required
+              formControlName="manConfirmedAt"
+            >
+              <option value="TRUE">Đã xác nhận</option>
+              <option value="FALSE">chưa xác nhận</option>
+              <option value="">Mặc định</option>
+            </select>
           </th>
         </tr>
-        <tr *ngIf='payrolls.length === 0' style='height: 50vh'>
-          <td colspan='100' class='text-center check-content font-weight-bold font-xl '>
-            <span style='position: absolute ; top: 50%; left: 50%'> Hiện không có Phiếu chấm công nào !</span>
-          </td>
+      </thead>
+      <tbody *ngIf="payroll$ | async as payrolls">
+        <tr *ngIf="!(loaded$ | async); else payroll">
+          <th colSpan="100">
+            <ngx-skeleton-loader
+              count="10"
+              appearance="line"
+            ></ngx-skeleton-loader>
+          </th>
         </tr>
-      </ng-template>
+        <ng-template #payroll>
+          <tr
+            *ngFor="let payroll of payrolls; let i = index"
+            (contextmenu)="child.onContextMenu($event, payroll)"
+          >
+            <th
+              class="pointer fixed-side text-center"
+              (click)="readPayroll(payroll)"
+              [ngClass]="{ odd: i % 2 === 0, even: i % 2 !== 0 }"
+            >
+              <div>{{ i + 1 }}</div>
+            </th>
+            <th
+              class="pointer fixed-side text-center"
+              (click)="readPayroll(payroll)"
+              [ngClass]="{ odd: i % 2 === 0, even: i % 2 !== 0 }"
+            >
+              <div>
+                {{ payroll.id }}
+              </div>
+            </th>
+            <th
+              class="pointer text-center"
+              (click)="readPayroll(payroll)"
+              [ngClass]="{ odd: i % 2 === 0, even: i % 2 !== 0 }"
+            >
+              <div>
+                {{ payroll?.employee?.lastName }}
+              </div>
+            </th>
+            <th
+              class="pointer fixed-side text-center"
+              (click)="readPayroll(payroll)"
+              [ngClass]="{ odd: i % 2 === 0, even: i % 2 !== 0 }"
+            >
+              <div>
+                {{ payroll?.employee?.workday }}
+              </div>
+            </th>
+            <th class="pointer text-center" (click)="readPayroll(payroll)">
+              <div>
+                {{ payroll.branch }}
+              </div>
+            </th>
+            <th class="pointer text-center" (click)="readPayroll(payroll)">
+              <div>
+                {{ payroll.position }}
+              </div>
+            </th>
+            <th class="pointer text-center" (click)="readPayroll(payroll)">
+              <div>
+                {{ payroll.createdAt | date: 'dd-MM-yyyy' }}
+              </div>
+            </th>
+            <th
+              class="text-center"
+              *ngFor="let item of daysInMonth; let i = index"
+              (click)="readPayroll(payroll)"
+              [ngStyle]="{
+                color: payroll.timesheet
+                  ? payroll.timesheet.datetime[i]['color']
+                  : 'black'
+              }"
+            >
+              <div>
+                {{
+                  payroll?.timesheet
+                    ? payroll.timesheet.datetime[i][item.key]
+                    : ''
+                }}
+              </div>
+            </th>
+            <th class="pointer text-center" (click)="readPayroll(payroll)">
+              <div>
+                {{ payroll?.timesheet?.total }}
+              </div>
+            </th>
+            <th>
+              {{
+                payroll?.accConfirmedAt
+                  ? (payroll.accConfirmedAt | date: 'dd-MM-yyyy')
+                  : 'Chưa xác nhận'
+              }}
+            </th>
+            <th class="pointer text-center">
+              <div
+                (click)="
+                  updateManConfirm(
+                    payroll.id,
+                    payroll.manConfirmedAt,
+                    payroll.createdAt
+                  )
+                "
+              >
+                <input
+                  style="pointer-events: none"
+                  disabled
+                  type="checkbox"
+                  [checked]="payroll.manConfirmedAt !== null"
+                />
+              </div>
+            </th>
+          </tr>
+          <tr *ngIf="payrolls.length === 0" style="height: 50vh">
+            <td
+              colspan="100"
+              class="text-center check-content font-weight-bold font-xl"
+            >
+              <span style="position: absolute; top: 50%; left: 50%">
+                Hiện không có Phiếu chấm công nào !</span
+              >
+            </td>
+          </tr>
+        </ng-template>
       </tbody>
     </table>
   </div>
 </div>
 
 <app-mouse-right
-  [items]='[ItemContextMenu.RESTORE, ItemContextMenu.HISTORY_PAYROLL]'
+  [items]="[ItemContextMenu.RESTORE, ItemContextMenu.HISTORY_PAYROLL]"
   #child
-  (onDel)='deletePayroll($event)'
-  (onAdd)='addPayroll($event)'
-  (onRestore)='restorePayroll($event)'
-  (onHisPayroll)='historyPayroll($event)'
-  (onDetail)='readPayroll($event)'>
+  (onDel)="deletePayroll($event)"
+  (onAdd)="addPayroll($event)"
+  (onRestore)="restorePayroll($event)"
+  (onHisPayroll)="historyPayroll($event)"
+  (onDetail)="readPayroll($event)"
+>
 </app-mouse-right>
 
 <style>
@@ -188,7 +279,6 @@
     left: 420px;
     z-index: 2;
   }
-
 
   .table-scroll thead th:nth-child(3),
   .table-scroll thead th:nth-child(4) {

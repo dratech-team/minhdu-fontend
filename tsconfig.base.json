@@ -15,27 +15,28 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@minhdu-fontend/components": ["libs/components/src/index.ts"],
       "@minhdu-fontend/auth": ["libs/auth/src/index.ts"],
-      "@minhdu-fontend/data-models": ["libs/data-models/index.ts"],
-      "@minhdu-fontend/constants": ["libs/constants/index.ts"],
-      "@minhdu-fontend/enums": ["libs/enums/index.ts"],
-      "@minhdu-fontend/orgchart": ["libs/orgchart/src/index.ts"],
-      "@minhdu-fontend/service": ["libs/service/index.ts"],
-      "@minhdu-fontend/employee": ["libs/employee/src/index.ts"],
-      "@minhdu-fontend/location": ["libs/location/src/index.ts"],
-      "@minhdu-fontend/environment": ["libs/environments/index.ts"],
-      "@minhdu-fontend/system": ["libs/system/src/index.ts"],
+      "@minhdu-fontend/base-dto": ["libs/dto/index.ts"],
+      "@minhdu-fontend/base-entity": ["libs/entities/index.ts"],
+      "@minhdu-fontend/components": ["libs/components/src/index.ts"],
       "@minhdu-fontend/config": ["libs/configs/index.ts"],
+      "@minhdu-fontend/constants": ["libs/constants/index.ts"],
+      "@minhdu-fontend/data-models": ["libs/data-models/index.ts"],
+      "@minhdu-fontend/dra-effects": ["libs/dra-effects/src/index.ts"],
+      "@minhdu-fontend/employee": ["libs/employee/src/index.ts"],
+      "@minhdu-fontend/employee-v2": ["libs/employee-v2/src/index.ts"],
+      "@minhdu-fontend/enums": ["libs/enums/index.ts"],
+      "@minhdu-fontend/environment": ["libs/environments/index.ts"],
+      "@minhdu-fontend/location": ["libs/location/src/index.ts"],
+      "@minhdu-fontend/orgchart": ["libs/orgchart/src/index.ts"],
       "@minhdu-fontend/orgchart-position": [
         "libs/orgchart/src/lib/+state/position/index.ts"
       ],
-      "@minhdu-fontend/utils": ["libs/utils/index.ts"],
-      "@minhdu-fontend/base-entity": ["libs/entities/index.ts"],
-      "@minhdu-fontend/base-dto": ["libs/dto/index.ts"],
-      "@minhdu-fontend/dra-effects": ["libs/dra-effects/src/index.ts"],
       "@minhdu-fontend/orgchart-v2": ["libs/orgchart-v2/src/index.ts"],
-      "@minhdu-fontend/employee-v2": ["libs/employee-v2/src/index.ts"]
+      "@minhdu-fontend/pipes": ["libs/pipes/src/index.ts"],
+      "@minhdu-fontend/service": ["libs/service/index.ts"],
+      "@minhdu-fontend/system": ["libs/system/src/index.ts"],
+      "@minhdu-fontend/utils": ["libs/utils/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

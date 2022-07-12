@@ -1,6 +1,3 @@
-import {BaseSystemHistoryEntity} from "../base/base-system-history.entity";
+import { BaseSystemHistoryEntity } from '../base/base-system-history.entity';
 
-export interface SystemHistoryEntity extends BaseSystemHistoryEntity {
-}
-
-
+export interface SystemHistoryEntity extends BaseSystemHistoryEntity {}

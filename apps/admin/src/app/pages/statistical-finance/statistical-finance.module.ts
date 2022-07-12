@@ -12,7 +12,6 @@ import { PayComponent } from './container/components/pay.component/pay.component
 import { DebtsComponent } from './container/components/debt.component/debts.component';
 import { LoanComponent } from './container/components/loan.component/loan.component';
 
-
 @NgModule({
   imports: [
     StatisticalFinanceRoutingModule,
@@ -21,17 +20,15 @@ import { LoanComponent } from './container/components/loan.component/loan.compon
     CommonModule,
     MatFormFieldModule,
     MatSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   declarations: [
     StatisticalFinanceComponent,
     CollectComponent,
     PayComponent,
     DebtsComponent,
-    LoanComponent
+    LoanComponent,
   ],
-  exports: [
-  ],
+  exports: [],
 })
-export class StatisticalFinanceModule {
-}
+export class StatisticalFinanceModule {}

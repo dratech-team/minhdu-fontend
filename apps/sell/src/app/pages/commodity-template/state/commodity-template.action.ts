@@ -1,9 +1,9 @@
-import {createAction, props} from '@datorama/akita-ng-effects';
-import {AddCommodityTemplateDto} from "../dto/add-commodity-template.dto";
-import {SearchCommodityTemplateDto} from "../dto/search-commodity-template.dto";
-import {UpdateCommodityTemplateDto} from "../dto/update-commodity-template.dto";
-import {RemoveCommodityDto} from "../dto/remove-commodity-template.dto";
-import {LoadOneCommodityTemplateDto} from "../dto/load-one-commodity-template.dto";
+import { createAction, props } from '@datorama/akita-ng-effects';
+import { AddCommodityTemplateDto } from '../dto/add-commodity-template.dto';
+import { SearchCommodityTemplateDto } from '../dto/search-commodity-template.dto';
+import { UpdateCommodityTemplateDto } from '../dto/update-commodity-template.dto';
+import { RemoveCommodityDto } from '../dto/remove-commodity-template.dto';
+import { LoadOneCommodityTemplateDto } from '../dto/load-one-commodity-template.dto';
 
 const addOne = createAction(
   '[COMMODITY_TEMPLATE] Add One',
@@ -12,7 +12,7 @@ const addOne = createAction(
 
 const loadAll = createAction(
   '[COMMODITY_TEMPLATE] Load All',
-  props<SearchCommodityTemplateDto>()
+  props<Partial<SearchCommodityTemplateDto>>()
 );
 
 const loadOne = createAction(
@@ -34,7 +34,6 @@ const error = createAction(
   '[COMMODITY_TEMPLATE] Error',
   props<{ error: string }>()
 );
-
 
 export const CommodityTemplateActions = {
   addOne,

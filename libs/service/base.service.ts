@@ -1,9 +1,9 @@
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {ResponsePaginate} from '../data-models';
-import {Api} from '../constants';
-import {ResponseMessageEntity} from '../entities';
-import {VersionEnum} from '../enums';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ResponsePaginate } from '../data-models';
+import { Api } from '../constants';
+import { ResponseMessageEntity } from '../entities';
+import { VersionEnum } from '../enums';
 
 export abstract class BaseService<T> {
   protected constructor(
@@ -31,15 +31,25 @@ export abstract class BaseService<T> {
   }
 
   addMany(body: any): Observable<ResponseMessageEntity> {
-    return this.http.post<ResponseMessageEntity>(this.url + `/multiple/creation`, body);
+    return this.http.post<ResponseMessageEntity>(
+      this.url + `/multiple/creation`,
+      body
+    );
   }
 
   update(id: any, body: Partial<any>): Observable<T> {
     return this.http.patch<T>(this.url + `/${id}`, body);
   }
 
-  updateMany(body: any, method?: 'put' | 'patch' | 'post'): Observable<ResponseMessageEntity> {
-    return this.http.request<ResponseMessageEntity>(method ?? 'post', this.url + `/multiple/updation`, { body });
+  updateMany(
+    body: any,
+    method?: 'put' | 'patch' | 'post'
+  ): Observable<ResponseMessageEntity> {
+    return this.http.request<ResponseMessageEntity>(
+      method ?? 'post',
+      this.url + `/multiple/updation`,
+      { body }
+    );
   }
 
   delete(id: number, params?: any): Observable<void> {
@@ -47,7 +57,10 @@ export abstract class BaseService<T> {
   }
 
   deleteMany(body: any): Observable<ResponseMessageEntity> {
-    return this.http.post<ResponseMessageEntity>(this.url + `/multiple/deletion`, body);
+    return this.http.post<ResponseMessageEntity>(
+      this.url + `/multiple/deletion`,
+      body
+    );
   }
 
   sort(body: any): Observable<any> {

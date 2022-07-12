@@ -4,5 +4,5 @@ export enum HrefEnum {
   ORDER = 'don-hang',
   ROUTE = 'tuyen-duong',
   SYSTEM = 'he-thong',
-  COMMODITY_TEMPLATE = 'quan-li-dong-ga'
+  COMMODITY_TEMPLATE = 'quan-li-dong-ga',
 }

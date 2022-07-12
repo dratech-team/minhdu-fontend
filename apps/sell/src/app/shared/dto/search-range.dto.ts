@@ -1,4 +1,4 @@
-export class SearchRangeDto {
+export interface SearchRangeDto {
   readonly startedAt_start?: Date;
   readonly startedAt_end?: Date;
   readonly endedAt_start?: Date;

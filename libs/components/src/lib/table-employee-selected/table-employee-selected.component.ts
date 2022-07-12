@@ -1,16 +1,17 @@
 import {
-  Component, DoCheck,
+  Component,
   EventEmitter,
-  Input, IterableDiffers,
+  Input,
+  IterableDiffers,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges
 } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Employee } from '@minhdu-fontend/data-models';
-import { pickAll, pickOne, someComplete } from '../../../../utils/pick-item.ultil';
+import { pickOne, someComplete } from '@minhdu-fontend/utils';
 
 @Component({
   selector: 'app-table-employee-selected',
@@ -25,10 +26,7 @@ export class TableEmployeeSelectedComponent implements OnInit, OnChanges {
   employeeId!: number;
   differ: any;
 
-  constructor(
-    private differs: IterableDiffers,
-    private readonly store: Store
-  ) {
+  constructor(private differs: IterableDiffers, private readonly store: Store) {
     this.differ = differs.find([]).create(undefined);
   }
 
@@ -43,22 +41,28 @@ export class TableEmployeeSelectedComponent implements OnInit, OnChanges {
     if (this.employees.length === 0) {
       this.isSelectAll = false;
     }
-    this.employeesSelected =[...this.employees];
+    this.employeesSelected = [...this.employees];
   }
 
-
   updateSelect(employee: Employee) {
-    this.isSelectAll = pickOne(employee, this.employeesSelected, this.employees).isSelectAll
+    this.isSelectAll = pickOne(
+      employee,
+      this.employeesSelected,
+      this.employees
+    ).isSelectAll;
     this.EventSelectEmployee.emit(this.employeesSelected);
   }
 
-
   someComplete(): boolean {
-    return someComplete(this.employees,this.employeesSelected, this.isSelectAll)
+    return someComplete(
+      this.employees,
+      this.employeesSelected,
+      this.isSelectAll
+    );
   }
 
   setAll() {
-    this.employeesSelected = []
+    this.employeesSelected = [];
     this.EventSelectEmployee.emit(this.employeesSelected);
   }
 

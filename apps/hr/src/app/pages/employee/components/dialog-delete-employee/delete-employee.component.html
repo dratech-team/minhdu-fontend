@@ -1,37 +1,41 @@
-<div class='main-popup'>
-  <div mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+<div class="main-popup">
+  <div mat-dialog-close class="close-popup">
+    <span class="mr-1"> close</span>
+    <div class="x-popup">
+      <img src="../../../../../assets/img/share/x2-lg.svg" alt="cancel" />
     </div>
   </div>
-  <div *ngIf='data.permanentlyDeleted' class='mt-2'>
-    <div class='title-popup'>
-        <span>Xóa nhân viên {{data.employee.lastName}}</span>
+  <div *ngIf="data.permanentlyDeleted" class="mt-2">
+    <div class="title-popup">
+      <span>Xóa nhân viên {{ data.employee.lastName }}</span>
     </div>
-    <div class='text-danger mt-2'>Xóa nhân  viên dữ liệu sẽ biến mất hoàn toàn</div>
-    <div class='mt-4 ' mat-dialog-actions>
-      <button class='btn btn-dark ml-2'  (click)='submit()'>Đồng ý</button>
+    <div class="text-danger mt-2">
+      Xóa nhân viên dữ liệu sẽ biến mất hoàn toàn
+    </div>
+    <div class="mt-4" mat-dialog-actions>
+      <button class="btn btn-dark ml-2" (click)="submit()">Đồng ý</button>
     </div>
   </div>
-  <div *ngIf='!data.permanentlyDeleted'  class='mt-2' style='width: 400px' >
-    <div class='title-popup'>
-      <span *ngIf=' !data.leftAt; else restore '  >Nhân viên {{data.employee.lastName}} tạm thời nghỉ việc </span>
-      <ng-template  #restore>
+  <div *ngIf="!data.permanentlyDeleted" class="mt-2" style="width: 400px">
+    <div class="title-popup">
+      <span *ngIf="!data.leftAt; else restore"
+        >Nhân viên {{ data.employee.lastName }} tạm thời nghỉ việc
+      </span>
+      <ng-template #restore>
         <div class="font-lg">Khôi phục nhân viên</div>
       </ng-template>
     </div>
-    <div class='mt-2 '>
-      <form [formGroup]='formGroup' *ngIf='!data.leftAt'>
-        <label class='title-child'>Ngày nghỉ việc</label>
-        <input type='date' class='form-control' formControlName='leftAt'>
+    <div class="mt-2">
+      <form [formGroup]="formGroup" *ngIf="!data.leftAt">
+        <label class="title-child">Ngày nghỉ việc</label>
+        <input type="date" class="form-control" formControlName="leftAt" />
       </form>
-      <div *ngIf="data.leftAt" class="font-lg">Khôi phục nhân viên {{data.employee.lastName}}</div>
+      <div *ngIf="data.leftAt" class="font-lg">
+        Khôi phục nhân viên {{ data.employee.lastName }}
+      </div>
     </div>
-    <div class='mt-2 ' mat-dialog-actions>
-      <button class='btn btn-dark ml-2'  (click)='submit()'>Đồng ý</button>
+    <div class="mt-2" mat-dialog-actions>
+      <button class="btn btn-dark ml-2" (click)="submit()">Đồng ý</button>
     </div>
   </div>
 </div>
-
-

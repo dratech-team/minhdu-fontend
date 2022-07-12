@@ -1,8 +1,20 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Employee } from '@minhdu-fontend/data-models';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { debounceTime, startWith, tap } from 'rxjs/operators';
 import { TimekeepingService } from './timekeeping.service';
 import { of } from 'rxjs';
@@ -10,18 +22,29 @@ import {
   EmployeeAction,
   selectEmployeeLoaded,
   selectorAllEmployee,
-  selectorTotalEmployee
+  selectorTotalEmployee,
 } from '@minhdu-fontend/employee';
-import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
+import {
+  getAllPosition,
+  PositionActions,
+} from '@minhdu-fontend/orgchart-position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { searchAutocomplete } from '@minhdu-fontend/utils';
-import { checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComplete } from '@minhdu-fontend/utils';
+import {
+  checkIsSelectAllInit,
+  handleValSubPickItems,
+  pickAll,
+  pickOne,
+  someComplete,
+} from '@minhdu-fontend/utils';
 
 @Component({
   selector: 'app-pick-employee-deduction',
-  templateUrl: './pick-employee-absent.component.html'
+  templateUrl: './pick-employee-absent.component.html',
 })
-export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges {
+export class PickEmployeeAbsentComponent
+  implements OnInit, OnChanges, OnChanges
+{
   @Input() employeeInit?: Employee;
   @Input() createdPayroll!: Date;
   @Input() employeesSelected: Employee[] = [];
@@ -41,23 +64,24 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges
   loaded$ = this.store.pipe(select(selectEmployeeLoaded));
   total$ = this.store.pipe(select(selectorTotalEmployee));
 
-  formGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
-    position: new FormControl('', Validators.required),
-    branch: new FormControl('', Validators.required)
+  formGroup = new UntypedFormGroup({
+    name: new UntypedFormControl('', Validators.required),
+    position: new UntypedFormControl('', Validators.required),
+    branch: new UntypedFormControl('', Validators.required),
   });
 
   constructor(
     private readonly store: Store,
     private readonly service: TimekeepingService
-  ) {
-  }
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.employeesSelected) {
       this.isSelectAll =
         this.employees.length > 1 &&
-        this.employees.every((e) => this.employeesSelected.some(item => item.id === e.id));
+        this.employees.every((e) =>
+          this.employeesSelected.some((item) => item.id === e.id)
+        );
     }
 
     if (
@@ -72,8 +96,8 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges
           employee: {
             take: 30,
             skip: 0,
-            createdPayroll: new Date(changes.createdPayroll.currentValue)
-          }
+            createdPayroll: new Date(changes.createdPayroll.currentValue),
+          },
         })
       );
     }
@@ -89,10 +113,18 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges
         this.isSelectAll = false;
       }
       if (this.isEventSearch) {
-        this.isSelectAll = checkIsSelectAllInit(employees, this.employeesSelected);
+        this.isSelectAll = checkIsSelectAllInit(
+          employees,
+          this.employeesSelected
+        );
       }
 
-      this.employees = handleValSubPickItems(employees, this.employees, this.employeesSelected, this.isSelectAll);
+      this.employees = handleValSubPickItems(
+        employees,
+        this.employees,
+        this.employeesSelected,
+        this.isSelectAll
+      );
       const value = this.formGroup.value;
     });
     this.store.dispatch(PositionActions.loadPosition());
@@ -107,7 +139,7 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges
           Object.assign(val, {
             take: this.pageSize,
             skip: this.pageIndex,
-            createdPayroll: new Date(this.createdPayroll)
+            createdPayroll: new Date(this.createdPayroll),
           });
           return this.store.dispatch(
             EmployeeAction.loadInit({ employee: val })
@@ -117,7 +149,8 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges
       .subscribe();
 
     this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
+      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) ||
+        of(''),
       this.store.pipe(select(getAllPosition))
     );
 
@@ -128,12 +161,20 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges
   }
 
   updateSelect(employee: Employee) {
-    this.isSelectAll = pickOne(employee, this.employeesSelected, this.employees).isSelectAll;
+    this.isSelectAll = pickOne(
+      employee,
+      this.employeesSelected,
+      this.employees
+    ).isSelectAll;
     this.EventSelectEmployee.emit(this.employeesSelected);
   }
 
   someComplete(): boolean {
-    return someComplete(this.employees, this.employeesSelected, this.isSelectAll);
+    return someComplete(
+      this.employees,
+      this.employeesSelected,
+      this.isSelectAll
+    );
   }
 
   setAll(select: boolean) {

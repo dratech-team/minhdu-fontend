@@ -1,8 +1,12 @@
- <form [formGroup]="formGroup">
-    <span class='font-weight-bold mb-2'>Chú thích</span>
-   <textarea [rows]="4" class="form-control" type="text" formControlName="note"></textarea>
-  </form>
-  <div class="row mt-4 ml-2">
-    <button nz-button nzType="primary" (click)="onSubmit()">Xác nhận</button>
-  </div>
-
+<form [formGroup]="formGroup">
+  <span class="font-weight-bold mb-2">Chú thích</span>
+  <textarea
+    [rows]="4"
+    class="form-control"
+    type="text"
+    formControlName="note"
+  ></textarea>
+</form>
+<div class="row mt-4 ml-2">
+  <button nz-button nzType="primary" (click)="onSubmit()">Xác nhận</button>
+</div>

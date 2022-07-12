@@ -1,44 +1,38 @@
-<div class='main-popup'>
-  <div mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='../../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+<div class="main-popup">
+  <div mat-dialog-close class="close-popup">
+    <span class="mr-1"> close</span>
+    <div class="x-popup">
+      <img src="../../../../../../assets/img/share/x2-lg.svg" alt="cancel" />
     </div>
   </div>
-  <div class=' font-weight-bold font-xl mx-auto ' >
-  {{title}}
+  <div class="font-weight-bold font-xl mx-auto">
+    {{ title }}
   </div>
-  <div class='fixTableHead  mt-2 mx-auto'>
-    <table style='min-width: 700px' #table >
+  <div class="fixTableHead mt-2 mx-auto">
+    <table style="min-width: 700px" #table>
       <thead>
-      <tr>
-        <th style='width: 70px'>
-          <div class='border-top text-center'>stt</div>
-
-        </th>
-        <th>
-          <div class='border-top text-center'>Tháng</div>
-
-        </th>
-        <th>
-          <div class='border-top text-center'>Tổng Tiền</div>
-
-        </th>
-      </tr>
+        <tr>
+          <th style="width: 70px">
+            <div class="border-top text-center">stt</div>
+          </th>
+          <th>
+            <div class="border-top text-center">Tháng</div>
+          </th>
+          <th>
+            <div class="border-top text-center">Tổng Tiền</div>
+          </th>
+        </tr>
       </thead>
       <tbody>
-      <tr *ngFor='let item of dataDetail;let i = index'>
-        <td class='text-center'>{{i + 1}}</td>
-        <td class='text-center'>{{item.datetime}}</td>
-        <td class='text-center'>{{item.total|number:'1.0-0'}} vnd</td>
-      </tr>
-
+        <tr *ngFor="let item of dataDetail; let i = index">
+          <td class="text-center">{{ i + 1 }}</td>
+          <td class="text-center">{{ item.datetime }}</td>
+          <td class="text-center">{{ item.total | number: '1.0-0' }} vnd</td>
+        </tr>
       </tbody>
     </table>
   </div>
-  <div class='d-flex justify-content-end font-weight-bold  mx-auto mt-2  w-100'>
-    <div>
-      Tổng công: {{totalSalary|number:'1.0-0'}} vnd
-    </div>
+  <div class="d-flex justify-content-end font-weight-bold mx-auto mt-2 w-100">
+    <div>Tổng công: {{ totalSalary | number: '1.0-0' }} vnd</div>
   </div>
 </div>

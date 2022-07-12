@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import {AuthModule, ErrorInterceptor, JwtInterceptor} from '@minhdu-fontend/auth';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthModule } from '@minhdu-fontend/auth';
 import { CommonModule, HashLocationStrategy } from '@angular/common';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AppRoutingModule } from './app-routing.module';
@@ -19,21 +19,20 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AppComponent } from './app.component';
-import { WarehouseLayoutComponent } from './container/base/warehouse-layout.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OrgchartModule } from '@minhdu-fontend/orgchart';
 import { SupplierModule } from './pages/supplier/supplier.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { RouteGuard } from './route.guard';
-import {StoreDevtoolsModule} from "@ngrx/store-devtools";
-import {environment} from "../../../hr/src/environments/environment";
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../../../hr/src/environments/environment';
 import { WarehouseModule } from './pages/warehouse/warehosue.module';
-import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
-import {AccountEffects} from "../../../../libs/system/src/lib/state/account-management/account.effects";
+import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
+import { AccountEffects } from '../../../../libs/system/src/lib/state/account-management/account.effects';
 
 @NgModule({
-  declarations: [WarehouseLayoutComponent, AppComponent],
+  declarations: [AppComponent],
   imports: [
     ReactiveFormsModule,
     FormsModule,

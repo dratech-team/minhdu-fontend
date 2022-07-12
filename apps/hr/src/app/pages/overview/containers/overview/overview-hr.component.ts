@@ -10,27 +10,29 @@ import { Chart, stakedChart } from '@minhdu-fontend/data-models';
 
 @Component({
   selector: 'app-overview-hr',
-  templateUrl: 'overview.component.html'
+  templateUrl: 'overview.component.html',
 })
 export class OverviewHrComponent implements OnInit {
-  overviewAgeEmployee: Chart [] = [];
-  overviewTotalEmployee:stakedChart [] = [];
+  overviewAgeEmployee: Chart[] = [];
+  overviewTotalEmployee: stakedChart[] = [];
 
   constructor(
     private readonly store: Store<AppState>,
     private readonly dialog: MatDialog,
     private readonly overviewService: OverviewService
-  ) {
-
-  }
+  ) {}
 
   ngOnInit() {
-    this.overviewService.overviewAge({ filter: OverviewFilterEnum.AGE }).subscribe(val => {
-      this.overviewAgeEmployee = val;
-    });
-    this.overviewService.overviewTotalEmp({ filter: OverviewFilterEnum.CREATED_AT }).subscribe(val => {
-      this.overviewTotalEmployee = val;
-    });
+    this.overviewService
+      .overviewAge({ filter: OverviewFilterEnum.AGE })
+      .subscribe((val) => {
+        this.overviewAgeEmployee = val;
+      });
+    this.overviewService
+      .overviewTotalEmp({ filter: OverviewFilterEnum.CREATED_AT })
+      .subscribe((val) => {
+        this.overviewTotalEmployee = val;
+      });
   }
 
   statisticalEmployee() {

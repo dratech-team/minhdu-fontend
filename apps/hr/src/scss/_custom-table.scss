@@ -1,4 +1,3 @@
-
 .select {
   font-size: 15px;
   border: none;
@@ -96,13 +95,11 @@
   text-align: center;
 }
 
-.table-scroll thead tr th,
-{
+.table-scroll thead tr th {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
 }
-
 
 .table-scroll tbody th {
   padding: 5px;
@@ -123,7 +120,6 @@
   width: 120px;
   z-index: 2;
 }
-
 
 .table-scroll thead th:first-child,
 .table-scroll thead th:nth-child(2) {

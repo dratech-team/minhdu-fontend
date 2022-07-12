@@ -1,7 +1,7 @@
-import {BasePositionEntity} from "../bases";
-import {BranchEntity} from "../../branch/entities/branch.entity";
+import { BasePositionEntity } from '../bases';
+import { BranchEntity } from '../../branch/entities/branch.entity';
 
-export interface PositionEntity extends BasePositionEntity{
-  branches: BranchEntity[]
-  _count?: any
+export interface PositionEntity extends BasePositionEntity {
+  branches: BranchEntity[];
+  _count?: any;
 }

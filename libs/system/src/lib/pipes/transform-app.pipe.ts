@@ -1,8 +1,8 @@
-import {Pipe, PipeTransform} from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'transformApp',
-  pure: false
+  pure: false,
 })
 export class TransformAppPipe implements PipeTransform {
   transform(appName: string | undefined, apps: any[]): string {
@@ -11,6 +11,5 @@ export class TransformAppPipe implements PipeTransform {
     } else {
       return '-';
     }
-
   }
 }

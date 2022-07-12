@@ -1,213 +1,333 @@
-<div class='font-lg font-weight-bold my-2'>
-  Đã chọn: {{salariesSelected.length}}/{{totalSalaryStay$|async}}
+<div class="font-lg font-weight-bold my-2">
+  Đã chọn: {{ salariesSelected.length }}/{{ totalSalaryStay$ | async }}
 </div>
-<div class='table-scroll mt-2 position-relative'
-     infiniteScroll
-     [alwaysCallback]='true'
-     [infiniteScrollDistance]='1'
-     [infiniteScrollThrottle]='10'
-     [scrollWindow]='false'
-     (scrolled)='onScroll()'
+<div
+  class="table-scroll mt-2 position-relative"
+  infiniteScroll
+  [alwaysCallback]="true"
+  [infiniteScrollDistance]="1"
+  [infiniteScrollThrottle]="10"
+  [scrollWindow]="false"
+  (scrolled)="onScroll()"
 >
-  <table matSort (matSortChange)="sortPayroll()" [formGroup]='formGroup' class='main-table' style='width: 2000px;'>
+  <table
+    matSort
+    (matSortChange)="sortPayroll()"
+    [formGroup]="formGroup"
+    class="main-table"
+    style="width: 2000px"
+  >
     <thead>
-    <tr>
-      <th>
-        <div mat-sort-header="{{sortEnum.STT}}" class='border-top text-center'>stt</div>
-        <input type='text' disabled>
-      </th>
-      <th>
-        <div class='border-top text-center'>Mã phiếu lương</div>
-        <input type='search' (keypress)='checkInputNumber($event)' class='form-control text-center'
-               formControlName='code'>
-      </th>
-      <th style='width: 250px'>
-        <div class='border-top text-center'>
-          <div mat-sort-header="{{sortEnum.NAME}}" class='d-flex justify-content-center' style='height: 100%'>
-            <span>Tên nhân viên</span>
-            <mat-select style='width: 100px; margin-left: 3px ' formControlName='searchType'>
-              <mat-option *ngFor='let item of searchTypeConstant' [value]='item.value'>{{item.name}}</mat-option>
-            </mat-select>
-          </div>
-        </div>
-        <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='search' formControlName='name'>
-      </th>
-      <th style='width: 120px ; z-index: 3'>
-        <div class='border-top border-bottom d-flex justify-content-center align-items-center'>
-            <span>
-               Chọn
-            </span>
-        </div>
-        <div class='w-100 d-flex justify-content-between'>
-          <div *ngIf='salariesSelected.length > 0'>
-            <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
-                    (click)='updateMultipleSalaryStay()'
-                    class=' btn btn-primary d-flex justify-content-center align-items-center m-1 '>
-              Sửa
-            </button>
-            <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
-                    (click)='deleteMultipleSalaryStay()'
-                    class=' btn btn-danger d-flex justify-content-center align-items-center m-1 '>
-              Xóa
-            </button>
-          </div>
-        </div>
-      </th>
-      <th style='width: 200px'>
-        <div mat-sort-header="{{sortEnum.BRANCH}}" class='title-profile'>Đơn vị</div>
-        <input class='form-control' type='search' matInput disabled>
-      </th>
-      <th style='width: 200px'>
-        <div mat-sort-header="{{sortEnum.POSITION}}" class='title-profile'>Chức vụ</div>
-        <nz-select
-          nzShowSearch
-          nzAllowClear
-          style='width:100%'
-          formControlName='position'
-          nzPlaceHolder='chọn chức vụ'
-          [compareWith]="compareFN"
-        >
-          <nz-option
-            *ngFor='let position of positions$|async'
-            [nzLabel]='position.name'
-            [nzValue]='position'
+      <tr>
+        <th>
+          <div
+            mat-sort-header="{{ sortEnum.STT }}"
+            class="border-top text-center"
           >
-          </nz-option>
-        </nz-select>
-      </th>
-      <th style='width: 220px;'>
-        <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
-        <input disabled>
-      </th>
-      <th style='min-width: 300px;'>
-        <div class='border-top d-flex justify-content-center align-items-center'>Phụ cấp lương</div>
-        <nz-select style="width: 100%"
-                   [nzMaxTagCount]="1"
-                   [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
-                   nzMode="multiple"
-                   nzPlaceHolder="Chọn loại phụ cấp"
-                   formControlName="titles"
-        >
-          <nz-option *ngFor="let item of templateStays" [nzLabel]="item" [nzValue]="item"></nz-option>
-          <nz-option [nzLabel]="'Tất cả'" [nzValue]="''"></nz-option>
-        </nz-select>
-        <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn</ng-template>
-      </th>
-      <th>
-        <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị tính</div>
-        <input disabled>
-      </th>
-      <th>
-        <div class='border-top d-flex justify-content-center align-items-center'>thành tiền</div>
-        <input type='text' disabled>
-      </th>
-    </tr>
+            stt
+          </div>
+          <input type="text" disabled />
+        </th>
+        <th>
+          <div class="border-top text-center">Mã phiếu lương</div>
+          <input
+            type="search"
+            (keypress)="checkInputNumber($event)"
+            class="form-control text-center"
+            formControlName="code"
+          />
+        </th>
+        <th style="width: 250px">
+          <div class="border-top text-center">
+            <div
+              mat-sort-header="{{ sortEnum.NAME }}"
+              class="d-flex justify-content-center"
+              style="height: 100%"
+            >
+              <span>Tên nhân viên</span>
+              <mat-select
+                style="width: 100px; margin-left: 3px"
+                formControlName="searchType"
+              >
+                <mat-option
+                  *ngFor="let item of searchTypeConstant"
+                  [value]="item.value"
+                  >{{ item.name }}</mat-option
+                >
+              </mat-select>
+            </div>
+          </div>
+          <input
+            class="form-control text-center"
+            placeholder="Nhập tên nhân viên"
+            type="search"
+            formControlName="name"
+          />
+        </th>
+        <th style="width: 120px; z-index: 3">
+          <div
+            class="border-top border-bottom d-flex justify-content-center align-items-center"
+          >
+            <span> Chọn </span>
+          </div>
+          <div class="w-100 d-flex justify-content-between">
+            <div *ngIf="salariesSelected.length > 0">
+              <button
+                style="height: 30px; font-size: 13px; margin: 3px auto 0"
+                (click)="updateMultipleSalaryStay()"
+                class="btn btn-primary d-flex justify-content-center align-items-center m-1"
+              >
+                Sửa
+              </button>
+              <button
+                style="height: 30px; font-size: 13px; margin: 3px auto 0"
+                (click)="deleteMultipleSalaryStay()"
+                class="btn btn-danger d-flex justify-content-center align-items-center m-1"
+              >
+                Xóa
+              </button>
+            </div>
+          </div>
+        </th>
+        <th style="width: 200px">
+          <div mat-sort-header="{{ sortEnum.BRANCH }}" class="title-profile">
+            Đơn vị
+          </div>
+          <input class="form-control" type="search" matInput disabled />
+        </th>
+        <th style="width: 200px">
+          <div mat-sort-header="{{ sortEnum.POSITION }}" class="title-profile">
+            Chức vụ
+          </div>
+          <nz-select
+            nzShowSearch
+            nzAllowClear
+            style="width: 100%"
+            formControlName="position"
+            nzPlaceHolder="chọn chức vụ"
+            [compareWith]="compareFN"
+          >
+            <nz-option
+              *ngFor="let position of positions$ | async"
+              [nzLabel]="position.name"
+              [nzValue]="position"
+            >
+            </nz-option>
+          </nz-select>
+        </th>
+        <th style="width: 220px">
+          <div
+            class="border-top d-flex justify-content-center align-items-center"
+          >
+            Tháng
+          </div>
+          <input disabled />
+        </th>
+        <th style="min-width: 300px">
+          <div
+            class="border-top d-flex justify-content-center align-items-center"
+          >
+            Phụ cấp lương
+          </div>
+          <nz-select
+            style="width: 100%"
+            [nzMaxTagCount]="1"
+            [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
+            nzMode="multiple"
+            nzPlaceHolder="Chọn loại phụ cấp"
+            formControlName="titles"
+          >
+            <nz-option
+              *ngFor="let item of templateStays"
+              [nzLabel]="item"
+              [nzValue]="item"
+            ></nz-option>
+            <nz-option [nzLabel]="'Tất cả'" [nzValue]="''"></nz-option>
+          </nz-select>
+          <ng-template #tagPlaceHolderPosition let-positionSelected
+            >và {{ positionSelected.length }} đã chọn</ng-template
+          >
+        </th>
+        <th>
+          <div
+            class="border-top d-flex justify-content-center align-items-center"
+          >
+            Đơn vị tính
+          </div>
+          <input disabled />
+        </th>
+        <th>
+          <div
+            class="border-top d-flex justify-content-center align-items-center"
+          >
+            thành tiền
+          </div>
+          <input type="text" disabled />
+        </th>
+      </tr>
     </thead>
-    <tbody *ngIf='(payrollStay$|async) as payrollsBasic'>
-    <tr *ngIf='!(loaded$|async) else payrollBasicTemp'>
-      <th colSpan="100">
-        <ngx-skeleton-loader count='18' appearance='line'></ngx-skeleton-loader>
-      </th>
-    </tr>
-    <ng-template #payrollBasicTemp>
-      <tr *ngFor='let payrollStay of payrollsBasic; let i = index'
-          [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-        <th class='pointer'
-            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-          <div>
-            {{i + 1}}
-          </div>
-        </th>
-        <th class='pointer'
-            (click)='readPayroll(payrollStay)'
-            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-          <div>
-            {{payrollStay.payrollId}}
-          </div>
-        </th>
-        <th class='pointer'
-            (click)='readPayroll(payrollStay)'
-            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-          <div>
-            {{payrollStay.employee.lastName}}
-          </div>
-        </th>
-        <th class='pointer'
-            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-          <div class=' d-flex align-items-center justify-content-center pointer '
-               *ngFor='let item of payrollStay.salaries|filterTypeSalary:["STAY"]'>
-            <mat-checkbox
-              style="margin-top: 5px"
-              [checked]='selectSalary(item)'
-              (change)='updateSelectSalary({ salary:item,payroll: payrollStay}, $event.checked)'>
-            </mat-checkbox>
-          </div>
-        </th>
-        <th style='width: 200px' class='pointer'
-            (click)='readPayroll(payrollStay)'>
-          <div>
-            {{payrollStay.branch}}
-          </div>
-        </th>
-        <th style='width: 200px' class='pointer'
-            (click)='readPayroll(payrollStay)'
-            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-          <div>
-            {{payrollStay.position}}
-          </div>
-        </th>
-        <th class='pointer' style='width: 220px;'>
-          <div class=' d-flex align-items-center justify-content-center pointer '
-               *ngFor='let item of payrollStay.salaries|filterTypeSalary:["STAY"]'
-               (contextmenu)='child.onContextMenu($event,item)'
-               (click)='readPayroll(payrollStay)'>
-            {{getRangeDay().start|date:'yyyy-MM'}}
-          </div>
-        </th>
-        <th class='pointer' style='min-width: 300px;'>
-          <div class=' d-flex align-items-center justify-content-center pointer'
-               *ngFor='let item of payrollStay.salaries|filterTypeSalary:["STAY"]'
-               (contextmenu)='child.onContextMenu($event,item)'
-               (click)='readPayroll(payrollStay)'>
-            {{item.title}}  {{ item.allowance ? '+ ' + item.allowance.title : '' }}
-          </div>
-        </th>
-        <th class='pointer'>
-          <div class=' d-flex align-items-center justify-content-center pointer'
-               *ngFor='let item of payrollStay.salaries|filterTypeSalary:["STAY"]'
-               (contextmenu)='child.onContextMenu($event,item)'
-               (click)='readPayroll(payrollStay)'>
-            {{item?.times}}
-            {{
-            item.unit === "HOUR" ? "Giờ" : "Ngày"
-            }}
-          </div>
-        </th>
-        <th class='pointer'>
-          <div class=' d-flex align-items-center justify-content-center pointer'
-               *ngFor='let item of payrollStay.salaries|filterTypeSalary:["STAY"]'
-               (contextmenu)='child.onContextMenu($event,item)'
-               (click)='readPayroll(payrollStay)'>
-            {{item?.price ? (item.price | number:'1.0-0') : 0}}VND
-            {{ item.allowance ? '+ ' + (item.allowance.price | number:'1.0-0') + 'VND' : '' }}
-          </div>
+    <tbody *ngIf="payrollStay$ | async as payrollsBasic">
+      <tr *ngIf="!(loaded$ | async); else payrollBasicTemp">
+        <th colSpan="100">
+          <ngx-skeleton-loader
+            count="18"
+            appearance="line"
+          ></ngx-skeleton-loader>
         </th>
       </tr>
-      <tr *ngIf='!payrollsBasic || payrollsBasic.length === 0  ' style='height: 50vh'>
-        <td colspan='11' class='text-center check-content font-weight-bold font-xl '>
-          <span style='position: absolute ; top: 60%; left: 35%'> Hiện không có Phiếu tăng ca nào !</span>
-        </td>
-      </tr>
-    </ng-template>
+      <ng-template #payrollBasicTemp>
+        <tr
+          *ngFor="let payrollStay of payrollsBasic; let i = index"
+          [ngClass]="{ odd: i % 2 === 0, even: i % 2 !== 0 }"
+        >
+          <th
+            class="pointer"
+            [ngClass]="{ odd: i % 2 === 0, even: i % 2 !== 0 }"
+          >
+            <div>
+              {{ i + 1 }}
+            </div>
+          </th>
+          <th
+            class="pointer"
+            (click)="readPayroll(payrollStay)"
+            [ngClass]="{ odd: i % 2 === 0, even: i % 2 !== 0 }"
+          >
+            <div>
+              {{ payrollStay.payrollId }}
+            </div>
+          </th>
+          <th
+            class="pointer"
+            (click)="readPayroll(payrollStay)"
+            [ngClass]="{ odd: i % 2 === 0, even: i % 2 !== 0 }"
+          >
+            <div>
+              {{ payrollStay.employee.lastName }}
+            </div>
+          </th>
+          <th
+            class="pointer"
+            [ngClass]="{ odd: i % 2 === 0, even: i % 2 !== 0 }"
+          >
+            <div
+              class="d-flex align-items-center justify-content-center pointer"
+              *ngFor="
+                let item of payrollStay.salaries | filterTypeSalary: ['STAY']
+              "
+            >
+              <mat-checkbox
+                style="margin-top: 5px"
+                [checked]="selectSalary(item)"
+                (change)="
+                  updateSelectSalary(
+                    { salary: item, payroll: payrollStay },
+                    $event.checked
+                  )
+                "
+              >
+              </mat-checkbox>
+            </div>
+          </th>
+          <th
+            style="width: 200px"
+            class="pointer"
+            (click)="readPayroll(payrollStay)"
+          >
+            <div>
+              {{ payrollStay.branch }}
+            </div>
+          </th>
+          <th
+            style="width: 200px"
+            class="pointer"
+            (click)="readPayroll(payrollStay)"
+            [ngClass]="{ odd: i % 2 === 0, even: i % 2 !== 0 }"
+          >
+            <div>
+              {{ payrollStay.position }}
+            </div>
+          </th>
+          <th class="pointer" style="width: 220px">
+            <div
+              class="d-flex align-items-center justify-content-center pointer"
+              *ngFor="
+                let item of payrollStay.salaries | filterTypeSalary: ['STAY']
+              "
+              (contextmenu)="child.onContextMenu($event, item)"
+              (click)="readPayroll(payrollStay)"
+            >
+              {{ getRangeDay().start | date: 'yyyy-MM' }}
+            </div>
+          </th>
+          <th class="pointer" style="min-width: 300px">
+            <div
+              class="d-flex align-items-center justify-content-center pointer"
+              *ngFor="
+                let item of payrollStay.salaries | filterTypeSalary: ['STAY']
+              "
+              (contextmenu)="child.onContextMenu($event, item)"
+              (click)="readPayroll(payrollStay)"
+            >
+              {{ item.title }}
+              {{ item.allowance ? '+ ' + item.allowance.title : '' }}
+            </div>
+          </th>
+          <th class="pointer">
+            <div
+              class="d-flex align-items-center justify-content-center pointer"
+              *ngFor="
+                let item of payrollStay.salaries | filterTypeSalary: ['STAY']
+              "
+              (contextmenu)="child.onContextMenu($event, item)"
+              (click)="readPayroll(payrollStay)"
+            >
+              {{ item?.times }}
+              {{ item.unit === 'HOUR' ? 'Giờ' : 'Ngày' }}
+            </div>
+          </th>
+          <th class="pointer">
+            <div
+              class="d-flex align-items-center justify-content-center pointer"
+              *ngFor="
+                let item of payrollStay.salaries | filterTypeSalary: ['STAY']
+              "
+              (contextmenu)="child.onContextMenu($event, item)"
+              (click)="readPayroll(payrollStay)"
+            >
+              {{ item?.price ? (item.price | number: '1.0-0') : 0 }}VND
+              {{
+                item.allowance
+                  ? '+ ' + (item.allowance.price | number: '1.0-0') + 'VND'
+                  : ''
+              }}
+            </div>
+          </th>
+        </tr>
+        <tr
+          *ngIf="!payrollsBasic || payrollsBasic.length === 0"
+          style="height: 50vh"
+        >
+          <td
+            colspan="11"
+            class="text-center check-content font-weight-bold font-xl"
+          >
+            <span style="position: absolute; top: 60%; left: 35%">
+              Hiện không có Phiếu tăng ca nào !</span
+            >
+          </td>
+        </tr>
+      </ng-template>
     </tbody>
   </table>
 </div>
-<mat-spinner *ngIf='loadingDelete' class='loading'></mat-spinner>
+<mat-spinner *ngIf="loadingDelete" class="loading"></mat-spinner>
 <app-mouse-right
   #child
-  (onAdd)='addSalaryStay($event)'
-  (onDetail)='readPayroll($event)'
-  (onDel)='deleteSalaryStay($event)'>
+  (onAdd)="addSalaryStay($event)"
+  (onDetail)="readPayroll($event)"
+  (onDel)="deleteSalaryStay($event)"
+>
 </app-mouse-right>
 <style>
   .table-scroll th:nth-child(3) {
@@ -228,7 +348,6 @@
     left: 420px;
     z-index: 2;
   }
-
 
   .table-scroll thead th:nth-child(3),
   .table-scroll thead th:nth-child(4) {
@@ -262,6 +381,3 @@
     top: 70px;
   }
 </style>
-
-
-

@@ -1,92 +1,110 @@
-  <div [formGroup]="formGroup" class="mt-3 px-2" style="height: 50vh; overflow-y: scroll">
-    <div class="d-flex flex-column mt-2">
-      <div> <span class="font-weight-bold">Ngày toạ phiếu lương</span></div>
-      <nz-date-picker nzMode="date" formControlName="createdAt" ></nz-date-picker>
-    </div>
-    <div class="d-flex flex-column mt-2">
-      <div> <span class="font-weight-bold">Ngày công chuẩn</span></div>
-      <input nz-input class="mt-1" formControlName="workday" type="number" max="31">
-    </div>
-    <div class="d-flex flex-column mt-2">
-      <div> <span class="font-weight-bold">Thuế (%)</span></div>
-      <input
-        nz-input
-        type='number'
-        min='0'
-        max='100'
-        placeholder='10'
-        formControlName='tax'
-      >
-    </div>
-    <div class="d-flex flex-column mt-2">
-      <div> <span class="font-weight-bold">Công thức lương</span></div>
-      <nz-select
-        class='mt-1'
-        nzShowSearch
-        style='width:100%'
-        nzPlaceHolder='Chọn công thức lương'
-        [compareWith]='compareRecipe'
-        formControlName="recipeType"
-      >
-        <nz-option
-          *ngFor='let recipeType of recipeTypeConstant '
-          [nzLabel]='recipeType.name'
-          [nzValue]='recipeType'
-        >
-        </nz-option>
-      </nz-select>
-    </div>
-    <div class="d-flex flex-column mt-2">
-      <div>
-        <span class="font-weight-bold">Loại lương</span></div>
-      <nz-select
-        class='mt-1'
-        nzShowSearch
-        style='width:100%'
-        nzPlaceHolder='Chọn loại lương'
-        formControlName="isFlatSalary"
-      >
-        <nz-option [nzValue]="true" nzLabel="Lương cố định"></nz-option>
-        <nz-option [nzValue]="false" nzLabel="Lương không cố định"></nz-option>
-      </nz-select>
-    </div>
-    <div class="d-flex flex-column mt-2">
-      <div> <span class="font-weight-bold">Chọn đơn vị</span></div>
-      <nz-select
-        class='mt-1'
-        nzShowSearch
-        style='width:100%'
-        nzPlaceHolder='Chọn đơn vị'
-        [compareWith]='compareFN'
-        formControlName="branch"
-      >
-        <nz-option
-          *ngFor='let branch of branches$ | async'
-          [nzLabel]='branch.name'
-          [nzValue]='branch'
-        >
-        </nz-option>
-      </nz-select>
-    </div>
-    <div class="d-flex flex-column mt-2">
-      <div class="font-weight-bold"><span>Chọn chức vụ</span></div>
-      <nz-select
-        class='mt-1'
-        nzShowSearch
-        style='width:100%'
-        nzPlaceHolder='Chọn chức vụ'
-        [compareWith]='compareFN'
-        formControlName="position"
-      >
-        <nz-option
-          *ngFor='let position of positions'
-          [nzLabel]='position.name'
-          [nzValue]='position'
-        >
-        </nz-option>
-      </nz-select>
-    </div>
+<div
+  [formGroup]="formGroup"
+  class="mt-3 px-2"
+  style="height: 50vh; overflow-y: scroll"
+>
+  <div class="d-flex flex-column mt-2">
+    <div><span class="font-weight-bold">Ngày toạ phiếu lương</span></div>
+    <nz-date-picker nzMode="date" formControlName="createdAt"></nz-date-picker>
   </div>
-  <div class="d-flex  mt-3 ml-1">
-    <button nz-button nzType="primary" [nzLoading]="(updated$|async) === false" (click)="onSubmit()"> Xác nhận</button>
+  <div class="d-flex flex-column mt-2">
+    <div><span class="font-weight-bold">Ngày công chuẩn</span></div>
+    <input
+      nz-input
+      class="mt-1"
+      formControlName="workday"
+      type="number"
+      max="31"
+    />
   </div>
+  <div class="d-flex flex-column mt-2">
+    <div><span class="font-weight-bold">Thuế (%)</span></div>
+    <input
+      nz-input
+      type="number"
+      min="0"
+      max="100"
+      placeholder="10"
+      formControlName="tax"
+    />
+  </div>
+  <div class="d-flex flex-column mt-2">
+    <div><span class="font-weight-bold">Công thức lương</span></div>
+    <nz-select
+      class="mt-1"
+      nzShowSearch
+      style="width: 100%"
+      nzPlaceHolder="Chọn công thức lương"
+      [compareWith]="compareRecipe"
+      formControlName="recipeType"
+    >
+      <nz-option
+        *ngFor="let recipeType of recipeTypeConstant"
+        [nzLabel]="recipeType.name"
+        [nzValue]="recipeType"
+      >
+      </nz-option>
+    </nz-select>
+  </div>
+  <div class="d-flex flex-column mt-2">
+    <div>
+      <span class="font-weight-bold">Loại lương</span>
+    </div>
+    <nz-select
+      class="mt-1"
+      nzShowSearch
+      style="width: 100%"
+      nzPlaceHolder="Chọn loại lương"
+      formControlName="isFlatSalary"
+    >
+      <nz-option [nzValue]="true" nzLabel="Lương cố định"></nz-option>
+      <nz-option [nzValue]="false" nzLabel="Lương không cố định"></nz-option>
+    </nz-select>
+  </div>
+  <div class="d-flex flex-column mt-2">
+    <div><span class="font-weight-bold">Chọn đơn vị</span></div>
+    <nz-select
+      class="mt-1"
+      nzShowSearch
+      style="width: 100%"
+      nzPlaceHolder="Chọn đơn vị"
+      [compareWith]="compareFN"
+      formControlName="branch"
+    >
+      <nz-option
+        *ngFor="let branch of branches$ | async"
+        [nzLabel]="branch.name"
+        [nzValue]="branch"
+      >
+      </nz-option>
+    </nz-select>
+  </div>
+  <div class="d-flex flex-column mt-2">
+    <div class="font-weight-bold"><span>Chọn chức vụ</span></div>
+    <nz-select
+      class="mt-1"
+      nzShowSearch
+      style="width: 100%"
+      nzPlaceHolder="Chọn chức vụ"
+      [compareWith]="compareFN"
+      formControlName="position"
+    >
+      <nz-option
+        *ngFor="let position of positions"
+        [nzLabel]="position.name"
+        [nzValue]="position"
+      >
+      </nz-option>
+    </nz-select>
+  </div>
+</div>
+<div class="d-flex mt-3 ml-1">
+  <button
+    nz-button
+    nzType="primary"
+    [nzLoading]="loading$ | async"
+    (click)="onSubmit()"
+  >
+    Xác nhận
+  </button>
+</div>

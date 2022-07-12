@@ -1,144 +1,185 @@
-<form [formGroup]='formGroup'>
-  <div class='form-group'>
-    <div class='row'>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='lastName'>Họ và tên</label><span class='star'>*</span>
+<form [formGroup]="formGroup">
+  <div class="form-group">
+    <div class="row">
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="lastName">Họ và tên</label><span class="star">*</span>
         <input
-          class='form-control'
-          formControlName='lastName'
-          id='lastname'
-          placeholder='Hiệu'
-          type='text'
-          [ngClass]="{ 'is-invalid': submitting && form.lastName.errors?.required }"
+          class="form-control"
+          formControlName="lastName"
+          id="lastname"
+          placeholder="Hiệu"
+          type="text"
+          [ngClass]="{
+            'is-invalid': submitting && form.lastName.errors?.required
+          }"
+        />
+        <div
+          *ngIf="submitting && form.lastName.errors?.required"
+          class="invalid-feedback"
         >
-        <div *ngIf='submitting && form.lastName.errors?.required ' class='invalid-feedback'>
           <div>Chưa nhập họ và tên</div>
         </div>
       </div>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='birthplace'>Nguyên quán</label>
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="birthplace">Nguyên quán</label>
         <input
-          class='form-control'
-          formControlName='birthplace'
-          id='birthplace'
-          placeholder='Phước Sơn - Tuy Phước - Bình Định '
-          type='text'
-        >
-      </div>
-    </div>
-    <div class='row mt-3'>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='religion'>Tôn giáo
-        </label>
-        <input type='text' class='form-control' id='religion' placeholder='Không' formControlName='religion'>
-      </div>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='ethnicity'>Dân tộc
-        </label>
-        <input
-          class='form-control'
-          formControlName='ethnicity'
-          id='ethnicity'
-          placeholder='Kinh'
-          type='text'
-        >
-      </div>
-    </div>
-    <div class='row mt-3'>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='address'>Địa chỉ</label><span class='star'>*</span>
-
-        <input
-          class='form-control'
-          formControlName='address'
-          id='address'
-          placeholder='Số nhà / thôn xóm'
-          type='text'
-          [ngClass]="{ 'is-invalid': submitting && form.address.errors?.required }"
-        >
-        <div *ngIf='submitting && form.address.errors?.required ' class='invalid-feedback'>
-          <div>Chưa nhập địa chỉ</div>
-        </div>
-      </div>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='note'>Ghi chú</label>
-        <input
-          id='note'
-          type='text'
-          class='form-control'
-          formControlName='note'
-        >
-      </div>
-    </div>
-    <div class='row mt-3'>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='identify'>CMND/CCCD</label>
-        <input type='tel' class='form-control not-arrow-input' id='identify'
-               (keypress)="checkInputNumber($event)"
-               min='0'
-               placeholder='215421236' formControlName='identify'>
-      </div>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='idCardAt'>Ngày cấp</label>
-        <input
-          type='date'
-          placeholder='06/05/1997'
-          class='form-control'
-          id='idCardAt'
-          formControlName='idCardAt'
-        >
-      </div>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='issuedBy'>Nơi cấp </label>
-        <input type='text' class='form-control' id='issuedBy'
-               placeholder='Bình Định' formControlName='issuedBy'>
+          class="form-control"
+          formControlName="birthplace"
+          id="birthplace"
+          placeholder="Phước Sơn - Tuy Phước - Bình Định "
+          type="text"
+        />
       </div>
     </div>
     <div class="row mt-3">
-      <div class='col' [formGroup]='formGroup'>
-        <label for='phone'>Số điện thoại </label>
-        <input type='tel'
-               class='form-control not-arrow-input'
-               id='phone'
-               placeholder='0337552146'
-               formControlName='phone'
-               (keypress)='checkInputNumber($event)'
-        >
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="religion">Tôn giáo </label>
+        <input
+          type="text"
+          class="form-control"
+          id="religion"
+          placeholder="Không"
+          formControlName="religion"
+        />
       </div>
-      <div class='col' [formGroup]='formGroup'>
-        <label for='workphone'>Số điện thoại khác </label>
-        <input type='tel'
-               class='form-control not-arrow-input'
-               id='workphone'
-               placeholder='0337552146'
-               formControlName='workPhone'
-               (keypress)='checkInputNumber($event)'
-        >
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="ethnicity">Dân tộc </label>
+        <input
+          class="form-control"
+          formControlName="ethnicity"
+          id="ethnicity"
+          placeholder="Kinh"
+          type="text"
+        />
       </div>
     </div>
-    <div class='row mt-3'>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='birthday'>Ngày sinh </label><span class='star'>*</span>
-        <input type='date' id='birthday' class='form-control' formControlName='birthday'
-               [ngClass]="{ 'is-invalid': submitting && form.birthday.errors?.required }">
-        <div *ngIf='submitting && form.birthday.errors?.required ' class='invalid-feedback'>
+    <div class="row mt-3">
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="address">Địa chỉ</label><span class="star">*</span>
+
+        <input
+          class="form-control"
+          formControlName="address"
+          id="address"
+          placeholder="Số nhà / thôn xóm"
+          type="text"
+          [ngClass]="{
+            'is-invalid': submitting && form.address.errors?.required
+          }"
+        />
+        <div
+          *ngIf="submitting && form.address.errors?.required"
+          class="invalid-feedback"
+        >
+          <div>Chưa nhập địa chỉ</div>
+        </div>
+      </div>
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="note">Ghi chú</label>
+        <input
+          id="note"
+          type="text"
+          class="form-control"
+          formControlName="note"
+        />
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="identify">CMND/CCCD</label>
+        <input
+          type="tel"
+          class="form-control not-arrow-input"
+          id="identify"
+          (keypress)="checkInputNumber($event)"
+          min="0"
+          placeholder="215421236"
+          formControlName="identify"
+        />
+      </div>
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="idCardAt">Ngày cấp</label>
+        <input
+          type="date"
+          placeholder="06/05/1997"
+          class="form-control"
+          id="idCardAt"
+          formControlName="idCardAt"
+        />
+      </div>
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="issuedBy">Nơi cấp </label>
+        <input
+          type="text"
+          class="form-control"
+          id="issuedBy"
+          placeholder="Bình Định"
+          formControlName="issuedBy"
+        />
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col" [formGroup]="formGroup">
+        <label for="phone">Số điện thoại </label>
+        <input
+          type="tel"
+          class="form-control not-arrow-input"
+          id="phone"
+          placeholder="0337552146"
+          formControlName="phone"
+          (keypress)="checkInputNumber($event)"
+        />
+      </div>
+      <div class="col" [formGroup]="formGroup">
+        <label for="workphone">Số điện thoại khác </label>
+        <input
+          type="tel"
+          class="form-control not-arrow-input"
+          id="workphone"
+          placeholder="0337552146"
+          formControlName="workPhone"
+          (keypress)="checkInputNumber($event)"
+        />
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="birthday">Ngày sinh </label><span class="star">*</span>
+        <input
+          type="date"
+          id="birthday"
+          class="form-control"
+          formControlName="birthday"
+          [ngClass]="{
+            'is-invalid': submitting && form.birthday.errors?.required
+          }"
+        />
+        <div
+          *ngIf="submitting && form.birthday.errors?.required"
+          class="invalid-feedback"
+        >
           <div>Chưa nhập ngày sinh</div>
         </div>
       </div>
-      <div class='col-sm d-flex flex-column' [formGroup]='formGroup'>
+      <div class="col-sm d-flex flex-column" [formGroup]="formGroup">
         <div>
-          <label for='gender'>Giới tính</label><span class='star'>*</span>
+          <label for="gender">Giới tính</label><span class="star">*</span>
         </div>
-        <nz-radio-group  formControlName='gender' id='gender'>
-          <label nz-radio *ngFor="let gender of genderConstant" [nzValue]="gender.value">{{gender.name}}</label>
+        <nz-radio-group formControlName="gender" id="gender">
+          <label
+            nz-radio
+            *ngFor="let gender of genderConstant"
+            [nzValue]="gender.value"
+            >{{ gender.name }}</label
+          >
         </nz-radio-group>
-        <div *ngIf='submitting && form.gender.errors?.required '
-             style='font-size: 80%;
-             color: #f86c6b;'>
+        <div
+          *ngIf="submitting && form.gender.errors?.required"
+          style="font-size: 80%; color: #f86c6b"
+        >
           <div>Chưa chọn giới tính</div>
         </div>
       </div>
     </div>
   </div>
 </form>
-

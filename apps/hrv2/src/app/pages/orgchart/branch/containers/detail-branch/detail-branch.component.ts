@@ -1,28 +1,35 @@
-import {Component, OnInit} from '@angular/core';
-import {OrgchartEnum} from '@minhdu-fontend/enums';
-import {FormControl} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Actions} from "@datorama/akita-ng-effects";
-import {BranchActions, BranchEntity, BranchQuery} from "@minhdu-fontend/orgchart-v2";
-import {NzModalService} from "ng-zorro-antd/modal";
-import {ModalBranchComponent} from "../../components/modal-branch/modal-branch.component";
-import {DataAddOrUpBranch} from "../../data/modal-department.data";
-import {ModalAlertComponent} from "@minhdu-fontend/components";
-import {ModalAlertEntity} from "@minhdu-fontend/base-entity";
-import {AllowanceBranchComponent} from "../../components/modal-allowance-branch/allowance-branch.component";
-import {DataAddOrUpAllowanceBranch} from "../../data/modal-allowance-branch.data";
-import {AllowanceSalaryEntity} from "../../../../salary/entities";
-import {AllowanceBranchEntity} from "../../entities/allowance-branch.entity";
+import { Component, OnInit } from '@angular/core';
+import { ModeEnum, OrgchartEnum } from '@minhdu-fontend/enums';
+import { UntypedFormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Actions } from '@datorama/akita-ng-effects';
+import {
+  BranchActions,
+  BranchEntity,
+  BranchQuery,
+} from '@minhdu-fontend/orgchart-v2';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { ModalBranchComponent } from '../../components/modal-branch/modal-branch.component';
+import { DataAddOrUpBranch } from '../../data/modal-department.data';
+import { ModalAlertComponent } from '@minhdu-fontend/components';
+import { ModalAlertEntity } from '@minhdu-fontend/base-entity';
+import { AllowanceBranchComponent } from '../../components/modal-allowance-branch/allowance-branch.component';
+import { DataAddOrUpAllowanceBranch } from '../../data/modal-allowance-branch.data';
+import { AllowanceBranchEntity } from '../../entities/allowance-branch.entity';
+import { AccountQuery } from '../../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 
 @Component({
-  templateUrl: 'detail-branch.component.html'
+  templateUrl: 'detail-branch.component.html',
 })
 export class DetailBranchComponent implements OnInit {
   branch$ = this.branchQuery.selectEntity(this.branchId);
+  currentUser$ = this.accountQuery.selectCurrentUser();
+
   type = OrgchartEnum;
   pageSize = 30;
   pageIndexInit = 0;
-  branch = new FormControl();
+  branch = new UntypedFormControl();
+  modeEnum = ModeEnum;
 
   constructor(
     private readonly actions$: Actions,
@@ -30,11 +37,12 @@ export class DetailBranchComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly modal: NzModalService,
-  ) {
-  }
+    private readonly activeRouter: ActivatedRoute,
+    private readonly accountQuery: AccountQuery
+  ) {}
 
   ngOnInit(): void {
-    this.actions$.dispatch(BranchActions.loadOne({id: this.branchId}));
+    this.actions$.dispatch(BranchActions.loadOne({ id: this.branchId }));
   }
 
   onAddAllowance(branch: BranchEntity) {
@@ -44,12 +52,12 @@ export class DetailBranchComponent implements OnInit {
       nzComponentParams: <{ data: DataAddOrUpAllowanceBranch }>{
         data: {
           add: {
-            branch: branch
-          }
-        }
+            branch: branch,
+          },
+        },
       },
-      nzFooter: []
-    })
+      nzFooter: [],
+    });
   }
 
   onUpdateAllowance(allowance: AllowanceBranchEntity) {
@@ -59,12 +67,12 @@ export class DetailBranchComponent implements OnInit {
       nzComponentParams: <{ data: DataAddOrUpAllowanceBranch }>{
         data: {
           update: {
-            allowance: allowance
-          }
-        }
+            allowance: allowance,
+          },
+        },
       },
-      nzFooter: []
-    })
+      nzFooter: [],
+    });
   }
 
   updateBranch(branch: BranchEntity) {
@@ -74,12 +82,12 @@ export class DetailBranchComponent implements OnInit {
       nzComponentParams: <{ data?: DataAddOrUpBranch }>{
         data: {
           update: {
-            branch: branch
-          }
-        }
+            branch: branch,
+          },
+        },
       },
-      nzFooter: []
-    })
+      nzFooter: [],
+    });
   }
 
   get branchId(): number {
@@ -87,45 +95,53 @@ export class DetailBranchComponent implements OnInit {
   }
 
   onDelete(branch: BranchEntity) {
-    this.modal.create({
-      nzTitle: `Xoá đơn vị ${branch.name}`,
-      nzContent: ModalAlertComponent,
-      nzComponentParams: <{ data: ModalAlertEntity }>{
-        data: {
-          description: `Bạn có chắc chắn muốn xoá đơn vị ${branch.name} này không`
+    this.modal
+      .create({
+        nzTitle: `Xoá đơn vị ${branch.name}`,
+        nzContent: ModalAlertComponent,
+        nzComponentParams: <{ data: ModalAlertEntity }>{
+          data: {
+            description: `Bạn có chắc chắn muốn xoá đơn vị ${branch.name} này không`,
+          },
+        },
+        nzFooter: [],
+      })
+      .afterClose.subscribe((val) => {
+        if (val) {
+          this.actions$.dispatch(BranchActions.remove({ id: branch.id }));
+          this.branchQuery
+            .select((state) => state.deleted)
+            .subscribe((val) => {
+              if (val) {
+                this.router.navigate(['to-chuc']).then();
+              }
+            });
         }
-      },
-      nzFooter: []
-    }).afterClose.subscribe(val => {
-      if (val) {
-        this.actions$.dispatch(BranchActions.remove({id: branch.id}))
-        this.branchQuery.select(state => state.deleted).subscribe(val => {
-          if (val) {
-            this.router.navigate(['to-chuc']).then()
-          }
-        })
-      }
-    })
+      });
   }
 
   deleteAllowance(allowance: AllowanceBranchEntity) {
-    this.modal.create({
-      nzTitle: `Xoá Phụ cấp  ${allowance.title}`,
-      nzContent: ModalAlertComponent,
-      nzComponentParams: <{ data: ModalAlertEntity }>{
-        data: {
-          description: `Bạn có chắc chắn muốn xoá phụ cấp${allowance.title} này không`
+    this.modal
+      .create({
+        nzTitle: `Xoá Phụ cấp  ${allowance.title}`,
+        nzContent: ModalAlertComponent,
+        nzComponentParams: <{ data: ModalAlertEntity }>{
+          data: {
+            description: `Bạn có chắc chắn muốn xoá phụ cấp${allowance.title} này không`,
+          },
+        },
+        nzFooter: [],
+      })
+      .afterClose.subscribe((val) => {
+        if (val) {
+          this.actions$.dispatch(
+            BranchActions.deleteAllowance({ salaryId: allowance.id })
+          );
         }
-      },
-      nzFooter: []
-    }).afterClose.subscribe(val => {
-      if (val) {
-        this.actions$.dispatch(BranchActions.deleteAllowance({salaryId: allowance.id}))
-      }
-    })
+      });
   }
 
   onListPosition(id: number) {
-    this.router.navigate(['to-chuc/chuc-vu']).then()
+    this.router.navigate(['to-chuc/chuc-vu']).then();
   }
 }

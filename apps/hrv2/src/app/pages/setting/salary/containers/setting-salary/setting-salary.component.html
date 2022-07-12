@@ -1,26 +1,34 @@
 <div class="d-flex mt-3 ml-2">
-  <div class='d-flex flex-column ml-3 border p-2' style='height: 75vh; width:250px; overflow-y: scroll'>
+  <div
+    class="d-flex flex-column ml-3 border p-2"
+    style="height: 75vh; width: 250px; overflow-y: scroll"
+  >
     <nz-collapse>
-      <nz-collapse-panel
-        nzHeader='Tìm kiếm'
-        nzActive='true'>
-        <div [formGroup]='formGroup'>
-          <input nz-input class='form-control' type='search' formControlName='search'>
+      <nz-collapse-panel nzHeader="Tìm kiếm" nzActive="true">
+        <div [formGroup]="formGroup">
+          <input
+            nz-input
+            class="form-control"
+            type="search"
+            formControlName="search"
+          />
         </div>
       </nz-collapse-panel>
     </nz-collapse>
     <nz-collapse class="mt-2">
-      <nz-collapse-panel
-        nzHeader='Loại bản mẫu'
-        nzActive='true'>
-        <div [formGroup]='formGroup'>
+      <nz-collapse-panel nzHeader="Loại bản mẫu" nzActive="true">
+        <div [formGroup]="formGroup">
           <nz-select
             nzShowSearch
             formControlName="types"
             nzMode="multiple"
             style="width: 100%"
           >
-            <nz-option *ngFor="let item of blockSalaries" [nzValue]="item.type" [nzLabel]="item.title"></nz-option>
+            <nz-option
+              *ngFor="let item of blockSalaries"
+              [nzValue]="item.type"
+              [nzLabel]="item.title"
+            ></nz-option>
           </nz-select>
         </div>
       </nz-collapse-panel>
@@ -28,34 +36,46 @@
     <nz-collapse class="mt-2">
       <nz-collapse-panel
         [formGroup]="formGroup"
-        nzHeader='Đơn vị'
-        nzActive='true'>
-        <nz-select style="width: 100%"
-                   nzMode="multiple"
-                   nzAllowClear
-                   nzShowSearch
-                   [compareWith]="compareFN"
-                   nzPlaceHolder="Chọn đơn vị"
-                   formControlName="branches"
+        nzHeader="Đơn vị"
+        nzActive="true"
+      >
+        <nz-select
+          style="width: 100%"
+          nzMode="multiple"
+          nzAllowClear
+          nzShowSearch
+          [compareWith]="compareFN"
+          nzPlaceHolder="Chọn đơn vị"
+          formControlName="branches"
         >
-          <nz-option *ngFor="let item of branches$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
+          <nz-option
+            *ngFor="let item of branches$ | async"
+            [nzLabel]="item.name"
+            [nzValue]="item"
+          ></nz-option>
         </nz-select>
       </nz-collapse-panel>
     </nz-collapse>
     <nz-collapse class="mt-2">
       <nz-collapse-panel
         [formGroup]="formGroup"
-        nzHeader='Chức vụ'
-        nzActive='true'>
-        <nz-select style="width: 100%"
-                   nzMode="multiple"
-                   nzAllowClear
-                   nzShowSearch
-                   [compareWith]="compareFN"
-                   nzPlaceHolder="Chọn chức vụ"
-                   formControlName="positions"
+        nzHeader="Chức vụ"
+        nzActive="true"
+      >
+        <nz-select
+          style="width: 100%"
+          nzMode="multiple"
+          nzAllowClear
+          nzShowSearch
+          [compareWith]="compareFN"
+          nzPlaceHolder="Chọn chức vụ"
+          formControlName="positions"
         >
-          <nz-option *ngFor="let item of positions$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
+          <nz-option
+            *ngFor="let item of positions$ | async"
+            [nzLabel]="item.name"
+            [nzValue]="item"
+          ></nz-option>
         </nz-select>
       </nz-collapse-panel>
     </nz-collapse>
@@ -65,116 +85,189 @@
       <div class="font-2xl font-weight-bold">Cài đặt lương</div>
       <div>
         <div>
-          <button nz-button nzType="primary" class="ml-2" (click)="onAdd()">Thêm</button>
-          <button class='ml-2' nz-button nzPopoverTitle='Ghim'
-                  (click)="onDevelopment()">Ghim
+          <button nz-button nzType="primary" class="ml-2" (click)="onAdd()">
+            Thêm
+          </button>
+          <button
+            class="ml-2"
+            nz-button
+            nzPopoverTitle="Ghim"
+            (click)="onDevelopment()"
+          >
+            Ghim
           </button>
         </div>
       </div>
     </div>
     <div>
-      <div><span class="font-weight-bold">Tổng cộng: </span> <span>{{total$|async}}</span></div>
+      <div>
+        <span class="font-weight-bold">Tổng cộng: </span>
+        <span>{{ total$ | async }}</span>
+      </div>
       <nz-table
         #tableSetting
-        *ngIf=" (settingSalaries$|async) as settingSalaries"
+        *ngIf="settingSalaries$ | async as settingSalaries"
         nzShowPagination="false"
-        [nzScroll]="{ x: '2500px',y: '65vh'}"
-        nzSize='middle'
-        [nzLoading]="loading$|async"
+        [nzScroll]="{ x: '2500px', y: '65vh' }"
+        nzSize="middle"
+        [nzLoading]="(loading$ | async) && (total$ | async) === 0"
         [nzData]="settingSalaries"
         [nzBordered]="true"
         [nzOuterBordered]="true"
       >
         <thead>
-        <tr>
-          <th nzLeft nzWidth="60px">STT</th>
-          <th
-            [nzSortFn]='true'
-            (nzSortOrderChange)='onSort({orderBy: sortEnum.TITLE, orderType:$event})'
-            nzLeft>Tên bản mẫu</th>
-          <th
-            [nzSortFn]='true'
-            (nzSortOrderChange)='onSort({orderBy: sortEnum.PRICE, orderType:$event})'
-            nzLeft nzWidth="200px">Đơn giá - Công thức lương</th>
-          <th
-            [nzSortFn]='true'
-            (nzSortOrderChange)='onSort({orderBy: sortEnum.UNIT, orderType:$event})'
-            nzWidth="100px">Đơn vị tính</th>
-          <th
-            [nzSortFn]='true'
-            (nzSortOrderChange)='onSort({orderBy: sortEnum.DATETIME, orderType:$event})'
-            nzWidth="200px">Ngày</th>
-          <th
-            [nzSortFn]='true'
-            (nzSortOrderChange)='onSort({orderBy: sortEnum.RATE, orderType:$event})'
-            nzWidth="100px"
-          >Hệ số</th>
-          <th
-            [nzSortFn]='true'
-            (nzSortOrderChange)='onSort({orderBy: sortEnum.TYPE, orderType:$event})'
-            nzWidth="200px">Loại bản mẫu</th>
-          <th>Đơn vị</th>
-          <th>Chức vụ</th>
-          <th>Ghi chú</th>
-        </tr>
+          <tr>
+            <th nzLeft nzWidth="60px">STT</th>
+            <th
+              *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO"
+              nzLeft
+              nzWidth="60px"
+            >
+              Id
+            </th>
+            <th
+              [nzSortFn]="true"
+              (nzSortOrderChange)="
+                onSort({ orderBy: sortEnum.TITLE, orderType: $event })
+              "
+              nzLeft
+            >
+              Tên bản mẫu
+            </th>
+            <th
+              [nzSortFn]="true"
+              (nzSortOrderChange)="
+                onSort({ orderBy: sortEnum.PRICE, orderType: $event })
+              "
+              nzLeft
+              nzWidth="200px"
+            >
+              Đơn giá - Công thức lương
+            </th>
+            <th
+              [nzSortFn]="true"
+              (nzSortOrderChange)="
+                onSort({ orderBy: sortEnum.UNIT, orderType: $event })
+              "
+              nzWidth="100px"
+            >
+              Đơn vị tính
+            </th>
+            <th
+              [nzSortFn]="true"
+              (nzSortOrderChange)="
+                onSort({ orderBy: sortEnum.DATETIME, orderType: $event })
+              "
+              nzWidth="200px"
+            >
+              Ngày
+            </th>
+            <th
+              [nzSortFn]="true"
+              (nzSortOrderChange)="
+                onSort({ orderBy: sortEnum.RATE, orderType: $event })
+              "
+              nzWidth="100px"
+            >
+              Hệ số
+            </th>
+            <th
+              [nzSortFn]="true"
+              (nzSortOrderChange)="
+                onSort({ orderBy: sortEnum.TYPE, orderType: $event })
+              "
+              nzWidth="200px"
+            >
+              Loại bản mẫu
+            </th>
+            <th>Đơn vị</th>
+            <th>Chức vụ</th>
+            <th>Ghi chú</th>
+          </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let settingSalary of settingSalaries; let i = index"
-            (contextmenu)='child.onContextMenu($event,settingSalary)'
+          <tr
+            *ngFor="let settingSalary of settingSalaries; let i = index"
+            (contextmenu)="child.onContextMenu($event, settingSalary)"
             class="pointer"
             (click)="onUpdate(settingSalary)"
-        >
-          <td nzLeft>{{i + 1}}</td>
-          <td nzLeft>{{settingSalary.title}}</td>
-          <td nzLeft>{{ settingSalary | pricesettingsalary }}</td>
-          <td>{{settingSalary.unit | transformconstant:datetimeConstant}}</td>
-          <td>
-            <div *ngIf="settingSalary.startedAt else notDate">
-              Từ {{settingSalary.startedAt|date:'dd-MM-yyyy'}}
-              <br>
-              đến {{settingSalary.endedAt|date:'dd-MM-yyyy'}}
-            </div>
-            <ng-template #notDate>
-              -
-            </ng-template>
-          </td>
-          <td>{{settingSalary.rate}}</td>
-          <td>{{settingSalary.type|blocksalary: blockSalaries }}</td>
-          <td>
-            <mat-chip-list>
-              <mat-chip
-                (click)="$event.stopPropagation()"
-                [style]='{"background": formGroup.get("branch")?.value?.id === branch.id ? "red" : "#00000040"}'
-                *ngFor='let branch of settingSalary.branches'>
-                {{branch.name}}
-              </mat-chip>
-            </mat-chip-list>
-          </td>
-          <td>
-            <mat-chip-list>
-              <mat-chip
-                (click)="$event.stopPropagation()"
-                [style]='{"background": formGroup.get("position")?.value?.id === position.id ? "red" : "#00000040"}'
-                *ngFor='let position of settingSalary.positions'>
-                {{position.name}}
-              </mat-chip>
-            </mat-chip-list>
-          </td>
-          <td>{{settingSalary.note }}</td>
-        </tr>
-        <tr *ngIf="((count$|async) || 0) < ((total$|async) || 0) && (total$|async) !== 0">
-          <td [colSpan]="tableSetting.listOfAutoColWidth.length">
-            <div class="w-100 d-flex justify-content-start" style="position: relative">
-              <button
-                (click)="onLoadMore()"
-                style="position: sticky; left: 35vw"
-                nz-button nzType="primary"
-                [nzLoading]="loadMore$|async">
-                Tải thêm {{((remain$|async) || 0)}}
-              </button>
-            </div>
-          </td>
-        </tr>
+          >
+            <td nzLeft>{{ i + 1 }}</td>
+            <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO" nzLeft>
+              {{ settingSalary.id }}
+            </td>
+            <td nzLeft>{{ settingSalary.title }}</td>
+            <td nzLeft>{{ settingSalary | pricesettingsalary }}</td>
+            <td>
+              {{ settingSalary.unit | transformconstant: datetimeConstant }}
+            </td>
+            <td>
+              <div *ngIf="settingSalary.startedAt; else notDate">
+                Từ {{ settingSalary.startedAt | date: 'dd-MM-yyyy' }}
+                <br />
+                đến {{ settingSalary.endedAt | date: 'dd-MM-yyyy' }}
+              </div>
+              <ng-template #notDate> - </ng-template>
+            </td>
+            <td>{{ settingSalary.rate }}</td>
+            <td>{{ settingSalary.type | blocksalary: blockSalaries }}</td>
+            <td>
+              <mat-chip-list>
+                <mat-chip
+                  (click)="$event.stopPropagation()"
+                  [style]="{
+                    background:
+                      formGroup.get('branch')?.value?.id === branch.id
+                        ? 'red'
+                        : '#00000040'
+                  }"
+                  *ngFor="let branch of settingSalary.branches"
+                >
+                  {{ branch.name }}
+                </mat-chip>
+              </mat-chip-list>
+            </td>
+            <td>
+              <mat-chip-list>
+                <mat-chip
+                  (click)="$event.stopPropagation()"
+                  [style]="{
+                    background:
+                      formGroup.get('position')?.value?.id === position.id
+                        ? 'red'
+                        : '#00000040'
+                  }"
+                  *ngFor="let position of settingSalary.positions"
+                >
+                  {{ position.name }}
+                </mat-chip>
+              </mat-chip-list>
+            </td>
+            <td>{{ settingSalary.note }}</td>
+          </tr>
+          <tr
+            *ngIf="
+              ((count$ | async) || 0) < ((total$ | async) || 0) &&
+              (total$ | async) !== 0
+            "
+          >
+            <td [colSpan]="tableSetting.listOfAutoColWidth.length">
+              <div
+                class="w-100 d-flex justify-content-start"
+                style="position: relative"
+              >
+                <button
+                  (click)="onLoadMore()"
+                  style="position: sticky; left: 35vw"
+                  nz-button
+                  nzType="primary"
+                  [nzLoading]="loading$ | async"
+                >
+                  Tải thêm {{ (remain$ | async) || 0 }}
+                </button>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </nz-table>
     </div>
@@ -185,8 +278,7 @@
 </ng-template>
 <app-mouse-right
   #child
-  (onAdd)='onAdd()'
-  (onUpdate)='onUpdate($event)'
-  (onDel)='onDelete($event)'
+  (onAdd)="onAdd()"
+  (onUpdate)="onUpdate($event)"
+  (onDel)="onDelete($event)"
 ></app-mouse-right>
-

@@ -1,23 +1,22 @@
-import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
-import {Injectable} from '@angular/core';
-import {SalarySettingEntity, SettingSalaryVisibleEntity} from '../entities';
-import {updateStateUiUtil} from "@minhdu-fontend/utils";
-import {StorageName} from "@minhdu-fontend/constants";
-import {BranchEntity, PositionEntity} from "@minhdu-fontend/orgchart-v2";
-import {SalaryTypeEnum} from "@minhdu-fontend/enums";
-import {NzTableSortOrder} from "ng-zorro-antd/table";
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { Injectable } from '@angular/core';
+import { SalarySettingEntity, SettingSalaryVisibleEntity } from '../entities';
+import { updateStateUiUtil } from '@minhdu-fontend/utils';
+import { StorageName } from '@minhdu-fontend/constants';
+import { BranchEntity, PositionEntity } from '@minhdu-fontend/orgchart-v2';
+import { SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { NzTableSortOrder } from 'ng-zorro-antd/table';
 
 export interface SettingSalaryState extends EntityState<SalarySettingEntity> {
   total: number;
-  remain: number,
-  loading: boolean;
-  loadMore: boolean;
+  remain: number;
+  loading?: boolean;
   added: boolean | null;
   search?: {
-    search: string,
-    branches: BranchEntity[],
-    positions: PositionEntity[],
-    types: SalaryTypeEnum[],
+    search: string;
+    branches: BranchEntity[];
+    positions: PositionEntity[];
+    types: SalaryTypeEnum[];
     orderBy: string;
     orderType: NzTableSortOrder;
   };
@@ -28,54 +27,60 @@ export function createInitialState(): SettingSalaryState {
   return {
     total: 0,
     remain: 0,
-    loading: true,
-    loadMore: false,
     added: null,
     ui: {
       stt: {
         pinned: true,
-        visible: true
+        visible: true,
       },
       code: {
         pinned: false,
-        visible: true
+        visible: true,
       },
       title: {
         pinned: true,
-        visible: false
+        visible: false,
       },
       rate: {
         pinned: false,
-        visible: true
+        visible: true,
       },
       price: {
         pinned: false,
-        visible: true
+        visible: true,
       },
       note: {
         pinned: false,
-        visible: true
+        visible: true,
       },
       type: {
         pinned: false,
-        visible: true
-      }
-    }
+        visible: true,
+      },
+    },
   };
 }
 
-@Injectable({providedIn: 'root'})
-@StoreConfig({name: StorageName.SETTING_SALARY})
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: StorageName.SETTING_SALARY })
 export class SettingSalaryStore extends EntityStore<SettingSalaryState> {
   constructor() {
     super(createInitialState());
   }
 
-  updateUI(newState: Partial<SettingSalaryVisibleEntity>, type: 'visible' | 'pinned') {
-    return this.update(state => {
+  updateUI(
+    newState: Partial<SettingSalaryVisibleEntity>,
+    type: 'visible' | 'pinned'
+  ) {
+    return this.update((state) => {
       return {
         ...state,
-        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), updateStateUiUtil<SettingSalaryVisibleEntity>(newState, type)) : state.ui
+        ui: state.ui
+          ? Object.assign(
+              JSON.parse(JSON.stringify(state.ui)),
+              updateStateUiUtil<SettingSalaryVisibleEntity>(newState, type)
+            )
+          : state.ui,
       };
     });
   }

@@ -13,5 +13,6 @@ const loadAll = createAction(
 );
 
 export const IncubatorFactoryActions = {
-  addEgg, loadAll
+  addEgg,
+  loadAll,
 };

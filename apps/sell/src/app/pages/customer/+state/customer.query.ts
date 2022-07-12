@@ -16,5 +16,4 @@ export class CustomerQuery extends QueryEntity<CustomerState> {
   selectDelivering = (customerId: CustomerEntity['id']) => {
     return this.selectEntity(customerId, (entity) => entity?.delivering);
   };
-
 }

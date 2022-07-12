@@ -1,26 +1,30 @@
-<div class='animated main-popup px-3 py-2' style='width: 300px'>
-  <div mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+<div class="animated main-popup px-3 py-2" style="width: 300px">
+  <div mat-dialog-close class="close-popup">
+    <span class="mr-1"> close</span>
+    <div class="x-popup">
+      <img src="../../../../../assets/img/share/x2-lg.svg" alt="cancel" />
     </div>
   </div>
-  <h2 class='font-weight-bold'>
-    Xuất bảng chấm công
-  </h2>
-  <div class=' mt-4  '>
-    <span class='title-item'>Tên file</span><span class='star'>*</span>
-    <input type='text' class='form-control mt-1' [formControl]='name'
-           [ngClass]="{ 'is-invalid': submitted && name.errors}">
-    <div *ngIf='submitted && name.errors' class='invalid-feedback'>
-      <div *ngIf='name.errors'>Chưa nhập tên file</div>
+  <h2 class="font-weight-bold">Xuất bảng chấm công</h2>
+  <div class="mt-4">
+    <span class="title-item">Tên file</span><span class="star">*</span>
+    <input
+      type="text"
+      class="form-control mt-1"
+      [formControl]="name"
+      [ngClass]="{ 'is-invalid': submitted && name.errors }"
+    />
+    <div *ngIf="submitted && name.errors" class="invalid-feedback">
+      <div *ngIf="name.errors">Chưa nhập tên file</div>
     </div>
   </div>
-  <div class=' mt-4 d-flex  '>
-    <button (click)='onSubmit()'
-            style='font-size: 12px'
-            class=' col-md-3 btn btn-ok d-flex justify-content-center'>Đồng ý
+  <div class="mt-4 d-flex">
+    <button
+      (click)="onSubmit()"
+      style="font-size: 12px"
+      class="col-md-3 btn btn-ok d-flex justify-content-center"
+    >
+      Đồng ý
     </button>
   </div>
 </div>
-

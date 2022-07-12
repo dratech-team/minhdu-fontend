@@ -1,1 +1,1 @@
-export * from './radios-status-order.constant'
+export * from './radios-status-order.constant';

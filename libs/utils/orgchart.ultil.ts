@@ -1,15 +1,17 @@
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-export const searchAutocomplete = (name$: Observable<string>, data$: Observable<any[]>) => {
-  return combineLatest([
-    name$,
-    data$
-  ]).pipe(
+export const searchAutocomplete = (
+  name$: Observable<string>,
+  data$: Observable<any[]>
+) => {
+  return combineLatest([name$, data$]).pipe(
     map(([name, data]) => {
       if (name) {
         return data.filter((e) => {
-          return (e?.name || e?.title).toLowerCase().includes(name?.toLowerCase());
+          return (e?.name || e?.title)
+            .toLowerCase()
+            .includes(name?.toLowerCase());
         });
       } else {
         return data;
@@ -18,12 +20,11 @@ export const searchAutocomplete = (name$: Observable<string>, data$: Observable<
   );
 };
 
-
-export const searchAndAddAutocomplete = (name$: Observable<string>, data$: Observable<any[]>) => {
-  return combineLatest([
-    name$,
-    data$
-  ]).pipe(
+export const searchAndAddAutocomplete = (
+  name$: Observable<string>,
+  data$: Observable<any[]>
+) => {
+  return combineLatest([name$, data$]).pipe(
     map(([name, data]) => {
       if (name) {
         const result = data.filter((e) => {

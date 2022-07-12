@@ -1,66 +1,68 @@
-import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
-import {Injectable} from '@angular/core';
-import {StockEntity, StockVisibleEntity} from '../entities';
-import {updateStateUiUtil} from '../../../../../../sell/src/app/utils/update-state-ui.util';
-import {BaseSearchStockDto} from "../dto";
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { Injectable } from '@angular/core';
+import { StockEntity, StockVisibleEntity } from '../entities';
+import { updateStateUiUtil } from '../../../../../../sell/src/app/utils/update-state-ui.util';
+import { BaseSearchStockDto } from '../dto';
 
 export interface StockState extends EntityState<StockEntity> {
-  loading: boolean;
-  added: boolean|null;
+  loading?: boolean;
   search: Partial<BaseSearchStockDto>;
   ui: StockVisibleEntity;
 }
 
 export function createInitialState(): StockState {
   return {
-    loading: true,
-    added: null,
     search: {},
     ui: {
       stt: {
         pinned: true,
-        visible: true
+        visible: true,
       },
       code: {
         pinned: false,
-        visible: true
+        visible: true,
       },
       name: {
         pinned: true,
-        visible: true
+        visible: true,
       },
       unit: {
         pinned: false,
-        visible: true
+        visible: true,
       },
-      note:{
+      note: {
         pinned: false,
-        visible: true
+        visible: true,
       },
-      supplier:{
+      supplier: {
         pinned: false,
-        visible: true
+        visible: true,
       },
-      category:{
+      category: {
         pinned: false,
-        visible: true
-      }
-    }
+        visible: true,
+      },
+    },
   };
 }
 
-@Injectable({providedIn: 'root'})
-@StoreConfig({name: 'stock'})
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: 'stock' })
 export class StockStore extends EntityStore<StockState> {
   constructor() {
     super(createInitialState());
   }
 
   updateUI(newState: Partial<StockVisibleEntity>, type: 'visible' | 'pinned') {
-    return this.update(state => {
+    return this.update((state) => {
       return {
         ...state,
-        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), updateStateUiUtil<StockVisibleEntity>(newState, type)) : state.ui
+        ui: state.ui
+          ? Object.assign(
+              JSON.parse(JSON.stringify(state.ui)),
+              updateStateUiUtil<StockVisibleEntity>(newState, type)
+            )
+          : state.ui,
       };
     });
   }

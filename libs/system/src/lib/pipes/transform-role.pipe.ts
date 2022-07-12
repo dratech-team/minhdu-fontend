@@ -3,7 +3,7 @@ import { Role } from '../../../../enums/hr/role.enum';
 
 @Pipe({
   name: 'transformRole',
-  pure: false
+  pure: false,
 })
 export class TransformRolePipe implements PipeTransform {
   transform(role: Role, roles: any[]): string {

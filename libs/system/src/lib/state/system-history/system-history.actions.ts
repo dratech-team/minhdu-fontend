@@ -1,10 +1,9 @@
-import {createAction, props} from "@datorama/akita-ng-effects";
-import {AddSystemHistoryDto} from "../../dto/system-history/add-system-history.dto";
-import {SearchSystemHistoryDto} from "../../dto/system-history/search-system-history.dto";
-import {LoadOneSystemHistoryDto} from "../../dto/system-history/load-one-system-history.dto";
-import {UpdateSystemHistoryDto} from "../../dto/system-history/update-system-history.dto";
-import {RemoveSystemHistoryDto} from "../../dto/system-history/remove-system-history.dto";
-
+import { createAction, props } from '@datorama/akita-ng-effects';
+import { AddSystemHistoryDto } from '../../dto/system-history/add-system-history.dto';
+import { SearchSystemHistoryDto } from '../../dto/system-history/search-system-history.dto';
+import { LoadOneSystemHistoryDto } from '../../dto/system-history/load-one-system-history.dto';
+import { UpdateSystemHistoryDto } from '../../dto/system-history/update-system-history.dto';
+import { RemoveSystemHistoryDto } from '../../dto/system-history/remove-system-history.dto';
 
 export const addOne = createAction(
   '[SYSTEM_HISTORY] Add One',
@@ -33,7 +32,7 @@ export const remove = createAction(
 
 export const error = createAction(
   '[SYSTEM_HISTORY] Error',
-  props<{err: string}>()
+  props<{ err: string }>()
 );
 
 export const SystemHistoryActions = {
@@ -42,5 +41,5 @@ export const SystemHistoryActions = {
   loadOne,
   update,
   remove,
-  error
+  error,
 };

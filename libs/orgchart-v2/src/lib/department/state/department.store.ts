@@ -1,32 +1,27 @@
-import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
-import {Injectable} from '@angular/core';
-import {BaseSearchDepartmenthDto} from "../dto";
-import {DepartmentEntity} from "../entities/department.entity";
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { Injectable } from '@angular/core';
+import { BaseSearchDepartmenthDto } from '../dto';
+import { DepartmentEntity } from '../entities/department.entity';
 import { StorageName } from '@minhdu-fontend/constants';
 
 export interface DepartmentState extends EntityState<DepartmentEntity> {
-  loading: boolean;
-  added: boolean | null;
-  total: number
+  loading?: boolean;
+  total: number;
   search: Partial<BaseSearchDepartmenthDto>;
-  removeEmp: boolean | null
 }
 
 function createInitState(): DepartmentState {
   return {
-    loading: true,
-    added: null,
     total: 0,
     search: {
       name: '',
-      code: ''
+      code: '',
     },
-    removeEmp: null
   };
 }
 
-@Injectable({providedIn: 'root'})
-@StoreConfig({name: StorageName.DEPARTMENT})
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: StorageName.DEPARTMENT })
 export class DepartmentStore extends EntityStore<DepartmentState> {
   constructor() {
     super(createInitState());

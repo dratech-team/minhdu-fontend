@@ -1,11 +1,20 @@
-import {Component, EventEmitter, Input, IterableDiffers, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {pickOne, someComplete} from '@minhdu-fontend/utils';
-import {Payroll} from "../../../+state/payroll/payroll.interface";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  IterableDiffers,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { pickOne, someComplete } from '@minhdu-fontend/utils';
+import { Payroll } from '../../../+state/payroll/payroll.interface';
 
 @Component({
   selector: 'app-table-payroll-selected',
-  templateUrl: './table-payroll-selected.component.html'
+  templateUrl: './table-payroll-selected.component.html',
 })
 export class TablePayrollSelectedComponent implements OnInit, OnChanges {
   @Input() payrolls: Payroll[] = [];
@@ -16,9 +25,7 @@ export class TablePayrollSelectedComponent implements OnInit, OnChanges {
   employeeId!: number;
   differ: any;
 
-  constructor(
-    private differs: IterableDiffers,
-  ) {
+  constructor(private differs: IterableDiffers) {
     this.differ = differs.find([]).create(undefined);
   }
 
@@ -33,22 +40,24 @@ export class TablePayrollSelectedComponent implements OnInit, OnChanges {
     if (this.payrolls.length === 0) {
       this.isSelectAll = false;
     }
-    this.payrollsSelected =[...this.payrolls];
+    this.payrollsSelected = [...this.payrolls];
   }
 
-
   updateSelect(payroll: Payroll) {
-    this.isSelectAll = pickOne(payroll, this.payrollsSelected, this.payrolls).isSelectAll
+    this.isSelectAll = pickOne(
+      payroll,
+      this.payrollsSelected,
+      this.payrolls
+    ).isSelectAll;
     this.EventSelectPayroll.emit(this.payrollsSelected);
   }
 
-
   someComplete(): boolean {
-    return someComplete(this.payrolls,this.payrollsSelected, this.isSelectAll)
+    return someComplete(this.payrolls, this.payrollsSelected, this.isSelectAll);
   }
 
   setAll() {
-    this.payrollsSelected = []
+    this.payrollsSelected = [];
     this.EventSelectPayroll.emit(this.payrollsSelected);
   }
 

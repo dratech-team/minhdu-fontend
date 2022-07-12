@@ -1,4 +1,4 @@
-@import "~@coreui/coreui-pro/scss/coreui";
+@import '~@coreui/coreui-pro/scss/coreui';
 
 body {
   height: fit-content !important;
@@ -20,6 +20,9 @@ $spinkit-spinner-color: $body-color;
   font-family: Roboto, serif;
 }
 
+.context-menu {
+  width: 150px;
+}
 .background-snackbar {
   background: #f0fff5;
 }
@@ -39,7 +42,7 @@ $spinkit-spinner-color: $body-color;
 .label-input {
   font-size: 16px;
   line-height: 19px;
-  color: #3C3B54;
+  color: #3c3b54;
 }
 
 .star {
@@ -63,7 +66,7 @@ $spinkit-spinner-color: $body-color;
   font-size: 16px;
   line-height: 19px;
   text-align: center;
-  background: #EBEBEB;
+  background: #ebebeb;
   border-radius: 4px;
 }
 
@@ -71,7 +74,7 @@ $spinkit-spinner-color: $body-color;
   font-weight: 300;
   font-size: 16px;
   line-height: 19px;
-  color: #3C3B54;
+  color: #3c3b54;
   vertical-align: inherit !important;
 }
 
@@ -79,7 +82,7 @@ $spinkit-spinner-color: $body-color;
   font-weight: 500;
   font-size: 20px;
   line-height: 24px;
-  color: #80828B;
+  color: #80828b;
 }
 
 .btn-ok {
@@ -91,7 +94,7 @@ $spinkit-spinner-color: $body-color;
   line-height: 19px;
   text-align: center;
   color: #ffffff;
-  background: #3C3B54;
+  background: #3c3b54;
   border-radius: 4px;
 }
 
@@ -101,7 +104,7 @@ $spinkit-spinner-color: $body-color;
 
 .main-popup .close-popup {
   font-size: 16px;
-  color: #7749F8;
+  color: #7749f8;
   display: flex;
   align-items: center;
   position: absolute;
@@ -119,41 +122,41 @@ $spinkit-spinner-color: $body-color;
   align-content: center;
   width: 14px;
   height: 14px;
-  border: solid 1px #7749F8;
+  border: solid 1px #7749f8;
   border-radius: 50%;
-  background: #7749F8;
+  background: #7749f8;
 }
 
 .color-delete {
-  color: #EB5757 !important;
+  color: #eb5757 !important;
 }
 
 .background-delete {
-  background: #EB5757 !important;
+  background: #eb5757 !important;
 }
 
 .success {
-  background: #B5EEBB;
+  background: #b5eebb;
 }
 
 .fail {
-  background: #EEB5B5;
+  background: #eeb5b5;
 }
 
 .attention {
-  background: #EDEEB5;
+  background: #edeeb5;
 }
 
 .btn-print {
-  border: solid 1px #95AAF8;
-  background: #95AAF8;
+  border: solid 1px #95aaf8;
+  background: #95aaf8;
   border-radius: 32px;
 }
 
 .title-input {
   font-size: 16px;
   line-height: 19px;
-  color: #3C3B54;
+  color: #3c3b54;
 }
 
 .share-table {
@@ -162,7 +165,7 @@ $spinkit-spinner-color: $body-color;
 
 .title-child {
   font-size: 16px;
-  color: #3C3B54;
+  color: #3c3b54;
   line-height: 19px;
 }
 
@@ -175,7 +178,7 @@ $spinkit-spinner-color: $body-color;
 }
 
 .btn-edit {
-  border: solid 1px #80828B;
+  border: solid 1px #80828b;
   border-radius: 20%;
 }
 
@@ -234,9 +237,9 @@ tr table tbody tr:nth-child(odd) td {
   cursor: pointer;
   display: flex;
   margin-right: 10px;
-  background: #4B3880;
+  background: #4b3880;
   padding: 4px;
-  border: solid 1px #4B3880;
+  border: solid 1px #4b3880;
   border-radius: 4px;
 }
 
@@ -245,7 +248,7 @@ tr table tbody tr:nth-child(odd) td {
   cursor: pointer;
   font-size: 12px;
   line-height: 28px;
-  color: #1c8eb7
+  color: #1c8eb7;
 }
 
 .star {
@@ -269,11 +272,11 @@ tr table tbody tr:nth-child(odd) td {
   border-radius: 4px;
 }
 
-input[type="search"] {
+input[type='search'] {
   -webkit-appearance: searchfield;
 }
 
-input[type="search"]::-webkit-search-cancel-button {
+input[type='search']::-webkit-search-cancel-button {
   -webkit-appearance: searchfield-cancel-button;
 }
 
@@ -281,8 +284,7 @@ input[type="search"]::-webkit-search-cancel-button {
   box-sizing: border-box;
   border-radius: 4px;
   box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-  0 8px 10px 1px rgba(0, 0, 0, 0.14),
-  0 3px 14px 2px rgba(0, 0, 0, 0.12);
+    0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
   height: 40px;
 }
 
@@ -309,4 +311,4 @@ input[type="search"]::-webkit-search-cancel-button {
   left: 50%;
 }
 
-@import "~ng-zorro-antd/ng-zorro-antd.min.css";
+@import '~ng-zorro-antd/ng-zorro-antd.min.css';

@@ -1,5 +1,4 @@
-export enum StatusRoute{
-  RUNNING ='RUNNING',
+export enum StatusRoute {
+  RUNNING = 'RUNNING',
   COMPLETE = 'COMPLETE',
 }
-

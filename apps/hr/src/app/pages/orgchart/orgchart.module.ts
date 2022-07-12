@@ -23,7 +23,6 @@ import { BranchContainer } from './container/branch/branch.container';
 import { DialogBranchComponent } from './component/dialog-branch/dialog-branch.component';
 import { AllowanceBranchComponent } from './component/dialog-allowance-branch/allowance-branch.component';
 import { DetailBranchContainer } from './container/detail-branch/detail-branch.container';
-import { ContextMenuModule } from 'ngx-contextmenu';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 
 @NgModule({
@@ -47,8 +46,7 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
     MatProgressSpinnerModule,
     OrgchartRoutingModule,
     MatDialogModule,
-    ContextMenuModule,
-    NzMessageModule
+    NzMessageModule,
   ],
   declarations: [
     DialogPositionComponent,
@@ -56,8 +54,7 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
     BranchContainer,
     DialogBranchComponent,
     AllowanceBranchComponent,
-    DetailBranchContainer
-  ]
+    DetailBranchContainer,
+  ],
 })
-export class OrgchartModule {
-}
+export class OrgchartModule {}

@@ -4,7 +4,7 @@ import { EntityState } from '@ngrx/entity';
 import { MenuWarehouseEum } from '@minhdu-fontend/enums';
 
 export interface adminState extends EntityState<any> {
-  tab: MenuWarehouseEum,
+  tab: MenuWarehouseEum;
 }
 
 export const selectorMainState = createFeatureSelector<adminState>(

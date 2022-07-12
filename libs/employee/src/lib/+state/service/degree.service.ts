@@ -1,16 +1,14 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {Api} from '@minhdu-fontend/constants';
-import {Employee} from '@minhdu-fontend/data-models';
-import {BaseService} from 'libs/service/base.service';
-import {VersionEnum} from "@minhdu-fontend/enums";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Api } from '@minhdu-fontend/constants';
+import { Employee } from '@minhdu-fontend/data-models';
+import { BaseService } from 'libs/service/base.service';
+import { VersionEnum } from '@minhdu-fontend/enums';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class DegreeService extends BaseService<Employee> {
-  constructor(
-    public readonly http: HttpClient
-  ) {
+  constructor(public readonly http: HttpClient) {
     super(Api.HR.EMPLOYEE.DEGREE, http);
   }
 
@@ -27,6 +25,8 @@ export class DegreeService extends BaseService<Employee> {
   }
 
   deleteContracts(id: number): Observable<void> {
-    return this.http.delete<void>(VersionEnum.V2 + Api.HR.EMPLOYEE.CONTRACT + `/${id}`);
+    return this.http.delete<void>(
+      VersionEnum.V2 + Api.HR.EMPLOYEE.CONTRACT + `/${id}`
+    );
   }
 }

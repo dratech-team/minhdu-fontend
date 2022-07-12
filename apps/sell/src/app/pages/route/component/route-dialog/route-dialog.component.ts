@@ -1,47 +1,51 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {RouteActions, RouteQuery, RouteStore} from '../../+state';
-import {DatePipe} from '@angular/common';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {Actions} from "@datorama/akita-ng-effects";
-import {NzModalRef} from "ng-zorro-antd/modal";
-import {UpdateTypeEnum} from "../../enums/update-type.enum";
-import {OrderEnum} from "@minhdu-fontend/enums";
-import {OrderEntity} from "../../../order/enitities/order.entity";
-import {CommodityEntity} from "../../../commodity/entities";
+import { Component, Input, OnInit } from '@angular/core';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { RouteActions, RouteQuery, RouteStore } from '../../+state';
+import { DatePipe } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Actions } from '@datorama/akita-ng-effects';
+import { NzModalRef } from 'ng-zorro-antd/modal';
+import { UpdaterRouteTypeEnum } from '../../enums/updater-route-type.enum';
+import { SortTypeOrderEnum } from '@minhdu-fontend/enums';
+import { OrderEntity } from '../../../order/enitities/order.entity';
+import { CommodityEntity } from '../../../commodity/entities';
 
 @Component({
   templateUrl: 'route-dialog.component.html',
 })
 export class RouteDialogComponent implements OnInit {
-  @Input() data?: any
-  added$ = this.routeQuery.select(state => state.added)
+  @Input() data?: any;
+  loading$ = this.routeQuery.select((state) => state.loading);
 
-  orderEnum = OrderEnum
+  orderEnum = SortTypeOrderEnum;
   submitted = false;
   isSelectAll = false;
   stepIndex = 0;
-  updateTypeEnum = UpdateTypeEnum
-  formGroup!: FormGroup;
+  updateTypeEnum = UpdaterRouteTypeEnum;
+  formGroup!: UntypedFormGroup;
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly actions$: Actions,
     private readonly routeQuery: RouteQuery,
     private readonly routeStore: RouteStore,
     private readonly datePipe: DatePipe,
     private readonly modalRef: NzModalRef,
-    private readonly snackbar: MatSnackBar,
-  ) {
-  }
+    private readonly snackbar: MatSnackBar
+  ) {}
 
   ngOnInit() {
-    this.routeStore.update(state => ({
-      ...state, added: null
-    }))
+    this.routeStore.update((state) => ({
+      ...state,
+      added: null,
+    }));
 
-    if (this.data?.updateType === UpdateTypeEnum.ORDER) {
-      this.stepIndex = 1
+    if (this.data?.updateType === UpdaterRouteTypeEnum.ORDER) {
+      this.stepIndex = 1;
     }
 
     this.formGroup = this.formBuilder.group({
@@ -67,7 +71,7 @@ export class RouteDialogComponent implements OnInit {
 
   onSubmit(): any {
     if (this.formGroup.value.orders.length === 0) {
-      return this.snackbar.open('Chưa chọn đơn hàng', '', {duration: 1500});
+      return this.snackbar.open('Chưa chọn đơn hàng', '', { duration: 1500 });
     }
     const val = this.formGroup.value;
     const route = {
@@ -82,16 +86,16 @@ export class RouteDialogComponent implements OnInit {
     };
     if (this.data) {
       this.actions$.dispatch(
-        RouteActions.update({updates: route, id: this.data.route.id})
+        RouteActions.update({ updates: route, id: this.data.route.id })
       );
     } else {
-      this.actions$.dispatch(RouteActions.addOne({body: route}));
+      this.actions$.dispatch(RouteActions.addOne({ body: route }));
     }
-    this.added$.subscribe(added => {
-      if (added) {
+    this.loading$.subscribe((loading) => {
+      if (loading === false) {
         this.modalRef.close();
       }
-    })
+    });
   }
 
   pre(): void {

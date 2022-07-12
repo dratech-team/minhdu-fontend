@@ -5,5 +5,5 @@ export interface BaseSearchCommodityDto extends Partial<Omit<BaseCommodityEntity
   readonly closed?: boolean;
 }
 
-export interface SearchCommodityDto extends BaseSearchDto<BaseSearchCommodityDto> {
-}
+export interface SearchCommodityDto
+  extends BaseSearchDto<BaseSearchCommodityDto> {}

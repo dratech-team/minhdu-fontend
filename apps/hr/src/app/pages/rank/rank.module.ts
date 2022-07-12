@@ -19,7 +19,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RankRoutingModule } from './rank-routing.module';
 import { RankComponent } from './containers/rank/rank.component';
 
-
 @NgModule({
   imports: [
     ComponentsModule,
@@ -39,11 +38,8 @@ import { RankComponent } from './containers/rank/rank.component';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     RankRoutingModule,
-    MatDialogModule
+    MatDialogModule,
   ],
-  declarations: [
-    RankComponent
-  ]
+  declarations: [RankComponent],
 })
-export class RankModule {
-}
+export class RankModule {}

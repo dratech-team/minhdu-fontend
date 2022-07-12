@@ -11,21 +11,19 @@ export class EggTypeEffect {
     private readonly action$: Actions,
     private readonly service: EggTypeService,
     private readonly store: EggTypeStore
-  ) {
-  }
+  ) {}
 
   @Effect()
   addOne$ = this.action$.pipe(
     ofType(EggTypeActions.addOne),
-    switchMap(props => this.service.addOne(props)),
-    tap(data => this.store.add(data))
+    switchMap((props) => this.service.addOne(props)),
+    tap((data) => this.store.add(data))
   );
 
   @Effect()
   loadAll$ = this.action$.pipe(
     ofType(EggTypeActions.loadAll),
     switchMap(() => this.service.getAll()),
-    tap(data => this.store.set(data))
+    tap((data) => this.store.set(data))
   );
-
 }

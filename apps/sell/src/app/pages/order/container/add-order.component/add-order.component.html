@@ -1,185 +1,311 @@
-<div class='px-5 pt-5 pb-3 '>
-  <form id='form' [formGroup]='formGroup' autocomplete='off' class='mt-3' style='width: 100%'>
-    <div class='d-flex justify-content-between  align-items-center ' style='background: #e2e4e9;
-              position: fixed;
-              top: 94px;
-              left: 0;
-              right: 0;
-              height: 50px;
-              z-index: 10;
-          '>
-      <div class='row h3 ml-2 '>
-        Thêm đơn hàng
-      </div>
-      <div class=' d-flex flex-row  '>
-        <button (click)='onSubmit()' class='btn btn-primary mr-3 '>Lưu</button>
+<div class="px-5 pt-5 pb-3">
+  <form
+    id="form"
+    [formGroup]="formGroup"
+    autocomplete="off"
+    class="mt-3"
+    style="width: 100%"
+  >
+    <div
+      class="d-flex justify-content-between align-items-center"
+      style="
+        background: #e2e4e9;
+        position: fixed;
+        top: 94px;
+        left: 0;
+        right: 0;
+        height: 50px;
+        z-index: 10;
+      "
+    >
+      <div class="row h3 ml-2">Thêm đơn hàng</div>
+      <div class="d-flex flex-row">
+        <button (click)="onSubmit()" class="btn btn-primary mr-3">Lưu</button>
       </div>
     </div>
-    <div [formGroup]='formGroup' class='mt-3' style='padding: 0 10%;'>
+    <div [formGroup]="formGroup" class="mt-3" style="padding: 0 10%">
       <div>
-        <div class='h4 mt-4'>
-          Thông tin đơn hàng
-        </div>
-        <div class='row ml-2 mt-5'>
-          <div class='col-3' [formGroup]='formGroup'>
-            <label for='createdAt' class='h5'>Ngày tạo đơn hàng<span class='star'>*</span>
+        <div class="h4 mt-4">Thông tin đơn hàng</div>
+        <div class="row ml-2 mt-5">
+          <div class="col-3" [formGroup]="formGroup">
+            <label for="createdAt" class="h5"
+              >Ngày tạo đơn hàng<span class="star">*</span>
             </label>
-            <input type='date' class='form-control' id='createdAt' formControlName='createdAt'
-                   [ngClass]="{ 'is-invalid': submitted && checkValid.createdAt.errors?.required }">
-            <div *ngIf='submitted && checkValid.createdAt.errors?.required' class='invalid-feedback'>
+            <input
+              type="date"
+              class="form-control"
+              id="createdAt"
+              formControlName="createdAt"
+              [ngClass]="{
+                'is-invalid': submitted && checkValid.createdAt.errors?.required
+              }"
+            />
+            <div
+              *ngIf="submitted && checkValid.createdAt.errors?.required"
+              class="invalid-feedback"
+            >
               <div>Chưa nhập ngày tạo đơn hàng</div>
             </div>
           </div>
-          <div class='col-6' [formGroup]='formGroup'>
-            <label for='explain' class='h5'>Chú thích</label>
-            <input type='text' class='form-control' id='explain' formControlName='explain'>
+          <div class="col-6" [formGroup]="formGroup">
+            <label for="explain" class="h5">Chú thích</label>
+            <input
+              type="text"
+              class="form-control"
+              id="explain"
+              formControlName="explain"
+            />
           </div>
         </div>
-        <div class='mt-3 d-flex'>
-          <div class='d-flex ml-2'>
+        <div class="mt-3 d-flex">
+          <div class="d-flex ml-2">
             <div class="col-3">
-              <label for='deliveriedAt' class='h5'>Ngày hẹn giao</label>
-              <input type='date' class='form-control' id='deliveriedAt' formControlName='endedAt'>
+              <label for="deliveriedAt" class="h5">Ngày hẹn giao</label>
+              <input
+                type="date"
+                class="form-control"
+                id="deliveriedAt"
+                formControlName="endedAt"
+              />
             </div>
             <div class="col-9">
               <place-selector
-                [formGroup]='formGroup'
-                [form]='checkValid'
-                [submitting]='submitted'
-                [isRequiredDistrict]='false'
-                [isRequiredWard]='false'
+                [formGroup]="formGroup"
+                [form]="checkValid"
+                [submitting]="submitted"
+                [isRequiredDistrict]="false"
+                [isRequiredWard]="false"
               ></place-selector>
             </div>
-
           </div>
         </div>
-        <div *ngIf='customerPicked'  class='animated fadeIn mt-3'>
-          <div class='h5 ml-4'> Khách hàng</div>
-          <div class='mt-2 mb-1 ml-4 pointer' (click)='pickCustomer()'>
+        <div *ngIf="customerPicked" class="animated fadeIn mt-3">
+          <div class="h5 ml-4">Khách hàng</div>
+          <div class="mt-2 mb-1 ml-4 pointer" (click)="pickCustomer()">
             <div
-              class='d-flex justify-content-center align-items-center '
-              style='width: 200px;
-                        height: 40px;
-                        background-color: white;
-                        border: 1px solid #d3d7de;
-                        border-radius: 4px;'>
-              <span class='h5' style='color: #20a8d8; margin-bottom: 0'>
-                Chọn Khách hàng <img class='ml-2' src='assets/icon/share/plus-lg.svg' alt='plus'>
+              class="d-flex justify-content-center align-items-center"
+              style="
+                width: 200px;
+                height: 40px;
+                background-color: white;
+                border: 1px solid #d3d7de;
+                border-radius: 4px;
+              "
+            >
+              <span class="h5" style="color: #20a8d8; margin-bottom: 0">
+                Chọn Khách hàng
+                <img
+                  class="ml-2"
+                  src="assets/icon/share/plus-lg.svg"
+                  alt="plus"
+                />
               </span>
             </div>
           </div>
-          <nz-table class="ml-4" nzShowPagination="false" [nzData]="[customerPicked]" #tableCustomer>
+          <nz-table
+            class="ml-4"
+            nzShowPagination="false"
+            [nzData]="[customerPicked]"
+            #tableCustomer
+          >
             <thead>
-            <tr>
-              <th>Tên khách hàng</th>
-              <th>Số điện thoại</th>
-              <th>Loại khách hàng</th>
-              <th>Nguồn khác hàng</th>
-              <th>Email</th>
-              <!--              <th class='text-center'>Bỏ chọn</th>-->
-            </tr>
+              <tr>
+                <th>Tên khách hàng</th>
+                <th>Số điện thoại</th>
+                <th>Loại khách hàng</th>
+                <th>Nguồn khác hàng</th>
+                <th>Email</th>
+                <!--              <th class='text-center'>Bỏ chọn</th>-->
+              </tr>
             </thead>
             <tbody>
-            <ng-template let-customerPicked ngFor [ngForOf]="tableCustomer.data">
-              <tr>
-                <td>{{customerPicked.lastName}}</td>
-                <td>{{customerPicked?.phone}}</td>
-                <td> {{customerPicked?.type === customerType.AGENCY ?
-                  'Đại lý' : customerPicked?.type === customerType.RETAIL ?
-                    'Khách lẻ' : 'Chưa cập nhật'}}
-                </td>
-                <td>
-                  {{
-                  customerPicked?.resource === resourceType.SELF_FIND
-                    ? 'Tự tìm'
-                    : customerPicked?.resource === resourceType.RESEARCH
-                      ? 'Tra cứu'
-                      : customerPicked?.resource === resourceType.INTRODUCED
+              <ng-template
+                let-customerPicked
+                ngFor
+                [ngForOf]="tableCustomer.data"
+              >
+                <tr>
+                  <td>{{ customerPicked.lastName }}</td>
+                  <td>{{ customerPicked?.phone }}</td>
+                  <td>
+                    {{
+                      customerPicked?.type === customerType.AGENCY
+                        ? 'Đại lý'
+                        : customerPicked?.type === customerType.RETAIL
+                        ? 'Khách lẻ'
+                        : 'Chưa cập nhật'
+                    }}
+                  </td>
+                  <td>
+                    {{
+                      customerPicked?.resource === resourceType.SELF_FIND
+                        ? 'Tự tìm'
+                        : customerPicked?.resource === resourceType.RESEARCH
+                        ? 'Tra cứu'
+                        : customerPicked?.resource === resourceType.INTRODUCED
                         ? 'Giới thiệu'
                         : 'Khác'
-                  }}
-                </td>
-                <td *ngIf='customerPicked?.email'>{{customerPicked.email}} </td>
-                <td *ngIf='!customerPicked?.email'>Chưa cập nhật</td>
-                <!--              <td class='text-center'>-->
-                <!--                <button (click)='deleteCustomerId()' style=' font-size: 10px'-->
-                <!--                        class='btn btn-danger '>Bỏ chọn-->
-                <!--                </button>-->
-                <!--              </td>-->
-              </tr>
-            </ng-template>
-
-            </tbody>
-
-          </nz-table>
-        </div>
-        <div class='mt-5 ml-4 pointer animated fadeIn' *ngIf='!customerPicked' (click)='pickCustomer()'>
-          <div class=' d-flex justify-content-center align-items-center ' style=' height: 63px;
-                  background-color: white;
-                  border: 1px solid #d3d7de;
-                  border-radius: 4px;'><span class='h5' style='color: #20a8d8;  margin-bottom: 0'>Chọn Khách hàng <img
-            class='ml-2' src='assets/icon/share/plus-lg.svg' alt='plus'> </span>
-          </div>
-        </div>
-        <div *ngIf='commoditiesPicked.length > 0' class='mt-3 mb-3 animated fadeIn'>
-          <div class='h5 ml-4'> Hàng hóa ({{commoditiesPicked.length}})</div>
-          <div class='fixTableHead' style='height: 400px; width: 100% ; overflow-y: auto'>
-            <div class=' ml-4  my-2' (click)='pickCommodities()'>
-              <div class=' d-flex justify-content-center align-items-center ' style=' width: 200px;
-                        height: 40px;
-                        background-color: white;
-                        border: 1px solid #d3d7de;
-                        border-radius: 4px;'><span class='h5 pointer' style='color: #20a8d8 ; margin-bottom: 0'>
-                Chọn hàng hóa <img class='ml-2' src='assets/icon/share/plus-lg.svg' alt='plus'> </span>
-              </div>
-            </div>
-            <nz-table [nzData]="commoditiesPicked"
-                      #tableCommodities
-                      nzShowPagination="false"
-              class='mb-1 ml-4'>
-              <thead>
-              <tr style='height: 35px'>
-                <th class='text-center'>Mã hàng hóa</th>
-                <th class='text-center'>Tên hàng hóa</th>
-                <th class='text-center'>Đơn giá</th>
-                <th class='text-center'>Số lượng</th>
-                <th class='text-center'>Tặng</th>
-                <th class='text-center'>Số lượng mua thêm</th>
-                <th class='text-center'>Đơn giá mua thêm</th>
-                <!--                <th class='text-center'>Đơn vị</th>-->
-                <th class='text-center'>Bỏ chọn</th>
-              </tr>
-              </thead>
-              <tbody>
-              <ng-template ngFor let-commodity [ngForOf]="tableCommodities.data">
-                <tr>
-                  <td class='text-center'> {{commodity.code}} </td>
-                  <td class='text-center'> {{commodity.name}} </td>
-                  <td class='text-center'>{{commodity.price | number:'1.0-0' | notEmpty:'Theo thời giá'}}</td>
-                  <td class='text-center'>{{commodity.amount | number :'1.0-0'}} </td>
-                  <td class='text-center'>{{commodity.gift | number :'1.0-0' | notEmpty:'0'}} </td>
-                  <td class='text-center'>{{commodity.more?.amount | number :'1.0-0' | notEmpty:'0'}} </td>
-                  <td class='text-center'> {{commodity.more?.price | number:'1.0-0' | notEmpty:'0'}} đ</td>
-                  <!--                <td class='text-center '> {{commodity?.unit === commodityUnit.KG ? 'Kilogam' : 'Con'}}</td>-->
-                  <td class='text-center'>
-                    <button (click)='deleteCommodity(commodity)' nzDanger nz-button nzType="default">
-                      Bỏ chọn
-                    </button>
+                    }}
                   </td>
+                  <td *ngIf="customerPicked?.email">
+                    {{ customerPicked.email }}
+                  </td>
+                  <td *ngIf="!customerPicked?.email">Chưa cập nhật</td>
+                  <!--              <td class='text-center'>-->
+                  <!--                <button (click)='deleteCustomerId()' style=' font-size: 10px'-->
+                  <!--                        class='btn btn-danger '>Bỏ chọn-->
+                  <!--                </button>-->
+                  <!--              </td>-->
                 </tr>
               </ng-template>
-
+            </tbody>
+          </nz-table>
+        </div>
+        <div
+          class="mt-5 ml-4 pointer animated fadeIn"
+          *ngIf="!customerPicked"
+          (click)="pickCustomer()"
+        >
+          <div
+            class="d-flex justify-content-center align-items-center"
+            style="
+              height: 63px;
+              background-color: white;
+              border: 1px solid #d3d7de;
+              border-radius: 4px;
+            "
+          >
+            <span class="h5" style="color: #20a8d8; margin-bottom: 0"
+              >Chọn Khách hàng
+              <img
+                class="ml-2"
+                src="assets/icon/share/plus-lg.svg"
+                alt="plus"
+              />
+            </span>
+          </div>
+        </div>
+        <div
+          *ngIf="commoditiesPicked.length > 0"
+          class="mt-3 mb-3 animated fadeIn"
+        >
+          <div class="h5 ml-4">Hàng hóa ({{ commoditiesPicked.length }})</div>
+          <div
+            class="fixTableHead"
+            style="height: 400px; width: 100%; overflow-y: auto"
+          >
+            <div class="ml-4 my-2" (click)="pickCommodities()">
+              <div
+                class="d-flex justify-content-center align-items-center"
+                style="
+                  width: 200px;
+                  height: 40px;
+                  background-color: white;
+                  border: 1px solid #d3d7de;
+                  border-radius: 4px;
+                "
+              >
+                <span
+                  class="h5 pointer"
+                  style="color: #20a8d8; margin-bottom: 0"
+                >
+                  Chọn hàng hóa
+                  <img
+                    class="ml-2"
+                    src="assets/icon/share/plus-lg.svg"
+                    alt="plus"
+                  />
+                </span>
+              </div>
+            </div>
+            <nz-table
+              [nzData]="commoditiesPicked"
+              #tableCommodities
+              nzShowPagination="false"
+              class="mb-1 ml-4"
+            >
+              <thead>
+                <tr style="height: 35px">
+                  <th class="text-center">Mã hàng hóa</th>
+                  <th class="text-center">Tên hàng hóa</th>
+                  <th class="text-center">Đơn giá</th>
+                  <th class="text-center">Số lượng</th>
+                  <th class="text-center">Tặng</th>
+                  <th class="text-center">Số lượng mua thêm</th>
+                  <th class="text-center">Đơn giá mua thêm</th>
+                  <!--                <th class='text-center'>Đơn vị</th>-->
+                  <th class="text-center">Bỏ chọn</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-template
+                  ngFor
+                  let-commodity
+                  [ngForOf]="tableCommodities.data"
+                >
+                  <tr>
+                    <td class="text-center">{{ commodity.code }}</td>
+                    <td class="text-center">{{ commodity.name }}</td>
+                    <td class="text-center">
+                      {{commodity.price | pricecommodity}}
+                    </td>
+                    <td class="text-center">
+                      {{ commodity.amount | number: '1.0-0' }}
+                    </td>
+                    <td class="text-center">
+                      {{ commodity.gift | number: '1.0-0' | notEmpty: '0' }}
+                    </td>
+                    <td class="text-center">
+                      {{
+                        commodity.more?.amount | number: '1.0-0' | notEmpty: '0'
+                      }}
+                    </td>
+                    <td class="text-center">
+                      {{
+                        commodity.more?.price | number: '1.0-0' | notEmpty: '0'
+                      }}
+                      đ
+                    </td>
+                    <!--                <td class='text-center '> {{commodity?.unit === commodityUnit.KG ? 'Kilogam' : 'Con'}}</td>-->
+                    <td class="text-center">
+                      <button
+                        (click)="deleteCommodity(commodity)"
+                        nzDanger
+                        nz-button
+                        nzType="default"
+                      >
+                        Bỏ chọn
+                      </button>
+                    </td>
+                  </tr>
+                </ng-template>
               </tbody>
             </nz-table>
           </div>
         </div>
-        <div class=' ml-4  my-5 animated fadeIn ' *ngIf='commoditiesPicked.length === 0' style='width:98%'
-             (click)='pickCommodities()'>
-          <div class=' d-flex justify-content-center align-items-center ' style=' height: 63px;
-                  background-color: white;
-                  border: 1px solid #d3d7de;
-                  border-radius: 4px;'><span class='h5 pointer' style='color: #20a8d8;  margin-bottom: 0'>Chọn hàng hóa
-              <img class='ml-2' src='assets/icon/share/plus-lg.svg' alt='plus'> </span>
+        <div
+          class="ml-4 my-5 animated fadeIn"
+          *ngIf="commoditiesPicked.length === 0"
+          style="width: 98%"
+          (click)="pickCommodities()"
+        >
+          <div
+            class="d-flex justify-content-center align-items-center"
+            style="
+              height: 63px;
+              background-color: white;
+              border: 1px solid #d3d7de;
+              border-radius: 4px;
+            "
+          >
+            <span class="h5 pointer" style="color: #20a8d8; margin-bottom: 0"
+              >Chọn hàng hóa
+              <img
+                class="ml-2"
+                src="assets/icon/share/plus-lg.svg"
+                alt="plus"
+              />
+            </span>
           </div>
         </div>
       </div>

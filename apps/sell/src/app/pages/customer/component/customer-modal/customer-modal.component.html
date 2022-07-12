@@ -1,197 +1,281 @@
-<form [formGroup]='formGroup' autocomplete='off' style="height: 45vh; overflow-y: scroll; overflow-x: hidden">
-  <div class='form-group'>
-    <div class='row'>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='lastName'>Họ và tên<span class='star'>*</span>
-        </label>
+<form
+  [formGroup]="formGroup"
+  autocomplete="off"
+  style="height: 45vh; overflow-y: scroll; overflow-x: hidden"
+>
+  <div class="form-group">
+    <div class="row">
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="lastName">Họ và tên<span class="star">*</span> </label>
         <input
-          class='form-control'
-          formControlName='lastName'
-          id='lastname'
-          placeholder='Hiệu'
-          type='text'
-          [ngClass]="{ 'is-invalid': submitted && checkValid.lastName.errors?.required }"
+          class="form-control"
+          formControlName="lastName"
+          id="lastname"
+          placeholder="Hiệu"
+          type="text"
+          [ngClass]="{
+            'is-invalid': submitted && checkValid.lastName.errors?.required
+          }"
+        />
+        <div
+          *ngIf="submitted && checkValid.lastName.errors?.required"
+          class="invalid-feedback"
         >
-        <div *ngIf='submitted && checkValid.lastName.errors?.required' class='invalid-feedback'>
           <div>Chưa nhập họ và tên khác hàng</div>
         </div>
       </div>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='birthplace'>Nguyên quán</label>
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="birthplace">Nguyên quán</label>
         <input
-          class='form-control'
-          formControlName='birthplace'
-          id='birthplace'
-          placeholder='Phước Sơn - Tuy Phước - Bình Định '
-          type='text'
-          [ngClass]="{ 'is-invalid': submitted && checkValid.birthplace.errors?.required }"
+          class="form-control"
+          formControlName="birthplace"
+          id="birthplace"
+          placeholder="Phước Sơn - Tuy Phước - Bình Định "
+          type="text"
+          [ngClass]="{
+            'is-invalid': submitted && checkValid.birthplace.errors?.required
+          }"
+        />
+        <div
+          *ngIf="submitted && checkValid.birthplace.errors?.required"
+          class="invalid-feedback"
         >
-        <div *ngIf='submitted && checkValid.birthplace.errors?.required' class='invalid-feedback'>
           <div>Chưa nhập nguyên quán</div>
         </div>
       </div>
     </div>
-    <div class='row mt-3'>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='religion'>Tôn giáo
-        </label>
-        <input type='text' class='form-control' id='religion' placeholder='Không' formControlName='religion'>
-      </div>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='ethnicity'>Dân tộc
-        </label>
+    <div class="row mt-3">
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="religion">Tôn giáo </label>
         <input
-          class='form-control'
-          formControlName='ethnicity'
-          id='ethnicity'
-          placeholder='Kinh'
-          type='text'
-        >
+          type="text"
+          class="form-control"
+          id="religion"
+          placeholder="Không"
+          formControlName="religion"
+        />
+      </div>
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="ethnicity">Dân tộc </label>
+        <input
+          class="form-control"
+          formControlName="ethnicity"
+          id="ethnicity"
+          placeholder="Kinh"
+          type="text"
+        />
       </div>
     </div>
-    <div class='row mt-3'>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='address'>Địa chỉ</label>
+    <div class="row mt-3">
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="address">Địa chỉ</label>
         <input
-          class='form-control'
-          formControlName='address'
-          id='address'
-          placeholder='Số nhà / thôn xóm'
-          type='text'
-        >
+          class="form-control"
+          formControlName="address"
+          id="address"
+          placeholder="Số nhà / thôn xóm"
+          type="text"
+        />
       </div>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='note'>Ghi chú</label>
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="note">Ghi chú</label>
         <input
-          id='note'
-          type='text'
-          class='form-control'
-          formControlName='note'
-        >
+          id="note"
+          type="text"
+          class="form-control"
+          formControlName="note"
+        />
       </div>
     </div>
     <place-selector
-      [ward]='data?.update?.customer?.ward'
+      [ward]="data?.update?.customer?.ward"
       [province]="data?.update?.customer?.province"
       [district]="data?.update?.customer?.district"
-      [formGroup]='formGroup'
-      [submitting]='submitted'
-      [form]='checkValid'
+      [formGroup]="formGroup"
+      [submitting]="submitted"
+      [form]="checkValid"
       [isUpdate]="!!data"
-      [isRequiredDistrict]='false'
-      [isRequiredWard]='false'
+      [isRequiredDistrict]="false"
+      [isRequiredWard]="false"
     >
     </place-selector>
-    <div class='row mt-3'>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='cmnd'>CMND/CCCD</label>
-        <input type='number' class='form-control' id='cmnd' placeholder='215421236' formControlName='identify'
-               [ngClass]="{ 'is-invalid': submitted && checkValid.identify.errors?.required }">
-        <div *ngIf='submitted && checkValid.identify.errors?.required' class='invalid-feedback'>
+    <div class="row mt-3">
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="cmnd">CMND/CCCD</label>
+        <input
+          type="number"
+          class="form-control"
+          id="cmnd"
+          placeholder="215421236"
+          formControlName="identify"
+          [ngClass]="{
+            'is-invalid': submitted && checkValid.identify.errors?.required
+          }"
+        />
+        <div
+          *ngIf="submitted && checkValid.identify.errors?.required"
+          class="invalid-feedback"
+        >
           <div>Chưa nhập CMND/CCCD</div>
         </div>
       </div>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='idCardAt'>Ngày cấp</label>
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="idCardAt">Ngày cấp</label>
         <input
-          type='date'
-          placeholder='06/05/1997'
-          class='form-control'
-          id='idCardAt'
-          formControlName='idCardAt'
-          [ngClass]="{ 'is-invalid': submitted && checkValid.idCardAt.errors?.required }"
+          type="date"
+          placeholder="06/05/1997"
+          class="form-control"
+          id="idCardAt"
+          formControlName="idCardAt"
+          [ngClass]="{
+            'is-invalid': submitted && checkValid.idCardAt.errors?.required
+          }"
+        />
+        <div
+          *ngIf="submitted && checkValid.idCardAt.errors?.required"
+          class="invalid-feedback"
         >
-        <div *ngIf='submitted && checkValid.idCardAt.errors?.required' class='invalid-feedback'>
           <div>Chưa nhập ngày cấp</div>
         </div>
       </div>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='issuedBy'>Nơi cấp</label>
-        <input type='text' class='form-control' id='issuedBy' placeholder='Bình Định' formControlName='issuedBy'
-               [ngClass]="{ 'is-invalid': submitted && checkValid.issuedBy.errors?.required }">
-        <div *ngIf='submitted && checkValid.issuedBy.errors?.required' class='invalid-feedback'>
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="issuedBy">Nơi cấp</label>
+        <input
+          type="text"
+          class="form-control"
+          id="issuedBy"
+          placeholder="Bình Định"
+          formControlName="issuedBy"
+          [ngClass]="{
+            'is-invalid': submitted && checkValid.issuedBy.errors?.required
+          }"
+        />
+        <div
+          *ngIf="submitted && checkValid.issuedBy.errors?.required"
+          class="invalid-feedback"
+        >
           <div>Chưa nhập nơi cấp</div>
         </div>
       </div>
     </div>
-    <div class='row mt-3'>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='phone'>Số điện thoại <span class='star'>*</span></label>
-        <input type='tel' class='form-control' id='phone' placeholder='0337552146' formControlName='phone'
-               [ngClass]="{ 'is-invalid': submitted && checkValid.phone.errors?.required }">
-        <div *ngIf='submitted && checkValid.phone.errors?.required' class='invalid-feedback'>
+    <div class="row mt-3">
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="phone">Số điện thoại <span class="star">*</span></label>
+        <input
+          type="tel"
+          class="form-control"
+          id="phone"
+          placeholder="0337552146"
+          formControlName="phone"
+          [ngClass]="{
+            'is-invalid': submitted && checkValid.phone.errors?.required
+          }"
+        />
+        <div
+          *ngIf="submitted && checkValid.phone.errors?.required"
+          class="invalid-feedback"
+        >
           <div>Chưa nhập số điện thoại</div>
         </div>
       </div>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='birthday'>Ngày sinh</label>
-        <input type='date' id='birthday' class='form-control' formControlName='birthday'
-               [ngClass]="{ 'is-invalid': submitted && checkValid.birthday.errors?.required }">
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="birthday">Ngày sinh</label>
+        <input
+          type="date"
+          id="birthday"
+          class="form-control"
+          formControlName="birthday"
+          [ngClass]="{
+            'is-invalid': submitted && checkValid.birthday.errors?.required
+          }"
+        />
       </div>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='gender'>Giới tính</label>
-        <div id='gender'>
-          <mat-radio-group class='d-flex justify-content-around' formControlName='gender'>
-            <mat-radio-button value='MALE'>Nam</mat-radio-button>
-            <mat-radio-button value='FEMALE'>Nữ</mat-radio-button>
-            <mat-radio-button value='OTHER'>Khác</mat-radio-button>
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="gender">Giới tính</label>
+        <div id="gender">
+          <mat-radio-group
+            class="d-flex justify-content-around"
+            formControlName="gender"
+          >
+            <mat-radio-button value="MALE">Nam</mat-radio-button>
+            <mat-radio-button value="FEMALE">Nữ</mat-radio-button>
+            <mat-radio-button value="OTHER">Khác</mat-radio-button>
           </mat-radio-group>
         </div>
       </div>
     </div>
-    <div class='row mt-3'>
-      <div class='col-sm' [formGroup]='formGroup'>
+    <div class="row mt-3">
+      <div class="col-sm" [formGroup]="formGroup">
         <label>Loại Khách hàng</label>
         <div>
-          <nz-select style="width:100%" formControlName="type">
-            <nz-option *ngFor="let item of customerConstant" [nzValue]="item.value" [nzLabel]="item.name">
+          <nz-select style="width: 100%" formControlName="type">
+            <nz-option
+              *ngFor="let item of customerConstant"
+              [nzValue]="item.value"
+              [nzLabel]="item.name"
+            >
             </nz-option>
           </nz-select>
         </div>
-        <div *ngIf='submitted && checkValid.type.errors?.required' class='invalid-feedback'>
+        <div
+          *ngIf="submitted && checkValid.type.errors?.required"
+          class="invalid-feedback"
+        >
           <div>Chưa chọn loại khách hàng</div>
         </div>
       </div>
-      <div class='col-sm' [formGroup]='formGroup'>
+      <div class="col-sm" [formGroup]="formGroup">
         <label>Nguồn khác hàng</label>
         <div>
           <nz-select style="width: 100%" formControlName="resource">
-            <nz-option *ngFor="let item of resourceConstant" [nzValue]="item.value" [nzLabel]="item.name">
+            <nz-option
+              *ngFor="let item of resourceConstant"
+              [nzValue]="item.value"
+              [nzLabel]="item.name"
+            >
             </nz-option>
           </nz-select>
         </div>
-        <div *ngIf='submitted && checkValid.type.errors?.required' class='invalid-feedback'>
+        <div
+          *ngIf="submitted && checkValid.type.errors?.required"
+          class="invalid-feedback"
+        >
           <div>Chưa chọn nguồn khách hàng</div>
         </div>
       </div>
     </div>
-    <div class='row mt-3'>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='religion'>Email
-        </label>
-        <input type='text' class='form-control' id='email' placeholder='trangiahieu@gmail.com'
-               formControlName='email'>
-      </div>
-    </div>
-    <div class='row mt-3' [formGroup]='formGroup'>
-      <div class='col-sm'>
-        <label for='facebook'>Tìm năng</label>
+    <div class="row mt-3">
+      <div class="col-sm" [formGroup]="formGroup">
+        <label for="religion">Email </label>
         <input
-          id='facebook'
-          type='checkbox'
-          class='form-control'
-          formControlName='isPotential'
-        >
+          type="text"
+          class="form-control"
+          id="email"
+          placeholder="trangiahieu@gmail.com"
+          formControlName="email"
+        />
       </div>
     </div>
-
+    <div class="row mt-3" [formGroup]="formGroup">
+      <div class="col-sm">
+        <label for="facebook">Tìm năng</label>
+        <input
+          id="facebook"
+          type="checkbox"
+          class="form-control"
+          formControlName="isPotential"
+        />
+      </div>
+    </div>
   </div>
 </form>
-<div class='row d-flex mt-3 justify-content-center'>
-  <button (click)='onSubmit()' nz-button nzType="primary" [nzLoading]="(added$|async) === false"> Xác nhận</button>
+<div class="row d-flex mt-3 justify-content-center">
+  <button
+    (click)="onSubmit()"
+    nz-button
+    nzType="primary"
+    [nzLoading]="loading$ | async"
+  >
+    Xác nhận
+  </button>
 </div>
-
-
-
-
-

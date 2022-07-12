@@ -1,3 +1,3 @@
-import {BaseDegreeEntity} from "../base/base-degree.entity";
+import { BaseDegreeEntity } from '../base/base-degree.entity';
 
-export type DegreeEntity = BaseDegreeEntity
+export type DegreeEntity = BaseDegreeEntity;

@@ -17,70 +17,51 @@
         "cacheableOperations": ["build", "lint", "test", "e2e"],
         "accessToken": "MzUwZTMwMGEtZmI3ZC00MWJiLTg2OWUtNTJjMTE1MmRjY2U2fHJlYWQtd3JpdGU=",
         "canTrackAnalytics": false,
-        "showUsageWarnings": true
+        "showUsageWarnings": true,
+        "parallel": 3
       }
     }
   },
-  "projects": {
-    "hr": {
-      "tags": []
+  "targetDependencies": {
+    "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ]
+  },
+  "cli": {
+    "analytics": "488afbe4-1bad-4fe4-91d0-b58f564af609",
+    "defaultCollection": "@nrwl/angular"
+  },
+  "defaultProject": "hr",
+  "generators": {
+    "@datorama/akita:component": {
+      "styleext": "scss"
     },
-    "components": {
-      "tags": []
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
     },
-    "auth": {
-      "tags": []
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
     },
-    "orgchart": {
-      "tags": []
+    "@nrwl/angular:library": {
+      "linter": "eslint",
+      "unitTestRunner": "jest"
     },
-    "sell": {
-      "tags": []
-    },
-    "employee": {
-      "tags": []
-    },
-    "location": {
-      "tags": []
-    },
-    "warehouse": {
-      "tags": []
-    },
-    "admin": {
-      "tags": []
-    },
-    "system": {
-      "tags": []
-    },
-    "breed": {
-      "tags": []
-    },
-    "breed-e2e": {
-      "tags": [],
-      "implicitDependencies": ["breed"]
-    },
-    "hrv2": {
-      "tags": []
-    },
-    "hrv2-e2e": {
-      "tags": [],
-      "implicitDependencies": ["hrv2"]
-    },
-    "dra-effects": {
-      "tags": []
-    },
-    "farm": {
-      "tags": []
-    },
-    "farm-e2e": {
-      "tags": [],
-      "implicitDependencies": ["farm"]
-    },
-    "employee-v2": {
-      "tags": []
-    },
-    "orgchart-v2": {
-      "tags": []
+    "@nrwl/angular:component": {
+      "style": "scss"
     }
   }
 }

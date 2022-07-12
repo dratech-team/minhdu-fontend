@@ -1,7 +1,7 @@
-button:hover{
+button:hover {
   background: #5bc0de6e;
 }
-.button{
+.button {
   border: none;
   height: 40px;
   outline: #5bc0de;
@@ -9,48 +9,47 @@ button:hover{
   background: white;
 }
 
-.header{
+.header {
   position: fixed;
-  top:0;
+  top: 0;
   left: 0;
   right: 0;
   z-index: 100;
   background: white;
 }
-.main-body{
-  margin: 50px ;
+.main-body {
+  margin: 50px;
 }
-.footer{
+.footer {
   position: fixed;
-  bottom:0;
+  bottom: 0;
   left: 0;
   right: 0;
   z-index: 100;
-
 }
-.btn-border{
+.btn-border {
   border: solid 2px #5bc0de;
   color: #428bca;
 }
-@media only screen and (max-width: 739px){
-  .hide-on-mobile{
+@media only screen and (max-width: 739px) {
+  .hide-on-mobile {
     display: none;
   }
-  .app-name{
+  .app-name {
     font-size: 13px;
     font-weight: bold;
     padding: 0 !important;
   }
-  .menu-mobile{
+  .menu-mobile {
     display: flex;
     justify-content: space-between;
   }
 }
-@media only screen and (min-width: 739px){
-  .hide-on-pc{
+@media only screen and (min-width: 739px) {
+  .hide-on-pc {
     display: none;
   }
-  .app-name{
+  .app-name {
     font-size: 20px;
     font-weight: bold;
   }

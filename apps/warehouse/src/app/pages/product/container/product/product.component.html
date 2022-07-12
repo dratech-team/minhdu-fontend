@@ -1,33 +1,37 @@
 <div class="d-flex mt-3 ml-2">
-  <div class='d-flex flex-column ml-3 border p-2' style='height: 80vh; width:250px; overflow-y: scroll'>
+  <div
+    class="d-flex flex-column ml-3 border p-2"
+    style="height: 80vh; width: 250px; overflow-y: scroll"
+  >
     <nz-collapse>
-      <nz-collapse-panel
-        nzHeader='Tìm kiếm'
-        nzActive='true'>
-        <div [formGroup]='formGroup'>
-          <input nz-input class='form-control' type='search' formControlName='search'>
+      <nz-collapse-panel nzHeader="Tìm kiếm" nzActive="true">
+        <div [formGroup]="formGroup">
+          <input
+            nz-input
+            class="form-control"
+            type="search"
+            formControlName="search"
+          />
         </div>
       </nz-collapse-panel>
     </nz-collapse>
     <div class="mt-2">
       <nz-collapse>
-        <nz-collapse-panel
-          nzHeader='Ngành hàng'
-          nzActive='true'>
-          <div [formGroup]='formGroup'>
+        <nz-collapse-panel nzHeader="Ngành hàng" nzActive="true">
+          <div [formGroup]="formGroup">
             <nz-select
-              class='ml-2'
+              class="ml-2"
               nzShowSearch
               nzAllowClear
-              style='width:100%'
-              nzPlaceHolder='Chọn ngành hàng'
-              [compareWith]='compareFN'
+              style="width: 100%"
+              nzPlaceHolder="Chọn ngành hàng"
+              [compareWith]="compareFN"
               formControlName="category"
             >
               <nz-option
-                *ngFor='let warehouse of warehouses$ | async'
-                [nzLabel]='warehouse.name'
-                [nzValue]='warehouse'
+                *ngFor="let warehouse of warehouses$ | async"
+                [nzLabel]="warehouse.name"
+                [nzValue]="warehouse"
               >
               </nz-option>
             </nz-select>
@@ -37,23 +41,21 @@
     </div>
     <div class="mt-2">
       <nz-collapse>
-        <nz-collapse-panel
-          nzHeader='Nhà cung cấp'
-          nzActive='true'>
-          <div [formGroup]='formGroup'>
+        <nz-collapse-panel nzHeader="Nhà cung cấp" nzActive="true">
+          <div [formGroup]="formGroup">
             <nz-select
-              class='ml-2'
+              class="ml-2"
               nzShowSearch
               nzAllowClear
-              style='width:100%'
-              nzPlaceHolder='Chọn nhà cung cấp'
-              [compareWith]='compareFN'
+              style="width: 100%"
+              nzPlaceHolder="Chọn nhà cung cấp"
+              [compareWith]="compareFN"
               formControlName="supplier"
             >
               <nz-option
-                *ngFor='let supplier of supplier$ | async'
-                [nzLabel]='supplier.name'
-                [nzValue]='supplier'
+                *ngFor="let supplier of supplier$ | async"
+                [nzLabel]="supplier.name"
+                [nzValue]="supplier"
               >
               </nz-option>
             </nz-select>
@@ -67,28 +69,34 @@
       <div class="font-2xl font-weight-bold">Sản phẩm</div>
       <div>
         <div>
-          <button nz-button nzType="primary" class="ml-2" (click)="onAdd()">Thêm</button>
-          <button class='ml-2' nz-button nz-popover nzPopoverTitle='Ghim'
-                  [(nzPopoverVisible)]='visible'
-                  nzPopoverPlacement='bottomRight'
-                  [nzPopoverContent]='pinned'
-                  nzPopoverTrigger='click'>Ghim
+          <button nz-button nzType="primary" class="ml-2" (click)="onAdd()">
+            Thêm
+          </button>
+          <button
+            class="ml-2"
+            nz-button
+            nz-popover
+            nzPopoverTitle="Ghim"
+            [(nzPopoverVisible)]="visible"
+            nzPopoverPlacement="bottomRight"
+            [nzPopoverContent]="pinned"
+            nzPopoverTrigger="click"
+          >
+            Ghim
           </button>
         </div>
       </div>
     </div>
     <div>
       <minhdu-fontend-table-product
-        [products]="(products$|async)|| []"
+        [products]="(products$ | async) || []"
         [pageSize]="pageSizeTable"
-        [loading]="(loading$|async)||false"
+        [loading]="(loading$ | async) || false"
         (pageIndexChange)="onPagination($event)"
       ></minhdu-fontend-table-product>
     </div>
-
   </div>
 </div>
 <ng-template #pinned>
   <minhdu-fontend-pinned-product></minhdu-fontend-pinned-product>
 </ng-template>
-

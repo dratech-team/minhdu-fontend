@@ -1,16 +1,16 @@
-import {RemoteTypeEnum} from "../enums/remote-type.enum";
+import { RemoteTypeEnum } from '../enums/remote-type.enum';
 
 export const RemoteConstant = [
   {
     name: 'WFH',
-    value: RemoteTypeEnum.WFH
+    value: RemoteTypeEnum.WFH,
   },
   {
     name: 'ONSITE',
-    value: RemoteTypeEnum.ONSITE
+    value: RemoteTypeEnum.ONSITE,
   },
   {
     name: 'REMOTE',
-    value: RemoteTypeEnum.REMOTE
-  }
-]
+    value: RemoteTypeEnum.REMOTE,
+  },
+];

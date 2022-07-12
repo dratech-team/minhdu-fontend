@@ -1,29 +1,49 @@
-<div class="animated main-popup p-3" >
-  <div mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+<div class="animated main-popup p-3">
+  <div mat-dialog-close class="close-popup">
+    <span class="mr-1"> close</span>
+    <div class="x-popup">
+      <img src="../../../../../assets/img/share/x2-lg.svg" alt="cancel" />
     </div>
   </div>
   <div class="title-popup">
-    <span style='color: #1b8eb7'>Thêm hàng loạt</span>
+    <span style="color: #1b8eb7">Thêm hàng loạt</span>
   </div>
-  <div class="row mt-4 content-popup " style='width: 400px'>
-     <div (click)='selectTypeAddMultiple(salaryType.OVERTIME)'
-          class='pointer border rounded  border-primary p-1 my-1 w-100 d-flex align-items-center justify-content-between'>
-       <span style='color: #1b8eb7' class='title-item col'>Thêm Tăng ca</span>
-       <img  width='25' height='25' src='assets/icon/plus-circle.svg' alt='Thêm tăng ca'>
-     </div>
-    <div (click)='selectTypeAddMultiple(salaryType.ALLOWANCE)'
-         class='pointer border rounded  border-primary p-1 my-1 w-100 d-flex align-items-center justify-content-between'>
-      <span style='color: #1b8eb7' class='title-item col'>Thêm Phụ cấp</span>
-      <img  width='25' height='25' src='assets/icon/plus-circle.svg' alt='Thêm Phụ cấp'>
+  <div class="row mt-4 content-popup" style="width: 400px">
+    <div
+      (click)="selectTypeAddMultiple(salaryType.OVERTIME)"
+      class="pointer border rounded border-primary p-1 my-1 w-100 d-flex align-items-center justify-content-between"
+    >
+      <span style="color: #1b8eb7" class="title-item col">Thêm Tăng ca</span>
+      <img
+        width="25"
+        height="25"
+        src="assets/icon/plus-circle.svg"
+        alt="Thêm tăng ca"
+      />
     </div>
-    <div (click)='selectTypeAddMultiple(salaryType.ABSENT)'
-         class='pointer border rounded  border-primary p-1 my-1 w-100 d-flex align-items-center justify-content-between'>
-      <span style='color: #1b8eb7' class='title-item col'>Thêm Khấu trừ</span>
-      <img  width='25' height='25' src='assets/icon/plus-circle.svg' alt='Thêm khấu trừ'>
+    <div
+      (click)="selectTypeAddMultiple(salaryType.ALLOWANCE)"
+      class="pointer border rounded border-primary p-1 my-1 w-100 d-flex align-items-center justify-content-between"
+    >
+      <span style="color: #1b8eb7" class="title-item col">Thêm Phụ cấp</span>
+      <img
+        width="25"
+        height="25"
+        src="assets/icon/plus-circle.svg"
+        alt="Thêm Phụ cấp"
+      />
+    </div>
+    <div
+      (click)="selectTypeAddMultiple(salaryType.ABSENT)"
+      class="pointer border rounded border-primary p-1 my-1 w-100 d-flex align-items-center justify-content-between"
+    >
+      <span style="color: #1b8eb7" class="title-item col">Thêm Khấu trừ</span>
+      <img
+        width="25"
+        height="25"
+        src="assets/icon/plus-circle.svg"
+        alt="Thêm khấu trừ"
+      />
     </div>
   </div>
 </div>
-

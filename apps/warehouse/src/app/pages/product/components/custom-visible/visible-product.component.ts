@@ -1,33 +1,32 @@
-import {Component} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {ProductQuery} from "../../state/product.query";
-import {ProductStore} from "../../state/product.store";
+import { Component } from '@angular/core';
+import { UntypedFormGroup } from '@angular/forms';
+import { ProductQuery } from '../../state/product.query';
+import { ProductStore } from '../../state/product.store';
 
 @Component({
   selector: 'minhdu-fontend-pinned-product',
-  templateUrl: 'visible-product.component.html'
+  templateUrl: 'visible-product.component.html',
 })
 export class VisibleProductComponent {
-  ui$ = this.productQuery.select(state => state.ui);
-  formGroup!: FormGroup;
+  ui$ = this.productQuery.select((state) => state.ui);
+  formGroup!: UntypedFormGroup;
   visibleEntity: any = {};
 
   constructor(
     private readonly productQuery: ProductQuery,
     private readonly productStore: ProductStore
-  ) {
-  }
+  ) {}
 
   onVisibleChange(visible: boolean, visibleEntity: any) {
     this.visibleEntity = visibleEntity;
   }
 
   onUpdateVisible() {
-    this.productStore.updateUI(this.visibleEntity,'visible');
+    this.productStore.updateUI(this.visibleEntity, 'visible');
   }
 
   onUpdatePinned() {
-    this.productStore.updateUI(this.visibleEntity,'pinned');
+    this.productStore.updateUI(this.visibleEntity, 'pinned');
   }
 
   visible(key: 'visible' | 'pinned'): boolean {

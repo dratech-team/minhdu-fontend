@@ -1,5 +1,3 @@
-import {BaseWarehouseEntity} from '../bases/base-warehouse.entity';
+import { BaseWarehouseEntity } from '../bases/base-warehouse.entity';
 
-export interface WarehouseEntity extends BaseWarehouseEntity {
-}
-
+export interface WarehouseEntity extends BaseWarehouseEntity {}

@@ -1,18 +1,23 @@
 import { DecimalPipe } from '@angular/common';
-import { Directive, OnInit, ElementRef, Renderer2, HostListener } from '@angular/core';
+import {
+  Directive,
+  OnInit,
+  ElementRef,
+  Renderer2,
+  HostListener,
+} from '@angular/core';
 
 @Directive({
-  selector: '[inputCurrency]'
+  selector: '[inputCurrency]',
 })
 export class InputCurrencyDirective implements OnInit {
-  currencyChars = new RegExp('[\.,]', 'g');
+  currencyChars = new RegExp('[.,]', 'g');
 
   constructor(
     public el: ElementRef,
     public renderer: Renderer2,
     private decimalPipe: DecimalPipe
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.format(this.el.nativeElement.value);
@@ -20,7 +25,7 @@ export class InputCurrencyDirective implements OnInit {
 
   @HostListener('input', ['$event.target.value']) onInput(e: string) {
     this.format(e);
-  };
+  }
 
   @HostListener('paste', ['$event']) onPaste(event: ClipboardEvent) {
     event.preventDefault();

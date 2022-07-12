@@ -1,16 +1,16 @@
-import {Gender} from "../enums";
+import { GenderTypeEnum } from '../enums';
 
 export const GenderTypeConstant = [
   {
-    name:'Nam',
-    value: Gender.MALE
+    name: 'Nam',
+    value: GenderTypeEnum.MALE,
   },
   {
-    name:'Nữ',
-    value: Gender.FEMALE
+    name: 'Nữ',
+    value: GenderTypeEnum.FEMALE,
   },
   {
-    name:'Khác',
-    value: Gender.OTHER
-  }
-]
+    name: 'Khác',
+    value: GenderTypeEnum.OTHER,
+  },
+];

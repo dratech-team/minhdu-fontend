@@ -28,11 +28,9 @@ ng-select.bootstrap {
     border: $input-btn-border-width solid $input-border-color;
 
     &.open {
-
     }
 
     &.focus {
-
     }
 
     &.below {
@@ -50,13 +48,13 @@ ng-select.bootstrap {
       pointer-events: none;
     }
 
-    >div.single {
+    > div.single {
       display: flex;
       height: 34px;
       width: 100%;
 
-      >div.value,
-      >div.placeholder {
+      > div.value,
+      > div.placeholder {
         flex: 1;
         line-height: 34px;
         overflow: hidden;
@@ -64,12 +62,12 @@ ng-select.bootstrap {
         white-space: nowrap;
       }
 
-      >div.placeholder {
+      > div.placeholder {
         color: $input-color;
       }
 
-      >div.clear,
-      >div.toggle {
+      > div.clear,
+      > div.toggle {
         color: lighten($input-group-addon-color, 5%);
         line-height: 30px;
         text-align: center;
@@ -80,16 +78,16 @@ ng-select.bootstrap {
         }
       }
 
-      >div.clear {
-        font-size:18px;
+      > div.clear {
+        font-size: 18px;
       }
 
-      >div.toggle {
-        font-size:14px;
+      > div.toggle {
+        font-size: 14px;
       }
     }
 
-    >div.multiple {
+    > div.multiple {
       display: flex;
       flex-flow: row wrap;
       height: 100%;
@@ -97,17 +95,17 @@ ng-select.bootstrap {
       padding: 0;
       width: 100%;
 
-      >div.option {
+      > div.option {
         background-color: darken($input-bg, 5%);
         @if $enable-rounded {
           border-radius: $input-border-radius;
         } @else {
           border-radius: 0;
         }
-    		border: 1px solid darken($input-border-color, 5%);
-    		color: $blue;
-    		display: inline-block;
-    		font-size: .9em;
+        border: 1px solid darken($input-border-color, 5%);
+        color: $blue;
+        display: inline-block;
+        font-size: 0.9em;
         padding: 0 5px 0 0;
         margin: 5px 0 0 5px;
         vertical-align: top;
@@ -117,7 +115,7 @@ ng-select.bootstrap {
           display: inline-block;
           color: $blue;
           cursor: pointer;
-          font-size: .9em;
+          font-size: 0.9em;
           height: 22px;
           line-height: 22px;
           border-right: 1px solid darken($input-border-color, 5%);
@@ -163,14 +161,14 @@ ng-select.bootstrap {
     padding: 4px 0;
   }
 
- select-dropdown {
+  select-dropdown {
     box-sizing: border-box;
 
     * {
-        box-sizing: border-box;
+      box-sizing: border-box;
     }
 
-    >div {
+    > div {
       background-color: $input-bg;
       border: 1px solid darken($input-bg, 5%);
       box-sizing: border-box;

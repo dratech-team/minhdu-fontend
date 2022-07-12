@@ -1,4 +1,4 @@
-@import "~@coreui/coreui-pro/scss/coreui";
+@import '~@coreui/coreui-pro/scss/coreui';
 
 body {
   margin: 0 !important;
@@ -12,9 +12,9 @@ $spinkit-spinner-color: $body-color;
 @import 'apps/hr/src/scss/autocomplete';
 
 @import 'apps/hr/src/scss/custom';
-.chart .chart-legend{
+.chart .chart-legend {
   position: absolute;
-  bottom:0px;
+  bottom: 0px;
   left: 10px;
   max-width: 520px;
   overflow: hidden;

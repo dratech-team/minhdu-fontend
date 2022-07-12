@@ -3,21 +3,27 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 import { persistState, PersistStateSelectFn } from '@datorama/akita';
+import { StorageName } from '@minhdu-fontend/constants';
+import { CustomerState } from './app/pages/customer/+state';
 import { OrderState } from './app/pages/order/+state';
 import { RouteState } from './app/pages/route/+state';
-import {StorageName} from "@minhdu-fontend/constants";
 
 if (environment.production) {
   enableProdMode();
 }
 
-const selectOrder: PersistStateSelectFn<OrderState> = (state) => ({ ui: state.ui });
-const selectRoute: PersistStateSelectFn<RouteState> = (state) => ({ ui: state.ui });
-selectOrder.storeName = StorageName.ORDER;
-selectRoute.storeName = StorageName.ROUTE;
+const selectUICustomer: PersistStateSelectFn<CustomerState> = (state) => ({ ui: state.ui });
+const selectUIOrder: PersistStateSelectFn<OrderState> = (state) => ({ ui: state.ui });
+const selectUIRoute: PersistStateSelectFn<RouteState> = (state) => ({ ui: state.ui });
+
+selectUICustomer.storeName = StorageName.CUSTOMER;
+selectUIOrder.storeName = StorageName.ORDER;
+selectUIRoute.storeName = StorageName.ROUTE;
 
 const storage = persistState({
-  select: [selectOrder, selectRoute]
+  include: [StorageName.ACCOUNT],
+  select: [selectUICustomer, selectUIOrder, selectUIRoute],
+  key: 'sell-app'
 });
 
 const providers = [{ provide: 'persistStorage', useValue: storage }];

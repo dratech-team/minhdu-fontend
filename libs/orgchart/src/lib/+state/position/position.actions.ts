@@ -1,9 +1,7 @@
-import {Position} from '@minhdu-fontend/data-models';
-import {createAction, props} from '@ngrx/store';
+import { Position } from '@minhdu-fontend/data-models';
+import { createAction, props } from '@ngrx/store';
 
-export const loadPosition = createAction(
-  '[Position/API] Load Position'
-);
+export const loadPosition = createAction('[Position/API] Load Position');
 export const searchPosition = createAction(
   '[Position/API] Search Position',
   props<{ position: string }>()
@@ -16,7 +14,7 @@ export const loadPositionSuccess = createAction(
 
 export const addPosition = createAction(
   '[Position/API] Add Position',
-  props<{ name: string, workday?: number, branchIds?: number[] }>()
+  props<{ name: string; workday?: number; branchIds?: number[] }>()
 );
 
 export const addPositionSuccess = createAction(
@@ -26,24 +24,23 @@ export const addPositionSuccess = createAction(
 
 export const updatePosition = createAction(
   '[Position/API] Update Position',
-  props<{ id: number, name: string, workday: Date, branchIds?: number []  }>()
+  props<{ id: number; name: string; workday: Date; branchIds?: number[] }>()
 );
 
 export const updatePositionSuccess = createAction(
   '[Position/API] Update Position Success',
-  props<{ position: Position}>()
+  props<{ position: Position }>()
 );
 
 export const deletePosition = createAction(
   '[Position/API] Delete Position',
-  props<{ id: number, branchId?: number }>()
+  props<{ id: number; branchId?: number }>()
 );
 
 export const loadPositionFailure = createAction(
   '[Position/API] Load Position Failure',
   props<{ error: any }>()
 );
-
 
 export const PositionActions = {
   addPosition,
@@ -54,5 +51,5 @@ export const PositionActions = {
   loadPositionFailure,
   updatePosition,
   updatePositionSuccess,
-  deletePosition
+  deletePosition,
 };

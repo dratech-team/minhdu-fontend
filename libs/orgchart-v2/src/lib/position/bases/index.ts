@@ -1,1 +1,1 @@
-export * from './base-position.entity'
+export * from './base-position.entity';

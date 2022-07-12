@@ -4,7 +4,6 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import * as OrgchartActions from './orgchart.actions';
 import { Branch } from '@minhdu-fontend/data-models';
 
-
 export const ORGCHART_FEATURE_KEY = 'orgchart';
 
 export interface State extends EntityState<Branch> {
@@ -14,15 +13,16 @@ export interface State extends EntityState<Branch> {
   error?: string | null; // last known error (if any)
 }
 
-
 export interface OrgchartPartialState {
   readonly [ORGCHART_FEATURE_KEY]: State;
 }
 
-export const orgchartAdapter: EntityAdapter<Branch> = createEntityAdapter<Branch>();
+export const orgchartAdapter: EntityAdapter<Branch> =
+  createEntityAdapter<Branch>();
 
 export const initialState: State = orgchartAdapter.getInitialState({
-  loaded: false, added: false
+  loaded: false,
+  added: false,
 });
 const orgchartReducer = createReducer(
   initialState,
@@ -35,50 +35,53 @@ const orgchartReducer = createReducer(
   ),
 
   on(OrgchartActions.updateBranchSuccess, (state, { branch }) => {
-      return orgchartAdapter.updateOne({ id:branch.id, changes: branch },
-        { ...state, added: true });
-    }
-  ),
+    return orgchartAdapter.updateOne(
+      { id: branch.id, changes: branch },
+      { ...state, added: true }
+    );
+  }),
 
   on(OrgchartActions.getBranch, (state) => ({
     ...state,
     loaded: false,
-    error: null
+    error: null,
   })),
 
   on(OrgchartActions.getBranchSuccess, (state, action) =>
-    orgchartAdapter.upsertOne(action.branch, { ...state, loaded: true, added: true })
+    orgchartAdapter.upsertOne(action.branch, {
+      ...state,
+      loaded: true,
+      added: true,
+    })
   ),
   on(OrgchartActions.init, (state) => ({
     ...state,
     loaded: false,
-    error: null
+    error: null,
   })),
 
   on(OrgchartActions.searchBranch, (state) => ({
     ...state,
     loaded: false,
-    error: null
+    error: null,
   })),
 
   on(OrgchartActions.addBranch, (state) => ({
     ...state,
     added: false,
-    error: null
+    error: null,
   })),
 
   on(OrgchartActions.updateBranch, (state) => ({
     ...state,
     added: false,
-    error: null
+    error: null,
   })),
   on(OrgchartActions.loadOrgchartFailure, (state, { error }) => ({
     ...state,
-    error
+    error,
   }))
-  )
-;
-
+);
 export function reducer(state: State | undefined, action: Action) {
   return orgchartReducer(state, action);
 }

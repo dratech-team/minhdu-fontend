@@ -1,4 +1,4 @@
-export interface BaseOrgChart{
-  id: number,
-  name: string,
+export interface BaseOrgChart {
+  id: number;
+  name: string;
 }

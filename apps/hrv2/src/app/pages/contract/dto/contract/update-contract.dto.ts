@@ -1,6 +1,6 @@
-import {BaseContractEntity} from "../../bases/base-contract.entity";
-import {BaseUpdateDto} from "@minhdu-fontend/base-dto";
+import { BaseContractEntity } from '../../bases/base-contract.entity';
+import { BaseUpdateDto } from '@minhdu-fontend/base-dto';
 
-export type BaseUpdateContractDto = BaseContractEntity
+export type BaseUpdateContractDto = BaseContractEntity;
 
-export type UpdateContractDto = BaseUpdateDto<BaseUpdateContractDto>
+export type UpdateContractDto = BaseUpdateDto<BaseUpdateContractDto>;

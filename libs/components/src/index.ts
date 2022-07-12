@@ -11,4 +11,4 @@ export * from './lib/modal-date-picker/modal-date-picker.component';
 export * from './lib/pipes/transform-constant.pipe';
 
 //data
-export * from  './lib/data/modal-export-excel.data'
+export * from './lib/data/modal-export-excel.data';

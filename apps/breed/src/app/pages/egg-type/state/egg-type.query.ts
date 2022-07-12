@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 
 @QueryConfig({
   sortBy: 'stt',
-  sortByOrder: Order.ASC
+  sortByOrder: Order.ASC,
 })
 @Injectable({ providedIn: 'root' })
 export class EggTypeQuery extends QueryEntity<EggTypeState> {

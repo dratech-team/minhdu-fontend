@@ -1,81 +1,80 @@
-<div class='main-popup'>
-  <div mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+<div class="main-popup">
+  <div mat-dialog-close class="close-popup">
+    <span class="mr-1"> close</span>
+    <div class="x-popup">
+      <img src="../../../../../assets/img/share/x2-lg.svg" alt="cancel" />
     </div>
   </div>
   <h2 mat-dialog-title>Thân nhân</h2>
-  <mat-dialog-content class='mat-typography'>
-    <form [formGroup]='formGroup' (submit)='onSubmit()'>
+  <mat-dialog-content class="mat-typography">
+    <form [formGroup]="formGroup" (submit)="onSubmit()">
       <div>
-        <app-add-profile [formGroup]='formGroup' [form]='f' [submitted]='submitted'></app-add-profile>
-        <place-selector [ward]='data?.relative?.ward' [formGroup]='formGroup' [form]='f'
-                        [submitting]='submitted'
+        <app-add-profile
+          [formGroup]="formGroup"
+          [form]="f"
+          [submitted]="submitted"
+        ></app-add-profile>
+        <place-selector
+          [ward]="data?.relative?.ward"
+          [formGroup]="formGroup"
+          [form]="f"
+          [submitting]="submitted"
         >
-
         </place-selector>
-        <div class='row mt-3' [formGroup]='formGroup'>
-          <div class='col-sm'>
-            <label for='career'>Nghề nghiệp</label>
+        <div class="row mt-3" [formGroup]="formGroup">
+          <div class="col-sm">
+            <label for="career">Nghề nghiệp</label>
             <input
-              class='form-control'
-              formControlName='career'
-              id='career'
-              placeholder='nông'
-              type='text'
-            >
+              class="form-control"
+              formControlName="career"
+              id="career"
+              placeholder="nông"
+              type="text"
+            />
           </div>
-          <div class='col-sm'>
-            <label for='relationship'>Quan hệ<span class='star'>*</span>
+          <div class="col-sm">
+            <label for="relationship"
+              >Quan hệ<span class="star">*</span>
             </label>
-            <mat-select id='relationship' class='form-control' formControlName='relationship'
-                        [ngClass]="{ 'is-invalid': submitted && f.relationship.errors }">
-              <mat-option value='FATHER'>
-                Cha
-              </mat-option>
-              <mat-option value='MOTHER'>
-                Mẹ
-              </mat-option>
-              <mat-option value='SON'>
-                Con trai
-              </mat-option>
-              <mat-option value='DAUGHTER'>
-                Con gái
-              </mat-option>
-              <mat-option value='WIFE'>
-                Vợ
-              </mat-option>
-              <mat-option value='HUSBAND'>
-                Chồng
-              </mat-option>
+            <mat-select
+              id="relationship"
+              class="form-control"
+              formControlName="relationship"
+              [ngClass]="{ 'is-invalid': submitted && f.relationship.errors }"
+            >
+              <mat-option value="FATHER"> Cha </mat-option>
+              <mat-option value="MOTHER"> Mẹ </mat-option>
+              <mat-option value="SON"> Con trai </mat-option>
+              <mat-option value="DAUGHTER"> Con gái </mat-option>
+              <mat-option value="WIFE"> Vợ </mat-option>
+              <mat-option value="HUSBAND"> Chồng </mat-option>
             </mat-select>
           </div>
-          <div *ngIf='submitted && f.relationship.errors?.required' class='invalid-feedback'>
+          <div
+            *ngIf="submitted && f.relationship.errors?.required"
+            class="invalid-feedback"
+          >
             <div>Chưa chọn mối quan hệ</div>
           </div>
         </div>
-        <div class='row mt-3'>
-          <div class='col-3 star font-weight-bold d-flex align-items-center'>
+        <div class="row mt-3">
+          <div class="col-3 star font-weight-bold d-flex align-items-center">
             Liên hệ khẩn cấp :
-            <div class='col-1 '>
+            <div class="col-1">
               <input
-                style='height: 20px;
-              width: 20px;'
-                class='form-control'
-                formControlName='sos'
-                id='sos'
-                type='checkbox'
-              >
+                style="height: 20px; width: 20px"
+                class="form-control"
+                formControlName="sos"
+                id="sos"
+                type="checkbox"
+              />
             </div>
           </div>
-
         </div>
-        <div class='row d-flex mt-3 justify-content-center'>
-          <button type='submit' class='btn btn-dark ml-2'> Xác nhận</button>
+        <div class="row d-flex mt-3 justify-content-center">
+          <button type="submit" class="btn btn-dark ml-2">Xác nhận</button>
         </div>
       </div>
     </form>
   </mat-dialog-content>
 </div>
-

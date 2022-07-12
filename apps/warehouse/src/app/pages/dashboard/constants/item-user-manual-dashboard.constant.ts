@@ -24,4 +24,4 @@ export const ItemUserManualDashboardConstant = [
     description: 'Tạo mới và quản lý tồn kho theo từng phiên bản sản phẩm',
     readingTime: 1,
   },
-]
+];

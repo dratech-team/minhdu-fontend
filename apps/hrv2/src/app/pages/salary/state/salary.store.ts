@@ -1,11 +1,11 @@
-import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
-import {Injectable} from '@angular/core';
-import {SalaryEntity} from '../entities';
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { Injectable } from '@angular/core';
+import { SalaryEntity } from '../entities';
 
 export interface SalaryState extends EntityState<SalaryEntity> {
   loading: boolean;
   added: boolean | null;
-  total: number
+  total: number;
 }
 
 function createInitState(): SalaryState {
@@ -16,8 +16,8 @@ function createInitState(): SalaryState {
   };
 }
 
-@Injectable({providedIn: 'root'})
-@StoreConfig({name: 'salary'})
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: 'salary' })
 export class SalaryStore extends EntityStore<SalaryState> {
   constructor() {
     super(createInitState());

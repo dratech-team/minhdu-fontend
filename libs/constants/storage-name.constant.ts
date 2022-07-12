@@ -13,7 +13,7 @@ export const StorageName = {
   SETTING_SALARY: 'setting-salary',
   CONTRACT: 'contract',
   //Sell
-  COMMODITY_TEMPLATE:'commodity-template',
+  COMMODITY_TEMPLATE: 'commodity-template',
   COMMODITY: 'commodity',
   CUSTOMER: 'customer',
   BILL: 'bill',

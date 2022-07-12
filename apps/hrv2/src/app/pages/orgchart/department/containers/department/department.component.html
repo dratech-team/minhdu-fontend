@@ -1,11 +1,17 @@
 <div class="d-flex mt-3 ml-2">
-  <div class='d-flex flex-column ml-3 border p-2' style='height: 80vh; width:250px; overflow-y: scroll'>
+  <div
+    class="d-flex flex-column ml-3 border p-2"
+    style="height: 80vh; width: 250px; overflow-y: scroll"
+  >
     <nz-collapse>
-      <nz-collapse-panel
-        nzHeader='Tìm kiếm'
-        nzActive='true'>
-        <div [formGroup]='formGroup'>
-          <input nz-input class='form-control' type='search' formControlName='search'>
+      <nz-collapse-panel nzHeader="Tìm kiếm" nzActive="true">
+        <div [formGroup]="formGroup">
+          <input
+            nz-input
+            class="form-control"
+            type="search"
+            formControlName="search"
+          />
         </div>
       </nz-collapse-panel>
     </nz-collapse>
@@ -14,52 +20,64 @@
     <div class="mt-2 d-flex flex-column">
       <div class="d-flex mb-2 justify-content-between align-items-center">
         <div>
-          <span class="font-weight-bold">Tổng: </span> {{total$|async}}
+          <span class="font-weight-bold">Tổng: </span> {{ total$ | async }}
         </div>
         <div>
           <button nz-button nzType="primary" (click)="onAdd()">Thêm</button>
         </div>
       </div>
-      <nz-table #tableDepartment
-                nzShowPagination="false"
-                [nzLoading]="loading$|async"
-                [nzScroll]="{ x: '',y: '53vh'}"
-                nzSize='small'
-                [nzData]="(departments$|async)|| []"
+      <nz-table
+        #tableDepartment
+        nzShowPagination="false"
+        [nzLoading]="(loading$ | async) && (total$ | async) === 0"
+        [nzScroll]="{ x: '', y: '53vh' }"
+        nzSize="small"
+        [nzData]="(departments$ | async) || []"
       >
         <thead>
-        <tr>
-          <th nzLeft nzWidth="60px">STT</th>
-          <th>Mã Phòng ban</th>
-          <th nzLeft>Tên phòng ban</th>
-          <th nzLeft>Đơn vị</th>
-          <th nzLeft>Tổng nhân viên</th>
-        </tr>
+          <tr>
+            <th nzLeft nzWidth="60px">STT</th>
+            <th *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">
+              Mã Phòng ban
+            </th>
+            <th nzLeft>Tên phòng ban</th>
+            <th nzLeft>Đơn vị</th>
+            <th nzLeft>Tổng nhân viên</th>
+          </tr>
         </thead>
         <tbody>
-        <ng-template ngFor let-department [ngForOf]="tableDepartment.data" let-i='index'>
-          <tr class="pointer" (click)="onEmployee(department)" (contextmenu)='child.onContextMenu($event,department)'>
-            <td nzLeft>{{i + 1}}</td>
-            <td>{{department.id}}</td>
-            <td nzLeft>{{department.name}}</td>
-            <td>{{department.branch.name}}</td>
-            <td>{{department._count.employees}}</td>
-          </tr>
-        </ng-template>
+          <ng-template
+            ngFor
+            let-department
+            [ngForOf]="tableDepartment.data"
+            let-i="index"
+          >
+            <tr
+              class="pointer"
+              (click)="onEmployee(department)"
+              (contextmenu)="child.onContextMenu($event, department)"
+            >
+              <td nzLeft>{{ i + 1 }}</td>
+              <td *ngIf="(currentUser$ | async)?.mode === modeEnum.INFO">
+                {{ department.id }}
+              </td>
+              <td nzLeft>{{ department.name }}</td>
+              <td>{{ department.branch.name }}</td>
+              <td>{{ department._count.employees }}</td>
+            </tr>
+          </ng-template>
         </tbody>
       </nz-table>
     </div>
-
   </div>
 </div>
 <app-mouse-right
   [items]="[itemContext.PROFILE, itemContext.PAYROLL, itemContext.OVERTIME]"
   #child
-  (onAdd)='onAdd($event)'
-  (onUpdate)='onUpdate($event)'
-  (onDel)='onDelete($event)'
+  (onAdd)="onAdd($event)"
+  (onUpdate)="onUpdate($event)"
+  (onDel)="onDelete($event)"
   (onProfile)="onEmployee($event)"
   (onPayroll)="onPayroll($event, filterTypeEnum.PAYROLL)"
   (onOvertime)="onPayroll($event, filterTypeEnum.OVERTIME)"
 ></app-mouse-right>
-

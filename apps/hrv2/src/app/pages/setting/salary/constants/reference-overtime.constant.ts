@@ -1,7 +1,7 @@
-import {salariesConstant, recipeType} from "./recipes.constant";
-import {PriceType} from "../enums";
+import { salariesConstant, recipeType } from './recipes.constant';
+import { PriceType } from '../enums';
 
-export const ReferenceOvertimeConstant: recipeType [] = [
+export const ReferenceOvertimeConstant: recipeType[] = [
   {
     name: 'Đơn giá',
     value: PriceType.PRICE,
@@ -9,12 +9,10 @@ export const ReferenceOvertimeConstant: recipeType [] = [
   {
     name: 'Loại lương',
     value: PriceType.BLOCK,
-    salariesConstant: salariesConstant
+    salariesConstant: salariesConstant,
   },
   {
     name: 'Lương chuẩn',
     value: PriceType.STANDARD,
   },
 ];
-
-

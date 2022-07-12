@@ -89,7 +89,6 @@ button.toast-close-button {
   position: fixed;
   z-index: 999999;
   /*overrides*/
-
 }
 #toast-container * {
   -moz-box-sizing: border-box;
@@ -133,16 +132,16 @@ button.toast-close-button {
 }
 
 #toast-container .toast-warning:before {
-  content: "\e01c";
+  content: '\e01c';
 }
 #toast-container .toast-error:before {
-  content: "\e082";
+  content: '\e082';
 }
 #toast-container .toast-info:before {
-  content: "\e08b";
+  content: '\e08b';
 }
 #toast-container .toast-success:before {
-  content: "\e080";
+  content: '\e080';
 }
 #toast-container.toast-top-center > div,
 #toast-container.toast-bottom-center > div {
@@ -155,19 +154,19 @@ button.toast-close-button {
   margin: auto;
 }
 .toast {
-  background-color: theme-color("primary");
+  background-color: theme-color('primary');
 }
 .toast-success {
-  background-color: theme-color("success");
+  background-color: theme-color('success');
 }
 .toast-error {
-  background-color: theme-color("danger");
+  background-color: theme-color('danger');
 }
 .toast-info {
-  background-color: theme-color("info");
+  background-color: theme-color('info');
 }
 .toast-warning {
-  background-color: theme-color("warning");
+  background-color: theme-color('warning');
 }
 
 progress-bar,
@@ -177,7 +176,7 @@ progress-bar,
   bottom: 0;
   height: 4px;
   background-color: #000000;
-  opacity: .2;
+  opacity: 0.2;
   -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=20);
   filter: alpha(opacity=20);
 }
@@ -191,7 +190,7 @@ div[toast],
 div[toast].ng-enter,
 .toast.ng-enter {
   opacity: 0 !important;
-  transition: opacity .3s linear;
+  transition: opacity 0.3s linear;
 }
 
 div[toast].ng-enter.ng-enter-active,
@@ -202,7 +201,7 @@ div[toast].ng-enter.ng-enter-active,
 div[toast].ng-leave,
 .toast.ng-leave {
   opacity: 1;
-  transition: opacity .3s linear;
+  transition: opacity 0.3s linear;
 }
 
 div[toast].ng-leave.ng-leave-active,

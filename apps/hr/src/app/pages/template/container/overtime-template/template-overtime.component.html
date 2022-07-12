@@ -1,192 +1,244 @@
-<div class='main-content mx-auto' style='width: 98%'>
-  <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
-  <div style='width: 1700px' class='mx-auto'>
-    <div class=' h3 '>Bản mẫu tăng ca</div>
+<div class="main-content mx-auto" style="width: 98%">
+  <mat-spinner *ngIf="adding$ | async" class="loading"></mat-spinner>
+  <div style="width: 1700px" class="mx-auto">
+    <div class="h3">Bản mẫu tăng ca</div>
     <div>
-      <button (click)='templateOvertime()' class='btn btn-primary mt-3 '>Tạo mẫu</button>
+      <button (click)="templateOvertime()" class="btn btn-primary mt-3">
+        Tạo mẫu
+      </button>
     </div>
   </div>
-  <div class='mt-3 font-weight-bold'>
-    Tổng: {{total$|async}}
-  </div>
-  <div class='table-scroll mt-2'
-       infiniteScroll
-       [infiniteScrollDistance]='0'
-       [infiniteScrollThrottle]='0'
-       [scrollWindow]='false'
-       [alwaysCallback]='false'
-       (scrolled)='onScroll()'>
-    <table [formGroup]='formGroup' style='width: 2100px'>
+  <div class="mt-3 font-weight-bold">Tổng: {{ total$ | async }}</div>
+  <div
+    class="table-scroll mt-2"
+    infiniteScroll
+    [infiniteScrollDistance]="0"
+    [infiniteScrollThrottle]="0"
+    [scrollWindow]="false"
+    [alwaysCallback]="false"
+    (scrolled)="onScroll()"
+  >
+    <table [formGroup]="formGroup" style="width: 2150px">
       <thead style="z-index: 5">
-      <tr>
-        <th style='width: 50px'>
-          <div class='border-top text-center'>stt</div>
-          <input
-            type='text'
-            disabled
-          >
-        </th>
-        <th style="width: 20%">
-          <div class='border-top text-center'>Tên bản mẫu</div>
-          <input
-            class='form-control '
-            type='search'
-            formControlName='title'
-          >
-        </th>
-        <th style="width: 200px">
-          <div class='border-top text-center'>Giá</div>
-          <input
-            class='form-control  '
-            type='text' formControlName='price'>
-        </th>
-        <th style="width: 200px !important;">
-          <div class='border-top text-center'>Loại nhân viên</div>
-          <mat-select class='form-control' style='width:100%' formControlName='employeeType'>
-            <mat-option value='{{EmployeeType.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</mat-option>
-            <mat-option value='{{EmployeeType.EMPLOYEE_SEASONAL}}'>Nhân viên thời vụ</mat-option>
-            <mat-option value=''>Tất cả</mat-option>
-          </mat-select>
-        </th>
-        <th style="width: 150px">
-          <div class='border-top text-center'>Đơn vị tính</div>
-          <select class='select border-top' style='width: 100%' matNativeControl required formControlName='unit'>
-            <option *ngFor="let item of templateOverConstant" [value]="item.value">{{item.name}}</option>
-            <option value="''">Tất cả</option>
-          </select>
-        </th>
-        <th>
-          <div class='border-top text-center'>Đơn vị</div>
-          <nz-select style="width: 100%"
-                     [nzMaxTagCount]="3"
-                     [nzMaxTagPlaceholder]="tagPlaceHolder"
-                     nzMode="multiple"
-                     nzPlaceHolder="Chọn đơn vị"
-                     formControlName="branch"
-          >
-            <nz-option *ngFor="let item of branches$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
-          </nz-select>
-          <ng-template #tagPlaceHolder let-branchSelect>và {{ branchSelect.length }} đã chọn</ng-template>
-          <!--            <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>-->
-          <!--            <mat-autocomplete #branch='matAutocomplete'>-->
-          <!--              <mat-option-->
-          <!--                *ngFor='let branch of branches$ | async'-->
-          <!--                [value]='branch.name'-->
-          <!--                (onSelectionChange)='onSelectBranch(branch.name)'>-->
-          <!--                {{branch.name}}-->
-          <!--              </mat-option>-->
-          <!--            </mat-autocomplete>-->
-        </th>
-        <th>
-          <div class='border-top text-center'>Chức vụ</div>
-          <nz-select style="width: 100%"
-                     [nzMaxTagCount]="3"
-                     [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
-                     nzMode="multiple"
-                     nzPlaceHolder="Chọn chức vụ"
-                     formControlName="position"
-          >
-            <nz-option *ngFor="let item of positions$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
-          </nz-select>
-          <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn
-          </ng-template>
-        </th>
-        <th style="width:250px">
-          <div class='border-top text-center'>Chú ý</div>
-          <input
-            class='form-control '
-            type='search' formControlName='note'>
-        </th>
-      </tr>
+        <tr>
+          <th style="width: 50px">
+            <div class="border-top text-center">stt</div>
+            <input type="text" disabled />
+          </th>
+          <th style="width: 50px">
+            <div class="border-top text-center">Id</div>
+            <input type="text" disabled />
+          </th>
+          <th style="width: 20%">
+            <div class="border-top text-center">Tên bản mẫu</div>
+            <input class="form-control" type="search" formControlName="title" />
+          </th>
+          <th style="width: 200px">
+            <div class="border-top text-center">Giá</div>
+            <input class="form-control" type="text" formControlName="price" />
+          </th>
+          <th style="width: 200px !important">
+            <div class="border-top text-center">Loại nhân viên</div>
+            <mat-select
+              class="form-control"
+              style="width: 100%"
+              formControlName="employeeType"
+            >
+              <mat-option value="{{ EmployeeType.FULL_TIME }}"
+                >Nhân viên chính thức</mat-option
+              >
+              <mat-option value="{{ EmployeeType.SEASONAL }}"
+                >Nhân viên thời vụ</mat-option
+              >
+              <mat-option value="">Tất cả</mat-option>
+            </mat-select>
+          </th>
+          <th style="width: 150px">
+            <div class="border-top text-center">Đơn vị tính</div>
+            <select
+              class="select border-top"
+              style="width: 100%"
+              matNativeControl
+              required
+              formControlName="unit"
+            >
+              <option
+                *ngFor="let item of templateOverConstant"
+                [value]="item.value"
+              >
+                {{ item.name }}
+              </option>
+              <option value="''">Tất cả</option>
+            </select>
+          </th>
+          <th>
+            <div class="border-top text-center">Đơn vị</div>
+            <nz-select
+              style="width: 100%"
+              [nzMaxTagCount]="3"
+              [nzMaxTagPlaceholder]="tagPlaceHolder"
+              nzMode="multiple"
+              nzPlaceHolder="Chọn đơn vị"
+              formControlName="branch"
+            >
+              <nz-option
+                *ngFor="let item of branches$ | async"
+                [nzLabel]="item.name"
+                [nzValue]="item"
+              ></nz-option>
+            </nz-select>
+            <ng-template #tagPlaceHolder let-branchSelect
+              >và {{ branchSelect.length }} đã chọn</ng-template
+            >
+            <!--            <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>-->
+            <!--            <mat-autocomplete #branch='matAutocomplete'>-->
+            <!--              <mat-option-->
+            <!--                *ngFor='let branch of branches$ | async'-->
+            <!--                [value]='branch.name'-->
+            <!--                (onSelectionChange)='onSelectBranch(branch.name)'>-->
+            <!--                {{branch.name}}-->
+            <!--              </mat-option>-->
+            <!--            </mat-autocomplete>-->
+          </th>
+          <th>
+            <div class="border-top text-center">Chức vụ</div>
+            <nz-select
+              style="width: 100%"
+              [nzMaxTagCount]="3"
+              [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
+              nzMode="multiple"
+              nzPlaceHolder="Chọn chức vụ"
+              formControlName="position"
+            >
+              <nz-option
+                *ngFor="let item of positions$ | async"
+                [nzLabel]="item.name"
+                [nzValue]="item"
+              ></nz-option>
+            </nz-select>
+            <ng-template #tagPlaceHolderPosition let-positionSelected
+              >và {{ positionSelected.length }} đã chọn
+            </ng-template>
+          </th>
+          <th style="width: 250px">
+            <div class="border-top text-center">Chú ý</div>
+            <input class="form-control" type="search" formControlName="note" />
+          </th>
+        </tr>
       </thead>
-      <tbody *ngIf='(templates$| async) as templates'>
-      <tr *ngIf='!(loaded$|async) else tableTemplate'>
-        <th colSpan="20" style="z-index: -1!important;">
-          <ngx-skeleton-loader count='10' appearance='line'></ngx-skeleton-loader>
-        </th>
-      </tr>
-      <ng-template #tableTemplate>
-        <tr
-          *ngFor='let template of templates; let i = index'
-          (contextmenu)='child.onContextMenu($event,template)'>
-          <th
-            class='pointer'
-            (click)='templateOvertime(template,true)'
-            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{i + 1}}
-          </th>
-          <th
-            class='pointer'
-            (click)='templateOvertime(template,true)'
-            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{template.title}}
-          </th>
-          <th
-            class='pointer'
-            (click)='templateOvertime(template,true)'>
-            {{template.price ? ((template.price | number: '1.0-0') + ' vnd') : 'Theo lương chuẩn'}}
-          </th>
-          <th
-            class='pointer'
-            (click)='templateOvertime(template,true)'>
-            {{template.employeeType === EmployeeType.EMPLOYEE_SEASONAL ? "Nhân viên thời vụ" : "Nhân viên chính thức"}}
-          </th>
-          <th
-            class='pointer'>
-            {{template.unit|transformconstant:templateOverConstant}}
-          </th>
-          <th
-            class='pointer '
-            (click)='templateOvertime(template,true)'>
-            <mat-chip-list>
-              <mat-chip
-                style="z-index: -1!important;"
-                [ngStyle]='{ "background": checkItemInArr(branch, formGroup.value.branch) ? "red": i%2 !== 0 ? "white" : "#dddddd" }'
-                *ngFor='let branch of template.branches'
-                [selectable]='false'
-                [removable]='false'>
-                {{branch.name}}
-              </mat-chip>
-            </mat-chip-list>
-          </th>
-          <th
-            class='pointer p-1 '
-            (click)='templateOvertime(template,true)'>
-            <mat-chip-list>
-              <mat-chip
-                style="z-index: -1!important;"
-                (click)='onOvertime(template, position)'
-                [ngStyle]='{"background":checkItemInArr(position,formGroup.value.position) ? "red": i%2 !== 0 ? "white" : "#dddddd" }'
-                *ngFor='let position of template.positions'
-                [selectable]='false'
-                [removable]='false'>
-                {{position.name}}
-              </mat-chip>
-            </mat-chip-list>
-          </th>
-          <th
-            class='pointer '
-            (click)='templateOvertime(template,true)'>
-            {{template.note}}
+      <tbody *ngIf="templates$ | async as templates">
+        <tr *ngIf="!(loaded$ | async); else tableTemplate">
+          <th colSpan="20" style="z-index: -1 !important">
+            <ngx-skeleton-loader
+              count="10"
+              appearance="line"
+            ></ngx-skeleton-loader>
           </th>
         </tr>
-        <tr *ngIf='!templates || templates.length === 0 ' style='height:50vh;'>
-          <td colspan='8' class='font-xl font-weight-bold text-center'>
-          <span>
-             Hiện chưa có bản mẫu tăng ca nào!
-          </span>
-          </td>
-        </tr>
-      </ng-template>
-
+        <ng-template #tableTemplate>
+          <tr
+            *ngFor="let template of templates; let i = index"
+            (contextmenu)="child.onContextMenu($event, template)"
+          >
+            <th
+              class="pointer"
+              (click)="templateOvertime(template, true)"
+              [ngClass]="{ odd: i % 2 === 0, even: i % 2 !== 0 }"
+            >
+              {{ i + 1 }}
+            </th>
+            <th
+              class="pointer"
+              (click)="templateOvertime(template, true)"
+              [ngClass]="{ odd: i % 2 === 0, even: i % 2 !== 0 }"
+            >
+              {{ template.id }}
+            </th>
+            <th
+              class="pointer"
+              (click)="templateOvertime(template, true)"
+              [ngClass]="{ odd: i % 2 === 0, even: i % 2 !== 0 }"
+            >
+              {{ template.title }}
+            </th>
+            <th class="pointer" (click)="templateOvertime(template, true)">
+              {{
+                template.price
+                  ? (template.price | number: '1.0-0') + ' vnd'
+                  : 'Theo lương chuẩn'
+              }}
+            </th>
+            <th class="pointer" (click)="templateOvertime(template, true)">
+              {{
+                template.employeeType === EmployeeType.SEASONAL
+                  ? 'Nhân viên thời vụ'
+                  : 'Nhân viên chính thức'
+              }}
+            </th>
+            <th class="pointer">
+              {{ template.unit | transformconstant: templateOverConstant }}
+            </th>
+            <th class="pointer" (click)="templateOvertime(template, true)">
+              <mat-chip-list>
+                <mat-chip
+                  style="z-index: -1 !important"
+                  [ngStyle]="{
+                    background: checkItemInArr(branch, formGroup.value.branch)
+                      ? 'red'
+                      : i % 2 !== 0
+                      ? 'white'
+                      : '#dddddd'
+                  }"
+                  *ngFor="let branch of template.branches"
+                  [selectable]="false"
+                  [removable]="false"
+                >
+                  {{ branch.name }}
+                </mat-chip>
+              </mat-chip-list>
+            </th>
+            <th class="pointer p-1" (click)="templateOvertime(template, true)">
+              <mat-chip-list>
+                <mat-chip
+                  style="z-index: -1 !important"
+                  (click)="onOvertime(template, position)"
+                  [ngStyle]="{
+                    background: checkItemInArr(
+                      position,
+                      formGroup.value.position
+                    )
+                      ? 'red'
+                      : i % 2 !== 0
+                      ? 'white'
+                      : '#dddddd'
+                  }"
+                  *ngFor="let position of template.positions"
+                  [selectable]="false"
+                  [removable]="false"
+                >
+                  {{ position.name }}
+                </mat-chip>
+              </mat-chip-list>
+            </th>
+            <th class="pointer" (click)="templateOvertime(template, true)">
+              {{ template.note }}
+            </th>
+          </tr>
+          <tr *ngIf="!templates || templates.length === 0" style="height: 50vh">
+            <td colspan="8" class="font-xl font-weight-bold text-center">
+              <span> Hiện chưa có bản mẫu tăng ca nào! </span>
+            </td>
+          </tr>
+        </ng-template>
       </tbody>
     </table>
   </div>
   <app-mouse-right
-    #child [items]="[itemContextMenu.OVERTIME]"
-    (onAdd)='templateOvertime($event)'
-    (onUpdate)='templateOvertime($event,true)'
-    (onDel)='deleteOvertime($event)'
+    #child
+    [items]="[itemContextMenu.OVERTIME]"
+    (onAdd)="templateOvertime($event)"
+    (onUpdate)="templateOvertime($event, true)"
+    (onDel)="deleteOvertime($event)"
     (onOvertime)="onOvertime($event)"
   ></app-mouse-right>
 </div>
@@ -199,7 +251,14 @@
     z-index: 2;
   }
 
-  .table-scroll thead th:nth-child(2) {
+  .table-scroll thead th:nth-child(2),
+  .table-scroll thead th:nth-child(3) {
     z-index: 5;
+  }
+  .table-scroll th:nth-child(3) {
+    position: -webkit-sticky;
+    position: sticky;
+    left: 100px;
+    z-index: 2;
   }
 </style>

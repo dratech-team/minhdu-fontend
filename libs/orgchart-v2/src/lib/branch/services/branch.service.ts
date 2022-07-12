@@ -1,27 +1,31 @@
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {Api} from '@minhdu-fontend/constants';
-import {Injectable} from '@angular/core';
-import {Branch, ResponsePaginate} from '@minhdu-fontend/data-models';
-import {BaseService} from '@minhdu-fontend/service';
-import {BranchEntity} from "../entities/branch.entity";
-import {AddBranchDto, LoadOneBranchDto, SearchBranchDto, UpdateBranchDto} from "../dto";
-import {VersionEnum} from "@minhdu-fontend/enums";
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Api } from '@minhdu-fontend/constants';
+import { Injectable } from '@angular/core';
+import { Branch, ResponsePaginate } from '@minhdu-fontend/data-models';
+import { BaseService } from '@minhdu-fontend/service';
+import { BranchEntity } from '../entities/branch.entity';
+import {
+  AddBranchDto,
+  LoadOneBranchDto,
+  SearchBranchDto,
+  UpdateBranchDto,
+} from '../dto';
+import { VersionEnum } from '@minhdu-fontend/enums';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class BranchService extends BaseService<BranchEntity> {
-  constructor(
-    public readonly http: HttpClient
-  ) {
+  constructor(public readonly http: HttpClient) {
     super(Api.HR.EMPLOYEE.BRANCH, http);
   }
-
 
   addOne(addBranchDto: AddBranchDto): Observable<BranchEntity> {
     return super.addOne(addBranchDto.body);
   }
 
-  pagination(searchBranchDto?: SearchBranchDto): Observable<ResponsePaginate<BranchEntity>> {
+  pagination(
+    searchBranchDto?: SearchBranchDto
+  ): Observable<ResponsePaginate<BranchEntity>> {
     return super.pagination(searchBranchDto?.search);
   }
 
@@ -37,12 +41,13 @@ export class BranchService extends BaseService<BranchEntity> {
     return super.update(updateBranchDto.id, updateBranchDto.updates);
   }
 
-
   delete(id: number): Observable<any> {
     return super.delete(id);
   }
 
   deleteAllowanceInBranch(salaryId: number): Observable<BranchEntity> {
-    return this.http.delete<BranchEntity>(VersionEnum.V2 + Api.HR.PAYROLL.BRANCH_ALLOWANCE + `/${salaryId}`);
+    return this.http.delete<BranchEntity>(
+      VersionEnum.V2 + Api.HR.PAYROLL.BRANCH_ALLOWANCE + `/${salaryId}`
+    );
   }
 }

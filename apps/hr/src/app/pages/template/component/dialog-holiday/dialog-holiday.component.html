@@ -1,89 +1,128 @@
-<div class='main-popup'>
-  <div mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+<div class="main-popup">
+  <div mat-dialog-close class="close-popup">
+    <span class="mr-1"> close</span>
+    <div class="x-popup">
+      <img src="../../../../../assets/img/share/x2-lg.svg" alt="cancel" />
     </div>
   </div>
-  <h2 mat-dialog-title>{{data.title}}</h2>
-  <mat-dialog-content class='mat-typography' style='max-height: 45vh'>
-    <form [formGroup]='formGroup' class='px-3 py-1'>
+  <h2 mat-dialog-title>{{ data.title }}</h2>
+  <mat-dialog-content class="mat-typography" style="max-height: 45vh">
+    <form [formGroup]="formGroup" class="px-3 py-1">
       <div>
-        <div class='form-group '>
+        <div class="form-group">
           <div>
-            <div class=' title-item mb-2'>
+            <div class="title-item mb-2">
               <span>Tên ngày lễ</span>
-              <span class='star'>*</span>
+              <span class="star">*</span>
             </div>
-            <div class=' mb-3' [formGroup]='formGroup'>
-              <input type='text' class='form-control  px-1' formControlName='name'
-                     [ngClass]="{ 'is-invalid': submitted && f.name.errors?.required }">
-              <div *ngIf='submitted && f.name.errors?.required' class='invalid-feedback'>
+            <div class="mb-3" [formGroup]="formGroup">
+              <input
+                type="text"
+                class="form-control px-1"
+                formControlName="name"
+                [ngClass]="{
+                  'is-invalid': submitted && f.name.errors?.required
+                }"
+              />
+              <div
+                *ngIf="submitted && f.name.errors?.required"
+                class="invalid-feedback"
+              >
                 <div>Chưa nhập tên ngày lễ</div>
               </div>
             </div>
-
           </div>
-          <div class='mt-3'>
-            <div class=' title-item mb-2'>
+          <div class="mt-3">
+            <div class="title-item mb-2">
               <span>Chọn ngày</span>
-              <span class='star'>*</span>
+              <span class="star">*</span>
             </div>
-            <div class=' mb-3' [formGroup]='formGroup'>
-              <input type='date' class='form-control  px-1' formControlName='datetime'
-                     [ngClass]="{ 'is-invalid': submitted && f.datetime.errors?.required }">
-              <div *ngIf='submitted && f.datetime.errors?.required' class='invalid-feedback'>
+            <div class="mb-3" [formGroup]="formGroup">
+              <input
+                type="date"
+                class="form-control px-1"
+                formControlName="datetime"
+                [ngClass]="{
+                  'is-invalid': submitted && f.datetime.errors?.required
+                }"
+              />
+              <div
+                *ngIf="submitted && f.datetime.errors?.required"
+                class="invalid-feedback"
+              >
                 <div>Chưa nhập ngày lễ</div>
               </div>
             </div>
           </div>
-          <div class='mt-3'>
-            <div class=' title-item mb-2'>
+          <div class="mt-3">
+            <div class="title-item mb-2">
               <span>Hệ số</span>
-              <span class='star'>*</span>
+              <span class="star">*</span>
             </div>
-            <div class=' mb-3' [formGroup]='formGroup'>
-              <input type='number' class='form-control  px-1' formControlName='rate' min='1'
-                     [ngClass]="{ 'is-invalid': submitted && f.rate.errors?.required }">
-              <div *ngIf='submitted && f.rate.errors?.required' class='invalid-feedback'>
+            <div class="mb-3" [formGroup]="formGroup">
+              <input
+                type="number"
+                class="form-control px-1"
+                formControlName="rate"
+                min="1"
+                [ngClass]="{
+                  'is-invalid': submitted && f.rate.errors?.required
+                }"
+              />
+              <div
+                *ngIf="submitted && f.rate.errors?.required"
+                class="invalid-feedback"
+              >
                 <div>Chưa nhập hệ số</div>
               </div>
             </div>
           </div>
-          <div class='mt-3' *ngIf='hidePrice'>
-            <div class=' title-item mb-2'>
+          <div class="mt-3" *ngIf="hidePrice">
+            <div class="title-item mb-2">
               <span>Giá</span>
             </div>
-            <div class=' mb-3' [formGroup]='formGroup'>
-              <input type='text' class='form-control  px-1' formControlName='price' inputCurrency>
+            <div class="mb-3" [formGroup]="formGroup">
+              <input
+                type="text"
+                class="form-control px-1"
+                formControlName="price"
+                inputCurrency
+              />
             </div>
           </div>
-          <div class='mt-2' [formGroup]='formGroup'>
-
-            <div class=''><span class='main-title'>Chức vụ</span><span class='star'>*</span></div>
-            <nz-select nzMode="tags" style="width: 100%"  [formControl]="formPosition" [compareWith]='compareFN'>
-              <nz-option  *ngFor='let position of positions$ | async' [nzValue]="position" [nzLabel]="position.name"></nz-option>
+          <div class="mt-2" [formGroup]="formGroup">
+            <div class="">
+              <span class="main-title">Chức vụ</span><span class="star">*</span>
+            </div>
+            <nz-select
+              nzMode="tags"
+              style="width: 100%"
+              [formControl]="formPosition"
+              [compareWith]="compareFN"
+            >
+              <nz-option
+                *ngFor="let position of positions$ | async"
+                [nzValue]="position"
+                [nzLabel]="position.name"
+              ></nz-option>
             </nz-select>
             <!-- <div *ngIf="submitted && f.position.errors" class="invalid-feedback">
               <div *ngIf="f.position.errors?.required">Chưa chọn chức vụ</div>
             </div> -->
           </div>
-          <div class='mt-4 d-flex '>
-            <div class=' title-item mb-2'>
+          <div class="mt-4 d-flex">
+            <div class="title-item mb-2">
               <span>Ràng buộc bởi ngày công chuẩn</span>
             </div>
-            <div class=' mb-3 ml-3' [formGroup]='formGroup'>
-              <mat-checkbox formControlName='isConstraint'>
-              </mat-checkbox>
+            <div class="mb-3 ml-3" [formGroup]="formGroup">
+              <mat-checkbox formControlName="isConstraint"> </mat-checkbox>
             </div>
           </div>
         </div>
       </div>
     </form>
   </mat-dialog-content>
-  <div class=' row mt-2 ml-2'>
-    <button (click)='onSubmit()' class='btn btn-ok '>Lưu</button>
+  <div class="row mt-2 ml-2">
+    <button (click)="onSubmit()" class="btn btn-ok">Lưu</button>
   </div>
 </div>
-
-

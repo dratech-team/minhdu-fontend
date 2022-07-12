@@ -10,29 +10,31 @@ export class WardEffect {
   loadWards$ = createEffect(() =>
     this.action.pipe(
       ofType(WardAction.loadAllWards),
-      switchMap(_ => this.WardService.getAll()),
+      switchMap((_) => this.WardService.getAll()),
       map((props) => WardAction.loadAllWardsSuccess({ wards: props })),
-      catchError(err => throwError(err))
-    ));
+      catchError((err) => throwError(err))
+    )
+  );
   getWard$ = createEffect(() =>
     this.action.pipe(
       ofType(WardAction.getWard),
-      switchMap(props => this.WardService.getOne(props.idWard)),
+      switchMap((props) => this.WardService.getOne(props.idWard)),
       map((props) => WardAction.getWardSuccess({ ward: props })),
-      catchError(err => throwError(err))
-    ));
+      catchError((err) => throwError(err))
+    )
+  );
 
   getWardsByDistrictId$ = createEffect(() =>
     this.action.pipe(
       ofType(WardAction.getWardsByDistrictId),
-      switchMap(props => this.WardService.getAll(props)),
+      switchMap((props) => this.WardService.getAll(props)),
       map((props) => WardAction.getWardsByDistrictIdSuccess({ wards: props })),
-      catchError(err => throwError(err))
-    ));
+      catchError((err) => throwError(err))
+    )
+  );
 
   constructor(
     private readonly action: Actions,
     private readonly WardService: WardService
-  ) {
-  }
+  ) {}
 }

@@ -8,13 +8,13 @@ const routes: Routes = [
   {
     path: 'auth/login',
     loadChildren: () =>
-      import('@minhdu-fontend/auth').then((m) => m.AuthModule)
+      import('@minhdu-fontend/auth').then((m) => m.AuthModule),
   },
   {
     path: '',
     component: SellLayoutComponent,
     data: {
-      title: 'Home'
+      title: 'Home',
     },
     children: [
       {
@@ -23,7 +23,7 @@ const routes: Routes = [
           import('./pages/statistical/statistical.module').then(
             (m) => m.StatisticalModule
           ),
-        canActivate: [RouteGuard]
+        canActivate: [RouteGuard],
       },
       {
         path: HrefEnum.CUSTOMER,
@@ -32,12 +32,13 @@ const routes: Routes = [
             (m) => m.CustomerModule
           ),
         data: {
-          title: 'Khách hàng'
+          title: 'Khách hàng',
         },
-        canActivate: [RouteGuard]
+        canActivate: [RouteGuard],
       },
       /**
        * @deprecated
+       * hàng hoá chưa cần page riêng để hiển thiị
        * */
       {
         path: 'hang-hoa',
@@ -46,61 +47,62 @@ const routes: Routes = [
             (m) => m.CommodityModule
           ),
         data: {
-          title: 'Hàng hóa'
+          title: 'Hàng hóa',
         },
-        canActivate: [RouteGuard]
+        canActivate: [RouteGuard],
       },
       {
         path: HrefEnum.ORDER,
         loadChildren: () =>
           import('./pages/order/order.module').then((m) => m.OrderModule),
         data: {
-          title: 'Đơn hàng'
+          title: 'Đơn hàng',
         },
-        canActivate: [RouteGuard]
+        canActivate: [RouteGuard],
       },
       {
         path: HrefEnum.ROUTE,
         loadChildren: () =>
           import('./pages/route/route.module').then((m) => m.RouteModule),
-        canActivate: [RouteGuard]
+        canActivate: [RouteGuard],
       },
 
       /**
        * @deprecated
+       * không sử dụng nữa vì ko có quản lý hoá đơn
        * */
       {
         path: 'bill',
         loadChildren: () =>
           import('./pages/bill/bill.module').then((m) => m.BillModule),
-        canActivate: [RouteGuard]
+        canActivate: [RouteGuard],
       },
       {
         path: HrefEnum.COMMODITY_TEMPLATE,
         loadChildren: () =>
-          import('./pages/commodity-template/commodity-template.module')
-            .then((m) => m.CommodityTemplateModule),
-        canActivate: [RouteGuard]
+          import('./pages/commodity-template/commodity-template.module').then(
+            (m) => m.CommodityTemplateModule
+          ),
+        canActivate: [RouteGuard],
       },
       {
         path: HrefEnum.SYSTEM,
         loadChildren: () =>
           import('@minhdu-fontend/system').then((m) => m.SystemModule),
-        canActivate: [RouteGuard]
+        canActivate: [RouteGuard],
       },
-      { path: '**', redirectTo: '' }
-    ]
-  }
+      { path: '**', redirectTo: '' },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
       useHash: true,
-      initialNavigation: 'enabled'
-    })
+      initialNavigation: 'enabledBlocking',
+    }),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

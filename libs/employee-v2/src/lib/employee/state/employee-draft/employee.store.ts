@@ -3,12 +3,11 @@ import { EmployeeEntity, EmployeeState } from '@minhdu-fontend/employee-v2';
 import { Injectable } from '@angular/core';
 import { StorageName } from '@minhdu-fontend/constants';
 
-export interface EmployeeDraftState extends EntityState<EmployeeEntity> {
-}
+export interface EmployeeDraftState extends EntityState<EmployeeEntity> {}
 
 export function createInitialState(): EmployeeDraftState {
   return {
-    loading: false
+    loading: false,
   };
 }
 
@@ -19,4 +18,3 @@ export class EmployeeDraftStore extends EntityStore<EmployeeState> {
     super(createInitialState());
   }
 }
-

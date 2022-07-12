@@ -1,12 +1,14 @@
 import {
   AfterViewInit,
-  Component, DoCheck,
+  Component,
+  DoCheck,
   EventEmitter,
-  Input, IterableDiffers,
+  Input,
+  IterableDiffers,
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -14,18 +16,29 @@ import { Employee } from '@minhdu-fontend/data-models';
 import {
   EmployeeAction,
   selectEmployeeLoaded,
-  selectorAllEmployee, selectorTotalEmployee
+  selectorAllEmployee,
+  selectorTotalEmployee,
 } from '@minhdu-fontend/employee';
-import { EmployeeType, RecipeType, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import {
+  EmployeeType,
+  RecipeType,
+  SalaryTypeEnum,
+} from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, startWith, tap } from 'rxjs/operators';
-import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import {
+  getAllPosition,
+  PositionActions,
+} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
-import { pickAll, pickOne } from '../../../../../../../../libs/utils/pick-item.ultil';
+import {
+  pickAll,
+  pickOne,
+} from '../../../../../../../../libs/utils/pick-item.ultil';
 
 @Component({
   selector: 'app-table-allowance-employee',
-  templateUrl: 'table-allowance-employee.component.html'
+  templateUrl: 'table-allowance-employee.component.html',
 })
 export class TableAllowanceEmployeeComponent implements OnInit, OnChanges {
   @Input() employees: Employee[] = [];
@@ -41,9 +54,7 @@ export class TableAllowanceEmployeeComponent implements OnInit, OnChanges {
   constructor(
     private readonly store: Store,
     private readonly snackBar: MatSnackBar
-  ) {
-
-  }
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.employees) {
@@ -54,7 +65,9 @@ export class TableAllowanceEmployeeComponent implements OnInit, OnChanges {
         this.isSelectAllEmployee = true;
         this.isSelectAllowance =
           this.employees !== null &&
-          this.employees.every((e) => this.allowEmployeesSelected.some(item => item.id === e.id));
+          this.employees.every((e) =>
+            this.allowEmployeesSelected.some((item) => item.id === e.id)
+          );
       }
       this.employeesSelected = [...changes.employees.currentValue];
     }
@@ -64,7 +77,9 @@ export class TableAllowanceEmployeeComponent implements OnInit, OnChanges {
       } else {
         this.isSelectAllowance =
           this.employees !== null &&
-          this.employees.every((e) => this.allowEmployeesSelected.some(item => item.id === e.id));
+          this.employees.every((e) =>
+            this.allowEmployeesSelected.some((item) => item.id === e.id)
+          );
       }
     }
   }
@@ -75,13 +90,17 @@ export class TableAllowanceEmployeeComponent implements OnInit, OnChanges {
 
   //check-box-employee
   updateSelectEmployee(employee: Employee) {
-    const val = pickOne(employee, this.employeesSelected, this.employees, this.allowEmployeesSelected);
+    const val = pickOne(
+      employee,
+      this.employeesSelected,
+      this.employees,
+      this.allowEmployeesSelected
+    );
     this.isSelectAllEmployee = val.isSelectAll;
     this.isSelectAllowance = val.isSelectAllowance;
     this.EventSelectEmployee.emit(this.employeesSelected);
     this.EventSelectAllowance.emit(this.allowEmployeesSelected);
   }
-
 
   setAllEmployee(select: boolean) {
     this.isSelectAllEmployee = select;
@@ -93,21 +112,27 @@ export class TableAllowanceEmployeeComponent implements OnInit, OnChanges {
       this.employees,
       this.employeesSelected,
       this.allowEmployeesSelected,
-      this.isSelectAllowance);
+      this.isSelectAllowance
+    );
     this.EventSelectEmployee.emit(this.employeesSelected);
     this.EventSelectAllowance.emit(this.allowEmployeesSelected);
   }
 
   //check-box-allowance
   updateSelectAllowance(employee: Employee) {
-    this.isSelectAllowance = pickOne(employee, this.allowEmployeesSelected, this.employees).isSelectAll;
+    this.isSelectAllowance = pickOne(
+      employee,
+      this.allowEmployeesSelected,
+      this.employees
+    ).isSelectAll;
     this.EventSelectAllowance.emit(this.allowEmployeesSelected);
   }
 
   someCompleteAllowance(): boolean {
     return (
-      this.employees.filter((e) => this.allowEmployeesSelected.some(item => item.id === e.id)).length >
-      0 && !this.isSelectAllowance
+      this.employees.filter((e) =>
+        this.allowEmployeesSelected.some((item) => item.id === e.id)
+      ).length > 0 && !this.isSelectAllowance
     );
   }
 

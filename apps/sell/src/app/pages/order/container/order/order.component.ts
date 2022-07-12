@@ -1,237 +1,225 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {Router} from '@angular/router';
-import {Api, CurrenciesConstant, PaginationDto} from '@minhdu-fontend/constants';
-import {ConvertBoolean, ItemContextMenu, OrderEnum, PaidType, PaymentType, StatusOrder} from '@minhdu-fontend/enums';
-import {ExportService} from '@minhdu-fontend/service';
-import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
-import {debounceTime, map, tap} from 'rxjs/operators';
-import {OrderActions, OrderQuery, OrderStore} from '../../+state';
-import {Actions} from '@datorama/akita-ng-effects';
-import {Sort} from '@minhdu-fontend/data-models';
-import {NzModalService} from 'ng-zorro-antd/modal';
-import {OrderDialogComponent} from '../../component';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Api } from '@minhdu-fontend/constants';
+import {
+  ConvertBoolean,
+  ItemContextMenu,
+  ModeEnum,
+  PaidType,
+  PaymentType,
+  SortTypeOrderEnum
+} from '@minhdu-fontend/enums';
+import { debounceTime, map } from 'rxjs/operators';
+import { OrderActions, OrderQuery, OrderStore } from '../../+state';
+import { Actions } from '@datorama/akita-ng-effects';
+import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import * as _ from 'lodash';
-import {OrderEntity} from '../../enitities/order.entity';
-import {radiosStatusOrderConstant} from '../../constants';
-import {WidthConstant} from "../../../../shared/constants";
-import {ModalExportExcelComponent, ModalExportExcelData} from "@minhdu-fontend/components";
-import {DatePipe} from "@angular/common";
+import { OrderEntity } from '../../enitities/order.entity';
+import { radiosStatusOrderConstant } from '../../constants';
+import { WidthConstant } from '../../../../shared/constants';
+import { ModalExportExcelComponent, ModalExportExcelData } from '@minhdu-fontend/components';
+import { DatePipe } from '@angular/common';
+import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
+import { OrderStatusEnum } from '../../enums';
+import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
+import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
+import { OrderComponentService } from '../../shared';
 
 @Component({
-  templateUrl: 'order.component.html'
+  templateUrl: 'order.component.html',
+  styleUrls: ['order.component.scss']
 })
-
 export class OrderComponent implements OnInit {
-  ui$ = this.orderQuery.select(state => state.ui);
-  orders$ = this.orderQuery.selectAll().pipe(map(value => JSON.parse(JSON.stringify(value))));
+  valueSort?: Sort;
+
+  account$ = this.accountQuery.selectCurrentUser();
+  ui$ = this.orderQuery.select((state) => state.ui);
+  expandedAll$ = this.orderQuery.select((state) => state.expandedAll);
   loading$ = this.orderQuery.selectLoading();
-  totalOrder$ = this.orderQuery.select(state => state.total);
-  deleted$ = this.orderQuery.select(state => state.deleted);
-  commodityUniq$ = this.orderQuery.select(state => state.commodityUniq);
-  totalCommodity$ = this.orderQuery.select(state => state.totalCommodity);
+  total$ = this.orderQuery.select((state) => state.total);
+  count$ = this.orderQuery.selectCount();
+  remain$ = this.orderQuery.select((state) => state.remain);
+  commodityUniq$ = this.orderQuery.select((state) => state.commodityUniq);
+  totalCommodity$ = this.orderQuery.select((state) => state.totalCommodity);
+  orders$ = this.orderQuery
+    .selectAll()
+    .pipe(map((value) => JSON.parse(JSON.stringify(value))));
   commodities$ = this.orderQuery.selectAll().pipe(
-    map(orders => {
-      return _.uniqBy(_.flattenDeep(orders.map(order => order.commodities)), 'code');
+    map((orders) => {
+      return _.uniqBy(
+        _.flattenDeep(orders.map((order) => order.commodities)),
+        'code'
+      );
     })
   );
 
   radios = radiosStatusOrderConstant;
+
+  ModeEnum = ModeEnum;
   ItemContextMenu = ItemContextMenu;
-  paidType = PaidType;
-  statusOrder = StatusOrder;
-  currenciesConstant = CurrenciesConstant;
-  convertBoolean = ConvertBoolean;
-  payType = PaymentType;
-  pageSize = 25;
-  pageIndexInit = 0;
-  sortOrderEnum = OrderEnum;
+  PaidType = PaidType;
+  ConvertBoolean = ConvertBoolean;
+  PaymentType = PaymentType;
+  SortTypeOrderEnum = SortTypeOrderEnum;
+  widthConstant = WidthConstant;
+
   visible = false;
-  pageSizeTable = 10;
-  expanedAll$ = this.orderQuery.select(state => state.expandedAll);
-  stateSearch = this.orderQuery.getValue().search;
-  valueSort?: Sort;
-  widthConstant = WidthConstant
+  search = this.orderQuery.getValue().search;
+
+  menus: ContextMenuEntity[] = [
+    {
+      title: 'Thêm',
+      click: () => this.orderComponentService.onAdd()
+    },
+    {
+      title: 'Sửa',
+      click: (data: OrderEntity) => this.orderComponentService.onUpdate(data)
+    },
+    {
+      title: 'Xoá',
+      click: (data: any) => this.orderComponentService.onRemove(data)
+    },
+    {
+      title: 'Huỷ',
+      click: (data: OrderEntity) => this.orderComponentService.onCancel(data)
+    },
+    {
+      title: 'Giao hàng',
+      click: (data: any) => this.orderComponentService.onDelivery(data)
+    },
+    {
+      title: 'Khôi phục',
+      click: (data: OrderEntity) => this.orderComponentService.onRestore(data)
+    }
+  ];
+
   formGroup = new FormGroup({
-    search: new FormControl(this.stateSearch.search),
-    // paidType: new FormControl(this.stateSearch.paidType),
-    // customer: new FormControl(this.stateSearch.customer),
-    status: new FormControl(this.stateSearch.status),
-    // explain: new FormControl(this.stateSearch.explain),
-    endedAt_start: new FormControl(this.stateSearch.endedAt_start),
-    endedAt_end: new FormControl(this.stateSearch.endedAt_end),
-    startedAt_end: new FormControl(this.stateSearch.startedAt_start),
-    startedAt_start: new FormControl(this.stateSearch.startedAt_end),
-    deliveredAt_start: new FormControl(this.stateSearch.deliveredAt_start),
-    deliveredAt_end: new FormControl(this.stateSearch.deliveredAt_end),
-    // commodityTotal: new FormControl(this.stateSearch.commodityTotal),
-    // province: new FormControl(this.stateSearch.province),
-    // bsx: new FormControl(this.stateSearch.bsx),
-    commodity: new FormControl(this.stateSearch.commodity)
+    search: new FormControl<string>(''),
+    status: new FormControl<OrderStatusEnum>(OrderStatusEnum.ALL),
+    endedAt_start: new FormControl<Date | null>(null),
+    endedAt_end: new FormControl<Date | null>(null),
+    startedAt_end: new FormControl<Date>(getFirstDayInMonth(new Date())),
+    startedAt_start: new FormControl<Date>(getLastDayInMonth(new Date())),
+    deliveredAt_start: new FormControl<Date | null>(null),
+    deliveredAt_end: new FormControl<Date | null>(null),
+    commodity: new FormControl('')
   });
 
   constructor(
+    public readonly orderComponentService: OrderComponentService,
     private readonly datePipe: DatePipe,
     private readonly actions$: Actions,
-    private readonly orderQuery: OrderQuery,
-    private readonly orderStore: OrderStore,
-    private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly modal: NzModalService,
-    private readonly exportService: ExportService
+    private readonly nzContextMenuService: NzContextMenuService,
+    private readonly orderStore: OrderStore,
+    private readonly orderQuery: OrderQuery,
+    private readonly accountQuery: AccountQuery
   ) {
   }
 
   ngOnInit() {
-    this.formGroup.valueChanges
-      .pipe(
-        debounceTime(1000),
-        tap((val: any) => {
-          this.actions$.dispatch(
-            OrderActions.loadAll({param: this.mapOrder(val)})
-          );
-        })
-      )
-      .subscribe();
-  }
-
-
-  onAdd() {
-    this.modal.create({
-      nzTitle: 'Thêm đơn hàng',
-      nzContent: OrderDialogComponent,
-      nzWidth: '80vw',
-      nzFooter: []
+    this.formGroup.valueChanges.pipe(
+      debounceTime(500)
+    ).subscribe((order) => {
+      this.actions$.dispatch(
+        OrderActions.loadAll({ search: this.mapOrder(order), isPaginate: false })
+      );
     });
   }
 
-  onDetail(id: number, isUpdate: boolean) {
-    this.router.navigate(['don-hang/chi-tiet-don-hang', id], {
-      queryParams: {
-        isUpdate: isUpdate
-      }
-    }).then();
-  }
-
-  onUpdate($event: any) {
-    this.dialog
-      .open(DialogDatePickerComponent, {
-        width: 'fit-content',
-        data: {
-          titlePopup: 'Xác Nhận ngày giao hàng',
-          title: 'Ngày xác nhận'
-        }
-      })
-      .afterClosed()
-      .subscribe((val: any) => {
-        if (val) {
-          this.actions$.dispatch(
-            OrderActions.update({
-              id: $event.id,
-              updates: {
-                deliveredAt: val.day
-              }
-            })
-          );
-        }
-      });
-  }
-
-  onCancel($event: OrderEntity) {
-    this.modal.warning({
-      nzTitle:'Huỷ đơn hàng',
-      nzContent: 'Bạn có chắc chắn muốn huỷ đơn hàng này không',
-      nzOkDanger: true,
-      nzOnOk: () => {
-        this.actions$.dispatch(OrderActions.cancelOrder({orderId: $event.id}));
-      }
-    })
-  }
-
-  onDelete($event: any) {
-    this.modal.warning({
-      nzTitle: 'Xoá đơn hàng',
-      nzContent: `Bạn có chắc chắn muốn xoá đơn hàng này vĩnh viễn`,
-      nzOnOk: () => this.actions$.dispatch(OrderActions.remove({id: $event.id}))
-    })
-  }
-
-  onPagination(pageIndex: number) {
-    const value = this.formGroup.value;
-    const count = this.orderQuery.getCount();
-    if (pageIndex * this.pageSizeTable >= count) {
-      this.actions$.dispatch(OrderActions.loadAll({
-        param: this.mapOrder(value, true),
-        isPagination: true
-      }));
-    }
-
-  }
-
-  onPickDeliveryDay($event: any) {
-    this.formGroup.get('deliveredAt_start')?.setValue($event.start, {emitEvent: false});
-    this.formGroup.get('deliveredAt_end')?.setValue($event.end);
-  }
-
-  onPickCreatedAt($event: any) {
-    this.formGroup.get('startedAt_start')?.setValue($event.start, {emitEvent: false});
-    this.formGroup.get('startedAt_end')?.setValue($event.end);
-  }
-
-  onPickEndedAt($event: any) {
-    this.formGroup.get('endedAt_start')?.setValue($event.start), {emitEvent: false};
-    this.formGroup.get('endedAt_end')?.setValue($event.end);
-  }
-
-  onExpandAll() {
-    const expanedAll = this.orderQuery.getValue().expandedAll;
-    this.orderQuery.getAll().forEach((order: OrderEntity) => {
-      this.orderStore.update(order.id, {expand: !expanedAll});
-    });
-    this.orderStore.update(state => ({...state, expandedAll: !expanedAll}));
-  }
-
-  onSort(sort: Sort) {
-    this.valueSort = sort;
-    this.actions$.dispatch(OrderActions.loadAll({
-      param: this.mapOrder(this.formGroup.value)
-    }));
-  }
-
-  mapOrder(dataFG: any, isPagination?: boolean) {
-    this.orderStore.update(state => ({
-      ...state, search: dataFG
-    }));
-    const value = Object.assign(JSON.parse(JSON.stringify(dataFG)), {
-      skip: isPagination ? this.orderQuery.getCount() : PaginationDto.skip,
-      take: this.pageSize
-    });
-    return Object.assign({},
-      value?.status !== 1 ? _.omit(value, ['deliveredAt_end', 'deliveredAt_start']) : value,
-      this.valueSort?.orderType ? this.valueSort : {}
+  public onLoadMore() {
+    this.actions$.dispatch(
+      OrderActions.loadAll({ search: this.mapOrder(this.formGroup.value), isPaginate: true })
     );
   }
 
-  onPrint() {
+  public onContextMenu($event: MouseEvent, item: any): void {
+    this.nzContextMenuService.create($event, item);
+    $event.preventDefault();
+    $event.stopPropagation();
+  }
+
+  public onPickDeliveryDay($event: any) {
+    this.formGroup
+      .get('deliveredAt_start')
+      ?.setValue($event.start, { emitEvent: false });
+    this.formGroup.get('deliveredAt_end')?.setValue($event.end);
+  }
+
+  public onPickCreatedAt($event: any) {
+    this.formGroup
+      .get('startedAt_start')
+      ?.setValue($event.start, { emitEvent: false });
+    this.formGroup.get('startedAt_end')?.setValue($event.end);
+  }
+
+  public onPickEndedAt($event: any) {
+    this.formGroup.get('endedAt_start')?.setValue($event.start, { emitEvent: false });
+    this.formGroup.get('endedAt_end')?.setValue($event.end);
+  }
+
+  public onExpandAll() {
+    const expandedAll = this.orderQuery.getValue().expandedAll;
+    this.orderQuery.getAll().forEach((order: OrderEntity) => {
+      this.orderStore.update(order.id, { expand: !expandedAll });
+    });
+    this.orderStore.update((state) => ({ ...state, expandedAll: !expandedAll }));
+  }
+
+  public onSort(sort: Sort) {
+    this.valueSort = sort;
+    this.actions$.dispatch(
+      OrderActions.loadAll({
+        search: this.mapOrder(this.formGroup.value),
+        isPaginate: true
+      })
+    );
+  }
+
+  public onPrint() {
     this.modal.create({
       nzTitle: 'Xuất danh sách đơn hàng',
       nzWidth: 'fit-content',
       nzContent: ModalExportExcelComponent,
       nzComponentParams: <{ data: ModalExportExcelData }>{
         data: {
-          filename: `Đơn hàng`
-            + ` từ ngày ${this.datePipe.transform(this.formGroup.value.startedAt_start, 'dd-MM-yyy')}`
-            + ` đến ngày ${this.datePipe.transform(this.formGroup.value.startedAt_start, 'dd-MM-yyy')}`,
-          params: Object.assign({},
-            _.omit(this.mapOrder(this.formGroup.value, false), ['take', 'skip']),
-            {exportType: 'ORDER'}),
+          filename:
+            `Đơn hàng` +
+            ` từ ngày ${this.datePipe.transform(
+              this.formGroup.value.startedAt_start,
+              'dd-MM-yyy'
+            )}` +
+            ` đến ngày ${this.datePipe.transform(
+              this.formGroup.value.startedAt_start,
+              'dd-MM-yyy'
+            )}`,
+          params: Object.assign(
+            {},
+            _.omit(this.mapOrder(this.formGroup.value), [
+              'take',
+              'skip'
+            ]),
+            { exportType: 'ORDER' }
+          ),
           api: Api.SELL.ORDER.ORDER_EXPORT,
           selectDatetime: true,
-          typeDate: "RANGE_DATETIME"
+          typeDate: 'RANGE_DATETIME'
         }
       },
       nzFooter: []
-    })
+    });
+  }
+
+  private mapOrder(dataFG: any) {
+    return Object.assign(
+      {},
+      dataFG?.status !== 1
+        ? _.omit(dataFG, ['deliveredAt_end', 'deliveredAt_start'])
+        : dataFG,
+      this.valueSort?.orderType ? this.valueSort : {}
+    );
   }
 }

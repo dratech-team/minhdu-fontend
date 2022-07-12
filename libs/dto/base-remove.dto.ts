@@ -1,5 +1,3 @@
 import { BaseEntity } from '../entities';
 
-export interface BaseRemoveDto extends BaseEntity{
-}
-
+export interface BaseRemoveDto extends BaseEntity {}

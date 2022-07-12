@@ -1,6 +1,6 @@
-import {NzDateMode} from "ng-zorro-antd/date-picker";
+import { NzDateMode } from 'ng-zorro-antd/date-picker';
 
-export interface ModalDatePickerEntity{
-  type: NzDateMode
-  dateInit?: Date,
+export interface ModalDatePickerEntity {
+  type: NzDateMode;
+  dateInit?: Date;
 }

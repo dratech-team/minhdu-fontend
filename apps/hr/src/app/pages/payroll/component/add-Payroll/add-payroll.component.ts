@@ -1,33 +1,33 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import {
   MatDialog,
   MatDialogRef,
-  MAT_DIALOG_DATA
+  MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
   selectedAddedPayroll,
   selectedAddingPayroll,
-  selectedRangeDayPayroll
+  selectedRangeDayPayroll,
 } from '../../+state/payroll/payroll.selector';
 import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
 import { LoadingComponent } from '../popup-loading/loading.component';
-import {RangeDay} from "@minhdu-fontend/data-models";
-import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
+import { RangeDay } from '@minhdu-fontend/data-models';
+import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 
 @Component({
   templateUrl: 'add-payroll.component.html',
 })
 export class AddPayrollComponent implements OnInit {
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   adding$ = this.store.pipe(select(selectedAddingPayroll));
   createdAt = getSelectors<RangeDay>(selectedRangeDayPayroll, this.store).start;
   constructor(
     private dialogRef: MatDialogRef<AddPayrollComponent>,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly store: Store,
     private readonly datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data?: any

@@ -7,16 +7,15 @@ import { VersionEnum } from '@minhdu-fontend/enums';
 
 @Injectable({ providedIn: 'root' })
 export class OverviewService {
-  constructor(
-    public readonly http: HttpClient
-  ) {
-  }
+  constructor(public readonly http: HttpClient) {}
 
   overviewAge(params: any): Observable<Chart[]> {
-    return this.http.get<Chart[]>(VersionEnum.V1 + Api.HR.OVERVIEW, {params});
+    return this.http.get<Chart[]>(VersionEnum.V1 + Api.HR.OVERVIEW, { params });
   }
 
   overviewTotalEmp(params: any): Observable<stakedChart[]> {
-    return this.http.get<stakedChart[]>(VersionEnum.V1 + Api.HR.OVERVIEW, {params});
+    return this.http.get<stakedChart[]>(VersionEnum.V1 + Api.HR.OVERVIEW, {
+      params,
+    });
   }
 }

@@ -6,16 +6,15 @@ import { AppInterface } from './app.interface';
 
 @Component({
   templateUrl: 'app.container.html',
-  styleUrls: ['app.container.scss']
+  styleUrls: ['app.container.scss'],
 })
 export class AppContainer implements OnInit {
-  appMinhDuConstant$ !: Observable<AppInterface[]>;
+  appMinhDuConstant$!: Observable<AppInterface[]>;
 
   constructor(
     private readonly router: Router,
     private readonly appService: AppService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.appMinhDuConstant$ = this.appService.getAll();

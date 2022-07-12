@@ -1,44 +1,48 @@
-import {Component, Inject, Input, LOCALE_ID, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {DatePipe} from '@angular/common';
-import {CustomerResource, CustomerType} from '@minhdu-fontend/enums';
-import {CustomerActions, CustomerQuery} from '../../+state';
-import {Actions} from '@datorama/akita-ng-effects';
-import {NzModalRef} from "ng-zorro-antd/modal";
-import {CustomerConstant, ResourcesConstant} from "../../constants";
-import {BaseAddCustomer, BaseUpdateCustomerDto} from "../../dto";
-import {ModalCustomerData} from "../../data/modal-customer.data";
+import { Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
+import { CustomerActions, CustomerQuery } from '../../+state';
+import { Actions } from '@datorama/akita-ng-effects';
+import { NzModalRef } from 'ng-zorro-antd/modal';
+import { CustomerConstant, ResourcesConstant } from '../../constants';
+import { BaseAddCustomer, BaseUpdateCustomerDto } from '../../dto';
+import { ModalCustomerData } from '../../data/modal-customer.data';
 
 @Component({
   templateUrl: 'customer-modal.component.html'
 })
 export class CustomerModalComponent implements OnInit {
-  @Input() data?: ModalCustomerData
+  @Input() data?: ModalCustomerData;
 
-  added$ = this.customerQuery.select(state => state.added)
+  loading$ = this.customerQuery.selectLoading();
 
-  customerConstant = CustomerConstant.filter(item => item.value !== CustomerType.ALL)
-  resourceConstant = ResourcesConstant.filter(item => item.value !== CustomerResource.ALL)
+  customerConstant = CustomerConstant.filter(
+    (item) => item.value !== CustomerType.ALL
+  );
+  resourceConstant = ResourcesConstant.filter(
+    (item) => item.value !== CustomerResource.ALL
+  );
 
   submitted = false;
   provinceId: number | undefined;
   districtId: number | undefined;
   wardId: number | undefined;
 
-  formGroup!: FormGroup
+  formGroup!: UntypedFormGroup;
 
   constructor(
     @Inject(LOCALE_ID) private locale: string,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     public datePipe: DatePipe,
     private readonly actions$: Actions,
     private readonly customerQuery: CustomerQuery,
-    private readonly modalRef: NzModalRef,
+    private readonly modalRef: NzModalRef
   ) {
   }
 
   ngOnInit() {
-    const customer = this.data?.update?.customer
+    const customer = this.data?.update?.customer;
     this.formGroup = this.formBuilder.group({
       firstName: [''],
       lastName: [customer?.lastName, Validators.required],
@@ -47,9 +51,7 @@ export class CustomerModalComponent implements OnInit {
       birthplace: [customer?.birthplace],
       idCardAt: [
         customer?.idCardAt
-          ? this.datePipe.transform(
-            customer.idCardAt, 'yyyy-MM-dd'
-          )
+          ? this.datePipe.transform(customer.idCardAt, 'yyyy-MM-dd')
           : ''
       ],
       email: [customer?.email],
@@ -59,9 +61,7 @@ export class CustomerModalComponent implements OnInit {
       gender: [customer?.gender],
       birthday: [
         customer?.birthday
-          ? this.datePipe.transform(
-            customer.birthday, 'yyyy-MM-dd'
-          )
+          ? this.datePipe.transform(customer.birthday, 'yyyy-MM-dd')
           : ''
       ],
       ethnicity: [customer?.ethnicity],
@@ -84,14 +84,17 @@ export class CustomerModalComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    const customer = this.mapCustomer(this.formGroup.value)
+    const customer = this.mapCustomer(this.formGroup.value);
     this.actions$.dispatch(
       this.data?.update
-        ? CustomerActions.update({id: this.data.update.customer.id, updates: customer})
-        : CustomerActions.addOne({body: customer})
-    )
-    this.added$.subscribe(added => {
-      if (added) {
+        ? CustomerActions.update({
+          id: this.data.update.customer.id,
+          updates: customer
+        })
+        : CustomerActions.addOne({ body: customer })
+    );
+    this.loading$.subscribe((loading) => {
+      if (loading === false) {
         this.modalRef.close();
       }
     });
@@ -126,5 +129,3 @@ export class CustomerModalComponent implements OnInit {
     };
   }
 }
-
-

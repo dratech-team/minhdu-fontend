@@ -1,2 +1,2 @@
-export * from './payroll.entity'
-export * from './payslip.entity'
+export * from './payroll.entity';
+export * from './payslip.entity';

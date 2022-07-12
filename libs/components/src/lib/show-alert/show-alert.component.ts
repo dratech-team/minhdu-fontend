@@ -5,6 +5,5 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   templateUrl: 'show-alert.component.html',
 })
 export class ShowAlertComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
-  }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
 }

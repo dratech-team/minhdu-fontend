@@ -1,19 +1,21 @@
 import {
   AfterViewInit,
-  Component, DoCheck,
+  Component,
+  DoCheck,
   EventEmitter,
-  Input, IterableDiffers,
+  Input,
+  IterableDiffers,
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
-import {Payroll} from "../../../+state/payroll/payroll.interface";
-import {pickAll, pickOne} from "@minhdu-fontend/utils";
+import { Payroll } from '../../../+state/payroll/payroll.interface';
+import { pickAll, pickOne } from '@minhdu-fontend/utils';
 
 @Component({
   selector: 'app-table-allowance-Payroll',
-  templateUrl: 'table-allowance-payroll.component.html'
+  templateUrl: 'table-allowance-payroll.component.html',
 })
 export class TableAllowancePayrollComponent implements OnInit, OnChanges {
   @Input() payrolls: Payroll[] = [];
@@ -35,7 +37,9 @@ export class TableAllowancePayrollComponent implements OnInit, OnChanges {
         this.isSelectAllPayroll = true;
         this.isSelectAllowance =
           this.payrolls !== null &&
-          this.payrolls.every((e) => this.allowancePayrollSelected.some(item => item.id === e.id));
+          this.payrolls.every((e) =>
+            this.allowancePayrollSelected.some((item) => item.id === e.id)
+          );
       }
       this.payrollsSelected = [...changes.payrolls.currentValue];
     }
@@ -45,7 +49,9 @@ export class TableAllowancePayrollComponent implements OnInit, OnChanges {
       } else {
         this.isSelectAllowance =
           this.payrolls !== null &&
-          this.payrolls.every((e) => this.allowancePayrollSelected.some(item => item.id === e.id));
+          this.payrolls.every((e) =>
+            this.allowancePayrollSelected.some((item) => item.id === e.id)
+          );
       }
     }
   }
@@ -56,13 +62,17 @@ export class TableAllowancePayrollComponent implements OnInit, OnChanges {
 
   //check-box-employee
   updateSelectEmployee(payroll: Payroll) {
-    const val = pickOne(payroll, this.payrollsSelected, this.payrolls, this.allowancePayrollSelected);
+    const val = pickOne(
+      payroll,
+      this.payrollsSelected,
+      this.payrolls,
+      this.allowancePayrollSelected
+    );
     this.isSelectAllPayroll = val.isSelectAll;
     this.isSelectAllowance = val.isSelectAllowance;
     this.EventSelectPayroll.emit(this.payrollsSelected);
     this.EventSelectAllowance.emit(this.allowancePayrollSelected);
   }
-
 
   setAllEmployee(select: boolean) {
     this.isSelectAllPayroll = select;
@@ -74,21 +84,27 @@ export class TableAllowancePayrollComponent implements OnInit, OnChanges {
       this.payrolls,
       this.payrollsSelected,
       this.allowancePayrollSelected,
-      this.isSelectAllowance);
+      this.isSelectAllowance
+    );
     this.EventSelectPayroll.emit(this.payrollsSelected);
     this.EventSelectAllowance.emit(this.allowancePayrollSelected);
   }
 
   //check-box-allowance
   updateSelectAllowance(payroll: Payroll) {
-    this.isSelectAllowance = pickOne(payroll, this.allowancePayrollSelected, this.payrolls).isSelectAll;
+    this.isSelectAllowance = pickOne(
+      payroll,
+      this.allowancePayrollSelected,
+      this.payrolls
+    ).isSelectAll;
     this.EventSelectAllowance.emit(this.allowancePayrollSelected);
   }
 
   someCompleteAllowance(): boolean {
     return (
-      this.payrolls.filter((e) => this.allowancePayrollSelected.some(item => item.id === e.id)).length >
-      0 && !this.isSelectAllowance
+      this.payrolls.filter((e) =>
+        this.allowancePayrollSelected.some((item) => item.id === e.id)
+      ).length > 0 && !this.isSelectAllowance
     );
   }
 

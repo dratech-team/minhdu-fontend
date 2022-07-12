@@ -1,30 +1,30 @@
-import {PriceType} from "../enums";
-import {SalaryTypeEnum} from "@minhdu-fontend/enums";
-import {DiveEnum} from "../enums/dive.enum";
+import { PriceType } from '../enums';
+import { SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { DiveEnum } from '../enums/dive.enum';
 
 export interface recipeType {
-  name: string,
-  value: PriceType,
+  name: string;
+  value: PriceType;
   diveFor?: {
-    name: string,
-    value: DiveEnum
-  }[],
+    name: string;
+    value: DiveEnum;
+  }[];
   salariesConstant?: {
-    name: string,
-    value: string
-  } []
+    name: string;
+    value: string;
+  }[];
 }
 
 const diveForConstant: { name: string; value: DiveEnum }[] = [
   {
     name: 'Ngày công chuẩn',
-    value: DiveEnum.STANDARD
+    value: DiveEnum.STANDARD,
   },
   {
     name: 'Tuỳ chọn',
-    value: DiveEnum.OTHER
-  }
-]
+    value: DiveEnum.OTHER,
+  },
+];
 
 export const salariesConstant = [
   {
@@ -39,9 +39,9 @@ export const salariesConstant = [
     name: 'Lương cơ bản trích bảo hiểm',
     value: SalaryTypeEnum.BASIC_INSURANCE,
   },
-]
+];
 
-export const recipesConstant: recipeType [] = [
+export const recipesConstant: recipeType[] = [
   {
     name: 'Đơn giá',
     value: PriceType.PRICE,
@@ -51,11 +51,11 @@ export const recipesConstant: recipeType [] = [
     name: 'Loại lương',
     value: PriceType.BLOCK,
     diveFor: diveForConstant,
-    salariesConstant: salariesConstant
+    salariesConstant: salariesConstant,
   },
 ];
 
-export const recipesConstantOvertime: recipeType [] = [
+export const recipesConstantOvertime: recipeType[] = [
   {
     name: 'Đơn giá',
     value: PriceType.PRICE,
@@ -64,8 +64,6 @@ export const recipesConstantOvertime: recipeType [] = [
     name: 'Loại lương',
     value: PriceType.BLOCK,
     diveFor: diveForConstant,
-    salariesConstant: salariesConstant
+    salariesConstant: salariesConstant,
   },
 ];
-
-

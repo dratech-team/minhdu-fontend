@@ -11,13 +11,12 @@ export class BreedLayoutComponent implements OnInit {
   constructor(
     private readonly dialog: MatDialog,
     private readonly router: Router
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.router.navigate(['/']).then();
   }
-  onIncubatorFactory(){
-    this.router.navigate(['nha-may-ap']).then()
+  onIncubatorFactory() {
+    this.router.navigate(['nha-may-ap']).then();
   }
 }

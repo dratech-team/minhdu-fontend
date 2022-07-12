@@ -1,67 +1,71 @@
-import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
-import {Injectable} from '@angular/core';
-import {ProductEntity, ProductVisibleEntity} from '../entities';
-import {updateStateUiUtil} from '../../../../../../sell/src/app/utils/update-state-ui.util';
-import {SupplierEntity} from '../../supplier/entities';
-import {BaseSearchProductDto, SearchProductDto} from "../dto";
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { Injectable } from '@angular/core';
+import { ProductEntity, ProductVisibleEntity } from '../entities';
+import { updateStateUiUtil } from '../../../../../../sell/src/app/utils/update-state-ui.util';
+import { BaseSearchProductDto } from '../dto';
 
 export interface ProductState extends EntityState<ProductEntity> {
-  loading: boolean;
-  added: boolean|null;
+  loading?: boolean;
   search: Partial<BaseSearchProductDto>;
   ui: ProductVisibleEntity;
 }
 
 export function createInitialState(): ProductState {
   return {
-    loading: true,
-    added: null,
     search: {},
     ui: {
       stt: {
         pinned: true,
-        visible: true
+        visible: true,
       },
       code: {
         pinned: false,
-        visible: true
+        visible: true,
       },
       name: {
         pinned: true,
-        visible: true
+        visible: true,
       },
       unit: {
         pinned: false,
-        visible: true
+        visible: true,
       },
-      note:{
+      note: {
         pinned: false,
-        visible: true
+        visible: true,
       },
-      supplier:{
+      supplier: {
         pinned: false,
-        visible: true
+        visible: true,
       },
-      category:{
+      category: {
         pinned: false,
-        visible: true
-      }
-    }
+        visible: true,
+      },
+    },
   };
 }
 
-@Injectable({providedIn: 'root'})
-@StoreConfig({name: 'product'})
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: 'product' })
 export class ProductStore extends EntityStore<ProductState> {
   constructor() {
     super(createInitialState());
   }
 
-  updateUI(newState: Partial<ProductVisibleEntity>, type: 'visible' | 'pinned') {
-    return this.update(state => {
+  updateUI(
+    newState: Partial<ProductVisibleEntity>,
+    type: 'visible' | 'pinned'
+  ) {
+    return this.update((state) => {
       return {
         ...state,
-        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), updateStateUiUtil<ProductVisibleEntity>(newState, type)) : state.ui
+        ui: state.ui
+          ? Object.assign(
+              JSON.parse(JSON.stringify(state.ui)),
+              updateStateUiUtil<ProductVisibleEntity>(newState, type)
+            )
+          : state.ui,
       };
     });
   }
