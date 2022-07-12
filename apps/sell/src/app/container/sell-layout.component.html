@@ -3,130 +3,131 @@
   <meta name='viewport' content='width=device-width, initial-scale=1' />
   <title>Title</title>
 </head>
-<div class='px-3 mb-5 pt-1 grid_on header shadow-sm'>
-  <div>
-    <div class='row'>
-      <div class='d-flex col-md-7 col-xm-12'>
-        <div class='col-md-4 d-flex align-items-center'>
-          <div
-            routerLink='/'
-            class='col-md-1 col-xm-1 d-flex align-items-center justify-content-center'
-          >
-            <img src='assets/icon/sell-layout/grid-3x3.svg' alt='app' />
+<div>
+  <div class='header shadow-sm'>
+    <div>
+      <div class='row'>
+        <div class='d-flex col-md-7 col-xm-12'>
+          <div class='col-md-4 d-flex align-items-center'>
+            <div
+              routerLink='/'
+              class='col-md-1 col-xm-1 d-flex align-items-center justify-content-center'
+            >
+              <img src='assets/icon/sell-layout/grid-3x3.svg' alt='app' />
+            </div>
+            <span
+              routerLink='/'
+              class='col-md-11 col-xm-11 app-name pointer font-weight-bold'
+            >Bán hàng</span
+            >
           </div>
-          <span
-            routerLink='/'
-            class='col-md-11 col-xm-11 app-name pointer font-weight-bold'
-          >Bán hàng</span
-          >
         </div>
-      </div>
-      <div class='col-md-5 col-xm-12 d-flex justify-content-end'>
-        <button
-          type='button'
-          data-toggle='tooltip'
-          data-placement='bottom'
-          title='Facebook'
-          class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'
-        >
-          <a
-            href='https://www.facebook.com/GatachonlocMinhDuBinhDinh'
-            target='_blank'
+        <div class='col-md-5 col-xm-12 d-flex justify-content-end'>
+          <button
+            type='button'
+            data-toggle='tooltip'
+            data-placement='bottom'
+            title='Facebook'
+            class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'
+          >
+            <a
+              href='https://www.facebook.com/GatachonlocMinhDuBinhDinh'
+              target='_blank'
+            >
+              <img
+                height='20px btn'
+                src='../../assets/icon/sell-layout/facebook.svg'
+                alt='facebook'
+              /></a>
+          </button>
+          <button
+            *ngIf='role === roleEnum.ADMIN'
+            (click)='signUp()'
+            type='button'
+            data-toggle='tooltip'
+            data-placement='bottom'
+            title='Tạo tài khoản'
+            class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'
           >
             <img
-              height='20px btn'
-              src='../../assets/icon/sell-layout/facebook.svg'
-              alt='facebook'
-            /></a>
+              height='20px'
+              src='./assets/icon/sell-layout/person-plus.svg'
+              alt='create'
+            />
+          </button>
+          <button
+            (click)='setting()'
+            type='button'
+            data-toggle='tooltip'
+            data-placement='bottom'
+            title='Cài đặt'
+            class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'
+          >
+            <img
+              height='20px'
+              src='../../assets/icon/sell-layout/gear.svg'
+              alt='setting'
+            />
+          </button>
+          <button
+            (click)='logout()'
+            type='button'
+            data-toggle='tooltip'
+            data-placement='bottom'
+            title='Đăng xuất'
+            class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'
+          >
+            <img
+              height='20px'
+              src='./assets/icon/sell-layout/box-arrow-right.svg'
+              alt='setting'
+            />
+          </button>
+        </div>
+      </div>
+      <div class='mt-2 ml-2 row hide-on-mobile'>
+        <button
+          mat-button
+          *ngFor='let item of menuSell'
+          routerLink='{{ item.href }}'
+          class='ml-2'
+          routerLinkActive='active'
+          [style]="{
+          border: (tab$ | async) === item.href ? 'solid 2px' : 'none'
+        }"
+        >
+          <img class='m-1' src='{{ item.icon }}' alt='{{ item.state }}' />
+          {{ item.name }}
+        </button>
+      </div>
+      <div class='row hide-on-pc menu-mobile'>
+        <button class='btn font-lg overflow-hidden d-flex align-items-center'>
+          <img
+            class='m-1'
+            src='../../assets/icon/sell-layout/house-door.svg'
+            alt='home'
+          />
+          Bàn làm việc
         </button>
         <button
-          *ngIf='role === roleEnum.ADMIN'
-          (click)='signUp()'
-          type='button'
-          data-toggle='tooltip'
-          data-placement='bottom'
-          title='Tạo tài khoản'
-          class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'
+          (click)='pickMenuMobile()'
+          class='btn font-lg overflow-hidden d-flex align-items-center'
         >
           <img
-            height='20px'
-            src='./assets/icon/sell-layout/person-plus.svg'
-            alt='create'
+            class='mr-1'
+            src='../../assets/icon/sell-layout/list.svg'
+            alt='home'
           />
-        </button>
-        <button
-          (click)='setting()'
-          type='button'
-          data-toggle='tooltip'
-          data-placement='bottom'
-          title='Cài đặt'
-          class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'
-        >
-          <img
-            height='20px'
-            src='../../assets/icon/sell-layout/gear.svg'
-            alt='setting'
-          />
-        </button>
-        <button
-          (click)='logout()'
-          type='button'
-          data-toggle='tooltip'
-          data-placement='bottom'
-          title='Đăng xuất'
-          class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'
-        >
-          <img
-            height='20px'
-            src='./assets/icon/sell-layout/box-arrow-right.svg'
-            alt='setting'
-          />
+          Khác
         </button>
       </div>
     </div>
-    <div class='mt-2 ml-2 row hide-on-mobile'>
-      <button
-        mat-button
-        *ngFor='let item of menuSell'
-        routerLink='{{ item.href }}'
-        class='ml-2'
-        routerLinkActive='active'
-        [style]="{
-          border: (tab$ | async) === item.href ? 'solid 2px' : 'none'
-        }"
-      >
-        <img class='m-1' src='{{ item.icon }}' alt='{{ item.state }}' />
-        {{ item.name }}
-      </button>
-    </div>
-    <div class='row hide-on-pc menu-mobile'>
-      <button class='btn font-lg overflow-hidden d-flex align-items-center'>
-        <img
-          class='m-1'
-          src='../../assets/icon/sell-layout/house-door.svg'
-          alt='home'
-        />
-        Bàn làm việc
-      </button>
-      <button
-        (click)='pickMenuMobile()'
-        class='btn font-lg overflow-hidden d-flex align-items-center'
-      >
-        <img
-          class='mr-1'
-          src='../../assets/icon/sell-layout/list.svg'
-          alt='home'
-        />
-        Khác
-      </button>
-    </div>
   </div>
-</div>
-<div class='main-body ng-star-inserted' style='overflow-y: auto'>
-  <router-outlet></router-outlet>
-</div>
-
-<app-footer class='footer'>
+  <div class='container'>
+    <router-outlet></router-outlet>
+  </div>
+  <div class='footer'>
+    <app-footer >
   <span>
     <a href='https://dratech-solutions.com/' target='_blank'>
     Dratech Solutions
@@ -134,10 +135,12 @@
     &copy; 2021.
   </span
   >
-  <span class='ml-auto'>
+      <span class='ml-auto'>
     Powered by
     <a href='https://dratech-solutions.com/' target='_blank'>
       Công ty TNHH giải pháp phần mềm Dratech
     </a>
   </span>
-</app-footer>
+    </app-footer>
+  </div>
+</div>
