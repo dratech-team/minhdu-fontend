@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { OrderService } from '../service';
+import { OrderHistoryService, OrderService } from '../service';
 import { OrderActions } from './order.actions';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -26,6 +26,7 @@ export class OrderEffect {
     private readonly orderQuery: OrderQuery,
     private readonly orderStore: OrderStore,
     private readonly orderService: OrderService,
+    private readonly orderHistoryService: OrderHistoryService,
     private readonly router: Router
   ) {
   }
@@ -286,8 +287,8 @@ export class OrderEffect {
       )
     )
   );
-  @Effect()
 
+  @Effect()
   restore$ = this.actions$.pipe(
     ofType(OrderActions.restore),
     switchMap((props) => {
@@ -299,6 +300,20 @@ export class OrderEffect {
         catchError((err) => of(OrderActions.error(err)))
       );
     })
+  );
+
+  @Effect()
+  historyOrder$ = this.actions$.pipe(
+    ofType(OrderActions.historyOrder),
+    switchMap((props) => {
+        return this.orderHistoryService.pagination(props).pipe(
+          tap((res) => {
+            /// TODO: implement store history in order
+          }),
+          catchError((err) => of(OrderActions.error(err)))
+        );
+      }
+    )
   );
 
   private handleCommodityUniq(
