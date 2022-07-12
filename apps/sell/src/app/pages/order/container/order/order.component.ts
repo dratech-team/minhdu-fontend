@@ -10,7 +10,7 @@ import {
   PaymentType,
   SortTypeOrderEnum
 } from '@minhdu-fontend/enums';
-import { debounceTime, map } from 'rxjs/operators';
+import { debounceTime, map, startWith } from 'rxjs/operators';
 import { OrderActions, OrderQuery, OrderStore } from '../../+state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
@@ -22,10 +22,10 @@ import { WidthConstant } from '../../../../shared/constants';
 import { ModalExportExcelComponent, ModalExportExcelData } from '@minhdu-fontend/components';
 import { DatePipe } from '@angular/common';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
-import { OrderStatusEnum } from '../../enums';
 import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { OrderComponentService } from '../../shared';
+import { OrderStatusEnum } from '../../enums';
 
 @Component({
   templateUrl: 'order.component.html',
@@ -121,13 +121,13 @@ export class OrderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.formGroup.valueChanges.pipe(
-      debounceTime(500)
-    ).subscribe((order) => {
-      this.actions$.dispatch(
-        OrderActions.loadAll({ search: this.mapOrder(order), isPaginate: false })
-      );
-    });
+    this.formGroup.valueChanges
+      .pipe(debounceTime(1500), startWith(this.formGroup.value))
+      .subscribe((order) => {
+        this.actions$.dispatch(
+          OrderActions.loadAll({ search: this.mapOrder(order), isPaginate: false })
+        );
+      });
   }
 
   public onLoadMore() {

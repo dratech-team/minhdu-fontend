@@ -6,7 +6,7 @@ import { ModeEnum, SortRouteEnum } from '@minhdu-fontend/enums';
 import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
 import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
-import { debounceTime, map } from 'rxjs/operators';
+import { debounceTime, map, startWith } from 'rxjs/operators';
 import { RouteActions, RouteQuery, RouteStore } from '../../+state';
 import { RouteEntity } from '../../entities';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -18,7 +18,7 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import { RadiosStatusRouteConstant } from '../../constants';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
-import { UpdaterRouteTypeEnum } from '../../enums/updater-route-type.enum';
+import { UpdaterRouteTypeEnum } from '../../enums';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { RouteComponentService } from '../../shared';
 
@@ -85,7 +85,7 @@ export class RouteComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup.valueChanges
-      .pipe(debounceTime(500))
+      .pipe(debounceTime(1500), startWith(this.formGroup.value))
       .subscribe((route) => {
         this.actions$.dispatch(
           RouteActions.loadAll({ search: this.mapRoute(route), isPaginate: false })

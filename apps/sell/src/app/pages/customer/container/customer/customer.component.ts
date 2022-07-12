@@ -16,16 +16,16 @@ import { ModalExportExcelComponent, ModalExportExcelData } from '@minhdu-fontend
 import { CustomerActions, CustomerQuery, CustomerStore } from '../../+state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { RadiosStatusRouteConstant } from '../../constants/gender.constant';
 import { CustomerConstant, PotentialsConstant, ResourcesConstant } from '../../constants';
 import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
 import * as _ from 'lodash';
 import { OrderEntity } from '../../../order/enitities/order.entity';
 import { CustomerEntity } from '../../entities';
-import { PotentialEnum } from '../../enums';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
-import { startWith } from 'rxjs/operators';
+import { debounceTime, startWith } from 'rxjs/operators';
+import { RadiosStatusRouteConstant } from '../../../route/constants';
+import { PotentialEnum } from '../../enums';
 import { CustomerComponentService } from '../../shared';
 
 @Component({
@@ -98,7 +98,7 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup.valueChanges
-      .pipe(startWith(this.formGroup.value))
+      .pipe(debounceTime(1500), startWith(this.formGroup.value))
       .subscribe((formGroup) => {
         console.log('formGroup ', formGroup);
         this.actions$.dispatch(
