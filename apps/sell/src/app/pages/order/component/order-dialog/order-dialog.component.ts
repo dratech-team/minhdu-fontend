@@ -9,12 +9,18 @@ import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { District, Province, Ward } from '@minhdu-fontend/data-models';
+import { OrderEntity } from '../../enitities/order.entity';
 
 @Component({
   templateUrl: 'order-dialog.component.html'
 })
 export class OrderDialogComponent implements OnInit {
-  @Input() data: any;
+  @Input() data?: Partial<{
+    order: OrderEntity,
+    tab: number,
+    customerId?: number,
+    isUpdate: boolean
+  }>;
 
   formGroup!: FormGroup;
   districtId!: number;
@@ -58,11 +64,11 @@ export class OrderDialogComponent implements OnInit {
           { validators: Validators.required }
         )
         : new FormControl(),
-      explain: new FormControl<string | null>(this.data?.order?.explain),
-      province: new FormControl<Province | null>(this.data?.order?.province, { validators: Validators.required }),
-      district: new FormControl<District | null>(this.data?.order?.district),
-      ward: new FormControl<Ward | null>(this.data?.order?.ward),
-      customerId: new FormControl<number | null>(this.data?.order?.customerId)
+      explain: new FormControl<string | undefined>(this.data?.order?.explain),
+      province: new FormControl<Province | undefined>(this.data?.order?.province, { validators: Validators.required }),
+      district: new FormControl<District | undefined>(this.data?.order?.district),
+      ward: new FormControl<Ward | undefined>(this.data?.order?.ward),
+      customerId: new FormControl<number | undefined>(this.data?.order?.customerId)
     });
   }
 
@@ -101,7 +107,7 @@ export class OrderDialogComponent implements OnInit {
     if (!order.wardId) {
       delete order.wardId;
     }
-    if (this.data?.isUpdate) {
+    if (this.data?.order && this.data?.isUpdate) {
       this.actions$.dispatch(
         OrderActions.update({
           id: this.data.order.id,
@@ -109,7 +115,6 @@ export class OrderDialogComponent implements OnInit {
         })
       );
     } else {
-      console.log('add adsd', order);
       this.actions$.dispatch(OrderActions.addOne({ body: order }));
     }
     this.orderQuery.select().subscribe((state) => {

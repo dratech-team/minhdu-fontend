@@ -92,7 +92,7 @@ export class AddOrderComponent implements OnInit {
       nzTitle: 'Chon đơn hàng',
       nzContent: SelectCommodityComponent,
       nzWidth: '70vw',
-      nzComponentParams: { commodities: this.commoditiesPicked },
+      nzComponentParams: { data: { commodities: this.commoditiesPicked } },
       nzFooter: null
     }).afterClose.subscribe((val) => {
       if (val) {

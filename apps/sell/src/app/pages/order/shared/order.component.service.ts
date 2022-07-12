@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { OrderDialogComponent } from '../component';
-import { SelectCommodityComponent } from '../../../shared/components/select-commodity/select-commodity.component';
+import { SelectCommodityComponent } from '../../../shared/components';
 import { OrderActions } from '../+state';
 import { OrderEntity } from '../enitities/order.entity';
 import {
@@ -40,32 +40,29 @@ export class OrderComponentService {
         nzComponentParams: {
           data: { order: order, tab: 0, isUpdate: true }
         },
-        nzFooter: [],
         nzWidth: '65vw',
-        nzMaskClosable: false
+        nzMaskClosable: false,
+        nzFooter: []
       });
     } else {
       this.modal.create({
         nzTitle: 'Chọn hàng hoá',
         nzContent: SelectCommodityComponent,
-        nzComponentParams: { commodities: order.commodities },
+        nzComponentParams: { data: { commodities: order.commodities, isUpdate: true } },
         nzWidth: '70vw',
-        nzOnOk: (res) => {
-          console.log(res)
+        nzFooter: []
+      }).afterClose.subscribe((commodityIds: number[]) => {
+        if (commodityIds?.length) {
+          this.actions$.dispatch(
+            OrderActions.update({
+              id: order.id,
+              updates: {
+                commodityIds: commodityIds
+              }
+            })
+          );
         }
-      })
-      //   .afterClose.subscribe((commodityIds: number[]) => {
-      //   if (commodityIds?.length) {
-      //     this.actions$.dispatch(
-      //       OrderActions.update({
-      //         id: order.id,
-      //         updates: {
-      //           commodityIds: commodityIds
-      //         }
-      //       })
-      //     );
-      //   }
-      // });
+      });
     }
   }
 

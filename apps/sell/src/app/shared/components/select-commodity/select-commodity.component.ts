@@ -17,7 +17,7 @@ import { OrderDialogComponent } from '../../../pages/order/component';
   templateUrl: 'select-commodity.component.html'
 })
 export class SelectCommodityComponent implements OnInit {
-  @Input() commodities?: CommodityEntity[];
+  @Input() data?: Partial<{ commodities: CommodityEntity[], isUpdate: boolean }>;
   @Output() onChange = new EventEmitter<number[]>();
 
   account$ = this.accountQuery.selectCurrentUser();
@@ -103,6 +103,10 @@ export class SelectCommodityComponent implements OnInit {
         isPaginate: true
       })
     );
+  }
+
+  closeDialog() {
+    this.modalRef.close(Array.from(this.setOfCheckedId));
   }
 
   public onSetAll(checked: boolean): void {

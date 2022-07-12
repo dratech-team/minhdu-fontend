@@ -129,14 +129,15 @@
       </tbody>
     </nz-table>
   </div>
-  <!--  <button-->
-  <!--    class='mt-1'-->
-  <!--    (click)='closeDialog()'-->
-  <!--    nz-button-->
-  <!--    nzType='primary'-->
-  <!--  >-->
-  <!--    Xác nhận-->
-  <!--  </button>-->
+  <button
+    class='mt-1'
+    *ngIf='data?.isUpdate'
+    nz-button
+    nzType='primary'
+    (click)='closeDialog()'
+  >
+    Xác nhận
+  </button>
 </div>
 
 

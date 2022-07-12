@@ -79,7 +79,7 @@
 <ng-template [ngIf]='stepIndex === 2'>
   <div class='pt-2'>
     <select-commodity
-      [commodities]='data?.order?.commodities'
+      [data]='{commodities: data?.order?.commodities}'
       (onChange)='onChangeCommodity($event)'
     >
     </select-commodity>
