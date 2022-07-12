@@ -1,14 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommodityUnit, ModeEnum, PaymentType } from '@minhdu-fontend/enums';
 import { OrderActions, OrderQuery } from '../../+state';
 import { MatDialog } from '@angular/material/dialog';
-import { CommodityAction } from '../../../commodity/state';
+import { CommodityAction, CommodityQuery } from '../../../commodity/state';
 import { CommodityDialogComponent } from '../../../commodity/component';
 import { OrderHistoryService } from '../../service';
 import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Actions } from '@datorama/akita-ng-effects';
 import { OrderHistoryEntity } from '../../enitities';
 import { CommodityEntity } from '../../../commodity/entities';
@@ -25,9 +25,7 @@ import { OrderComponentService } from '../../shared';
 @Component({
   templateUrl: 'detail-order.component.html'
 })
-export class DetailOrderComponent implements OnInit, OnDestroy {
-  orderHistorySub = new Subject();
-
+export class DetailOrderComponent implements OnInit {
   order$ = this.orderQuery.selectEntity(this.getOrderId);
   loading$ = new BehaviorSubject<boolean>(false);
   account$ = this.accountQuery.selectCurrentUser();
@@ -191,11 +189,5 @@ export class DetailOrderComponent implements OnInit, OnDestroy {
         });
       }
     });
-  }
-
-  ngOnDestroy() {
-    this.orderHistorySub.next();
-    this.orderHistorySub.complete();
-    this.orderHistorySub.unsubscribe();
   }
 }
