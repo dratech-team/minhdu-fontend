@@ -5,7 +5,7 @@
   *ngIf='route$ | async as route'
 >
   <div class='mt-4 mr-3 d-flex justify-content-end'>
-    <button nz-button nzGhost nzType='primary' nzDanger (click)='routeComponentService.onRemove(route)'>
+    <button nz-button nzType='primary' nzDanger (click)='routeComponentService.onRemove(route)'>
       Xoá
     </button>
   </div>
