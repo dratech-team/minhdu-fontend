@@ -20,10 +20,8 @@ import { DevelopmentComponent } from './development/development.component';
 import { DialogDatePickerComponent } from './dialog-datepicker/dialog-datepicker.component';
 import { DialogDeleteComponent } from './dialog-delete/dialog-delete.component';
 import { DialogExportComponent } from './dialog-export/dialog-export.component';
-import { DialogSharedComponent } from './dialog-shared';
 import { InputCurrencyDirective } from './directive/input-currency.directive';
 import { MouseRightComponent } from './mouse-right/mouse-right.component';
-import { PlaceSelectorComponent } from './pick-location/place-selector.component';
 import { NotEmptyPipe } from './pipes/notEmty.pipe';
 import { SearchEmployeePipe } from './pipes/searchEmployee.pipe';
 import { TransformUnitPipe } from './pipes/transform-unit.pipe';
@@ -64,6 +62,9 @@ import { ConvertMinutePipe } from './pipes/convert-minute.pipe';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { ChartService } from './chart/services/chart.service';
+import { PlaceSelectorComponent } from './pick-location/place-selector.component';
+import { DialogSharedComponent } from './dialog-shared';
 
 const NzModules = [
   NzSelectModule,
@@ -181,9 +182,9 @@ const MatModules = [
     ConvertMinutePipe
   ],
   providers: [
+    ChartService,
     DatePipe,
     DecimalPipe,
-    MatDatepickerModule,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }
   ]
 })

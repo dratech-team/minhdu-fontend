@@ -20,7 +20,6 @@ export class StatisticalComponent implements OnInit {
   statisticalAgency: stakedChart[] = [];
   statisticalYear: stakedChart[] = [];
   filterOverview = FilterOverviewEnum;
-  dateTime = DatetimeUnitEnum;
   labelYProvince!: string;
   labelYYear!: string;
   labelYAgency!: string;

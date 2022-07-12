@@ -40,11 +40,6 @@ Not supports in Firefox and IE */
   display: none
 }
 
-/* div box */
-body {
-  background-color: #babac0
-}
-
 .scrollbar {
   height: 75vh;
   width: 25vw;
@@ -95,7 +90,7 @@ body {
 
 body {
   background: rgba(255, 255, 255, 0.71) !important;
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: auto;
 }
 
