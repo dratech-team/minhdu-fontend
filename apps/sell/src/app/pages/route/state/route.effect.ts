@@ -4,7 +4,7 @@ import { RouteActions } from './route.actions';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { RouteService } from '../service';
 import { of } from 'rxjs';
-import { getCommodityTotal, getTotalCommodity } from '../../../../../../../libs/utils/sell.ultil';
+import { getTotalPriceOfCommodity, getTotalCommodity } from '../../../../../../../libs/utils/sell.ultil';
 import { RouteStore } from './route.store';
 import { RouteQuery } from './route.query';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -225,7 +225,7 @@ export class RouteEffect {
       totalCommodityUniq: newRoute.orders.reduce((a, b) => a + b.totalCommodity, 0),
       orders: newRoute.orders.map((order) => {
           return Object.assign(order, {
-            commodityTotal: getCommodityTotal(order.commodities),
+            priceTotal: getTotalPriceOfCommodity(order.commodities),
             totalCommodity: getTotalCommodity(order.commodities),
             expand: true
           });
