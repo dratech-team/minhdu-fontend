@@ -17,7 +17,7 @@ import { DataModalCommodityTemplateData } from '../data/data-modal-commodity-tem
 import { ContextMenuEntity } from '@minhdu-fontend/data-models';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
 import { OrderActions } from '../../order/state';
-import { startWith } from 'rxjs/operators';
+import { debounceTime, startWith } from 'rxjs/operators';
 import { AccountQuery } from '../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { ModeEnum } from '@minhdu-fontend/enums';
 
@@ -71,7 +71,7 @@ export class CommodityTemplateComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup.valueChanges
-      .pipe(startWith(this.formGroup.value))
+      .pipe(debounceTime(500), startWith(this.formGroup.value))
       .subscribe((formGroup) => {
         this.actions$.dispatch(
           CommodityTemplateActions.loadAll({

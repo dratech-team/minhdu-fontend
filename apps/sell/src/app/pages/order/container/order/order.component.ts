@@ -10,7 +10,7 @@ import {
   PaymentType,
   SortTypeOrderEnum
 } from '@minhdu-fontend/enums';
-import { map, startWith } from 'rxjs/operators';
+import { debounceTime, map, startWith } from 'rxjs/operators';
 import { OrderActions, OrderQuery, OrderStore } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
@@ -122,7 +122,7 @@ export class OrderComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup.valueChanges
-      .pipe(startWith(this.formGroup.value))
+      .pipe(debounceTime(500), startWith(this.formGroup.value))
       .subscribe((order) => {
         this.actions$.dispatch(
           OrderActions.loadAll({ search: this.mapOrder(order), isPaginate: false })

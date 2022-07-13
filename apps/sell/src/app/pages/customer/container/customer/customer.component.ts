@@ -23,7 +23,7 @@ import { OrderEntity } from '../../../order/enitities/order.entity';
 import { CustomerEntity } from '../../entities';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
-import { startWith } from 'rxjs/operators';
+import { debounceTime, startWith } from 'rxjs/operators';
 import { RadiosStatusRouteConstant } from '../../../route/constants';
 import { PotentialEnum } from '../../enums';
 import { CustomerComponentService } from '../../shared';
@@ -98,7 +98,7 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup.valueChanges
-      .pipe(startWith(this.formGroup.value))
+      .pipe(debounceTime(500), startWith(this.formGroup.value))
       .subscribe((formGroup) => {
         this.actions$.dispatch(
           CustomerActions.loadAll({ search: this.mapCustomer(formGroup), isPaginate: false })
