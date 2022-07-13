@@ -143,12 +143,12 @@ export class OrderComponent implements OnInit {
     $event.stopPropagation();
   }
 
-  public onPickDeliveryDay($event: any) {
+  public onPickDeliveryDay($event: { start: Date, end: Date }) {
     this.formGroup.get('deliveredAt_start')?.setValue($event.start);
     this.formGroup.get('deliveredAt_end')?.setValue($event.end);
   }
 
-  public onPickCreatedAt($event: any) {
+  public onPickCreatedAt($event: { start: Date, end: Date }) {
     this.formGroup.get('startedAt_start')?.setValue($event.start);
     this.formGroup.get('startedAt_end')?.setValue($event.end);
   }

@@ -65,6 +65,7 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { ChartService } from './chart/services/chart.service';
 import { PlaceSelectorComponent } from './pick-location/place-selector.component';
 import { DialogSharedComponent } from './dialog-shared';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 const NzModules = [
   NzSelectModule,
@@ -110,7 +111,8 @@ const MatModules = [
     NzModules,
     MatModules,
     TooltipModule,
-    NzSkeletonModule
+    NzSkeletonModule,
+    NzToolTipModule
   ],
   declarations: [
     SwimLaneChartComponent,

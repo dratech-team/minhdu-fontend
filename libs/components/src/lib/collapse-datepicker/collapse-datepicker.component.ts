@@ -1,37 +1,54 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { AfterContentInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { RangeDay } from '@minhdu-fontend/data-models';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'minhdu-fontend-collapse-datepicker',
-  templateUrl: 'collapse-datepicker.component.html',
+  templateUrl: 'collapse-datepicker.component.html'
 })
-export class CollapseDatepickerComponent implements OnInit {
+export class CollapseDatepickerComponent implements OnInit, AfterContentInit {
   @Input() title: string = '';
   @Input() rangeDayInit?: RangeDay;
-  @Output() onPicker = new EventEmitter<any>();
+  @Output() onPicker = new EventEmitter<{ start: Date, end: Date }>();
 
-  formTitlePicker = new UntypedFormControl();
-  formRange = new UntypedFormControl();
-  formRadio = new UntypedFormControl();
+  tooltip = '';
+
+  formTitlePicker = new FormControl();
+  formRange = new FormControl();
+  formRadio = new FormControl();
   visible = false;
+
+  constructor(
+    private readonly changeDetection: ChangeDetectorRef,
+    private readonly datePipe: DatePipe
+  ) {
+  }
 
   ngOnInit() {
     this.formRange.valueChanges.subscribe((val) => {
       this.formRadio.setValue(1);
       this.onPicker.emit({
         start: val[0],
-        end: val[1],
+        end: val[1]
       });
+      this.tooltip = val[0] && val[1]
+        ? `Từ ${this.datePipe.transform(val[0], 'dd/MM/YYYY')} tới ${this.datePipe.transform(val[1], 'dd/MM/YYYY')}`
+        : '';
     });
   }
 
-  onTitlePicker($event: any) {
+  ngAfterContentInit(): void {
+    this.changeDetection.detectChanges();
+  }
+
+  onTitlePicker(picker: { title: string, startedAt: Date, endedAt: Date }) {
     this.visible = false;
-    this.formTitlePicker.setValue($event.titleDatepicker.title);
+    this.formTitlePicker.setValue(picker.title);
     this.onPicker.emit({
-      start: $event.titleDatepicker.startedAt,
-      end: $event.titleDatepicker.endedAt,
+      start: picker.startedAt,
+      end: picker.endedAt
     });
+    this.tooltip = `Từ ${this.datePipe.transform(picker.startedAt, 'dd/MM/YYYY')} tới ${this.datePipe.transform(picker.endedAt, 'dd/MM/YYYY')}`;
   }
 }

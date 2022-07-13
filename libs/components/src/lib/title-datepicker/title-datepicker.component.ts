@@ -13,8 +13,6 @@ export class TitleDatepickerComponent {
   optionDataPicker: TitleDatePicker[] = titleDatepicker;
 
   onSubmit(titleDatepicker: any) {
-    this.pickTitle.emit({
-      titleDatepicker,
-    });
+    this.pickTitle.emit(titleDatepicker);
   }
 }
