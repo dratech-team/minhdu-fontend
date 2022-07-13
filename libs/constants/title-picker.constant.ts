@@ -8,8 +8,8 @@ export interface TitleDatePicker {
 
 interface Children {
   title: string;
-  startedAt: Date | null;
-  endedAt: Date | null;
+  start: Date;
+  end: Date;
 }
 
 export const titleDatepicker: TitleDatePicker[] = [
@@ -18,23 +18,23 @@ export const titleDatepicker: TitleDatePicker[] = [
     children: [
       {
         title: 'Hôm nay',
-        startedAt: new Date(),
-        endedAt: new Date()
+        start: new Date(),
+        end: new Date()
       },
       {
         title: 'Hôm qua',
-        startedAt: moment().subtract(1, 'days').toDate(),
-        endedAt: moment().subtract(1, 'days').toDate()
+        start: moment().subtract(1, 'days').toDate(),
+        end: moment().subtract(1, 'days').toDate()
       },
       {
         title: 'Tuần này',
-        startedAt: moment().startOf('week').toDate(),
-        endedAt: moment().endOf('week').toDate()
+        start: moment().startOf('week').toDate(),
+        end: moment().endOf('week').toDate()
       },
       {
         title: '7 ngày qua',
-        startedAt: moment().subtract(7, 'days').toDate(),
-        endedAt: new Date()
+        start: moment().subtract(7, 'days').toDate(),
+        end: new Date()
       }
     ]
   },
@@ -43,28 +43,28 @@ export const titleDatepicker: TitleDatePicker[] = [
     children: [
       {
         title: 'Tháng này',
-        startedAt: getFirstDayInMonth(new Date()),
-        endedAt: moment(new Date()).endOf('months').toDate()
+        start: getFirstDayInMonth(new Date()),
+        end: moment(new Date()).endOf('months').toDate()
       },
       {
         title: 'Tháng trước',
-        startedAt: getDateInPreviousMonth().fistDate,
-        endedAt: getDateInPreviousMonth().lastDate
+        start: getDateInPreviousMonth().fistDate,
+        end: getDateInPreviousMonth().lastDate
       },
       {
         title: '30 ngày qua',
-        startedAt: moment().subtract(30, 'days').toDate(),
-        endedAt: new Date()
+        start: moment().subtract(30, 'days').toDate(),
+        end: new Date()
       },
       {
         title: 'Quí này',
-        startedAt: moment(new Date()).startOf('quarter').toDate(),
-        endedAt: moment(new Date()).endOf('quarter').toDate()
+        start: moment(new Date()).startOf('quarter').toDate(),
+        end: moment(new Date()).endOf('quarter').toDate()
       },
       {
         title: 'Quí trước',
-        startedAt: moment(new Date()).subtract(1, 'quarters').startOf('quarters').toDate(),
-        endedAt: moment(new Date()).subtract(1, 'quarters').endOf('quarters').toDate()
+        start: moment(new Date()).subtract(1, 'quarters').startOf('quarters').toDate(),
+        end: moment(new Date()).subtract(1, 'quarters').endOf('quarters').toDate()
       }
     ]
   }

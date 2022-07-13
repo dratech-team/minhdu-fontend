@@ -1,54 +1,49 @@
-import { AfterContentInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { RangeDay } from '@minhdu-fontend/data-models';
 import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'minhdu-fontend-collapse-datepicker',
+  selector: 'md-collapse-datepicker',
   templateUrl: 'collapse-datepicker.component.html'
 })
-export class CollapseDatepickerComponent implements OnInit, AfterContentInit {
+export class CollapseDatepickerComponent {
   @Input() title: string = '';
   @Input() rangeDayInit?: RangeDay;
-  @Output() onPicker = new EventEmitter<{ start: Date, end: Date }>();
+  @Output() onCalendarChange = new EventEmitter<{ start: Date, end: Date }>();
 
   tooltip = '';
 
   formTitlePicker = new FormControl();
-  formRange = new FormControl();
-  formRadio = new FormControl();
+  formRadio = new FormControl(1);
   visible = false;
 
   constructor(
-    private readonly changeDetection: ChangeDetectorRef,
     private readonly datePipe: DatePipe
   ) {
   }
 
-  ngOnInit() {
-    this.formRange.valueChanges.subscribe((val) => {
-      this.formRadio.setValue(1);
-      this.onPicker.emit({
-        start: val[0],
-        end: val[1]
-      });
-      this.tooltip = val[0] && val[1]
-        ? `Từ ${this.datePipe.transform(val[0], 'dd/MM/YYYY')} tới ${this.datePipe.transform(val[1], 'dd/MM/YYYY')}`
-        : '';
-    });
-  }
-
-  ngAfterContentInit(): void {
-    this.changeDetection.detectChanges();
-  }
-
-  onTitlePicker(picker: { title: string, startedAt: Date, endedAt: Date }) {
+  onTitlePicker(picker: { title: string, start: Date, end: Date }) {
     this.visible = false;
+    this.formRadio.setValue(0);
     this.formTitlePicker.setValue(picker.title);
-    this.onPicker.emit({
-      start: picker.startedAt,
-      end: picker.endedAt
+    this.onCalendarChange.emit({
+      start: picker.start,
+      end: picker.end
     });
-    this.tooltip = `Từ ${this.datePipe.transform(picker.startedAt, 'dd/MM/YYYY')} tới ${this.datePipe.transform(picker.endedAt, 'dd/MM/YYYY')}`;
+    this.tooltip = `Từ ${this.datePipe.transform(picker.start, 'dd/MM/YYYY')} tới ${this.datePipe.transform(picker.end, 'dd/MM/YYYY')}`;
+  }
+
+  onChange(date: (Date | null)[]) {
+    this.formRadio.setValue(1);
+    if (date && date[0] && date[1]) {
+      this.onCalendarChange.emit({
+        start: date[0],
+        end: date[1]
+      });
+      this.tooltip = date[0] && date[1]
+        ? `Từ ${this.datePipe.transform(date[0], 'dd/MM/YYYY')} tới ${this.datePipe.transform(date[1], 'dd/MM/YYYY')}`
+        : '';
+    }
   }
 }

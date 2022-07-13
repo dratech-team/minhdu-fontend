@@ -1,9 +1,4 @@
-import {
-  AfterContentChecked,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PickMenuComponent } from '../components/pick-menu-mobile/pick-menu.component';
 import { DevelopmentComponent } from 'libs/components/src/lib/development/development.component';
@@ -21,7 +16,7 @@ import { AccountQuery } from '../../../../../libs/system/src/lib/state/account-m
 @Component({
   selector: 'app-dashboard',
   templateUrl: './sell-layout.component.html',
-  styleUrls: ['./sell-layout.component.scss'],
+  styleUrls: ['./sell-layout.component.scss']
 })
 export class SellLayoutComponent implements OnInit {
   role = localStorage.getItem('role');
@@ -37,7 +32,8 @@ export class SellLayoutComponent implements OnInit {
     private readonly router: Router,
     private readonly appQuery: AppQuery,
     private readonly accountQuery: AccountQuery
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     // if (!this.role) {
@@ -74,7 +70,7 @@ export class SellLayoutComponent implements OnInit {
         if (currentUser) {
           this.actions$.dispatch(
             AccountActions.logout({
-              id: currentUser.id,
+              id: currentUser.id
             })
           );
         } else {

@@ -5,7 +5,7 @@
       <div
         class="my-1"
         *ngFor="let child of item.children"
-        (click)="onSubmit(child)"
+        (click)="child && onSubmit(child)"
       >
         <span class="ml-3 pointer" style="color: #40a9ff; font-size: 15px">{{
           child.title

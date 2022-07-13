@@ -19,14 +19,14 @@
       </label>
       <label nz-radio [nzValue]='1'>
         <nz-range-picker
-          [formControl]='formRange'
+          nz-tooltip
           [ngModel]='
             rangeDayInit?.start && rangeDayInit?.end
               ? [rangeDayInit?.start, rangeDayInit?.end]
               : []
           '
-          nz-tooltip
           [nzTooltipTitle]="this.formRadio.value === 1 ? tooltip : ''"
+          (nzOnCalendarChange)='onChange($event)'
         >
         </nz-range-picker>
       </label>

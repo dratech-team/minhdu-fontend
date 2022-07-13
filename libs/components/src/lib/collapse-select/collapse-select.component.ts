@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ControlContainer, UntypedFormGroup } from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'minhdu-fontend-collapse-select',
-  templateUrl: 'collapse-select.component.html',
+  templateUrl: 'collapse-select.component.html'
 })
 export class CollapseSelectComponent {
   @Input() header = '';

@@ -26,7 +26,6 @@ import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { OrderComponentService } from '../../shared';
 import { OrderStatusEnum } from '../../enums';
-import * as moment from 'moment';
 
 @Component({
   templateUrl: 'order.component.html',
@@ -99,8 +98,8 @@ export class OrderComponent implements OnInit {
   formGroup = new FormGroup({
     search: new FormControl<string>(''),
     status: new FormControl<OrderStatusEnum>(OrderStatusEnum.ALL),
-    startedAt_start: new FormControl<Date>(getLastDayInMonth(new Date())),
-    startedAt_end: new FormControl<Date>(getFirstDayInMonth(new Date())),
+    startedAt_start: new FormControl<Date>(getFirstDayInMonth(new Date())),
+    startedAt_end: new FormControl<Date>(getLastDayInMonth(new Date())),
     deliveredAt_start: new FormControl<Date | null>(null),
     deliveredAt_end: new FormControl<Date | null>(null),
     endedAt_start: new FormControl<Date | null>(null),

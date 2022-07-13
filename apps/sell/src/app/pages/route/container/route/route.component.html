@@ -26,26 +26,26 @@
       </minhdu-fontend-collapse-radios>
     </div>
     <div class='mt-2'>
-      <minhdu-fontend-collapse-datepicker
+      <md-collapse-datepicker
         [title]="'Ngày bắt đầu'"
         [rangeDayInit]='{
           start: search.startedAt_start,
           end: search.startedAt_end
         }'
-        (onPicker)='onPickStartedDay($event)'
+        (onCalendarChange)='onPickStartedDay($event)'
       >
-      </minhdu-fontend-collapse-datepicker>
+      </md-collapse-datepicker>
     </div>
     <div class='mt-2'>
-      <minhdu-fontend-collapse-datepicker
+      <md-collapse-datepicker
         title='Ngày kết thúc'
         [rangeDayInit]='{
           start: search.endedAt_start,
           end: search.endedAt_end
         }'
-        (onPicker)='onPickEndedAtDay($event)'
+        (onCalendarChange)='onPickEndedAtDay($event)'
       >
-      </minhdu-fontend-collapse-datepicker>
+      </md-collapse-datepicker>
     </div>
   </div>
   <div class='ml-3' style='width: 80%'>

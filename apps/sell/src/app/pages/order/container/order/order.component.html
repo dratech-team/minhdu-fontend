@@ -28,34 +28,34 @@
       </minhdu-fontend-collapse-radios>
     </div>
     <div class='mb-2'>
-      <minhdu-fontend-collapse-datepicker
+      <md-collapse-datepicker
         [rangeDayInit]='{
           start: search.startedAt_start,
           end: search.startedAt_end
         }'
         title='Ngày tạo'
-        (onPicker)='onPickCreatedAt($event)'
-      ></minhdu-fontend-collapse-datepicker>
+        (onCalendarChange)='onPickCreatedAt($event)'
+      ></md-collapse-datepicker>
     </div>
     <div class='mb-2'>
-      <minhdu-fontend-collapse-datepicker
+      <md-collapse-datepicker
         [title]="'Ngày hẹn giao'"
         [rangeDayInit]='{
           start: search.endedAt_start,
           end: search.endedAt_end
         }'
-        (onPicker)='onPickEndedAt($event)'
-      ></minhdu-fontend-collapse-datepicker>
+        (onCalendarChange)='onPickEndedAt($event)'
+      ></md-collapse-datepicker>
     </div>
     <div class='mb-2' *ngIf="formGroup.get('status')?.value === 1">
-      <minhdu-fontend-collapse-datepicker
+      <md-collapse-datepicker
         [rangeDayInit]='{
           start: search.deliveredAt_start,
           end: search.deliveredAt_end
         }'
         title='Ngày giao hàng'
-        (onPicker)='onPickDeliveryDay($event)'
-      ></minhdu-fontend-collapse-datepicker>
+        (onCalendarChange)='onPickDeliveryDay($event)'
+      ></md-collapse-datepicker>
     </div>
     <div class='mb-2'>
       <nz-collapse>
