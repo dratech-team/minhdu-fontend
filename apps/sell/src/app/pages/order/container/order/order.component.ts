@@ -26,6 +26,7 @@ import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { OrderComponentService } from '../../shared';
 import { OrderStatusEnum } from '../../enums';
+import * as moment from 'moment';
 
 @Component({
   templateUrl: 'order.component.html',
@@ -98,12 +99,12 @@ export class OrderComponent implements OnInit {
   formGroup = new FormGroup({
     search: new FormControl<string>(''),
     status: new FormControl<OrderStatusEnum>(OrderStatusEnum.ALL),
-    endedAt_start: new FormControl<Date | null>(null),
-    endedAt_end: new FormControl<Date | null>(null),
-    startedAt_end: new FormControl<Date>(getFirstDayInMonth(new Date())),
     startedAt_start: new FormControl<Date>(getLastDayInMonth(new Date())),
+    startedAt_end: new FormControl<Date>(getFirstDayInMonth(new Date())),
     deliveredAt_start: new FormControl<Date | null>(null),
     deliveredAt_end: new FormControl<Date | null>(null),
+    endedAt_start: new FormControl<Date | null>(null),
+    endedAt_end: new FormControl<Date | null>(null),
     commodity: new FormControl('')
   });
 
@@ -143,22 +144,18 @@ export class OrderComponent implements OnInit {
   }
 
   public onPickDeliveryDay($event: any) {
-    this.formGroup
-      .get('deliveredAt_start')
-      ?.setValue($event.start, { emitEvent: false });
+    this.formGroup.get('deliveredAt_start')?.setValue($event.start);
     this.formGroup.get('deliveredAt_end')?.setValue($event.end);
   }
 
   public onPickCreatedAt($event: any) {
-    this.formGroup
-      .get('startedAt_start')
-      ?.setValue($event.start, { emitEvent: false });
+    this.formGroup.get('startedAt_start')?.setValue($event.start);
     this.formGroup.get('startedAt_end')?.setValue($event.end);
   }
 
-  public onPickEndedAt($event: any) {
-    this.formGroup.get('endedAt_start')?.setValue($event.start, { emitEvent: false });
-    this.formGroup.get('endedAt_end')?.setValue($event.end);
+  public onPickEndedAt(datetime: { start: Date, end: Date }) {
+    this.formGroup.get('endedAt_start')?.setValue(datetime.start);
+    this.formGroup.get('endedAt_end')?.setValue(datetime.end);
   }
 
   public onExpandAll() {
@@ -214,11 +211,18 @@ export class OrderComponent implements OnInit {
   }
 
   private mapOrder(dataFG: any) {
+    if (!dataFG.startedAt_start || !dataFG.startedAt_end) {
+      dataFG = _.omit(dataFG, ['startedAt_start', 'startedAt_end']);
+    }
+    if (!dataFG.endedAt_start || !dataFG.endedAt_end) {
+      dataFG = _.omit(dataFG, ['endedAt_start', 'endedAt_end']);
+    }
+    if (!dataFG.deliveredAt_start || !dataFG.deliveredAt_start || dataFG?.status !== 1) {
+      dataFG = _.omit(dataFG, ['deliveredAt_end', 'deliveredAt_start']);
+    }
     return Object.assign(
       {},
-      dataFG?.status !== 1
-        ? _.omit(dataFG, ['deliveredAt_end', 'deliveredAt_start'])
-        : dataFG,
+      dataFG,
       this.valueSort?.orderType ? this.valueSort : {}
     );
   }

@@ -19,24 +19,24 @@ export const titleDatepicker: TitleDatePicker[] = [
       {
         title: 'Hôm nay',
         startedAt: new Date(),
-        endedAt: new Date(),
+        endedAt: new Date()
       },
       {
         title: 'Hôm qua',
         startedAt: moment().subtract(1, 'days').toDate(),
-        endedAt: moment().subtract(1, 'days').toDate(),
+        endedAt: moment().subtract(1, 'days').toDate()
       },
       {
         title: 'Tuần này',
         startedAt: moment().startOf('week').toDate(),
-        endedAt: new Date(),
+        endedAt: moment().endOf('week').toDate()
       },
       {
         title: '7 ngày qua',
         startedAt: moment().subtract(7, 'days').toDate(),
-        endedAt: new Date(),
-      },
-    ],
+        endedAt: new Date()
+      }
+    ]
   },
   {
     title: 'Theo tháng và quý',
@@ -44,28 +44,28 @@ export const titleDatepicker: TitleDatePicker[] = [
       {
         title: 'Tháng này',
         startedAt: getFirstDayInMonth(new Date()),
-        endedAt: new Date(),
+        endedAt: moment(new Date()).endOf('months').toDate()
       },
       {
         title: 'Tháng trước',
         startedAt: getDateInPreviousMonth().fistDate,
-        endedAt: getDateInPreviousMonth().lastDate,
+        endedAt: getDateInPreviousMonth().lastDate
       },
       {
         title: '30 ngày qua',
-        startedAt: moment().add(-30, 'days').toDate(),
-        endedAt: new Date(),
+        startedAt: moment().subtract(30, 'days').toDate(),
+        endedAt: new Date()
       },
       {
-        title: 'quí này',
-        startedAt: moment().startOf('quarter').toDate(),
-        endedAt: new Date(),
+        title: 'Quí này',
+        startedAt: moment(new Date()).startOf('quarter').toDate(),
+        endedAt: moment(new Date()).endOf('quarter').toDate()
       },
       {
-        title: 'quí trước',
-        startedAt: moment().startOf('quarter').toDate(),
-        endedAt: new Date(),
-      },
-    ],
-  },
+        title: 'Quí trước',
+        startedAt: moment(new Date()).subtract(1, 'quarters').startOf('quarters').toDate(),
+        endedAt: moment(new Date()).subtract(1, 'quarters').endOf('quarters').toDate()
+      }
+    ]
+  }
 ];
