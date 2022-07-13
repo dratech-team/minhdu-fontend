@@ -8,8 +8,8 @@ import { getCommodityTotal, getTotalCommodity } from '../../../../../../../libs/
 import { RouteStore } from './route.store';
 import { RouteQuery } from './route.query';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { OrderEntity } from '../../order/enitities/order.entity';
 import { PaginationDto } from '@minhdu-fontend/constants';
+import { RouteEntity } from '../entities';
 
 @Injectable()
 export class RouteEffect {
@@ -33,21 +33,19 @@ export class RouteEffect {
       return this.routeService.addOne(props).pipe(
         tap((res) => {
           this.message.success('Thêm tuyến đường thành công');
-          const expandedAll = this.routeQuery.getValue().expandedAll;
-          const orders = this.handelOrder(res.orders);
           this.routeStore.update((state) => ({
             ...state,
             loading: false,
-            total: state.total + 1
+            total: state.total + 1,
+            error: null
           }));
-          this.routeStore.add(
-            Object.assign(res, { orders, expand: expandedAll })
-          );
+          this.routeStore.add(this.mapToRoute(res));
         }),
         catchError((err) => {
           this.routeStore.update((state) => ({
             ...state,
-            loading: undefined
+            loading: undefined,
+            error: err
           }));
           return of(RouteActions.error(err));
         })
@@ -80,21 +78,9 @@ export class RouteEffect {
       );
       return this.routeService.pagination(search).pipe(
         map((res) => {
-          const expandedAll = this.routeQuery.getValue().expandedAll;
-
-          this.routeStore.update((state) => ({
-            ...state,
-            loading: false,
-            total: res.total
-          }));
           if (res.data.length) {
             const routes = res.data.map((route) => {
-              const orders = this.handelOrder(route.orders);
-              return Object.assign(route, {
-                totalCommodityUniq: this.totalCommodityUniq(route.orders),
-                orders: orders,
-                expand: expandedAll
-              });
+              return this.mapToRoute(route);
             });
             if (props.isPaginate) {
               this.routeStore.add(routes);
@@ -103,14 +89,18 @@ export class RouteEffect {
             }
             this.routeStore.update(state => ({
               ...state,
-              remain: res.total - this.routeQuery.getCount()
+              remain: res.total - this.routeQuery.getCount(),
+              loading: false,
+              total: res.total,
+              error: null
             }));
           }
         }),
         catchError((err) => {
           this.routeStore.update((state) => ({
             ...state,
-            loading: undefined
+            loading: undefined,
+            error: err
           }));
           return of(RouteActions.error(err));
         })
@@ -121,19 +111,23 @@ export class RouteEffect {
   @Effect()
   loadOne$ = this.action.pipe(
     ofType(RouteActions.loadOne),
-    switchMap((props) =>
-      this.routeService.getOne(props.id).pipe(
-        map((route) => {
-          this.routeStore.upsert(
-            route.id,
-            Object.assign(route, {
-              totalCommodityUniq: this.totalCommodityUniq(route.orders),
-              orders: this.handelOrder(route.orders)
-            })
-          );
-        }),
-        catchError((err) => of(RouteActions.error(err)))
-      )
+    switchMap((props) => {
+        this.routeStore.update((state) => ({
+          ...state,
+          loading: true
+        }));
+        return this.routeService.getOne(props.id).pipe(
+          map((route) => {
+            this.routeStore.upsert(route.id, this.mapToRoute(route));
+            this.routeStore.update((state) => ({
+              ...state,
+              loading: false,
+              error: null
+            }));
+          }),
+          catchError((err) => of(RouteActions.error(err)))
+        );
+      }
     )
   );
 
@@ -146,26 +140,20 @@ export class RouteEffect {
         loading: true
       }));
       return this.routeService.update(props).pipe(
-        map((route) => {
-          const expanedAll = this.routeQuery.getValue().expandedAll;
+        tap((route) => {
+          this.message.success('Cập nhật thành công');
+          this.routeStore.update(route.id, this.mapToRoute(route));
           this.routeStore.update((state) => ({
             ...state,
-            loading: false
+            loading: false,
+            error: null
           }));
-          this.message.success('Cập nhật thành công');
-          return this.routeStore.update(
-            route.id,
-            Object.assign(route, {
-              totalCommodityUniq: this.totalCommodityUniq(route.orders),
-              orders: this.handelOrder(route.orders),
-              expand: expanedAll
-            })
-          );
         }),
         catchError((err) => {
           this.routeStore.update((state) => ({
             ...state,
-            loading: undefined
+            loading: null,
+            error: err
           }));
           return of(RouteActions.error(err));
         })
@@ -174,7 +162,7 @@ export class RouteEffect {
   );
 
   @Effect()
-  delete$ = this.action.pipe(
+  remove$ = this.action.pipe(
     ofType(RouteActions.remove),
     switchMap((props) => {
       this.routeStore.update((state) => ({
@@ -182,19 +170,21 @@ export class RouteEffect {
         loading: true
       }));
       return this.routeService.delete(props.idRoute).pipe(
-        map((_) => {
+        tap((_) => {
+          this.message.success('Xoá tuyến đường thành công');
+          this.routeStore.remove(props.idRoute);
           this.routeStore.update((state) => ({
             ...state,
             loading: false,
-            total: state.total - 1
+            total: state.total - 1,
+            error: null
           }));
-          this.message.success('Xoá tuyến đường thành công');
-          return this.routeStore.remove(props.idRoute);
         }),
         catchError((err) => {
           this.routeStore.update((state) => ({
             ...state,
-            loading: undefined
+            loading: null,
+            error: err
           }));
           return of(RouteActions.error(err));
         })
@@ -211,10 +201,7 @@ export class RouteEffect {
           this.message.success('Cập nhật đơn hàng thành công');
           return this.routeStore.update(
             route.id,
-            Object.assign(route, {
-              totalCommodityUniq: this.totalCommodityUniq(route.orders),
-              orders: this.handelOrder(route.orders)
-            })
+            this.mapToRoute(route)
           );
         }),
         catchError((err) => of(RouteActions.error(err)))
@@ -222,17 +209,29 @@ export class RouteEffect {
     )
   );
 
-  private handelOrder(orders: OrderEntity[]) {
-    return orders.map((order) =>
-      Object.assign(order, {
-        commodityTotal: getCommodityTotal(order.commodities),
-        totalCommodity: getTotalCommodity(order.commodities),
-        expand: false
-      })
+  private mapToRoute(route: RouteEntity) {
+    const expandedAll = this.routeQuery.getValue().expandedAll;
+    const newRoute = Object.assign(route, {
+        orders: route.orders.map((order) => {
+          return Object.assign(order, {
+            commodities: order.commodities.sort((a, b) => a.id - b.id),
+            expand: true
+          });
+        })
+      }
     );
-  }
 
-  private totalCommodityUniq(orders: OrderEntity[]): number {
-    return orders.reduce((a, b) => a + b.totalCommodity, 0);
+    return Object.assign(newRoute, {
+      totalCommodityUniq: newRoute.orders.reduce((a, b) => a + b.totalCommodity, 0),
+      orders: newRoute.orders.map((order) => {
+          return Object.assign(order, {
+            commodityTotal: getCommodityTotal(order.commodities),
+            totalCommodity: getTotalCommodity(order.commodities),
+            expand: true
+          });
+        }
+      ),
+      expand: expandedAll
+    });
   }
 }

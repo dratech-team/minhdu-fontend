@@ -2,25 +2,26 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteActions, RouteQuery } from '../../state';
-import { PaymentType } from '@minhdu-fontend/enums';
+import { ModeEnum, PaymentType } from '@minhdu-fontend/enums';
 import { Actions } from '@datorama/akita-ng-effects';
-import { CancelEnum } from '../../enums';
+import { CancelEnum, UpdaterRouteTypeEnum } from '../../enums';
 import { CommodityEntity } from '../../../commodity/entities';
 import { OrderActions } from '../../../order/state';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { UpdaterRouteTypeEnum } from '../../enums/updater-route-type.enum';
 import { OrderEntity } from '../../../order/enitities/order.entity';
 import { ModalDatePickerComponent } from '@minhdu-fontend/components';
 import { ModalDatePickerEntity } from '@minhdu-fontend/base-entity';
 import { map } from 'rxjs/operators';
 import { RouterConstants } from '../../../../shared/constants';
 import { RouteComponentService } from '../../shared';
+import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 
 @Component({
   templateUrl: 'detail-route.component.html',
   styleUrls: ['detail-route.component.scss']
 })
 export class DetailRouteComponent implements OnInit {
+  account$ = this.accountQuery.selectCurrentUser();
   loading$ = this.routeQuery.selectLoading();
   route$ = this.routeQuery.selectEntity(this.routeId)
     .pipe(map(route => {
@@ -29,6 +30,8 @@ export class DetailRouteComponent implements OnInit {
       }
     }));
 
+  ModeEnum = ModeEnum;
+  RouterConstants = RouterConstants;
   PaymentType = PaymentType;
   UpdaterRouteTypeEnum = UpdaterRouteTypeEnum;
 
@@ -38,8 +41,9 @@ export class DetailRouteComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
+    private readonly modal: NzModalService,
     private readonly routeQuery: RouteQuery,
-    private readonly modal: NzModalService
+    private readonly accountQuery: AccountQuery
   ) {
   }
 
@@ -71,18 +75,17 @@ export class DetailRouteComponent implements OnInit {
   }
 
   public onCompleteOrder(order: OrderEntity) {
-    this.modal
-      .create({
-        nzTitle: 'Xác nhận giao hàng',
-        nzContent: ModalDatePickerComponent,
-        nzComponentParams: <{ data: ModalDatePickerEntity }>{
-          data: {
-            type: 'date',
-            dateInit: new Date()
-          }
-        },
-        nzFooter: []
-      })
+    this.modal.create({
+      nzTitle: 'Xác nhận giao hàng',
+      nzContent: ModalDatePickerComponent,
+      nzComponentParams: <{ data: ModalDatePickerEntity }>{
+        data: {
+          type: 'date',
+          dateInit: new Date()
+        }
+      },
+      nzFooter: []
+    })
       .afterClose.subscribe((val) => {
       if (val && this.routeId) {
         this.actions$.dispatch(

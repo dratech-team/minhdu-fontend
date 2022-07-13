@@ -83,7 +83,6 @@
         </td>
         <ng-template #pickMore>
           <td
-            [nzDisabled]='checkOrderSelect(order) && disableReselect'
             [nzChecked]='checkOrderSelect(order)'
             (nzCheckedChange)='onItemChecked(order, $event)'
           ></td>
@@ -176,6 +175,9 @@
         >
     <thead>
     <tr>
+      <th class='text-center' *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>
+        ID
+      </th>
       <th class='text-center'>Hàng hoá</th>
       <th class='text-center'>Số lượng</th>
       <th class='text-center'>Giá</th>
@@ -184,25 +186,23 @@
     </thead>
     <tbody>
     <tr *ngFor='let commodity of innerTable.data'>
+      <td class='text-center' *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>
+        {{ commodity.id }}
+      </td>
       <td class='text-center'>{{ commodity.name }}</td>
       <td class='text-center'>{{ commodity.amount }}</td>
       <td class='text-center'>{{ commodity.price }}</td>
       <td
         [nzShowCheckbox]='!commodity?.route'
         [nzChecked]='setOfCheckedCommodity.has(commodity)'
-        (nzCheckedChange)='
-                    onItemCheckedCommodity(commodity, order, $event)
-                  '
+        (nzCheckedChange)='onItemCheckedCommodity(commodity, order, $event)'
       >
         <a
-          *ngIf='commodity?.route'
-          [routerLink]="[
-                      '/tuyen-duong/chi-tiet-tuyen-duong/',
-                      commodity?.route?.id
-                    ]"
+          class='pointer no-underline'
           style='color: red'
           target='_blank'
-          class='pointer no-underline'
+          *ngIf='commodity?.route'
+          [routerLink]='[RouterConstants.ROUTE.DETAIL, commodity?.route?.id]'
         >
           {{ commodity?.route?.bsx }}
         </a>

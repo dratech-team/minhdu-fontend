@@ -3,7 +3,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Api } from '@minhdu-fontend/constants';
 import { ModeEnum, SortRouteEnum } from '@minhdu-fontend/enums';
-import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
 import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
 import { debounceTime, map, startWith } from 'rxjs/operators';
@@ -120,21 +119,6 @@ export class RouteComponent implements OnInit {
     this.nzContextMenuService.create($event, item);
     $event.preventDefault();
     $event.stopPropagation();
-  }
-
-  public onEnd(route: RouteEntity) {
-    this.modal.create({
-      nzTitle: 'Xác nhận giao hàng',
-      nzContent: DialogDatePickerComponent,
-      nzMaskClosable: false,
-      nzFooter: []
-    }).afterClose.subscribe((res: { date: Date }) => {
-      if (res) {
-        this.actions$.dispatch(
-          RouteActions.update({ id: route.id, updates: { endedAt: res.date } })
-        );
-      }
-    });
   }
 
   public onPickStartedDay($event: any) {

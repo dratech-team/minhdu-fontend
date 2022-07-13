@@ -10,6 +10,7 @@ import { PaginationDto } from '@minhdu-fontend/constants';
 import { ModeEnum, SortTypeOrderEnum } from '@minhdu-fontend/enums';
 import { BaseSearchOrderDto } from '../../../pages/order/dto';
 import { AccountQuery } from '../../../../../../../libs/system/src/lib/state/account-management/account.query';
+import { RouterConstants } from '../../constants';
 
 @Component({
   selector: 'select-order',
@@ -21,7 +22,6 @@ export class SelectOrderComponent implements OnInit {
   @Input() formGroup!: UntypedFormGroup;
   @Input() pickOne = false;
   @Input() customerId?: number;
-  @Input() disableReselect = false;
 
   account$ = this.accountQuery.selectCurrentUser();
   total$ = this.orderQuery.selectCount();
@@ -29,12 +29,12 @@ export class SelectOrderComponent implements OnInit {
   loading$ = this.orderQuery.select((state) => state.loading);
 
   orders: OrderEntity[] = [];
-  eventSearch = true;
-  checked = false;
+  checked = true;
   indeterminate = false;
   setOfCheckedOrder = new Set<OrderEntity>();
   setOfCheckedCommodity = new Set<CommodityEntity>();
 
+  RouterConstants = RouterConstants;
   ModeEnum = ModeEnum;
   PaidType = PaidType;
   SortTypeOrderEnum = SortTypeOrderEnum;
@@ -166,17 +166,16 @@ export class SelectOrderComponent implements OnInit {
       this.setOfCheckedCommodity.add(commodity);
     } else {
       this.setOfCheckedCommodity.delete(commodity);
-      if (
-        order.commodities.every((item) => !this.setOfCheckedCommodity.has(item))
-      ) {
+      const all = order.commodities.every((item) => !this.setOfCheckedCommodity.has(item));
+      if (all) {
         this.setOfCheckedOrder.delete(order);
       }
     }
-    this.refreshCheckedStatus();
     this.formGroup.get('orders')?.setValue(Array.from(this.setOfCheckedOrder));
     this.formGroup
       .get('commodities')
       ?.setValue(Array.from(this.setOfCheckedCommodity));
+    this.refreshCheckedStatus();
   }
 
   checkOrderSelect(order: OrderEntity): boolean {
