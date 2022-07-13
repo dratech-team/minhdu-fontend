@@ -220,7 +220,7 @@ export class RouteEffect {
       }
     );
 
-    return Object.assign(newRoute, {
+    const r = Object.assign(newRoute, {
       orders: newRoute.orders.map((order) => {
           return Object.assign(order, {
             priceTotal: order.commodities.reduce((total, commodity) => total + commodity.price, 0),
@@ -232,6 +232,9 @@ export class RouteEffect {
         }
       ),
       expand: expandedAll
+    });
+    return Object.assign(r, {
+      totalCommodity: r.orders.reduce((total, order) => total + order.totalCommodity, 0)
     });
   }
 }
