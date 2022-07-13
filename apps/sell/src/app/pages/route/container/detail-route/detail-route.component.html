@@ -105,8 +105,8 @@
               <span>Tổng gà:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom'>
-              <span class='title-detail text-danger'>
-                {{ route?.totalCommodity + ' Con'}}
+              <span class='title-detail text-danger font-weight-bold'>
+                {{ totalCommodity(route)}}
               </span>
             </div>
           </div>
@@ -135,7 +135,7 @@
             [nzData]='route.orders'
           >
             <thead>
-            <tr>
+            <tr style='height: 55px'>
               <th nzWidth='30px'></th>
               <th nzWidth='60px'>STT</th>
               <th nzWidth='60px' *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>ID</th>
@@ -186,7 +186,6 @@
                     <button
                       nz-button
                       nzType='primary'
-                      nzGhost
                       (click)='onCompleteOrder(order); $event.stopPropagation()'
                     >
                       Đã nhận hàng
@@ -213,12 +212,13 @@
               <tr [nzExpand]='order.expand'>
                 <nz-table
                   #innerTable
+                  nzSize='middle'
                   [nzData]='order.commodities'
-                  nzSize='small'
+                  [nzFrontPagination]='false'
                   [nzShowPagination]='false'
                 >
             <thead>
-            <tr>
+            <tr style='height: 50px'>
               <th nzWidth='60px'>STT</th>
               <th nzWidth='60px' *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>ID</th>
               <th class='text-center'>Hàng hoá</th>
@@ -245,7 +245,7 @@
                 >
                   <button
                     nz-button
-                    nzType='primary'
+                    nzType='default'
                     nzDanger
                     nz-tooltip
                     [nzTooltipTitle]="'Tuyến xe ' + commodity?.route?.name + '. BSX: ' + commodity?.route?.bsx + '. Nhấn huỷ để huỷ bỏ cho tuyến xe trên'"

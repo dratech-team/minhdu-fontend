@@ -10,4 +10,9 @@ export interface RouteEntity extends BaseRouteEntity {
   isSelect?: boolean;
   readonly totalCommodity: number;
   readonly expand: boolean;
+  readonly commodityUniq: {
+    code: string,
+    name: string,
+    amount: number,
+  }[];
 }

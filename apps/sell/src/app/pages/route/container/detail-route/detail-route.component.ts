@@ -15,6 +15,7 @@ import { map } from 'rxjs/operators';
 import { RouterConstants } from '../../../../shared/constants';
 import { RouteComponentService } from '../../shared';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
+import { RouteEntity } from '../../entities';
 
 @Component({
   templateUrl: 'detail-route.component.html',
@@ -24,11 +25,7 @@ export class DetailRouteComponent implements OnInit {
   account$ = this.accountQuery.selectCurrentUser();
   loading$ = this.routeQuery.selectLoading();
   route$ = this.routeQuery.selectEntity(this.routeId)
-    .pipe(map(route => {
-      if (route) {
-        return JSON.parse(JSON.stringify(route));
-      }
-    }));
+    .pipe(map(route => route && JSON.parse(JSON.stringify(route))));
 
   ModeEnum = ModeEnum;
   RouterConstants = RouterConstants;
@@ -142,5 +139,10 @@ export class DetailRouteComponent implements OnInit {
 
   public onRoute(orderId: number) {
     this.router.navigate([RouterConstants.ORDER.DETAIL, orderId]).then();
+  }
+
+  totalCommodity(route: RouteEntity) {
+    return `${route.totalCommodity} Con. Trong đó:
+    ${route.commodityUniq.map((commodity) => commodity.amount + ' ' + commodity.code)} `;
   }
 }
