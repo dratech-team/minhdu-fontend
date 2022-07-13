@@ -76,24 +76,22 @@ export class RouteEffect {
         }
       );
       return this.routeService.pagination(search).pipe(
-        map((res) => {
-          if (res.data.length) {
-            const routes = res.data.map((route) => {
-              return this.mapToRoute(route);
-            });
-            if (props.isPaginate) {
-              this.routeStore.add(routes);
-            } else {
-              this.routeStore.set(routes);
-            }
-            this.routeStore.update(state => ({
-              ...state,
-              remain: res.total - this.routeQuery.getCount(),
-              loading: false,
-              total: res.total,
-              error: null
-            }));
+        tap((res) => {
+          const routes = res.data.map((route) => {
+            return this.mapToRoute(route);
+          });
+          if (props.isPaginate) {
+            this.routeStore.add(routes);
+          } else {
+            this.routeStore.set(routes);
           }
+          this.routeStore.update(state => ({
+            ...state,
+            remain: res.total - this.routeQuery.getCount(),
+            loading: false,
+            total: res.total,
+            error: null
+          }));
         }),
         catchError((err) => {
           this.routeStore.update((state) => ({

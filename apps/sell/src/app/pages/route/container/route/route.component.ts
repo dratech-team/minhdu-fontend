@@ -5,7 +5,7 @@ import { Api } from '@minhdu-fontend/constants';
 import { ModeEnum, SortRouteEnum } from '@minhdu-fontend/enums';
 import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
 import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
-import { debounceTime, map, startWith } from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 import { RouteActions, RouteQuery, RouteStore } from '../../state';
 import { RouteEntity } from '../../entities';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -84,10 +84,10 @@ export class RouteComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup.valueChanges
-      .pipe(debounceTime(1500), startWith(this.formGroup.value))
+      .pipe(startWith(this.formGroup.value))
       .subscribe((route) => {
         this.actions$.dispatch(
-          RouteActions.loadAll({ search: this.mapRoute(route), isPaginate: false })
+          RouteActions.loadAll({ search: this.mapRoute(route) })
         );
       });
   }
