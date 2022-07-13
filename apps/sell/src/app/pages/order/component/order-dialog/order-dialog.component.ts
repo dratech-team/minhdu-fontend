@@ -68,8 +68,11 @@ export class OrderDialogComponent implements OnInit {
       province: new FormControl<Province | undefined>(this.data?.order?.province, { validators: Validators.required }),
       district: new FormControl<District | undefined>(this.data?.order?.district),
       ward: new FormControl<Ward | undefined>(this.data?.order?.ward),
-      customerId: new FormControl<number | undefined>(this.data?.order?.customerId)
+      customerId: new FormControl<number | undefined>(this.data?.order?.customerId),
+      commodityIds: new FormControl<number[] | undefined>(this.data?.order?.commodities?.map(commodity => commodity.id))
     });
+
+    console.log(this.formGroup.get("c"))
   }
 
   get checkValid() {

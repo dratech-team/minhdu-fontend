@@ -1,21 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { RouteActions, RouteQuery, RouteStore } from '../../state';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalRef } from 'ng-zorro-antd/modal';
-import { UpdaterRouteTypeEnum } from '../../enums/updater-route-type.enum';
+import { UpdaterRouteTypeEnum } from '../../enums';
 import { SortTypeOrderEnum } from '@minhdu-fontend/enums';
 import { OrderEntity } from '../../../order/enitities/order.entity';
 import { CommodityEntity } from '../../../commodity/entities';
 
 @Component({
-  templateUrl: 'route-dialog.component.html',
+  templateUrl: 'route-dialog.component.html'
 })
 export class RouteDialogComponent implements OnInit {
   @Input() data?: any;
@@ -36,12 +32,13 @@ export class RouteDialogComponent implements OnInit {
     private readonly datePipe: DatePipe,
     private readonly modalRef: NzModalRef,
     private readonly snackbar: MatSnackBar
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.routeStore.update((state) => ({
       ...state,
-      added: null,
+      added: null
     }));
 
     if (this.data?.updateType === UpdaterRouteTypeEnum.ORDER) {
@@ -52,16 +49,16 @@ export class RouteDialogComponent implements OnInit {
       name: [this.data?.route?.name, Validators.required],
       startedAt: [
         this.datePipe.transform(this.data?.route?.startedAt, 'yyyy-MM-dd'),
-        Validators.required,
+        Validators.required
       ],
       endedAt: [
-        this.datePipe.transform(this.data?.route?.endedAt, 'yyyy-MM-dd'),
+        this.datePipe.transform(this.data?.route?.endedAt, 'yyyy-MM-dd')
       ],
       bsx: [this.data?.route?.bsx, Validators.required],
       driver: [this.data?.route?.driver, Validators.required],
       garage: [this.data?.route?.garage],
       orders: [this.data?.route?.orders],
-      commodities: [[]],
+      commodities: [[]]
     });
   }
 
@@ -82,7 +79,7 @@ export class RouteDialogComponent implements OnInit {
       driver: val.driver,
       garage: val.garage,
       orderIds: val.orders.map((item: OrderEntity) => item.id),
-      commodityIds: val.commodities?.map((item: CommodityEntity) => item.id),
+      commodityIds: val.commodities?.map((item: CommodityEntity) => item.id)
     };
     if (this.data) {
       this.actions$.dispatch(

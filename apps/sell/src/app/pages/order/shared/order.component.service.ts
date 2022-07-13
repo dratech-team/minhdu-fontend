@@ -104,6 +104,7 @@ export class OrderComponentService {
       nzTitle: 'Xác nhận ngày giao hàng',
       nzContent: DialogDatePickerComponent,
       nzMaskClosable: false,
+      nzComponentParams: {datetime: new Date()},
       nzFooter: []
     }).afterClose.subscribe((res: { date: Date }) => {
       if (res) {

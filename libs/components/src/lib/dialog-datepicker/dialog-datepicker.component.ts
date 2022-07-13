@@ -1,20 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
+import { DatePipe } from '@angular/common';
 
 @Component({
   templateUrl: 'dialog-datepicker.component.html'
 })
 export class DialogDatePickerComponent {
+  @Input() datetime?: Date;
   submitted = false;
-  formGroup = new FormGroup({
-    date: new FormControl<Date | null>(null, { validators: [Validators.required] })
-  });
+  formGroup!: FormGroup;
 
-  constructor(public readonly nzModalRef: NzModalRef<DialogDatePickerComponent>) {
+  constructor(
+    public readonly nzModalRef: NzModalRef<DialogDatePickerComponent>,
+    private readonly datePipe: DatePipe
+  ) {
   }
 
   ngOnInit() {
+    console.log("dateitme ==== ",   this.datePipe.transform(this.datetime, 'dd/MM/yyyy'))
+    this.formGroup = new FormGroup({
+      date: new FormControl<string | null>(
+        this.datePipe.transform(this.datetime, 'MM/dd/yyyy'),
+        { validators: [Validators.required] }
+      )
+    });
   }
 
   onSubmit(): any {
@@ -22,6 +32,6 @@ export class DialogDatePickerComponent {
     if (this.formGroup.invalid) {
       return;
     }
-    this.nzModalRef.close(this.formGroup.value);
+    this.nzModalRef.close(new Date(this.formGroup.value));
   }
 }

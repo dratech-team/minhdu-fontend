@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { RangeDay } from '@minhdu-fontend/data-models';
 import { DatePipe } from '@angular/common';
+import { TitleDatetime } from '@minhdu-fontend/constants';
 
 @Component({
   selector: 'md-collapse-datepicker',
@@ -10,7 +11,7 @@ import { DatePipe } from '@angular/common';
 export class CollapseDatepickerComponent {
   @Input() title: string = '';
   @Input() rangeDayInit?: RangeDay;
-  @Output() onCalendarChange = new EventEmitter<{ start: Date, end: Date }>();
+  @Output() onCalendarChange = new EventEmitter<Pick<TitleDatetime, 'start' | 'end'>>();
 
   tooltip = '';
 
@@ -23,7 +24,7 @@ export class CollapseDatepickerComponent {
   ) {
   }
 
-  onTitlePicker(picker: { title: string, start: Date, end: Date }) {
+  onTitlePicker(picker: TitleDatetime) {
     this.visible = false;
     this.formRadio.setValue(0);
     this.formTitlePicker.setValue(picker.title);
@@ -31,7 +32,11 @@ export class CollapseDatepickerComponent {
       start: picker.start,
       end: picker.end
     });
-    this.tooltip = `Từ ${this.datePipe.transform(picker.start, 'dd/MM/YYYY')} tới ${this.datePipe.transform(picker.end, 'dd/MM/YYYY')}`;
+    if (picker.start && picker.end) {
+      this.tooltip = `Từ ${this.datePipe.transform(picker.start, 'dd/MM/YYYY')} tới ${this.datePipe.transform(picker.end, 'dd/MM/YYYY')}`;
+    } else {
+      this.tooltip = '';
+    }
   }
 
   onChange(date: (Date | null)[]) {

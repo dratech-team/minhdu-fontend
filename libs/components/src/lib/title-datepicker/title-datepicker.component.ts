@@ -1,24 +1,16 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { titleDatepicker } from '../../../../constants/title-picker.constant';
+import { titleDatepicker, TitleDatetime } from '@minhdu-fontend/constants';
 
 @Component({
-  selector: 'minhdu-fontend-title-datepicker',
+  selector: 'md-title-datepicker',
   templateUrl: 'title-datepicker.component.html'
 })
 export class TitleDatepickerComponent {
-  @Output() pickTitle = new EventEmitter<{
-    title: string;
-    start: Date;
-    end: Date;
-  }>();
+  @Output() pickTitle = new EventEmitter<TitleDatetime>();
   optionDataPicker = titleDatepicker;
 
-  onSubmit(titleDatepicker: {
-    title: string;
-    start: Date;
-    end: Date;
-  }) {
-    if(titleDatepicker) {
+  onSubmit(titleDatepicker: TitleDatetime) {
+    if (titleDatepicker) {
       this.pickTitle.emit(titleDatepicker);
     }
   }

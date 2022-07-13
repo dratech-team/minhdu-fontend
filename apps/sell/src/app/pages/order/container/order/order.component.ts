@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Api } from '@minhdu-fontend/constants';
+import { Api, TitleDatetime } from '@minhdu-fontend/constants';
 import {
   ConvertBoolean,
   ItemContextMenu,
@@ -26,6 +26,7 @@ import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { OrderComponentService } from '../../shared';
 import { OrderStatusEnum } from '../../enums';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   templateUrl: 'order.component.html',
@@ -75,7 +76,7 @@ export class OrderComponent implements OnInit {
     },
     {
       title: 'Sửa',
-      click: (data: OrderEntity) => this.orderComponentService.onUpdate(data)
+      click: (data: OrderEntity) => this.orderComponentService.onUpdate(data, 'GENERAL')
     },
     {
       title: 'Xoá',
@@ -91,7 +92,12 @@ export class OrderComponent implements OnInit {
     },
     {
       title: 'Khôi phục',
-      click: (data: OrderEntity) => this.orderComponentService.onRestore(data)
+      click: (data: OrderEntity) => {
+        if (data.deliveredAt) {
+          return this.orderComponentService.onRestore(data);
+        }
+        return this.message.error('Đơn hàng chưa giao không thể khôi phục');
+      }
     }
   ];
 
@@ -108,6 +114,7 @@ export class OrderComponent implements OnInit {
   });
 
   constructor(
+    public readonly message: NzMessageService,
     public readonly orderComponentService: OrderComponentService,
     private readonly datePipe: DatePipe,
     private readonly actions$: Actions,
@@ -142,17 +149,17 @@ export class OrderComponent implements OnInit {
     $event.stopPropagation();
   }
 
-  public onPickDeliveryDay($event: { start: Date, end: Date }) {
+  public onPickDeliveryDay($event: Pick<TitleDatetime, 'start' | 'end'>) {
     this.formGroup.get('deliveredAt_start')?.setValue($event.start);
     this.formGroup.get('deliveredAt_end')?.setValue($event.end);
   }
 
-  public onPickCreatedAt($event: { start: Date, end: Date }) {
+  public onPickCreatedAt($event: Pick<TitleDatetime, 'start' | 'end'>) {
     this.formGroup.get('startedAt_start')?.setValue($event.start);
     this.formGroup.get('startedAt_end')?.setValue($event.end);
   }
 
-  public onPickEndedAt(datetime: { start: Date, end: Date }) {
+  public onPickEndedAt(datetime: Pick<TitleDatetime, 'start' | 'end'>) {
     this.formGroup.get('endedAt_start')?.setValue(datetime.start);
     this.formGroup.get('endedAt_end')?.setValue(datetime.end);
   }

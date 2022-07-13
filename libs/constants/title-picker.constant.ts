@@ -3,13 +3,13 @@ import * as moment from 'moment';
 
 export interface TitleDatePicker {
   title: string;
-  children: Children[];
+  children: TitleDatetime[];
 }
 
-interface Children {
+export interface TitleDatetime {
   title: string;
-  start: Date;
-  end: Date;
+  start: Date | null;
+  end: Date | null;
 }
 
 export const titleDatepicker: TitleDatePicker[] = [
@@ -35,6 +35,11 @@ export const titleDatepicker: TitleDatePicker[] = [
         title: '7 ngày qua',
         start: moment().subtract(7, 'days').toDate(),
         end: new Date()
+      },
+      {
+        title: 'Bỏ chọn',
+        start: null,
+        end: null
       }
     ]
   },

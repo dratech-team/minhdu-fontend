@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewContainerRef } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { debounceTime, tap } from 'rxjs/operators';
+import { FormControl, FormGroup } from '@angular/forms';
+import { debounceTime, startWith } from 'rxjs/operators';
 import { CustomerEntity } from '../../../pages/customer/entities';
 import { CustomerType, ModeEnum } from '@minhdu-fontend/enums';
 import { CustomerModalComponent } from '../../../pages/customer/component';
@@ -18,7 +18,7 @@ import { PaginationDto } from '@minhdu-fontend/constants';
 export class SelectCustomerComponent implements OnInit {
   @Input() customers: CustomerEntity[] = [];
   @Input() pickOne = false;
-  @Input() formGroup!: UntypedFormGroup;
+  @Input() formGroup!: FormGroup;
   @Input() closeable = false;
   @Output() checkEvent = new EventEmitter<number[]>();
   @Input() data!: any;
@@ -36,10 +36,10 @@ export class SelectCustomerComponent implements OnInit {
   CustomerType = CustomerType;
   ModeEnum = ModeEnum;
 
-  formGroupCustomer = new UntypedFormGroup({
-    name: new UntypedFormControl(''),
-    type: new UntypedFormControl(''),
-    resource: new UntypedFormControl('')
+  formGroupCustomer = new FormGroup({
+    name: new FormControl(''),
+    type: new FormControl(''),
+    resource: new FormControl('')
   });
 
   constructor(
@@ -62,15 +62,12 @@ export class SelectCustomerComponent implements OnInit {
       });
     }
     this.formGroupCustomer.valueChanges
-      .pipe(
-        debounceTime(1000),
-        tap((value) => {
-          this.actions$.dispatch(
-            CustomerActions.loadAll({ search: this.mapToCustomer(value) })
-          );
-        })
-      )
-      .subscribe();
+      .pipe(debounceTime(500), startWith(this.formGroupCustomer.value))
+      .subscribe((fg) => {
+        this.actions$.dispatch(
+          CustomerActions.loadAll({ search: this.mapToCustomer(fg) })
+        );
+      });
   }
 
   onAdd() {

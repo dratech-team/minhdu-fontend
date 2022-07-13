@@ -1,16 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormGroup } from '@angular/forms';
 import { PaidType } from 'libs/enums/paidType.enum';
 import { OrderActions, OrderQuery } from '../../../pages/order/state';
 import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CommodityEntity } from '../../../pages/commodity/entities';
 import { OrderEntity } from '../../../pages/order/enitities/order.entity';
-import { PaginationDto } from '@minhdu-fontend/constants';
 import { ModeEnum, SortTypeOrderEnum } from '@minhdu-fontend/enums';
-import { BaseSearchOrderDto } from '../../../pages/order/dto';
 import { AccountQuery } from '../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { RouterConstants } from '../../constants';
+import * as _ from 'lodash';
+import { debounceTime, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'select-order',
@@ -39,15 +39,15 @@ export class SelectOrderComponent implements OnInit {
   PaidType = PaidType;
   SortTypeOrderEnum = SortTypeOrderEnum;
 
-  formGroupTable = new UntypedFormGroup({
-    filterRoute: new UntypedFormControl(false),
-    customer: new UntypedFormControl(''),
-    startedAt: new UntypedFormControl([
+  formGroupTable = new FormGroup({
+    filterRoute: new FormControl<boolean>(false),
+    search: new FormControl<string>(''),
+    startedAt: new FormControl<Date[] | null>([
       getFirstDayInMonth(new Date()),
       getLastDayInMonth(new Date())
     ]),
-    paidType: new UntypedFormControl(''),
-    explain: new UntypedFormControl('')
+    paidType: new FormControl<PaidType | string>(''),
+    explain: new FormControl<string>('')
   });
 
   constructor(
@@ -61,27 +61,26 @@ export class SelectOrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.onLoad(false);
     this.formGroup.value.orders?.map((item: OrderEntity) => {
       this.setOfCheckedOrder.add(item);
     });
-    this.formGroupTable.valueChanges.subscribe((_) => {
-      this.onLoad(false);
-    });
+    this.formGroupTable.valueChanges
+      .pipe(debounceTime(500), startWith(this.formGroupTable.value))
+      .subscribe((_) => {
+        this.actions$.dispatch(
+          OrderActions.loadAll({
+            search: this.mapOrder(this.formGroupTable.value),
+            isPaginate: false
+          })
+        );
+      });
   }
 
   onLoadMore() {
-    this.onLoad(true);
-  }
-
-  onLoad(pagination: boolean) {
     this.actions$.dispatch(
       OrderActions.loadAll({
-        search: this.mapOrder(
-          this.formGroupTable.value,
-          pagination
-        ) as BaseSearchOrderDto,
-        isPaginate: pagination
+        search: this.mapOrder(this.formGroupTable.value),
+        isPaginate: true
       })
     );
   }
@@ -136,24 +135,21 @@ export class SelectOrderComponent implements OnInit {
       !this.checked;
   }
 
-  private mapOrder(val: any, isPagination: boolean) {
-    const param = {
-      take: PaginationDto.take,
-      skip: isPagination ? this.orderQuery.getCount() : PaginationDto.skip,
+  private mapOrder(val: any) {
+    val = {
       paidType: val.paidType || '',
       filterRoute: val.filterRoute || '',
-      customer: val.customer || '',
+      search: val.search || '',
       explain: val.explain || '',
-      startedAt_start: val.startedAt
-        ? val.startedAt[0]
-        : getFirstDayInMonth(new Date()),
-      startedAt_end: val.startedAt
-        ? val.startedAt[1]
-        : getLastDayInMonth(new Date())
+      startedAt_start: val.startedAt[0],
+      startedAt_end: val.startedAt[1]
     };
+    if (val && !(val.startedAt_start && val.startedAt_end)) {
+      val = _.omit(val, ['startedAt_start', 'startedAt_end']);
+    }
     return Object.assign(
       {},
-      param,
+      val,
       this.customerId ? { customerId: this.customerId } : {}
     );
   }

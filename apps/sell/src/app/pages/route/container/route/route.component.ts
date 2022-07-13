@@ -164,19 +164,16 @@ export class RouteComponent implements OnInit {
   }
 
   private mapRoute(val: any) {
-    this.routeStore.update((state) => ({
-      ...state,
-      search: val
-    }));
+    if (!val.startedAt_start || !val.startedAt_end) {
+      val = _.omit(val, ['startedAt_start', 'startedAt_end']);
+    }
     if (!val.endedAt_start || !val.endedAt_end) {
-      delete val.endedAt_end;
-      delete val.endedAt_start;
+      val = _.omit(val, ['endedAt_start', 'endedAt_end']);
     }
     if (this.valueSort?.orderType) {
       Object.assign(val, this.valueSort);
     } else {
-      delete val.orderType;
-      delete val.orderBy;
+      val = _.omit(val, ['orderType', 'orderBy']);
     }
     return val;
   }

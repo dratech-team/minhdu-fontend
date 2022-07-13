@@ -31,7 +31,7 @@
       <th *ngIf='(account$ | async)?.mode === ModeEnum.INFO' nzWidth='50px'>ID</th>
       <th *ngIf='columns.includes(SortTypeOrderEnum.CUSTOMER)'>
         <div>Khách hàng</div>
-        <input nz-input type='search' formControlName='customer' />
+        <input nz-input type='search' formControlName='search' />
       </th>
       <th *ngIf='columns.includes(SortTypeOrderEnum.CREATED_AT)'>
         <div>Ngày tạo</div>
