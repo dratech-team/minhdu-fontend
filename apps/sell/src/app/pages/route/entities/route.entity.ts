@@ -8,6 +8,5 @@ export interface RouteEntity extends BaseRouteEntity {
   readonly latitude: string;
   readonly longitude: string;
   isSelect?: boolean;
-  readonly totalCommodityUniq: number;
   readonly expand: boolean;
 }

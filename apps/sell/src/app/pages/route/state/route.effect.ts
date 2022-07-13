@@ -4,7 +4,6 @@ import { RouteActions } from './route.actions';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { RouteService } from '../service';
 import { of } from 'rxjs';
-import { getTotalPriceOfCommodity } from '../../../../../../../libs/utils/sell.ultil';
 import { RouteStore } from './route.store';
 import { RouteQuery } from './route.query';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -222,10 +221,9 @@ export class RouteEffect {
     );
 
     return Object.assign(newRoute, {
-      totalCommodityUniq: newRoute.orders.reduce((a, b) => a + b.totalCommodity, 0),
       orders: newRoute.orders.map((order) => {
           return Object.assign(order, {
-            priceTotal: getTotalPriceOfCommodity(order.commodities),
+            priceTotal: order.commodities.reduce((total, commodity) => total + commodity.price, 0),
             totalCommodity: order.commodities
               .filter(commodity => commodity.routeId)
               .reduce((total, commodity) => total + commodity.amount, 0),
