@@ -100,7 +100,6 @@ export class CustomerComponent implements OnInit {
     this.formGroup.valueChanges
       .pipe(debounceTime(1500), startWith(this.formGroup.value))
       .subscribe((formGroup) => {
-        console.log('formGroup ', formGroup);
         this.actions$.dispatch(
           CustomerActions.loadAll({ search: this.mapCustomer(formGroup), isPaginate: false })
         );
