@@ -9,7 +9,6 @@ export * from './menu-sell.constant';
 export * from './recipeTypes.constant';
 export * from './searchType.constant';
 export * from './page.constant';
-export * from './option-data-picker.constant';
 //hr
 export * from './HR/typePayrollExport.constant';
 export * from './HR/unitAllowance.constant';
