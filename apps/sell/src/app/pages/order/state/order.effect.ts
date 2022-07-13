@@ -6,7 +6,6 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
 import { Router } from '@angular/router';
-import { getTotalCommodity } from '../../../../../../../libs/utils/sell.ultil';
 import { OrderQuery } from './order.query';
 import { OrderStore } from './order.store';
 import { RouteActions } from '../../route/state';
@@ -102,9 +101,7 @@ export class OrderEffect {
           const data = res.data.map((order: OrderEntity) => {
               return Object.assign(order, {
                 expand: expandedAll,
-                totalCommodity: (order.totalCommodity = getTotalCommodity(
-                  order.commodities
-                ))
+                totalCommodity: order.commodities.reduce((total, commodity) => total + commodity.amount, 0)
               });
             }
           );
