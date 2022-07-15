@@ -100,15 +100,18 @@
             </ng-template>
           </th>
           <th
+            nzLeft
             *ngIf='(account$ | async)?.mode === ModeEnum.INFO'
             nzWidth='70px'
           >
             ID
           </th>
+          <th nzWidth='70px' nzLeft>
+            STT
+          </th>
           <th
             *ngFor='let ui of (ui$ | async)'
             [nzLeft]='ui.pinned'
-            [nzWidth]="ui?.width+'px' || null"
           >
             {{ui.title}}
           </th>
@@ -135,16 +138,20 @@
             </nz-dropdown-menu>
             <td nzLeft [(nzExpand)]='route.expand'></td>
             <td
+              nzLeft
               *ngIf='(account$ | async)?.mode === ModeEnum.INFO'
             >
               {{ route.id }}
+            </td>
+            <td nzLeft>
+              {{ i + 1 }}
             </td>
             <td
               *ngFor='let ui of (ui$ | async)'
               [nzLeft]='ui.pinned'
               [ngStyle]='{ color: ui.textColor}'
             >
-              {{ ui.key === "stt" ? i + 1 : route[ui?.key || '']}}
+              {{ route[ui?.key || '']}}
             </td>
           </tr>
           <tr [nzExpand]='route.expand'>

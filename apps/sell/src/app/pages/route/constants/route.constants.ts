@@ -2,13 +2,6 @@ import { VisibleEntity } from '@minhdu-fontend/data-models';
 
 const listUI: VisibleEntity[] = [
   {
-    key: 'stt',
-    title: 'STT',
-    width: 60,
-    pinned: true,
-    visible: true
-  },
-  {
     key: 'status',
     title: 'Trạng thái chuyến xe',
     textColor: "#32863d",
