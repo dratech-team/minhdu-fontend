@@ -9,7 +9,7 @@ import { VisibleEntity } from '@minhdu-fontend/data-models';
 })
 export class VisibleRouteComponent {
   ui$ = this.routeQuery.select((state) => state.ui);
-  formGroup!: FormGroup;
+
   visibleEntity: VisibleEntity = { visible: true, pinned: false };
   visible = (key: 'visible' | 'pinned') => this.visibleEntity[key];
 
