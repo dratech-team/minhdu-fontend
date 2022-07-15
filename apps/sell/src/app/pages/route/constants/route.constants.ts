@@ -1,4 +1,6 @@
-const listUI = [
+import { VisibleEntity } from '@minhdu-fontend/data-models';
+
+const listUI: VisibleEntity[] = [
   {
     key: 'stt',
     title: 'STT',
@@ -7,48 +9,53 @@ const listUI = [
     visible: true
   },
   {
-    key: 'name',
+    key: 'status',
+    title: 'Trạng thái chuyến xe',
+    textColor: "#32863d",
     pinned: false,
-    visible: true,
+    visible: true
+  },
+  {
+    key: 'name',
     title: 'Tên tuyến đường',
-    width: null
+    width: null,
+    pinned: false,
+    visible: true
   },
   {
     key: 'startedAt',
+    title: 'Ngày bắt đầu',
+    width: null,
     pinned: false,
-    visible: true,
-    title: 'Ngày bắt đầu'
+    visible: true
   },
   {
     key: 'endedAt',
+    title: 'Ngày kết thúc',
     pinned: false,
-    visible: true,
-    title: 'Ngày kết thúc'
+    visible: true
   },
   {
     key: 'driver',
+    title: 'Tên tài xế',
+    width: null,
     pinned: false,
-    visible: true,
-    title: 'Tên tài xế'
+    visible: true
   },
   {
     key: 'bsx',
+    title: 'Biển số xe',
+    width: null,
     pinned: false,
-    visible: true,
-    title: 'Biển số xe'
+    visible: true
   },
   {
     key: 'garage',
+    title: 'Nhà xe',
+    width: null,
     pinned: false,
-    visible: true,
-    title: 'Nhà xe'
-  },
-  {
-    key: 'status',
-    pinned: false,
-    visible: true,
-    title: 'Trạng thái chuyến xe'
+    visible: true
   }
 ];
 
-export const RouteConstant = {listUI}
+export const RouteConstant = { listUI };

@@ -32,7 +32,7 @@ function createInitialState(): RouteState {
 }
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: StorageName.ROUTE })
+@StoreConfig({ name: StorageName.ROUTE, resettable: true })
 export class RouteStore extends EntityStore<RouteState> {
   constructor() {
     super(createInitialState());

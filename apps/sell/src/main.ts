@@ -20,14 +20,17 @@ selectUICustomer.storeName = StorageName.CUSTOMER;
 selectUIOrder.storeName = StorageName.ORDER;
 selectUIRoute.storeName = StorageName.ROUTE;
 
-const storage = persistState({
-  include: [StorageName.ACCOUNT],
-  select: [selectUICustomer, selectUIOrder, selectUIRoute],
-  key: 'sell-app'
+const selectStorage = persistState({
+  select: [selectUICustomer, selectUIOrder, selectUIRoute]
 });
 
-const providers = [{ provide: 'persistStorage', useValue: storage }];
+const includeStorage = persistState({
+  select: [selectUICustomer, selectUIOrder, selectUIRoute]
+});
 
-platformBrowserDynamic(providers)
+platformBrowserDynamic([
+  { provide: 'persistStorage', useValue: selectStorage, multi: true },
+  { provide: 'persistStorage', useValue: includeStorage, multi: true },
+])
   .bootstrapModule(AppModule)
   .catch((err) => console.error(err));

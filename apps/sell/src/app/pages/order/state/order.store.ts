@@ -126,7 +126,7 @@ function createInitState(): OrderState {
 }
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: StorageName.ORDER })
+@StoreConfig({ name: StorageName.ORDER, resettable: true })
 export class OrderStore extends EntityStore<OrderState> {
   constructor() {
     super(createInitState());

@@ -3,8 +3,8 @@ import { OrderEntity } from '../../order/enitities/order.entity';
 
 export interface BaseRouteEntity extends BaseEntity {
   readonly name: string;
-  readonly startedAt: Date;
-  readonly endedAt: Date;
+  readonly startedAt: Date | string;
+  readonly endedAt: Date | string | null;
   readonly orders: OrderEntity[];
   readonly bsx: string;
 }

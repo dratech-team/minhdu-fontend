@@ -1,4 +1,4 @@
-import { EntityState, EntityStore, getEntityType, StoreConfig } from '@datorama/akita';
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
 import { StorageName } from '@minhdu-fontend/constants';
 import { BaseSearchCommodityTemplateDto } from '../dto/search-commodity-template.dto';
@@ -25,7 +25,7 @@ function createInitState(): CommodityTemplateState {
 }
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: StorageName.COMMODITY_TEMPLATE })
+@StoreConfig({ name: StorageName.COMMODITY_TEMPLATE, resettable: true })
 export class CommodityTemplateStore extends EntityStore<CommodityTemplateState> {
   constructor() {
     super(createInitState());

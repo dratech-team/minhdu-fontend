@@ -27,7 +27,7 @@ function createInitState(): AccountState {
 }
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: StorageName.ACCOUNT })
+@StoreConfig({ name: StorageName.ACCOUNT, resettable: true })
 export class AccountStore extends EntityStore<AccountState> {
   constructor() {
     super(createInitState());

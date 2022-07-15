@@ -7,41 +7,41 @@ import { RemoveAccountDto } from '../../dto/account/remove-account.dto';
 import { SignInDto } from '../../dto/account/sign-in.dto';
 import { AccountEntity } from '../../entities/account.entity';
 
-export const addOne = createAction('[ACCOUNT] Add One', props<AddAccountDto>());
+const addOne = createAction('[ACCOUNT] Add One', props<AddAccountDto>());
 
-export const loadAll = createAction(
+const loadAll = createAction(
   '[ACCOUNT] Load All',
   props<SearchAccountDto>()
 );
 
-export const loadOne = createAction(
+const loadOne = createAction(
   '[ACCOUNT] Load One',
   props<LoadOneAccountDto>()
 );
 
-export const signIn = createAction('[ACCOUNT] Sign In', props<SignInDto>());
+const signIn = createAction('[ACCOUNT] Sign In', props<SignInDto>());
 
-export const update = createAction(
+const update = createAction(
   '[ACCOUNT] Update',
   props<UpdateAccountDto>()
 );
 
-export const updatePassword = createAction(
+const updatePassword = createAction(
   '[ACCOUNT] Update Password',
   props<UpdateAccountDto>()
 );
 
-export const remove = createAction(
+const remove = createAction(
   '[ACCOUNT] Remove',
   props<RemoveAccountDto>()
 );
 
-export const logout = createAction(
-  '[ACCOUNT] Logout',
+const signOut = createAction(
+  '[ACCOUNT] signOut',
   props<{ id: AccountEntity['id'] }>()
 );
 
-export const error = createAction('[ACCOUNT] Error', props<{ err: string }>());
+const error = createAction('[ACCOUNT] Error', props<{ err: string }>());
 
 export const AccountActions = {
   addOne,
@@ -51,6 +51,6 @@ export const AccountActions = {
   update,
   updatePassword,
   remove,
-  logout,
-  error,
+  signOut,
+  error
 };

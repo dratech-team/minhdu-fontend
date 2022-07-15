@@ -9,6 +9,7 @@ import { RouteQuery } from './route.query';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { PaginationDto } from '@minhdu-fontend/constants';
 import { RouteEntity } from '../entities';
+import { DatePipe } from '@angular/common';
 
 @Injectable()
 export class RouteEffect {
@@ -17,7 +18,8 @@ export class RouteEffect {
     private readonly routeQuery: RouteQuery,
     private readonly routeStore: RouteStore,
     private readonly routeService: RouteService,
-    private readonly message: NzMessageService
+    private readonly message: NzMessageService,
+    private readonly datePipe: DatePipe
   ) {
   }
 
@@ -206,19 +208,21 @@ export class RouteEffect {
     )
   );
 
-  private mapToRoute(route: RouteEntity) {
+  private mapToRoute(route: RouteEntity): RouteEntity {
     const expandedAll = this.routeQuery.getValue().expandedAll;
-    const newRoute = Object.assign(route, {
-        orders: route.orders.map((order) => {
-          return Object.assign(order, {
-            commodities: order.commodities.sort((a, b) => a.id - b.id),
-            expand: true
-          });
-        })
-      }
-    );
+    const newRoute: RouteEntity = {
+      ...route,
+      orders: route.orders.map((order) => {
+        return Object.assign(order, {
+          commodities: order.commodities.sort((a, b) => a.id - b.id),
+          expand: true
+        });
+      })
+    };
 
-    const r = Object.assign(newRoute, {
+    const r: RouteEntity = {
+      ...newRoute,
+      expand: expandedAll,
       orders: newRoute.orders.map((order) => {
           return Object.assign(order, {
             priceTotal: order.commodities.reduce((total, commodity) => total + commodity.price, 0),
@@ -228,11 +232,15 @@ export class RouteEffect {
             expand: true
           });
         }
-      ),
-      expand: expandedAll
-    });
-    return Object.assign(r, {
+      )
+    };
+    return {
+      ...r,
+      startedAt: this.datePipe.transform(r.startedAt, 'dd/MM/yyyy') as string,
+      endedAt: this.datePipe.transform(r.endedAt, 'dd/MM/yyyy') || 'Chưa cập nhật',
+      status: this.datePipe.transform(r.endedAt, 'dd/MM/yyyy') || 'Đang chạy',
+      garage: r.garage || 'Chưa cập nhật',
       totalCommodity: r.orders.reduce((total, order) => total + order.totalCommodity, 0)
-    });
+    };
   }
 }

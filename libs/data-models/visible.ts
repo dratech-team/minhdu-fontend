@@ -4,4 +4,5 @@ export interface VisibleEntity {
   readonly visible: boolean;
   readonly title?: string;
   readonly width?: number | null;
+  readonly textColor?: string;
 }

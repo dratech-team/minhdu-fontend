@@ -69,7 +69,7 @@ export class SellLayoutComponent implements OnInit {
         const currentUser = this.accountQuery.getCurrentUser();
         if (currentUser) {
           this.actions$.dispatch(
-            AccountActions.logout({
+            AccountActions.signOut({
               id: currentUser.id
             })
           );

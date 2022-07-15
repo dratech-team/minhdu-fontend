@@ -107,7 +107,7 @@
           </th>
           <th
             *ngFor='let ui of (ui$ | async)'
-            [nzLeft]='ui?.pinned || false'
+            [nzLeft]='ui.pinned'
             [nzWidth]="ui?.width+'px' || null"
           >
             {{ui.title}}
@@ -141,9 +141,10 @@
             </td>
             <td
               *ngFor='let ui of (ui$ | async)'
-              [nzLeft]='ui?.pinned || false'
+              [nzLeft]='ui.pinned'
+              [ngStyle]='{ color: ui.textColor}'
             >
-              {{ ui.key === "stt" ? i + 1 : route[ui?.key || ''] }}
+              {{ ui.key === "stt" ? i + 1 : route[ui?.key || '']}}
             </td>
           </tr>
           <tr [nzExpand]='route.expand'>
