@@ -5,6 +5,7 @@ import { BaseSearchRouteDto } from '../dto';
 import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 import { StorageName } from '@minhdu-fontend/constants';
 import { VisibleEntity } from '@minhdu-fontend/data-models';
+import { RouteConstant } from '../constants';
 
 export interface RouteState extends EntityState<RouteEntity> {
   readonly loading?: boolean;
@@ -26,58 +27,7 @@ function createInitialState(): RouteState {
       startedAt_end: getLastDayInMonth(new Date()),
       status: -1
     },
-    ui: [
-      {
-        key: 'stt',
-        title: 'STT',
-        width: 60,
-        pinned: true,
-        visible: true
-      },
-      {
-        key: 'name',
-        pinned: false,
-        visible: true,
-        title: 'Tên tuyến đường',
-        width: null
-      },
-      {
-        key: 'startedAt',
-        pinned: false,
-        visible: true,
-        title: 'Ngày bắt đầu'
-      },
-      {
-        key: 'endedAt',
-        pinned: false,
-        visible: true,
-        title: 'Ngày kết thúc'
-      },
-      {
-        key: 'driver',
-        pinned: false,
-        visible: true,
-        title: 'Tên tài xế'
-      },
-      {
-        key: 'bsx',
-        pinned: false,
-        visible: true,
-        title: 'Biển số xe'
-      },
-      {
-        key: 'garage',
-        pinned: false,
-        visible: true,
-        title: 'Nhà xe'
-      },
-      {
-        key: 'status',
-        pinned: false,
-        visible: true,
-        title: 'Trạng thái chuyến xe'
-      }
-    ]
+    ui: RouteConstant.listUI
   };
 }
 
@@ -90,9 +40,7 @@ export class RouteStore extends EntityStore<RouteState> {
 
   updateUI(visible: VisibleEntity) {
     return this.update(({ ui }) => ({
-      ui: arrayUpdate(ui, (ui) => {
-        return ui.key === visible.key;
-      }, visible)
+      ui: arrayUpdate(ui, (ui) => ui.key === visible.key, visible)
     }));
   }
 }
