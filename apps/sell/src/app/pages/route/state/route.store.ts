@@ -4,7 +4,7 @@ import { RouteEntity } from '../entities';
 import { BaseSearchRouteDto } from '../dto';
 import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 import { StorageName } from '@minhdu-fontend/constants';
-import { VisibleEntity } from '@minhdu-fontend/data-models';
+import { VisibleExtendEntity } from '@minhdu-fontend/data-models';
 import { RouteConstant } from '../constants';
 
 export interface RouteState extends EntityState<RouteEntity> {
@@ -13,7 +13,7 @@ export interface RouteState extends EntityState<RouteEntity> {
   readonly remain: number;
   readonly expandedAll: boolean;
   readonly search: BaseSearchRouteDto;
-  readonly ui: VisibleEntity[];
+  readonly ui: VisibleExtendEntity[];
 }
 
 function createInitialState(): RouteState {
@@ -38,7 +38,7 @@ export class RouteStore extends EntityStore<RouteState> {
     super(createInitialState());
   }
 
-  updateUI(visible: VisibleEntity) {
+  updateUI(visible: VisibleExtendEntity) {
     return this.update(({ ui }) => ({
       ui: arrayUpdate(ui, (ui) => ui.key === visible.key, visible)
     }));

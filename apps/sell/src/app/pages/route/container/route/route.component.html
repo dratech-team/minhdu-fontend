@@ -151,7 +151,7 @@
               [nzLeft]='ui.pinned'
               [ngStyle]='{ color: ui.textColor}'
             >
-              {{ route[ui?.key || '']}}
+              {{ui.key.length === 1 ? route[ui.key[0]] : route[ui.key[0] || ''][ui.key[1]]}}
             </td>
           </tr>
           <tr [nzExpand]='route.expand'>
