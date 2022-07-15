@@ -1,10 +1,10 @@
-import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { arrayUpdate, EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
-import { RouteEntity, routeVisibleEntity } from '../entities';
-import { BaseSearchRouteDto, SearchRouteDto } from '../dto';
+import { RouteEntity } from '../entities';
+import { BaseSearchRouteDto } from '../dto';
 import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
-import { updateStateUiUtil } from '../../../utils/update-state-ui.util';
 import { StorageName } from '@minhdu-fontend/constants';
+import { VisibleEntity } from '@minhdu-fontend/data-models';
 
 export interface RouteState extends EntityState<RouteEntity> {
   readonly loading?: boolean;
@@ -12,10 +12,10 @@ export interface RouteState extends EntityState<RouteEntity> {
   readonly remain: number;
   readonly expandedAll: boolean;
   readonly search: BaseSearchRouteDto;
-  readonly ui?: routeVisibleEntity;
+  readonly ui: VisibleEntity[];
 }
 
-export function createInitialState() {
+function createInitialState(): RouteState {
   return {
     total: 0,
     remain: 0,
@@ -24,42 +24,60 @@ export function createInitialState() {
       search: '',
       startedAt_start: getFirstDayInMonth(new Date()),
       startedAt_end: getLastDayInMonth(new Date()),
-      status: -1,
+      status: -1
     },
-    ui: {
-      stt: {
+    ui: [
+      {
+        key: 'stt',
+        title: 'STT',
+        width: 60,
         pinned: true,
-        visible: true,
+        visible: true
       },
-      name: {
+      {
+        key: 'name',
         pinned: false,
         visible: true,
+        title: 'Tên tuyến đường',
+        width: null
       },
-      startedAt: {
+      {
+        key: 'startedAt',
         pinned: false,
         visible: true,
+        title: 'Ngày bắt đầu'
       },
-      endedAt: {
+      {
+        key: 'endedAt',
         pinned: false,
         visible: true,
+        title: 'Ngày kết thúc'
       },
-      driver: {
+      {
+        key: 'driver',
         pinned: false,
         visible: true,
+        title: 'Tên tài xế'
       },
-      bsx: {
+      {
+        key: 'bsx',
         pinned: false,
         visible: true,
+        title: 'Biển số xe'
       },
-      garage: {
+      {
+        key: 'garage',
         pinned: false,
         visible: true,
+        title: 'Nhà xe'
       },
-      status: {
+      {
+        key: 'status',
         pinned: false,
         visible: true,
-      },
-    },
+        title: 'Trạng thái chuyến xe'
+      }
+    ]
   };
 }
 
@@ -70,17 +88,11 @@ export class RouteStore extends EntityStore<RouteState> {
     super(createInitialState());
   }
 
-  updateUI(newState: Partial<routeVisibleEntity>, type: 'visible' | 'pinned') {
-    return this.update((state) => {
-      return {
-        ...state,
-        ui: state.ui
-          ? Object.assign(
-              JSON.parse(JSON.stringify(state.ui)),
-              updateStateUiUtil<routeVisibleEntity>(newState, type)
-            )
-          : state.ui,
-      };
-    });
+  updateUI(visible: VisibleEntity) {
+    return this.update(({ ui }) => ({
+      ui: arrayUpdate(ui, (ui) => {
+        return ui.key === visible.key;
+      }, visible)
+    }));
   }
 }

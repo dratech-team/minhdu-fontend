@@ -38,6 +38,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { RouteComponentService } from './shared';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 @NgModule({
   imports: [
@@ -75,7 +76,8 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
     NzDropDownModule,
     NzIconModule,
     NzSkeletonModule,
-    NzToolTipModule
+    NzToolTipModule,
+    NzCheckboxModule
   ],
   declarations: [
     RouteComponent,
