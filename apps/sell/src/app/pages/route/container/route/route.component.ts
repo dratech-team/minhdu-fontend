@@ -29,10 +29,10 @@ export class RouteComponent implements OnInit {
 
   account$ = this.accountQuery.selectCurrentUser();
   loading$ = this.routeQuery.selectLoading();
+  ui$ = this.routeQuery.selectUI();
   total$ = this.routeQuery.select((state) => state.total);
   count$ = this.routeQuery.selectCount();
   remain$ = this.routeQuery.select((state) => state.remain);
-  ui$ = this.routeQuery.select((state) => state.ui);
   expandAll$ = this.routeQuery.select((state) => state.expandedAll);
   routes$ = this.routeQuery
     .selectAll()
