@@ -1,6 +1,12 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SelectOrderComponent } from './components/select-order/select-order.component';
+import {
+  OrderListComponent,
+  SelectCommodityComponent,
+  SelectCustomerComponent,
+  SelectOrderComponent,
+  SelectRouteComponent
+} from './components';
 import { CommonModule, CurrencyPipe, DecimalPipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
@@ -23,11 +29,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-import { PriceCommodityPipe } from './pipe/price-commodity.pipe';
-import { SelectCommodityComponent } from './components/select-commodity/select-commodity.component';
-import { SelectCustomerComponent } from './components/select-customer/select-customer.component';
-import { SelectRouteComponent } from './components/select-route/select-route.component';
-import { OrderListComponent } from './components/order-list/order-list.component';
+import { PriceCommodityPipe, UiPipe } from './pipe';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 
 @NgModule({
@@ -65,7 +67,8 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     SelectCommodityComponent,
     SelectCustomerComponent,
     SelectRouteComponent,
-    PriceCommodityPipe
+    PriceCommodityPipe,
+    UiPipe
   ],
   providers: [DecimalPipe, CurrencyPipe],
   exports: [
@@ -74,7 +77,8 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     SelectOrderComponent,
     SelectCustomerComponent,
     SelectRouteComponent,
-    PriceCommodityPipe
+    PriceCommodityPipe,
+    UiPipe
   ]
 })
 export class SharedModule {

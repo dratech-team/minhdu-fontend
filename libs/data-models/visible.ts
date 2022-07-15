@@ -2,6 +2,9 @@
 * Phiên bản cũ chưa được refactor
 * */
 
+
+import { DataTypeEnum } from '../enums';
+
 export interface VisibleEntity {
   readonly pinned: boolean;
   readonly visible: boolean;
@@ -15,4 +18,5 @@ export interface VisibleExtendEntity extends VisibleEntity {
   readonly title: string;
   readonly width: number | null;
   readonly textColor: string | null;
+  readonly dataType: DataTypeEnum;
 }

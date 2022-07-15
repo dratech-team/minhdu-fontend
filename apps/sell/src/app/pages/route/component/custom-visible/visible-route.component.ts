@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouteQuery, RouteStore } from '../../state';
-import { VisibleEntity } from '@minhdu-fontend/data-models';
+import { VisibleExtendEntity } from '@minhdu-fontend/data-models';
 
 @Component({
   selector: 'minhdu-fontend-pinned-route',
@@ -9,7 +9,8 @@ import { VisibleEntity } from '@minhdu-fontend/data-models';
 export class VisibleRouteComponent {
   ui$ = this.routeQuery.select((state) => state.ui);
 
-  visibleEntity: VisibleEntity = { visible: true, pinned: false };
+  visibleEntity = this.routeQuery.getValue().ui[0];
+
   visible = (key: 'visible' | 'pinned') => this.visibleEntity[key];
 
   constructor(
@@ -18,12 +19,12 @@ export class VisibleRouteComponent {
   ) {
   }
 
-  onPopoverVisibleChange(visible: boolean, visibleEntity: VisibleEntity) {
+  onPopoverVisibleChange(visible: boolean, visibleEntity: VisibleExtendEntity) {
     this.visibleEntity = visibleEntity;
   }
 
   onChange(key: 'visible' | 'pinned', visible: boolean) {
-    let newVisible: VisibleEntity;
+    let newVisible: VisibleExtendEntity;
     if (key === 'visible') {
       newVisible = { ...this.visibleEntity, visible: visible };
     } else {

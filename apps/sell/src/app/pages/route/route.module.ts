@@ -39,6 +39,7 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { RouteComponentService } from './shared';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { UiPipe } from '../../shared/pipe';
 
 @NgModule({
   imports: [
@@ -88,6 +89,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
   ],
   exports: [VisibleRouteComponent],
   providers: [
+    UiPipe,
     DatePipe,
     RouteService,
     RouteComponentService,

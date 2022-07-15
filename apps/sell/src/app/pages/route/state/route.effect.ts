@@ -236,10 +236,10 @@ export class RouteEffect {
     };
     return {
       ...r,
-      startedAt: this.datePipe.transform(r.startedAt, 'dd/MM/yyyy') as string,
-      endedAt: this.datePipe.transform(r.endedAt, 'dd/MM/yyyy') || 'Chưa cập nhật',
-      status: this.datePipe.transform(r.endedAt, 'dd/MM/yyyy') || 'Đang chạy',
-      garage: r.garage || 'Chưa cập nhật',
+      // startedAt: this.datePipe.transform(r.startedAt, 'dd/MM/yyyy') as string,
+      // endedAt: this.datePipe.transform(r.endedAt, 'dd/MM/yyyy') || 'Chưa cập nhật',
+      // status: this.datePipe.transform(r.endedAt, 'dd/MM/yyyy') || 'Đang chạy',
+      // garage: r.garage || 'Chưa cập nhật',
       totalCommodity: r.orders.reduce((total, order) => total + order.totalCommodity, 0)
     };
   }
