@@ -10,7 +10,7 @@ import {
   PaymentType,
   SortTypeOrderEnum
 } from '@minhdu-fontend/enums';
-import { debounceTime, map, startWith } from 'rxjs/operators';
+import { debounceTime, map, startWith, tap } from 'rxjs/operators';
 import { OrderActions, OrderQuery, OrderStore } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
@@ -27,6 +27,9 @@ import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/
 import { OrderComponentService } from '../../shared';
 import { OrderStatusEnum } from '../../enums';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { CommodityQuery } from '../../../commodity/state';
+import { CommodityTemplateActions } from '../../../commodity-template/state/commodity-template.action';
+import { CommodityTemplateQuery } from '../../../commodity-template/state/commodity-template.query';
 
 @Component({
   templateUrl: 'order.component.html',
@@ -47,14 +50,7 @@ export class OrderComponent implements OnInit {
   orders$ = this.orderQuery
     .selectAll()
     .pipe(map((value) => JSON.parse(JSON.stringify(value))));
-  commodities$ = this.orderQuery.selectAll().pipe(
-    map((orders) => {
-      return _.uniqBy(
-        _.flattenDeep(orders.map((order) => order.commodities)),
-        'code'
-      );
-    })
-  );
+  commodities$ = this.commodityTemplateQuery.selectAll();
 
   radios = radiosStatusOrderConstant;
 
@@ -123,11 +119,13 @@ export class OrderComponent implements OnInit {
     private readonly nzContextMenuService: NzContextMenuService,
     private readonly orderStore: OrderStore,
     private readonly orderQuery: OrderQuery,
+    private readonly commodityTemplateQuery: CommodityTemplateQuery,
     private readonly accountQuery: AccountQuery
   ) {
   }
 
   ngOnInit() {
+    this.actions$.dispatch(CommodityTemplateActions.loadAll({ isPaginate: false }));
     this.formGroup.valueChanges
       .pipe(debounceTime(500), startWith(this.formGroup.value))
       .subscribe((order) => {
