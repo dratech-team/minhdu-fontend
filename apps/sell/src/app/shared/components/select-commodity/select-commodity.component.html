@@ -97,12 +97,12 @@
           <td *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>{{ commodity.id }}</td>
           <td>{{ commodity.code }}</td>
           <td>{{ commodity.name }}</td>
-          <td>{{ commodity.price | number: '1.0' | notEmpty: '0' }} đ</td>
+          <td>{{ commodity.price ? (commodity.price | number: '1.0') : 'Theo thời giá'  }}</td>
           <td>{{ commodity.amount | number: '1.0' }}</td>
           <td>{{ (commodity.gift | number: '1.0') || '0' }}</td>
           <td>{{ (commodity?.more?.amount | number: '1.0') || '0' }}</td>
           <td>
-            {{ commodity?.more?.price | number: '1.0' | notEmpty: '0' }} đ
+            {{ commodity?.more?.price ? (commodity?.more?.price | number: '1.0') : 'Không có giá trị' }}
           </td>
           <td>{{ commodity.unit === CommodityUnit.KG ? 'KG' : 'Con' }}</td>
         </tr>
