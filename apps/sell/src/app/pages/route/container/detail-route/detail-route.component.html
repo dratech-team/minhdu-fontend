@@ -139,7 +139,7 @@
             <tr style='height: 55px'>
               <th nzWidth='50px' nzLeft (click)='onExpandAll()'>
                 <img
-                  *ngIf='expandedAll$ | async; else dash_square'
+                  *ngIf='(expandedAll$ | async); else dash_square'
                   src='assets/icon/share/dash-square.svg'
                 />
                 <ng-template #dash_square>

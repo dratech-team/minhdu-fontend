@@ -1,6 +1,6 @@
-import { CurrencyUnit } from '@minhdu-fontend/enums';
+import { CurrencyUnit, PaymentType } from '@minhdu-fontend/enums';
 import { RouteEntity } from '../../route/entities';
-import { Province } from '@minhdu-fontend/data-models';
+import { District, PaymentHistory, Province, Ward } from '@minhdu-fontend/data-models';
 import { CustomerEntity } from '../../customer/entities';
 import { CommodityEntity } from '../../commodity/entities';
 import { BaseEntity } from '@minhdu-fontend/base-entity';
@@ -16,4 +16,14 @@ export interface BaseOrderEntity extends BaseEntity {
   routes: RouteEntity[];
   province: Province;
   endedAt: Date;
+  paymentHistories: PaymentHistory[];
+  customerId: number;
+  explain: string;
+  paidAt?: Date;
+  payType?: PaymentType;
+  paidTotal?: number;
+  debt: number;
+  district?: District;
+  ward?: Ward;
+  hiddenDebt: boolean;
 }

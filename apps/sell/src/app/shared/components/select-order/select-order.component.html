@@ -16,7 +16,7 @@
 </div>
 <div>
   <nz-table
-    nzSize='small'
+    nzSize='middle'
     [nzShowPagination]='false'
     [nzFrontPagination]='false'
     [nzData]='orders'
@@ -176,7 +176,7 @@
         <nz-table
           #innerTable
           [nzData]='order.commodities'
-          nzSize='small'
+          nzSize='middle'
           [nzShowPagination]='false'
         >
     <thead>
@@ -197,7 +197,7 @@
       </td>
       <td class='text-center'>{{ commodity.name }}</td>
       <td class='text-center'>{{ commodity.amount }}</td>
-      <td class='text-center'>{{ commodity.price }}</td>
+      <td class='text-center'>{{ commodity.price | currency | notEmpty: 'Theo thời giá' }}</td>
       <td
         [nzShowCheckbox]='!commodity?.route'
         [nzChecked]='commoditySelected.has(commodity)'

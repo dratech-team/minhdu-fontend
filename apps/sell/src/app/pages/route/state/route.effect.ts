@@ -8,7 +8,11 @@ import { RouteStore } from './route.store';
 import { RouteQuery } from './route.query';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { PaginationDto } from '@minhdu-fontend/constants';
-import { RouteEntity } from '../entities';
+import { BaseRouteEntity, RouteEntity } from '../entities';
+import { uniq } from 'lodash';
+import { CommodityEntity } from '../../commodity/entities';
+import { CancelEnum } from '../enums';
+import { OrderEntity } from '../../order/enitities/order.entity';
 
 @Injectable()
 export class RouteEffect {
@@ -197,15 +201,20 @@ export class RouteEffect {
   );
 
   @Effect()
-  cancelCommodity$ = this.action.pipe(
+  cancel$ = this.action.pipe(
     ofType(RouteActions.cancel),
     switchMap((props) =>
       this.routeService.cancel(props.id, props.cancelDTO).pipe(
         map((route) => {
-          this.message.success('Cập nhật đơn hàng thành công');
+          if (props.cancelDTO.cancelType === CancelEnum.COMMODITY) {
+            return this.routeStore.update(
+              route.id,
+              this.mapToRoute(route)
+            );
+          }
           return this.routeStore.update(
             route.id,
-            this.mapToRoute(route)
+            {orders: []}
           );
         }),
         catchError((err) => of(RouteActions.error(err)))
@@ -213,15 +222,29 @@ export class RouteEffect {
     )
   );
 
-  private mapToRoute(route: RouteEntity): RouteEntity {
+  private mapToRoute(route: BaseRouteEntity): RouteEntity {
     const expandedAll = this.routeQuery.getValue().expandedAll;
+    const orderIds = uniq(route.commodities?.map((commodity: CommodityEntity) => commodity.orderId));
+    const orders: OrderEntity[] = orderIds.map(orderId => {
+      const commodity = route.commodities?.find((commodity: CommodityEntity) => commodity.orderId === orderId);
+      return {
+        ...commodity?.order,
+        commodities: route.commodities?.filter((commodity: CommodityEntity) => commodity.orderId === orderId)
+      } as OrderEntity;
+    });
+
     const newRoute: RouteEntity = {
+      commodityUniq: [],
+      expand: false,
+      status: '',
+      totalCommodity: 0,
       ...route,
-      orders: route.orders.map((order) => {
-        return Object.assign(order, {
-          commodities: order.commodities.sort((a, b) => a.id - b.id),
+      orders: orders.map((order) => {
+        return {
+          ...order,
+          commodities: order.commodities.sort((a: CommodityEntity, b: CommodityEntity) => a.id - b.id),
           expand: true
-        });
+        } as OrderEntity;
       })
     };
 
@@ -234,7 +257,7 @@ export class RouteEffect {
             totalCommodity: order.commodities
               .filter(commodity => commodity.routeId)
               .reduce((total, commodity) => total + commodity.amount, 0),
-            expand: true
+            expand: expandedAll
           });
         }
       )
@@ -242,6 +265,6 @@ export class RouteEffect {
     return {
       ...r,
       totalCommodity: r.orders.reduce((total, order) => total + order.totalCommodity, 0)
-    };
+    } as RouteEntity;
   }
 }

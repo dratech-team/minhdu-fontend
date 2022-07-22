@@ -16,6 +16,7 @@ import { RouterConstants } from '../../../../shared/constants';
 import { RouteComponentService } from '../../shared';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { RouteEntity } from '../../entities';
+import { arrayUpdate } from '@datorama/akita';
 
 @Component({
   templateUrl: 'detail-route.component.html',
@@ -42,9 +43,9 @@ export class DetailRouteComponent implements OnInit {
     private readonly modal: NzModalService,
     private readonly routeQuery: RouteQuery,
     private readonly accountQuery: AccountQuery,
-    private readonly routeStore: RouteStore,
+    private readonly routeStore: RouteStore
   ) {
-    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+    this.router.routeReuseStrategy.shouldReuseRoute = function() {
       return false;
     };
   }
@@ -59,9 +60,13 @@ export class DetailRouteComponent implements OnInit {
 
   public onExpandAll() {
     const expandedAll = this.routeQuery.getValue().expandedAll;
-    this.routeQuery.getAll().forEach((route: RouteEntity) => {
-      this.routeStore.update(route.id, { expand: !expandedAll });
-    });
+    const route = this.routeQuery.getEntity(this.routeId);
+    if (route) {
+      this.routeStore.update(route.id, ({ orders }) => ({
+        orders: arrayUpdate(orders, orders.map(order => order.id), { expand: !expandedAll })
+      }));
+    }
+
     this.routeStore.update((state) => ({ ...state, expandedAll: !expandedAll }));
   }
 
@@ -150,10 +155,10 @@ export class DetailRouteComponent implements OnInit {
     });
   }
 
-  public onRoute(id: number, type: "ORDER" | "ROUTE") {
-    if(type === "ORDER") {
+  public onRoute(id: number, type: 'ORDER' | 'ROUTE') {
+    if (type === 'ORDER') {
       this.router.navigate([RouterConstants.ORDER.DETAIL, id]).then();
-    }else {
+    } else {
       this.router.navigate([RouterConstants.ROUTE.DETAIL, id]).then();
     }
   }
