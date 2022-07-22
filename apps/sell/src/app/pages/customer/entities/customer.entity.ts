@@ -1,7 +1,7 @@
 import { District, Province, Ward } from '@minhdu-fontend/data-models';
 import { BaseCustomerEntity } from './base-customer.entity';
 import { OrderEntity } from '../../order/enitities/order.entity';
-import { PaymentEntity } from '../../payment/entities/payment.entity';
+import { PaymentEntity } from '../../payment/entities';
 
 export interface CustomerEntity extends BaseCustomerEntity {
   readonly province: Province;

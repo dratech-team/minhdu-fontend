@@ -104,6 +104,7 @@ export class CustomerComponent implements OnInit {
           CustomerActions.loadAll({ search: this.mapCustomer(formGroup), isPaginate: false })
         );
       });
+
   }
 
   public addOrder($event?: any) {
