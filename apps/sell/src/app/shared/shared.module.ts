@@ -31,6 +31,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { PriceCommodityPipe, UiPipe } from './pipe';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 @NgModule({
   imports: [
@@ -59,7 +60,8 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     NzSelectModule,
     NzRadioModule,
     NzDatePickerModule,
-    NzModalModule
+    NzModalModule,
+    TooltipModule
   ],
   declarations: [
     OrderListComponent,

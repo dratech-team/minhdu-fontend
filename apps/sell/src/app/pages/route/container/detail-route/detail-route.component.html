@@ -265,8 +265,9 @@
                 </div>
                 <ng-template #bsx>
                   <a
-                    *ngIf='commodity.route; else add'
+                    class='text-danger'
                     target='_blank'
+                    *ngIf='commodity.route; else add'
                     (click)='onRoute(commodity.route.id, "ROUTE")'
                   >
                     {{ commodity?.route?.bsx }}

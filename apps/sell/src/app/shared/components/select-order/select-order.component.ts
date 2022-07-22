@@ -20,7 +20,7 @@ import { debounceTime, startWith } from 'rxjs/operators';
 export class SelectOrderComponent implements OnInit {
   @Input() columns!: SortTypeOrderEnum[];
   @Input() formGroup!: UntypedFormGroup;
-  @Input() pickOne = false;
+  @Input() selectOne = false;
   @Input() customerId?: number;
 
   account$ = this.accountQuery.selectCurrentUser();
@@ -31,8 +31,8 @@ export class SelectOrderComponent implements OnInit {
   orders: OrderEntity[] = [];
   checked = true;
   indeterminate = false;
-  setOfCheckedOrder = new Set<OrderEntity>();
-  setOfCheckedCommodity = new Set<CommodityEntity>();
+  orderSelected = new Set<OrderEntity>();
+  commoditySelected = new Set<CommodityEntity>();
 
   RouterConstants = RouterConstants;
   ModeEnum = ModeEnum;
@@ -40,7 +40,7 @@ export class SelectOrderComponent implements OnInit {
   SortTypeOrderEnum = SortTypeOrderEnum;
 
   formGroupTable = new FormGroup({
-    filterRoute: new FormControl<boolean>(false),
+    filterRoute: new FormControl<boolean>(true),
     search: new FormControl<string>(''),
     startedAt: new FormControl<Date[] | null>([
       getFirstDayInMonth(new Date()),
@@ -62,7 +62,7 @@ export class SelectOrderComponent implements OnInit {
 
   ngOnInit(): void {
     this.formGroup.value.orders?.map((item: OrderEntity) => {
-      this.setOfCheckedOrder.add(item);
+      this.orderSelected.add(item);
     });
     this.formGroupTable.valueChanges
       .pipe(debounceTime(500), startWith(this.formGroupTable.value))
@@ -90,38 +90,34 @@ export class SelectOrderComponent implements OnInit {
   }
 
   isOrderSelected(order: OrderEntity): boolean {
-    return order.commodities.some(commodity => commodity.orderId);
-  }
-
-  isOrderSelectedAll(): boolean {
-    return this.setOfCheckedOrder.size === this.orderQuery.getCount();
+    return order.commodities.every(commodity => commodity.routeId !== null);
   }
 
   updateCheckedSet(order: OrderEntity, checked: boolean): void {
     if (checked) {
-      if (this.pickOne) {
-        this.setOfCheckedOrder.clear();
-        this.setOfCheckedOrder.add(order);
+      if (this.selectOne) {
+        this.orderSelected.clear();
+        this.orderSelected.add(order);
       } else {
-        this.setOfCheckedOrder.add(order);
+        this.orderSelected.add(order);
         order.commodities.map((item) => {
-          if (!item.route && !this.setOfCheckedCommodity.has(item)) {
-            this.setOfCheckedCommodity.add(item);
+          if (!item.route && !this.commoditySelected.has(item)) {
+            this.commoditySelected.add(item);
           }
         });
       }
     } else {
       order.commodities.map((item) => {
-        if (this.setOfCheckedCommodity.has(item)) {
-          this.setOfCheckedCommodity.delete(item);
+        if (this.commoditySelected.has(item)) {
+          this.commoditySelected.delete(item);
         }
       });
-      this.setOfCheckedOrder.delete(order);
+      this.orderSelected.delete(order);
     }
-    this.formGroup.get('orders')?.setValue(Array.from(this.setOfCheckedOrder));
+    this.formGroup.get('orders')?.setValue(Array.from(this.orderSelected));
     this.formGroup
       .get('commodities')
-      ?.setValue(Array.from(this.setOfCheckedCommodity));
+      ?.setValue(Array.from(this.commoditySelected));
   }
 
   onAllChecked(checked: boolean) {
@@ -136,10 +132,10 @@ export class SelectOrderComponent implements OnInit {
 
   private refreshCheckedStatus(): void {
     this.checked = this.orders.every((order) =>
-      this.setOfCheckedOrder.has(order)
+      this.orderSelected.has(order)
     );
     this.indeterminate =
-      this.orders.some((order) => this.setOfCheckedOrder.has(order)) &&
+      this.orders.some((order) => this.orderSelected.has(order)) &&
       !this.checked;
   }
 
@@ -164,25 +160,25 @@ export class SelectOrderComponent implements OnInit {
 
   onItemCheckedCommodity(commodity: any, order: OrderEntity, checked: boolean) {
     if (checked) {
-      if (!this.setOfCheckedOrder.has(order)) {
-        this.setOfCheckedOrder.add(order);
+      if (!this.orderSelected.has(order)) {
+        this.orderSelected.add(order);
       }
-      this.setOfCheckedCommodity.add(commodity);
+      this.commoditySelected.add(commodity);
     } else {
-      this.setOfCheckedCommodity.delete(commodity);
-      const all = order.commodities.every((item) => !this.setOfCheckedCommodity.has(item));
+      this.commoditySelected.delete(commodity);
+      const all = order.commodities.every((item) => !this.commoditySelected.has(item));
       if (all) {
-        this.setOfCheckedOrder.delete(order);
+        this.orderSelected.delete(order);
       }
     }
-    this.formGroup.get('orders')?.setValue(Array.from(this.setOfCheckedOrder));
+    this.formGroup.get('orders')?.setValue(Array.from(this.orderSelected));
     this.formGroup
       .get('commodities')
-      ?.setValue(Array.from(this.setOfCheckedCommodity));
+      ?.setValue(Array.from(this.commoditySelected));
     this.refreshCheckedStatus();
   }
 
   checkOrderSelect(order: OrderEntity): boolean {
-    return Array.from(this.setOfCheckedOrder).some((e) => e.id === order.id) && this.isOrderSelected(order);
+    return Array.from(this.orderSelected).some((e) => e.id === order.id) && this.isOrderSelected(order);
   }
 }
