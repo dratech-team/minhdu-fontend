@@ -159,7 +159,7 @@
             </thead>
             <tbody>
             <ng-template ngFor let-order let-i='index' [ngForOf]='nestedTable.data'>
-              <tr (click)='onRoute(order.id)'>
+              <tr (click)='onRoute(order.id, "ORDER")'>
                 <td
                   (click)='$event.stopPropagation()'
                   [(nzExpand)]='order.expand'
@@ -249,7 +249,7 @@
               </td>
               <td class='text-center'>
                 <div
-                  *ngIf='commodity.routeId; else bsx'
+                  *ngIf='commodity.routeId && commodity.routeId === route.id; else bsx'
                   class='d-flex justify-content-center align-items-center'
                 >
                   <button
@@ -265,26 +265,24 @@
                 </div>
                 <ng-template #bsx>
                   <a
+                    *ngIf='commodity.route; else add'
                     target='_blank'
-                    *ngIf='commodity.route'
-                    [routerLink]='[
-                      RouterConstants.ROUTE.DETAIL,
-                      commodity?.route?.id
-                    ]'
+                    (click)='onRoute(commodity.route.id, "ROUTE")'
                   >
                     {{ commodity?.route?.bsx }}
                   </a>
-                  <button
-                    nz-button
-                    nzType='primary'
-                    nzGhost
-                    nz-tooltip
-                    *ngIf='!commodity.route'
-                    nzTooltipTitle='Hàng hoá này chưa thuộc tuyến xe nào cả. Nhấn thêm để thêm vào tuyến xe hiện tại.'
-                    (click)='onAddCommodity(commodity)'
-                  >
-                    Thêm
-                  </button>
+                  <ng-template #add>
+                    <button
+                      nzType='primary'
+                      nz-button
+                      nzGhost
+                      nz-tooltip
+                      nzTooltipTitle='Hàng hoá này chưa thuộc tuyến xe nào cả. Nhấn thêm để thêm vào tuyến xe hiện tại.'
+                      (click)='onAddCommodity(commodity)'
+                    >
+                      Thêm
+                    </button>
+                  </ng-template>
                 </ng-template>
               </td>
             </tr>

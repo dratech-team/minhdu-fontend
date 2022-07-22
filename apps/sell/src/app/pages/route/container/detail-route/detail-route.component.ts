@@ -44,6 +44,9 @@ export class DetailRouteComponent implements OnInit {
     private readonly accountQuery: AccountQuery,
     private readonly routeStore: RouteStore,
   ) {
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
   }
 
   ngOnInit() {
@@ -147,8 +150,12 @@ export class DetailRouteComponent implements OnInit {
     });
   }
 
-  public onRoute(orderId: number) {
-    this.router.navigate([RouterConstants.ORDER.DETAIL, orderId]).then();
+  public onRoute(id: number, type: "ORDER" | "ROUTE") {
+    if(type === "ORDER") {
+      this.router.navigate([RouterConstants.ORDER.DETAIL, id]).then();
+    }else {
+      this.router.navigate([RouterConstants.ROUTE.DETAIL, id]).then();
+    }
   }
 
   totalCommodity(route: RouteEntity) {
