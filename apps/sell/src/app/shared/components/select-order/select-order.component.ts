@@ -89,6 +89,14 @@ export class SelectOrderComponent implements OnInit {
     this.formGroup.get('order')?.setValue(order);
   }
 
+  isOrderSelected(order: OrderEntity): boolean {
+    return order.commodities.some(commodity => commodity.orderId);
+  }
+
+  isOrderSelectedAll(): boolean {
+    return this.setOfCheckedOrder.size === this.orderQuery.getCount();
+  }
+
   updateCheckedSet(order: OrderEntity, checked: boolean): void {
     if (checked) {
       if (this.pickOne) {
@@ -175,6 +183,6 @@ export class SelectOrderComponent implements OnInit {
   }
 
   checkOrderSelect(order: OrderEntity): boolean {
-    return Array.from(this.setOfCheckedOrder).some((e) => e.id === order.id);
+    return Array.from(this.setOfCheckedOrder).some((e) => e.id === order.id) && this.isOrderSelected(order);
   }
 }

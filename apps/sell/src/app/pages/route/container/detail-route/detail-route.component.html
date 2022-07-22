@@ -129,6 +129,7 @@
           <nz-table
             #nestedTable
             nzSize='middle'
+            [nzBordered]='true'
             [nzShowPagination]='false'
             [nzFrontPagination]='false'
             [nzScroll]="{ y: '500px' }"
@@ -136,7 +137,15 @@
           >
             <thead>
             <tr style='height: 55px'>
-              <th nzWidth='30px'></th>
+              <th nzWidth='50px' nzLeft (click)='onExpandAll()'>
+                <img
+                  *ngIf='expandedAll$ | async; else dash_square'
+                  src='assets/icon/share/dash-square.svg'
+                />
+                <ng-template #dash_square>
+                  <img src='assets/icon/share/plus-square.svg' />
+                </ng-template>
+              </th>
               <th nzWidth='60px'>STT</th>
               <th nzWidth='60px' *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>ID</th>
               <th>Khách hàng</th>
@@ -167,10 +176,10 @@
                   }}
                 </td>
                 <td class='pointer'>
-                  {{ order?.ward?.name }}
+                  {{ order.province.name }}
                 </td>
                 <td class='pointer'>
-                  {{ order.explain }}
+                  {{ order.explain || "Chưa có dữ liệu" }}
                 </td>
                 <td class='pointer' style='color: red'>
                   {{ order.totalCommodity | number: '1.0-0' | notEmpty: '0' }}
@@ -213,8 +222,8 @@
                 <nz-table
                   #innerTable
                   nzSize='middle'
+                  [nzBordered]='true'
                   [nzData]='order.commodities'
-                  [nzFrontPagination]='false'
                   [nzShowPagination]='false'
                 >
             <thead>

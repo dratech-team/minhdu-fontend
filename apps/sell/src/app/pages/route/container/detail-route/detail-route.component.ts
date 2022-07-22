@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RouteActions, RouteQuery } from '../../state';
+import { RouteActions, RouteQuery, RouteStore } from '../../state';
 import { ModeEnum, PaymentType } from '@minhdu-fontend/enums';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CancelEnum, UpdaterRouteTypeEnum } from '../../enums';
@@ -24,6 +24,7 @@ import { RouteEntity } from '../../entities';
 export class DetailRouteComponent implements OnInit {
   account$ = this.accountQuery.selectCurrentUser();
   loading$ = this.routeQuery.selectLoading();
+  expandedAll$ = this.routeQuery.select((state) => state.expandedAll);
   route$ = this.routeQuery.selectEntity(this.routeId)
     .pipe(map(route => route && JSON.parse(JSON.stringify(route))));
 
@@ -40,7 +41,8 @@ export class DetailRouteComponent implements OnInit {
     private readonly router: Router,
     private readonly modal: NzModalService,
     private readonly routeQuery: RouteQuery,
-    private readonly accountQuery: AccountQuery
+    private readonly accountQuery: AccountQuery,
+    private readonly routeStore: RouteStore,
   ) {
   }
 
@@ -50,6 +52,14 @@ export class DetailRouteComponent implements OnInit {
 
   get routeId(): number {
     return this.activatedRoute.snapshot.params.id;
+  }
+
+  public onExpandAll() {
+    const expandedAll = this.routeQuery.getValue().expandedAll;
+    this.routeQuery.getAll().forEach((route: RouteEntity) => {
+      this.routeStore.update(route.id, { expand: !expandedAll });
+    });
+    this.routeStore.update((state) => ({ ...state, expandedAll: !expandedAll }));
   }
 
   public onAddCommodity(commodity: CommodityEntity) {

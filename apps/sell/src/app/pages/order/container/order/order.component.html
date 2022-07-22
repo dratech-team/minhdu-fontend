@@ -138,6 +138,7 @@
       <nz-table
         #tableOrder
         nzSize='middle'
+        [nzBordered]='true'
         [nzFrontPagination]='false'
         [nzShowPagination]='false'
         [nzScroll]="{ x: '2300px', y: '70vh' }"
@@ -271,9 +272,9 @@
         >
           <tr
             class='pointer'
+            *ngIf='ui$ | async as ui'
             (click)='orderComponentService.onDetail(order.id)'
             (contextmenu)='onContextMenu($event, menu)'
-            *ngIf='ui$ | async as ui'
           >
             <nz-dropdown-menu #menu='nzDropdownMenu'>
               <ul class='context-menu' nz-menu>
@@ -396,17 +397,18 @@
           <tr [nzExpand]='order.expand'>
             <nz-table
               #innerTable
-              [nzData]='order.commodities'
               nzSize='middle'
+              [nzBordered]='true'
+              [nzData]='order.commodities'
               [nzShowPagination]='false'
             >
         <thead>
         <tr>
           <th class='text-center'>Hàng hoá</th>
-          <th class='text-center' [nzWidth]='widthConstant.amount'>
+          <th class='text-center' [nzWidth]="'170px'">
             Số lượng
           </th>
-          <th class='text-center' [nzWidth]='widthConstant.price'>
+          <th class='text-center' [nzWidth]="'200px'">
             Giá
           </th>
         </tr>

@@ -4,7 +4,6 @@ import { OrderEntity } from '../../order/enitities/order.entity';
 
 export interface CommodityEntity extends BaseCommodityEntity {
   orders: OrderEntity[];
-  isSelect: boolean;
   gift: number;
   more: {
     amount: number;

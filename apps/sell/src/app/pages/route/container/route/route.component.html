@@ -83,10 +83,11 @@
         #tableRoute
         nzSize='middle'
         [nzLoading]='(loading$ | async) && (total$ | async) === 0'
+        [nzData]='routes$ | async'
+        [nzBordered]='true'
         [nzScroll]="{ x: '2000px', y: '70vh' }"
         [nzFrontPagination]='false'
         [nzShowPagination]='false'
-        [nzData]='routes$ | async'
       >
         <thead>
         <tr>
@@ -165,8 +166,9 @@
           <tr [nzExpand]='route.expand'>
             <nz-table
               #innerTable
-              [nzData]='route.orders'
+              [nzBordered]='true'
               nzSize='small'
+              [nzData]='route.orders'
               [nzShowPagination]='false'
             >
         <thead>

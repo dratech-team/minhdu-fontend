@@ -22,6 +22,7 @@
     <tr>
       <th
         nzWidth='60px'
+        [nzDisabled]='isOrderSelectedAll()'
         [nzShowCheckbox]='!pickOne'
         [(nzChecked)]='checked'
         [nzIndeterminate]='indeterminate'
@@ -83,6 +84,7 @@
         </td>
         <ng-template #pickMore>
           <td
+            [nzDisabled]="isOrderSelected(order)"
             [nzChecked]='checkOrderSelect(order)'
             (nzCheckedChange)='onItemChecked(order, $event)'
           ></td>

@@ -9,7 +9,6 @@ import { RouteQuery } from './route.query';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { PaginationDto } from '@minhdu-fontend/constants';
 import { RouteEntity } from '../entities';
-import { OrderService } from '../../order/service';
 
 @Injectable()
 export class RouteEffect {
@@ -18,7 +17,6 @@ export class RouteEffect {
     private readonly routeQuery: RouteQuery,
     private readonly routeStore: RouteStore,
     private readonly routeService: RouteService,
-    private readonly orderService: OrderService,
     private readonly message: NzMessageService
   ) {
   }
@@ -123,10 +121,6 @@ export class RouteEffect {
               loading: false,
               error: null
             }));
-            this.orderService.pagination({ routeId: props.id })
-              .subscribe((res) => {
-                this.routeStore.update(route.id, { orders: res.data });
-              });
           }),
           catchError((err) => {
             this.routeStore.update((state) => ({
