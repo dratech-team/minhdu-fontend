@@ -122,6 +122,7 @@
     <button
       nz-button
       nzType='primary'
+      *ngIf='data !== null && data !== undefined'
       [nzLoading]='(loading$ | async)'
       (click)='onSubmit(true)'
     >

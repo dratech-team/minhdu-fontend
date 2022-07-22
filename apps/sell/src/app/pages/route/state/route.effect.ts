@@ -9,7 +9,7 @@ import { RouteQuery } from './route.query';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { PaginationDto } from '@minhdu-fontend/constants';
 import { RouteEntity } from '../entities';
-import { DatePipe } from '@angular/common';
+import { OrderService } from '../../order/service';
 
 @Injectable()
 export class RouteEffect {
@@ -18,8 +18,8 @@ export class RouteEffect {
     private readonly routeQuery: RouteQuery,
     private readonly routeStore: RouteStore,
     private readonly routeService: RouteService,
-    private readonly message: NzMessageService,
-    private readonly datePipe: DatePipe
+    private readonly orderService: OrderService,
+    private readonly message: NzMessageService
   ) {
   }
 
@@ -116,15 +116,26 @@ export class RouteEffect {
           loading: true
         }));
         return this.routeService.getOne(props.id).pipe(
-          map((route) => {
+          tap((route) => {
             this.routeStore.upsert(route.id, this.mapToRoute(route));
             this.routeStore.update((state) => ({
               ...state,
               loading: false,
               error: null
             }));
+            this.orderService.pagination({ routeId: props.id })
+              .subscribe((res) => {
+                this.routeStore.update(route.id, { orders: res.data });
+              });
           }),
-          catchError((err) => of(RouteActions.error(err)))
+          catchError((err) => {
+            this.routeStore.update((state) => ({
+              ...state,
+              loading: null,
+              error: err
+            }));
+            return of(RouteActions.error(err));
+          })
         );
       }
     )
@@ -236,10 +247,6 @@ export class RouteEffect {
     };
     return {
       ...r,
-      // startedAt: this.datePipe.transform(r.startedAt, 'dd/MM/yyyy') as string,
-      // endedAt: this.datePipe.transform(r.endedAt, 'dd/MM/yyyy') || 'Chưa cập nhật',
-      // status: this.datePipe.transform(r.endedAt, 'dd/MM/yyyy') || 'Đang chạy',
-      // garage: r.garage || 'Chưa cập nhật',
       totalCommodity: r.orders.reduce((total, order) => total + order.totalCommodity, 0)
     };
   }

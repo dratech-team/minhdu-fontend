@@ -127,7 +127,6 @@
           <tr
             (contextmenu)='onContextMenu($event, menu)'
             class='pointer'
-            (click)='routeComponentService.onDetail(route.id)'
           >
             <nz-dropdown-menu #menu='nzDropdownMenu'>
               <ul class='context-menu' nz-menu>
@@ -150,6 +149,7 @@
               *ngFor='let ui of (ui$ | async)'
               [nzLeft]='ui.pinned'
               [ngStyle]='{ color: ui.textColor}'
+              (click)='routeComponentService.onDetail(route.id)'
             >
               {{
               (ui.key.length === 1

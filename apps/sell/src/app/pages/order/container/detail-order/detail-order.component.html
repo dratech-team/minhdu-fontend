@@ -184,8 +184,8 @@
                 <td class='text-center'>
                   {{commodity.price | pricecommodity}}
                 </td>
-                <td class='text-center'>{{ commodity.amount }}</td>
-                <td class='text-center'>{{ commodity.gift || '0' }}</td>
+                <td class='text-center'>{{ commodity.amount | number }}</td>
+                <td class='text-center'>{{ (commodity.gift | number) || '0' }}</td>
                 <td class='text-center'>
                   {{
                   commodity.more?.amount | number: '1.0-0' | notEmpty: '0'
@@ -339,7 +339,7 @@
             </tr>
             </thead>
             <tbody>
-            <ng-template ngFor let-orderHistory [ngForOf]='tableOrderHistory.data'>
+            <ng-template ngFor let-orderHistory let-i='index' [ngForOf]='tableOrderHistory.data'>
               <tr class='pointer'>
                 <td
                   class='text-center'
@@ -348,11 +348,11 @@
                   {{orderHistory.id}}
                 </td>
                 <td>
-                  {{ (orderHistory.confirmedAt | date: 'hh:mm:ss - dd/MM/yyyy') || 'Huỷ chốt đơn'}}
+                  {{ (orderHistory.confirmedAt | date: 'hh:mm:ss - dd/MM/yyyy') || 'Chưa/huỷ chốt đơn'}}
                 </td>
                 <td>{{ orderHistory.commodity.name }}</td>
                 <td>{{ orderHistory.price | pricecommodity}}</td>
-                <td>{{ orderHistory.amount }}</td>
+                <td>{{ orderHistory.amount | number }}</td>
                 <td>{{ orderHistory.gift }}</td>
                 <td>{{ orderHistory.more }}</td>
                 <td>

@@ -5,6 +5,7 @@ import { BaseSearchDto } from '@minhdu-fontend/base-dto';
 
 export interface BaseSearchOrderDto extends SearchRangeDto {
   readonly customerId?: number;
+  readonly routeId?: number;
   readonly status?: OrderStatusEnum;
   readonly orderBy?: string;
   readonly orderType?: string;
