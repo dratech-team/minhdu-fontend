@@ -9,7 +9,6 @@ import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { District, Province, Ward } from '@minhdu-fontend/data-models';
-import { OrderEntity } from '../../enitities/order.entity';
 import { BaseOrderEntity } from '../../enitities';
 
 @Component({
