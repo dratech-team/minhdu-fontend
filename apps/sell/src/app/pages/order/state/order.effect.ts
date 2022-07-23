@@ -8,7 +8,6 @@ import { ConvertBoolean } from '@minhdu-fontend/enums';
 import { Router } from '@angular/router';
 import { OrderQuery } from './order.query';
 import { OrderStore } from './order.store';
-import { RouteActions } from '../../route/state';
 import { CommodityUniq } from '../../commodity/entities';
 import { BaseOrderEntity, OrderEntity } from '../enitities';
 import { AddOrderDto, UpdateOrderDto } from '../dto';
@@ -102,27 +101,8 @@ export class OrderEffect {
     ofType(OrderActions.update),
     switchMap((props: UpdateOrderDto) => {
       return this.orderService.update(props).pipe(
-        map((response) => {
-          if (response.deliveredAt) {
-            // this.customerStore.update(response.customerId, (entity) => {
-            //   return {
-            //     debt: entity.debt
-            //       ? entity.debt +
-            //       response.paymentTotal -
-            //       response.commodityTotal
-            //       : entity.debt,
-            //     delivering: arrayRemove(entity.delivering, response.id),
-            //     delivered: arrayAdd(entity.delivered, response)
-            //   };
-            // });
-          }
-          if (props.inRoute) {
-            this.actions$.dispatch(
-              RouteActions.loadOne({ id: props.inRoute.routeId })
-            );
-          }
-          this.message.success('Cập nhật thành công');
-          this.orderStore.update(response.id, response);
+        tap((res) => {
+          this.orderStore.update(res.id, this.mapToOrder(res));
         }),
         catchError((err) => {
           return of(OrderActions.error(err));
@@ -138,14 +118,6 @@ export class OrderEffect {
       this.orderService.hide(props.id, props.hide).pipe(
         map((res) => {
           this.orderStore.update(res.id, res);
-          // this.customerStore.update(res.customerId, (entity) => {
-          //   return {
-          //     debt: entity.debt
-          //       ? entity.debt + (res.paymentTotal - res.commodityTotal)
-          //       : entity.debt,
-          //     delivered: arrayUpdate(entity.delivered, res.id, res)
-          //   };
-          // });
         }),
         catchError((err) => of(OrderActions.error(err)))
       )
@@ -339,7 +311,7 @@ export class OrderEffect {
     const routes = routeIds.map(routeId => {
       const commodity = order.commodities.find(commodity => commodity.routeId === routeId);
       return commodity?.route as RouteEntity;
-    }) as RouteEntity[];
+    }).filter(route => route) as RouteEntity[];
 
     return {
       ...order,
