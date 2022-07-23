@@ -1,10 +1,12 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
 import { AddOrderDto, LoadOneOrderDto, RemoveOrderDto, SearchOrderDto, UpdateOrderDto } from '../dto';
+import { BaseOrderEntity, OrderEntity } from '../enitities';
+import { ResponsePaginateOrderEntity } from '../enitities/response-paginate-order.entity';
 
 const addOne = createAction('[ORDER] Add One', props<AddOrderDto>());
 
 const loadAll = createAction(
-  '[ORDER] Load Init',
+  '[ORDER] Load All',
   props<SearchOrderDto>()
 );
 
@@ -38,6 +40,22 @@ const historyOrder = createAction(
   props<{ id: number }>()
 );
 
+const addOneSuccess = createAction(
+  '[ORDER] Add One Successfully',
+  props<BaseOrderEntity>()
+);
+
+const loadAllSuccess = createAction(
+  '[ORDER] Load All Successfully',
+  props<ResponsePaginateOrderEntity>()
+);
+
+const removeOneSuccess = createAction(
+  '[ORDER] Remove One Successfully',
+  props<OrderEntity>()
+);
+
+
 export const OrderActions = {
   addOne,
   loadAll,
@@ -49,5 +67,8 @@ export const OrderActions = {
   cancel,
   restore,
   error,
-  historyOrder
+  historyOrder,
+  addOneSuccess,
+  loadAllSuccess,
+  removeOneSuccess
 };

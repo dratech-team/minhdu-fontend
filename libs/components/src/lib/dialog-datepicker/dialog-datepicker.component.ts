@@ -18,7 +18,6 @@ export class DialogDatePickerComponent {
   }
 
   ngOnInit() {
-    console.log("dateitme ==== ",   this.datePipe.transform(this.datetime, 'dd/MM/yyyy'))
     this.formGroup = new FormGroup({
       date: new FormControl<string | null>(
         this.datePipe.transform(this.datetime, 'MM/dd/yyyy'),
@@ -32,6 +31,6 @@ export class DialogDatePickerComponent {
     if (this.formGroup.invalid) {
       return;
     }
-    this.nzModalRef.close(new Date(this.formGroup.value));
+    this.nzModalRef.close({date: new Date(this.formGroup.value.date)});
   }
 }

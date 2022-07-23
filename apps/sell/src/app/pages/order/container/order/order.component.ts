@@ -30,6 +30,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { CommodityQuery } from '../../../commodity/state';
 import { CommodityTemplateActions } from '../../../commodity-template/state/commodity-template.action';
 import { CommodityTemplateQuery } from '../../../commodity-template/state/commodity-template.query';
+import { BaseOrderEntity } from '../../enitities';
 
 @Component({
   templateUrl: 'order.component.html',
@@ -164,9 +165,9 @@ export class OrderComponent implements OnInit {
 
   public onExpandAll() {
     const expandedAll = this.orderQuery.getValue().expandedAll;
-    this.orderQuery.getAll().forEach((order: OrderEntity) => {
-      this.orderStore.update(order.id, { expand: !expandedAll });
-    });
+    // this.orderQuery.getAll().forEach((order: BaseOrderEntity) => {
+    //   this.orderStore.update(order.id, { expand: !expandedAll });
+    // });
     this.orderStore.update((state) => ({ ...state, expandedAll: !expandedAll }));
   }
 

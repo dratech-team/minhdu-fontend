@@ -186,31 +186,31 @@ export class CustomerEffect {
         )
         .pipe(
           tap((res) => {
-            if (props?.isPaginate) {
-              if (props.typeOrder === 'delivering') {
-                this.customerStore.update(props.search.customerId, {
-                  delivering: this.customerQuery
-                    .getEntity(props.search.customerId)
-                    ?.delivering.concat(res.data)
-                });
-              } else {
-                this.customerStore.update(props.search.customerId, {
-                  delivered: this.customerQuery
-                    .getEntity(props.search.customerId)
-                    ?.delivered.concat(res.data)
-                });
-              }
-            } else {
-              if (props.typeOrder === 'delivering') {
-                this.customerStore.update(props.search.customerId, {
-                  delivering: res.data
-                });
-              } else {
-                this.customerStore.update(props.search.customerId, {
-                  delivered: res.data
-                });
-              }
-            }
+            // if (props?.isPaginate) {
+            //   if (props.typeOrder === 'delivering') {
+            //     this.customerStore.update(props.search.customerId, {
+            //       delivering: this.customerQuery
+            //         .getEntity(props.search.customerId)
+            //         ?.delivering.concat(res.data)
+            //     });
+            //   } else {
+            //     this.customerStore.update(props.search.customerId, {
+            //       delivered: this.customerQuery
+            //         .getEntity(props.search.customerId)
+            //         ?.delivered.concat(res.data)
+            //     });
+            //   }
+            // } else {
+            //   if (props.typeOrder === 'delivering') {
+            //     this.customerStore.update(props.search.customerId, {
+            //       delivering: res.data
+            //     });
+            //   } else {
+            //     this.customerStore.update(props.search.customerId, {
+            //       delivered: res.data
+            //     });
+            //   }
+            // }
             this.customerStore.update((state) => ({
               ...state,
               deliveringLoading: false,

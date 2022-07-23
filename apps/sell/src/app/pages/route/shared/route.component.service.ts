@@ -12,6 +12,8 @@ import {
   DialogDatePickerComponent
 } from '../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { RouterConstants } from '../../../shared/constants';
+import { OrderEntity } from '../../order/enitities/order.entity';
+import { OrderActions } from '../../order/state';
 
 @Injectable()
 export class RouteComponentService {
@@ -101,6 +103,16 @@ export class RouteComponentService {
         this.actions$.dispatch(
           RouteActions.update({ id: route.id, updates: { endedAt: res.date } })
         );
+      }
+    });
+  }
+
+  onRestore(route: RouteEntity) {
+    this.modal.warning({
+      nzTitle: 'Bạn có chắc chắn muốn khôi phục chuyến xe?',
+      nzContent: `Sau khi khôi phục chuyến xe ${route.name} có biển số ${route.bsx}. Mọi thao tác trên chuyến xe này sẽ được khôi phục..!!`,
+      nzOnOk: () => {
+        this.actions$.dispatch(RouteActions.restore({ id: route.id }));
       }
     });
   }

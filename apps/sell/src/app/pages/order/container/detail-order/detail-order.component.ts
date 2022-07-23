@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommodityUnit, ModeEnum, PaymentType } from '@minhdu-fontend/enums';
 import { OrderActions, OrderQuery } from '../../state';
 import { MatDialog } from '@angular/material/dialog';
-import { CommodityAction, CommodityQuery } from '../../../commodity/state';
+import { CommodityAction } from '../../../commodity/state';
 import { CommodityDialogComponent } from '../../../commodity/component';
 import { OrderHistoryService } from '../../service';
 import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
@@ -13,7 +13,6 @@ import { Actions } from '@datorama/akita-ng-effects';
 import { OrderHistoryEntity } from '../../enitities';
 import { CommodityEntity } from '../../../commodity/entities';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { OrderEntity } from '../../enitities/order.entity';
 import { ModalAlertEntity } from '@minhdu-fontend/base-entity';
 import {
   ModalUpdateClosedCommodityComponent
@@ -41,6 +40,7 @@ export class DetailOrderComponent implements OnInit {
   });
 
   constructor(
+    public readonly orderComponentService: OrderComponentService,
     private readonly actions$: Actions,
     private readonly activatedRoute: ActivatedRoute,
     private readonly dialog: MatDialog,
@@ -48,7 +48,6 @@ export class DetailOrderComponent implements OnInit {
     private readonly orderHistoryService: OrderHistoryService,
     private readonly modal: NzModalService,
     private readonly message: NzMessageService,
-    private readonly componentService: OrderComponentService,
     private readonly formBuilder: UntypedFormBuilder,
     private readonly orderQuery: OrderQuery,
     private readonly accountQuery: AccountQuery
@@ -64,7 +63,7 @@ export class DetailOrderComponent implements OnInit {
       if (param.isUpdate === 'true') {
         const order = this.orderQuery.getEntity(this.getOrderId);
         if (order) {
-          this.onUpdate(order, 'GENERAL');
+          this.orderComponentService.onUpdate(order, 'GENERAL');
         }
       }
     });
@@ -78,22 +77,6 @@ export class DetailOrderComponent implements OnInit {
 
   get getOrderId(): number {
     return this.activatedRoute.snapshot.params.id;
-  }
-
-  onDetail(id: number) {
-    this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id]).then();
-  }
-
-  onUpdate(order: OrderEntity, type?: 'GENERAL' | 'COMMODITY') {
-    this.componentService.onUpdate(order, type);
-  }
-
-  onRemove(order: OrderEntity) {
-    this.componentService.onRemove(order);
-  }
-
-  onRestore(order: OrderEntity) {
-    this.componentService.onRestore(order);
   }
 
   public onUpdateCommodity(orderId: number, commodity: CommodityEntity) {

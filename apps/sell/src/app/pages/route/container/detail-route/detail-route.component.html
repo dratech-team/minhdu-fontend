@@ -1,10 +1,19 @@
 <nz-skeleton *ngIf='loading$ | async' class='loading'></nz-skeleton>
-
+taik
 <div
   class='animated fadeIn container'
   *ngIf='(route$ | async) as route'
 >
   <div class='mt-4 mr-3 d-flex justify-content-end'>
+    <button
+      class='mr-2'
+      nz-button
+      nzGhost
+      nzType='primary'
+      (click)='routeComponentService.onRestore(route)'
+    >
+      Khôi phục
+    </button>
     <button nz-button nzType='primary' nzDanger (click)='routeComponentService.onRemove(route)'>
       Xoá
     </button>
@@ -249,7 +258,7 @@
               </td>
               <td class='text-center'>
                 <div
-                  *ngIf='commodity.routeId && commodity.routeId === route.id; else bsx'
+                  *ngIf='commodity.routeId && commodity.routeId === route.id && !commodity.deliveredAt; else bsx'
                   class='d-flex justify-content-center align-items-center'
                 >
                   <button
@@ -270,7 +279,7 @@
                     *ngIf='commodity.route; else add'
                     (click)='onRoute(commodity.route.id, "ROUTE")'
                   >
-                    {{ commodity?.route?.bsx }}
+                    {{ (commodity.deliveredAt | date: 'dd/MM/yyyy') || commodity?.route?.bsx }}
                   </a>
                   <ng-template #add>
                     <button

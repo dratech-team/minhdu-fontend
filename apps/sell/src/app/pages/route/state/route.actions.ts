@@ -19,6 +19,11 @@ const cancel = createAction(
   props<{ id: number; cancelDTO: CancelDto }>()
 );
 
+const restore = createAction(
+  '[ROUTE] Restore',
+  props<{ id: number}>()
+);
+
 const error = createAction('[ROUTE] Error', props<{ error: string }>());
 
 export const RouteActions = {
@@ -28,5 +33,6 @@ export const RouteActions = {
   update,
   remove,
   cancel,
+  restore,
   error
 };

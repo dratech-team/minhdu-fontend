@@ -7,4 +7,5 @@ export interface BaseCommodityEntity extends BaseEntity {
   readonly amount: number;
   readonly unit: CommodityUnit;
   readonly price: number;
+  readonly deliveredAt?: Date;
 }

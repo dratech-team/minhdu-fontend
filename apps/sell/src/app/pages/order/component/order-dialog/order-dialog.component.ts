@@ -10,13 +10,14 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { District, Province, Ward } from '@minhdu-fontend/data-models';
 import { OrderEntity } from '../../enitities/order.entity';
+import { BaseOrderEntity } from '../../enitities';
 
 @Component({
   templateUrl: 'order-dialog.component.html'
 })
 export class OrderDialogComponent implements OnInit {
   @Input() data?: Partial<{
-    order: OrderEntity,
+    order: BaseOrderEntity,
     tab: number,
     customerId?: number,
     isUpdate: boolean

@@ -14,7 +14,7 @@ if (environment.production) {
 
 const selectUICustomer: PersistStateSelectFn<CustomerState> = (state) => ({ ui: state.ui });
 const selectUIOrder: PersistStateSelectFn<OrderState> = (state) => ({ ui: state.ui });
-const selectUIRoute: PersistStateSelectFn<RouteState> = (state) => ({ ui: state.ui });
+const selectUIRoute: PersistStateSelectFn<RouteState> = (state) => ({ ui: state.ui, expandedAll: state.expandedAll });
 
 selectUICustomer.storeName = StorageName.CUSTOMER;
 selectUIOrder.storeName = StorageName.ORDER;

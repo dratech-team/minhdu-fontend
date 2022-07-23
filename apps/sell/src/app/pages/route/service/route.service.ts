@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { BaseRouteEntity } from '../entities';
 import { AddRouteDto, CancelDto, UpdateRouteDto } from '../dto';
+import { OrderEntity } from '../../order/enitities/order.entity';
 
 @Injectable({ providedIn: 'root' })
 export class RouteService extends BaseService<BaseRouteEntity> {
@@ -35,5 +36,9 @@ export class RouteService extends BaseService<BaseRouteEntity> {
 
   cancel(routeId: number, body: CancelDto): Observable<BaseRouteEntity> {
     return this.http.patch<BaseRouteEntity>(this.url + `/${routeId}/cancel`, body);
+  }
+
+  restore(id: BaseRouteEntity['id']): Observable<BaseRouteEntity> {
+    return this.http.patch<BaseRouteEntity>(this.url + `/${id}` + '/restore', null);
   }
 }

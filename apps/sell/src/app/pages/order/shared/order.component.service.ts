@@ -9,6 +9,7 @@ import {
   DialogDatePickerComponent
 } from '../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { Router } from '@angular/router';
+import { BaseOrderEntity } from '../enitities';
 
 @Injectable()
 export class OrderComponentService {
@@ -32,7 +33,7 @@ export class OrderComponentService {
     this.router.navigate(['don-hang/chi-tiet-don-hang', id]).then();
   }
 
-  onUpdate(order: OrderEntity, type?: 'GENERAL' | 'COMMODITY') {
+  onUpdate(order: BaseOrderEntity, type?: 'GENERAL' | 'COMMODITY') {
     if (type === 'GENERAL') {
       this.modal.create({
         nzTitle: 'Sửa đơn hàng',

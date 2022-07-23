@@ -201,6 +201,22 @@ export class RouteEffect {
   );
 
   @Effect()
+  restore$ = this.action.pipe(
+    ofType(RouteActions.restore),
+    switchMap((props) =>
+      this.routeService.restore(props.id).pipe(
+        tap((route) => {
+          this.routeStore.update(
+            route.id,
+            this.mapToRoute(route)
+          );
+        }),
+        catchError((err) => of(RouteActions.error(err)))
+      )
+    )
+  );
+
+  @Effect()
   cancel$ = this.action.pipe(
     ofType(RouteActions.cancel),
     switchMap((props) =>
@@ -214,7 +230,7 @@ export class RouteEffect {
           }
           return this.routeStore.update(
             route.id,
-            {orders: []}
+            { orders: [] }
           );
         }),
         catchError((err) => of(RouteActions.error(err)))

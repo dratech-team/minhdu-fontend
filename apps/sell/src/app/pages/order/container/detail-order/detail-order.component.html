@@ -10,7 +10,7 @@
         nz-button
         nzGhost
         nzType='primary'
-        (click)='onRestore(order)'
+        (click)='orderComponentService.onRestore(order)'
       >
         Khôi phục
       </button>
@@ -20,7 +20,7 @@
         nz-button
         nzType='primary'
         nzDanger
-        (click)='onRemove(order)'
+        (click)='orderComponentService.onRemove(order)'
       >
         Xoá
       </button>
@@ -35,7 +35,7 @@
           data-placement='top'
           title=' chỉnh sửa '
           class='edit'
-          (click)="onUpdate(order, 'GENERAL')"
+          (click)="orderComponentService.onUpdate(order, 'GENERAL')"
         >
           <img
             style='height: 15px'
@@ -134,7 +134,7 @@
             nz-button
             nzGhost
             nzType='primary'
-            (click)="onUpdate(order, 'COMMODITY')"
+            (click)="orderComponentService.onUpdate(order, 'COMMODITY')"
           >
             Thêm
           </button>
@@ -158,6 +158,7 @@
               >
                 ID
               </th>
+              <th class='text-center'>Trạng thái</th>
               <th class='text-center' nzWidth='80px'>MHH</th>
               <th class='text-center'>Tên hàng hóa</th>
               <th class='text-center'>Đơn giá</th>
@@ -179,6 +180,7 @@
                 >
                   {{commodity.id}}
                 </td>
+                <td class='text-center'>{{ (commodity.deliveredAt | date: 'dd/MM/yyyy') || commodity.routeId ? 'Đang giao' : 'Sẵn sàng' }}</td>
                 <td class='text-center'>{{ commodity.code }}</td>
                 <td class='text-center'>{{ commodity.name }}</td>
                 <td class='text-center'>
@@ -259,7 +261,7 @@
           </thead>
           <tbody>
           <ng-template ngFor let-route [ngForOf]='tableRoute.data'>
-            <tr (click)='onDetail(route.id)'>
+            <tr (click)='orderComponentService.onDetail(route.id)'>
               <td
                 class='text-center'
                 *ngIf='(account$ | async)?.mode === ModeEnum.INFO'

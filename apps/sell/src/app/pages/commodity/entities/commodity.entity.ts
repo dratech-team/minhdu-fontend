@@ -1,6 +1,6 @@
 import { RouteEntity } from '../../route/entities';
 import { BaseCommodityEntity } from './base-commodity.entity';
-import { OrderEntity } from '../../order/enitities/order.entity';
+import { OrderEntity } from '../../order/enitities';
 
 export interface CommodityEntity extends BaseCommodityEntity {
   order: OrderEntity;

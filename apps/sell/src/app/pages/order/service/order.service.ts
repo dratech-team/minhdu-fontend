@@ -4,53 +4,52 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { Update } from '@ngrx/entity';
-import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { AddOrderDto, BaseSearchOrderDto, UpdateOrderDto } from '../dto';
-import { CommodityUniq } from '../../commodity/entities';
-import { OrderEntity } from '../enitities/order.entity';
+import { BaseOrderEntity, OrderEntity } from '../enitities';
+import { ResponsePaginateOrderEntity } from '../enitities/response-paginate-order.entity';
 
 @Injectable({ providedIn: 'root' })
-export class OrderService extends BaseService<OrderEntity> {
+export class OrderService extends BaseService<BaseOrderEntity> {
   constructor(public readonly http: HttpClient) {
     super(Api.SELL.ORDER.ORDER, http);
   }
 
-  addOne(props: AddOrderDto): Observable<OrderEntity> {
+  addOne(props: AddOrderDto): Observable<BaseOrderEntity> {
     return super.addOne(props.body);
   }
 
   pagination(
     params?: BaseSearchOrderDto
-  ): Observable<ResponsePaginate<OrderEntity> & { commodityUniq: CommodityUniq[] }> {
+  ): Observable<ResponsePaginateOrderEntity> {
     return super.pagination(params);
   }
 
-  payment(id: number, body: any): Observable<Update<OrderEntity>> {
-    return this.http.patch<Update<OrderEntity>>(this.url + `/${id}/paid`, body);
+  payment(id: number, body: any): Observable<Update<BaseOrderEntity>> {
+    return this.http.patch<Update<BaseOrderEntity>>(this.url + `/${id}/paid`, body);
   }
 
-  getOne(id: OrderEntity['id']): Observable<OrderEntity> {
+  getOne(id: BaseOrderEntity['id']): Observable<BaseOrderEntity> {
     return super.getOne(id);
   }
 
-  update(updateDto: UpdateOrderDto): Observable<OrderEntity> {
+  update(updateDto: UpdateOrderDto): Observable<BaseOrderEntity> {
     return super.update(updateDto.id, updateDto.updates);
   }
 
-  hide(id: any, body: any): Observable<OrderEntity> {
-    return this.http.patch<OrderEntity>(this.url + '/hide' + `/${id}`, body);
+  hide(id: any, body: any): Observable<BaseOrderEntity> {
+    return this.http.patch<BaseOrderEntity>(this.url + '/hide' + `/${id}`, body);
   }
 
-  delete(id: OrderEntity['id']): Observable<void> {
+  delete(id: BaseOrderEntity['id']): Observable<void> {
     return super.delete(id);
   }
 
-  cancel(id: OrderEntity['id']): Observable<OrderEntity> {
+  cancel(id: BaseOrderEntity['id']): Observable<BaseOrderEntity> {
     return this.http.delete<OrderEntity>(this.url + `/${id}` + '/cancel');
   }
 
-  restore(id: OrderEntity['id']): Observable<OrderEntity> {
-    return this.http.patch<OrderEntity>(this.url + `/${id}` + '/restore', null);
+  restore(id: BaseOrderEntity['id']): Observable<BaseOrderEntity> {
+    return this.http.patch<BaseOrderEntity>(this.url + `/${id}` + '/restore', null);
   }
 
   orderHistory(): Observable<any> {
