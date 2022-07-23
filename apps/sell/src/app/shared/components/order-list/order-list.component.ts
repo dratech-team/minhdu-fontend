@@ -138,7 +138,7 @@ export class OrderListComponent implements OnInit {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.actions$.dispatch(OrderActions.cancel({ orderId: order.id }));
+        this.actions$.dispatch(OrderActions.cancel({ id: order.id }));
       }
     });
   }

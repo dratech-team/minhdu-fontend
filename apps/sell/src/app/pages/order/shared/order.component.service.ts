@@ -10,6 +10,7 @@ import {
 } from '../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { Router } from '@angular/router';
 import { BaseOrderEntity } from '../enitities';
+import { RichTextComponent } from '../../../../../../../libs/components/src/lib/rich-text/rich-text.component';
 
 @Injectable()
 export class OrderComponentService {
@@ -90,11 +91,12 @@ export class OrderComponentService {
   onCancel(order: OrderEntity) {
     this.modal.warning({
       nzTitle: 'Huỷ đơn hàng',
-      nzContent: `Bạn có chắc chắn muốn huỷ đơn hàng đến ${order.province.name} của khách hàng ${order.customer.lastName} không`,
+      nzContent: RichTextComponent,
+      nzComponentParams: { description: `Bạn có chắc chắn muốn huỷ đơn hàng đến ${order.province.name} của khách hàng ${order.customer.lastName} không? \n Nếu có thể hãy cho chúng tôi biết lý do ở bên dưới nhé` },
       nzOkDanger: true,
-      nzOnOk: () => {
+      nzOnOk: (res) => {
         this.actions$.dispatch(
-          OrderActions.cancel({ orderId: order.id })
+          OrderActions.cancel({ id: order.id, reason: res.formGroup.value.reason || undefined })
         );
       }
     });
@@ -105,7 +107,7 @@ export class OrderComponentService {
       nzTitle: 'Xác nhận ngày giao hàng',
       nzContent: DialogDatePickerComponent,
       nzMaskClosable: false,
-      nzComponentParams: {datetime: new Date()},
+      nzComponentParams: { datetime: new Date() },
       nzFooter: []
     }).afterClose.subscribe((res: { date: Date }) => {
       if (res) {

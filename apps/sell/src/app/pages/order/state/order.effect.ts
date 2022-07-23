@@ -182,9 +182,9 @@ export class OrderEffect {
   cancel$ = this.actions$.pipe(
     ofType(OrderActions.cancel),
     switchMap((props) =>
-      this.orderService.cancel(props.orderId).pipe(
+      this.orderService.cancel(props.id, { reason: props.reason }).pipe(
         map((res) => {
-          const entity = this.orderQuery.getEntity(props.orderId);
+          const entity = this.orderQuery.getEntity(props.id);
           this.orderStore.remove(res.id);
           return entity && OrderActions.removeOneSuccess(entity);
         }),

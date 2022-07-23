@@ -66,6 +66,8 @@ import { ChartService } from './chart/services/chart.service';
 import { PlaceSelectorComponent } from './pick-location/place-selector.component';
 import { DialogSharedComponent } from './dialog-shared';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { RichTextComponent } from './rich-text/rich-text.component';
+import { NzFormModule } from 'ng-zorro-antd/form';
 
 const NzModules = [
   NzSelectModule,
@@ -112,7 +114,8 @@ const MatModules = [
     MatModules,
     TooltipModule,
     NzSkeletonModule,
-    NzToolTipModule
+    NzToolTipModule,
+    NzFormModule
   ],
   declarations: [
     SwimLaneChartComponent,
@@ -147,7 +150,8 @@ const MatModules = [
     TotalPricePipe,
     RoundingNumberPipe,
     ModalExportExcelComponent,
-    ConvertMinutePipe
+    ConvertMinutePipe,
+    RichTextComponent
   ],
   exports: [
     SwimLaneChartComponent,
@@ -181,7 +185,8 @@ const MatModules = [
     TotalPricePipe,
     RoundingNumberPipe,
     ModalExportExcelComponent,
-    ConvertMinutePipe
+    ConvertMinutePipe,
+    RichTextComponent
   ],
   providers: [
     ChartService,

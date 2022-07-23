@@ -25,7 +25,7 @@ const remove = createAction('[ORDER] Remove', props<RemoveOrderDto>());
 
 const cancel = createAction(
   '[ORDER] Cancel',
-  props<{ orderId: number }>()
+  props<{ id: number, reason?: string }>()
 );
 
 const restore = createAction(

@@ -44,8 +44,8 @@ export class OrderService extends BaseService<BaseOrderEntity> {
     return super.delete(id);
   }
 
-  cancel(id: BaseOrderEntity['id']): Observable<BaseOrderEntity> {
-    return this.http.delete<OrderEntity>(this.url + `/${id}` + '/cancel');
+  cancel(id: BaseOrderEntity['id'], body: {reason?: string}): Observable<BaseOrderEntity> {
+    return this.http.delete<OrderEntity>(this.url + `/${id}` + '/cancel', { body });
   }
 
   restore(id: BaseOrderEntity['id']): Observable<BaseOrderEntity> {
