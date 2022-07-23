@@ -181,11 +181,12 @@ export class OrderEffect {
   @Effect({ dispatch: true })
   cancel$ = this.actions$.pipe(
     ofType(OrderActions.cancel),
-    switchMap((prop) =>
-      this.orderService.cancel(prop.orderId).pipe(
+    switchMap((props) =>
+      this.orderService.cancel(props.orderId).pipe(
         map((res) => {
-          this.message.success('Huỷ đơn hàng thành công');
+          const entity = this.orderQuery.getEntity(props.orderId);
           this.orderStore.remove(res.id);
+          return entity && OrderActions.removeOneSuccess(entity);
         }),
         catchError((err) => of(OrderActions.error(err)))
       )
