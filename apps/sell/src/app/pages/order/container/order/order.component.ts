@@ -16,7 +16,7 @@ import { Actions } from '@datorama/akita-ng-effects';
 import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import * as _ from 'lodash';
-import { OrderEntity } from '../../enitities';
+import { BaseOrderEntity, OrderEntity } from '../../enitities';
 import { radiosStatusOrderConstant } from '../../constants';
 import { WidthConstant } from '../../../../shared/constants';
 import { ModalExportExcelComponent, ModalExportExcelData } from '@minhdu-fontend/components';
@@ -163,9 +163,9 @@ export class OrderComponent implements OnInit {
 
   public onExpandAll() {
     const expandedAll = this.orderQuery.getValue().expandedAll;
-    // this.orderQuery.getAll().forEach((order: BaseOrderEntity) => {
-    //   this.orderStore.update(order.id, { expand: !expandedAll });
-    // });
+    this.orderQuery.getAll().forEach((order: OrderEntity) => {
+      this.orderStore.update(order.id, { expand: !expandedAll });
+    });
     this.orderStore.update((state) => ({ ...state, expandedAll: !expandedAll }));
   }
 
