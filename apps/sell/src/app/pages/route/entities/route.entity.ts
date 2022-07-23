@@ -3,7 +3,8 @@ import { OrderEntity } from '../../order/enitities';
 
 export interface RouteEntity extends Omit<BaseRouteEntity, 'commodities'> {
   isSelect?: boolean;
-  readonly totalCommodity: number;
+  readonly orderTotal: number;
+  readonly priceTotal: number;
   readonly expand: boolean;
   readonly commodityUniq: {
     code: string,

@@ -72,8 +72,6 @@ export class OrderDialogComponent implements OnInit {
       customerId: new FormControl<number | undefined>(this.data?.order?.customerId),
       commodityIds: new FormControl<number[] | undefined>(this.data?.order?.commodities?.map(commodity => commodity.id))
     });
-
-    console.log(this.formGroup.get("c"))
   }
 
   get checkValid() {

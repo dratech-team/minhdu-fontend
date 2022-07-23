@@ -4,12 +4,11 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { OrderDialogComponent } from '../component';
 import { SelectCommodityComponent } from '../../../shared/components';
 import { OrderActions } from '../state';
-import { OrderEntity } from '../enitities/order.entity';
+import { BaseOrderEntity, OrderEntity } from '../enitities';
 import {
   DialogDatePickerComponent
 } from '../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { Router } from '@angular/router';
-import { BaseOrderEntity } from '../enitities';
 import { RichTextComponent } from '../../../../../../../libs/components/src/lib/rich-text/rich-text.component';
 
 @Injectable()

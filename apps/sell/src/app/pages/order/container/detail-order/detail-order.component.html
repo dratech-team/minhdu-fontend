@@ -190,12 +190,12 @@
                 <td class='text-center'>{{ (commodity.gift | number) || '0' }}</td>
                 <td class='text-center'>
                   {{
-                  commodity.more?.amount | number: '1.0-0' | notEmpty: '0'
+                  commodity?.more?.amount | number: '1.0-0' | notEmpty: '0'
                   }}
                 </td>
                 <td class='text-center'>
                   {{
-                  commodity.more?.price | number: '1.0-0' | notEmpty: '0'
+                  commodity?.more?.price | currency: 'VND' | notEmpty: '0'
                   }}
                 </td>
                 <td class='text-center'>

@@ -253,7 +253,8 @@ export class RouteEffect {
       commodityUniq: [],
       expand: false,
       status: '',
-      totalCommodity: 0,
+      orderTotal: 0,
+      priceTotal: 0,
       ...route,
       orders: orders.map((order) => {
         return {
@@ -270,9 +271,9 @@ export class RouteEffect {
       orders: newRoute.orders.map((order) => {
           return Object.assign(order, {
             priceTotal: order.commodities.reduce((total, commodity) => total + commodity.price, 0),
-            totalCommodity: order.commodities
+            commodityTotal: order.commodities
               .filter(commodity => commodity.routeId)
-              .reduce((total, commodity) => total + commodity.amount, 0),
+              .reduce((a, commodity) => a + commodity.amount, 0),
             expand: expandedAll
           });
         }
@@ -280,7 +281,7 @@ export class RouteEffect {
     };
     return {
       ...r,
-      totalCommodity: r.orders.reduce((total, order) => total + order.totalCommodity, 0)
+      orderTotal: r.orders.reduce((total, order) => total + order.commodityTotal, 0)
     } as RouteEntity;
   }
 }

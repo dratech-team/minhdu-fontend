@@ -357,8 +357,8 @@
               [nzLeft]='ui.vans?.pinned || false'
             >
               <div *ngIf='order?.routes?.length > 0; else notCar'>
-                  <span *ngFor='let route of order?.routes'
-                  >{{ route?.bsx }},
+                  <span *ngFor='let route of order?.routes; let i=index'>
+                    {{ route?.bsx + ((order?.routes?.length > 1 && (order?.routes?.length - 1) !== i) ? ', ' : '')}}
                   </span>
               </div>
               <ng-template #notCar>
@@ -370,14 +370,14 @@
               [nzLeft]='ui.totalCommodity?.pinned || false'
               class='text-center'
             >
-              {{ order.totalCommodity | number: '1.0-0' | notEmpty: '0' }}
+              {{ order.commodityTotal | number: '1.0-0' | notEmpty: '0' }}
             </td>
             <td
               *ngIf='ui.commodityTotal.visible'
               [nzLeft]='ui.commodityTotal?.pinned || false'
               class='text-center'
             >
-              {{ order.commodityTotal | number: '1.0-0' | notEmpty: '0' }} đ
+              {{ order.priceTotal | number: '1.0-0' | notEmpty: '0' }} đ
             </td>
             <td
               *ngIf='ui.paymentTotal.visible'
@@ -397,7 +397,7 @@
           <tr [nzExpand]='order.expand'>
             <nz-table
               #innerTable
-              nzSize='middle'
+              nzSize='small'
               [nzBordered]='true'
               [nzData]='order.commodities'
               [nzShowPagination]='false'
@@ -406,18 +406,18 @@
         <tr>
           <th class='text-center'>Hàng hoá</th>
           <th class='text-center' [nzWidth]="'170px'">
-            Số lượng
+            Tổng số lượng
           </th>
-          <th class='text-center' [nzWidth]="'200px'">
-            Giá
-          </th>
+          <!--          <th class='text-center' [nzWidth]="'200px'">-->
+          <!--            Giá-->
+          <!--          </th>-->
         </tr>
         </thead>
         <tbody>
         <tr *ngFor='let commodity of innerTable.data'>
           <td class='text-center'>{{ commodity.name }}</td>
-          <td class='text-center'>{{ commodity.amount }}</td>
-          <td class='text-center'>{{ commodity.price }}</td>
+          <td class='text-center'>{{ commodity.amount + (commodity?.more?.amount || 0) + commodity.gift  }}</td>
+          <!--          <td class='text-center'>{{ commodity.price }}</td>-->
         </tr>
         </tbody>
       </nz-table>

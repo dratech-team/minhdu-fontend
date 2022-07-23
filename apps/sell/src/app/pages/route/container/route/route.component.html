@@ -176,8 +176,8 @@
           <th class='text-center'>Tên khách hàng</th>
           <th class='text-center'>Ngày tạo</th>
           <th class='text-center'>Điểm đến</th>
-          <th class='text-center'>Tiền hàng</th>
-          <th class='text-center'>Tổng hàng hoá</th>
+<!--          <th class='text-center'>Tiền hàng</th>-->
+<!--          <th class='text-center'>Tổng hàng hoá</th>-->
         </tr>
         </thead>
         <tbody>
@@ -185,11 +185,12 @@
           <td>{{ order.customer.lastName }}</td>
           <td>{{ order.createdAt | date: 'dd-MM-yyyy' }}</td>
           <td>
-            {{ order?.province?.name }} -
-            {{ order?.district?.name }} - {{ order?.ward?.name }}
+            {{ order?.province?.name }}
+            {{ order?.district?.name ? ' - ' + order.district.name : '' }}
+            {{ order?.ward?.name ? ' - ' + order.ward.name : '' }}
           </td>
-          <td>{{ order?.commodityTotal | number: '1.0-0' }} đ</td>
-          <td>{{ order?.totalCommodity | number: '1.0-0' }}</td>
+<!--          <td>{{ (order?.priceTotal | currency: 'VND') || 'Theo thời giá'}}</td>-->
+<!--          <td>{{ order?.commodityTotal | number: '1.0-0' }}</td>-->
         </tr>
         </tbody>
       </nz-table>

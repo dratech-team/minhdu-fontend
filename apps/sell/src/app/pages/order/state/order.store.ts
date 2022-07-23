@@ -12,7 +12,7 @@ export interface OrderState extends EntityState<OrderEntity> {
   readonly total: number;
   readonly remain: number;
   readonly commodityUniq: CommodityUniq[];
-  readonly totalCommodity: number;
+  readonly commodityTotal: number;
   readonly ui: OrderVisibleEntity;
   readonly search: BaseSearchOrderDto;
 }
@@ -23,7 +23,7 @@ function createInitState(): OrderState {
     total: 0,
     remain: 0,
     commodityUniq: [],
-    totalCommodity: 0,
+    commodityTotal: 0,
     search: {
       search: '',
       paidType: '',

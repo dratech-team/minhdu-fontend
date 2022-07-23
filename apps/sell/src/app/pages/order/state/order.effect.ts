@@ -235,11 +235,11 @@ export class OrderEffect {
         );
         return {
           ...state,
-          loading: true,
+          loading: false,
           error: null,
           total: state.total + 1,
           remain: (state.total + 1) - this.orderQuery.getCount(),
-          totalCommodity: state.totalCommodity + res.commodities?.reduce((a, b) => a + b.amount, 0),
+          commodityTotal: state.commodityTotal + res.commodities?.reduce((a, b) => a + b.amount, 0),
           commodityUniq: commodityUniq
         };
       });
@@ -256,7 +256,7 @@ export class OrderEffect {
         error: null,
         remain: res.total - this.orderQuery.getCount(),
         total: res.total,
-        totalCommodity: res.commodityUniq.reduce(
+        commodityTotal: res.commodityUniq.reduce(
           (x, y) => x + y.amount,
           0
         ),
@@ -293,7 +293,7 @@ export class OrderEffect {
           ...state,
           loading: false,
           error: null,
-          totalCommodity: state.totalCommodity - res.commodities?.reduce((a, b) => a + b.amount, 0),
+          commodityTotal: state.commodityTotal - res.commodities?.reduce((a, b) => a + b.amount, 0),
           total: state.total - 1,
           commodityUniq: commodityUniq
         };
@@ -315,17 +315,20 @@ export class OrderEffect {
 
   private mapToOrder(order: BaseOrderEntity): OrderEntity {
     const expandedAll = this.orderQuery.getValue().expandedAll;
-    const totalCommodity = order.commodities.reduce((total, commodity) => total + commodity.amount, 0);
+    const commodityTotal = order.commodities.reduce((a, commodity) => a + commodity.amount, 0);
+    const priceTotal = order.commodities.reduce((a, commodity) => {
+      return a + ((commodity.amount * commodity.price) + ((commodity.more?.amount || 0) * (commodity?.more?.price || 0)));
+    }, 0);
     const routeIds = uniq(order.commodities.map(commodity => commodity.routeId));
     const routes = routeIds.map(routeId => {
       const commodity = order.commodities.find(commodity => commodity.routeId === routeId);
       return commodity?.route as RouteEntity;
     }).filter(route => route) as RouteEntity[];
-
     return {
       ...order,
       expand: expandedAll,
-      totalCommodity: totalCommodity,
+      commodityTotal: commodityTotal,
+      priceTotal: priceTotal,
       routes: routes,
       orderHistories: []
     };

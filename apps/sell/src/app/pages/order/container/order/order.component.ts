@@ -10,13 +10,13 @@ import {
   PaymentType,
   SortTypeOrderEnum
 } from '@minhdu-fontend/enums';
-import { debounceTime, map, startWith, tap } from 'rxjs/operators';
+import { debounceTime, map, startWith } from 'rxjs/operators';
 import { OrderActions, OrderQuery, OrderStore } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import * as _ from 'lodash';
-import { OrderEntity } from '../../enitities/order.entity';
+import { OrderEntity } from '../../enitities';
 import { radiosStatusOrderConstant } from '../../constants';
 import { WidthConstant } from '../../../../shared/constants';
 import { ModalExportExcelComponent, ModalExportExcelData } from '@minhdu-fontend/components';
@@ -27,10 +27,8 @@ import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/
 import { OrderComponentService } from '../../shared';
 import { OrderStatusEnum } from '../../enums';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { CommodityQuery } from '../../../commodity/state';
 import { CommodityTemplateActions } from '../../../commodity-template/state/commodity-template.action';
 import { CommodityTemplateQuery } from '../../../commodity-template/state/commodity-template.query';
-import { BaseOrderEntity } from '../../enitities';
 
 @Component({
   templateUrl: 'order.component.html',
@@ -47,7 +45,7 @@ export class OrderComponent implements OnInit {
   count$ = this.orderQuery.selectCount();
   remain$ = this.orderQuery.select((state) => state.remain);
   commodityUniq$ = this.orderQuery.select((state) => state.commodityUniq);
-  totalCommodity$ = this.orderQuery.select((state) => state.totalCommodity);
+  totalCommodity$ = this.orderQuery.select((state) => state.commodityTotal);
   orders$ = this.orderQuery
     .selectAll()
     .pipe(map((value) => JSON.parse(JSON.stringify(value))));
