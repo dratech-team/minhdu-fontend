@@ -20,4 +20,5 @@ export const StorageName = {
   ROUTE: 'route',
   ORDER: 'order',
   PAYMENT: 'payment',
+  ORDER_HISTORY: 'order_history',
 };

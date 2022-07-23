@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
-import { OrderHistoryEntity } from '../enitities';
+import { OrderHistoryEntity } from '../../../pages/order/enitities';
 
 @Injectable({ providedIn: 'root' })
 export class OrderHistoryService extends BaseService<OrderHistoryEntity> {

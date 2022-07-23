@@ -879,5 +879,8 @@
       },
       "tags": []
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

@@ -42,7 +42,7 @@ export class CommodityEffect {
           this.commodityStore.update((state) => ({
             ...state,
             loading: null,
-            error: err,
+            error: err
           }));
           return of(CommodityAction.error(err));
         })
@@ -135,7 +135,7 @@ export class CommodityEffect {
   );
 
   @Effect()
-  deleteCommodity$ = this.actions$.pipe(
+  removeOne$ = this.actions$.pipe(
     ofType(CommodityAction.remove),
     switchMap((props) =>
       this.commodityService.delete(props.id).pipe(

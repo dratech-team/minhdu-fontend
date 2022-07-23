@@ -37,7 +37,7 @@ const error = createAction('[ORDER] Error', props<{ error: string }>());
 
 const orderHistory = createAction(
   '[ORDER] History Order',
-  props<{ orderId: number }>()
+  props<{ orderId: number, loadMore?: boolean }>()
 );
 
 const addOneSuccess = createAction(

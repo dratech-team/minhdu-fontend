@@ -35,9 +35,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { OrderService } from './service';
-import {
-  ModalUpdateClosedCommodityComponent
-} from '../commodity/component/modal-update-closed-commodity/modal-update-closed-commodity.component';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { OrderComponentService } from './shared';
@@ -91,8 +88,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
     DetailOrderComponent,
     OrderDialogComponent,
     AddOrderComponent,
-    VisibleOrderComponent,
-    ModalUpdateClosedCommodityComponent
+    VisibleOrderComponent
   ],
   providers: [
     { provide: MatDialogRef, useValue: {} },

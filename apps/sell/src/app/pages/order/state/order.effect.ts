@@ -16,6 +16,7 @@ import { PaginationDto } from '@minhdu-fontend/constants';
 import { chain, flattenDeep, uniq } from 'lodash';
 import { RouteEntity } from '../../route/entities';
 import { ResponsePaginateOrderEntity } from '../enitities/response-paginate-order.entity';
+import { arrayAdd } from '@datorama/akita';
 
 @Injectable()
 export class OrderEffect {
@@ -82,13 +83,14 @@ export class OrderEffect {
     })
   );
 
-  @Effect()
+  @Effect({ dispatch: true })
   loadOne$ = this.actions$.pipe(
     ofType(OrderActions.loadOne),
     switchMap((props) => {
         return this.orderService.getOne(props.id).pipe(
-          tap((order) => {
+          map((order) => {
             this.orderStore.upsert(order.id, this.mapToOrder(order));
+            return OrderActions.orderHistory({ orderId: order.id });
           }),
           catchError((err) => of(OrderActions.error(err)))
         );
@@ -178,14 +180,20 @@ export class OrderEffect {
     })
   );
 
-  @Effect({ dispatch: true })
+  @Effect()
   historyOrder$ = this.actions$.pipe(
     ofType(OrderActions.orderHistory),
     switchMap((props) => {
         const count = this.orderQuery.getEntity(props.orderId)?.orderHistories?.length || 0;
         const params = Object.assign({}, props, { take: PaginationDto.take, skip: count });
         return this.orderHistoryService.pagination(params).pipe(tap((res) => {
-            this.orderStore.update(props.orderId, { orderHistories: res.data });
+            if (props?.loadMore) {
+              this.orderStore.update(props.orderId, ({ orderHistories }) => ({
+                orderHistories: arrayAdd(orderHistories, res.data)
+              }));
+            } else {
+              this.orderStore.update(props.orderId, { orderHistories: res.data });
+            }
           }),
           catchError((err) => of(OrderActions.error(err)))
         );
