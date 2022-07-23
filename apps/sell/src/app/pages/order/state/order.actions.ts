@@ -35,9 +35,9 @@ const restore = createAction(
 
 const error = createAction('[ORDER] Error', props<{ error: string }>());
 
-const historyOrder = createAction(
+const orderHistory = createAction(
   '[ORDER] History Order',
-  props<{ id: number }>()
+  props<{ orderId: number }>()
 );
 
 const addOneSuccess = createAction(
@@ -67,7 +67,7 @@ export const OrderActions = {
   cancel,
   restore,
   error,
-  historyOrder,
+  orderHistory,
   addOneSuccess,
   loadAllSuccess,
   removeOneSuccess

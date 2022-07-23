@@ -56,8 +56,7 @@ export class DetailOrderComponent implements OnInit {
 
   ngOnInit() {
     this.actions$.dispatch(OrderActions.loadOne({ id: this.getOrderId }));
-
-    this.loadInitOrderHistory();
+    this.actions$.dispatch(OrderActions.orderHistory({ orderId: this.getOrderId }));
 
     this.activatedRoute.queryParams.subscribe((param) => {
       if (param.isUpdate === 'true') {

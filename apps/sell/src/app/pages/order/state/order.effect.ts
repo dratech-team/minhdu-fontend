@@ -180,11 +180,12 @@ export class OrderEffect {
 
   @Effect({ dispatch: true })
   historyOrder$ = this.actions$.pipe(
-    ofType(OrderActions.historyOrder),
+    ofType(OrderActions.orderHistory),
     switchMap((props) => {
-        return this.orderHistoryService.pagination(props).pipe(
-          tap((res) => {
-            /// TODO: implement store history in order
+        const count = this.orderQuery.getEntity(props.orderId)?.orderHistories?.length || 0;
+        const params = Object.assign({}, props, { take: PaginationDto.take, skip: count });
+        return this.orderHistoryService.pagination(params).pipe(tap((res) => {
+            this.orderStore.update(props.orderId, { orderHistories: res.data });
           }),
           catchError((err) => of(OrderActions.error(err)))
         );
@@ -317,7 +318,8 @@ export class OrderEffect {
       ...order,
       expand: expandedAll,
       totalCommodity: totalCommodity,
-      routes: routes
+      routes: routes,
+      orderHistories: []
     };
   }
 }
