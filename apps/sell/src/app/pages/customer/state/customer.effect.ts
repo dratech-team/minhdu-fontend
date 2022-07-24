@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { catchError, concatMap, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, concatMap, switchMap, take, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { CustomerActions } from './customer.actions';
 import { CustomerService } from '../service';
@@ -11,6 +11,8 @@ import { AddCustomerDto, SearchCustomerDto } from '../dto';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PaginationDto } from '@minhdu-fontend/constants';
+import { arrayAdd } from '@datorama/akita';
+import { OrderStatusEnum } from '../../order/enums';
 
 @Injectable()
 export class CustomerEffect {
@@ -55,13 +57,14 @@ export class CustomerEffect {
           }));
         }),
         catchError((err) => {
-          return of(CustomerActions.error(err));
+          this.action$.dispatch(CustomerActions.error(err));
+          return of();
         })
       );
     })
   );
 
-  @Effect({ dispatch: true })
+  @Effect()
   addOne$ = this.action$.pipe(
     ofType(CustomerActions.addOne),
     switchMap((props: AddCustomerDto) => {
@@ -75,26 +78,43 @@ export class CustomerEffect {
           this.customerStore.add(res);
         }),
         catchError((err) => {
-          return of(CustomerActions.error(err));
+          this.action$.dispatch(CustomerActions.error(err));
+          return of();
         })
       );
     })
   );
 
-  @Effect({ dispatch: true })
+  @Effect()
   loadOne$ = this.action$.pipe(
     ofType(CustomerActions.loadOne),
     switchMap((props) =>
       this.customerService.getOne(props.id).pipe(
         tap((customer) => {
           this.customerStore.upsert(customer.id, customer);
+          this.customerStore.update(state => ({ ...state, loading: false, error: null }));
+
+          this.orderService.pagination({ customerId: props.id, status: OrderStatusEnum.DELIVERED })
+            .pipe(take(1))
+            .subscribe(res => {
+              this.customerStore.update(props.id, { delivered: res.data });
+            });
+
+          this.orderService.pagination({ customerId: props.id, status: OrderStatusEnum.DELIVERING })
+            .pipe(take(1))
+            .subscribe(res => {
+              this.customerStore.update(props.id, { delivering: res.data });
+            });
         }),
-        catchError((err) => of(CustomerActions.error(err)))
+        catchError((err) => {
+          this.action$.dispatch(CustomerActions.error(err));
+          return of();
+        })
       )
     )
   );
 
-  @Effect({ dispatch: true })
+  @Effect()
   updateOne$ = this.action$.pipe(
     ofType(CustomerActions.update),
     switchMap((props) => {
@@ -107,18 +127,19 @@ export class CustomerEffect {
           this.customerStore.update(response.id, response);
         }),
         catchError((err) => {
-          return of(CustomerActions.error(err));
+          this.action$.dispatch(CustomerActions.error(err));
+          return of();
         })
       );
     })
   );
 
-  @Effect({ dispatch: true })
+  @Effect()
   removeOne = this.action$.pipe(
     ofType(CustomerActions.remove),
     switchMap((props) => {
       return this.customerService.delete(props.id).pipe(
-        map(() => {
+        tap(() => {
           this.customerStore.update((state) => ({
             ...state,
             total: state.total - 1,
@@ -129,41 +150,29 @@ export class CustomerEffect {
           return this.customerStore.remove(props.id);
         }),
         catchError((err) => {
-          this.customerStore.update((state) => ({
-            ...state,
-            loading: undefined,
-            error: err
-          }));
-          return of(CustomerActions.error(err));
+          this.action$.dispatch(CustomerActions.error(err));
+          return of();
         })
       );
     })
   );
 
-  @Effect({ dispatch: true })
+  @Effect()
   loadOrder$ = this.action$.pipe(
     ofType(CustomerActions.loadOrder),
     concatMap((props) => {
-      this.customerStore.update((state) => ({
-        ...state,
-        deliveringLoading:
-          props?.typeOrder === 'delivering' ? true : state.deliveringLoading,
-        deliveredLoading:
-          props?.typeOrder === 'delivered' ? true : state.deliveredLoading
-      }));
-      return this.orderService
-        .pagination(
-          Object.assign(props.search, {
-            status: props.typeOrder === 'delivered' ? 1 : 0
-          })
-        )
+      const status = props.typeOrder === 'delivered' ? OrderStatusEnum.DELIVERED : OrderStatusEnum.DELIVERING;
+      return this.orderService.pagination(Object.assign(props.search, { status }))
         .pipe(
           tap((res) => {
-            this.customerStore.update((state) => ({
-              ...state,
-              deliveringLoading: false,
-              deliveredLoading: false
-            }));
+            if (props.isSet) {
+              this.customerStore.update(props.search.customerId, { [props.typeOrder]: res.data });
+            } else {
+              this.customerStore.update(props.search.customerId, ({ delivering, delivered }) => ({
+                delivering: props.typeOrder === 'delivering' ? arrayAdd(delivered, res.data) : delivered,
+                delivered: props.typeOrder === 'delivered' ? arrayAdd(delivered, res.data) : delivered
+              }));
+            }
           }),
           catchError((err) => of(CustomerActions.error(err)))
         );

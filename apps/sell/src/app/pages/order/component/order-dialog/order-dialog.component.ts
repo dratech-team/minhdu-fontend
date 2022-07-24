@@ -26,8 +26,6 @@ export class OrderDialogComponent implements OnInit {
   districtId!: number;
   provinceId!: number;
 
-  loading$ = this.orderQuery.selectLoading();
-
   submitted = false;
   routes: number[] = [];
   stepIndex = 0;
@@ -68,7 +66,7 @@ export class OrderDialogComponent implements OnInit {
       province: new FormControl<Province | undefined>(this.data?.order?.province, { validators: Validators.required }),
       district: new FormControl<District | undefined>(this.data?.order?.district),
       ward: new FormControl<Ward | undefined>(this.data?.order?.ward),
-      customerId: new FormControl<number | undefined>(this.data?.order?.customerId),
+      customerId: new FormControl<number | undefined>(this.data?.customerId),
       commodityIds: new FormControl<number[] | undefined>(this.data?.order?.commodities?.map(commodity => commodity.id))
     });
   }
@@ -126,7 +124,12 @@ export class OrderDialogComponent implements OnInit {
   }
 
   pre(): void {
-    this.stepIndex -= 1;
+    if (this.data?.customerId) {
+      this.stepIndex = 0;
+    } else {
+      this.stepIndex -= 1;
+    }
+
   }
 
   next(): any {
@@ -138,6 +141,10 @@ export class OrderDialogComponent implements OnInit {
     if (this.stepIndex > 0 && !this.formGroup.value.customerId) {
       return this.message.warning('Chưa chọn khách hàng');
     }
-    this.stepIndex += 1;
+    if (this.data?.customerId) {
+      this.stepIndex = 2;
+    } else {
+      this.stepIndex += 1;
+    }
   }
 }

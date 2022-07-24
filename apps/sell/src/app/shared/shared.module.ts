@@ -32,6 +32,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { PriceCommodityPipe, UiPipe } from './pipe';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { CustomNgSortPipe } from './pipe/sort.pipe';
 
 @NgModule({
   imports: [
@@ -70,7 +71,8 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     SelectCustomerComponent,
     SelectRouteComponent,
     PriceCommodityPipe,
-    UiPipe
+    UiPipe,
+    CustomNgSortPipe
   ],
   providers: [DecimalPipe, CurrencyPipe],
   exports: [
@@ -80,7 +82,8 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     SelectCustomerComponent,
     SelectRouteComponent,
     PriceCommodityPipe,
-    UiPipe
+    UiPipe,
+    CustomNgSortPipe
   ]
 })
 export class SharedModule {

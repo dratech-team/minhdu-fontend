@@ -292,9 +292,8 @@
       </div>
       <order-list
         [delivered]='false'
-        [loading$]='deliveringLoading$'
         [customerId]='getId'
-        [orders]='delivering$ | async | notEmpty: []'
+        [orders]='customer.delivering | notEmpty: []'
       >
       </order-list>
     </div>
@@ -306,9 +305,8 @@
       </div>
       <order-list
         [delivered]='true'
-        [loading$]='deliveredLoading$'
         [customerId]='getId'
-        [orders]='delivered$ | async | notEmpty: []'
+        [orders]='customer.delivered | notEmpty: []'
       ></order-list>
     </div>
     <div class='col-12 mt-5'>

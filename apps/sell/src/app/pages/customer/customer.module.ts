@@ -43,6 +43,7 @@ import { PaymentEffect } from '../payment/payment';
 import { PaymentModule } from '../payment/payment.module';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { CustomerComponentService } from './shared';
+import { CustomNgSortPipe } from '../../shared/pipe/sort.pipe';
 
 @NgModule({
   imports: [
@@ -97,6 +98,7 @@ import { CustomerComponentService } from './shared';
   providers: [
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     DatePipe,
+    CustomNgSortPipe,
     CustomerComponentService,
     CustomerService,
     PaymentService,

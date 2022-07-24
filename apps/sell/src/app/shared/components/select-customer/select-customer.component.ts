@@ -7,7 +7,7 @@ import { CustomerModalComponent } from '../../../pages/customer/component';
 import { CustomerActions, CustomerQuery } from '../../../pages/customer/state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { CustomerConstant, ResourcesConstant } from '../../../pages/customer/constants';
+import { CustomerTypeConstant, ResourcesConstant } from '../../../pages/customer/constants';
 import { AccountQuery } from '../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { PaginationDto } from '@minhdu-fontend/constants';
 
@@ -32,7 +32,7 @@ export class SelectCustomerComponent implements OnInit {
   customerIds: number[] = [];
 
   ResourcesConstant = ResourcesConstant;
-  CustomerConstant = CustomerConstant;
+  CustomerConstant = CustomerTypeConstant;
   CustomerType = CustomerType;
   ModeEnum = ModeEnum;
 

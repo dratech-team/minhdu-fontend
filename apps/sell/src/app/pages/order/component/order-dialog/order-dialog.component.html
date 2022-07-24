@@ -90,7 +90,6 @@
     nz-button
     nzType='primary'
     (click)='onSubmit()'
-    [nzLoading]='loading$ | async'
   >
     Xác nhận
   </button>
@@ -125,7 +124,6 @@
     <button
       nz-button
       nzType='primary'
-      [nzLoading]='loading$ | async'
       (click)='onSubmit()'
       *ngIf='stepIndex === 2'
     >

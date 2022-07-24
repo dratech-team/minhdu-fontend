@@ -21,7 +21,7 @@
         header='Giới tính'
         [controlName]="'gender'"
         [active]='true'
-        [radios]='RadiosStatusRouteConstant'
+        [radios]='GenderTypeConstant'
       >
       </minhdu-fontend-collapse-radios>
     </div>
@@ -51,7 +51,7 @@
         header='Loại khách hàng'
         [controlName]="'type'"
         [active]='true'
-        [radios]='CustomerConstant'
+        [radios]='CustomerTypeConstant'
       >
       </minhdu-fontend-collapse-radios>
     </div>
@@ -120,9 +120,7 @@
           *ngIf='ui.name?.visible'
           [nzLeft]='ui.name?.pinned || false'
           [nzSortFn]='true'
-          (nzSortOrderChange)='
-                onSort({ orderBy: SortTypeCustomerEnum.NAME, orderType: $event })
-              '
+          (nzSortOrderChange)='onSort({ key: "lastName", directions: $event })'
         >
           Tên khách hàng
         </th>
@@ -142,9 +140,7 @@
           *ngIf='ui.gender?.visible'
           [nzLeft]='ui.gender?.pinned || false'
           [nzSortFn]='true'
-          (nzSortOrderChange)='
-                onSort({ orderBy: SortTypeCustomerEnum.GENDER, orderType: $event })
-              '
+          (nzSortOrderChange)='onSort({ key: "gender", directions: $event })'
         >
           Giới tính
         </th>
@@ -152,12 +148,7 @@
           *ngIf='ui.potential?.visible'
           [nzLeft]='ui.potential?.pinned || false'
           [nzSortFn]='true'
-          (nzSortOrderChange)='
-                onSort({
-                  orderBy: SortTypeCustomerEnum.IS_POTENTIAL,
-                  orderType: $event
-                })
-              '
+          (nzSortOrderChange)='onSort({ key: "isPotential", directions: $event })'
         >
           Tiềm năng
         </th>
@@ -165,12 +156,7 @@
           *ngIf='ui.resource?.visible'
           [nzLeft]='ui.resource?.pinned || false'
           [nzSortFn]='true'
-          (nzSortOrderChange)='
-                onSort({
-                  orderBy: SortTypeCustomerEnum.RESOURCE,
-                  orderType: $event
-                })
-              '
+          (nzSortOrderChange)='onSort({ key: "resource", directions: $event })'
         >
           Nguồn khách hàng
         </th>
@@ -178,12 +164,7 @@
           *ngIf='ui.customerType?.visible'
           [nzLeft]='ui.customerType?.pinned || false'
           [nzSortFn]='true'
-          (nzSortOrderChange)='
-                onSort({
-                  orderBy: SortTypeCustomerEnum.CUSTOMER_TYPE,
-                  orderType: $event
-                })
-              '
+          (nzSortOrderChange)='onSort({ key: "type", directions: $event })'
         >
           Loại khách hàng
         </th>
@@ -193,6 +174,8 @@
         <th
           *ngIf='ui.address?.visible'
           [nzLeft]='ui.address?.pinned || false'
+          [nzSortFn]='true'
+          (nzSortOrderChange)='onSort({ key: "address", directions: $event })'
         >
           Địa chỉ
         </th>
@@ -267,7 +250,7 @@
           *ngIf='ui.customerType?.visible'
           [nzLeft]='ui.customerType?.pinned || false'
         >
-          {{ customer?.type | transformconstant: CustomerConstant }}
+          {{ customer?.type | transformconstant: CustomerTypeConstant }}
         </td>
         <td
           *ngIf='ui.email?.visible'

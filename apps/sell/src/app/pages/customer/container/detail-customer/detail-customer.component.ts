@@ -7,7 +7,7 @@ import { CustomerActions, CustomerQuery, CustomerStore } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { OrderDialogComponent } from '../../../order/component';
-import { OrderEntity } from '../../../order/enitities/order.entity';
+import { OrderEntity } from '../../../order/enitities';
 import { CustomerComponentService } from '../../shared';
 
 @Component({
@@ -16,21 +16,13 @@ import { CustomerComponentService } from '../../shared';
 })
 export class DetailCustomerComponent implements OnInit {
   customer$ = this.customerQuery.selectEntity(this.getId);
-  delivered$ = this.customerQuery.selectDelivered(this.getId);
-  delivering$ = this.customerQuery.selectDelivering(this.getId);
-  deliveringLoading$ = this.customerQuery.select(
-    (state) => state.deliveringLoading
-  );
-  deliveredLoading$ = this.customerQuery.select(
-    (state) => state.deliveredLoading
-  );
 
   convertBoolean = ConvertBoolean;
   paidType = PaidType;
   orders: OrderEntity[] = [];
 
   get getId(): number {
-    return this.activatedRoute.snapshot.params.id;
+    return +this.activatedRoute.snapshot.params.id;
   }
 
   constructor(
@@ -47,23 +39,6 @@ export class DetailCustomerComponent implements OnInit {
 
   ngOnInit() {
     this.actions$.dispatch(CustomerActions.loadOne({ id: this.getId }));
-    this.actions$.dispatch(
-      CustomerActions.loadOrder({
-        search: { take: 20, skip: 0, customerId: +this.getId },
-        typeOrder: 'delivering'
-      })
-    );
-    this.actions$.dispatch(
-      CustomerActions.loadOrder({
-        search: {
-          take: 20,
-          skip: 0,
-          customerId: +this.getId,
-          hiddenDebt: StatusOrder.ALL
-        },
-        typeOrder: 'delivered'
-      })
-    );
   }
 
   development() {
