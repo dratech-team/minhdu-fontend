@@ -166,6 +166,25 @@ app-dashboard {
   color: #1f2229;
 }
 
+.sub-table-title {
+  font-weight: 200;
+}
+
+.total {
+  font-weight: bold;
+  color: black;
+}
+
+.total-price {
+  font-weight: bold;
+  color: red;
+}
+
+.payment {
+  font-weight: bold;
+  color: rgb(39, 121, 41);
+}
+
 .required {
   color: red;
 }

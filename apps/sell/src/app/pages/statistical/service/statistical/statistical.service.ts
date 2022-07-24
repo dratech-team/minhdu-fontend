@@ -2,13 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { VersionEnum } from '@minhdu-fontend/enums';
 
 @Injectable()
 export class StatisticalService {
   constructor(
-    private readonly message: NzMessageService,
     public readonly http: HttpClient
   ) {
   }
