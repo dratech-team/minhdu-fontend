@@ -19,7 +19,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { CustomerConstant, PotentialsConstant, ResourcesConstant } from '../../constants';
 import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
 import * as _ from 'lodash';
-import { OrderEntity } from '../../../order/enitities/order.entity';
+import { OrderEntity } from '../../../order/enitities';
 import { CustomerEntity } from '../../entities';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
@@ -66,7 +66,6 @@ export class CustomerComponent implements OnInit {
 
   CustomerType = CustomerType;
   ModeEnum = ModeEnum;
-  ItemContextMenu = ItemContextMenu;
   SortTypeCustomerEnum = SortTypeCustomerEnum;
   RadiosStatusRouteConstant = RadiosStatusRouteConstant;
   PotentialsConstant = PotentialsConstant;
@@ -101,7 +100,7 @@ export class CustomerComponent implements OnInit {
       .pipe(debounceTime(500), startWith(this.formGroup.value))
       .subscribe((formGroup) => {
         this.actions$.dispatch(
-          CustomerActions.loadAll({ search: this.mapCustomer(formGroup), isSet: false })
+          CustomerActions.loadAll({ search: this.mapCustomer(formGroup), isSet: true })
         );
       });
 
@@ -146,7 +145,7 @@ export class CustomerComponent implements OnInit {
 
   public onLoadMore() {
     this.actions$.dispatch(
-      CustomerActions.loadAll({ search: this.mapCustomer(this.formGroup.value), isSet: true })
+      CustomerActions.loadAll({ search: this.mapCustomer(this.formGroup.value), isSet: false })
     );
   }
 

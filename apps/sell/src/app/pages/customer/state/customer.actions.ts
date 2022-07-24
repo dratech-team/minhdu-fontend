@@ -21,8 +21,8 @@ const error = createAction('[CUSTOMER] error', props<{ error: string }>());
 
 export const CustomerActions = {
   addOne,
-  loadAll,
   loadOne,
+  loadAll,
   update,
   remove,
   loadOrder,

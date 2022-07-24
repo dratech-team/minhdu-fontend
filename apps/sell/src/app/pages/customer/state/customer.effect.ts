@@ -29,10 +29,6 @@ export class CustomerEffect {
   loadAll$ = this.action$.pipe(
     ofType(CustomerActions.loadAll),
     switchMap((props: SearchCustomerDto) => {
-      this.customerStore.update((state) => ({
-        ...state,
-        loading: true
-      }));
       const params = Object.assign(
         {},
         props.search,
@@ -41,15 +37,15 @@ export class CustomerEffect {
           : {},
         {
           take: PaginationDto.take,
-          skip: props.isSet ? this.customerQuery.getCount() : 0
+          skip: props.isSet ? PaginationDto.skip : this.customerQuery.getCount()
         }
       );
       return this.customerService.pagination(params).pipe(
-        map((res) => {
+        tap((res) => {
           if (props.isSet) {
-            this.customerStore.add(res.data);
-          } else {
             this.customerStore.set(res.data);
+          } else {
+            this.customerStore.add(res.data);
           }
           this.customerStore.update(state => ({
             ...state,
@@ -59,64 +55,49 @@ export class CustomerEffect {
           }));
         }),
         catchError((err) => {
-          this.customerStore.update((state) => ({
-            ...state,
-            loading: undefined
-          }));
           return of(CustomerActions.error(err));
         })
       );
     })
   );
 
-  @Effect()
+  @Effect({ dispatch: true })
   addOne$ = this.action$.pipe(
     ofType(CustomerActions.addOne),
     switchMap((props: AddCustomerDto) => {
-      this.customerStore.update((state) => ({
-        ...state,
-        loading: true,
-        total: state.total + 1
-      }));
       return this.customerService.addOne(props).pipe(
         tap((res) => {
           this.customerStore.update((state) => ({
             ...state,
-            loading: false
+            loading: false,
+            total: state.total + 1
           }));
           this.customerStore.add(res);
         }),
         catchError((err) => {
-          this.customerStore.update((state) => ({
-            ...state,
-            loading: undefined,
-            total: state.total - 1
-          }));
           return of(CustomerActions.error(err));
         })
       );
     })
   );
 
-  @Effect()
+  @Effect({ dispatch: true })
   loadOne$ = this.action$.pipe(
     ofType(CustomerActions.loadOne),
     switchMap((props) =>
       this.customerService.getOne(props.id).pipe(
-        map((customer) => this.customerStore.upsert(customer.id, customer)),
+        tap((customer) => {
+          this.customerStore.upsert(customer.id, customer);
+        }),
         catchError((err) => of(CustomerActions.error(err)))
       )
     )
   );
 
-  @Effect()
+  @Effect({ dispatch: true })
   updateOne$ = this.action$.pipe(
     ofType(CustomerActions.update),
     switchMap((props) => {
-      this.customerStore.update((state) => ({
-        ...state,
-        loading: true
-      }));
       return this.customerService.update(props).pipe(
         tap((response) => {
           this.customerStore.update((state) => ({
@@ -126,24 +107,16 @@ export class CustomerEffect {
           this.customerStore.update(response.id, response);
         }),
         catchError((err) => {
-          this.customerStore.update((state) => ({
-            ...state,
-            loading: undefined
-          }));
           return of(CustomerActions.error(err));
         })
       );
     })
   );
 
-  @Effect()
+  @Effect({ dispatch: true })
   removeOne = this.action$.pipe(
     ofType(CustomerActions.remove),
     switchMap((props) => {
-      this.customerStore.update((state) => ({
-        ...state,
-        loading: true
-      }));
       return this.customerService.delete(props.id).pipe(
         map(() => {
           this.customerStore.update((state) => ({
@@ -167,7 +140,7 @@ export class CustomerEffect {
     })
   );
 
-  @Effect()
+  @Effect({ dispatch: true })
   loadOrder$ = this.action$.pipe(
     ofType(CustomerActions.loadOrder),
     concatMap((props) => {
@@ -186,31 +159,6 @@ export class CustomerEffect {
         )
         .pipe(
           tap((res) => {
-            // if (props?.isPaginate) {
-            //   if (props.typeOrder === 'delivering') {
-            //     this.customerStore.update(props.search.customerId, {
-            //       delivering: this.customerQuery
-            //         .getEntity(props.search.customerId)
-            //         ?.delivering.concat(res.data)
-            //     });
-            //   } else {
-            //     this.customerStore.update(props.search.customerId, {
-            //       delivered: this.customerQuery
-            //         .getEntity(props.search.customerId)
-            //         ?.delivered.concat(res.data)
-            //     });
-            //   }
-            // } else {
-            //   if (props.typeOrder === 'delivering') {
-            //     this.customerStore.update(props.search.customerId, {
-            //       delivering: res.data
-            //     });
-            //   } else {
-            //     this.customerStore.update(props.search.customerId, {
-            //       delivered: res.data
-            //     });
-            //   }
-            // }
             this.customerStore.update((state) => ({
               ...state,
               deliveringLoading: false,
@@ -219,6 +167,36 @@ export class CustomerEffect {
           }),
           catchError((err) => of(CustomerActions.error(err)))
         );
+    })
+  );
+
+  @Effect()
+  requesting$ = this.action$.pipe(
+    ofType(
+      CustomerActions.addOne,
+      CustomerActions.loadOne,
+      CustomerActions.loadAll,
+      CustomerActions.update,
+      CustomerActions.remove
+    ),
+    tap(() => {
+      this.customerStore.update((state) => ({
+        ...state,
+        loading: true,
+        error: null
+      }));
+    })
+  );
+
+  @Effect()
+  error$ = this.action$.pipe(
+    ofType(CustomerActions.error),
+    tap((res) => {
+      this.customerStore.update((state) => ({
+        ...state,
+        loading: null,
+        error: res.error
+      }));
     })
   );
 }
