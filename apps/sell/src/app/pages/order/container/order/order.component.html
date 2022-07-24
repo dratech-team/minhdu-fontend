@@ -177,7 +177,7 @@
             *ngIf='ui.status.visible'
             [nzLeft]='ui.status?.pinned || false'
             [nzSortFn]='true'
-            (nzSortOrderChange)="onSort({ orderBy: 'status', orderType: $event })"
+            (nzSortOrderChange)="onSort({ key: 'deliveredAt', directions: $event })"
           >
             Trạng thái đơn hàng
           </th>
@@ -186,7 +186,7 @@
             *ngIf='ui.createdAt.visible'
             [nzLeft]='ui.createdAt?.pinned || false'
             [nzSortFn]='true'
-            (nzSortOrderChange)="onSort({ orderBy: 'createdAt', orderType: $event })"
+            (nzSortOrderChange)="onSort({ key: 'createdAt', directions: $event })"
           >
             Ngày tạo
           </th>
@@ -194,7 +194,7 @@
             *ngIf='ui.endedAt.visible'
             [nzLeft]='ui.endedAt?.pinned || false'
             class='text-center font-weight-bold'
-            (nzSortOrderChange)="onSort({ orderBy: 'endedAt', orderType: $event })"
+            (nzSortOrderChange)="onSort({ key: 'endedAt', directions: $event })"
             [nzSortFn]='true'
           >
             Ngày hẹn giao
@@ -203,7 +203,7 @@
             *ngIf='ui.customer.visible'
             [nzLeft]='ui.customer?.pinned || false'
             [nzSortFn]='true'
-            (nzSortOrderChange)="onSort({ orderBy: 'customer', orderType: $event })"
+            (nzSortOrderChange)="onSort({ key: 'customer', directions: $event })"
             class='text-center font-weight-bold'
           >
             Khách hàng
@@ -213,7 +213,7 @@
             [nzLeft]='ui.destination?.pinned || false'
             class='text-center font-weight-bold'
             [nzSortFn]='true'
-            (nzSortOrderChange)="onSort({ orderBy: 'destination', orderType: $event })"
+            (nzSortOrderChange)="onSort({ key: 'destination', directions: $event })"
           >
             Điểm đến
           </th>

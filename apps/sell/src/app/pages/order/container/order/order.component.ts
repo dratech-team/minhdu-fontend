@@ -6,7 +6,7 @@ import { ModeEnum } from '@minhdu-fontend/enums';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import { OrderActions, OrderQuery, OrderStore } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
-import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
+import { ContextMenuEntity, Sort, SortEntity } from '@minhdu-fontend/data-models';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import * as _ from 'lodash';
 import { OrderEntity } from '../../enitities';
@@ -153,11 +153,11 @@ export class OrderComponent implements OnInit {
     this.orderStore.update((state) => ({ ...state, expandedAll: !expandedAll }));
   }
 
-  public onSort(sort: Sort) {
+  public onSort(sort: SortEntity) {
     this.actions$.dispatch(
       OrderActions.loadAll({
         search: this.mapOrder(this.formGroup.value, sort),
-        isPaginate: true
+        isPaginate: false
       })
     );
   }
@@ -196,12 +196,9 @@ export class OrderComponent implements OnInit {
     });
   }
 
-  private mapOrder(dataFG: any, sort?: Sort) {
+  private mapOrder(dataFG: any, sort?: SortEntity) {
     if (sort) {
-      if (sort.orderType === 'ascend') {
-        sort.orderType = 'asc';
-      }
-      sort.orderType = 'desc';
+      sort = Object.assign(sort, { directions: sort.directions === 'ascend' ? 'asc' : 'desc' });
     }
     if (!dataFG.startedAt_start || !dataFG.startedAt_end) {
       dataFG = _.omit(dataFG, ['startedAt_start', 'startedAt_end']);
@@ -212,7 +209,6 @@ export class OrderComponent implements OnInit {
     if (!dataFG.deliveredAt_start || !dataFG.deliveredAt_start || dataFG?.status !== 1) {
       dataFG = _.omit(dataFG, ['deliveredAt_end', 'deliveredAt_start']);
     }
-    console.log('mapOrder', Object.assign({}, dataFG, sort));
     return Object.assign({}, dataFG, sort);
   }
 }
