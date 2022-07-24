@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Api, TitleDatetime } from '@minhdu-fontend/constants';
-import { ModeEnum, SortTypeOrderEnum } from '@minhdu-fontend/enums';
+import { ModeEnum } from '@minhdu-fontend/enums';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import { OrderActions, OrderQuery, OrderStore } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -27,8 +27,6 @@ import { CommodityTemplateQuery } from '../../../commodity-template/state/commod
   styleUrls: ['order.component.scss']
 })
 export class OrderComponent implements OnInit {
-  valueSort?: Sort;
-
   account$ = this.accountQuery.selectCurrentUser();
   ui$ = this.orderQuery.select((state) => state.ui);
   expandedAll$ = this.orderQuery.select((state) => state.expandedAll);
@@ -46,7 +44,6 @@ export class OrderComponent implements OnInit {
   radios = radiosStatusOrderConstant;
 
   ModeEnum = ModeEnum;
-  SortTypeOrderEnum = SortTypeOrderEnum;
 
   visible = false;
   search = this.orderQuery.getValue().search;
@@ -157,10 +154,9 @@ export class OrderComponent implements OnInit {
   }
 
   public onSort(sort: Sort) {
-    this.valueSort = sort;
     this.actions$.dispatch(
       OrderActions.loadAll({
-        search: this.mapOrder(this.formGroup.value),
+        search: this.mapOrder(this.formGroup.value, sort),
         isPaginate: true
       })
     );
@@ -200,7 +196,13 @@ export class OrderComponent implements OnInit {
     });
   }
 
-  private mapOrder(dataFG: any) {
+  private mapOrder(dataFG: any, sort?: Sort) {
+    if (sort) {
+      if (sort.orderType === 'ascend') {
+        sort.orderType = 'asc';
+      }
+      sort.orderType = 'desc';
+    }
     if (!dataFG.startedAt_start || !dataFG.startedAt_end) {
       dataFG = _.omit(dataFG, ['startedAt_start', 'startedAt_end']);
     }
@@ -210,7 +212,7 @@ export class OrderComponent implements OnInit {
     if (!dataFG.deliveredAt_start || !dataFG.deliveredAt_start || dataFG?.status !== 1) {
       dataFG = _.omit(dataFG, ['deliveredAt_end', 'deliveredAt_start']);
     }
-
-    return Object.assign({}, dataFG, this.valueSort);
+    console.log('mapOrder', Object.assign({}, dataFG, sort));
+    return Object.assign({}, dataFG, sort);
   }
 }

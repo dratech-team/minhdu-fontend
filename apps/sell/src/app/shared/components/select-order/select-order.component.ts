@@ -5,7 +5,7 @@ import { OrderActions, OrderQuery } from '../../../pages/order/state';
 import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CommodityEntity } from '../../../pages/commodity/entities';
-import { OrderEntity } from '../../../pages/order/enitities/order.entity';
+import { OrderEntity } from '../../../pages/order/enitities';
 import { ModeEnum, SortTypeOrderEnum } from '@minhdu-fontend/enums';
 import { AccountQuery } from '../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { RouterConstants } from '../../constants';
@@ -18,7 +18,6 @@ import { debounceTime, startWith } from 'rxjs/operators';
   styleUrls: ['select-order.component.scss']
 })
 export class SelectOrderComponent implements OnInit {
-  @Input() columns!: SortTypeOrderEnum[];
   @Input() formGroup!: UntypedFormGroup;
   @Input() selectOne = false;
   @Input() customerId?: number;

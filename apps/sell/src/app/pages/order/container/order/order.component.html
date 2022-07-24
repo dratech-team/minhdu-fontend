@@ -173,20 +173,20 @@
             ID
           </th>
           <th
+            class='text-center font-weight-bold'
             *ngIf='ui.status.visible'
             [nzLeft]='ui.status?.pinned || false'
-            class='text-center font-weight-bold'
+            [nzSortFn]='true'
+            (nzSortOrderChange)="onSort({ orderBy: 'status', orderType: $event })"
           >
             Trạng thái đơn hàng
           </th>
           <th
+            class='text-center font-weight-bold'
             *ngIf='ui.createdAt.visible'
             [nzLeft]='ui.createdAt?.pinned || false'
-            class='text-center font-weight-bold'
             [nzSortFn]='true'
-            (nzSortOrderChange)='
-                onSort({ orderBy: SortTypeOrderEnum.CREATED_AT, orderType: $event })
-              '
+            (nzSortOrderChange)="onSort({ orderBy: 'createdAt', orderType: $event })"
           >
             Ngày tạo
           </th>
@@ -194,9 +194,7 @@
             *ngIf='ui.endedAt.visible'
             [nzLeft]='ui.endedAt?.pinned || false'
             class='text-center font-weight-bold'
-            (nzSortOrderChange)='
-                onSort({ orderBy: SortTypeOrderEnum.END, orderType: $event })
-              '
+            (nzSortOrderChange)="onSort({ orderBy: 'endedAt', orderType: $event })"
             [nzSortFn]='true'
           >
             Ngày hẹn giao
@@ -205,9 +203,7 @@
             *ngIf='ui.customer.visible'
             [nzLeft]='ui.customer?.pinned || false'
             [nzSortFn]='true'
-            (nzSortOrderChange)='
-                onSort({ orderBy: SortTypeOrderEnum.CUSTOMER, orderType: $event })
-              '
+            (nzSortOrderChange)="onSort({ orderBy: 'customer', orderType: $event })"
             class='text-center font-weight-bold'
           >
             Khách hàng
@@ -217,9 +213,7 @@
             [nzLeft]='ui.destination?.pinned || false'
             class='text-center font-weight-bold'
             [nzSortFn]='true'
-            (nzSortOrderChange)='
-                onSort({ orderBy: SortTypeOrderEnum.PROVINCE, orderType: $event })
-              '
+            (nzSortOrderChange)="onSort({ orderBy: 'destination', orderType: $event })"
           >
             Điểm đến
           </th>

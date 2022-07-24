@@ -54,14 +54,9 @@ export class OrderEffect {
   loadAll$ = this.actions$.pipe(
     ofType(OrderActions.loadAll),
     switchMap((props) => {
-      if (props.search?.orderType) {
-        Object.assign(props, Object.assign(props.search, {
-          orderType: props.search?.orderType === 'ascend' ? 'asc' : 'des'
-        }));
-      }
       const search = Object.assign(
         props.search,
-        props.search?.status === undefined || props.search?.status === null
+        (props.search?.status === undefined || props.search?.status === null)
           ? { status: 0 }
           : {},
         { take: PaginationDto.take, skip: props.isPaginate ? this.orderQuery.getCount() : 0 }

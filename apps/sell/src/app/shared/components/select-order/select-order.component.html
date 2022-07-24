@@ -3,7 +3,7 @@
     <nz-select
       style='width: 100px'
       formControlName='filterRoute'
-      tooltip="Lọc ra những đơn hàng/đơn hàng có hàng hoá chưa được đưa lên xe nào."
+      tooltip='Lọc ra những đơn hàng/đơn hàng có hàng hoá chưa được đưa lên xe nào.'
     >
       <nz-option [nzValue]='false' nzLabel='Tất cả'></nz-option>
       <nz-option nzLabel='Lọc' [nzValue]='true'>
@@ -34,23 +34,23 @@
       ></th>
       <th *ngIf='!selectOne' nzWidth='50px'></th>
       <th *ngIf='(account$ | async)?.mode === ModeEnum.INFO' nzWidth='50px'>ID</th>
-      <th *ngIf='columns.includes(SortTypeOrderEnum.CUSTOMER)'>
+      <th>
         <div>Khách hàng</div>
         <input nz-input type='search' formControlName='search' />
       </th>
-      <th *ngIf='columns.includes(SortTypeOrderEnum.CREATED_AT)'>
+      <th>
         <div>Ngày tạo</div>
         <nz-range-picker formControlName='startedAt'></nz-range-picker>
       </th>
-      <th *ngIf='columns.includes(SortTypeOrderEnum.TOTAL_COMMODITIES)'>
+      <th>
         <div>Tiền hàng</div>
         <input type='number' nz-input disabled />
       </th>
-      <th *ngIf='columns.includes(SortTypeOrderEnum.TOTAL_AMOUNT_COMMODITY)'>
+      <th>
         <div>Tổng số hàng</div>
         <input type='number' nz-input disabled />
       </th>
-      <th *ngIf='columns.includes(SortTypeOrderEnum.PAYMENT)'>
+      <th>
         <div>Thanh toán</div>
         <nz-select formControlName='paidType'>
           <nz-option
@@ -64,11 +64,11 @@
           <nz-option nzValue='' nzLabel='tất cả'></nz-option>
         </nz-select>
       </th>
-      <th *ngIf='columns.includes(SortTypeOrderEnum.AMOUNT_PAYMENT)'>
+      <th>
         <div>Lần thanh toán</div>
         <input disabled nz-input type='number' />
       </th>
-      <th *ngIf='columns.includes(SortTypeOrderEnum.EXPLAIN)'>
+      <th>
         <div class=' '>Diễn giải</div>
         <input class='form-control' type='text' formControlName='explain' />
       </th>
@@ -88,7 +88,7 @@
         </td>
         <ng-template #selectMultiple>
           <td
-            [nzDisabled]="isOrderSelected(order)"
+            [nzDisabled]='isOrderSelected(order)'
             [nzChecked]='checkOrderSelect(order)'
             (nzCheckedChange)='onItemChecked(order, $event)'
           ></td>
@@ -97,7 +97,7 @@
         <td *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>
           {{order.id}}
         </td>
-        <td *ngIf='columns.includes(SortTypeOrderEnum.CUSTOMER)'>
+        <td>
           <a
             [routerLink]="['/don-hang/chi-tiet-don-hang/', order.id]"
             style='color: black'
@@ -106,7 +106,7 @@
           >{{ order?.customer?.lastName }}
           </a>
         </td>
-        <td *ngIf='columns.includes(SortTypeOrderEnum.CREATED_AT)'>
+        <td>
           <a
             [routerLink]="['/don-hang/chi-tiet-don-hang/', order.id]"
             style='color: black'
@@ -120,7 +120,7 @@
             }}
           </a>
         </td>
-        <td *ngIf='columns.includes(SortTypeOrderEnum.TOTAL_COMMODITIES)'>
+        <td>
           <a
             [routerLink]="['/don-hang/chi-tiet-don-hang/', order.id]"
             target='_blank'
@@ -130,7 +130,7 @@
             {{ order.priceTotal | number: '1.0-0' | notEmpty: '0' }} đ
           </a>
         </td>
-        <td *ngIf='columns.includes(SortTypeOrderEnum.TOTAL_AMOUNT_COMMODITY)'>
+        <td>
           <a
             [routerLink]="['/don-hang/chi-tiet-don-hang/', order.id]"
             target='_blank'
@@ -140,7 +140,7 @@
             {{ order.commodityTotal | number: '1.0-0' }}
           </a>
         </td>
-        <td *ngIf='columns.includes(SortTypeOrderEnum.PAYMENT)'>
+        <td>
           <a
             [routerLink]="['/don-hang/chi-tiet-don-hang/', order.id]"
             target='_blank'
@@ -150,7 +150,7 @@
             {{ order?.paymentTotal | number: '1.0-0' | notEmpty: '0' }} đ
           </a>
         </td>
-        <td *ngIf='columns.includes(SortTypeOrderEnum.AMOUNT_PAYMENT)'>
+        <td>
           <a
             routerLink='/don-hang/lich-su-thanh-toan'
             style='color: black'
@@ -161,7 +161,7 @@
             {{ order?.paymentHistories?.length }}
           </a>
         </td>
-        <td *ngIf='columns.includes(SortTypeOrderEnum.EXPLAIN)'>
+        <td>
           <a
             [routerLink]="['/don-hang/chi-tiet-don-hang/', order.id]"
             style='color: black'
@@ -176,7 +176,7 @@
         <nz-table
           #innerTable
           [nzData]='order.commodities'
-          nzSize='middle'
+          nzSize='small'
           [nzShowPagination]='false'
         >
     <thead>
@@ -197,7 +197,7 @@
       </td>
       <td class='text-center'>{{ commodity.name }}</td>
       <td class='text-center'>{{ commodity.amount }}</td>
-      <td class='text-center'>{{ commodity.price | currency | notEmpty: 'Theo thời giá' }}</td>
+      <td class='text-center'>{{ commodity.price | currency: "VND" | notEmpty: 'Theo thời giá' }}</td>
       <td
         [nzShowCheckbox]='!commodity?.route'
         [nzChecked]='commoditySelected.has(commodity)'

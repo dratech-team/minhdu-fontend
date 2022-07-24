@@ -79,14 +79,6 @@
 <ng-template [ngIf]='indexStep === 1'>
   <select-order
     [formGroup]='formGroup'
-    [columns]='[
-      orderEnum.CREATED_AT,
-      orderEnum.TOTAL_COMMODITIES,
-      orderEnum.TOTAL_AMOUNT_COMMODITY,
-      orderEnum.PAYMENT,
-      orderEnum.AMOUNT_PAYMENT,
-      orderEnum.EXPLAIN
-    ]'
     [selectOne]='true'
   ></select-order>
 </ng-template>
