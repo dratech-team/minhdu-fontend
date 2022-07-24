@@ -223,10 +223,7 @@ export class OrderComponent implements OnInit {
     if (!dataFG.deliveredAt_start || !dataFG.deliveredAt_start || dataFG?.status !== 1) {
       dataFG = _.omit(dataFG, ['deliveredAt_end', 'deliveredAt_start']);
     }
-    return Object.assign(
-      {},
-      dataFG,
-      this.valueSort?.orderType ? this.valueSort : {}
-    );
+
+    return Object.assign({}, dataFG, this.valueSort);
   }
 }
