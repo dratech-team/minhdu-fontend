@@ -76,7 +76,7 @@ export class CommodityTemplateComponent implements OnInit {
         this.actions$.dispatch(
           CommodityTemplateActions.loadAll({
             search: this.mapTemplate(formGroup, false),
-            isPaginate: false
+            isSet: false
           })
         );
       });

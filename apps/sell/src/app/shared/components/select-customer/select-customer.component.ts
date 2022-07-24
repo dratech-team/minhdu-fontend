@@ -83,7 +83,7 @@ export class SelectCustomerComponent implements OnInit {
     this.actions$.dispatch(
       CustomerActions.loadAll({
         search: this.mapToCustomer(val, true),
-        isPaginate: true
+        isSet: true
       })
     );
   }

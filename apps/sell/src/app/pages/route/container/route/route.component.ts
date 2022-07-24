@@ -137,7 +137,7 @@ export class RouteComponent implements OnInit {
 
   public onLoadMore() {
     this.actions$.dispatch(
-      RouteActions.loadAll({ search: this.mapRoute(this.formGroup.value), isPaginate: true })
+      RouteActions.loadAll({ search: this.mapRoute(this.formGroup.value), isSet: true })
     );
   }
 
@@ -154,7 +154,7 @@ export class RouteComponent implements OnInit {
     this.actions$.dispatch(
       OrderActions.loadAll({
         search: this.mapRoute(this.formGroup.value),
-        isPaginate: false
+        isSet: false
       })
     );
   }

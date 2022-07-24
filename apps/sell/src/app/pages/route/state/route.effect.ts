@@ -76,7 +76,7 @@ export class RouteEffect {
           : {},
         {
           take: PaginationDto.take,
-          skip: props.isPaginate ? this.routeQuery.getCount() : 0
+          skip: !props.isSet ? this.routeQuery.getCount() : 0
         }
       );
       return this.routeService.pagination(search).pipe(
@@ -84,10 +84,10 @@ export class RouteEffect {
           const routes = res.data.map((route) => {
             return this.mapToRoute(route);
           });
-          if (props.isPaginate) {
-            this.routeStore.add(routes);
-          } else {
+          if (props.isSet) {
             this.routeStore.set(routes);
+          } else {
+            this.routeStore.add(routes);
           }
           this.routeStore.update(state => ({
             ...state,

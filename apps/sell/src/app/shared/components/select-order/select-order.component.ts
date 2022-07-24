@@ -69,7 +69,7 @@ export class SelectOrderComponent implements OnInit {
         this.actions$.dispatch(
           OrderActions.loadAll({
             search: this.mapOrder(this.formGroupTable.value),
-            isPaginate: false
+            isSet: false
           })
         );
       });
@@ -79,7 +79,7 @@ export class SelectOrderComponent implements OnInit {
     this.actions$.dispatch(
       OrderActions.loadAll({
         search: this.mapOrder(this.formGroupTable.value),
-        isPaginate: true
+        isSet: true
       })
     );
   }

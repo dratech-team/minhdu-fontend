@@ -108,19 +108,19 @@ export class OrderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(CommodityTemplateActions.loadAll({ isPaginate: false }));
+    this.actions$.dispatch(CommodityTemplateActions.loadAll({ isSet: false }));
     this.formGroup.valueChanges
       .pipe(debounceTime(500), startWith(this.formGroup.value))
       .subscribe((order) => {
         this.actions$.dispatch(
-          OrderActions.loadAll({ search: this.mapOrder(order), isPaginate: false })
+          OrderActions.loadAll({ search: this.mapOrder(order), isSet: false })
         );
       });
   }
 
   public onLoadMore() {
     this.actions$.dispatch(
-      OrderActions.loadAll({ search: this.mapOrder(this.formGroup.value), isPaginate: true })
+      OrderActions.loadAll({ search: this.mapOrder(this.formGroup.value), isSet: true })
     );
   }
 
@@ -157,7 +157,7 @@ export class OrderComponent implements OnInit {
     this.actions$.dispatch(
       OrderActions.loadAll({
         search: this.mapOrder(this.formGroup.value, sort),
-        isPaginate: false
+        isSet: false
       })
     );
   }

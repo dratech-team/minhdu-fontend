@@ -101,7 +101,7 @@ export class CustomerComponent implements OnInit {
       .pipe(debounceTime(500), startWith(this.formGroup.value))
       .subscribe((formGroup) => {
         this.actions$.dispatch(
-          CustomerActions.loadAll({ search: this.mapCustomer(formGroup), isPaginate: false })
+          CustomerActions.loadAll({ search: this.mapCustomer(formGroup), isSet: false })
         );
       });
 
@@ -146,14 +146,14 @@ export class CustomerComponent implements OnInit {
 
   public onLoadMore() {
     this.actions$.dispatch(
-      CustomerActions.loadAll({ search: this.mapCustomer(this.formGroup.value), isPaginate: true })
+      CustomerActions.loadAll({ search: this.mapCustomer(this.formGroup.value), isSet: true })
     );
   }
 
   public onSort(sort: Sort) {
     this.valueSort = sort;
     this.actions$.dispatch(
-      CustomerActions.loadAll({ search: this.mapCustomer(this.formGroup.value), isPaginate: true })
+      CustomerActions.loadAll({ search: this.mapCustomer(this.formGroup.value), isSet: true })
     );
   }
 

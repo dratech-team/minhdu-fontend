@@ -16,7 +16,8 @@ export class PositionEffects {
     private readonly positionQuery: PositionQuery,
     private readonly branchService: PositionService,
     private readonly message: NzMessageService
-  ) {}
+  ) {
+  }
 
   @Effect()
   loadAll$ = this.action$.pipe(
@@ -24,30 +25,30 @@ export class PositionEffects {
     switchMap((props) => {
       this.positionStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.branchService.pagination(props).pipe(
         map((response) => {
           this.positionStore.update((state) => ({
             ...state,
             loading: false,
-            total: response.total,
+            total: response.total
           }));
           // if (response.data.length === 0) {
           //   this.message.warning('Đã lấy hết chức vụ');
           // } else {
           //   this.message.success('tải danh sách chức vụ thành công');
           // }
-          if (props.isPaginate) {
-            this.positionStore.add(response.data);
-          } else {
+          if (props.isSet) {
             this.positionStore.set(response.data);
+          } else {
+            this.positionStore.add(response.data);
           }
         }),
         catchError((err) => {
           this.positionStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(PositionActions.error(err));
         })
@@ -61,21 +62,21 @@ export class PositionEffects {
     switchMap((props) => {
       this.positionStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.branchService.addOne(props).pipe(
         tap((res) => {
           this.message.success('Thêm đơn vị thành công');
           this.positionStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           this.positionStore.upsert(res.id, res);
         }),
         catchError((err) => {
           this.positionStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(PositionActions.error(err));
         })
@@ -100,20 +101,20 @@ export class PositionEffects {
     switchMap((props) => {
       this.positionStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.branchService.update(props).pipe(
         tap((response) => {
           this.positionStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           this.positionStore.update(response.id, response);
         }),
         catchError((err) => {
           this.positionStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(PositionActions.error(err));
         })

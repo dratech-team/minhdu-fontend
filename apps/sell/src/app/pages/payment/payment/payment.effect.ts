@@ -62,7 +62,7 @@ export class PaymentEffect {
       }));
       Object.assign(props.search, {
         take: PaginationDto.take,
-        skip: props.isPaginate
+        skip: props.isSet
           ? this.paymentQuery.getCount()
           : PaginationDto.skip,
       });
@@ -73,7 +73,7 @@ export class PaymentEffect {
             loading: false,
             total: response.total,
           }));
-          if (props.isPaginate) {
+          if (props.isSet) {
             this.paymentStore.add(response.data);
           } else {
             this.paymentStore.set(response.data);

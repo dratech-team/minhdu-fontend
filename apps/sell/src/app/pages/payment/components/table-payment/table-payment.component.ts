@@ -66,7 +66,7 @@ export class TablePaymentComponent implements OnInit {
     this.actions$.dispatch(
       PaymentActions.loadAll({
         search: this.mapPayment(this.formGroup.value),
-        isPaginate,
+        isSet: isPaginate,
       })
     );
   }

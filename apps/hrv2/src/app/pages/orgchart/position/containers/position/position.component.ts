@@ -79,7 +79,7 @@ export class PositionComponent implements OnInit {
     this.actions$.dispatch(
       DepartmentActions.loadAll({
         search: this.formGroup.value,
-        isPaginate: true,
+        isSet: true,
       })
     );
   }

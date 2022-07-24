@@ -250,7 +250,7 @@ export class EmployeeComponent implements OnInit {
         orderBy: this.valueSort?.orderBy || '',
         orderType: this.valueSort?.orderType || ''
       },
-      isPaginate: isPagination
+      isSet: isPagination
     };
   }
 

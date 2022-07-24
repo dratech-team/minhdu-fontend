@@ -90,7 +90,7 @@ export class PayrollEffect {
           }));
           return PayrollActions.loadAll({
             search: this.payrollQuery.getValue()?.search,
-            isPaginate: false,
+            isSet: false,
           });
         }),
         catchError((err) => {

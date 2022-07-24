@@ -105,7 +105,7 @@ export class SettingSalaryComponent implements OnInit {
     this.actions$.dispatch(
       SettingSalaryActions.loadAll({
         search: this.mapSettingSalary(this.formGroup.value, isPaginate),
-        isPaginate: isPaginate,
+        isSet: isPaginate,
       })
     );
   }

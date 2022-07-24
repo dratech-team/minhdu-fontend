@@ -98,7 +98,7 @@ export class SupplierComponent implements OnInit {
       this.actions$.dispatch(
         SupplierActions.loadAll({
           search: this.mapSupplier(true),
-          isPaginate: true,
+          isSet: true,
         })
       );
     }

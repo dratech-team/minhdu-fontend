@@ -60,15 +60,15 @@ export class CommodityEffect {
       }));
       const param = Object.assign(props, Object.assign(props.search, {
         take: PaginationDto.take,
-        skip: props.isPaginate ? this.commodityQuery.getCount() : 0
+        skip: !props.isSet ? this.commodityQuery.getCount() : 0
       }));
       return this.commodityService.pagination(param)
         .pipe(
           map((res) => {
-            if (props?.isPaginate) {
-              this.commodityStore.add(res.data);
-            } else {
+            if (props?.isSet) {
               this.commodityStore.set(res.data);
+            } else {
+              this.commodityStore.add(res.data);
             }
             this.commodityStore.update((state) => ({
               ...state,

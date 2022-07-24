@@ -33,10 +33,10 @@ export class DepartmentEffects {
             loading: false,
             total: response.total,
           }));
-          if (props.isPaginate) {
-            this.departmentStore.add(response.data);
-          } else {
+          if (props.isSet) {
             this.departmentStore.set(response.data);
+          } else {
+            this.departmentStore.add(response.data);
           }
         }),
         catchError((err) => {

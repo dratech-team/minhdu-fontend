@@ -30,12 +30,12 @@ export class ContractEffect {
           {
             ...state,
           },
-          props.isPaginate ? { loadMore: true } : { loading: true }
+          props.isSet ? { loadMore: true } : { loading: true }
         )
       );
       Object.assign(props.search, {
         take: PaginationDto.take,
-        skip: props.isPaginate
+        skip: props.isSet
           ? this.contractQuery.getCount()
           : PaginationDto.skip,
       });
@@ -44,7 +44,7 @@ export class ContractEffect {
           if (res.data.length === 0) {
             this.message.info('Đã lấy hết xếp hạng');
           }
-          if (props.isPaginate) {
+          if (props.isSet) {
             this.contractStore.add(res.data);
           } else {
             this.contractStore.set(res.data);
@@ -56,7 +56,7 @@ export class ContractEffect {
                 total: res.total,
                 remain: res.total - this.contractQuery.getCount(),
               },
-              props.isPaginate ? { loadMore: false } : { loading: false }
+              props.isSet ? { loadMore: false } : { loading: false }
             )
           );
         }),
@@ -66,7 +66,7 @@ export class ContractEffect {
               {
                 ...state,
               },
-              props.isPaginate ? { loadMore: false } : { loading: false }
+              props.isSet ? { loadMore: false } : { loading: false }
             )
           );
           return of(ContractActions.error(err));

@@ -59,15 +59,15 @@ export class OrderEffect {
         (props.search?.status === undefined || props.search?.status === null)
           ? { status: 0 }
           : {},
-        { take: PaginationDto.take, skip: props.isPaginate ? this.orderQuery.getCount() : 0 }
+        { take: PaginationDto.take, skip: !props.isSet ? this.orderQuery.getCount() : 0 }
       );
       return this.orderService.pagination(search).pipe(
         map((res: ResponsePaginateOrderEntity) => {
           const data = res.data.map(order => this.mapToOrder(order));
-          if (props.isPaginate) {
-            this.orderStore.add(data);
-          } else {
+          if (props.isSet) {
             this.orderStore.set(data);
+          } else {
+            this.orderStore.add(data);
           }
           return OrderActions.loadAllSuccess(res);
         }),

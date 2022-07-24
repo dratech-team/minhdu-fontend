@@ -60,10 +60,10 @@ export class CommodityTemplateEffect {
       }));
       return this.service.pagination(props).pipe(
         tap((res) => {
-          if (props.isPaginate) {
-            this.store.add(res.data);
-          } else {
+          if (props.isSet) {
             this.store.set(res.data);
+          } else {
+            this.store.add(res.data);
           }
           this.store.update(state => ({
             ...state,

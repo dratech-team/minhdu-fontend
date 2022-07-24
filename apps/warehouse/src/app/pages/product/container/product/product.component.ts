@@ -77,7 +77,7 @@ export class ProductComponent implements OnInit {
       this.actions$.dispatch(
         ProductActions.loadAll({
           search: this.mapProduct(this.formGroup.value, true),
-          isPaginate: true,
+          isSet: true,
         })
       );
     }

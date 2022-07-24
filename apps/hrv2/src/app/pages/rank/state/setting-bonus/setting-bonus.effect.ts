@@ -29,12 +29,12 @@ export class SettingBonusEffect {
           {
             ...state,
           },
-          props.isPaginate ? { loadMore: true } : { loading: true }
+          props.isSet ? { loadMore: true } : { loading: true }
         )
       );
       Object.assign(props.search, {
         take: PaginationDto.take,
-        skip: props.isPaginate
+        skip: props.isSet
           ? this.settingBonusQuery.getCount()
           : PaginationDto.skip,
       });
@@ -46,13 +46,13 @@ export class SettingBonusEffect {
                 ...state,
                 total: res.total,
               },
-              props.isPaginate ? { loadMore: false } : { loading: false }
+              props.isSet ? { loadMore: false } : { loading: false }
             )
           );
           if (res.data.length === 0) {
             this.message.info('Đã lấy hết cài đặt thưởng');
           }
-          if (props.isPaginate) {
+          if (props.isSet) {
             this.settingBonusStore.add(res.data);
           } else {
             this.settingBonusStore.set(res.data);
@@ -64,7 +64,7 @@ export class SettingBonusEffect {
               {
                 ...state,
               },
-              props.isPaginate ? { loadMore: false } : { loading: false }
+              props.isSet ? { loadMore: false } : { loading: false }
             )
           );
           return of(SettingBonusActions.error(err));

@@ -66,7 +66,7 @@ export class AccountEffects {
       }));
       Object.assign(props.search, {
         take: PaginationDto.take,
-        skip: props.isPaginate
+        skip: props.isSet
           ? this.accountQuery.getCount()
           : PaginationDto.skip
       });
@@ -78,7 +78,7 @@ export class AccountEffects {
             remain: res.total - this.accountQuery.getCount(),
             loading: false
           }));
-          if (props.isPaginate) {
+          if (props.isSet) {
             this.accountStore.add(res.data);
           } else {
             this.accountStore.upsertMany(res.data);

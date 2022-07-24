@@ -82,7 +82,7 @@ export class AccountManagementComponent implements OnInit {
       search: Object.assign({}, value, {
         branch: value.branches.map((branch: BranchEntity) => branch.id) || '',
       }),
-      isPaginate: isPaginate,
+      isSet: isPaginate,
     };
   }
 

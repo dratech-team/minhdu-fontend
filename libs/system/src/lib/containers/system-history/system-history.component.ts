@@ -71,7 +71,7 @@ export class systemHistoryComponent implements OnInit {
     this.actions$.dispatch(
       SystemHistoryActions.loadAll({
         search: val,
-        isPaginate,
+        isSet: isPaginate,
       })
     );
   }

@@ -100,7 +100,7 @@ export class SelectCommodityComponent implements OnInit {
     this.actions$.dispatch(
       CommodityAction.loadAll({
         search: this.mapToCommodity(value),
-        isPaginate: true
+        isSet: true
       })
     );
   }

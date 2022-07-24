@@ -51,7 +51,7 @@ export class SelectRouteComponent implements OnInit {
     this.actions$.dispatch(
       RouteActions.loadAll({
         search: value,
-        isPaginate: true
+        isSet: true
       })
     );
     this.assignIsSelect();

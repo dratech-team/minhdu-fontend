@@ -81,7 +81,7 @@ export class OrderListComponent implements OnInit {
               hiddenDebt: StatusOrder.ALL
             }),
             typeOrder: 'delivered',
-            isPaginate: true
+            isSet: true
           })
         );
       } else {
@@ -89,7 +89,7 @@ export class OrderListComponent implements OnInit {
           CustomerActions.loadOrder({
             search: this.mapOrders(val, true),
             typeOrder: 'delivering',
-            isPaginate: true
+            isSet: true
           })
         );
       }

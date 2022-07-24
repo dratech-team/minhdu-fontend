@@ -77,7 +77,7 @@ export class ConsignmentComponent implements OnInit {
       this.actions$.dispatch(
         ProductActions.loadAll({
           search: this.mapConsignment(true),
-          isPaginate: true,
+          isSet: true,
         })
       );
     }
