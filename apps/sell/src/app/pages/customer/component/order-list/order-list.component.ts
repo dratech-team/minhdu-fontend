@@ -1,21 +1,21 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { OrderEntity } from '../../../pages/order/enitities';
-import { OrderActions, OrderQuery } from '../../../pages/order/state';
+import { OrderEntity } from '../../../order/enitities';
+import { OrderActions, OrderQuery } from '../../../order/state';
 import { MatDialog } from '@angular/material/dialog';
 import { debounceTime, take, tap } from 'rxjs/operators';
 import { ModeEnum, StatusOrder } from '@minhdu-fontend/enums';
-import { DialogSharedComponent } from '../../../../../../../libs/components/src/lib/dialog-shared';
+import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared';
 import { Actions } from '@datorama/akita-ng-effects';
-import { CustomerActions, CustomerQuery, CustomerStore } from '../../../pages/customer/state';
+import { CustomerActions, CustomerQuery, CustomerStore } from '../../state';
 import { Observable } from 'rxjs';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ModalDatePickerComponent } from '@minhdu-fontend/components';
 import { ModalDatePickerEntity } from '@minhdu-fontend/base-entity';
 import { arrayAdd, arrayRemove } from '@datorama/akita';
-import { AccountQuery } from '../../../../../../../libs/system/src/lib/state/account-management/account.query';
-import { OrderService } from '../../../pages/order/service';
+import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
+import { OrderService } from '../../../order/service';
 
 @Component({
   selector: 'order-list',

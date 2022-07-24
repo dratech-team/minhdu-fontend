@@ -87,11 +87,11 @@
           {{ order?.explain || 'Không có nội dung' }}
         </td>
         <td *ngIf='delivered'>
-          <mat-slide-toggle
-            [checked]='order.hiddenDebt'
+          <nz-switch
+            [ngSwitch]='order.hiddenDebt'
             (click)='updateOrder(order)'
             class='m-auto'
-          ></mat-slide-toggle>
+          ></nz-switch>
         </td>
         <td *ngIf='!delivered' (click)='$event.stopPropagation()'>
           <button nz-button nzType='primary' (click)='confirmOrder(order)'>

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
-  OrderListComponent,
   SelectCommodityComponent,
   SelectCustomerComponent,
   SelectOrderComponent,
@@ -65,7 +64,6 @@ import { CustomNgSortPipe } from './pipe/sort.pipe';
     TooltipModule
   ],
   declarations: [
-    OrderListComponent,
     SelectOrderComponent,
     SelectCommodityComponent,
     SelectCustomerComponent,
@@ -76,7 +74,6 @@ import { CustomNgSortPipe } from './pipe/sort.pipe';
   ],
   providers: [DecimalPipe, CurrencyPipe],
   exports: [
-    OrderListComponent,
     SelectCommodityComponent,
     SelectOrderComponent,
     SelectCustomerComponent,
