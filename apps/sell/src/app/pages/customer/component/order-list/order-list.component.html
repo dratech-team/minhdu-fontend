@@ -86,10 +86,10 @@
         <td *ngIf='!delivered'>
           {{ order?.explain || 'Không có nội dung' }}
         </td>
-        <td *ngIf='delivered'>
+        <td *ngIf='delivered' (click)='$event.stopPropagation()'>
           <nz-switch
-            [ngSwitch]='order.hiddenDebt'
-            (click)='updateOrder(order)'
+            [(ngModel)]='order.hide'
+            (ngModelChange)='updateOrder(order)'
             class='m-auto'
           ></nz-switch>
         </td>

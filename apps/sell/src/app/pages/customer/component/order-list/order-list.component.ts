@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ModalDatePickerComponent } from '@minhdu-fontend/components';
 import { ModalDatePickerEntity } from '@minhdu-fontend/base-entity';
-import { arrayAdd, arrayRemove } from '@datorama/akita';
+import { arrayAdd, arrayRemove, arrayUpdate } from '@datorama/akita';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { OrderService } from '../../../order/service';
 
@@ -54,6 +54,7 @@ export class OrderListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.orders = JSON.parse(JSON.stringify(this.orders));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
@@ -110,12 +111,13 @@ export class OrderListComponent implements OnInit {
   }
 
   updateOrder(order: OrderEntity) {
-    this.actions$.dispatch(
-      OrderActions.hide({
-        id: order.id,
-        hide: { hide: !order.hiddenDebt }
-      })
-    );
+    this.orderService.hide(order.id, { hide: !order.hide })
+      .pipe(take(1))
+      .subscribe((res) => {
+        this.customerStore.update(this.customerId, ({ delivered }) => ({
+          delivered: arrayUpdate(delivered, order.id, res)
+        }));
+      });
   }
 
   deleteOrder(order: OrderEntity) {

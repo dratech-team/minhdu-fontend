@@ -1,6 +1,6 @@
-import { PaidType, StatusOrder } from '@minhdu-fontend/enums';
+import { PaidType } from '@minhdu-fontend/enums';
 import { SearchRangeDto } from '../../../shared/dto';
-import { OrderStatusEnum } from '../enums';
+import { HideDebtStatusEnum, OrderStatusEnum } from '../enums';
 import { BaseSearchDto } from '@minhdu-fontend/base-dto';
 
 export interface BaseSearchOrderDto extends SearchRangeDto {
@@ -17,7 +17,7 @@ export interface BaseSearchOrderDto extends SearchRangeDto {
   readonly province?: string;
   readonly bsx?: string;
   readonly commodity?: string;
-  readonly hiddenDebt?: StatusOrder;
+  readonly hiddenDebt?: HideDebtStatusEnum;
 }
 
 export type SearchOrderDto = BaseSearchDto<BaseSearchOrderDto>

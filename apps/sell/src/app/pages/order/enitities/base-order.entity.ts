@@ -23,5 +23,5 @@ export interface BaseOrderEntity extends BaseEntity {
   province: Province;
   district?: District;
   ward?: Ward;
-  hiddenDebt: boolean;
+  hide: boolean;
 }

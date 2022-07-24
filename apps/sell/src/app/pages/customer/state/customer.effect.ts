@@ -12,7 +12,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PaginationDto } from '@minhdu-fontend/constants';
 import { arrayAdd } from '@datorama/akita';
-import { OrderStatusEnum } from '../../order/enums';
+import { HideDebtStatusEnum, OrderStatusEnum } from '../../order/enums';
 
 @Injectable()
 export class CustomerEffect {
@@ -94,13 +94,21 @@ export class CustomerEffect {
           this.customerStore.upsert(customer.id, customer);
           this.customerStore.update(state => ({ ...state, loading: false, error: null }));
 
-          this.orderService.pagination({ customerId: props.id, status: OrderStatusEnum.DELIVERED })
+          this.orderService.pagination({
+            customerId: props.id,
+            status: OrderStatusEnum.DELIVERED,
+            hiddenDebt: HideDebtStatusEnum.ALL
+          })
             .pipe(take(1))
             .subscribe(res => {
               this.customerStore.update(props.id, { delivered: res.data });
             });
 
-          this.orderService.pagination({ customerId: props.id, status: OrderStatusEnum.DELIVERING })
+          this.orderService.pagination({
+            customerId: props.id,
+            status: OrderStatusEnum.DELIVERING,
+            hiddenDebt: HideDebtStatusEnum.ALL
+          })
             .pipe(take(1))
             .subscribe(res => {
               this.customerStore.update(props.id, { delivering: res.data });
