@@ -2,14 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Api, TitleDatetime } from '@minhdu-fontend/constants';
-import {
-  ConvertBoolean,
-  ItemContextMenu,
-  ModeEnum,
-  PaidType,
-  PaymentType,
-  SortTypeOrderEnum
-} from '@minhdu-fontend/enums';
+import { ModeEnum, SortTypeOrderEnum } from '@minhdu-fontend/enums';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import { OrderActions, OrderQuery, OrderStore } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -18,7 +11,6 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import * as _ from 'lodash';
 import { OrderEntity } from '../../enitities';
 import { radiosStatusOrderConstant } from '../../constants';
-import { WidthConstant } from '../../../../shared/constants';
 import { ModalExportExcelComponent, ModalExportExcelData } from '@minhdu-fontend/components';
 import { DatePipe } from '@angular/common';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
@@ -54,12 +46,7 @@ export class OrderComponent implements OnInit {
   radios = radiosStatusOrderConstant;
 
   ModeEnum = ModeEnum;
-  ItemContextMenu = ItemContextMenu;
-  PaidType = PaidType;
-  ConvertBoolean = ConvertBoolean;
-  PaymentType = PaymentType;
   SortTypeOrderEnum = SortTypeOrderEnum;
-  widthConstant = WidthConstant;
 
   visible = false;
   search = this.orderQuery.getValue().search;
