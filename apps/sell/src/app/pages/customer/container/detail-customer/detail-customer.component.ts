@@ -17,8 +17,6 @@ import { CustomerComponentService } from '../../shared';
 export class DetailCustomerComponent implements OnInit {
   customer$ = this.customerQuery.selectEntity(this.getId);
 
-  convertBoolean = ConvertBoolean;
-  paidType = PaidType;
   orders: OrderEntity[] = [];
 
   get getId(): number {
