@@ -16,7 +16,7 @@ import { Actions } from '@datorama/akita-ng-effects';
 import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import * as _ from 'lodash';
-import { BaseOrderEntity, OrderEntity } from '../../enitities';
+import { OrderEntity } from '../../enitities';
 import { radiosStatusOrderConstant } from '../../constants';
 import { WidthConstant } from '../../../../shared/constants';
 import { ModalExportExcelComponent, ModalExportExcelData } from '@minhdu-fontend/components';
