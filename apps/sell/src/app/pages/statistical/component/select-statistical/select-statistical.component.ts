@@ -4,10 +4,10 @@ import { FilterOverviewEnum, OptionOverviewEnum } from '@minhdu-fontend/enums';
 import * as dateFns from 'date-fns';
 
 @Component({
-  selector: 'app-pick-statical',
-  templateUrl: 'pick-statistical-type.component.html'
+  selector: 'select-statical',
+  templateUrl: 'select-statistical.component.html'
 })
-export class PickStatisticalTypeComponent implements OnInit {
+export class SelectStatisticalComponent implements OnInit {
   @Input() type!: FilterOverviewEnum;
   @Output() onExport = new EventEmitter<any>();
   @Output() onChangeValue = new EventEmitter<any>();
