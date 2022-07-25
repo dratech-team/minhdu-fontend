@@ -65,7 +65,7 @@ export class OrderEffect {
           : {},
         { take: PaginationDto.take, skip: !props.isSet ? this.orderQuery.getCount() : 0 }
       );
-      return this.orderService.pagination(search).pipe(
+      return this.orderService.pagination({ search: search }).pipe(
         map((res: ResponsePaginateOrderEntity) => {
           const data = res.data.map(order => this.mapToOrder(order));
           if (props.isSet) {

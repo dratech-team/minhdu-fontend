@@ -9,6 +9,8 @@ import { OrderDialogComponent } from '../../../order/component';
 import { BaseOrderEntity } from '../../../order/enitities';
 import { CustomerComponentService } from '../../shared';
 import { OrderListComponent } from '../../component/order-list/order-list.component';
+import { SearchOrderDto } from '../../dto';
+import { omit } from 'lodash';
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -56,6 +58,21 @@ export class DetailCustomerComponent implements OnInit {
         }
       }
     });
+  }
+
+  public onOrderChanged(event: SearchOrderDto, delivered: boolean): void {
+    let search = {
+      startedAt_start: event.search.ranges?.length === 2 ? event.search.ranges[0] : null,
+      startedAt_end: event.search.ranges?.length === 2 ? event.search.ranges[1] : null,
+      province: event.search?.ward || '',
+      explain: event.search?.explain || '',
+      customerId: this.getId,
+    };
+    this.actions$.dispatch(CustomerActions.loadOrder({
+      search: (!search?.startedAt_start || !search?.startedAt_end) ? omit(search, ['startedAt_start', 'startedAt_end']) : search,
+      isSet: !event.isLoadMore,
+      typeOrder: delivered ? 'delivered' : 'delivering'
+    }));
   }
 
   public onFullScreenOrder(orders: BaseOrderEntity[], delivered: boolean): void {

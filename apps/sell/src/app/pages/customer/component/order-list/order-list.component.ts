@@ -15,6 +15,7 @@ import { ModalDatePickerEntity } from '@minhdu-fontend/base-entity';
 import { arrayAdd, arrayRemove, arrayUpdate } from '@datorama/akita';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { OrderService } from '../../../order/service';
+import { SearchOrderDto } from '../../dto';
 
 @Component({
   selector: 'order-list',
@@ -26,10 +27,9 @@ export class OrderListComponent implements OnInit {
   @Input() customerId?: number;
   @Input() loading = false;
 
-  @Output() onValueChanged = new EventEmitter<{
-    search: Partial<{ ranges: Date[] | null, ward: string | null | undefined, explain: string | null | undefined }>,
-    isSet: boolean
-  }>();
+  state$ = this.customerQuery.select();
+
+  @Output() onValueChanged = new EventEmitter<SearchOrderDto>();
 
   account$ = this.accQuery.selectCurrentUser();
 
@@ -58,20 +58,9 @@ export class OrderListComponent implements OnInit {
   }
 
   ngOnInit() {
-    // search
-    //tap((val) => {
-    //         this.actions$.dispatch(
-    //           CustomerActions.loadOrder({
-    //             search: Object.assign({}, this.mapOrders(val), {
-    //               hiddenDebt: StatusOrder.ALL
-    //             }),
-    //             isSet: true,
-    //             typeOrder: this.delivered ? 'delivered' : 'delivering'
-    //           })
-    //         );
     this.formGroup.valueChanges.subscribe(formGroup => {
       this.onValueChanged.emit({
-        search: formGroup, isSet: true
+        search: formGroup, isLoadMore: false
       });
     });
   }
@@ -79,17 +68,8 @@ export class OrderListComponent implements OnInit {
   onLoadMore() {
     const val = this.formGroup.value;
     this.onValueChanged.emit({
-      search: val, isSet: true
+      search: val, isLoadMore: true
     });
-    // this.actions$.dispatch(
-    //   CustomerActions.loadOrder({
-    //     search: Object.assign({}, this.mapOrders(val), {
-    //       hiddenDebt: StatusOrder.ALL
-    //     }),
-    //     typeOrder: this.delivered ? 'delivered' : 'delivering',
-    //     isSet: false
-    //   })
-    // );
   }
 
   detailOrder(id: number) {

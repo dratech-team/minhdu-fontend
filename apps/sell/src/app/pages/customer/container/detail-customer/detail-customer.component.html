@@ -308,6 +308,7 @@
           [customerId]='getId'
           [loading]='(deliveringLoading$ | async) || false'
           [orders]='customer.delivering | notEmpty: []'
+          (onValueChanged)='onOrderChanged($event, false)'
         >
         </order-list>
       </div>
@@ -327,8 +328,9 @@
         <order-list
           [delivered]='true'
           [customerId]='getId'
-          [loading]='(deliveringLoading$ | async) || false'
+          [loading]='(deliveredLoading$ | async) || false'
           [orders]='customer.delivered | notEmpty: []'
+          (onValueChanged)='onOrderChanged($event, true)'
         ></order-list>
       </div>
       <div class='col-12 mt-5'>

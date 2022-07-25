@@ -110,6 +110,25 @@
         </td>
       </tr>
     </ng-template>
+    <tr *ngIf='delivered ? ((state$ | async)?.deliveredRemain || 0 > 0) : ((state$ | async)?.deliveringRemain || 0 > 0)'>
+      <td colspan='10'>
+        <div
+          class='w-100 d-flex justify-content-start'
+          style='position: relative'
+        >
+          <button
+            nz-button
+            nzGhost
+            nzType='primary'
+            style='position: sticky; left: 45vw'
+            [nzLoading]='delivered ? (state$ | async)?.deliveredLoading : (state$ | async)?.deliveringLoading'
+            (click)='onLoadMore()'
+          >
+            Tải thêm
+          </button>
+        </div>
+      </td>
+    </tr>
     </tbody>
   </nz-table>
 </div>

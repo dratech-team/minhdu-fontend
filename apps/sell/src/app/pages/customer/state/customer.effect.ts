@@ -98,9 +98,13 @@ export class CustomerEffect {
             error: null
           }));
           this.orderService.pagination({
-            customerId: props.id,
-            status: OrderStatusEnum.DELIVERED,
-            hiddenDebt: HideDebtStatusEnum.ALL
+            search: {
+              take: PaginationDto.take,
+              skip: PaginationDto.skip,
+              customerId: props.id,
+              status: OrderStatusEnum.DELIVERED,
+              hiddenDebt: HideDebtStatusEnum.ALL
+            }
           })
             .pipe(take(1))
             .subscribe(res => {
@@ -116,9 +120,13 @@ export class CustomerEffect {
             });
 
           this.orderService.pagination({
-            customerId: props.id,
-            status: OrderStatusEnum.DELIVERING,
-            hiddenDebt: HideDebtStatusEnum.ALL
+            search: {
+              take: PaginationDto.take,
+              skip: PaginationDto.skip,
+              customerId: props.id,
+              status: OrderStatusEnum.DELIVERING,
+              hiddenDebt: HideDebtStatusEnum.ALL
+            }
           })
             .pipe(take(1))
             .subscribe(res => {
@@ -185,31 +193,33 @@ export class CustomerEffect {
     })
   );
 
-  @Effect({ dispatch: true })
+  @Effect({ dispatch: false })
   loadOrder$ = this.action$.pipe(
     ofType(CustomerActions.loadOrder),
     concatMap((props) => {
       const status = props.typeOrder === 'delivered' ? OrderStatusEnum.DELIVERED : OrderStatusEnum.DELIVERING;
       const customer = this.customerQuery.getEntity(props.search.customerId);
-      return this.orderService.pagination(Object.assign(
-        {},
-        props.search,
-        {
-          status,
-          take: PaginationDto.take,
-          skip: props.isSet
-            ? PaginationDto.skip
-            : props.typeOrder === 'delivered'
-              ? (customer?.delivered?.length || 0)
-              : (customer?.delivering?.length || 0)
-        }
-      )).pipe(
+      return this.orderService.pagination({
+        search: Object.assign(
+          {},
+          props.search,
+          {
+            status,
+            take: PaginationDto.take,
+            skip: props.isSet
+              ? PaginationDto.skip
+              : props.typeOrder === 'delivered'
+                ? (customer?.delivered?.length || 0)
+                : (customer?.delivering?.length || 0)
+          }
+        )
+      }).pipe(
         tap((res) => {
           if (props.isSet) {
             this.customerStore.update(props.search.customerId, { [props.typeOrder]: res.data });
           } else {
             this.customerStore.update(props.search.customerId, ({ delivering, delivered }) => ({
-              delivering: props.typeOrder === 'delivering' ? arrayAdd(delivered, res.data) : delivered,
+              delivering: props.typeOrder === 'delivering' ? arrayAdd(delivering, res.data) : delivering,
               delivered: props.typeOrder === 'delivered' ? arrayAdd(delivered, res.data) : delivered
             }));
           }
@@ -219,8 +229,8 @@ export class CustomerEffect {
             deliveringLoading: props.typeOrder === 'delivering' ? false : state.deliveringLoading,
             deliveredTotal: res.total,
             deliveringTotal: res.total,
-            deliveredRemain: state.deliveredTotal - (this.customerQuery.getEntity(props.search.customerId)?.delivered?.length || 0),
-            deliveringRemain: state.deliveringTotal - (this.customerQuery.getEntity(props.search.customerId)?.delivering?.length || 0),
+            deliveredRemain: res.total - (this.customerQuery.getEntity(props.search.customerId)?.delivered?.length || 0),
+            deliveringRemain: res.total - (this.customerQuery.getEntity(props.search.customerId)?.delivering?.length || 0),
             error: null
           }));
         }),
