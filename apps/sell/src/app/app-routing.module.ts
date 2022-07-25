@@ -20,7 +20,7 @@ const routes: Routes = [
       {
         path: HrefEnum.DASHBOARD,
         loadChildren: () =>
-          import('./pages/statistical/overview.module').then(
+          import('./pages/overview/overview.module').then(
             (m) => m.OverviewModule
           ),
         canActivate: [RouteGuard],
