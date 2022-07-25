@@ -7,30 +7,52 @@ import { StorageName } from '@minhdu-fontend/constants';
 import { CustomerState } from './app/pages/customer/state';
 import { OrderState } from './app/pages/order/state';
 import { RouteState } from './app/pages/route/state';
+import { CommodityState } from './app/pages/commodity/state';
+import { CommodityTemplateState } from './app/pages/commodity-template/state/commodity-template.store';
+import { PaymentState } from './app/pages/payment/payment';
 
 if (environment.production) {
   enableProdMode();
 }
 
-const selectUICustomer: PersistStateSelectFn<CustomerState> = (state) => ({ ui: state.ui });
-const selectUIOrder: PersistStateSelectFn<OrderState> = (state) => ({ ui: state.ui });
-const selectUIRoute: PersistStateSelectFn<RouteState> = (state) => ({ ui: state.ui, expandedAll: state.expandedAll });
+const selectUICustomer: PersistStateSelectFn<CustomerState> = ({ ui }) => {
+  return { ui };
+};
+const selectUIOrder: PersistStateSelectFn<OrderState> = ({ ui }) => {
+  return { ui };
+};
+const selectUIRoute: PersistStateSelectFn<RouteState> = ({ ui, expandedAll }) => {
+  return { ui, expandedAll };
+};
+const selectUICommodity: PersistStateSelectFn<CommodityState> = ({ ui }) => {
+  return { ui };
+};
+const selectUICommodityTemplate: PersistStateSelectFn<CommodityTemplateState> = ({ ui }) => {
+  return { ui };
+};
+const selectUIPayment: PersistStateSelectFn<PaymentState> = ({ ui }) => {
+  return { ui };
+};
 
 selectUICustomer.storeName = StorageName.CUSTOMER;
 selectUIOrder.storeName = StorageName.ORDER;
 selectUIRoute.storeName = StorageName.ROUTE;
+selectUICommodity.storeName = StorageName.COMMODITY;
+selectUICommodityTemplate.storeName = StorageName.COMMODITY_TEMPLATE;
+selectUIPayment.storeName = StorageName.PAYMENT;
 
-const selectStorage = persistState({
-  select: [selectUICustomer, selectUIOrder, selectUIRoute]
+
+persistState({
+  select: [
+    selectUICustomer,
+    selectUIOrder,
+    selectUIRoute,
+    selectUICommodity,
+    selectUICommodityTemplate,
+    selectUIPayment
+  ]
 });
 
-const includeStorage = persistState({
-  select: [selectUICustomer, selectUIOrder, selectUIRoute]
-});
-
-platformBrowserDynamic([
-  { provide: 'persistStorage', useValue: selectStorage, multi: true },
-  { provide: 'persistStorage', useValue: includeStorage, multi: true },
-])
+platformBrowserDynamic()
   .bootstrapModule(AppModule)
   .catch((err) => console.error(err));
