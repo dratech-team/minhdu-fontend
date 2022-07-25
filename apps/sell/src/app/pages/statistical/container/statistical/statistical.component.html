@@ -8,8 +8,8 @@
         <div class="mt-2 d-flex justify-content-between">
           <span class="mt-2 ml-3 mb-1 title-chart">Thống kê theo tỉnh</span>
           <app-pick-statical
-            (EventStatistical)="onStatistical(filterOverview.NATION, $event)"
-            (EventPrint)="
+            (onChangeValue)="onStatistical(filterOverview.NATION, $event)"
+            (onExport)="
               printStatistical(
                 Api.SELL.STATISTICAL.STATISTICAL_PROVINCE_PRINT,
                 $event
@@ -39,8 +39,8 @@
           >
           <app-pick-statical
             [type]="filterOverview.CUSTOMER"
-            (EventStatistical)="onStatistical(filterOverview.CUSTOMER, $event)"
-            (EventPrint)="
+            (onChangeValue)="onStatistical(filterOverview.CUSTOMER, $event)"
+            (onExport)="
               printStatistical(
                 Api.SELL.STATISTICAL.STATISTICAL_AGENCY_PRINT,
                 $event
@@ -68,8 +68,8 @@
           <span class="mt-2 ml-3 mb-1 title-chart">Thống kê theo năm</span>
           <app-pick-statical
             [type]="filterOverview.YEAR"
-            (EventStatistical)="onStatistical(filterOverview.YEAR, $event)"
-            (EventPrint)="
+            (onChangeValue)="onStatistical(filterOverview.YEAR, $event)"
+            (onExport)="
               printStatistical(
                 Api.SELL.STATISTICAL.STATISTICAL_AGENCY_PRINT,
                 $event
