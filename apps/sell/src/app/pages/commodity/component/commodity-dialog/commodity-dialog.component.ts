@@ -71,7 +71,7 @@ export class CommodityDialogComponent implements OnInit {
   }
 
   compare() {
-    const commodity = this.data.commodity;
+    const commodity = this.data?.commodity;
     const value = this.formGroup.value;
 
     return commodity && commodity.price === value.price &&
@@ -86,8 +86,8 @@ export class CommodityDialogComponent implements OnInit {
       logged = false;
     }
     return {
-      closed: this.data.commodity.closed || false,
-      orderId: this.data.commodity?.orderId,
+      closed: this.data?.commodity?.closed || false,
+      orderId: this.data?.commodity?.orderId,
       logged: logged,
       code: value.code,
       name: value.name,

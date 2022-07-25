@@ -43,6 +43,11 @@ import { PaymentEffect } from '../payment/payment';
 import { PaymentModule } from '../payment/payment.module';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { CustomerComponentService } from './shared';
+import { CustomNgSortPipe } from '../../shared/pipe/sort.pipe';
+import { OrderListComponent } from './component/order-list/order-list.component';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 @NgModule({
   imports: [
@@ -86,9 +91,13 @@ import { CustomerComponentService } from './shared';
     NzStepsModule,
     NzDatePickerModule,
     PaymentModule,
-    NzDropDownModule
+    NzDropDownModule,
+    NzSwitchModule,
+    NzIconModule,
+    NzSkeletonModule
   ],
   declarations: [
+    OrderListComponent,
     CustomerComponent,
     DetailCustomerComponent,
     CustomerModalComponent,
@@ -97,6 +106,7 @@ import { CustomerComponentService } from './shared';
   providers: [
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     DatePipe,
+    CustomNgSortPipe,
     CustomerComponentService,
     CustomerService,
     PaymentService,

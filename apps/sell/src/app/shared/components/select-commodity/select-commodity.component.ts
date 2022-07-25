@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityUnit, CustomerType, ModeEnum } from '@minhdu-fontend/enums';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, startWith } from 'rxjs/operators';
 import { CommodityAction, CommodityQuery } from '../../../pages/commodity/state';
 import { CommodityDialogComponent } from '../../../pages/commodity/component';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -52,14 +52,11 @@ export class SelectCommodityComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.actions$.dispatch(
-      CommodityAction.loadAll({ search: {} })
-    );
     this.formGroup.valueChanges
-      .pipe(debounceTime(500))
+      .pipe(debounceTime(500), startWith(this.formGroup.value))
       .subscribe((val) => {
         this.actions$.dispatch(
-          CommodityAction.loadAll({ search: this.mapToCommodity(val) })
+          CommodityAction.loadAll({ search: this.mapToCommodity(val), isSet: true })
         );
       });
   }
@@ -100,26 +97,13 @@ export class SelectCommodityComponent implements OnInit {
     this.actions$.dispatch(
       CommodityAction.loadAll({
         search: this.mapToCommodity(value),
-        isSet: true
+        isSet: false
       })
     );
   }
 
   closeDialog() {
     this.modalRef.close(Array.from(this.setOfCheckedId));
-  }
-
-  public onSetAll(checked: boolean): void {
-    const commodityIds = this.commodityQuery.getAll().map(commodity => commodity.id);
-    if (checked) {
-      this.setOfCheckedId = new Set(commodityIds);
-      this.onChange.emit(commodityIds);
-    } else {
-      this.setOfCheckedId.clear();
-      this.onChange.emit([]);
-    }
-
-    this.refreshCheckedStatus();
   }
 
   public updateCheckedSet(id: number, checked: boolean): void {
@@ -143,11 +127,6 @@ export class SelectCommodityComponent implements OnInit {
 
   public onItemChecked(id: number, checked: boolean): void {
     this.updateCheckedSet(id, checked);
-    this.refreshCheckedStatus();
-  }
-
-  public onCurrentPageDataChange(commodities: CommodityEntity[]): void {
-    this.listOfCurrentPageData = commodities;
     this.refreshCheckedStatus();
   }
 

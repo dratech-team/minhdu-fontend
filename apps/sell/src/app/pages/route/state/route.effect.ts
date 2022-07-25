@@ -12,7 +12,7 @@ import { BaseRouteEntity, RouteEntity } from '../entities';
 import { uniq } from 'lodash';
 import { CommodityEntity } from '../../commodity/entities';
 import { CancelEnum } from '../enums';
-import { OrderEntity } from '../../order/enitities/order.entity';
+import { OrderEntity } from '../../order/enitities';
 
 @Injectable()
 export class RouteEffect {

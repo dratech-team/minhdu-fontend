@@ -39,6 +39,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { OrderComponentService } from './shared';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { CustomNgSortPipe } from '../../shared/pipe/sort.pipe';
 
 @NgModule({
   imports: [
@@ -96,7 +97,8 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     DatePipe,
     OrderComponentService,
-    OrderService
+    OrderService,
+    CustomNgSortPipe
   ],
   exports: []
 })

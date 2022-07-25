@@ -6,7 +6,7 @@ import { ModeEnum } from '@minhdu-fontend/enums';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import { OrderActions, OrderQuery, OrderStore } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
-import { ContextMenuEntity, Sort, SortEntity } from '@minhdu-fontend/data-models';
+import { ContextMenuEntity, SortEntity } from '@minhdu-fontend/data-models';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import * as _ from 'lodash';
 import { OrderEntity } from '../../enitities';
@@ -21,6 +21,7 @@ import { OrderStatusEnum } from '../../enums';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CommodityTemplateActions } from '../../../commodity-template/state/commodity-template.action';
 import { CommodityTemplateQuery } from '../../../commodity-template/state/commodity-template.query';
+import { CustomNgSortPipe } from '../../../../shared/pipe/sort.pipe';
 
 @Component({
   templateUrl: 'order.component.html',
@@ -96,6 +97,7 @@ export class OrderComponent implements OnInit {
     public readonly message: NzMessageService,
     public readonly orderComponentService: OrderComponentService,
     private readonly datePipe: DatePipe,
+    private readonly nzSortPipe: CustomNgSortPipe,
     private readonly actions$: Actions,
     private readonly router: Router,
     private readonly modal: NzModalService,
@@ -197,9 +199,6 @@ export class OrderComponent implements OnInit {
   }
 
   private mapOrder(dataFG: any, sort?: SortEntity) {
-    if (sort) {
-      sort = Object.assign(sort, { directions: sort.directions === 'ascend' ? 'asc' : 'desc' });
-    }
     if (!dataFG.startedAt_start || !dataFG.startedAt_end) {
       dataFG = _.omit(dataFG, ['startedAt_start', 'startedAt_end']);
     }
@@ -209,6 +208,6 @@ export class OrderComponent implements OnInit {
     if (!dataFG.deliveredAt_start || !dataFG.deliveredAt_start || dataFG?.status !== 1) {
       dataFG = _.omit(dataFG, ['deliveredAt_end', 'deliveredAt_start']);
     }
-    return Object.assign({}, dataFG, sort);
+    return Object.assign({}, dataFG, this.nzSortPipe.transform(sort));
   }
 }

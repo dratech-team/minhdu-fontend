@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { catchError, concatMap, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, concatMap, switchMap, take, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { CustomerActions } from './customer.actions';
 import { CustomerService } from '../service';
@@ -11,6 +11,8 @@ import { AddCustomerDto, SearchCustomerDto } from '../dto';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PaginationDto } from '@minhdu-fontend/constants';
+import { arrayAdd } from '@datorama/akita';
+import { HideDebtStatusEnum, OrderStatusEnum } from '../../order/enums';
 
 @Injectable()
 export class CustomerEffect {
@@ -55,13 +57,14 @@ export class CustomerEffect {
           }));
         }),
         catchError((err) => {
-          return of(CustomerActions.error(err));
+          this.action$.dispatch(CustomerActions.error(err));
+          return of();
         })
       );
     })
   );
 
-  @Effect({ dispatch: true })
+  @Effect()
   addOne$ = this.action$.pipe(
     ofType(CustomerActions.addOne),
     switchMap((props: AddCustomerDto) => {
@@ -75,26 +78,79 @@ export class CustomerEffect {
           this.customerStore.add(res);
         }),
         catchError((err) => {
-          return of(CustomerActions.error(err));
+          this.action$.dispatch(CustomerActions.error(err));
+          return of();
         })
       );
     })
   );
 
-  @Effect({ dispatch: true })
+  @Effect()
   loadOne$ = this.action$.pipe(
     ofType(CustomerActions.loadOne),
     switchMap((props) =>
       this.customerService.getOne(props.id).pipe(
         tap((customer) => {
           this.customerStore.upsert(customer.id, customer);
+          this.customerStore.update(state => ({
+            ...state,
+            loading: false,
+            error: null
+          }));
+          this.orderService.pagination({
+            search: {
+              take: PaginationDto.take,
+              skip: PaginationDto.skip,
+              customerId: props.id,
+              status: OrderStatusEnum.DELIVERED,
+              hiddenDebt: HideDebtStatusEnum.ALL
+            }
+          })
+            .pipe(take(1))
+            .subscribe(res => {
+              this.customerStore.update(props.id, { delivered: res.data });
+              const count = res.data?.length || 0;
+              this.customerStore.update((state) => ({
+                ...state,
+                deliveredLoading: false,
+                deliveredTotal: res.total,
+                deliveredRemain: res.total - count,
+                error: null
+              }));
+            });
+
+          this.orderService.pagination({
+            search: {
+              take: PaginationDto.take,
+              skip: PaginationDto.skip,
+              customerId: props.id,
+              status: OrderStatusEnum.DELIVERING,
+              hiddenDebt: HideDebtStatusEnum.ALL
+            }
+          })
+            .pipe(take(1))
+            .subscribe(res => {
+              this.customerStore.update(props.id, { delivering: res.data });
+              const count = res.data?.length || 0;
+              this.customerStore.update((state) => ({
+                ...state,
+                deliveringLoading: false,
+                deliveringTotal: res.total,
+                deliveringRemain: res.total - count,
+                error: null
+              }));
+            });
+
         }),
-        catchError((err) => of(CustomerActions.error(err)))
+        catchError((err) => {
+          this.action$.dispatch(CustomerActions.error(err));
+          return of();
+        })
       )
     )
   );
 
-  @Effect({ dispatch: true })
+  @Effect()
   updateOne$ = this.action$.pipe(
     ofType(CustomerActions.update),
     switchMap((props) => {
@@ -107,18 +163,19 @@ export class CustomerEffect {
           this.customerStore.update(response.id, response);
         }),
         catchError((err) => {
-          return of(CustomerActions.error(err));
+          this.action$.dispatch(CustomerActions.error(err));
+          return of();
         })
       );
     })
   );
 
-  @Effect({ dispatch: true })
+  @Effect()
   removeOne = this.action$.pipe(
     ofType(CustomerActions.remove),
     switchMap((props) => {
       return this.customerService.delete(props.id).pipe(
-        map(() => {
+        tap(() => {
           this.customerStore.update((state) => ({
             ...state,
             total: state.total - 1,
@@ -129,44 +186,56 @@ export class CustomerEffect {
           return this.customerStore.remove(props.id);
         }),
         catchError((err) => {
-          this.customerStore.update((state) => ({
-            ...state,
-            loading: undefined,
-            error: err
-          }));
-          return of(CustomerActions.error(err));
+          this.action$.dispatch(CustomerActions.error(err));
+          return of();
         })
       );
     })
   );
 
-  @Effect({ dispatch: true })
+  @Effect({ dispatch: false })
   loadOrder$ = this.action$.pipe(
     ofType(CustomerActions.loadOrder),
     concatMap((props) => {
-      this.customerStore.update((state) => ({
-        ...state,
-        deliveringLoading:
-          props?.typeOrder === 'delivering' ? true : state.deliveringLoading,
-        deliveredLoading:
-          props?.typeOrder === 'delivered' ? true : state.deliveredLoading
-      }));
-      return this.orderService
-        .pagination(
-          Object.assign(props.search, {
-            status: props.typeOrder === 'delivered' ? 1 : 0
-          })
+      const status = props.typeOrder === 'delivered' ? OrderStatusEnum.DELIVERED : OrderStatusEnum.DELIVERING;
+      const customer = this.customerQuery.getEntity(props.search.customerId);
+      return this.orderService.pagination({
+        search: Object.assign(
+          {},
+          props.search,
+          {
+            status,
+            take: PaginationDto.take,
+            skip: props.isSet
+              ? PaginationDto.skip
+              : props.typeOrder === 'delivered'
+                ? (customer?.delivered?.length || 0)
+                : (customer?.delivering?.length || 0)
+          }
         )
-        .pipe(
-          tap((res) => {
-            this.customerStore.update((state) => ({
-              ...state,
-              deliveringLoading: false,
-              deliveredLoading: false
+      }).pipe(
+        tap((res) => {
+          if (props.isSet) {
+            this.customerStore.update(props.search.customerId, { [props.typeOrder]: res.data });
+          } else {
+            this.customerStore.update(props.search.customerId, ({ delivering, delivered }) => ({
+              delivering: props.typeOrder === 'delivering' ? arrayAdd(delivering, res.data) : delivering,
+              delivered: props.typeOrder === 'delivered' ? arrayAdd(delivered, res.data) : delivered
             }));
-          }),
-          catchError((err) => of(CustomerActions.error(err)))
-        );
+          }
+          this.customerStore.update((state) => ({
+            ...state,
+            deliveredLoading: props.typeOrder === 'delivered' ? false : state.deliveredLoading,
+            deliveringLoading: props.typeOrder === 'delivering' ? false : state.deliveringLoading,
+            deliveredTotal: res.total,
+            deliveringTotal: res.total,
+            deliveredRemain: res.total - (this.customerQuery.getEntity(props.search.customerId)?.delivered?.length || 0),
+            deliveringRemain: res.total - (this.customerQuery.getEntity(props.search.customerId)?.delivering?.length || 0),
+            error: null
+          }));
+        }),
+        catchError((err) => of(CustomerActions.error(err)))
+      );
     })
   );
 
@@ -174,7 +243,6 @@ export class CustomerEffect {
   requesting$ = this.action$.pipe(
     ofType(
       CustomerActions.addOne,
-      CustomerActions.loadOne,
       CustomerActions.loadAll,
       CustomerActions.update,
       CustomerActions.remove
@@ -185,6 +253,68 @@ export class CustomerEffect {
         loading: true,
         error: null
       }));
+    })
+  );
+
+  @Effect()
+  requestingOrder$ = this.action$.pipe(
+    ofType(CustomerActions.loadOrder),
+    tap((res) => {
+      this.customerStore.update((state) => {
+        if (res.typeOrder === 'delivering') {
+          return {
+            ...state,
+            deliveringLoading: true,
+            error: null
+          };
+        }
+        return {
+          ...state,
+          deliveredLoading: true,
+          error: null
+        };
+      });
+    })
+  );
+
+  @Effect()
+  requestingLoadOne$ = this.action$.pipe(
+    ofType(CustomerActions.loadOne),
+    tap((res) => {
+      this.customerStore.update((state) => {
+        return {
+          ...state,
+          loading: true,
+          deliveringLoading: true,
+          deliveredLoading: true,
+          error: null
+        };
+      });
+    })
+  );
+
+  @Effect()
+  loadOrderSuccess$ = this.action$.pipe(
+    ofType(CustomerActions.loadOrderSuccess),
+    tap((res) => {
+      return this.customerStore.update((state) => {
+        if (res.typeOrder === 'delivering') {
+          return {
+            ...state,
+            deliveringLoading: false,
+            deliveringTotal: res.total,
+            deliveringRemain: res.total - (res.customer.delivering?.length || 0),
+            error: null
+          };
+        }
+        return {
+          ...state,
+          deliveringLoading: false,
+          deliveringTotal: res.total,
+          deliveringRemain: res.total - (state.customer.delivered?.length || 0),
+          error: null
+        };
+      });
     })
   );
 

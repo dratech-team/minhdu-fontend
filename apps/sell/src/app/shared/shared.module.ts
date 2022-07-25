@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
-  OrderListComponent,
   SelectCommodityComponent,
   SelectCustomerComponent,
   SelectOrderComponent,
@@ -32,6 +31,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { PriceCommodityPipe, UiPipe } from './pipe';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { CustomNgSortPipe } from './pipe/sort.pipe';
 
 @NgModule({
   imports: [
@@ -64,23 +64,23 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     TooltipModule
   ],
   declarations: [
-    OrderListComponent,
     SelectOrderComponent,
     SelectCommodityComponent,
     SelectCustomerComponent,
     SelectRouteComponent,
     PriceCommodityPipe,
-    UiPipe
+    UiPipe,
+    CustomNgSortPipe
   ],
   providers: [DecimalPipe, CurrencyPipe],
   exports: [
-    OrderListComponent,
     SelectCommodityComponent,
     SelectOrderComponent,
     SelectCustomerComponent,
     SelectRouteComponent,
     PriceCommodityPipe,
-    UiPipe
+    UiPipe,
+    CustomNgSortPipe
   ]
 })
 export class SharedModule {

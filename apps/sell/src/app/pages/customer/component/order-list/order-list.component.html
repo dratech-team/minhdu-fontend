@@ -1,0 +1,134 @@
+<div>
+  <nz-table
+    #tableOrder
+    nzSize='middle'
+    [nzScroll]="{ y: '450px' }"
+    [nzData]='orders'
+    [nzLoading]='loading'
+    [nzPageSize]='pageSizeTable'
+    [nzShowPagination]='false'
+    [nzFrontPagination]='false'
+    [nzBordered]='true'
+  >
+    <thead [formGroup]='formGroup'>
+    <tr>
+      <th nzWidth='50px'>
+        STT
+      </th>
+      <th nzWidth='50px' *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>
+        ID
+      </th>
+      <th>
+        <div>Ngày tạo</div>
+        <nz-range-picker formControlName='ranges'></nz-range-picker>
+      </th>
+      <th>
+        <div class=''>Điểm đến</div>
+        <input formControlName='ward' nz-input type='search' />
+      </th>
+      <th>
+        <div class=''>Tiền đơn hàng</div>
+        <input nz-input [disabled]='true' type='number' />
+      </th>
+      <th>
+        <div class=''>Tiền thanh toán</div>
+        <input nz-input [disabled]='true' type='number' />
+      </th>
+      <th *ngIf='delivered'>
+        <div class=''>Ngày giao hàng</div>
+        <input nz-input [disabled]='true' type='date' />
+      </th>
+      <th *ngIf='!delivered'>
+        <div class=''>Diễn giải</div>
+        <input nz-input formControlName='explain' type='search' />
+      </th>
+      <th *ngIf='delivered'>
+        <div class=''>Ẩn nợ</div>
+        <input nz-input [disabled]='true' type='number' />
+      </th>
+      <th *ngIf='!delivered'>
+        <div class=''>Đã giao</div>
+        <input nz-input [disabled]='true' type='number' />
+      </th>
+      <th *ngIf='!delivered'>
+        <div class=''>Hủy</div>
+        <input nz-input [disabled]='true' type='number' />
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-template ngFor let-order [ngForOf]='tableOrder.data' let-i='index'>
+      <tr class='pointer' (click)='detailOrder(order.id)'>
+        <td>
+          {{ i + 1 }}
+        </td>
+        <td *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>
+          {{ order.id }}
+        </td>
+        <td>
+          {{ (order?.createdAt | date: 'dd/MM/yyyy') || 'Đang cập nhật' }}
+        </td>
+        <td>
+          {{ order?.ward ? (order.ward?.name + ' - ') : ''}}
+          {{ order?.district ? (order.district?.name + ' - ') : '' }}
+          {{ order.province.name }}
+        </td>
+        <td style='color: #f86c6b'>
+          {{ order.priceTotal | number: '1.0-0' | notEmpty: '0' }} đ
+        </td>
+        <td style='color: #20c997'>
+          {{ order?.paymentTotal | number: '1.0-0' | notEmpty: '0' }} đ
+        </td>
+        <td *ngIf='delivered'>
+          {{ order?.deliveredAt | date: 'dd/MM/yyyy' }}
+        </td>
+        <td *ngIf='!delivered'>
+          {{ order?.explain || 'Không có nội dung' }}
+        </td>
+        <td *ngIf='delivered' (click)='$event.stopPropagation()'>
+          <nz-switch
+            [(ngModel)]='order.hide'
+            (ngModelChange)='updateOrder(order)'
+            class='m-auto'
+          ></nz-switch>
+        </td>
+        <td *ngIf='!delivered' (click)='$event.stopPropagation()'>
+          <button nz-button nzType='primary' (click)='confirmOrder(order)'>
+            Đã giao
+          </button>
+        </td>
+
+        <td *ngIf='!delivered' (click)='$event.stopPropagation()'>
+          <button
+            *ngIf='order.paymentTotal === 0'
+            nz-button
+            nzType='default'
+            (click)='deleteOrder(order)'
+          >
+            Hủy
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+    <tr *ngIf='delivered ? ((state$ | async)?.deliveredRemain || 0 > 0) : ((state$ | async)?.deliveringRemain || 0 > 0)'>
+      <td colspan='10'>
+        <div
+          class='w-100 d-flex justify-content-start'
+          style='position: relative'
+        >
+          <button
+            nz-button
+            nzGhost
+            nzType='primary'
+            style='position: sticky; left: 45vw'
+            [nzLoading]='delivered ? (state$ | async)?.deliveredLoading : (state$ | async)?.deliveringLoading'
+            (click)='onLoadMore()'
+          >
+            Tải thêm
+          </button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+</div>

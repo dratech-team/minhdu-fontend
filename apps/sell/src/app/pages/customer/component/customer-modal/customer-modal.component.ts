@@ -5,7 +5,7 @@ import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
 import { CustomerActions, CustomerQuery } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalRef } from 'ng-zorro-antd/modal';
-import { CustomerConstant, ResourcesConstant } from '../../constants';
+import { CustomerTypeConstant, ResourcesConstant } from '../../constants';
 import { BaseAddCustomer, BaseUpdateCustomerDto } from '../../dto';
 import { ModalCustomerData } from '../../data/modal-customer.data';
 
@@ -17,7 +17,7 @@ export class CustomerModalComponent implements OnInit {
 
   loading$ = this.customerQuery.selectLoading();
 
-  customerConstant = CustomerConstant.filter(
+  customerConstant = CustomerTypeConstant.filter(
     (item) => item.value !== CustomerType.ALL
   );
   resourceConstant = ResourcesConstant.filter(

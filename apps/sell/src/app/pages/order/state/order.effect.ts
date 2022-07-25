@@ -5,7 +5,6 @@ import { OrderActions } from './order.actions';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
-import { Router } from '@angular/router';
 import { OrderQuery } from './order.query';
 import { OrderStore } from './order.store';
 import { CommodityUniq } from '../../commodity/entities';
@@ -17,6 +16,7 @@ import { chain, flattenDeep, uniq } from 'lodash';
 import { RouteEntity } from '../../route/entities';
 import { ResponsePaginateOrderEntity } from '../enitities/response-paginate-order.entity';
 import { arrayAdd } from '@datorama/akita';
+import { CustomerStore } from '../../customer/state';
 
 @Injectable()
 export class OrderEffect {
@@ -27,9 +27,9 @@ export class OrderEffect {
     private readonly actions$: Actions,
     private readonly orderQuery: OrderQuery,
     private readonly orderStore: OrderStore,
+    private readonly customerStore: CustomerStore,
     private readonly orderService: OrderService,
-    private readonly orderHistoryService: OrderHistoryService,
-    private readonly router: Router
+    private readonly orderHistoryService: OrderHistoryService
   ) {
   }
 
@@ -40,7 +40,11 @@ export class OrderEffect {
       return this.orderService.addOne(props).pipe(
         map((res) => {
           this.orderStore.add(this.mapToOrder(res));
-          this.router.navigate(['don-hang']).then();
+          if (res.customerId) {
+            this.customerStore.update(res.customerId, ({ delivering }) => ({
+              delivering: arrayAdd(delivering, res)
+            }));
+          }
           return OrderActions.addOneSuccess(res);
         }),
         catchError((err) => {
@@ -61,7 +65,7 @@ export class OrderEffect {
           : {},
         { take: PaginationDto.take, skip: !props.isSet ? this.orderQuery.getCount() : 0 }
       );
-      return this.orderService.pagination(search).pipe(
+      return this.orderService.pagination({ search: search }).pipe(
         map((res: ResponsePaginateOrderEntity) => {
           const data = res.data.map(order => this.mapToOrder(order));
           if (props.isSet) {

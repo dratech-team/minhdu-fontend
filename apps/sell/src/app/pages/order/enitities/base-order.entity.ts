@@ -12,7 +12,6 @@ export interface BaseOrderEntity extends BaseEntity {
   deliveredAt?: Date | null;
   commodities: CommodityEntity[];
   currency: CurrencyUnit;
-  province: Province;
   endedAt: Date;
   paymentHistories: PaymentHistory[];
   customerId: number;
@@ -21,7 +20,8 @@ export interface BaseOrderEntity extends BaseEntity {
   payType?: PaymentType;
   paidTotal?: number;
   debt: number;
+  province: Province;
   district?: District;
   ward?: Ward;
-  hiddenDebt: boolean;
+  hide: boolean;
 }

@@ -10,6 +10,9 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { District, Province, Ward } from '@minhdu-fontend/data-models';
 import { BaseOrderEntity } from '../../enitities';
+import { BaseAddOrderDto, BaseUpdateOrderDto } from '../../dto';
+import { omit } from 'lodash';
+import { take } from 'rxjs/operators';
 
 @Component({
   templateUrl: 'order-dialog.component.html'
@@ -25,8 +28,6 @@ export class OrderDialogComponent implements OnInit {
   formGroup!: FormGroup;
   districtId!: number;
   provinceId!: number;
-
-  loading$ = this.orderQuery.selectLoading();
 
   submitted = false;
   routes: number[] = [];
@@ -68,7 +69,7 @@ export class OrderDialogComponent implements OnInit {
       province: new FormControl<Province | undefined>(this.data?.order?.province, { validators: Validators.required }),
       district: new FormControl<District | undefined>(this.data?.order?.district),
       ward: new FormControl<Ward | undefined>(this.data?.order?.ward),
-      customerId: new FormControl<number | undefined>(this.data?.order?.customerId),
+      customerId: new FormControl<number | undefined>(this.data?.customerId),
       commodityIds: new FormControl<number[] | undefined>(this.data?.order?.commodities?.map(commodity => commodity.id))
     });
   }
@@ -82,43 +83,23 @@ export class OrderDialogComponent implements OnInit {
   }
 
   onSubmit(): any {
-    const val = this.formGroup.value;
-
-    if (val.commodityIds.length == 0) {
+    if (this.formGroup.value.commodityIds.length == 0) {
       return this.message.warning('Chưa chọn hàng hoá');
     }
 
-    const order = {
-      customerId: val.customerId,
-      commodityIds: val.commodityIds,
-      wardId: val?.ward?.id,
-      districtId: val?.district?.id,
-      provinceId: val.province.id,
-      explain: val.explain,
-      deliveredAt: val.deliveredAt,
-      createdAt: val.createdAt,
-      endedAt: val.endedAt
-    };
-    if (!val.deliveredAt) {
-      delete order.deliveredAt;
-    }
-    if (!order.districtId) {
-      delete order.districtId;
-    }
-    if (!order.wardId) {
-      delete order.wardId;
-    }
     if (this.data?.order && this.data?.isUpdate) {
       this.actions$.dispatch(
         OrderActions.update({
           id: this.data.order.id,
-          updates: order
+          updates: this.mapToOrder(this.formGroup.value)
         })
       );
     } else {
-      this.actions$.dispatch(OrderActions.addOne({ body: order }));
+      this.actions$.dispatch(OrderActions.addOne({
+        body: this.mapToOrder(this.formGroup.value)
+      }));
     }
-    this.orderQuery.select().subscribe((state) => {
+    this.orderQuery.select().pipe(take(1)).subscribe((state) => {
       if (!(state.loading && state.error)) {
         this.modalRef.close();
       }
@@ -126,7 +107,11 @@ export class OrderDialogComponent implements OnInit {
   }
 
   pre(): void {
-    this.stepIndex -= 1;
+    if (this.data?.customerId) {
+      this.stepIndex = 0;
+    } else {
+      this.stepIndex -= 1;
+    }
   }
 
   next(): any {
@@ -138,6 +123,28 @@ export class OrderDialogComponent implements OnInit {
     if (this.stepIndex > 0 && !this.formGroup.value.customerId) {
       return this.message.warning('Chưa chọn khách hàng');
     }
-    this.stepIndex += 1;
+    if (this.data?.customerId) {
+      this.stepIndex = 2;
+    } else {
+      this.stepIndex += 1;
+    }
+  }
+
+  private mapToOrder(val: any): BaseAddOrderDto | BaseUpdateOrderDto {
+    if (!val.deliveredAt) {
+      val = omit(val, 'deliveredAt');
+    }
+    if (!val.districtId) {
+      val = omit(val, 'districtId');
+    }
+    if (!val.wardId) {
+      val = omit(val, 'wardId');
+    }
+    return {
+      ...val,
+      wardId: val?.ward?.id,
+      districtId: val?.district?.id,
+      provinceId: val.province.id
+    };
   }
 }

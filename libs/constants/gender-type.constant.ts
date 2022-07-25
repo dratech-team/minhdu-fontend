@@ -10,7 +10,7 @@ export const GenderTypeConstant = [
     value: GenderTypeEnum.FEMALE,
   },
   {
-    name: 'Khác',
-    value: GenderTypeEnum.OTHER,
+    name: 'Tất cả',
+    value: GenderTypeEnum.ALL,
   },
 ];
