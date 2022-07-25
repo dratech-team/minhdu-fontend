@@ -2,14 +2,12 @@
   <nz-table
     #tableOrder
     nzSize='middle'
-    [nzLoading]='loading$ | async'
-    [nzScroll]="{ y: '300px' }"
+    [nzScroll]="{ y: '450px' }"
     [nzData]='orders'
     [nzPageSize]='pageSizeTable'
     [nzShowPagination]='false'
     [nzFrontPagination]='false'
     [nzBordered]='true'
-    (nzPageIndexChange)='isPagination($event)'
   >
     <thead [formGroup]='formGroup'>
     <tr>

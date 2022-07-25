@@ -46,6 +46,7 @@ import { CustomerComponentService } from './shared';
 import { CustomNgSortPipe } from '../../shared/pipe/sort.pipe';
 import { OrderListComponent } from './component/order-list/order-list.component';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @NgModule({
   imports: [
@@ -90,7 +91,8 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
     NzDatePickerModule,
     PaymentModule,
     NzDropDownModule,
-    NzSwitchModule
+    NzSwitchModule,
+    NzIconModule
   ],
   declarations: [
     OrderListComponent,

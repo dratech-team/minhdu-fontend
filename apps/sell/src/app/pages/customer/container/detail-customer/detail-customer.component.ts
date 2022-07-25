@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DevelopmentComponent } from '@minhdu-fontend/components';
-import { ConvertBoolean, PaidType, StatusOrder } from '@minhdu-fontend/enums';
 import { CustomerActions, CustomerQuery, CustomerStore } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { OrderDialogComponent } from '../../../order/component';
-import { OrderEntity } from '../../../order/enitities';
+import { BaseOrderEntity, OrderEntity } from '../../../order/enitities';
 import { CustomerComponentService } from '../../shared';
+import { OrderListComponent } from '../../component/order-list/order-list.component';
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -54,6 +54,20 @@ export class DetailCustomerComponent implements OnInit {
           customerId: this.getId
         }
       }
+    });
+  }
+
+  public onFullScreenOrder(orders: BaseOrderEntity[]): void {
+    this.modal.create({
+      nzWidth: 'fit-content',
+      nzMask: false,
+      nzCentered: true,
+      nzContent: OrderListComponent,
+      nzComponentParams: {
+        orders: orders,
+        delivered: false
+      },
+      nzFooter: null
     });
   }
 }

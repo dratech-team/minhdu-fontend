@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { OrderEntity } from '../../../order/enitities';
+import { BaseOrderEntity } from '../../../order/enitities';
 import { OrderActions, OrderQuery } from '../../../order/state';
 import { MatDialog } from '@angular/material/dialog';
 import { debounceTime, take, tap } from 'rxjs/operators';
@@ -9,7 +9,6 @@ import { ModeEnum, StatusOrder } from '@minhdu-fontend/enums';
 import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CustomerActions, CustomerQuery, CustomerStore } from '../../state';
-import { Observable } from 'rxjs';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ModalDatePickerComponent } from '@minhdu-fontend/components';
 import { ModalDatePickerEntity } from '@minhdu-fontend/base-entity';
@@ -22,9 +21,8 @@ import { OrderService } from '../../../order/service';
   templateUrl: 'order-list.component.html'
 })
 export class OrderListComponent implements OnInit {
-  @Input() orders: OrderEntity[] = [];
+  @Input() orders: BaseOrderEntity[] = [];
   @Input() delivered: boolean = false;
-  @Input() loading$!: Observable<boolean>;
   @Input() customerId?: number;
 
   account$ = this.accQuery.selectCurrentUser();
@@ -55,62 +53,40 @@ export class OrderListComponent implements OnInit {
 
   ngOnInit() {
     this.orders = JSON.parse(JSON.stringify(this.orders));
-    this.formGroup.valueChanges
-      .pipe(
-        debounceTime(1000),
-        tap((val) => {
-          if (this.delivered) {
-            this.actions$.dispatch(
-              CustomerActions.loadOrder({
-                search: Object.assign({}, this.mapOrders(val, true), {
-                  hiddenDebt: StatusOrder.ALL
-                }),
-                typeOrder: 'delivered'
-              })
-            );
-          } else {
-            this.actions$.dispatch(
-              CustomerActions.loadOrder({
-                search: this.mapOrders(val),
-                typeOrder: 'delivering'
-              })
-            );
-          }
-        })
-      )
-      .subscribe();
-  }
-
-  isPagination(pageIndex: number) {
-    if (pageIndex * this.pageSizeTable >= this.orders.length) {
-      const val = this.formGroup.value;
-      if (this.delivered) {
+    // search
+    this.formGroup.valueChanges.pipe(
+      debounceTime(1000),
+      tap((val) => {
         this.actions$.dispatch(
           CustomerActions.loadOrder({
             search: Object.assign({}, this.mapOrders(val, true), {
               hiddenDebt: StatusOrder.ALL
             }),
-            typeOrder: 'delivered',
-            isSet: true
+            typeOrder: this.delivered ? 'delivered' : 'delivering'
           })
         );
-      } else {
-        this.actions$.dispatch(
-          CustomerActions.loadOrder({
-            search: this.mapOrders(val, true),
-            typeOrder: 'delivering',
-            isSet: true
-          })
-        );
-      }
-    }
+      })
+    ).subscribe();
+  }
+
+  onLoadMore() {
+    const val = this.formGroup.value;
+    this.actions$.dispatch(
+      CustomerActions.loadOrder({
+        search: Object.assign({}, this.mapOrders(val, true), {
+          hiddenDebt: StatusOrder.ALL
+        }),
+        typeOrder: this.delivered ? 'delivered' : 'delivering',
+        isSet: false
+      })
+    );
   }
 
   detailOrder(id: number) {
     this.router.navigate(['don-hang/chi-tiet-don-hang', id]).then();
   }
 
-  updateOrder(order: OrderEntity) {
+  updateOrder(order: BaseOrderEntity) {
     this.orderService.hide(order.id, { hide: !order.hide })
       .pipe(take(1))
       .subscribe((res) => {
@@ -120,7 +96,7 @@ export class OrderListComponent implements OnInit {
       });
   }
 
-  deleteOrder(order: OrderEntity) {
+  deleteOrder(order: BaseOrderEntity) {
     const ref = this.dialog.open(DialogSharedComponent, {
       width: 'fit-content',
       data: {
@@ -140,7 +116,7 @@ export class OrderListComponent implements OnInit {
     });
   }
 
-  confirmOrder(order: OrderEntity) {
+  confirmOrder(order: BaseOrderEntity) {
     this.modal
       .create({
         nzTitle: 'Xác nhận Giao hàng',

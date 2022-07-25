@@ -56,7 +56,7 @@ export class SelectCommodityComponent implements OnInit {
       .pipe(debounceTime(500), startWith(this.formGroup.value))
       .subscribe((val) => {
         this.actions$.dispatch(
-          CommodityAction.loadAll({ search: this.mapToCommodity(val) })
+          CommodityAction.loadAll({ search: this.mapToCommodity(val), isSet: true })
         );
       });
   }

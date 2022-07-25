@@ -278,17 +278,28 @@
     </div>
     <div class='col-12 mt-5'>
       <div class='d-flex align-items-center justify-content-between mb-2'>
-        <div class='row align-items-center title-table ml-1'>
-          Đơn hàng đang giao
+        <div class='d-flex flex-row align-items-center'>
+          <div class='title-table'>
+            Đơn hàng đang giao
+          </div>
+          <i
+            class='pointer ml-2'
+            nz-icon
+            nzType='fullscreen'
+            nzTheme='outline'
+            (click)='onFullScreenOrder(customer.delivering)'
+          ></i>
         </div>
-        <button
-          nz-button
-          nzGhost
-          nzType='primary'
-          (click)='onAddOrder()'
-        >
-          Thêm đơn hàng
-        </button>
+        <div>
+          <button
+            nz-button
+            nzGhost
+            nzType='primary'
+            (click)='onAddOrder()'
+          >
+            Thêm đơn hàng
+          </button>
+        </div>
       </div>
       <order-list
         [delivered]='false'
