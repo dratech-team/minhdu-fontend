@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { VersionEnum } from '@minhdu-fontend/enums';
 
 @Injectable()
-export class StatisticalService {
+export class OverviewService {
   constructor(
     public readonly http: HttpClient
   ) {
