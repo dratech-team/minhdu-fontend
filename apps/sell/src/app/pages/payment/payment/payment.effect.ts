@@ -7,11 +7,9 @@ import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
 import { PaymentService } from '../services/payment.Service';
 import { PaymentQuery } from './payment.query';
 import { PaymentStore } from './payment.store';
-import { SearchPaymentDto } from '../dto/search-payment.dto';
-import { RemovePaymentDto } from '../dto/remove-payment.dto';
+import { RemovePaymentDto, SearchPaymentDto, UpdatePaymentDto } from '../dto';
 import { PaginationDto } from '@minhdu-fontend/constants';
 import { CustomerActions, CustomerStore } from '../../customer/state';
-import { UpdatePaymentDto } from '../dto/update-payment.dto';
 
 @Injectable()
 export class PaymentEffect {
@@ -22,7 +20,8 @@ export class PaymentEffect {
     private readonly paymentQuery: PaymentQuery,
     private readonly paymentStore: PaymentStore,
     private readonly customerStore: CustomerStore
-  ) {}
+  ) {
+  }
 
   @Effect()
   addOne$ = this.action$.pipe(
@@ -30,21 +29,21 @@ export class PaymentEffect {
     switchMap((props) => {
       this.paymentStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.paymentService.addOne(props).pipe(
         tap((res) => {
           this.message.success('Thanh toán thành công');
           this.paymentStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           this.paymentStore.add(res);
         }),
         catchError((err) => {
           this.paymentStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(PaymentActions.error(err));
         })
@@ -58,20 +57,20 @@ export class PaymentEffect {
     switchMap((props: SearchPaymentDto) => {
       this.paymentStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       Object.assign(props.search, {
         take: PaginationDto.take,
         skip: props.isSet
           ? this.paymentQuery.getCount()
-          : PaginationDto.skip,
+          : PaginationDto.skip
       });
       return this.paymentService.pagination(props).pipe(
         map((response) => {
           this.paymentStore.update((state) => ({
             ...state,
             loading: false,
-            total: response.total,
+            total: response.total
           }));
           if (props.isSet) {
             this.paymentStore.add(response.data);
@@ -82,7 +81,7 @@ export class PaymentEffect {
         catchError((err) => {
           this.paymentStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           return of(PaymentActions.error(err));
         })
@@ -96,14 +95,14 @@ export class PaymentEffect {
     switchMap((props: UpdatePaymentDto) => {
       this.paymentStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.paymentService.update(props).pipe(
         tap((res) => {
           this.message.success('Cập nhật thanh toán thành công');
           this.paymentStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           this.paymentStore.update(res.id, res);
           this.action$.dispatch(
@@ -113,7 +112,7 @@ export class PaymentEffect {
         catchError((err) => {
           this.paymentStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(PaymentActions.error(err));
         })
@@ -127,7 +126,7 @@ export class PaymentEffect {
     switchMap((props: RemovePaymentDto) => {
       this.paymentStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.paymentService.delete(props.id).pipe(
         tap((_) => {
@@ -137,19 +136,19 @@ export class PaymentEffect {
               ...entity,
               debt: entity.debt
                 ? entity.debt - props.paidTotal
-                : -props.paidTotal,
+                : -props.paidTotal
             };
           });
           this.paymentStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           this.paymentStore.remove(props.id);
         }),
         catchError((err) => {
           this.paymentStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(PaymentActions.error(err));
         })

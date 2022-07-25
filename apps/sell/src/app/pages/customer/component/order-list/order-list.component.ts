@@ -1,14 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BaseOrderEntity } from '../../../order/enitities';
 import { OrderActions, OrderQuery } from '../../../order/state';
 import { MatDialog } from '@angular/material/dialog';
-import { debounceTime, take, tap } from 'rxjs/operators';
-import { ModeEnum, StatusOrder } from '@minhdu-fontend/enums';
+import { take } from 'rxjs/operators';
+import { ModeEnum } from '@minhdu-fontend/enums';
 import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared';
 import { Actions } from '@datorama/akita-ng-effects';
-import { CustomerActions, CustomerQuery, CustomerStore } from '../../state';
+import { CustomerQuery, CustomerStore } from '../../state';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ModalDatePickerComponent } from '@minhdu-fontend/components';
 import { ModalDatePickerEntity } from '@minhdu-fontend/base-entity';
@@ -24,13 +24,19 @@ export class OrderListComponent implements OnInit {
   @Input() orders: BaseOrderEntity[] = [];
   @Input() delivered: boolean = false;
   @Input() customerId?: number;
+  @Input() loading = false;
+
+  @Output() onValueChanged = new EventEmitter<{
+    search: Partial<{ ranges: Date[] | null, ward: string | null | undefined, explain: string | null | undefined }>,
+    isSet: boolean
+  }>();
 
   account$ = this.accQuery.selectCurrentUser();
 
-  formGroup = new UntypedFormGroup({
-    createdAt: new UntypedFormControl(''),
-    ward: new UntypedFormControl(''),
-    explain: new UntypedFormControl('')
+  formGroup = new FormGroup({
+    ranges: new FormControl<Date[] | null>(null),
+    ward: new FormControl<string | null | undefined>(''),
+    explain: new FormControl<string | null | undefined>('')
   });
 
   ModeEnum = ModeEnum;
@@ -52,34 +58,38 @@ export class OrderListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.orders = JSON.parse(JSON.stringify(this.orders));
     // search
-    this.formGroup.valueChanges.pipe(
-      debounceTime(1000),
-      tap((val) => {
-        this.actions$.dispatch(
-          CustomerActions.loadOrder({
-            search: Object.assign({}, this.mapOrders(val, true), {
-              hiddenDebt: StatusOrder.ALL
-            }),
-            typeOrder: this.delivered ? 'delivered' : 'delivering'
-          })
-        );
-      })
-    ).subscribe();
+    //tap((val) => {
+    //         this.actions$.dispatch(
+    //           CustomerActions.loadOrder({
+    //             search: Object.assign({}, this.mapOrders(val), {
+    //               hiddenDebt: StatusOrder.ALL
+    //             }),
+    //             isSet: true,
+    //             typeOrder: this.delivered ? 'delivered' : 'delivering'
+    //           })
+    //         );
+    this.formGroup.valueChanges.subscribe(formGroup => {
+      this.onValueChanged.emit({
+        search: formGroup, isSet: true
+      });
+    });
   }
 
   onLoadMore() {
     const val = this.formGroup.value;
-    this.actions$.dispatch(
-      CustomerActions.loadOrder({
-        search: Object.assign({}, this.mapOrders(val, true), {
-          hiddenDebt: StatusOrder.ALL
-        }),
-        typeOrder: this.delivered ? 'delivered' : 'delivering',
-        isSet: false
-      })
-    );
+    this.onValueChanged.emit({
+      search: val, isSet: true
+    });
+    // this.actions$.dispatch(
+    //   CustomerActions.loadOrder({
+    //     search: Object.assign({}, this.mapOrders(val), {
+    //       hiddenDebt: StatusOrder.ALL
+    //     }),
+    //     typeOrder: this.delivered ? 'delivered' : 'delivering',
+    //     isSet: false
+    //   })
+    // );
   }
 
   detailOrder(id: number) {
@@ -143,10 +153,8 @@ export class OrderListComponent implements OnInit {
     });
   }
 
-  private mapOrders(val: any, isPagination?: boolean): any {
+  private mapOrders(val: any): any {
     return {
-      skip: isPagination ? this.orders.length : this.pageIndexInit,
-      take: this.pageSize,
       delivered: this.delivered ? 1 : 0,
       createdAt: val.createdAt,
       ward: val.ward,

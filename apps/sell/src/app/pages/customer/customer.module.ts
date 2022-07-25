@@ -47,6 +47,7 @@ import { CustomNgSortPipe } from '../../shared/pipe/sort.pipe';
 import { OrderListComponent } from './component/order-list/order-list.component';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 @NgModule({
   imports: [
@@ -92,7 +93,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     PaymentModule,
     NzDropDownModule,
     NzSwitchModule,
-    NzIconModule
+    NzIconModule,
+    NzSkeletonModule
   ],
   declarations: [
     OrderListComponent,

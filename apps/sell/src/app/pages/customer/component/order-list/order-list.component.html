@@ -4,6 +4,7 @@
     nzSize='middle'
     [nzScroll]="{ y: '450px' }"
     [nzData]='orders'
+    [nzLoading]='loading'
     [nzPageSize]='pageSizeTable'
     [nzShowPagination]='false'
     [nzFrontPagination]='false'
@@ -19,7 +20,7 @@
       </th>
       <th>
         <div>Ngày tạo</div>
-        <input formControlName='createdAt' nz-input type='date' />
+        <nz-range-picker formControlName='ranges'></nz-range-picker>
       </th>
       <th>
         <div class=''>Điểm đến</div>

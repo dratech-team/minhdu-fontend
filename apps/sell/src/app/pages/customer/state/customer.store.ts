@@ -10,7 +10,11 @@ export interface CustomerState extends EntityState<CustomerEntity> {
   readonly total: number;
   readonly remain: number;
   readonly deliveredLoading: boolean;
+  readonly deliveredTotal: number;
+  readonly deliveredRemain: number;
   readonly deliveringLoading: boolean;
+  readonly deliveringTotal: number;
+  readonly deliveringRemain: number;
   readonly search: Partial<BaseSearchCustomerDto>;
   readonly ui: CustomerVisibleEntity;
 }
@@ -19,8 +23,12 @@ function createInitState(): CustomerState {
   return {
     total: 0,
     remain: 0,
-    deliveredLoading: true,
-    deliveringLoading: true,
+    deliveredTotal: 0,
+    deliveredRemain: 0,
+    deliveringTotal: 0,
+    deliveringRemain: 0,
+    deliveredLoading: false,
+    deliveringLoading: false,
     search: {
       resource: CustomerResource.ALL,
       isPotential: -1,

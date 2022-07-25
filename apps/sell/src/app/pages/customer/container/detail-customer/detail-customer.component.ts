@@ -6,7 +6,7 @@ import { CustomerActions, CustomerQuery, CustomerStore } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { OrderDialogComponent } from '../../../order/component';
-import { BaseOrderEntity, OrderEntity } from '../../../order/enitities';
+import { BaseOrderEntity } from '../../../order/enitities';
 import { CustomerComponentService } from '../../shared';
 import { OrderListComponent } from '../../component/order-list/order-list.component';
 
@@ -15,9 +15,10 @@ import { OrderListComponent } from '../../component/order-list/order-list.compon
   styleUrls: ['detail-customer.component.scss']
 })
 export class DetailCustomerComponent implements OnInit {
+  loading$ = this.customerQuery.selectLoading();
+  deliveringLoading$ = this.customerQuery.select(state => state.deliveringLoading);
+  deliveredLoading$ = this.customerQuery.select(state => state.deliveredLoading);
   customer$ = this.customerQuery.selectEntity(this.getId);
-
-  orders: OrderEntity[] = [];
 
   get getId(): number {
     return +this.activatedRoute.snapshot.params.id;
@@ -57,7 +58,7 @@ export class DetailCustomerComponent implements OnInit {
     });
   }
 
-  public onFullScreenOrder(orders: BaseOrderEntity[]): void {
+  public onFullScreenOrder(orders: BaseOrderEntity[], delivered: boolean): void {
     this.modal.create({
       nzWidth: 'fit-content',
       nzMask: false,
@@ -65,7 +66,7 @@ export class DetailCustomerComponent implements OnInit {
       nzContent: OrderListComponent,
       nzComponentParams: {
         orders: orders,
-        delivered: false
+        delivered: delivered
       },
       nzFooter: null
     });

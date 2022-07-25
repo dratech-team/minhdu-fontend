@@ -92,8 +92,11 @@ export class CustomerEffect {
       this.customerService.getOne(props.id).pipe(
         tap((customer) => {
           this.customerStore.upsert(customer.id, customer);
-          this.customerStore.update(state => ({ ...state, loading: false, error: null }));
-
+          this.customerStore.update(state => ({
+            ...state,
+            loading: false,
+            error: null
+          }));
           this.orderService.pagination({
             customerId: props.id,
             status: OrderStatusEnum.DELIVERED,
@@ -102,6 +105,14 @@ export class CustomerEffect {
             .pipe(take(1))
             .subscribe(res => {
               this.customerStore.update(props.id, { delivered: res.data });
+              const count = res.data?.length || 0;
+              this.customerStore.update((state) => ({
+                ...state,
+                deliveredLoading: false,
+                deliveredTotal: res.total,
+                deliveredRemain: res.total - count,
+                error: null
+              }));
             });
 
           this.orderService.pagination({
@@ -112,7 +123,16 @@ export class CustomerEffect {
             .pipe(take(1))
             .subscribe(res => {
               this.customerStore.update(props.id, { delivering: res.data });
+              const count = res.data?.length || 0;
+              this.customerStore.update((state) => ({
+                ...state,
+                deliveringLoading: false,
+                deliveringTotal: res.total,
+                deliveringRemain: res.total - count,
+                error: null
+              }));
             });
+
         }),
         catchError((err) => {
           this.action$.dispatch(CustomerActions.error(err));
@@ -165,25 +185,47 @@ export class CustomerEffect {
     })
   );
 
-  @Effect()
+  @Effect({ dispatch: true })
   loadOrder$ = this.action$.pipe(
     ofType(CustomerActions.loadOrder),
     concatMap((props) => {
       const status = props.typeOrder === 'delivered' ? OrderStatusEnum.DELIVERED : OrderStatusEnum.DELIVERING;
-      return this.orderService.pagination(Object.assign(props.search, { status }))
-        .pipe(
-          tap((res) => {
-            if (props.isSet) {
-              this.customerStore.update(props.search.customerId, { [props.typeOrder]: res.data });
-            } else {
-              this.customerStore.update(props.search.customerId, ({ delivering, delivered }) => ({
-                delivering: props.typeOrder === 'delivering' ? arrayAdd(delivered, res.data) : delivered,
-                delivered: props.typeOrder === 'delivered' ? arrayAdd(delivered, res.data) : delivered
-              }));
-            }
-          }),
-          catchError((err) => of(CustomerActions.error(err)))
-        );
+      const customer = this.customerQuery.getEntity(props.search.customerId);
+      return this.orderService.pagination(Object.assign(
+        {},
+        props.search,
+        {
+          status,
+          take: PaginationDto.take,
+          skip: props.isSet
+            ? PaginationDto.skip
+            : props.typeOrder === 'delivered'
+              ? (customer?.delivered?.length || 0)
+              : (customer?.delivering?.length || 0)
+        }
+      )).pipe(
+        tap((res) => {
+          if (props.isSet) {
+            this.customerStore.update(props.search.customerId, { [props.typeOrder]: res.data });
+          } else {
+            this.customerStore.update(props.search.customerId, ({ delivering, delivered }) => ({
+              delivering: props.typeOrder === 'delivering' ? arrayAdd(delivered, res.data) : delivered,
+              delivered: props.typeOrder === 'delivered' ? arrayAdd(delivered, res.data) : delivered
+            }));
+          }
+          this.customerStore.update((state) => ({
+            ...state,
+            deliveredLoading: props.typeOrder === 'delivered' ? false : state.deliveredLoading,
+            deliveringLoading: props.typeOrder === 'delivering' ? false : state.deliveringLoading,
+            deliveredTotal: res.total,
+            deliveringTotal: res.total,
+            deliveredRemain: state.deliveredTotal - (this.customerQuery.getEntity(props.search.customerId)?.delivered?.length || 0),
+            deliveringRemain: state.deliveringTotal - (this.customerQuery.getEntity(props.search.customerId)?.delivering?.length || 0),
+            error: null
+          }));
+        }),
+        catchError((err) => of(CustomerActions.error(err)))
+      );
     })
   );
 
@@ -191,7 +233,6 @@ export class CustomerEffect {
   requesting$ = this.action$.pipe(
     ofType(
       CustomerActions.addOne,
-      CustomerActions.loadOne,
       CustomerActions.loadAll,
       CustomerActions.update,
       CustomerActions.remove
@@ -202,6 +243,68 @@ export class CustomerEffect {
         loading: true,
         error: null
       }));
+    })
+  );
+
+  @Effect()
+  requestingOrder$ = this.action$.pipe(
+    ofType(CustomerActions.loadOrder),
+    tap((res) => {
+      this.customerStore.update((state) => {
+        if (res.typeOrder === 'delivering') {
+          return {
+            ...state,
+            deliveringLoading: true,
+            error: null
+          };
+        }
+        return {
+          ...state,
+          deliveredLoading: true,
+          error: null
+        };
+      });
+    })
+  );
+
+  @Effect()
+  requestingLoadOne$ = this.action$.pipe(
+    ofType(CustomerActions.loadOne),
+    tap((res) => {
+      this.customerStore.update((state) => {
+        return {
+          ...state,
+          loading: true,
+          deliveringLoading: true,
+          deliveredLoading: true,
+          error: null
+        };
+      });
+    })
+  );
+
+  @Effect()
+  loadOrderSuccess$ = this.action$.pipe(
+    ofType(CustomerActions.loadOrderSuccess),
+    tap((res) => {
+      return this.customerStore.update((state) => {
+        if (res.typeOrder === 'delivering') {
+          return {
+            ...state,
+            deliveringLoading: false,
+            deliveringTotal: res.total,
+            deliveringRemain: res.total - (res.customer.delivering?.length || 0),
+            error: null
+          };
+        }
+        return {
+          ...state,
+          deliveringLoading: false,
+          deliveringTotal: res.total,
+          deliveringRemain: res.total - (state.customer.delivered?.length || 0),
+          error: null
+        };
+      });
     })
   );
 
