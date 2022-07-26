@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { catchError, concatMap, switchMap, take, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { catchError, concatMap, switchMap, tap } from 'rxjs/operators';
+import { combineLatest, of } from 'rxjs';
 import { CustomerActions } from './customer.actions';
 import { CustomerService } from '../service';
 import { CustomerQuery } from './customer.query';
@@ -97,50 +97,54 @@ export class CustomerEffect {
             loading: false,
             error: null
           }));
-          this.orderService.pagination({
-            search: {
-              take: PaginationDto.take,
-              skip: PaginationDto.skip,
-              customerId: props.id,
-              status: OrderStatusEnum.DELIVERED,
-              hiddenDebt: HideDebtStatusEnum.ALL
-            }
-          })
-            .pipe(take(1))
-            .subscribe(res => {
-              this.customerStore.update(props.id, { delivered: res.data });
-              const count = res.data?.length || 0;
+          const abc = [OrderStatusEnum.DELIVERING, OrderStatusEnum.DELIVERED, OrderStatusEnum.CANCELLED]
+            .map(status => {
+              return this.orderService.pagination({
+                search: {
+                  take: PaginationDto.take,
+                  skip: PaginationDto.skip,
+                  customerId: props.id,
+                  status: status,
+                  hiddenDebt: HideDebtStatusEnum.ALL
+                }
+              });
+            });
+
+          return combineLatest(abc).subscribe((res) => {
+            res.map((item, i) => {
+              let keyUpdate = '';
+              let keyLoading = '';
+              let keyTotal = '';
+              let keyRemain = '';
+
+              if (i === 0) {
+                keyUpdate = 'delivering';
+                keyLoading = 'deliveringLoading';
+                keyTotal = 'deliveringTotal';
+                keyRemain = 'deliveringRemain';
+              } else if (i === 1) {
+                keyUpdate = 'delivered';
+                keyLoading = 'deliveredLoading';
+                keyTotal = 'deliveredTotal';
+                keyRemain = 'deliveredRemain';
+              } else {
+                keyUpdate = 'cancelled';
+                keyLoading = 'cancelledLoading';
+                keyTotal = 'cancelledTotal';
+                keyRemain = 'cancelledRemain';
+              }
+
+              this.customerStore.update(props.id, { [keyUpdate]: res[i].data });
+              const count = res[i].data?.length || 0;
               this.customerStore.update((state) => ({
                 ...state,
-                deliveredLoading: false,
-                deliveredTotal: res.total,
-                deliveredRemain: res.total - count,
+                [keyLoading]: false,
+                [keyTotal]: res[i].total,
+                [keyRemain]: res[i].total - count,
                 error: null
               }));
             });
-
-          this.orderService.pagination({
-            search: {
-              take: PaginationDto.take,
-              skip: PaginationDto.skip,
-              customerId: props.id,
-              status: OrderStatusEnum.DELIVERING,
-              hiddenDebt: HideDebtStatusEnum.ALL
-            }
-          })
-            .pipe(take(1))
-            .subscribe(res => {
-              this.customerStore.update(props.id, { delivering: res.data });
-              const count = res.data?.length || 0;
-              this.customerStore.update((state) => ({
-                ...state,
-                deliveringLoading: false,
-                deliveringTotal: res.total,
-                deliveringRemain: res.total - count,
-                error: null
-              }));
-            });
-
+          });
         }),
         catchError((err) => {
           this.action$.dispatch(CustomerActions.error(err));
@@ -197,7 +201,12 @@ export class CustomerEffect {
   loadOrder$ = this.action$.pipe(
     ofType(CustomerActions.loadOrder),
     concatMap((props) => {
-      const status = props.typeOrder === 'delivered' ? OrderStatusEnum.DELIVERED : OrderStatusEnum.DELIVERING;
+      const status = props.typeOrder === 'delivered'
+        ? OrderStatusEnum.DELIVERED
+        : props.typeOrder === 'delivering'
+          ? OrderStatusEnum.DELIVERING
+          : OrderStatusEnum.CANCELLED;
+
       const customer = this.customerQuery.getEntity(props.search.customerId);
       return this.orderService.pagination({
         search: Object.assign(
@@ -210,7 +219,9 @@ export class CustomerEffect {
               ? PaginationDto.skip
               : props.typeOrder === 'delivered'
                 ? (customer?.delivered?.length || 0)
-                : (customer?.delivering?.length || 0)
+                : props.typeOrder === 'delivering'
+                  ? (customer?.delivering?.length || 0)
+                  : (customer?.cancelled?.length || 0)
           }
         )
       }).pipe(
@@ -218,21 +229,28 @@ export class CustomerEffect {
           if (props.isSet) {
             this.customerStore.update(props.search.customerId, { [props.typeOrder]: res.data });
           } else {
-            this.customerStore.update(props.search.customerId, ({ delivering, delivered }) => ({
+            this.customerStore.update(props.search.customerId, ({ delivering, delivered, cancelled }) => ({
               delivering: props.typeOrder === 'delivering' ? arrayAdd(delivering, res.data) : delivering,
-              delivered: props.typeOrder === 'delivered' ? arrayAdd(delivered, res.data) : delivered
+              delivered: props.typeOrder === 'delivered' ? arrayAdd(delivered, res.data) : delivered,
+              cancelled: props.typeOrder === 'cancelled' ? arrayAdd(cancelled, res.data) : cancelled
             }));
           }
-          this.customerStore.update((state) => ({
-            ...state,
-            deliveredLoading: props.typeOrder === 'delivered' ? false : state.deliveredLoading,
-            deliveringLoading: props.typeOrder === 'delivering' ? false : state.deliveringLoading,
-            deliveredTotal: res.total,
-            deliveringTotal: res.total,
-            deliveredRemain: res.total - (this.customerQuery.getEntity(props.search.customerId)?.delivered?.length || 0),
-            deliveringRemain: res.total - (this.customerQuery.getEntity(props.search.customerId)?.delivering?.length || 0),
-            error: null
-          }));
+          this.customerStore.update((state) => {
+            const customer = this.customerQuery.getEntity(props.search.customerId);
+            return {
+              ...state,
+              deliveredLoading: props.typeOrder === 'delivered' ? false : state.deliveredLoading,
+              deliveringLoading: props.typeOrder === 'delivering' ? false : state.deliveringLoading,
+              cancelledLoading: props.typeOrder === 'cancelled' ? false : state.cancelledLoading,
+              deliveringTotal: res.total,
+              deliveredTotal: res.total,
+              cancelledTotal: res.total,
+              deliveringRemain: res.total - (customer?.delivering?.length || 0),
+              deliveredRemain: res.total - (customer?.delivered?.length || 0),
+              cancelledRemain: res.total - (customer?.cancelled?.length || 0),
+              error: null
+            };
+          });
         }),
         catchError((err) => of(CustomerActions.error(err)))
       );

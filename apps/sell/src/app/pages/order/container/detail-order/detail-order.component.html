@@ -237,7 +237,7 @@
         <nz-table
           class='mt-3'
           #tableRoute
-          [nzData]='order.routes'
+          [nzData]='order.routes || []'
           [nzScroll]="{ y: '300px' }"
           [nzShowPagination]='false'
           nzSize='middle'

@@ -61,7 +61,7 @@ export class DetailCustomerComponent implements OnInit {
     });
   }
 
-  public onOrderChanged(event: SearchOrderDto, delivered: boolean): void {
+  public onOrderChanged(event: SearchOrderDto, type: 'delivering' | 'delivered' | 'cancelled'): void {
     let search = {
       startedAt_start: event.search.ranges?.length === 2 ? event.search.ranges[0] : null,
       startedAt_end: event.search.ranges?.length === 2 ? event.search.ranges[1] : null,
@@ -72,7 +72,7 @@ export class DetailCustomerComponent implements OnInit {
     this.actions$.dispatch(CustomerActions.loadOrder({
       search: (!search?.startedAt_start || !search?.startedAt_end) ? omit(search, ['startedAt_start', 'startedAt_end']) : search,
       isSet: !event.isLoadMore,
-      typeOrder: delivered ? 'delivered' : 'delivering'
+      typeOrder: type
     }));
   }
 

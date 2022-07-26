@@ -8,6 +8,7 @@ import { VisibleEntity } from '@minhdu-fontend/data-models';
 export interface PaymentState extends EntityState<PaymentEntity> {
   loading?: boolean;
   total: number;
+  remain: number;
   search?: Partial<SearchPaymentDto>;
   ui: VisibleEntity;
 }
@@ -15,6 +16,7 @@ export interface PaymentState extends EntityState<PaymentEntity> {
 function createInitState(): PaymentState {
   return {
     total: 0,
+    remain: 0,
     ui: { pinned: false, visible: false }
   };
 }

@@ -16,7 +16,7 @@ const remove = createAction('[CUSTOMER] Remove', props<RemoveCustomerDto>());
 
 const loadOrder = createAction(
   '[CUSTOMER] Load Order Delivering/Delivered',
-  props<SearchOrderDto & { typeOrder: 'delivered' | 'delivering' }>()
+  props<SearchOrderDto & { typeOrder: 'delivered' | 'delivering' | 'cancelled' }>()
 );
 
 const loadOrderSuccess = createAction(

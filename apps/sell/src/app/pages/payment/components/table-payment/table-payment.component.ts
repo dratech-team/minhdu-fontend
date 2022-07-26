@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { debounceTime, tap } from 'rxjs/operators';
-import { ItemContextMenu, PaymentType } from '@minhdu-fontend/enums';
+import { debounceTime, startWith } from 'rxjs/operators';
+import { PaymentType } from '@minhdu-fontend/enums';
 import { PaymentModalComponent } from '../payment-modal/payment-modal.component';
 import { PaymentActions, PaymentQuery, PaymentStore } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -20,15 +20,14 @@ export class TablePaymentComponent implements OnInit {
 
   paymentHistories$ = this.paymentQuery.selectAll();
   loading$ = this.paymentQuery.select((state) => state.loading);
+  remain$ = this.paymentQuery.select((state) => state.remain);
 
-  pageSizeTable = 10;
-  pageTypeEnum = ItemContextMenu;
   payType = PaymentType;
 
-  formGroup = new UntypedFormGroup({
-    name: new UntypedFormControl(''),
-    paidAt: new UntypedFormControl(''),
-    createdAt: new UntypedFormControl('')
+  formGroup = new FormGroup({
+    name: new FormControl<string>(''),
+    paidAt: new FormControl<PaymentType>(PaymentType.ALL),
+    createdAt: new FormControl<Date | null>(null)
   });
 
   constructor(
@@ -42,30 +41,23 @@ export class TablePaymentComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.onLoad(false);
-    this.formGroup.valueChanges
-      .pipe(
-        debounceTime(1000),
-        tap((_) => {
-          this.onLoad(false);
+    this.formGroup.valueChanges.pipe(
+      debounceTime(1000), startWith(this.formGroup.value)
+    ).subscribe((formGroup) => {
+      this.actions$.dispatch(
+        PaymentActions.loadAll({
+          search: this.mapPayment(formGroup),
+          isSet: true
         })
-      )
-      .subscribe();
+      );
+    });
   }
 
-  onLoadMore(pageIndex: number) {
-    const count = this.paymentQuery.getCount();
-    if (pageIndex * this.pageSizeTable >= count) {
-      this.onLoad(true);
-    }
-    this.onLoad(true);
-  }
-
-  onLoad(isPaginate: boolean) {
+  onLoadMore() {
     this.actions$.dispatch(
       PaymentActions.loadAll({
         search: this.mapPayment(this.formGroup.value),
-        isSet: isPaginate
+        isSet: false
       })
     );
   }
@@ -94,11 +86,6 @@ export class TablePaymentComponent implements OnInit {
             paidTotal: payment.total
           })
         );
-        this.loading$.subscribe((loading) => {
-          if (loading === false) {
-            this.onLoad(false);
-          }
-        });
       }
     });
   }

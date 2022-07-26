@@ -61,7 +61,7 @@ export class PaymentEffect {
       }));
       Object.assign(props.search, {
         take: PaginationDto.take,
-        skip: props.isSet
+        skip: !props.isSet
           ? this.paymentQuery.getCount()
           : PaginationDto.skip
       });
@@ -73,9 +73,9 @@ export class PaymentEffect {
             total: response.total
           }));
           if (props.isSet) {
-            this.paymentStore.add(response.data);
-          } else {
             this.paymentStore.set(response.data);
+          } else {
+            this.paymentStore.add(response.data);
           }
         }),
         catchError((err) => {

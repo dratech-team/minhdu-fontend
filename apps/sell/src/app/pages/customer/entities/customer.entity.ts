@@ -9,5 +9,6 @@ export interface CustomerEntity extends BaseCustomerEntity {
   readonly ward: Ward;
   readonly delivered: OrderEntity[];
   readonly delivering: OrderEntity[];
+  readonly cancelled: OrderEntity[];
   readonly paymentHistories?: PaymentEntity[];
 }

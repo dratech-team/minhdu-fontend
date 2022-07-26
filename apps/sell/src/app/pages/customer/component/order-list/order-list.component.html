@@ -35,14 +35,14 @@
         <input nz-input [disabled]='true' type='number' />
       </th>
       <th *ngIf='type === "delivered"'>
-        <div class=''>Ngày giao hàng</div>
+        <div>Ngày giao hàng</div>
         <input nz-input [disabled]='true' type='date' />
       </th>
       <th *ngIf='type === "delivering"'>
         <div class=''>Diễn giải</div>
         <input nz-input formControlName='explain' type='search' />
       </th>
-      <th nzWidth='120px'>
+      <th *ngIf='type !== "cancelled"' nzWidth='120px'>
         <div>Thanh toán</div>
       </th>
       <th *ngIf='type === "delivered"'>
@@ -50,10 +50,13 @@
         <input nz-input [disabled]='true' type='number' />
       </th>
       <th *ngIf='type === "delivering"' nzWidth='100px'>
-        <div class=''>Đã giao</div>
+        Đã giao
       </th>
       <th *ngIf='type === "delivering"' nzWidth='90px'>
-        <div class=''>Hủy</div>
+        Hủy
+      </th>
+      <th *ngIf='type === "cancelled"'>
+        Ngày huỷ
       </th>
       <!--      <th nzWidth='100px'>-->
       <!--        <div>Chi tiết</div>-->
@@ -89,7 +92,7 @@
         <td *ngIf='type === "delivering"'>
           {{ order?.explain || 'Không có nội dung' }}
         </td>
-        <td (click)='$event.stopPropagation()'>
+        <td *ngIf='type !== "cancelled"' (click)='$event.stopPropagation()'>
           <button nz-button nzType='primary' (click)='payment(order)'>
             Thanh toán
           </button>
@@ -121,6 +124,9 @@
         <!--            Chi tiết-->
         <!--          </button>-->
         <!--        </td>-->
+        <td>
+          {{ order?.cancelledAt | date: 'dd/MM/yyyy' }}
+        </td>
       </tr>
     </ng-template>
     <tr

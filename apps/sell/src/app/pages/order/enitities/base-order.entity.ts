@@ -8,6 +8,7 @@ import { OrderHistoryEntity } from './order-history.entity';
 export interface BaseOrderEntity extends BaseEntity {
   customer: CustomerEntity;
   createdAt: Date;
+  cancelledAt: Date;
   priceTotal: number;
   paymentTotal: number;
   deliveredAt?: Date | null;
