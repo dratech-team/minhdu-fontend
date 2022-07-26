@@ -8,7 +8,7 @@ export interface CommodityEntity extends BaseCommodityEntity {
   more: {
     amount: number;
     price: number;
-  };
+  } | null;
   closed: boolean;
   routeId?: number;
   route?: RouteEntity;

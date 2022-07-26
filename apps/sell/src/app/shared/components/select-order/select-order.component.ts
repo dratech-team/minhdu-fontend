@@ -180,4 +180,11 @@ export class SelectOrderComponent implements OnInit {
   checkOrderSelect(order: OrderEntity): boolean {
     return Array.from(this.orderSelected).some((e) => e.id === order.id) && this.isOrderSelected(order);
   }
+
+  commodityTotal = (commodities: CommodityEntity[]) => {
+    return commodities.reduce((acc, cur) => {
+      return acc + cur.amount + (cur.more?.amount || 0) + (cur.gift || 0);
+    }, 0);
+  };
+
 }

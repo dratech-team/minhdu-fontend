@@ -314,7 +314,6 @@ export class OrderEffect {
 
   private mapToOrder(order: BaseOrderEntity): OrderEntity {
     const expandedAll = this.orderQuery.getValue().expandedAll;
-    const commodityTotal = order.commodities.reduce((a, commodity) => a + commodity.amount, 0);
     const priceTotal = order.commodities.reduce((a, commodity) => {
       return a + ((commodity.amount * commodity.price) + ((commodity.more?.amount || 0) * (commodity?.more?.price || 0)));
     }, 0);
@@ -326,7 +325,6 @@ export class OrderEffect {
     return {
       ...order,
       expand: expandedAll,
-      commodityTotal: commodityTotal,
       priceTotal: priceTotal,
       routes: routes,
       orderHistories: []
