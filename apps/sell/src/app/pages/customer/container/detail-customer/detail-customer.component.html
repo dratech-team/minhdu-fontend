@@ -289,7 +289,7 @@
               nz-icon
               nzType='fullscreen'
               nzTheme='outline'
-              (click)='onFullScreenOrder(customer.delivering, false)'
+              (click)='onFullScreenOrder(customer.delivering, "delivering")'
             ></i>
           </div>
           <div>
@@ -304,7 +304,7 @@
           </div>
         </div>
         <order-list
-          [delivered]='false'
+          [type]="'delivering'"
           [customerId]='getId'
           [loading]='(deliveringLoading$ | async) || false'
           [orders]='customer.delivering | notEmpty: []'
@@ -323,11 +323,11 @@
             nz-icon
             nzType='fullscreen'
             nzTheme='outline'
-            (click)='onFullScreenOrder(customer.delivered, true)'
+            (click)='onFullScreenOrder(customer.delivered, "delivered")'
           ></i>
         </div>
         <order-list
-          [delivered]='true'
+          [type]="'delivered'"
           [customerId]='getId'
           [loading]='(deliveredLoading$ | async) || false'
           [orders]='customer.delivered | notEmpty: []'

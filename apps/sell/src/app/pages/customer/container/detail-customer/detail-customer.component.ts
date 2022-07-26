@@ -80,7 +80,7 @@ export class DetailCustomerComponent implements OnInit {
     this.customerComponentService.onPayment(customer, order);
   }
 
-  public onFullScreenOrder(orders: OrderEntity[], delivered: boolean): void {
+  public onFullScreenOrder(orders: OrderEntity[], type: 'delivered' | 'delivering' | 'cancelled'): void {
     this.modal.create({
       nzWidth: 'fit-content',
       nzMask: false,
@@ -88,7 +88,7 @@ export class DetailCustomerComponent implements OnInit {
       nzContent: OrderListComponent,
       nzComponentParams: {
         orders: orders,
-        delivered: delivered
+        type: type
       },
       nzFooter: null
     });

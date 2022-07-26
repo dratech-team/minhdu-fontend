@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BaseOrderEntity, OrderEntity } from '../../../order/enitities';
+import { OrderEntity } from '../../../order/enitities';
 import { OrderQuery } from '../../../order/state';
 import { MatDialog } from '@angular/material/dialog';
 import { take } from 'rxjs/operators';
@@ -23,7 +23,7 @@ import { SearchOrderDto } from '../../dto';
 })
 export class OrderListComponent implements OnInit {
   @Input() orders: OrderEntity[] = [];
-  @Input() delivered: boolean = false;
+  @Input() type: 'delivered' | 'delivering' | 'cancelled' = 'delivering';
   @Input() customerId?: number;
   @Input() loading = false;
 
@@ -104,7 +104,6 @@ export class OrderListComponent implements OnInit {
     ref.afterClosed().subscribe((val) => {
       if (val) {
         this.onCancel.emit(order);
-        // this.actions$.dispatch(OrderActions.cancel({ id: order.id }));
       }
     });
   }
@@ -125,14 +124,6 @@ export class OrderListComponent implements OnInit {
       .afterClose.subscribe((val) => {
       if (val) {
         this.onDelivered.emit(new Date(val));
-        // this.orderService.update({ id: order.id, updates: { deliveredAt: new Date(val) } })
-        //   .pipe(take(1))
-        //   .subscribe((res) => {
-        //     this.customerStore.update(this.customerId, ({ delivering, delivered }) => ({
-        //       delivered: arrayAdd(delivered, res),
-        //       delivering: arrayRemove(delivering, order.id)
-        //     }));
-        //   });
       }
     });
   }
@@ -141,9 +132,29 @@ export class OrderListComponent implements OnInit {
     this.onPayment.emit(order);
   }
 
+  orderLoading() {
+    const state = this.customerQuery.getValue();
+    if (this.type === 'delivering') {
+      return state.deliveringLoading;
+    } else if (this.type === 'delivered') {
+      return state?.deliveredLoading;
+    }
+    return state.cancelledLoading;
+  }
+
+  orderRemaining() {
+    const state = this.customerQuery.getValue();
+    if (this.type === 'delivering') {
+      return state.deliveringRemain > 0;
+    } else if (this.type === 'delivered') {
+      return state.deliveredRemain > 0;
+    }
+    return state.cancelledRemain > 0;
+  }
+
   private mapOrders(val: any): any {
     return {
-      delivered: this.delivered ? 1 : 0,
+      delivered: this.type === 'delivered' ? 1 : 0,
       createdAt: val.createdAt,
       ward: val.ward,
       explain: val.explain,

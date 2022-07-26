@@ -34,25 +34,25 @@
         <div class=''>Tiền thanh toán</div>
         <input nz-input [disabled]='true' type='number' />
       </th>
-      <th *ngIf='delivered'>
+      <th *ngIf='type === "delivered"'>
         <div class=''>Ngày giao hàng</div>
         <input nz-input [disabled]='true' type='date' />
       </th>
-      <th *ngIf='!delivered'>
+      <th *ngIf='type === "delivering"'>
         <div class=''>Diễn giải</div>
         <input nz-input formControlName='explain' type='search' />
       </th>
       <th nzWidth='120px'>
         <div>Thanh toán</div>
       </th>
-      <th *ngIf='delivered'>
+      <th *ngIf='type === "delivered"'>
         <div class=''>Ẩn nợ</div>
         <input nz-input [disabled]='true' type='number' />
       </th>
-      <th *ngIf='!delivered' nzWidth='100px'>
+      <th *ngIf='type === "delivering"' nzWidth='100px'>
         <div class=''>Đã giao</div>
       </th>
-      <th *ngIf='!delivered' nzWidth='90px'>
+      <th *ngIf='type === "delivering"' nzWidth='90px'>
         <div class=''>Hủy</div>
       </th>
       <!--      <th nzWidth='100px'>-->
@@ -83,10 +83,10 @@
         <td style='color: #20c997'>
           {{ order?.paymentTotal | number: '1.0-0' | notEmpty: '0' }} đ
         </td>
-        <td *ngIf='delivered'>
+        <td *ngIf='type === "delivered"'>
           {{ order?.deliveredAt | date: 'dd/MM/yyyy' }}
         </td>
-        <td *ngIf='!delivered'>
+        <td *ngIf='type === "delivering"'>
           {{ order?.explain || 'Không có nội dung' }}
         </td>
         <td (click)='$event.stopPropagation()'>
@@ -94,19 +94,19 @@
             Thanh toán
           </button>
         </td>
-        <td *ngIf='delivered' (click)='$event.stopPropagation()'>
+        <td *ngIf='type === "delivered"' (click)='$event.stopPropagation()'>
           <nz-switch
             [(ngModel)]='order.hide'
             (ngModelChange)='onUpdate(order)'
             class='m-auto'
           ></nz-switch>
         </td>
-        <td *ngIf='!delivered' (click)='$event.stopPropagation()'>
+        <td *ngIf='type === "delivering"' (click)='$event.stopPropagation()'>
           <button nz-button nzType='default' (click)='onConfirm(order)'>
             Đã giao
           </button>
         </td>
-        <td *ngIf='!delivered' (click)='$event.stopPropagation()'>
+        <td *ngIf='type === "delivering"' (click)='$event.stopPropagation()'>
           <button
             *ngIf='order.paymentTotal === 0'
             nz-button
@@ -125,7 +125,7 @@
       </tr>
     </ng-template>
     <tr
-      *ngIf='delivered ? ((state$ | async)?.deliveredRemain || 0 > 0) : ((state$ | async)?.deliveringRemain || 0 > 0)'>
+      *ngIf='orderRemaining()'>
       <td colspan='10'>
         <div
           class='w-100 d-flex justify-content-start'
@@ -136,7 +136,7 @@
             nzGhost
             nzType='primary'
             style='position: sticky; left: 45vw'
-            [nzLoading]='delivered ? (state$ | async)?.deliveredLoading : (state$ | async)?.deliveringLoading'
+            [nzLoading]='orderLoading()'
             (click)='onLoadMore()'
           >
             Tải thêm
