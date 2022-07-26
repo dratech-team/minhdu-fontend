@@ -88,7 +88,7 @@ export class OrderListComponent implements OnInit {
       });
   }
 
-  onRemove(order: OrderEntity) {
+  cancel(order: OrderEntity) {
     const ref = this.dialog.open(DialogSharedComponent, {
       width: 'fit-content',
       data: {

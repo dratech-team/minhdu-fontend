@@ -108,13 +108,12 @@
         </td>
         <td *ngIf='type === "delivering"' (click)='$event.stopPropagation()'>
           <button
-            *ngIf='order.paymentTotal === 0'
             nz-button
             nzDanger
             nzType='primary'
-            (click)='onRemove(order)'
+            (click)='cancel(order)'
           >
-            Hủy
+            Huỷ
           </button>
         </td>
         <!--        <td (click)='$event.stopPropagation()'>-->
