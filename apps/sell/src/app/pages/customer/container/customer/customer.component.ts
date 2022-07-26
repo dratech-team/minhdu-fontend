@@ -52,7 +52,7 @@ export class CustomerComponent implements OnInit {
     },
     {
       title: 'Thanh toán',
-      click: (data: CustomerEntity) => this.customerComponentService.onPayment(data)
+      click: () => this.customerComponentService.onPayment()
     }
   ];
 

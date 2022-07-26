@@ -80,7 +80,7 @@
   <select-order
     [formGroup]='formGroup'
     [selectOne]='true'
-    [search]='{customerId: data?.add?.customer?.id}'
+    [search]='{customerId: (data?.add?.order?.customerId || data.add?.customer?.id)}'
   ></select-order>
 </ng-template>
 

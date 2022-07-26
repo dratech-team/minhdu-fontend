@@ -6,12 +6,9 @@ import { OrderQuery } from '../../../order/state';
 import { MatDialog } from '@angular/material/dialog';
 import { take } from 'rxjs/operators';
 import { ModeEnum } from '@minhdu-fontend/enums';
-import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CustomerQuery, CustomerStore } from '../../state';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { ModalDatePickerComponent } from '@minhdu-fontend/components';
-import { ModalDatePickerEntity } from '@minhdu-fontend/base-entity';
 import { arrayUpdate } from '@datorama/akita';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { OrderService } from '../../../order/service';
@@ -29,7 +26,7 @@ export class OrderListComponent implements OnInit {
 
   @Output() onValueChanged = new EventEmitter<SearchOrderDto>();
   @Output() onPayment = new EventEmitter<OrderEntity>();
-  @Output() onDelivered = new EventEmitter<Date>();
+  @Output() onDelivered = new EventEmitter<OrderEntity>();
   @Output() onCancel = new EventEmitter<OrderEntity>();
 
   account$ = this.accQuery.selectCurrentUser();
@@ -89,43 +86,11 @@ export class OrderListComponent implements OnInit {
   }
 
   cancel(order: OrderEntity) {
-    const ref = this.dialog.open(DialogSharedComponent, {
-      width: 'fit-content',
-      data: {
-        title: 'Đơn hàng đang giao',
-        description: `hủy đơn hàng đang giao ${
-          order?.ward ? order.ward.name : ''
-        }
-          ${order?.district ? order.district.name : ''} ${
-          order?.province?.name
-        }`
-      }
-    });
-    ref.afterClosed().subscribe((val) => {
-      if (val) {
-        this.onCancel.emit(order);
-      }
-    });
+    this.onCancel.emit(order);
   }
 
   onConfirm(order: OrderEntity) {
-    this.modal
-      .create({
-        nzTitle: 'Xác nhận Giao hàng',
-        nzContent: ModalDatePickerComponent,
-        nzComponentParams: <{ data: ModalDatePickerEntity }>{
-          data: {
-            type: 'date',
-            dateInit: new Date()
-          }
-        },
-        nzFooter: []
-      })
-      .afterClose.subscribe((val) => {
-      if (val) {
-        this.onDelivered.emit(new Date(val));
-      }
-    });
+    this.onDelivered.emit(order);
   }
 
   payment(order: OrderEntity) {

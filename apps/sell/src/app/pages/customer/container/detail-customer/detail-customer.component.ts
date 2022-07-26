@@ -11,7 +11,11 @@ import { CustomerComponentService } from '../../shared';
 import { OrderListComponent } from '../../component/order-list/order-list.component';
 import { SearchOrderDto } from '../../dto';
 import { omit } from 'lodash';
+import { OrderService } from '../../../order/service';
+import { PaymentModalComponent } from '../../../payment/components';
 import { CustomerEntity } from '../../entities';
+import { PaymentService } from '../../../payment/services/payment.Service';
+import { arrayUpdate } from '@datorama/akita';
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -34,6 +38,8 @@ export class DetailCustomerComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
+    private readonly orderService: OrderService,
+    private readonly paymentService: PaymentService,
     private readonly customerStore: CustomerStore,
     private readonly customerQuery: CustomerQuery
   ) {
@@ -76,8 +82,44 @@ export class DetailCustomerComponent implements OnInit {
     }));
   }
 
-  public onPayment(customer: CustomerEntity, order: OrderEntity): void {
-    this.customerComponentService.onPayment(customer, order);
+  public onPayment(customer: CustomerEntity, order?: OrderEntity) {
+    this.modal.create({
+      nzWidth: 'fit-content',
+      nzCentered: true,
+      nzContent: PaymentModalComponent,
+      nzComponentParams: {
+        data: { add: { order, customer: order?.customer || customer } }
+      },
+      nzFooter: null
+    }).afterClose.subscribe((result) => {
+      if (result) {
+        this.paymentService.addOne({
+          body: {
+            ...result,
+            customerId: customer.id,
+            orderId: order?.id || result.orderId
+          }
+        })
+          .subscribe((res) => {
+            this.customerStore.update(customer.id, (customer) => {
+              const paymentTotal = customer.delivering.concat(customer.delivered).concat(customer.cancelled)
+                .filter(o => o.id === res.orderId)
+                .reduce((acc, cur) => acc + cur.paymentTotal, 0);
+
+              return {
+                debt: (customer.debt || 0) + res.total,
+                delivering: arrayUpdate(customer.delivering, res.orderId, { paymentTotal: paymentTotal + res.total }),
+                delivered: arrayUpdate(customer.delivered, res.orderId, { paymentTotal: paymentTotal + res.total }),
+                cancelled: arrayUpdate(customer.cancelled, res.orderId, { paymentTotal: paymentTotal + res.total })
+              };
+            });
+          });
+      }
+    });
+  }
+
+  public onCancelOrder(order: OrderEntity) {
+
   }
 
   public onFullScreenOrder(orders: OrderEntity[], type: 'delivered' | 'delivering' | 'cancelled'): void {

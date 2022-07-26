@@ -9,7 +9,6 @@ import { PaymentQuery } from './payment.query';
 import { PaymentStore } from './payment.store';
 import { RemovePaymentDto, SearchPaymentDto, UpdatePaymentDto } from '../dto';
 import { PaginationDto } from '@minhdu-fontend/constants';
-import { CustomerActions, CustomerStore } from '../../customer/state';
 
 @Injectable()
 export class PaymentEffect {
@@ -18,8 +17,7 @@ export class PaymentEffect {
     private readonly message: NzMessageService,
     private readonly paymentService: PaymentService,
     private readonly paymentQuery: PaymentQuery,
-    private readonly paymentStore: PaymentStore,
-    private readonly customerStore: CustomerStore
+    private readonly paymentStore: PaymentStore
   ) {
   }
 
@@ -105,9 +103,6 @@ export class PaymentEffect {
             loading: false
           }));
           this.paymentStore.update(res.id, res);
-          this.action$.dispatch(
-            CustomerActions.loadOne({ id: res.customerId })
-          );
         }),
         catchError((err) => {
           this.paymentStore.update((state) => ({
@@ -131,14 +126,6 @@ export class PaymentEffect {
       return this.paymentService.delete(props.id).pipe(
         tap((_) => {
           this.message.success('Xoá lịch sử thành toán thành công');
-          this.customerStore.update(props.customerId, (entity) => {
-            return {
-              ...entity,
-              debt: entity.debt
-                ? entity.debt - props.paidTotal
-                : -props.paidTotal
-            };
-          });
           this.paymentStore.update((state) => ({
             ...state,
             loading: false

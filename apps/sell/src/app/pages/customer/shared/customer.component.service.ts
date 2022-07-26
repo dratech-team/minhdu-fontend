@@ -61,24 +61,19 @@ export class CustomerComponentService {
     });
   }
 
-  onPayment(customer: CustomerEntity, order?: OrderEntity) {
-    this.modal.create({
+  onPayment(order?: OrderEntity) {
+    return this.modal.create({
       nzWidth: 'fit-content',
       nzTitle: 'Thanh toán',
       nzContent: PaymentModalComponent,
       nzComponentParams: <{ data: ModalAddOrUpdatePayment }>{
         data: {
           add: {
-            customer: customer,
             order: order
           }
         }
       },
-      nzFooter: []
-    }).afterClose.subscribe((val) => {
-      if (val) {
-        this.actions$.dispatch(CustomerActions.loadOne({ id: customer.id }));
-      }
-    });
+      nzFooter: null
+    })
   }
 }

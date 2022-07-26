@@ -56,7 +56,7 @@
           <button
             nz-button
             nzType='primary'
-            (click)='customerComponentService.onPayment(customer)'
+            (click)='onPayment(customer)'
           >
             Thanh toán
           </button>
@@ -334,6 +334,7 @@
           [loading]='(deliveredLoading$ | async) || false'
           [orders]='customer.delivered | notEmpty: []'
           (onValueChanged)='onOrderChanged($event, "delivered")'
+          (onPayment)='onPayment(customer, $event)'
         ></order-list>
       </div>
       <div class='col-12 mt-5'>
