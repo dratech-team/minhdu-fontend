@@ -1,5 +1,5 @@
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
-import { BaseOrderEntity } from './base-order.entity';
 import { CommodityUniq } from '../../commodity/entities';
+import { OrderEntity } from './order.entity';
 
-export type ResponsePaginateOrderEntity = ResponsePaginate<BaseOrderEntity> & { commodityUniq: CommodityUniq[] };
+export type ResponsePaginateOrderEntity = ResponsePaginate<OrderEntity> & { commodityUniq: CommodityUniq[] };

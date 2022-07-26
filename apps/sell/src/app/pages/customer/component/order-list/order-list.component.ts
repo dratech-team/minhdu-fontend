@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BaseOrderEntity } from '../../../order/enitities';
-import { OrderActions, OrderQuery } from '../../../order/state';
+import { BaseOrderEntity, OrderEntity } from '../../../order/enitities';
+import { OrderQuery } from '../../../order/state';
 import { MatDialog } from '@angular/material/dialog';
 import { take } from 'rxjs/operators';
 import { ModeEnum } from '@minhdu-fontend/enums';
@@ -12,7 +12,7 @@ import { CustomerQuery, CustomerStore } from '../../state';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ModalDatePickerComponent } from '@minhdu-fontend/components';
 import { ModalDatePickerEntity } from '@minhdu-fontend/base-entity';
-import { arrayAdd, arrayRemove, arrayUpdate } from '@datorama/akita';
+import { arrayUpdate } from '@datorama/akita';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { OrderService } from '../../../order/service';
 import { SearchOrderDto } from '../../dto';
@@ -22,16 +22,18 @@ import { SearchOrderDto } from '../../dto';
   templateUrl: 'order-list.component.html'
 })
 export class OrderListComponent implements OnInit {
-  @Input() orders: BaseOrderEntity[] = [];
+  @Input() orders: OrderEntity[] = [];
   @Input() delivered: boolean = false;
   @Input() customerId?: number;
   @Input() loading = false;
 
-  state$ = this.customerQuery.select();
-
   @Output() onValueChanged = new EventEmitter<SearchOrderDto>();
+  @Output() onPayment = new EventEmitter<OrderEntity>();
+  @Output() onDelivered = new EventEmitter<Date>();
+  @Output() onCancel = new EventEmitter<OrderEntity>();
 
   account$ = this.accQuery.selectCurrentUser();
+  state$ = this.customerQuery.select();
 
   formGroup = new FormGroup({
     ranges: new FormControl<Date[] | null>(null),
@@ -72,11 +74,11 @@ export class OrderListComponent implements OnInit {
     });
   }
 
-  detailOrder(id: number) {
+  onDetail(id: number) {
     this.router.navigate(['don-hang/chi-tiet-don-hang', id]).then();
   }
 
-  updateOrder(order: BaseOrderEntity) {
+  onUpdate(order: OrderEntity) {
     this.orderService.hide(order.id, { hide: !order.hide })
       .pipe(take(1))
       .subscribe((res) => {
@@ -86,7 +88,7 @@ export class OrderListComponent implements OnInit {
       });
   }
 
-  deleteOrder(order: BaseOrderEntity) {
+  onRemove(order: OrderEntity) {
     const ref = this.dialog.open(DialogSharedComponent, {
       width: 'fit-content',
       data: {
@@ -101,12 +103,13 @@ export class OrderListComponent implements OnInit {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.actions$.dispatch(OrderActions.cancel({ id: order.id }));
+        this.onCancel.emit(order);
+        // this.actions$.dispatch(OrderActions.cancel({ id: order.id }));
       }
     });
   }
 
-  confirmOrder(order: BaseOrderEntity) {
+  onConfirm(order: OrderEntity) {
     this.modal
       .create({
         nzTitle: 'Xác nhận Giao hàng',
@@ -121,16 +124,21 @@ export class OrderListComponent implements OnInit {
       })
       .afterClose.subscribe((val) => {
       if (val) {
-        this.orderService.update({ id: order.id, updates: { deliveredAt: new Date(val) } })
-          .pipe(take(1))
-          .subscribe((res) => {
-            this.customerStore.update(this.customerId, ({ delivering, delivered }) => ({
-              delivered: arrayAdd(delivered, res),
-              delivering: arrayRemove(delivering, order.id)
-            }));
-          });
+        this.onDelivered.emit(new Date(val));
+        // this.orderService.update({ id: order.id, updates: { deliveredAt: new Date(val) } })
+        //   .pipe(take(1))
+        //   .subscribe((res) => {
+        //     this.customerStore.update(this.customerId, ({ delivering, delivered }) => ({
+        //       delivered: arrayAdd(delivered, res),
+        //       delivering: arrayRemove(delivering, order.id)
+        //     }));
+        //   });
       }
     });
+  }
+
+  payment(order: OrderEntity) {
+    this.onPayment.emit(order);
   }
 
   private mapOrders(val: any): any {

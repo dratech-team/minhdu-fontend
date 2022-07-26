@@ -39,7 +39,7 @@ import { EmployeeModule } from '../../../../../hrv2/src/app/pages/employee/emplo
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-import { PaymentEffect } from '../payment/payment';
+import { PaymentEffect } from '../payment/state';
 import { PaymentModule } from '../payment/payment.module';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { CustomerComponentService } from './shared';

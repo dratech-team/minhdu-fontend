@@ -1,0 +1,41 @@
+<nz-table
+  #orderTable
+  [nzLoading]='loading'
+  [nzData]='orders'
+  [nzFrontPagination]='false'
+  [nzShowPagination]='false'
+  [nzBordered]='true'
+>
+  <thead>
+  <tr>
+    <th>STT</th>
+    <th>ID</th>
+    <th>
+      <div>Ngày tạo</div>
+      <nz-range-picker formControlName='startedAt'></nz-range-picker>
+    </th>
+    <th>
+      <div>Tiền hàng</div>
+      <input type='number' nz-input disabled />
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-template ngFor let-order let-i='index' [ngForOf]='orderTable.data'>
+    <tr>
+      <td>
+        {{i+1}}
+      </td>
+      <td>
+        {{order.id}}
+      </td>
+      <td>
+        {{order.createdAt}}
+      </td>
+      <td>
+        {{order.priceTotal}}
+      </td>
+    </tr>
+  </ng-template>
+  </tbody>
+</nz-table>

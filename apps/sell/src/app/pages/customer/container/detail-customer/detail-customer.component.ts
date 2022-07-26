@@ -6,11 +6,12 @@ import { CustomerActions, CustomerQuery, CustomerStore } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { OrderDialogComponent } from '../../../order/component';
-import { BaseOrderEntity } from '../../../order/enitities';
+import { OrderEntity } from '../../../order/enitities';
 import { CustomerComponentService } from '../../shared';
 import { OrderListComponent } from '../../component/order-list/order-list.component';
 import { SearchOrderDto } from '../../dto';
 import { omit } from 'lodash';
+import { CustomerEntity } from '../../entities';
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -66,7 +67,7 @@ export class DetailCustomerComponent implements OnInit {
       startedAt_end: event.search.ranges?.length === 2 ? event.search.ranges[1] : null,
       province: event.search?.ward || '',
       explain: event.search?.explain || '',
-      customerId: this.getId,
+      customerId: this.getId
     };
     this.actions$.dispatch(CustomerActions.loadOrder({
       search: (!search?.startedAt_start || !search?.startedAt_end) ? omit(search, ['startedAt_start', 'startedAt_end']) : search,
@@ -75,7 +76,11 @@ export class DetailCustomerComponent implements OnInit {
     }));
   }
 
-  public onFullScreenOrder(orders: BaseOrderEntity[], delivered: boolean): void {
+  public onPayment(customer: CustomerEntity, order: OrderEntity): void {
+    this.customerComponentService.onPayment(customer, order);
+  }
+
+  public onFullScreenOrder(orders: OrderEntity[], delivered: boolean): void {
     this.modal.create({
       nzWidth: 'fit-content',
       nzMask: false,

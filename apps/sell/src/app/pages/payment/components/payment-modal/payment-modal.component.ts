@@ -1,15 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { PaymentType, SortTypeOrderEnum } from '@minhdu-fontend/enums';
+import { FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { PaymentType } from '@minhdu-fontend/enums';
 import { DatePipe } from '@angular/common';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { Actions } from '@datorama/akita-ng-effects';
-import { PaymentActions, PaymentQuery } from '../../payment';
+import { PaymentActions, PaymentQuery } from '../../state';
 import { ModalAddOrUpdatePayment } from '../../../customer/data/modal-payment.data';
 import { BaseAddPaymentDto, BaseUpdatePaymentDto } from '../../dto';
 import { PayTypeConstant } from '../../constants';
-import { OrderQuery } from '../../../order/state';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { OrderEntity } from '../../../order/enitities';
 
 @Component({
   templateUrl: 'payment-modal.component.html'
@@ -21,31 +21,28 @@ export class PaymentModalComponent implements OnInit {
   payTypeConstant = PayTypeConstant.filter(
     (item) => item.value !== PaymentType.ALL
   );
-  formGroup!: UntypedFormGroup;
+  formGroup!: FormGroup;
   indexStep = 0;
-  orderEnum = SortTypeOrderEnum;
 
   constructor(
     public datePipe: DatePipe,
     public modalRef: NzModalRef,
     private readonly actions$: Actions,
     private readonly formBuilder: UntypedFormBuilder,
-    private readonly paymentQuery: PaymentQuery,
-    private readonly orderQuery: OrderQuery,
-    private readonly message: NzMessageService
+    private readonly message: NzMessageService,
+    private readonly paymentQuery: PaymentQuery
   ) {
   }
+
   ngOnInit() {
     const paymentHistory = this.data?.update?.payment;
-    this.formGroup = this.formBuilder.group({
-      payType: [
-        paymentHistory?.payType || PaymentType.CASH,
-        Validators.required
-      ],
-      paidTotal: [paymentHistory?.total, Validators.required],
-      paidAt: [paymentHistory?.paidAt || new Date(), Validators.required],
-      note: [paymentHistory?.note],
-      order: [paymentHistory?.order]
+
+    this.formGroup = new FormGroup({
+      payType: new FormControl<PaymentType>(paymentHistory?.payType || PaymentType.CASH, { validators: Validators.required }),
+      paidTotal: new FormControl<number | undefined>(paymentHistory?.total, { validators: Validators.required }),
+      paidAt: new FormControl<Date>(paymentHistory?.paidAt || new Date(), { validators: Validators.required }),
+      note: new FormControl<string | undefined>(paymentHistory?.note),
+      order: new FormControl<OrderEntity | undefined>(paymentHistory?.order || this.data.add?.order)
     });
   }
 

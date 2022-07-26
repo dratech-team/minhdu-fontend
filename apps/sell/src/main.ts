@@ -9,7 +9,7 @@ import { OrderState } from './app/pages/order/state';
 import { RouteState } from './app/pages/route/state';
 import { CommodityState } from './app/pages/commodity/state';
 import { CommodityTemplateState } from './app/pages/commodity-template/state/commodity-template.store';
-import { PaymentState } from './app/pages/payment/payment';
+import { PaymentState } from './app/pages/payment/state';
 
 if (environment.production) {
   enableProdMode();

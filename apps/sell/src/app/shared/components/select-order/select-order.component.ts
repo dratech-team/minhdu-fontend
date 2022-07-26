@@ -11,6 +11,7 @@ import { AccountQuery } from '../../../../../../../libs/system/src/lib/state/acc
 import { RouterConstants } from '../../constants';
 import * as _ from 'lodash';
 import { debounceTime, startWith } from 'rxjs/operators';
+import { BaseSearchOrderDto } from '../../../pages/order/dto';
 
 @Component({
   selector: 'select-order',
@@ -20,7 +21,7 @@ import { debounceTime, startWith } from 'rxjs/operators';
 export class SelectOrderComponent implements OnInit {
   @Input() formGroup!: UntypedFormGroup;
   @Input() selectOne = false;
-  @Input() customerId?: number;
+  @Input() search?: BaseSearchOrderDto;
 
   account$ = this.accountQuery.selectCurrentUser();
   total$ = this.orderQuery.selectCount();
@@ -39,7 +40,7 @@ export class SelectOrderComponent implements OnInit {
   SortTypeOrderEnum = SortTypeOrderEnum;
 
   formGroupTable = new FormGroup({
-    filterRoute: new FormControl<boolean>(true),
+    filterRoute: new FormControl<boolean>(false),
     search: new FormControl<string>(''),
     startedAt: new FormControl<Date[] | null>([
       getFirstDayInMonth(new Date()),
@@ -54,12 +55,12 @@ export class SelectOrderComponent implements OnInit {
     private readonly orderQuery: OrderQuery,
     private readonly accountQuery: AccountQuery
   ) {
-    this.orderQuery.selectAll().subscribe((val) => {
-      this.orders = JSON.parse(JSON.stringify(val));
-    });
   }
 
   ngOnInit(): void {
+    this.orderQuery.selectAll().subscribe((val) => {
+      this.orders = JSON.parse(JSON.stringify(val));
+    });
     this.formGroup.value.orders?.map((item: OrderEntity) => {
       this.orderSelected.add(item);
     });
@@ -69,7 +70,7 @@ export class SelectOrderComponent implements OnInit {
         this.actions$.dispatch(
           OrderActions.loadAll({
             search: this.mapOrder(this.formGroupTable.value),
-            isSet: false
+            isSet: true
           })
         );
       });
@@ -79,7 +80,7 @@ export class SelectOrderComponent implements OnInit {
     this.actions$.dispatch(
       OrderActions.loadAll({
         search: this.mapOrder(this.formGroupTable.value),
-        isSet: true
+        isSet: false
       })
     );
   }
@@ -138,25 +139,6 @@ export class SelectOrderComponent implements OnInit {
       !this.checked;
   }
 
-  private mapOrder(val: any) {
-    val = {
-      paidType: val.paidType || '',
-      filterRoute: val.filterRoute || '',
-      search: val.search || '',
-      explain: val.explain || '',
-      startedAt_start: val.startedAt[0],
-      startedAt_end: val.startedAt[1]
-    };
-    if (val && !(val.startedAt_start && val.startedAt_end)) {
-      val = _.omit(val, ['startedAt_start', 'startedAt_end']);
-    }
-    return Object.assign(
-      {},
-      val,
-      this.customerId ? { customerId: this.customerId } : {}
-    );
-  }
-
   onItemCheckedCommodity(commodity: any, order: OrderEntity, checked: boolean) {
     if (checked) {
       if (!this.orderSelected.has(order)) {
@@ -183,8 +165,24 @@ export class SelectOrderComponent implements OnInit {
 
   commodityTotal = (commodities: CommodityEntity[]) => {
     return commodities.reduce((acc, cur) => {
-      return acc + cur.amount + (cur.more?.amount || 0) + (cur.gift || 0);
+      return acc + (cur.amount || 0) + (cur.more?.amount || 0) + (cur.gift || 0);
     }, 0);
   };
 
+  private mapOrder(val: any) {
+    val = {
+      ...this.search,
+      paidType: val.paidType || '',
+      filterRoute: val.filterRoute || '',
+      search: val.search || '',
+      explain: val.explain || '',
+      startedAt_start: val.startedAt[0],
+      startedAt_end: val.startedAt[1],
+      status: -1
+    };
+    if (val && !(val.startedAt_start && val.startedAt_end)) {
+      val = _.omit(val, ['startedAt_start', 'startedAt_end']);
+    }
+    return val;
+  }
 }

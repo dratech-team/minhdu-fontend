@@ -8,6 +8,7 @@ import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { Router } from '@angular/router';
 import { RouterConstants } from '../../../shared/constants';
+import { OrderEntity } from '../../order/enitities';
 
 @Injectable()
 export class CustomerComponentService {
@@ -60,15 +61,16 @@ export class CustomerComponentService {
     });
   }
 
-  onPayment(customer: CustomerEntity) {
+  onPayment(customer: CustomerEntity, order?: OrderEntity) {
     this.modal.create({
-      nzWidth: '70vw',
+      nzWidth: 'fit-content',
       nzTitle: 'Thanh toán',
       nzContent: PaymentModalComponent,
       nzComponentParams: <{ data: ModalAddOrUpdatePayment }>{
         data: {
           add: {
-            customer: customer
+            customer: customer,
+            order: order
           }
         }
       },

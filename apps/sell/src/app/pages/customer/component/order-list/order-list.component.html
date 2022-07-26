@@ -42,23 +42,27 @@
         <div class=''>Diễn giải</div>
         <input nz-input formControlName='explain' type='search' />
       </th>
+      <th nzWidth='120px'>
+        <div>Thanh toán</div>
+      </th>
       <th *ngIf='delivered'>
         <div class=''>Ẩn nợ</div>
         <input nz-input [disabled]='true' type='number' />
       </th>
-      <th *ngIf='!delivered'>
+      <th *ngIf='!delivered' nzWidth='100px'>
         <div class=''>Đã giao</div>
-        <input nz-input [disabled]='true' type='number' />
       </th>
-      <th *ngIf='!delivered'>
+      <th *ngIf='!delivered' nzWidth='90px'>
         <div class=''>Hủy</div>
-        <input nz-input [disabled]='true' type='number' />
       </th>
+      <!--      <th nzWidth='100px'>-->
+      <!--        <div>Chi tiết</div>-->
+      <!--      </th>-->
     </tr>
     </thead>
     <tbody>
     <ng-template ngFor let-order [ngForOf]='tableOrder.data' let-i='index'>
-      <tr class='pointer' (click)='detailOrder(order.id)'>
+      <tr class='pointer' (click)='onDetail(order.id)'>
         <td>
           {{ i + 1 }}
         </td>
@@ -85,32 +89,43 @@
         <td *ngIf='!delivered'>
           {{ order?.explain || 'Không có nội dung' }}
         </td>
+        <td (click)='$event.stopPropagation()'>
+          <button nz-button nzType='primary' (click)='payment(order)'>
+            Thanh toán
+          </button>
+        </td>
         <td *ngIf='delivered' (click)='$event.stopPropagation()'>
           <nz-switch
             [(ngModel)]='order.hide'
-            (ngModelChange)='updateOrder(order)'
+            (ngModelChange)='onUpdate(order)'
             class='m-auto'
           ></nz-switch>
         </td>
         <td *ngIf='!delivered' (click)='$event.stopPropagation()'>
-          <button nz-button nzType='primary' (click)='confirmOrder(order)'>
+          <button nz-button nzType='default' (click)='onConfirm(order)'>
             Đã giao
           </button>
         </td>
-
         <td *ngIf='!delivered' (click)='$event.stopPropagation()'>
           <button
             *ngIf='order.paymentTotal === 0'
             nz-button
-            nzType='default'
-            (click)='deleteOrder(order)'
+            nzDanger
+            nzType='primary'
+            (click)='onRemove(order)'
           >
             Hủy
           </button>
         </td>
+        <!--        <td (click)='$event.stopPropagation()'>-->
+        <!--          <button nz-button nzType='dashed' (click)='onDetail(order.id)'>-->
+        <!--            Chi tiết-->
+        <!--          </button>-->
+        <!--        </td>-->
       </tr>
     </ng-template>
-    <tr *ngIf='delivered ? ((state$ | async)?.deliveredRemain || 0 > 0) : ((state$ | async)?.deliveringRemain || 0 > 0)'>
+    <tr
+      *ngIf='delivered ? ((state$ | async)?.deliveredRemain || 0 > 0) : ((state$ | async)?.deliveringRemain || 0 > 0)'>
       <td colspan='10'>
         <div
           class='w-100 d-flex justify-content-start'

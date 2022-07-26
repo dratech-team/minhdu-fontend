@@ -80,6 +80,7 @@
   <select-order
     [formGroup]='formGroup'
     [selectOne]='true'
+    [search]='{customerId: data?.add?.customer?.id}'
   ></select-order>
 </ng-template>
 
@@ -100,9 +101,8 @@
         <span>
           {{
           formGroup.value.paidTotal
-            | roundingnumber: 100
-            | number: '1.0'
-            | notEmpty: '0'
+            | currency: 'VND'
+            | notEmpty: '0đ'
           }}</span
         >
       </div>
@@ -141,7 +141,7 @@
         <tr>
           <td>{{ orderPicked?.customer?.lastName }}</td>
           <td>{{ orderPicked?.createdAt | date: 'dd/MM/yyyy' }}</td>
-          <td>{{ orderPicked?.commodityTotal | number: '0.0' }}</td>
+          <td class='text-red-500'>{{ orderPicked?.priceTotal | number: '0.0' }}</td>
           <td>{{ orderPicked?.paymentHistories?.length }}</td>
         </tr>
       </ng-template>

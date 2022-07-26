@@ -4,18 +4,16 @@ import { Router } from '@angular/router';
 import { debounceTime, tap } from 'rxjs/operators';
 import { ItemContextMenu, PaymentType } from '@minhdu-fontend/enums';
 import { PaymentModalComponent } from '../payment-modal/payment-modal.component';
-import { PaymentQuery } from '../../payment/payment.query';
+import { PaymentActions, PaymentQuery, PaymentStore } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
-import { PaymentActions } from '../../payment';
-import { PaymentStore } from '../../payment/payment.store';
-import { PaymentEntity } from '../../entities/payment.entity';
+import { PaymentEntity } from '../../entities';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { DatePipe } from '@angular/common';
 import { ModalAddOrUpdatePayment } from '../../../customer/data/modal-payment.data';
 
 @Component({
   selector: 'minhdu-fontend-table-payment',
-  templateUrl: 'table-payment.component.html',
+  templateUrl: 'table-payment.component.html'
 })
 export class TablePaymentComponent implements OnInit {
   @Input() customerId!: number;
@@ -30,7 +28,7 @@ export class TablePaymentComponent implements OnInit {
   formGroup = new UntypedFormGroup({
     name: new UntypedFormControl(''),
     paidAt: new UntypedFormControl(''),
-    createdAt: new UntypedFormControl(''),
+    createdAt: new UntypedFormControl('')
   });
 
   constructor(
@@ -40,7 +38,8 @@ export class TablePaymentComponent implements OnInit {
     private readonly router: Router,
     private readonly paymentQuery: PaymentQuery,
     private readonly paymentStore: PaymentStore
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.onLoad(false);
@@ -66,7 +65,7 @@ export class TablePaymentComponent implements OnInit {
     this.actions$.dispatch(
       PaymentActions.loadAll({
         search: this.mapPayment(this.formGroup.value),
-        isSet: isPaginate,
+        isSet: isPaginate
       })
     );
   }
@@ -74,7 +73,7 @@ export class TablePaymentComponent implements OnInit {
   mapPayment(value: any) {
     this.paymentStore.update((state) => ({
       ...state,
-      search: value,
+      search: value
     }));
     return Object.assign({}, value, { customerId: this.customerId });
   }
@@ -92,7 +91,7 @@ export class TablePaymentComponent implements OnInit {
           PaymentActions.remove({
             id: payment.id,
             customerId: payment.customerId,
-            paidTotal: payment.total,
+            paidTotal: payment.total
           })
         );
         this.loading$.subscribe((loading) => {
@@ -100,7 +99,7 @@ export class TablePaymentComponent implements OnInit {
             this.onLoad(false);
           }
         });
-      },
+      }
     });
   }
 
@@ -112,11 +111,11 @@ export class TablePaymentComponent implements OnInit {
       nzComponentParams: <{ data: ModalAddOrUpdatePayment }>{
         data: {
           update: {
-            payment: payment,
-          },
-        },
+            payment: payment
+          }
+        }
       },
-      nzFooter: [],
+      nzFooter: []
     });
   }
 }

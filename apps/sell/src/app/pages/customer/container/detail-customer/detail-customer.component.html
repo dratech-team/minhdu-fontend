@@ -309,6 +309,7 @@
           [loading]='(deliveringLoading$ | async) || false'
           [orders]='customer.delivering | notEmpty: []'
           (onValueChanged)='onOrderChanged($event, false)'
+          (onPayment)='onPayment(customer, $event)'
         >
         </order-list>
       </div>

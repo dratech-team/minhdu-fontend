@@ -3,6 +3,7 @@ import { District, PaymentHistory, Province, Ward } from '@minhdu-fontend/data-m
 import { CustomerEntity } from '../../customer/entities';
 import { CommodityEntity } from '../../commodity/entities';
 import { BaseEntity } from '@minhdu-fontend/base-entity';
+import { OrderHistoryEntity } from './order-history.entity';
 
 export interface BaseOrderEntity extends BaseEntity {
   customer: CustomerEntity;
@@ -24,4 +25,5 @@ export interface BaseOrderEntity extends BaseEntity {
   district?: District;
   ward?: Ward;
   hide: boolean;
+  orderHistories: OrderHistoryEntity[];
 }

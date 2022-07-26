@@ -33,6 +33,7 @@
         (nzCheckedChange)='onAllChecked($event)'
       ></th>
       <th *ngIf='!selectOne' nzWidth='50px'></th>
+      <th nzWidth='50px'>STT</th>
       <th *ngIf='(account$ | async)?.mode === ModeEnum.INFO' nzWidth='50px'>ID</th>
       <th>
         <div>Khách hàng</div>
@@ -69,13 +70,13 @@
         <input disabled nz-input type='number' />
       </th>
       <th>
-        <div class=' '>Diễn giải</div>
+        <div>Diễn giải</div>
         <input class='form-control' type='text' formControlName='explain' />
       </th>
     </tr>
     </thead>
     <tbody [formGroup]='formGroup'>
-    <ng-template ngFor let-order [ngForOf]='orders'>
+    <ng-template ngFor let-order let-i='index' [ngForOf]='orders'>
       <tr>
         <td *ngIf='selectOne; else selectMultiple'>
           <input
@@ -94,6 +95,9 @@
           ></td>
           <td [(nzExpand)]='order.expand'></td>
         </ng-template>
+        <td>
+          {{i + 1}}
+        </td>
         <td *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>
           {{order.id}}
         </td>
@@ -137,7 +141,7 @@
             class='pointer no-underline'
             style='color: #f86c6b'
           >
-            {{ commodityTotal(order.commodities) | number: '1.0-0' }}
+            {{ commodityTotal(order.commodities) }}
           </a>
         </td>
         <td>

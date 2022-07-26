@@ -7,7 +7,7 @@ import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { UpdaterRouteTypeEnum } from '../../enums';
 import { SortTypeOrderEnum } from '@minhdu-fontend/enums';
-import { OrderEntity } from '../../../order/enitities/order.entity';
+import { OrderEntity } from '../../../order/enitities';
 import { CommodityEntity } from '../../../commodity/entities';
 
 @Component({
@@ -17,7 +17,6 @@ export class RouteDialogComponent implements OnInit {
   @Input() data?: any;
   loading$ = this.routeQuery.select((state) => state.loading);
 
-  orderEnum = SortTypeOrderEnum;
   submitted = false;
   isSelectAll = false;
   stepIndex = 0;

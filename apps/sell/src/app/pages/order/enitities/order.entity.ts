@@ -1,10 +1,7 @@
 import { BaseOrderEntity } from './base-order.entity';
 import { RouteEntity } from '../../route/entities';
-import { OrderHistoryEntity } from './order-history.entity';
 
 export interface OrderEntity extends BaseOrderEntity {
-  priceTotal: number;
-  expand: boolean;
-  routes: RouteEntity[];
-  orderHistories: OrderHistoryEntity[];
+  expand?: boolean;
+  routes?: RouteEntity[];
 }
