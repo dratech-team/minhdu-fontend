@@ -4,6 +4,7 @@ import { OrderHistoryEntity } from './order-history.entity';
 
 export interface OrderEntity extends BaseOrderEntity {
   commodityTotal: number;
+  priceTotal: number;
   expand: boolean;
   routes: RouteEntity[];
   orderHistories: OrderHistoryEntity[];

@@ -1,9 +1,10 @@
 import { BaseEntity } from '@minhdu-fontend/base-entity';
-import { OrderEntity } from '../../order/enitities/order.entity';
 import { CommodityEntity } from '../../commodity/entities';
 import { Employee } from '@minhdu-fontend/data-models';
+import { OrderEntity } from '../../order/enitities';
 
 export interface BaseRouteEntity extends BaseEntity {
+  readonly orders: OrderEntity[];
   readonly driver: string;
   readonly employee: Employee;
   readonly garage?: string;
@@ -14,4 +15,9 @@ export interface BaseRouteEntity extends BaseEntity {
   readonly endedAt: Date | string | null;
   readonly commodities: CommodityEntity[];
   readonly bsx: string;
+  readonly commodityUniq: {
+    code: string,
+    name: string,
+    amount: number,
+  }[];
 }

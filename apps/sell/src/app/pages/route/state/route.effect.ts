@@ -9,10 +9,8 @@ import { RouteQuery } from './route.query';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { PaginationDto } from '@minhdu-fontend/constants';
 import { BaseRouteEntity, RouteEntity } from '../entities';
-import { uniq } from 'lodash';
 import { CommodityEntity } from '../../commodity/entities';
 import { CancelEnum } from '../enums';
-import { OrderEntity } from '../../order/enitities';
 
 @Injectable()
 export class RouteEffect {
@@ -240,48 +238,16 @@ export class RouteEffect {
 
   private mapToRoute(route: BaseRouteEntity): RouteEntity {
     const expandedAll = this.routeQuery.getValue().expandedAll;
-    const orderIds = uniq(route.commodities?.map((commodity: CommodityEntity) => commodity.orderId));
-    const orders: OrderEntity[] = orderIds.map(orderId => {
-      const commodity = route.commodities?.find((commodity: CommodityEntity) => commodity.orderId === orderId);
-      return {
-        ...commodity?.order,
-        commodities: route.commodities?.filter((commodity: CommodityEntity) => commodity.orderId === orderId)
-      } as OrderEntity;
-    });
-
-    const newRoute: RouteEntity = {
-      commodityUniq: [],
-      expand: false,
-      status: '',
-      orderTotal: 0,
-      priceTotal: 0,
+    return {
       ...route,
-      orders: orders.map((order) => {
+      expand: expandedAll,
+      orders: route.orders.map((order) => {
         return {
           ...order,
           commodities: order.commodities.sort((a: CommodityEntity, b: CommodityEntity) => a.id - b.id),
-          expand: true
-        } as OrderEntity;
+          expand: expandedAll
+        };
       })
     };
-
-    const r: RouteEntity = {
-      ...newRoute,
-      expand: expandedAll,
-      orders: newRoute.orders.map((order) => {
-          return Object.assign(order, {
-            priceTotal: order.commodities.reduce((total, commodity) => total + commodity.price, 0),
-            commodityTotal: order.commodities
-              .filter(commodity => commodity.routeId)
-              .reduce((a, commodity) => a + commodity.amount, 0),
-            expand: expandedAll
-          });
-        }
-      )
-    };
-    return {
-      ...r,
-      orderTotal: r.orders.reduce((total, order) => total + order.commodityTotal, 0)
-    } as RouteEntity;
   }
 }
