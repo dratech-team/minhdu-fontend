@@ -54,7 +54,7 @@
       Đã giao
     </th>
     <th [nzWidth]='type === OrderTypeEnum.DELIVERING ? "80px" : "110px"'>
-      {{type === OrderTypeEnum.DELIVERING ? 'Hủy' : 'Khôi phục'}}
+      {{type === OrderTypeEnum.DELIVERING ? 'Huỷ' : 'Khôi phục'}}
     </th>
     <th nzWidth='120px' *ngIf='type === OrderTypeEnum.DELIVERED'>
       <div>Ẩn nợ</div>
@@ -121,7 +121,7 @@
       <td (click)='$event.stopPropagation()'>
         <i
           class='pointer'
-          style="font-size: 1.3em; ; color: red"
+          style="font-size: 1.3em; color: red"
           nz-icon
           [nzType]="type === OrderTypeEnum.DELIVERING ? 'delete-row' : 'rollback'"
           nzTheme="outline"

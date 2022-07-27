@@ -163,7 +163,6 @@ export class DetailCustomerComponent implements OnInit {
       nzFooter: null
     }).afterClose.subscribe(res => {
       if (res) {
-        console.log(res.date);
         this.orderService.update(order.id, { deliveredAt: res.date })
           .pipe(take(1))
           .subscribe((res) => {

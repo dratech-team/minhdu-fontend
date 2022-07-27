@@ -20,7 +20,7 @@ export class DialogDatePickerComponent {
   ngOnInit() {
     this.formGroup = new FormGroup({
       date: new FormControl<string | null>(
-        this.datePipe.transform(this.datetime, 'MM/dd/yyyy'),
+        this.datePipe.transform(this.datetime || new Date(), 'MM/dd/yyyy'),
         { validators: [Validators.required] }
       )
     });

@@ -1,15 +1,13 @@
 <form [formGroup]='formGroup'>
-  <div class='mb-2'>
-    <label for='date'>Nhập ngày: </label>
-    <input
-      class="form-control"
+  <div class='d-flex flex-column mb-2'>
+    <label class='h6' for='date'>Chọn ngày</label>
+    <nz-date-picker
       id='date'
       formControlName='date'
-      type='date'
       [ngClass]="{
             'is-invalid': submitted && formGroup.controls.date.errors?.required
           }"
-    />
+    ></nz-date-picker>
   </div>
   <div *ngIf='submitted && formGroup.controls.date.errors?.required' class='invalid-feedback'>
     Chưa nhập ngày
