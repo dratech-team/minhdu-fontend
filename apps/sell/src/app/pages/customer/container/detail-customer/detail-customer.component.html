@@ -302,7 +302,7 @@
             [orders]='customer.delivered | notEmpty: []'
             (onValueChanged)='onOrderChanged($event, OrderTypeEnum.DELIVERED)'
             (onPayment)='onPayment(customer, $event)'
-            (onHide)='onHideOrder($event, OrderTypeEnum.DELIVERING)'
+            (onHide)='onHideOrder($event)'
             (onCancelOrRestore)='onCancelOrRestoreOrder($event, "restore")'
           ></order-list>
         </div>
@@ -338,7 +338,7 @@
               nz-icon
               nzType='fullscreen'
               nzTheme='outline'
-              (click)='onFullScreenOrder(OrderTypeEnum.DELIVERING)'
+              (click)='onFullScreenOrder("payment")'
             ></i>
           </div>
           <div class='my-3'>
@@ -360,6 +360,7 @@
         ></i>
       </div>
       <order-list
+        *ngIf="fullScreen !== 'payment'; else fullScreenPayment"
         [type]='fullScreen'
         [customerId]='getId'
         [loading]='orderLoading(OrderTypeEnum.DELIVERED) || false'
@@ -370,6 +371,10 @@
         (onCancelOrRestore)='onCancelOrRestoreOrder($event, "cancel")'
       >
       </order-list>
+      <ng-template #fullScreenPayment>
+        <minhdu-fontend-table-payment [customerId]='customer.id'>
+        </minhdu-fontend-table-payment>
+      </ng-template>
     </div>
   </div>
 </ng-template>

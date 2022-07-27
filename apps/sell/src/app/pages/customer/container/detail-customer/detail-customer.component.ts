@@ -44,7 +44,7 @@ export class DetailCustomerComponent implements OnInit {
   customer$ = this.customerQuery.selectEntity(this.getId);
 
   isSyncDebt = false;
-  fullScreen: OrderTypeEnum | null = null;
+  fullScreen: OrderTypeEnum | null | "payment" = null;
 
   GenderTypeEnum = GenderTypeEnum;
   OrderTypeEnum = OrderTypeEnum;
@@ -214,7 +214,7 @@ export class DetailCustomerComponent implements OnInit {
     });
   }
 
-  public onHideOrder(order: OrderEntity, type: OrderTypeEnum) {
+  public onHideOrder(order: OrderEntity) {
     this.orderService.hide(order.id, { hide: !order.hide })
       .pipe(take(1))
       .subscribe((res) => {
@@ -226,7 +226,7 @@ export class DetailCustomerComponent implements OnInit {
       });
   }
 
-  public onFullScreenOrder(type: OrderTypeEnum): void {
+  public onFullScreenOrder(type: OrderTypeEnum | null | "payment"): void {
     this.fullScreen = type;
   }
 
