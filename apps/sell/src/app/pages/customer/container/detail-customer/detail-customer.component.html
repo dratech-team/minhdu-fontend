@@ -331,6 +331,14 @@
       <div class='col-12 mt-5'>
         <div class='row d-flex align-items-center'>
           <div class='align-items-center title-table'>Lịch sử thanh toán</div>
+          <i
+            *ngIf='customer.delivering?.length'
+            class='pointer ml-2'
+            nz-icon
+            nzType='fullscreen'
+            nzTheme='outline'
+            (click)='onFullScreenOrder(customer.delivering, OrderTypeEnum.DELIVERING)'
+          ></i>
         </div>
         <div class='my-3'>
           <minhdu-fontend-table-payment [customerId]='customer.id'>

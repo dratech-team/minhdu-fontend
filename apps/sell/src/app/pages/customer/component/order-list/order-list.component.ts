@@ -109,7 +109,7 @@ export class OrderListComponent implements OnInit {
     return state.cancelledLoading;
   }
 
-  orderRemaining() {
+  orderRemaining(): number {
     const state = this.customerQuery.getValue();
     if (this.type === OrderTypeEnum.DELIVERING) {
       return state.deliveringRemain;

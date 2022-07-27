@@ -1,7 +1,7 @@
 <nz-table
   #tableOrder
   nzSize='middle'
-  [nzScroll]="{ y: '450px' }"
+  [nzScroll]="{ y: '80vh' }"
   [nzData]='orders'
   [nzLoading]='loading'
   [nzPageSize]='pageSizeTable'
@@ -151,7 +151,7 @@
           [nzLoading]='orderLoading()'
           (click)='onLoadMore()'
         >
-          Tải thêm
+          Tải thêm {{orderRemaining()}} đơn hàng
         </button>
       </div>
     </td>
