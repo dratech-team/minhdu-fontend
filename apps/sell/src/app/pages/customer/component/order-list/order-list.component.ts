@@ -15,7 +15,6 @@ import { DatePipe } from '@angular/common';
 import { OrderTypeEnum } from '../../enums';
 import { RouterConstants } from '../../../../shared/constants';
 import { HideDebtStatusEnum } from '../../../order/enums';
-import { BaseSearchOrderDto } from '../../../order/dto';
 
 @Component({
   selector: 'order-list',
