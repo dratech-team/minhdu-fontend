@@ -9,9 +9,13 @@
             <img
               class='rounded-circle row'
               alt='50x50'
-              src='{{ customer.avt }}'
+              src='{{
+              customer.avt || (customer.gender === GenderTypeEnum.MALE ? "https://bit.ly/3owMJR4" : customer.gender === GenderTypeEnum.FEMALE ? "https://bit.ly/3zhQzTs" : "https://bit.ly/3S2e0sn")
+               }}'
               data-holder-rendered='true'
               height='160px'
+              width='160px'
+              style='align-self: center'
             />
             <div class='d-flex flex-column justify-content-center'>
               <button

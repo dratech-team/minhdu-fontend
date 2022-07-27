@@ -22,7 +22,7 @@ import {
   DialogDatePickerComponent
 } from '../../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { RichTextComponent } from '../../../../../../../../libs/components/src/lib/rich-text/rich-text.component';
-import { HideDebtStatusEnum } from '../../../order/enums';
+import { GenderTypeEnum } from '@minhdu-fontend/enums';
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -34,6 +34,7 @@ export class DetailCustomerComponent implements OnInit {
   deliveredLoading$ = this.customerQuery.select(state => state.deliveredLoading);
   customer$ = this.customerQuery.selectEntity(this.getId);
 
+  GenderTypeEnum = GenderTypeEnum;
   OrderTypeEnum = OrderTypeEnum;
 
   get getId(): number {
