@@ -239,15 +239,15 @@ export class CustomerEffect {
             const customer = this.customerQuery.getEntity(props.search.customerId);
             return {
               ...state,
-              deliveredLoading: props.orderType === 'delivered' ? false : state.deliveredLoading,
               deliveringLoading: props.orderType === 'delivering' ? false : state.deliveringLoading,
+              deliveredLoading: props.orderType === 'delivered' ? false : state.deliveredLoading,
               cancelledLoading: props.orderType === 'cancelled' ? false : state.cancelledLoading,
-              deliveringTotal: res.total,
-              deliveredTotal: res.total,
-              cancelledTotal: res.total,
-              deliveringRemain: res.total - (customer?.delivering?.length || 0),
-              deliveredRemain: res.total - (customer?.delivered?.length || 0),
-              cancelledRemain: res.total - (customer?.cancelled?.length || 0),
+              deliveringTotal: props.orderType === 'delivering' ? res.total : state.deliveringTotal,
+              deliveredTotal: props.orderType === 'delivered' ? res.total : state.deliveredTotal,
+              cancelledTotal: props.orderType === 'cancelled' ? res.total : state.cancelledTotal,
+              deliveringRemain: props.orderType === 'delivering' ? res.total - (customer?.delivering?.length || 0) : state.deliveringRemain,
+              deliveredRemain: props.orderType === 'delivered' ? res.total - (customer?.delivered?.length || 0) : state.deliveredRemain,
+              cancelledRemain: props.orderType === 'cancelled' ? res.total - (customer?.cancelled?.length || 0) : state.cancelledRemain,
               error: null
             };
           });

@@ -22,6 +22,7 @@ import {
   DialogDatePickerComponent
 } from '../../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { RichTextComponent } from '../../../../../../../../libs/components/src/lib/rich-text/rich-text.component';
+import { HideDebtStatusEnum } from '../../../order/enums';
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -208,7 +209,8 @@ export class DetailCustomerComponent implements OnInit {
   private mapToSearchOrder(data: Partial<OrderListFormType>) {
     let newSearch: Partial<BaseSearchOrderDto> = {
       province: data.province || '',
-      customerId: this.getId
+      customerId: this.getId,
+      hiddenDebt: data.hiddenDebt
     };
 
     if (data.createdAt?.length === 2) {

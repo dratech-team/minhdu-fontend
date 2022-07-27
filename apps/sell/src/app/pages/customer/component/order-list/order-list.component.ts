@@ -10,10 +10,12 @@ import { CustomerQuery, CustomerStore } from '../../state';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { OrderService } from '../../../order/service';
-import { OrderListData } from '../../data';
+import { OrderListData, OrderListFormType } from '../../data';
 import { DatePipe } from '@angular/common';
 import { OrderTypeEnum } from '../../enums';
 import { RouterConstants } from '../../../../shared/constants';
+import { HideDebtStatusEnum } from '../../../order/enums';
+import { BaseSearchOrderDto } from '../../../order/dto';
 
 @Component({
   selector: 'order-list',
@@ -35,12 +37,14 @@ export class OrderListComponent implements OnInit {
   state$ = this.customerQuery.select();
 
   formGroup = new FormGroup({
+    hiddenDebt: new FormControl<HideDebtStatusEnum>(HideDebtStatusEnum.ALL),
     createdAt: new FormControl<Date[] | null>(null),
     deliveredAt: new FormControl<Date[] | null>(null),
     province: new FormControl<string | null | undefined>(''),
     explain: new FormControl<string | null | undefined>('')
   });
 
+  HideDebtEnum = HideDebtStatusEnum;
   OrderTypeEnum = OrderTypeEnum;
   ModeEnum = ModeEnum;
   pageSize = 10;
@@ -64,15 +68,15 @@ export class OrderListComponent implements OnInit {
   ngOnInit() {
     this.formGroup.valueChanges.subscribe((formGroup) => {
       this.onValueChanged.emit({
-        search: formGroup, isLoadMore: false
+        search: formGroup as OrderListFormType, isLoadMore: false
       });
     });
   }
 
   onLoadMore() {
-    const val = this.formGroup.value;
+    const value = this.formGroup.value;
     this.onValueChanged.emit({
-      search: val, isLoadMore: true
+      search: value as OrderListFormType, isLoadMore: true
     });
   }
 

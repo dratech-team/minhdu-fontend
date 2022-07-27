@@ -57,8 +57,13 @@
       <th [nzWidth]='type === OrderTypeEnum.DELIVERING ? "80px" : "120px"'>
         {{type === OrderTypeEnum.DELIVERING ? 'Hủy' : 'Khôi phục'}}
       </th>
-      <th nzWidth='90px' *ngIf='type === OrderTypeEnum.DELIVERED'>
-        Ẩn nợ
+      <th nzWidth='120px' *ngIf='type === OrderTypeEnum.DELIVERED'>
+        <div>Ẩn nợ</div>
+        <nz-select style='width: 100px;' formControlName='hiddenDebt'>
+          <nz-option nzLabel='Tất cả' [nzValue]='HideDebtEnum.ALL'></nz-option>
+          <nz-option nzLabel='Ẩn nợ' [nzValue]='HideDebtEnum.HIDDEN'></nz-option>
+          <nz-option nzLabel='Không nợ' [nzValue]='HideDebtEnum.NON_HIDDEN'></nz-option>
+        </nz-select>
       </th>
     </tr>
     </thead>
