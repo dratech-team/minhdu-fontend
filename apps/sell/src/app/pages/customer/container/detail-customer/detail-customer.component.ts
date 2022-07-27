@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DevelopmentComponent } from '@minhdu-fontend/components';
 import { CustomerActions, CustomerQuery, CustomerStore } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -16,7 +14,7 @@ import { PaymentService } from '../../../payment/services/payment.Service';
 import { arrayAdd, arrayRemove, arrayUpdate } from '@datorama/akita';
 import { BaseSearchOrderDto } from '../../../order/dto';
 import { OrderListData, OrderListFormType } from '../../data';
-import { take } from 'rxjs/operators';
+import { catchError, take, tap } from 'rxjs/operators';
 import { OrderTypeEnum } from '../../enums';
 import {
   DialogDatePickerComponent
@@ -24,6 +22,9 @@ import {
 import { RichTextComponent } from '../../../../../../../../libs/components/src/lib/rich-text/rich-text.component';
 import { GenderTypeEnum } from '@minhdu-fontend/enums';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import * as dateFns from 'date-fns';
+import { CustomerService } from '../../service';
+import { of } from 'rxjs';
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -34,6 +35,8 @@ export class DetailCustomerComponent implements OnInit {
   deliveringLoading$ = this.customerQuery.select(state => state.deliveringLoading);
   deliveredLoading$ = this.customerQuery.select(state => state.deliveredLoading);
   customer$ = this.customerQuery.selectEntity(this.getId);
+
+  isSyncDebt = false;
 
   GenderTypeEnum = GenderTypeEnum;
   OrderTypeEnum = OrderTypeEnum;
@@ -51,6 +54,7 @@ export class DetailCustomerComponent implements OnInit {
     private readonly message: NzMessageService,
     private readonly orderService: OrderService,
     private readonly paymentService: PaymentService,
+    private readonly customerService: CustomerService,
     private readonly customerStore: CustomerStore,
     private readonly customerQuery: CustomerQuery
   ) {
@@ -61,7 +65,29 @@ export class DetailCustomerComponent implements OnInit {
   }
 
   development() {
-    this.message.warning("Chức năng đang phát triển");
+    this.message.warning('Chức năng đang phát triển');
+  }
+
+  public onSyncDebt(customer: CustomerEntity) {
+    this.isSyncDebt = true;
+    this.customerService.syncDebt(customer.id)
+      .pipe(
+        take(1),
+        tap((customer) => {
+          this.customerStore.update(customer.id, { debt: customer.debt });
+          this.isSyncDebt = false;
+          this.message.success('Đã cập nhật dư nợ mới nhất !!');
+        }),
+        catchError((err) => {
+          this.isSyncDebt = false;
+          return of(err);
+        })
+      )
+      .subscribe();
+  }
+
+  public calculatorAge(datetime: Date) {
+    return dateFns.intervalToDuration({ start: new Date(), end: new Date(datetime) }).years;
   }
 
   public onAddOrder() {
