@@ -6,7 +6,6 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { OrderDialogComponent } from '../../../order/component';
 import { OrderEntity } from '../../../order/enitities';
 import { CustomerComponentService } from '../../shared';
-import { OrderListComponent } from '../../component/order-list/order-list.component';
 import { OrderService } from '../../../order/service';
 import { PaymentModalComponent } from '../../../payment/components';
 import { CustomerEntity } from '../../entities';
@@ -32,11 +31,20 @@ import { of } from 'rxjs';
 })
 export class DetailCustomerComponent implements OnInit {
   loading$ = this.customerQuery.selectLoading();
-  deliveringLoading$ = this.customerQuery.select(state => state.deliveringLoading);
+  orderLoading = (type: OrderTypeEnum) => {
+    const state = this.customerQuery.getValue();
+    if (type === OrderTypeEnum.DELIVERING) {
+      return state.deliveringLoading;
+    } else if (type === OrderTypeEnum.DELIVERED) {
+      return state.deliveredLoading;
+    }
+    return state.cancelledLoading;
+  };
   deliveredLoading$ = this.customerQuery.select(state => state.deliveredLoading);
   customer$ = this.customerQuery.selectEntity(this.getId);
 
   isSyncDebt = false;
+  fullScreen: OrderTypeEnum | null = null;
 
   GenderTypeEnum = GenderTypeEnum;
   OrderTypeEnum = OrderTypeEnum;
@@ -218,20 +226,12 @@ export class DetailCustomerComponent implements OnInit {
       });
   }
 
-  public onFullScreenOrder(orders: OrderEntity[], type: OrderTypeEnum): void {
-    const customer = this.customerQuery.getEntity(this.getId);
-    this.modal.create({
-      nzWidth: 'fit-content',
-      nzTitle: `Danh sách đơn hàng của ${customer?.lastName}`,
-      nzMask: false,
-      nzCentered: true,
-      nzContent: OrderListComponent,
-      nzComponentParams: {
-        orders: orders,
-        type: type
-      },
-      nzFooter: null
-    });
+  public onFullScreenOrder(type: OrderTypeEnum): void {
+    this.fullScreen = type;
+  }
+
+  public onFullScreenExit(): void {
+    this.fullScreen = null;
   }
 
   private mapToSearchOrder(data: Partial<OrderListFormType>) {
