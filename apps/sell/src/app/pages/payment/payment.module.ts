@@ -13,6 +13,8 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { AuthModule } from '@minhdu-fontend/auth';
 import { SelectOrderComponent } from './components/select-order/select-order.component';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 @NgModule({
   imports: [
@@ -27,7 +29,9 @@ import { SelectOrderComponent } from './components/select-order/select-order.com
     ComponentsModule,
     NzButtonModule,
     NgxCurrencyModule,
-    AuthModule
+    AuthModule,
+    NzIconModule,
+    NzDropDownModule
   ],
   exports: [TablePaymentComponent],
   declarations: [

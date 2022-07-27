@@ -8,8 +8,10 @@ import { PaymentActions, PaymentQuery, PaymentStore } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { PaymentEntity } from '../../entities';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { DatePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 import { ModalAddOrUpdatePayment } from '../../../customer/data';
+import { ContextMenuEntity } from '@minhdu-fontend/data-models';
+import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
 
 @Component({
   selector: 'minhdu-fontend-table-payment',
@@ -24,19 +26,32 @@ export class TablePaymentComponent implements OnInit {
 
   payType = PaymentType;
 
+  menus: ContextMenuEntity[] = [
+    {
+      title: 'Sửa',
+      click: (data: PaymentEntity) => this.onUpdate(data)
+    },
+    {
+      title: 'Xoá',
+      click: (data: PaymentEntity) => this.onRemove(data)
+    }
+  ];
+
   formGroup = new FormGroup({
     name: new FormControl<string>(''),
     paidAt: new FormControl<PaymentType>(PaymentType.ALL),
-    createdAt: new FormControl<Date | null>(null)
+    ranges: new FormControl<Date[] | null>(null)
   });
 
   constructor(
     private readonly actions$: Actions,
     private readonly modal: NzModalService,
     private readonly datePipe: DatePipe,
+    private readonly currencyPipe: CurrencyPipe,
     private readonly router: Router,
     private readonly paymentQuery: PaymentQuery,
-    private readonly paymentStore: PaymentStore
+    private readonly paymentStore: PaymentStore,
+    private readonly nzContextMenuService: NzContextMenuService
   ) {
   }
 
@@ -70,21 +85,17 @@ export class TablePaymentComponent implements OnInit {
     return Object.assign({}, value, { customerId: this.customerId });
   }
 
-  onDelete(payment: PaymentEntity) {
+  onRemove(payment: PaymentEntity) {
     this.modal.warning({
       nzTitle: 'Xoá lịch sử thanh toán',
       nzContent: `bạn có chắc chắn xoá lịch sử thanh toán ngày ${this.datePipe.transform(
         payment.paidAt,
         'dd/MM/yyyy'
-      )} không`,
+      )} với số tiền là ${this.currencyPipe.transform(payment.total, "VND")} không`,
       nzOkDanger: true,
       nzOnOk: () => {
         this.actions$.dispatch(
-          PaymentActions.remove({
-            id: payment.id,
-            customerId: payment.customerId,
-            paidTotal: payment.total
-          })
+          PaymentActions.remove({ id: payment.id })
         );
       }
     });
@@ -104,5 +115,11 @@ export class TablePaymentComponent implements OnInit {
       },
       nzFooter: []
     });
+  }
+
+  public onContextMenu($event: MouseEvent, item: any): void {
+    this.nzContextMenuService.create($event, item);
+    $event.preventDefault();
+    $event.stopPropagation();
   }
 }

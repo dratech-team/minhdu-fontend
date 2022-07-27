@@ -44,16 +44,16 @@
     <th *ngIf='type === OrderTypeEnum.DELIVERING'>
       Diễn giải
     </th>
-    <th *ngIf='type !== OrderTypeEnum.CANCELLED' nzWidth='120px'>
+    <th *ngIf='type !== OrderTypeEnum.CANCELLED' nzWidth='100px'>
       <div>Thanh toán</div>
     </th>
     <th *ngIf='type === OrderTypeEnum.CANCELLED'>
       Ngày huỷ
     </th>
-    <th *ngIf='type === OrderTypeEnum.DELIVERING' nzWidth='120px'>
+    <th *ngIf='type === OrderTypeEnum.DELIVERING' nzWidth='90px'>
       Đã giao
     </th>
-    <th [nzWidth]='type === OrderTypeEnum.DELIVERING ? "80px" : "120px"'>
+    <th [nzWidth]='type === OrderTypeEnum.DELIVERING ? "80px" : "110px"'>
       {{type === OrderTypeEnum.DELIVERING ? 'Hủy' : 'Khôi phục'}}
     </th>
     <th nzWidth='120px' *ngIf='type === OrderTypeEnum.DELIVERED'>
@@ -96,27 +96,37 @@
         {{ order?.explain || 'Không có nội dung' }}
       </td>
       <td *ngIf='type !== OrderTypeEnum.CANCELLED' (click)='$event.stopPropagation()'>
-        <button nz-button nzType='primary' (click)='payment(order)'>
-          Thanh toán
-        </button>
+        <i
+          class='pointer'
+          style="font-size: 1.3em; color: #3941fc"
+          nz-icon
+          nzType="dollar"
+          nzTheme="outline"
+          (click)='payment(order)'
+        ></i>
       </td>
       <td *ngIf='type === OrderTypeEnum.CANCELLED'>
         {{ order?.cancelledAt | date: 'dd/MM/yyyy' }}
       </td>
       <td *ngIf='type === OrderTypeEnum.DELIVERING' (click)='$event.stopPropagation()'>
-        <button nz-button nzType='default' (click)='onConfirm(order)'>
-          Đã giao
-        </button>
+        <i
+          class='pointer'
+          style="font-size: 1.3em; color: #3c763d"
+          nz-icon
+          nzType="file-done"
+          nzTheme="outline"
+          (click)='onConfirm(order)'
+        ></i>
       </td>
       <td (click)='$event.stopPropagation()'>
-        <button
-          nz-button
-          nzDanger
-          nzType='primary'
-          (click)='cancel(order)'
-        >
-          {{type === OrderTypeEnum.DELIVERING ? 'Huỷ' : 'Khôi phục'}}
-        </button>
+        <i
+          class='pointer'
+          style="font-size: 1.3em; ; color: red"
+          nz-icon
+          [nzType]="type === OrderTypeEnum.DELIVERING ? 'delete-row' : 'rollback'"
+          nzTheme="outline"
+          (click)='onConfirm(order)'
+        ></i>
       </td>
       <td *ngIf='type === OrderTypeEnum.DELIVERED' (click)='$event.stopPropagation()'>
         <nz-switch

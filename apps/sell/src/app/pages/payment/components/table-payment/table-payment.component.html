@@ -4,6 +4,7 @@
     nzSize='middle'
     [nzData]='(paymentHistories$ | async) || []'
     [nzScroll]="{ y: '300px' }"
+    [nzBordered]='true'
     [nzShowPagination]='false'
     [nzFrontPagination]='false'
   >
@@ -11,23 +12,23 @@
     <tr>
       <th>
         <div>Ngày Thanh toán</div>
-        <input formControlName='paidAt' nz-input type='date' />
+        <nz-range-picker formControlName='ranges'></nz-range-picker>
       </th>
       <th>
-        <div>Số tiền thanh toán</div>
-        <input [disabled]='true' nz-input type='number' />
-      </th>
-      <th>
-        <div>Đơn vị</div>
-        <input [disabled]='true' nz-input type='number' />
+        Số tiền thanh toán
       </th>
       <th>
         <div>Loại thanh toán</div>
         <input [disabled]='true' nz-input type='number' />
       </th>
       <th>
-        <div>Chú thích</div>
-        <input [disabled]='true' nz-input type='number' />
+        Chú thích
+      </th>
+      <th nzWidth='120px'>
+        Chỉnh sửa
+      </th>
+      <th nzWidth='90px'>
+        Xoá
       </th>
     </tr>
     </thead>
@@ -39,22 +40,43 @@
     >
       <tr
         class='pointer'
-        (click)='onUpdate(paymentHistory)'
-        (contextmenu)='child.onContextMenu($event, paymentHistory)'
+        (contextmenu)='onContextMenu($event, menu)'
       >
+        <nz-dropdown-menu #menu='nzDropdownMenu'>
+          <ul class='context-menu' nz-menu>
+            <li nz-menu-item *ngFor='let item of menus' (click)='item.click(paymentHistory)'>
+              {{item.title}}
+            </li>
+          </ul>
+        </nz-dropdown-menu>
         <td>
           {{ paymentHistory?.paidAt | date: 'dd/MM/yyyy' }}
         </td>
         <td>
-          {{ paymentHistory.total | number: '1.0-0' | notEmpty: '0' }}
+          {{ paymentHistory.total | currency: 'VND' | notEmpty: '0đ' }}
         </td>
-        <td>Việt nam đồng</td>
-        <td *ngIf='paymentHistory?.payType === payType.CASH'>Tiền mặt</td>
-        <td *ngIf='paymentHistory?.payType === payType.TRANSFER'>
-          Chuyển khoản
-        </td>
+        <td>{{paymentHistory?.payType === payType.CASH ? 'Tiền mặt' : 'Chuyển khoản' }}</td>
         <td>
           {{ paymentHistory?.note || 'Không có dữ liệu.' }}
+        </td>
+        <td (click)='$event.stopPropagation()'>
+          <i class='pointer'
+             style="font-size: 1.2em"
+             nz-icon
+             nzType='edit'
+             nzTheme='outline'
+             (click)='onUpdate(paymentHistory)'
+          ></i>
+        </td>
+        <td (click)='$event.stopPropagation()'>
+          <i
+            class='pointer color-delete'
+            style="font-size: 1.2em"
+            nz-icon
+            nzType='delete'
+            nzTheme='outline'
+            (click)='onRemove(paymentHistory)'
+          ></i>
         </td>
       </tr>
     </ng-template>
@@ -80,9 +102,3 @@
     </tbody>
   </nz-table>
 </div>
-<app-mouse-right
-  #child
-  (onDel)='onDelete($event)'
-  (onUpdate)='onUpdate($event)'
->
-</app-mouse-right>
