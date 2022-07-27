@@ -21,7 +21,7 @@ import { BaseSearchOrderDto } from '../../../pages/order/dto';
 export class SelectOrderComponent implements OnInit {
   @Input() formGroup!: UntypedFormGroup;
   @Input() selectOne = false;
-  @Input() search?: BaseSearchOrderDto;
+  @Input() search?: Partial<BaseSearchOrderDto>;
 
   account$ = this.accountQuery.selectCurrentUser();
   total$ = this.orderQuery.selectCount();

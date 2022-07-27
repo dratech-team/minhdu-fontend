@@ -9,13 +9,13 @@ import { OrderDialogComponent } from '../../../order/component';
 import { OrderEntity } from '../../../order/enitities';
 import { CustomerComponentService } from '../../shared';
 import { OrderListComponent } from '../../component/order-list/order-list.component';
-import { SearchOrderDto } from '../../dto';
-import { omit } from 'lodash';
 import { OrderService } from '../../../order/service';
 import { PaymentModalComponent } from '../../../payment/components';
 import { CustomerEntity } from '../../entities';
 import { PaymentService } from '../../../payment/services/payment.Service';
 import { arrayUpdate } from '@datorama/akita';
+import { BaseSearchOrderDto } from '../../../order/dto';
+import { OrderListData, OrderListFormType } from '../../data/order-list.data';
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -67,18 +67,11 @@ export class DetailCustomerComponent implements OnInit {
     });
   }
 
-  public onOrderChanged(event: SearchOrderDto, type: 'delivering' | 'delivered' | 'cancelled'): void {
-    let search = {
-      startedAt_start: event.search.ranges?.length === 2 ? event.search.ranges[0] : null,
-      startedAt_end: event.search.ranges?.length === 2 ? event.search.ranges[1] : null,
-      province: event.search?.ward || '',
-      explain: event.search?.explain || '',
-      customerId: this.getId
-    };
+  public onOrderChanged(event: OrderListData, type: 'delivering' | 'delivered' | 'cancelled'): void {
     this.actions$.dispatch(CustomerActions.loadOrder({
-      search: (!search?.startedAt_start || !search?.startedAt_end) ? omit(search, ['startedAt_start', 'startedAt_end']) : search,
+      search: this.mapToSearchOrder(event.search),
       isSet: !event.isLoadMore,
-      typeOrder: type
+      orderType: type
     }));
   }
 
@@ -134,5 +127,29 @@ export class DetailCustomerComponent implements OnInit {
       },
       nzFooter: null
     });
+  }
+
+  private mapToSearchOrder(data: Partial<OrderListFormType>) {
+    let newSearch: Partial<BaseSearchOrderDto> = {
+      province: data.province || '',
+      customerId: this.getId
+    };
+
+    if (data.createdAt?.length === 2) {
+      newSearch = {
+        ...newSearch,
+        startedAt_start: data.createdAt[0],
+        startedAt_end: data.createdAt[1]
+      };
+    }
+
+    if (data.deliveredAt?.length === 2) {
+      newSearch = {
+        ...newSearch,
+        deliveredAt_start: data.deliveredAt[0],
+        deliveredAt_end: data.deliveredAt[1]
+      };
+    }
+    return newSearch;
   }
 }

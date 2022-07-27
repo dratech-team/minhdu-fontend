@@ -12,7 +12,8 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { arrayUpdate } from '@datorama/akita';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { OrderService } from '../../../order/service';
-import { SearchOrderDto } from '../../dto';
+import { OrderListData } from '../../data';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'order-list',
@@ -24,7 +25,7 @@ export class OrderListComponent implements OnInit {
   @Input() customerId?: number;
   @Input() loading = false;
 
-  @Output() onValueChanged = new EventEmitter<SearchOrderDto>();
+  @Output() onValueChanged = new EventEmitter<OrderListData>();
   @Output() onPayment = new EventEmitter<OrderEntity>();
   @Output() onDelivered = new EventEmitter<OrderEntity>();
   @Output() onCancel = new EventEmitter<OrderEntity>();
@@ -33,8 +34,9 @@ export class OrderListComponent implements OnInit {
   state$ = this.customerQuery.select();
 
   formGroup = new FormGroup({
-    ranges: new FormControl<Date[] | null>(null),
-    ward: new FormControl<string | null | undefined>(''),
+    createdAt: new FormControl<Date[] | null>(null),
+    deliveredAt: new FormControl<Date[] | null>(null),
+    province: new FormControl<string | null | undefined>(''),
     explain: new FormControl<string | null | undefined>('')
   });
 
@@ -52,12 +54,13 @@ export class OrderListComponent implements OnInit {
     private readonly customerStore: CustomerStore,
     private readonly customerQuery: CustomerQuery,
     private readonly orderQuery: OrderQuery,
-    private readonly accQuery: AccountQuery
+    private readonly accQuery: AccountQuery,
+    private readonly datePipe: DatePipe
   ) {
   }
 
   ngOnInit() {
-    this.formGroup.valueChanges.subscribe(formGroup => {
+    this.formGroup.valueChanges.subscribe((formGroup) => {
       this.onValueChanged.emit({
         search: formGroup, isLoadMore: false
       });
@@ -117,13 +120,10 @@ export class OrderListComponent implements OnInit {
     return state.cancelledRemain > 0;
   }
 
-  private mapOrders(val: any): any {
-    return {
-      delivered: this.type === 'delivered' ? 1 : 0,
-      createdAt: val.createdAt,
-      ward: val.ward,
-      explain: val.explain,
-      customerId: this.customerId ? this.customerId : ''
-    };
+  tooltipRanges(type: 'createdAt' | 'deliveredAt') {
+    const datetime = this.formGroup.value[type];
+    return datetime?.length === 2
+      ? (this.datePipe.transform(datetime[0], 'dd/MM/YYYY') + ' - ' + this.datePipe.transform(datetime[1], 'dd/MM/YYYY'))
+      : '';
   }
 }

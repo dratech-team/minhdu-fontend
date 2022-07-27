@@ -12,7 +12,7 @@ export interface RouteState extends EntityState<RouteEntity> {
   readonly total: number;
   readonly remain: number;
   readonly expandedAll: boolean;
-  readonly search: BaseSearchRouteDto;
+  readonly search: Partial<BaseSearchRouteDto>;
   readonly ui: VisibleExtendEntity[];
 }
 

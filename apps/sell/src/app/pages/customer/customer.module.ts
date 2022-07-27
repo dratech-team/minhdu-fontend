@@ -48,6 +48,7 @@ import { OrderListComponent } from './component/order-list/order-list.component'
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 @NgModule({
   imports: [
@@ -94,7 +95,8 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
     NzDropDownModule,
     NzSwitchModule,
     NzIconModule,
-    NzSkeletonModule
+    NzSkeletonModule,
+    TooltipModule
   ],
   declarations: [
     OrderListComponent,

@@ -4,7 +4,7 @@ import { PaymentType } from '@minhdu-fontend/enums';
 import { DatePipe } from '@angular/common';
 import { Actions } from '@datorama/akita-ng-effects';
 import { PaymentQuery } from '../../state';
-import { ModalAddOrUpdatePayment } from '../../../customer/data/modal-payment.data';
+import { ModalAddOrUpdatePayment } from '../../../customer/data';
 import { PayTypeConstant } from '../../constants';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { OrderEntity } from '../../../order/enitities';
@@ -86,7 +86,7 @@ export class PaymentModalComponent implements OnInit {
       total: val.paidTotal,
       paidAt: val.paidAt,
       note: val.note,
-      orderId: val.order.id,
+      orderId: val.order.id
     };
   }
 }

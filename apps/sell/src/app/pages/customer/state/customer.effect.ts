@@ -201,9 +201,9 @@ export class CustomerEffect {
   loadOrder$ = this.action$.pipe(
     ofType(CustomerActions.loadOrder),
     concatMap((props) => {
-      const status = props.typeOrder === 'delivered'
+      const status = props.orderType === 'delivered'
         ? OrderStatusEnum.DELIVERED
-        : props.typeOrder === 'delivering'
+        : props.orderType === 'delivering'
           ? OrderStatusEnum.DELIVERING
           : OrderStatusEnum.CANCELLED;
 
@@ -217,9 +217,9 @@ export class CustomerEffect {
             take: PaginationDto.take,
             skip: props.isSet
               ? PaginationDto.skip
-              : props.typeOrder === 'delivered'
+              : props.orderType === 'delivered'
                 ? (customer?.delivered?.length || 0)
-                : props.typeOrder === 'delivering'
+                : props.orderType === 'delivering'
                   ? (customer?.delivering?.length || 0)
                   : (customer?.cancelled?.length || 0)
           }
@@ -227,21 +227,21 @@ export class CustomerEffect {
       }).pipe(
         tap((res) => {
           if (props.isSet) {
-            this.customerStore.update(props.search.customerId, { [props.typeOrder]: res.data });
+            this.customerStore.update(props.search.customerId, { [props.orderType]: res.data });
           } else {
             this.customerStore.update(props.search.customerId, ({ delivering, delivered, cancelled }) => ({
-              delivering: props.typeOrder === 'delivering' ? arrayAdd(delivering, res.data) : delivering,
-              delivered: props.typeOrder === 'delivered' ? arrayAdd(delivered, res.data) : delivered,
-              cancelled: props.typeOrder === 'cancelled' ? arrayAdd(cancelled, res.data) : cancelled
+              delivering: props.orderType === 'delivering' ? arrayAdd(delivering, res.data) : delivering,
+              delivered: props.orderType === 'delivered' ? arrayAdd(delivered, res.data) : delivered,
+              cancelled: props.orderType === 'cancelled' ? arrayAdd(cancelled, res.data) : cancelled
             }));
           }
           this.customerStore.update((state) => {
             const customer = this.customerQuery.getEntity(props.search.customerId);
             return {
               ...state,
-              deliveredLoading: props.typeOrder === 'delivered' ? false : state.deliveredLoading,
-              deliveringLoading: props.typeOrder === 'delivering' ? false : state.deliveringLoading,
-              cancelledLoading: props.typeOrder === 'cancelled' ? false : state.cancelledLoading,
+              deliveredLoading: props.orderType === 'delivered' ? false : state.deliveredLoading,
+              deliveringLoading: props.orderType === 'delivering' ? false : state.deliveringLoading,
+              cancelledLoading: props.orderType === 'cancelled' ? false : state.cancelledLoading,
               deliveringTotal: res.total,
               deliveredTotal: res.total,
               cancelledTotal: res.total,
@@ -279,7 +279,7 @@ export class CustomerEffect {
     ofType(CustomerActions.loadOrder),
     tap((res) => {
       this.customerStore.update((state) => {
-        if (res.typeOrder === 'delivering') {
+        if (res.orderType === 'delivering') {
           return {
             ...state,
             deliveringLoading: true,

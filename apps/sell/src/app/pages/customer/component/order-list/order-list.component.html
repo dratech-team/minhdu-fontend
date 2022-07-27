@@ -20,34 +20,36 @@
       </th>
       <th>
         <div>Ngày tạo</div>
-        <nz-range-picker formControlName='ranges'></nz-range-picker>
+        <nz-range-picker
+          formControlName='createdAt'
+          [tooltip]="tooltipRanges('createdAt')"
+        ></nz-range-picker>
       </th>
       <th>
         <div class=''>Điểm đến</div>
-        <input formControlName='ward' nz-input type='search' />
+        <input formControlName='province' nz-input type='search' />
       </th>
       <th>
-        <div class=''>Tiền đơn hàng</div>
-        <input nz-input [disabled]='true' type='number' />
+        Tiền đơn hàng
       </th>
       <th>
-        <div class=''>Tiền thanh toán</div>
-        <input nz-input [disabled]='true' type='number' />
+        Tiền thanh toán
       </th>
       <th *ngIf='type === "delivered"'>
         <div>Ngày giao hàng</div>
-        <input nz-input [disabled]='true' type='date' />
+        <nz-range-picker
+          formControlName='deliveredAt'
+          [tooltip]="tooltipRanges('deliveredAt')"
+        ></nz-range-picker>
       </th>
       <th *ngIf='type === "delivering"'>
-        <div class=''>Diễn giải</div>
-        <input nz-input formControlName='explain' type='search' />
+        Diễn giải
       </th>
       <th *ngIf='type !== "cancelled"' nzWidth='120px'>
         <div>Thanh toán</div>
       </th>
       <th *ngIf='type === "delivered"'>
-        <div class=''>Ẩn nợ</div>
-        <input nz-input [disabled]='true' type='number' />
+        Ẩn nợ
       </th>
       <th *ngIf='type === "delivering"' nzWidth='100px'>
         Đã giao
