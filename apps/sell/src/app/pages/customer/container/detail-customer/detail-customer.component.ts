@@ -211,8 +211,8 @@ export class DetailCustomerComponent implements OnInit {
       .pipe(take(1))
       .subscribe((res) => {
         if (res && this.getId) {
-          this.customerStore.update(this.getId, ({ delivered }) => ({
-            delivered: arrayUpdate(delivered, order.id, res)
+          this.customerStore.update(this.getId, (customer) => ({
+            delivered: arrayUpdate(customer.delivered, order.id, res)
           }));
         }
       });

@@ -106,26 +106,11 @@ export class CustomerModalComponent implements OnInit {
 
   private mapCustomer(value: any): BaseAddCustomer | BaseUpdateCustomerDto {
     return {
-      lastName: value.lastName,
-      identify: value?.identify,
-      gender: value.gender,
-      phone: value.phone,
-      issuedBy: value.issuedBy,
-      birthday: value.birthday,
-      birthplace: value.birthplace,
-      idCardAt: value.idCardAt,
+      ...value,
       customerType: value.type,
-      resource: value.resource,
-      address: value.address,
       provinceId: value.province.id,
       districtId: value?.district?.id,
-      wardId: value?.ward?.id,
-      email: value?.email,
-      note: value?.note,
-      ethnicity: value?.ethnicity,
-      religion: value?.religion,
-      isPotential: value?.isPotential,
-      type: value.type
+      wardId: value?.ward?.id
     };
   }
 }
