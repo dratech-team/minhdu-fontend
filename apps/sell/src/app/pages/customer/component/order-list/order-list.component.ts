@@ -4,16 +4,16 @@ import { Router } from '@angular/router';
 import { OrderEntity } from '../../../order/enitities';
 import { OrderQuery } from '../../../order/state';
 import { MatDialog } from '@angular/material/dialog';
-import { take } from 'rxjs/operators';
 import { ModeEnum } from '@minhdu-fontend/enums';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CustomerQuery, CustomerStore } from '../../state';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { arrayUpdate } from '@datorama/akita';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { OrderService } from '../../../order/service';
 import { OrderListData } from '../../data';
 import { DatePipe } from '@angular/common';
+import { OrderTypeEnum } from '../../enums';
+import { RouterConstants } from '../../../../shared/constants';
 
 @Component({
   selector: 'order-list',
@@ -21,14 +21,15 @@ import { DatePipe } from '@angular/common';
 })
 export class OrderListComponent implements OnInit {
   @Input() orders: OrderEntity[] = [];
-  @Input() type: 'delivered' | 'delivering' | 'cancelled' = 'delivering';
+  @Input() type: OrderTypeEnum = OrderTypeEnum.DELIVERING;
   @Input() customerId?: number;
   @Input() loading = false;
 
   @Output() onValueChanged = new EventEmitter<OrderListData>();
   @Output() onPayment = new EventEmitter<OrderEntity>();
   @Output() onDelivered = new EventEmitter<OrderEntity>();
-  @Output() onCancel = new EventEmitter<OrderEntity>();
+  @Output() onCancelOrRestore = new EventEmitter<OrderEntity>();
+  @Output() onHide = new EventEmitter<OrderEntity>();
 
   account$ = this.accQuery.selectCurrentUser();
   state$ = this.customerQuery.select();
@@ -40,6 +41,7 @@ export class OrderListComponent implements OnInit {
     explain: new FormControl<string | null | undefined>('')
   });
 
+  OrderTypeEnum = OrderTypeEnum;
   ModeEnum = ModeEnum;
   pageSize = 10;
   pageIndexInit = 0;
@@ -75,21 +77,15 @@ export class OrderListComponent implements OnInit {
   }
 
   onDetail(id: number) {
-    this.router.navigate(['don-hang/chi-tiet-don-hang', id]).then();
+    this.router.navigate([RouterConstants.ORDER.DETAIL, id]).then();
   }
 
-  onUpdate(order: OrderEntity) {
-    this.orderService.hide(order.id, { hide: !order.hide })
-      .pipe(take(1))
-      .subscribe((res) => {
-        this.customerStore.update(this.customerId, ({ delivered }) => ({
-          delivered: arrayUpdate(delivered, order.id, res)
-        }));
-      });
+  hide(order: OrderEntity) {
+    this.onHide.emit(order);
   }
 
   cancel(order: OrderEntity) {
-    this.onCancel.emit(order);
+    this.onCancelOrRestore.emit(order);
   }
 
   onConfirm(order: OrderEntity) {
@@ -102,9 +98,9 @@ export class OrderListComponent implements OnInit {
 
   orderLoading() {
     const state = this.customerQuery.getValue();
-    if (this.type === 'delivering') {
+    if (this.type === OrderTypeEnum.DELIVERING) {
       return state.deliveringLoading;
-    } else if (this.type === 'delivered') {
+    } else if (this.type === OrderTypeEnum.DELIVERED) {
       return state?.deliveredLoading;
     }
     return state.cancelledLoading;
@@ -112,12 +108,12 @@ export class OrderListComponent implements OnInit {
 
   orderRemaining() {
     const state = this.customerQuery.getValue();
-    if (this.type === 'delivering') {
-      return state.deliveringRemain > 0;
-    } else if (this.type === 'delivered') {
-      return state.deliveredRemain > 0;
+    if (this.type === OrderTypeEnum.DELIVERING) {
+      return state.deliveringRemain;
+    } else if (this.type === OrderTypeEnum.DELIVERED) {
+      return state.deliveredRemain;
     }
-    return state.cancelledRemain > 0;
+    return state.cancelledRemain;
   }
 
   tooltipRanges(type: 'createdAt' | 'deliveredAt') {

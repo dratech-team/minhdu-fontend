@@ -290,7 +290,7 @@
               nz-icon
               nzType='fullscreen'
               nzTheme='outline'
-              (click)='onFullScreenOrder(customer.delivering, "delivering")'
+              (click)='onFullScreenOrder(customer.delivering, OrderTypeEnum.DELIVERING)'
             ></i>
           </div>
           <div>
@@ -305,12 +305,14 @@
           </div>
         </div>
         <order-list
-          [type]="'delivering'"
+          [type]='OrderTypeEnum.DELIVERING'
           [customerId]='getId'
           [loading]='(deliveringLoading$ | async) || false'
           [orders]='customer.delivering | notEmpty: []'
-          (onValueChanged)='onOrderChanged($event, "delivering")'
+          (onValueChanged)='onOrderChanged($event, OrderTypeEnum.DELIVERING)'
           (onPayment)='onPayment(customer, $event)'
+          (onDelivered)='onDelivered($event)'
+          (onCancelOrRestore)='onCancelOrRestoreOrder($event, "cancel")'
         >
         </order-list>
       </div>
@@ -325,16 +327,18 @@
             nz-icon
             nzType='fullscreen'
             nzTheme='outline'
-            (click)='onFullScreenOrder(customer.delivered, "delivered")'
+            (click)='onFullScreenOrder(customer.delivered, OrderTypeEnum.DELIVERED)'
           ></i>
         </div>
         <order-list
-          [type]="'delivered'"
+          [type]='OrderTypeEnum.DELIVERED'
           [customerId]='getId'
           [loading]='(deliveredLoading$ | async) || false'
           [orders]='customer.delivered | notEmpty: []'
-          (onValueChanged)='onOrderChanged($event, "delivered")'
+          (onValueChanged)='onOrderChanged($event, OrderTypeEnum.DELIVERED)'
           (onPayment)='onPayment(customer, $event)'
+          (onHide)='onHideOrder($event, OrderTypeEnum.DELIVERING)'
+          (onCancelOrRestore)='onCancelOrRestoreOrder($event, "restore")'
         ></order-list>
       </div>
       <div class='col-12 mt-5'>
@@ -348,15 +352,16 @@
             nz-icon
             nzType='fullscreen'
             nzTheme='outline'
-            (click)='onFullScreenOrder(customer.cancelled, "cancelled")'
+            (click)='onFullScreenOrder(customer.cancelled, OrderTypeEnum.CANCELLED)'
           ></i>
         </div>
         <order-list
-          [type]="'cancelled'"
+          [type]='OrderTypeEnum.CANCELLED'
           [customerId]='getId'
           [loading]='(deliveredLoading$ | async) || false'
           [orders]='customer.cancelled | notEmpty: []'
-          (onValueChanged)='onOrderChanged($event, "cancelled")'
+          (onValueChanged)='onOrderChanged($event, OrderTypeEnum.CANCELLED)'
+          (onCancelOrRestore)='onCancelOrRestoreOrder($event, "restore")'
         ></order-list>
       </div>
       <div class='col-12 mt-5'>

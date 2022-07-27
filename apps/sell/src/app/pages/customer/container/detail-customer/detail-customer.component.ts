@@ -13,9 +13,15 @@ import { OrderService } from '../../../order/service';
 import { PaymentModalComponent } from '../../../payment/components';
 import { CustomerEntity } from '../../entities';
 import { PaymentService } from '../../../payment/services/payment.Service';
-import { arrayUpdate } from '@datorama/akita';
+import { arrayAdd, arrayRemove, arrayUpdate } from '@datorama/akita';
 import { BaseSearchOrderDto } from '../../../order/dto';
-import { OrderListData, OrderListFormType } from '../../data/order-list.data';
+import { OrderListData, OrderListFormType } from '../../data';
+import { take } from 'rxjs/operators';
+import { OrderTypeEnum } from '../../enums';
+import {
+  DialogDatePickerComponent
+} from '../../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
+import { RichTextComponent } from '../../../../../../../../libs/components/src/lib/rich-text/rich-text.component';
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -26,6 +32,8 @@ export class DetailCustomerComponent implements OnInit {
   deliveringLoading$ = this.customerQuery.select(state => state.deliveringLoading);
   deliveredLoading$ = this.customerQuery.select(state => state.deliveredLoading);
   customer$ = this.customerQuery.selectEntity(this.getId);
+
+  OrderTypeEnum = OrderTypeEnum;
 
   get getId(): number {
     return +this.activatedRoute.snapshot.params.id;
@@ -67,7 +75,7 @@ export class DetailCustomerComponent implements OnInit {
     });
   }
 
-  public onOrderChanged(event: OrderListData, type: 'delivering' | 'delivered' | 'cancelled'): void {
+  public onOrderChanged(event: OrderListData, type: OrderTypeEnum): void {
     this.actions$.dispatch(CustomerActions.loadOrder({
       search: this.mapToSearchOrder(event.search),
       isSet: !event.isLoadMore,
@@ -111,13 +119,81 @@ export class DetailCustomerComponent implements OnInit {
     });
   }
 
-  public onCancelOrder(order: OrderEntity) {
-
+  public onDelivered(order: OrderEntity) {
+    this.modal.create({
+      nzCentered: true,
+      nzContent: DialogDatePickerComponent,
+      nzFooter: null
+    }).afterClose.subscribe(res => {
+      if (res) {
+        console.log(res.date);
+        this.orderService.update(order.id, { deliveredAt: res.date })
+          .pipe(take(1))
+          .subscribe((res) => {
+            if (res && this.getId) {
+              this.customerStore.update(this.getId, (entity) => ({
+                delivering: arrayRemove(entity.delivering, order.id),
+                delivered: arrayAdd(entity.delivered, res)
+              }));
+            }
+          });
+      }
+    });
   }
 
-  public onFullScreenOrder(orders: OrderEntity[], type: 'delivered' | 'delivering' | 'cancelled'): void {
+  public onCancelOrRestoreOrder(order: OrderEntity, type: 'cancel' | 'restore') {
+    this.modal.create({
+      nzCentered: true,
+      nzTitle: `${type === 'cancel' ? 'Huỷ' : 'Khôi phục'} đơn hàng`,
+      nzContent: RichTextComponent,
+      nzComponentParams: { description: `Bạn có chắc chắn muốn ${type === 'cancel' ? 'huỷ' : 'khôi phục'} đơn hàng của khách hàng ${order.customer.lastName} đang được giao đến ${order.province.name}?` },
+      nzOnOk: (res) => {
+        if (type === 'cancel') {
+          this.orderService.cancel(order.id, { reason: res.formGroup.value.reason })
+            .pipe(take(1))
+            .subscribe(res => {
+              if (res && this.getId) {
+                this.customerStore.update(this.getId, (entity) => ({
+                  delivering: arrayRemove(entity.delivering, order.id),
+                  cancelled: arrayAdd(entity.delivered, res)
+                }));
+              }
+            });
+        } else {
+          this.orderService.restore(order.id)
+            .pipe(take(1))
+            .subscribe(res => {
+              if (res && this.getId) {
+                this.customerStore.update(this.getId, (entity) => ({
+                  delivering: arrayAdd(entity.delivering, res),
+                  delivered: arrayRemove(entity.delivered
+                    , order.id),
+                  cancelled: arrayRemove(entity.cancelled, order.id)
+                }));
+              }
+            });
+        }
+      }
+    });
+  }
+
+  public onHideOrder(order: OrderEntity, type: OrderTypeEnum) {
+    this.orderService.hide(order.id, { hide: !order.hide })
+      .pipe(take(1))
+      .subscribe((res) => {
+        if (res && this.getId) {
+          this.customerStore.update(this.getId, ({ delivered }) => ({
+            delivered: arrayUpdate(delivered, order.id, res)
+          }));
+        }
+      });
+  }
+
+  public onFullScreenOrder(orders: OrderEntity[], type: OrderTypeEnum): void {
+    const customer = this.customerQuery.getEntity(this.getId);
     this.modal.create({
       nzWidth: 'fit-content',
+      nzTitle: `Danh sách đơn hàng của ${customer?.lastName}`,
       nzMask: false,
       nzCentered: true,
       nzContent: OrderListComponent,

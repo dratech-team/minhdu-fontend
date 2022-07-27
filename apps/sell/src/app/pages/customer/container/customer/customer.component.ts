@@ -96,14 +96,6 @@ export class CustomerComponent implements OnInit {
 
   }
 
-  public addOrder($event?: any) {
-    this.router.navigate(['/don-hang/them-don-hang'], {
-      queryParams: {
-        customerId: $event.id
-      }
-    }).then();
-  }
-
   public onExport() {
     this.modal.create({
       nzTitle: 'Xuất danh sách khách hàng',

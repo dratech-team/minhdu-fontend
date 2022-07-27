@@ -35,34 +35,31 @@
       <th>
         Tiền thanh toán
       </th>
-      <th *ngIf='type === "delivered"'>
+      <th *ngIf='type === OrderTypeEnum.DELIVERED'>
         <div>Ngày giao hàng</div>
         <nz-range-picker
           formControlName='deliveredAt'
           [tooltip]="tooltipRanges('deliveredAt')"
         ></nz-range-picker>
       </th>
-      <th *ngIf='type === "delivering"'>
+      <th *ngIf='type === OrderTypeEnum.DELIVERING'>
         Diễn giải
       </th>
-      <th *ngIf='type !== "cancelled"' nzWidth='120px'>
+      <th *ngIf='type !== OrderTypeEnum.CANCELLED' nzWidth='120px'>
         <div>Thanh toán</div>
       </th>
-      <th *ngIf='type === "delivered"'>
-        Ẩn nợ
-      </th>
-      <th *ngIf='type === "delivering"' nzWidth='100px'>
-        Đã giao
-      </th>
-      <th *ngIf='type === "delivering"' nzWidth='90px'>
-        Hủy
-      </th>
-      <th *ngIf='type === "cancelled"'>
+      <th *ngIf='type === OrderTypeEnum.CANCELLED'>
         Ngày huỷ
       </th>
-      <!--      <th nzWidth='100px'>-->
-      <!--        <div>Chi tiết</div>-->
-      <!--      </th>-->
+      <th *ngIf='type === OrderTypeEnum.DELIVERING' nzWidth='120px'>
+        Đã giao
+      </th>
+      <th [nzWidth]='type === OrderTypeEnum.DELIVERING ? "80px" : "120px"'>
+        {{type === OrderTypeEnum.DELIVERING ? 'Hủy' : 'Khôi phục'}}
+      </th>
+      <th nzWidth='90px' *ngIf='type === OrderTypeEnum.DELIVERED'>
+        Ẩn nợ
+      </th>
     </tr>
     </thead>
     <tbody>
@@ -88,51 +85,45 @@
         <td style='color: #20c997'>
           {{ order?.paymentTotal | number: '1.0-0' | notEmpty: '0' }} đ
         </td>
-        <td *ngIf='type === "delivered"'>
+        <td *ngIf='type === OrderTypeEnum.DELIVERED'>
           {{ order?.deliveredAt | date: 'dd/MM/yyyy' }}
         </td>
-        <td *ngIf='type === "delivering"'>
+        <td *ngIf='type === OrderTypeEnum.DELIVERING'>
           {{ order?.explain || 'Không có nội dung' }}
         </td>
-        <td *ngIf='type !== "cancelled"' (click)='$event.stopPropagation()'>
+        <td *ngIf='type !== OrderTypeEnum.CANCELLED' (click)='$event.stopPropagation()'>
           <button nz-button nzType='primary' (click)='payment(order)'>
             Thanh toán
           </button>
         </td>
-        <td *ngIf='type === "delivered"' (click)='$event.stopPropagation()'>
-          <nz-switch
-            [(ngModel)]='order.hide'
-            (ngModelChange)='onUpdate(order)'
-            class='m-auto'
-          ></nz-switch>
+        <td *ngIf='type === OrderTypeEnum.CANCELLED'>
+          {{ order?.cancelledAt | date: 'dd/MM/yyyy' }}
         </td>
-        <td *ngIf='type === "delivering"' (click)='$event.stopPropagation()'>
+        <td *ngIf='type === OrderTypeEnum.DELIVERING' (click)='$event.stopPropagation()'>
           <button nz-button nzType='default' (click)='onConfirm(order)'>
             Đã giao
           </button>
         </td>
-        <td *ngIf='type === "delivering"' (click)='$event.stopPropagation()'>
+        <td (click)='$event.stopPropagation()'>
           <button
             nz-button
             nzDanger
             nzType='primary'
             (click)='cancel(order)'
           >
-            Huỷ
+            {{type === OrderTypeEnum.DELIVERING ? 'Huỷ' : 'Khôi phục'}}
           </button>
         </td>
-        <!--        <td (click)='$event.stopPropagation()'>-->
-        <!--          <button nz-button nzType='dashed' (click)='onDetail(order.id)'>-->
-        <!--            Chi tiết-->
-        <!--          </button>-->
-        <!--        </td>-->
-        <td>
-          {{ order?.cancelledAt | date: 'dd/MM/yyyy' }}
+        <td *ngIf='type === OrderTypeEnum.DELIVERED' (click)='$event.stopPropagation()'>
+          <nz-switch
+            class='m-auto'
+            [(ngModel)]='order.hide'
+            (ngModelChange)='hide(order)'
+          ></nz-switch>
         </td>
       </tr>
     </ng-template>
-    <tr
-      *ngIf='orderRemaining()'>
+    <tr *ngIf='orderRemaining()'>
       <td colspan='10'>
         <div
           class='w-100 d-flex justify-content-start'

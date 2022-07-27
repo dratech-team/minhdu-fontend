@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { Update } from '@ngrx/entity';
-import { AddOrderDto, SearchOrderDto, UpdateOrderDto } from '../dto';
+import { AddOrderDto, BaseUpdateOrderDto, SearchOrderDto } from '../dto';
 import { BaseOrderEntity, OrderEntity } from '../enitities';
 import { ResponsePaginateOrderEntity } from '../enitities/response-paginate-order.entity';
 
@@ -30,8 +30,8 @@ export class OrderService extends BaseService<BaseOrderEntity> {
     return super.getOne(id);
   }
 
-  update(updateDto: UpdateOrderDto): Observable<BaseOrderEntity> {
-    return super.update(updateDto.id, updateDto.updates);
+  update(id: number, updates: Partial<BaseUpdateOrderDto>): Observable<BaseOrderEntity> {
+    return super.update(id, updates);
   }
 
   hide(id: any, body: any): Observable<BaseOrderEntity> {
@@ -42,7 +42,7 @@ export class OrderService extends BaseService<BaseOrderEntity> {
     return super.delete(id);
   }
 
-  cancel(id: BaseOrderEntity['id'], body: { reason?: string }): Observable<BaseOrderEntity> {
+  cancel(id: BaseOrderEntity['id'], body: { reason?: string | null | undefined }): Observable<BaseOrderEntity> {
     return this.http.delete<OrderEntity>(this.url + `/${id}` + '/cancel', { body });
   }
 
