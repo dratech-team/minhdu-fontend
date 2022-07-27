@@ -31,6 +31,14 @@ import { of } from 'rxjs';
 })
 export class DetailCustomerComponent implements OnInit {
   loading$ = this.customerQuery.selectLoading();
+  customer$ = this.customerQuery.selectEntity(this.getId);
+
+  isSyncDebt = false;
+  fullScreen: OrderTypeEnum | null | 'payment' = null;
+
+  GenderTypeEnum = GenderTypeEnum;
+  OrderTypeEnum = OrderTypeEnum;
+
   orderLoading = (type: OrderTypeEnum) => {
     const state = this.customerQuery.getValue();
     if (type === OrderTypeEnum.DELIVERING) {
@@ -40,14 +48,6 @@ export class DetailCustomerComponent implements OnInit {
     }
     return state.cancelledLoading;
   };
-  deliveredLoading$ = this.customerQuery.select(state => state.deliveredLoading);
-  customer$ = this.customerQuery.selectEntity(this.getId);
-
-  isSyncDebt = false;
-  fullScreen: OrderTypeEnum | null | "payment" = null;
-
-  GenderTypeEnum = GenderTypeEnum;
-  OrderTypeEnum = OrderTypeEnum;
 
   get getId(): number {
     return +this.activatedRoute.snapshot.params.id;
@@ -191,7 +191,7 @@ export class DetailCustomerComponent implements OnInit {
               if (res && this.getId) {
                 this.customerStore.update(this.getId, (entity) => ({
                   delivering: arrayRemove(entity.delivering, order.id),
-                  cancelled: arrayAdd(entity.delivered, res)
+                  cancelled: arrayAdd(entity.cancelled, { ...order, cancelledAt: res.cancelledAt, reason: res.reason })
                 }));
               }
             });
@@ -225,7 +225,7 @@ export class DetailCustomerComponent implements OnInit {
       });
   }
 
-  public onFullScreenOrder(type: OrderTypeEnum | null | "payment"): void {
+  public onFullScreenOrder(type: OrderTypeEnum | null | 'payment'): void {
     this.fullScreen = type;
   }
 

@@ -50,6 +50,9 @@
     <th *ngIf='type === OrderTypeEnum.CANCELLED'>
       Ngày huỷ
     </th>
+    <th *ngIf='type === OrderTypeEnum.CANCELLED'>
+      Lý do
+    </th>
     <th *ngIf='type === OrderTypeEnum.DELIVERING' nzWidth='90px'>
       Đã giao
     </th>
@@ -98,40 +101,43 @@
       <td *ngIf='type !== OrderTypeEnum.CANCELLED' (click)='$event.stopPropagation()'>
         <i
           class='pointer'
-          style="font-size: 1.3em; color: #3941fc"
+          style='font-size: 1.3em; color: #3941fc'
           nz-icon
-          nzType="dollar"
-          nzTheme="outline"
+          nzType='dollar'
+          nzTheme='outline'
           (click)='payment(order)'
         ></i>
       </td>
       <td *ngIf='type === OrderTypeEnum.CANCELLED'>
         {{ order?.cancelledAt | date: 'dd/MM/yyyy' }}
       </td>
+      <td *ngIf='type === OrderTypeEnum.CANCELLED'>
+        {{ order.reason || 'Không có dữ liệu.' }}
+      </td>
       <td *ngIf='type === OrderTypeEnum.DELIVERING' (click)='$event.stopPropagation()'>
         <i
           class='pointer'
-          style="font-size: 1.3em; color: #3c763d"
+          style='font-size: 1.3em; color: #3c763d'
           nz-icon
-          nzType="file-done"
-          nzTheme="outline"
+          nzType='file-done'
+          nzTheme='outline'
           (click)='onConfirm(order)'
         ></i>
       </td>
       <td (click)='$event.stopPropagation()'>
         <i
           class='pointer'
-          style="font-size: 1.3em; color: red"
+          style='font-size: 1.3em; color: red'
           nz-icon
           [nzType]="type === OrderTypeEnum.DELIVERING ? 'delete-row' : 'rollback'"
-          nzTheme="outline"
-          (click)='onConfirm(order)'
+          nzTheme='outline'
+          (click)='cancel(order)'
         ></i>
       </td>
       <td *ngIf='type === OrderTypeEnum.DELIVERED' (click)='$event.stopPropagation()'>
         <nz-switch
           class='m-auto'
-          [(ngModel)]='order.hide'
+          [ngModel]='order.hide'
           (ngModelChange)='hide(order)'
         ></nz-switch>
       </td>

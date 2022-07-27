@@ -364,11 +364,18 @@
         [type]='fullScreen'
         [customerId]='getId'
         [loading]='orderLoading(OrderTypeEnum.DELIVERED) || false'
-        [orders]='customer[fullScreen] | notEmpty: []'
+        [orders]='fullScreen === OrderTypeEnum.DELIVERING
+         ? customer.delivering
+          : fullScreen === OrderTypeEnum.DELIVERED
+           ? customer.delivered
+           : fullScreen === OrderTypeEnum.CANCELLED
+            ? customer.cancelled
+            : customer[fullScreen]'
         (onValueChanged)='onOrderChanged($event, fullScreen)'
         (onPayment)='onPayment(customer, $event)'
         (onDelivered)='onDelivered($event)'
-        (onCancelOrRestore)='onCancelOrRestoreOrder($event, "cancel")'
+        (onCancelOrRestore)='onCancelOrRestoreOrder($event, (fullScreen === OrderTypeEnum.CANCELLED || fullScreen === OrderTypeEnum.DELIVERED) ? "restore" : "cancel")'
+        (onHide)='onHideOrder($event)'
       >
       </order-list>
       <ng-template #fullScreenPayment>

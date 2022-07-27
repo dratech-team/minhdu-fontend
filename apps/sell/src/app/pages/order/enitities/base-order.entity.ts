@@ -9,6 +9,7 @@ export interface BaseOrderEntity extends BaseEntity {
   customer: CustomerEntity;
   createdAt: Date;
   cancelledAt: Date;
+  reason: string;
   priceTotal: number;
   paymentTotal: number;
   deliveredAt?: Date | null;

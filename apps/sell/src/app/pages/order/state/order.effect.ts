@@ -317,6 +317,7 @@ export class OrderEffect {
     const priceTotal = order.commodities.reduce((a, commodity) => {
       return a + ((commodity.amount * commodity.price) + ((commodity.more?.amount || 0) * (commodity?.more?.price || 0)));
     }, 0);
+
     const routeIds = uniq(order.commodities.map(commodity => commodity.routeId));
     const routes = routeIds.map(routeId => {
       const commodity = order.commodities.find(commodity => commodity.routeId === routeId);
