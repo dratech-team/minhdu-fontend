@@ -96,7 +96,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     NzSwitchModule,
     NzIconModule,
     NzSkeletonModule,
-    TooltipModule
+    TooltipModule,
   ],
   declarations: [
     OrderListComponent,

@@ -1,46 +1,42 @@
 <nz-skeleton *ngIf='(loading$ | async); else loaded' [nzActive]='true'></nz-skeleton>
 <ng-template #loaded>
   <div class='animated fadeIn container ng-star-inserted'>
-    <div class='row' *ngIf='customer$ | async as customer'>
-      <div class='row col-12 mt-5'>
-        <div class='col-5 d-flex'>
-          <div class='main-title mr-5'>Thông tin Khách hàng</div>
-          <div class='col d-flex flex-column'>
-            <img
-              class='rounded-circle row'
-              alt='50x50'
-              src='{{
+    <div *ngIf='customer$ | async as customer'>
+      <div class='d-flex justify-content-between ml-lg-5'>
+        <div>
+          <img
+            class='rounded-circle row'
+            alt='50x50'
+            src='{{
               customer.avt || (customer.gender === GenderTypeEnum.MALE ? "https://bit.ly/3owMJR4" : customer.gender === GenderTypeEnum.FEMALE ? "https://bit.ly/3zhQzTs" : "https://bit.ly/3S2e0sn")
                }}'
-              data-holder-rendered='true'
-              height='160px'
-              width='160px'
-              style='align-self: center'
-            />
-            <div class='d-flex flex-column justify-content-center'>
-              <button
-                (click)='development()'
-                class='btn p-2 mb-3 rounded shadow-sm'
-              >
-                <img src='/assets/icon/share/person-circle.svg' alt='avatar' />
-                <span class='ml-2' style='color: #80828b'> Đổi avatar </span>
-              </button>
-              <button
-                nz-button
-                nzType='primary'
-                nzDanger
-                (click)='customerComponentService.onRemove(customer)'
-              >
-                Xóa Khách hàng
-              </button>
-            </div>
+            data-holder-rendered='true'
+            height='160px'
+            width='160px'
+            style='align-self: center'
+          />
+          <div class='d-flex flex-column justify-content-center'>
+            <button
+              (click)='development()'
+              class='btn p-2 mb-3 rounded shadow-sm'
+            >
+              <img src='/assets/icon/share/person-circle.svg' alt='avatar' />
+              <span class='ml-2' style='color: #80828b'> Đổi avatar </span>
+            </button>
+            <button
+              nz-button
+              nzType='primary'
+              nzDanger
+              (click)='customerComponentService.onRemove(customer)'
+            >
+              Xóa Khách hàng
+            </button>
           </div>
         </div>
-        <div class='col-7 d-flex justify-content-end align-items-start'>
-          <div class='align-items-center'>
+        <div class='d-flex'>
+          <div>
             <div
               class='mr-2 p-1'
-              style='border: solid 1px'
               [ngStyle]="{
               'border-color':
                 customer.debt && customer.debt < 0 ? 'red' : 'green'
@@ -48,7 +44,7 @@
             >
             <span
               class='title-detail'
-              style='padding: 8px'
+              style='padding: 8px; border: solid 1px'
               [ngStyle]="{
                 color: customer.debt && customer.debt < 0 ? 'red' : 'green'
               }"
@@ -68,7 +64,7 @@
       </div>
     </div>
     <div
-      class='row mt-3'
+      class='row mt-5'
       style='color: #80828b'
       *ngIf='customer$ | async as customer'
     >

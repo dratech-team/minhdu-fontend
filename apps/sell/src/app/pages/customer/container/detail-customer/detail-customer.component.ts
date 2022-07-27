@@ -23,6 +23,7 @@ import {
 } from '../../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { RichTextComponent } from '../../../../../../../../libs/components/src/lib/rich-text/rich-text.component';
 import { GenderTypeEnum } from '@minhdu-fontend/enums';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -46,8 +47,8 @@ export class DetailCustomerComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly actions$: Actions,
-    private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
+    private readonly message: NzMessageService,
     private readonly orderService: OrderService,
     private readonly paymentService: PaymentService,
     private readonly customerStore: CustomerStore,
@@ -60,7 +61,7 @@ export class DetailCustomerComponent implements OnInit {
   }
 
   development() {
-    this.dialog.open(DevelopmentComponent, { width: '25%' });
+    this.message.warning("Chức năng đang phát triển");
   }
 
   public onAddOrder() {
