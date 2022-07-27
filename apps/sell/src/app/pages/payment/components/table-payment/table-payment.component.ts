@@ -9,7 +9,7 @@ import { Actions } from '@datorama/akita-ng-effects';
 import { PaymentEntity } from '../../entities';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { DatePipe } from '@angular/common';
-import { ModalAddOrUpdatePayment } from '../../../customer/data/modal-payment.data';
+import { ModalAddOrUpdatePayment } from '../../../customer/data';
 
 @Component({
   selector: 'minhdu-fontend-table-payment',
