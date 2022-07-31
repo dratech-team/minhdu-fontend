@@ -40,6 +40,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { OrderComponentService } from './shared';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { CustomNgSortPipe } from '../../shared/pipe/sort.pipe';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @NgModule({
   imports: [
@@ -81,7 +82,8 @@ import { CustomNgSortPipe } from '../../shared/pipe/sort.pipe';
     MatDatepickerModule,
     NzSpinModule,
     NzDropDownModule,
-    NzToolTipModule
+    NzToolTipModule,
+    NzIconModule
   ],
   declarations: [
     PaymentHistoryComponent,

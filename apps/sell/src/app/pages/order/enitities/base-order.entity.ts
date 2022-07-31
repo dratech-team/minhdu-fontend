@@ -11,6 +11,7 @@ export interface BaseOrderEntity extends BaseEntity {
   cancelledAt: Date;
   reason: string;
   priceTotal: number;
+  total?: number;
   paymentTotal: number;
   deliveredAt?: Date | null;
   commodities: CommodityEntity[];

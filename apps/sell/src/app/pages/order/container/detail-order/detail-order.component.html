@@ -84,9 +84,16 @@
               <span>Tổng tiền hàng:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom'>
-              <span class='contain-detail' style='color: #f86c6b'>
-                {{ order.priceTotal | number: '1.0' | notEmpty: '0' }} đ
-              </span>
+              <button
+                class='mr-2'
+                nz-button
+                nzType='default'
+                style='color: green; border-color: green'
+                (click)='onSyncPriceTotal(order)'
+              >
+                <i nz-icon nzType='sync' [nzSpin]='isSync'></i>
+                {{  order.priceTotal | currency: 'VND' | notEmpty: '0'}}
+              </button>
             </div>
           </div>
           <div class='row ml-1 align-items-center'>
@@ -95,7 +102,7 @@
             </div>
             <div class='col-md-8 py-1 border-bottom'>
               <span class='contain-detail' style='color: #20c997'>
-                {{ order.paymentTotal | number: '1.0' | notEmpty: '0' }} đ
+                {{ order.paymentTotal | currency: 'VND' | notEmpty: '0' }}
               </span>
             </div>
           </div>
@@ -180,7 +187,8 @@
                 >
                   {{commodity.id}}
                 </td>
-                <td class='text-center'>{{ (commodity.deliveredAt | date: 'dd/MM/yyyy') || commodity.routeId ? 'Đang giao' : 'Sẵn sàng' }}</td>
+                <td
+                  class='text-center'>{{ (commodity.deliveredAt | date: 'dd/MM/yyyy') || commodity.routeId ? 'Đang giao' : 'Sẵn sàng' }}</td>
                 <td class='text-center'>{{ commodity.code }}</td>
                 <td class='text-center'>{{ commodity.name }}</td>
                 <td class='text-center'>

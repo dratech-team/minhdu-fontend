@@ -5,17 +5,18 @@ import { OrderActions, OrderQuery, OrderStore } from '../../state';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityAction } from '../../../commodity/state';
 import { CommodityDialogComponent } from '../../../commodity/component';
-import { OrderHistoryService } from '../../service';
+import { OrderHistoryService, OrderService } from '../../service';
 import { UntypedFormBuilder } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { Actions } from '@datorama/akita-ng-effects';
-import { OrderHistoryEntity } from '../../enitities';
+import { OrderEntity, OrderHistoryEntity } from '../../enitities';
 import { CommodityEntity } from '../../../commodity/entities';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { OrderComponentService } from '../../shared';
 import { arrayRemove } from '@datorama/akita';
+import { catchError, tap } from 'rxjs/operators';
 
 @Component({
   templateUrl: 'detail-order.component.html'
@@ -24,6 +25,8 @@ export class DetailOrderComponent implements OnInit {
   order$ = this.orderQuery.selectEntity(this.getOrderId);
   loading$ = new BehaviorSubject<boolean>(false);
   account$ = this.accountQuery.selectCurrentUser();
+
+  isSync = false;
 
   ModeEnum = ModeEnum;
   PaymentType = PaymentType;
@@ -36,6 +39,7 @@ export class DetailOrderComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly orderHistoryService: OrderHistoryService,
+    private readonly orderService: OrderService,
     private readonly modal: NzModalService,
     private readonly message: NzMessageService,
     private readonly formBuilder: UntypedFormBuilder,
@@ -60,6 +64,21 @@ export class DetailOrderComponent implements OnInit {
 
   get getOrderId(): number {
     return this.activatedRoute.snapshot.params.id;
+  }
+
+  public onSyncPriceTotal(order: OrderEntity) {
+    this.isSync = true;
+    this.orderService.syncPriceTotal(order.id).pipe(
+      tap((res) => {
+        this.orderStore.update(order.id, { priceTotal: res.priceTotal });
+        this.isSync = false;
+        this.message.success('Đã cập nhật tổng tiền mới nhất !!');
+      }),
+      catchError(err => {
+        this.isSync = false;
+        return of(err);
+      })
+    ).subscribe();
   }
 
   public onUpdateCommodity(orderId: number, commodity: CommodityEntity) {

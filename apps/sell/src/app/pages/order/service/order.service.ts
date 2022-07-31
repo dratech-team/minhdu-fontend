@@ -7,6 +7,8 @@ import { Update } from '@ngrx/entity';
 import { AddOrderDto, BaseUpdateOrderDto, SearchOrderDto } from '../dto';
 import { BaseOrderEntity, OrderEntity } from '../enitities';
 import { ResponsePaginateOrderEntity } from '../enitities/response-paginate-order.entity';
+import { CustomerEntity } from '../../customer/entities';
+import { VersionEnum } from '@minhdu-fontend/enums';
 
 @Injectable({ providedIn: 'root' })
 export class OrderService extends BaseService<BaseOrderEntity> {
@@ -50,7 +52,7 @@ export class OrderService extends BaseService<BaseOrderEntity> {
     return this.http.patch<BaseOrderEntity>(this.url + `/${id}` + '/restore', null);
   }
 
-  orderHistory(): Observable<any> {
-    return this.http.get('');
+  syncPriceTotal(id: number): Observable<BaseOrderEntity> {
+    return this.http.get<BaseOrderEntity>(VersionEnum.V1 + Api.SELL.ORDER.ORDER + `/${id}/price-total/sync`);
   }
 }

@@ -37,6 +37,6 @@ export class CustomerService extends BaseService<CustomerEntity> {
   }
 
   syncDebt(id: number): Observable<CustomerEntity> {
-    return this.http.get<CustomerEntity>(VersionEnum.V1 + Api.SELL.CUSTOMER.CUSTOMER + `/${id}/payment/sync`);
+    return this.http.get<CustomerEntity>(VersionEnum.V1 + Api.SELL.CUSTOMER.CUSTOMER + `/${id}/debt/sync`);
   }
 }

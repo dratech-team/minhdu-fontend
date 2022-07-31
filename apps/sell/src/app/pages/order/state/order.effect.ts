@@ -326,7 +326,7 @@ export class OrderEffect {
     return {
       ...order,
       expand: expandedAll,
-      priceTotal: priceTotal,
+      priceTotal: order.deliveredAt ? priceTotal : (order.total || 0), // total != 0 when order is delivered
       routes: routes,
       orderHistories: []
     };
