@@ -8,7 +8,7 @@ import { CancelEnum, UpdaterRouteTypeEnum } from '../../enums';
 import { CommodityEntity } from '../../../commodity/entities';
 import { OrderActions } from '../../../order/state';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { OrderEntity } from '../../../order/enitities/order.entity';
+import { OrderEntity } from '../../../order/enitities';
 import { ModalDatePickerComponent } from '@minhdu-fontend/components';
 import { ModalDatePickerEntity } from '@minhdu-fontend/base-entity';
 import { map } from 'rxjs/operators';

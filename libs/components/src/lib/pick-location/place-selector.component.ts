@@ -36,6 +36,13 @@ export class PlaceSelectorComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup = <UntypedFormGroup>this.controlContainer.control;
+
+    // init data from input
+    this.formGroup.get('province')?.setValue(this.province);
+    this.formGroup.get('district')?.setValue(this.district);
+    this.formGroup.get('ward')?.setValue(this.ward);
+
+
     this.reload$?.subscribe((val) => {
       if (val) {
         this.formGroup.reset();

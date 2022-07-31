@@ -56,7 +56,7 @@
         </div>
         <place-selector
           [isUpdate]='!!data?.order'
-          [province]='data?.order?.province'
+          [province]='data?.order?.province || customer?.province'
           [district]='data?.order?.district'
           [ward]='data?.order?.ward'
           [isRequiredDistrict]='false'

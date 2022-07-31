@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommodityUnit, CustomerResource, CustomerType, PaymentType } from '@minhdu-fontend/enums';
+import { CustomerResource, CustomerType, PaymentType } from '@minhdu-fontend/enums';
 import { OrderActions, OrderQuery } from '../../state';
 import { CustomerEntity } from '../../../customer/entities';
 import { DatePipe } from '@angular/common';
@@ -17,7 +17,6 @@ import { SelectCommodityComponent, SelectCustomerComponent } from '../../../../s
   templateUrl: 'add-order.component.html'
 })
 export class AddOrderComponent implements OnInit {
-  commodityUnit = CommodityUnit;
   commoditiesPicked: CommodityEntity[] = [];
   numberChars = new RegExp('[^0-9]', 'g');
   customerPicked: CustomerEntity | undefined;

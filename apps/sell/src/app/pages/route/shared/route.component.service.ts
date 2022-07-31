@@ -12,8 +12,6 @@ import {
   DialogDatePickerComponent
 } from '../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { RouterConstants } from '../../../shared/constants';
-import { OrderEntity } from '../../order/enitities/order.entity';
-import { OrderActions } from '../../order/state';
 
 @Injectable()
 export class RouteComponentService {

@@ -13,6 +13,7 @@ import { BaseOrderEntity } from '../../enitities';
 import { BaseAddOrderDto, BaseUpdateOrderDto } from '../../dto';
 import { omit } from 'lodash';
 import { take } from 'rxjs/operators';
+import { CustomerEntity } from '../../../customer/entities';
 
 @Component({
   templateUrl: 'order-dialog.component.html'
@@ -27,10 +28,9 @@ export class OrderDialogComponent implements OnInit {
 
   formGroup!: FormGroup;
   districtId!: number;
-  provinceId!: number;
 
+  customer?: CustomerEntity;
   submitted = false;
-  routes: number[] = [];
   stepIndex = 0;
 
   PaymentType = PaymentType;
@@ -48,9 +48,11 @@ export class OrderDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.customer = this.customerQuery.getEntity(this.data?.customerId);
+
     this.formGroup = new FormGroup({
       createdAt: new FormControl(
-        this.datePipe.transform(this.data?.order?.createdAt, 'yyyy-MM-dd'),
+        this.datePipe.transform(this.data?.order?.createdAt || new Date(), 'yyyy-MM-dd'),
         { validators: Validators.required }
       ),
       endedAt: this.data?.order?.endedAt
