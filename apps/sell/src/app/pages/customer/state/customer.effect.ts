@@ -44,7 +44,7 @@ export class CustomerEffect {
       );
       return this.customerService.pagination(params).pipe(
         tap((res) => {
-          if (props.isSet) {
+          if (props.isSet || res.total === 0) {
             this.customerStore.set(res.data);
           } else {
             this.customerStore.add(res.data);

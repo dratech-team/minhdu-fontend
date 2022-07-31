@@ -65,7 +65,7 @@ export class CommodityEffect {
       return this.commodityService.pagination(param)
         .pipe(
           map((res) => {
-            if (props?.isSet) {
+            if (props?.isSet || res.total === 0) {
               this.commodityStore.set(res.data);
             } else {
               this.commodityStore.add(res.data);

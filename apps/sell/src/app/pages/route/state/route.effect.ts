@@ -82,7 +82,7 @@ export class RouteEffect {
           const routes = res.data.map((route) => {
             return this.mapToRoute(route);
           });
-          if (props.isSet) {
+          if (props.isSet || res.total === 0) {
             this.routeStore.set(routes);
           } else {
             this.routeStore.add(routes);
