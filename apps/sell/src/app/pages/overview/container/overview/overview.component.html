@@ -1,0 +1,92 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12 mt-5 d-flex flex-wrap ml-2">
+      <div
+        class="d-flex flex-column mt-4 col-xm-12 px-2 border w-100"
+        style="margin-right: 1%; position: relative"
+      >
+        <div class="mt-2 d-flex justify-content-between">
+          <span class="mt-2 ml-3 mb-1 title-chart">Thống kê theo tỉnh</span>
+          <select-statical
+            (onChangeValue)="onStatistical(filterOverview.NATION, $event)"
+            (onExport)="
+              printStatistical(
+                Api.SELL.STATISTICAL.STATISTICAL_PROVINCE_PRINT,
+                $event
+              )
+            "
+          ></select-statical>
+        </div>
+        <div>
+          <app-swim-lane-chart
+            [data]="statisticalProvince"
+            [labelX]="'Tỉnh thành'"
+            [labelY]="labelYProvince"
+            [legend]="true"
+          >
+          </app-swim-lane-chart>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 mt-5 d-flex flex-wrap ml-2">
+      <div
+        class="d-flex flex-column mt-4 col-xm-12 px-2 border w-100"
+        style="margin-right: 1%; position: relative"
+      >
+        <div class="mt-2 d-flex justify-content-between">
+          <span class="mt-2 ml-3 mb-1 title-chart"
+            >Thống kê theo khách hàng</span
+          >
+          <select-statical
+            [type]="filterOverview.CUSTOMER"
+            (onChangeValue)="onStatistical(filterOverview.CUSTOMER, $event)"
+            (onExport)="
+              printStatistical(
+                Api.SELL.STATISTICAL.STATISTICAL_AGENCY_PRINT,
+                $event
+              )
+            "
+          ></select-statical>
+        </div>
+        <div>
+          <app-swim-lane-chart
+            [data]="statisticalAgency"
+            [labelX]="'Khách hàng'"
+            [labelY]="labelYProvince"
+            [legend]="true"
+          >
+          </app-swim-lane-chart>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 mt-5 d-flex flex-wrap ml-2">
+      <div
+        class="d-flex flex-column mt-4 col-xm-12 px-2 border w-100"
+        style="margin-right: 1%; position: relative"
+      >
+        <div class="mt-2 d-flex justify-content-between">
+          <span class="mt-2 ml-3 mb-1 title-chart">Thống kê theo năm</span>
+          <select-statical
+            [type]="filterOverview.YEAR"
+            (onChangeValue)="onStatistical(filterOverview.YEAR, $event)"
+            (onExport)="
+              printStatistical(
+                Api.SELL.STATISTICAL.STATISTICAL_AGENCY_PRINT,
+                $event
+              )
+            "
+          ></select-statical>
+        </div>
+        <div>
+          <app-swim-lane-chart
+            [data]="statisticalYear"
+            [labelX]="'Năm'"
+            [labelY]="labelYProvince"
+            [legend]="true"
+          >
+          </app-swim-lane-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

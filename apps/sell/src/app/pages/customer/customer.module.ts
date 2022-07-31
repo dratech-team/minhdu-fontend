@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { CommonModule, DatePipe } from '@angular/common';
-import { CustomerEffect } from './+state';
+import { CustomerEffect } from './state';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { HttpClientModule } from '@angular/common/http';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -20,9 +20,9 @@ import { SharedModule } from '../../shared/shared.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
 import { NzMessageModule } from 'ng-zorro-antd/message';
-import { OrderEffect } from '../order/+state';
+import { OrderEffect } from '../order/state';
 import { CommodityEffect } from '../commodity/state';
-import { RouteEffect } from '../route/+state';
+import { RouteEffect } from '../route/state';
 import { MatSortModule } from '@angular/material/sort';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
@@ -39,10 +39,16 @@ import { EmployeeModule } from '../../../../../hrv2/src/app/pages/employee/emplo
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-import { PaymentEffect } from '../payment/payment';
+import { PaymentEffect } from '../payment/state';
 import { PaymentModule } from '../payment/payment.module';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { CustomerComponentService } from './shared';
+import { CustomNgSortPipe } from '../../shared/pipe/sort.pipe';
+import { OrderListComponent } from './component/order-list/order-list.component';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 @NgModule({
   imports: [
@@ -86,9 +92,14 @@ import { CustomerComponentService } from './shared';
     NzStepsModule,
     NzDatePickerModule,
     PaymentModule,
-    NzDropDownModule
+    NzDropDownModule,
+    NzSwitchModule,
+    NzIconModule,
+    NzSkeletonModule,
+    TooltipModule,
   ],
   declarations: [
+    OrderListComponent,
     CustomerComponent,
     DetailCustomerComponent,
     CustomerModalComponent,
@@ -97,6 +108,7 @@ import { CustomerComponentService } from './shared';
   providers: [
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     DatePipe,
+    CustomNgSortPipe,
     CustomerComponentService,
     CustomerService,
     PaymentService,

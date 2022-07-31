@@ -58,7 +58,7 @@ export class RankComponent implements OnInit {
     this.actions$.dispatch(
       RankActions.loadAll({
         search: this.formGroup.value,
-        isPaginate: isPaginate,
+        isSet: isPaginate,
       })
     );
   }

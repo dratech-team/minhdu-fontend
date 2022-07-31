@@ -24,11 +24,26 @@ export class CommodityTemplateEffect {
   addOne$ = this.action$.pipe(
     ofType(CommodityTemplateActions.addOne),
     switchMap((props) => {
+      this.store.update((state) => ({
+        ...state,
+        loading: true
+      }));
       return this.service.addOne(props).pipe(
         tap((res) => {
           this.store.upsert(res.id, res);
+          this.store.update((state) => ({
+            ...state,
+            total: state.total + 1,
+            loading: false,
+            error: null
+          }));
         }),
         catchError((err) => {
+          this.store.update((state) => ({
+            ...state,
+            loading: null,
+            error: err
+          }));
           return of(CommodityTemplateActions.error(err));
         })
       );
@@ -39,22 +54,31 @@ export class CommodityTemplateEffect {
   loadAll$ = this.action$.pipe(
     ofType(CommodityTemplateActions.loadAll),
     switchMap((props) => {
-      this.store.update((state) => ({ ...state, loading: true }));
+      this.store.update((state) => ({
+        ...state,
+        loading: true
+      }));
       return this.service.pagination(props).pipe(
         tap((res) => {
-          this.store.update((state) => ({ ...state, loading: false }));
-          if (props.isPaginate) {
-            this.store.add(res.data);
-          } else {
+          if (props.isSet) {
             this.store.set(res.data);
+          } else {
+            this.store.add(res.data);
           }
           this.store.update(state => ({
             ...state,
-            remain: res.total - this.query.getCount()
+            remain: res.total - this.query.getCount(),
+            total: res.total,
+            loading: false,
+            error: null
           }));
         }),
         catchError((err) => {
-          this.store.update((state) => ({ ...state, loading: false }));
+          this.store.update((state) => ({
+            ...state,
+            loading: false,
+            error: err
+          }));
           return of(CommodityTemplateActions.error(err));
         })
       );
@@ -92,19 +116,30 @@ export class CommodityTemplateEffect {
   );
 
   @Effect()
-  delete$ = this.action$.pipe(
+  remove$ = this.action$.pipe(
     ofType(CommodityTemplateActions.remove),
     switchMap((props) => {
+      this.store.update((state) => ({
+        ...state,
+        loading: true
+      }));
       return this.service.delete(props.id).pipe(
         tap((_) => {
-          this.message.success('Xoá bản mẫu thành công');
           this.store.update((state) => ({
             ...state,
-            total: state.total - 1
+            total: state.total - 1,
+            loading: false,
+            error: null
           }));
           this.store.remove(props?.id);
+          this.message.success('Xoá bản mẫu thành công');
         }),
         catchError((err) => {
+          this.store.update((state) => ({
+            ...state,
+            loading: null,
+            error: err
+          }));
           return of(CommodityTemplateActions.error(err));
         })
       );

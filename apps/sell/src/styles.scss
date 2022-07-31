@@ -40,11 +40,6 @@ Not supports in Firefox and IE */
   display: none
 }
 
-/* div box */
-body {
-  background-color: #babac0
-}
-
 .scrollbar {
   height: 75vh;
   width: 25vw;
@@ -171,6 +166,25 @@ app-dashboard {
   color: #1f2229;
 }
 
+.sub-table-title {
+  font-weight: 200;
+}
+
+.total {
+  font-weight: bold;
+  color: black;
+}
+
+.total-price {
+  font-weight: bold;
+  color: red;
+}
+
+.payment {
+  font-weight: bold;
+  color: rgb(39, 121, 41);
+}
+
 .required {
   color: red;
 }
@@ -184,7 +198,6 @@ app-dashboard {
   font-family: Roboto, Arial, Helvetica, sans-serif;
   font-weight: 400;
   color: #1f2229;
-  padding-right: 8px;
 }
 
 .label-input {

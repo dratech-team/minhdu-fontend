@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewContainerRef } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { debounceTime, tap } from 'rxjs/operators';
+import { FormControl, FormGroup } from '@angular/forms';
+import { debounceTime, startWith } from 'rxjs/operators';
 import { CustomerEntity } from '../../../pages/customer/entities';
 import { CustomerType, ModeEnum } from '@minhdu-fontend/enums';
 import { CustomerModalComponent } from '../../../pages/customer/component';
-import { CustomerActions, CustomerQuery } from '../../../pages/customer/+state';
+import { CustomerActions, CustomerQuery } from '../../../pages/customer/state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { CustomerConstant, ResourcesConstant } from '../../../pages/customer/constants';
+import { CustomerTypeConstant, ResourcesConstant } from '../../../pages/customer/constants';
 import { AccountQuery } from '../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { PaginationDto } from '@minhdu-fontend/constants';
 
@@ -18,7 +18,7 @@ import { PaginationDto } from '@minhdu-fontend/constants';
 export class SelectCustomerComponent implements OnInit {
   @Input() customers: CustomerEntity[] = [];
   @Input() pickOne = false;
-  @Input() formGroup!: UntypedFormGroup;
+  @Input() formGroup!: FormGroup;
   @Input() closeable = false;
   @Output() checkEvent = new EventEmitter<number[]>();
   @Input() data!: any;
@@ -32,14 +32,14 @@ export class SelectCustomerComponent implements OnInit {
   customerIds: number[] = [];
 
   ResourcesConstant = ResourcesConstant;
-  CustomerConstant = CustomerConstant;
+  CustomerConstant = CustomerTypeConstant;
   CustomerType = CustomerType;
   ModeEnum = ModeEnum;
 
-  formGroupCustomer = new UntypedFormGroup({
-    name: new UntypedFormControl(''),
-    type: new UntypedFormControl(''),
-    resource: new UntypedFormControl('')
+  formGroupCustomer = new FormGroup({
+    name: new FormControl(''),
+    type: new FormControl(''),
+    resource: new FormControl('')
   });
 
   constructor(
@@ -54,23 +54,17 @@ export class SelectCustomerComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.customers.length === 0) {
-      this.actions$.dispatch(
-        CustomerActions.loadAll({ search: { take: 30, skip: 0 } })
-      );
       this.customers$.subscribe((customers) => {
         this.customers = JSON.parse(JSON.stringify(customers));
       });
     }
     this.formGroupCustomer.valueChanges
-      .pipe(
-        debounceTime(1000),
-        tap((value) => {
-          this.actions$.dispatch(
-            CustomerActions.loadAll({ search: this.mapToCustomer(value) })
-          );
-        })
-      )
-      .subscribe();
+      .pipe(debounceTime(500), startWith(this.formGroupCustomer.value))
+      .subscribe((fg) => {
+        this.actions$.dispatch(
+          CustomerActions.loadAll({ search: this.mapToCustomer(fg) })
+        );
+      });
   }
 
   onAdd() {
@@ -89,7 +83,7 @@ export class SelectCustomerComponent implements OnInit {
     this.actions$.dispatch(
       CustomerActions.loadAll({
         search: this.mapToCustomer(val, true),
-        isPaginate: true
+        isSet: true
       })
     );
   }

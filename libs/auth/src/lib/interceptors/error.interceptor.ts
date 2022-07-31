@@ -35,7 +35,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           const currentUser = this.accountQuery.getCurrentUser();
           if (currentUser) {
             this.actions$.dispatch(
-              AccountActions.logout({ id: currentUser.id })
+              AccountActions.signOut({ id: currentUser.id })
             );
           }
         } else if ([403].indexOf(err.status) !== -1) {

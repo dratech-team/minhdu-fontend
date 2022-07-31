@@ -4,56 +4,55 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { Update } from '@ngrx/entity';
-import { ResponsePaginate } from '@minhdu-fontend/data-models';
-import { AddOrderDto, BaseSearchOrderDto, UpdateOrderDto } from '../dto';
-import { CommodityUniq } from '../../commodity/entities';
-import { OrderEntity } from '../enitities/order.entity';
+import { AddOrderDto, BaseUpdateOrderDto, SearchOrderDto } from '../dto';
+import { BaseOrderEntity, OrderEntity } from '../enitities';
+import { ResponsePaginateOrderEntity } from '../enitities/response-paginate-order.entity';
+import { CustomerEntity } from '../../customer/entities';
+import { VersionEnum } from '@minhdu-fontend/enums';
 
 @Injectable({ providedIn: 'root' })
-export class OrderService extends BaseService<OrderEntity> {
+export class OrderService extends BaseService<BaseOrderEntity> {
   constructor(public readonly http: HttpClient) {
     super(Api.SELL.ORDER.ORDER, http);
   }
 
-  addOne(props: AddOrderDto): Observable<OrderEntity> {
+  addOne(props: AddOrderDto): Observable<BaseOrderEntity> {
     return super.addOne(props.body);
   }
 
-  pagination(
-    params?: BaseSearchOrderDto
-  ): Observable<ResponsePaginate<OrderEntity> & { commodityUniq: CommodityUniq[] }> {
-    return super.pagination(params);
+  pagination(params?: SearchOrderDto): Observable<ResponsePaginateOrderEntity> {
+    return super.pagination(params?.search);
   }
 
-  payment(id: number, body: any): Observable<Update<OrderEntity>> {
-    return this.http.patch<Update<OrderEntity>>(this.url + `/${id}/paid`, body);
+  payment(id: number, body: any): Observable<Update<BaseOrderEntity>> {
+    return this.http.patch<Update<BaseOrderEntity>>(this.url + `/${id}/paid`, body);
   }
 
-  getOne(id: OrderEntity['id']): Observable<OrderEntity> {
+  getOne(id: BaseOrderEntity['id']): Observable<BaseOrderEntity> {
     return super.getOne(id);
   }
 
-  update(updateDto: UpdateOrderDto): Observable<OrderEntity> {
-    return super.update(updateDto.id, updateDto.updates);
+  update(id: number, updates: Partial<BaseUpdateOrderDto>): Observable<BaseOrderEntity> {
+    return super.update(id, updates);
   }
 
-  hide(id: any, body: any): Observable<OrderEntity> {
-    return this.http.patch<OrderEntity>(this.url + '/hide' + `/${id}`, body);
+  hide(id: any, body: any): Observable<BaseOrderEntity> {
+    return this.http.patch<BaseOrderEntity>(this.url + '/hide' + `/${id}`, body);
   }
 
-  delete(id: OrderEntity['id']): Observable<void> {
+  delete(id: BaseOrderEntity['id']): Observable<void> {
     return super.delete(id);
   }
 
-  cancel(id: OrderEntity['id']): Observable<OrderEntity> {
-    return this.http.delete<OrderEntity>(this.url + `/${id}` + '/cancel');
+  cancel(id: BaseOrderEntity['id'], body: { reason?: string | null | undefined }): Observable<BaseOrderEntity> {
+    return this.http.delete<OrderEntity>(this.url + `/${id}` + '/cancel', { body });
   }
 
-  restore(id: OrderEntity['id']): Observable<OrderEntity> {
-    return this.http.patch<OrderEntity>(this.url + `/${id}` + '/restore', null);
+  restore(id: BaseOrderEntity['id']): Observable<BaseOrderEntity> {
+    return this.http.patch<BaseOrderEntity>(this.url + `/${id}` + '/restore', null);
   }
 
-  orderHistory(): Observable<any> {
-    return this.http.get('');
+  syncPriceTotal(id: number): Observable<BaseOrderEntity> {
+    return this.http.get<BaseOrderEntity>(VersionEnum.V1 + Api.SELL.ORDER.ORDER + `/${id}/price-total/sync`);
   }
 }

@@ -60,13 +60,13 @@ export class SystemHistoryEffects {
       }));
       Object.assign(props.search, {
         take: PaginationDto.take,
-        skip: props.isPaginate
+        skip: props.isSet
           ? this.systemHistoryQuery.getCount()
           : PaginationDto.skip,
       });
       return this.accountService.pagination(props).pipe(
         map((res) => {
-          if (props.isPaginate) {
+          if (props.isSet) {
             this.systemHistoryStore.add(res.data);
           } else {
             this.systemHistoryStore.set(res.data);

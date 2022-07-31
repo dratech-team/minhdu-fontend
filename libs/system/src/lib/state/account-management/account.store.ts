@@ -1,9 +1,4 @@
-import {
-  ActiveState,
-  EntityState,
-  EntityStore,
-  StoreConfig,
-} from '@datorama/akita';
+import { ActiveState, EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
 import { StorageName } from '@minhdu-fontend/constants';
 import { AccountEntity } from '../../entities/account.entity';
@@ -22,12 +17,12 @@ function createInitState(): AccountState {
     loading: false,
     total: 0,
     remain: 0,
-    active: null,
+    active: null
   };
 }
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: StorageName.ACCOUNT })
+@StoreConfig({ name: StorageName.ACCOUNT, resettable: true })
 export class AccountStore extends EntityStore<AccountState> {
   constructor() {
     super(createInitState());

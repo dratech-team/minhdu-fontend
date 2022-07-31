@@ -1,69 +1,104 @@
 <div>
   <nz-table
     #tablePaymentHistory
-    [nzData]="(paymentHistories$ | async) || []"
+    nzSize='middle'
+    [nzData]='(paymentHistories$ | async) || []'
     [nzScroll]="{ y: '300px' }"
-    nzSize="middle"
-    [nzPageSize]="pageSizeTable"
-    (nzPageIndexChange)="onLoadMore($event)"
+    [nzBordered]='true'
+    [nzShowPagination]='false'
+    [nzFrontPagination]='false'
   >
-    <thead [formGroup]="formGroup">
-      <tr>
-        <th>
-          <div>Ngày Thanh toán</div>
-          <input formControlName="paidAt" nz-input type="date" />
-        </th>
-        <th>
-          <div>Số tiền thanh toán</div>
-          <input [disabled]="true" nz-input type="number" />
-        </th>
-        <th>
-          <div>Đơn vị</div>
-          <input [disabled]="true" nz-input type="number" />
-        </th>
-        <th>
-          <div>Loại thanh toán</div>
-          <input [disabled]="true" nz-input type="number" />
-        </th>
-        <th>
-          <div>Chú thích</div>
-          <input [disabled]="true" nz-input type="number" />
-        </th>
-      </tr>
+    <thead [formGroup]='formGroup'>
+    <tr>
+      <th>
+        <div>Ngày Thanh toán</div>
+        <nz-range-picker formControlName='ranges'></nz-range-picker>
+      </th>
+      <th>
+        Số tiền thanh toán
+      </th>
+      <th>
+        <div>Loại thanh toán</div>
+        <input [disabled]='true' nz-input type='number' />
+      </th>
+      <th>
+        Chú thích
+      </th>
+      <th nzWidth='120px'>
+        Chỉnh sửa
+      </th>
+      <th nzWidth='90px'>
+        Xoá
+      </th>
+    </tr>
     </thead>
     <tbody>
-      <ng-template
-        ngFor
-        let-paymentHistory
-        [ngForOf]="tablePaymentHistory.data"
+    <ng-template
+      ngFor
+      let-paymentHistory
+      [ngForOf]='tablePaymentHistory.data'
+    >
+      <tr
+        class='pointer'
+        (contextmenu)='onContextMenu($event, menu)'
       >
-        <tr
-          class="pointer"
-          (click)="onUpdate(paymentHistory)"
-          (contextmenu)="child.onContextMenu($event, paymentHistory)"
+        <nz-dropdown-menu #menu='nzDropdownMenu'>
+          <ul class='context-menu' nz-menu>
+            <li nz-menu-item *ngFor='let item of menus' (click)='item.click(paymentHistory)'>
+              {{item.title}}
+            </li>
+          </ul>
+        </nz-dropdown-menu>
+        <td>
+          {{ paymentHistory?.paidAt | date: 'dd/MM/yyyy' }}
+        </td>
+        <td>
+          {{ paymentHistory.total | currency: 'VND' | notEmpty: '0đ' }}
+        </td>
+        <td>{{paymentHistory?.payType === payType.CASH ? 'Tiền mặt' : 'Chuyển khoản' }}</td>
+        <td>
+          {{ paymentHistory?.note || 'Không có dữ liệu.' }}
+        </td>
+        <td (click)='$event.stopPropagation()'>
+          <i class='pointer'
+             style="font-size: 1.2em"
+             nz-icon
+             nzType='edit'
+             nzTheme='outline'
+             (click)='onUpdate(paymentHistory)'
+          ></i>
+        </td>
+        <td (click)='$event.stopPropagation()'>
+          <i
+            class='pointer color-delete'
+            style="font-size: 1.2em"
+            nz-icon
+            nzType='delete'
+            nzTheme='outline'
+            (click)='onRemove(paymentHistory)'
+          ></i>
+        </td>
+      </tr>
+    </ng-template>
+    <tr *ngIf='(remain$ | async)'>
+      <td colspan='10'>
+        <div
+          class='w-100 d-flex justify-content-start'
+          style='position: relative'
         >
-          <td>
-            {{ paymentHistory?.paidAt | date: 'dd/MM/yyyy' }}
-          </td>
-          <td>
-            {{ paymentHistory.total | number: '1.0-0' | notEmpty: '0' }}
-          </td>
-          <td>Việt nam đồng</td>
-          <td *ngIf="paymentHistory?.payType === payType.CASH">Tiền mặt</td>
-          <td *ngIf="paymentHistory?.payType === payType.TRANSFER">
-            Chuyển khoản
-          </td>
-          <td>
-            {{ paymentHistory?.note }}
-          </td>
-        </tr>
-      </ng-template>
+          <button
+            nz-button
+            nzGhost
+            nzType='primary'
+            style='position: sticky; left: 45vw'
+            [nzLoading]='loading$ | async'
+            (click)='onLoadMore()'
+          >
+            Tải thêm {{ remain$ | async }} giá trị
+          </button>
+        </div>
+      </td>
+    </tr>
     </tbody>
   </nz-table>
 </div>
-<app-mouse-right
-  #child
-  (onDel)="onDelete($event)"
-  (onUpdate)="onUpdate($event)"
->
-</app-mouse-right>

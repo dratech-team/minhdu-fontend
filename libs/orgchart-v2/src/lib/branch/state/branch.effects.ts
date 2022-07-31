@@ -39,7 +39,7 @@ export class BranchEffects {
           if (response.data.length === 1 && response.data[0].positions) {
             this.positionStore.set(response.data[0].positions);
           }
-          if (props.isPaginate) {
+          if (props.isSet) {
             this.branchStore.add(response.data);
           } else {
             this.branchStore.set(response.data);

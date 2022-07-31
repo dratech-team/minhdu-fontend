@@ -3,22 +3,21 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Api } from '@minhdu-fontend/constants';
 import { ModeEnum, SortRouteEnum } from '@minhdu-fontend/enums';
-import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
 import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
-import { debounceTime, map } from 'rxjs/operators';
-import { RouteActions, RouteQuery, RouteStore } from '../../+state';
+import { debounceTime, map, startWith } from 'rxjs/operators';
+import { RouteActions, RouteQuery, RouteStore } from '../../state';
 import { RouteEntity } from '../../entities';
 import { Actions } from '@datorama/akita-ng-effects';
 import { DatePipe } from '@angular/common';
-import { OrderActions } from '../../../order/+state';
+import { OrderActions } from '../../../order/state';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { RadiosStatusRouteConstant } from '../../constants';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
-import { UpdaterRouteTypeEnum } from '../../enums/updater-route-type.enum';
+import { UpdaterRouteTypeEnum } from '../../enums';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { RouteComponentService } from '../../shared';
 
@@ -30,10 +29,10 @@ export class RouteComponent implements OnInit {
 
   account$ = this.accountQuery.selectCurrentUser();
   loading$ = this.routeQuery.selectLoading();
+  ui$ = this.routeQuery.selectUI();
   total$ = this.routeQuery.select((state) => state.total);
   count$ = this.routeQuery.selectCount();
   remain$ = this.routeQuery.select((state) => state.remain);
-  ui$ = this.routeQuery.select((state) => state.ui);
   expandAll$ = this.routeQuery.select((state) => state.expandedAll);
   routes$ = this.routeQuery
     .selectAll()
@@ -85,10 +84,10 @@ export class RouteComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup.valueChanges
-      .pipe(debounceTime(500))
+      .pipe(debounceTime(500), startWith(this.formGroup.value))
       .subscribe((route) => {
         this.actions$.dispatch(
-          RouteActions.loadAll({ search: this.mapRoute(route), isPaginate: false })
+          RouteActions.loadAll({ search: this.mapRoute(route) })
         );
       });
   }
@@ -122,21 +121,6 @@ export class RouteComponent implements OnInit {
     $event.stopPropagation();
   }
 
-  public onEnd(route: RouteEntity) {
-    this.modal.create({
-      nzTitle: 'Xác nhận giao hàng',
-      nzContent: DialogDatePickerComponent,
-      nzMaskClosable: false,
-      nzFooter: []
-    }).afterClose.subscribe((res: { date: Date }) => {
-      if (res) {
-        this.actions$.dispatch(
-          RouteActions.update({ id: route.id, updates: { endedAt: res.date } })
-        );
-      }
-    });
-  }
-
   public onPickStartedDay($event: any) {
     this.formGroup
       .get('startedAt_start')
@@ -153,7 +137,7 @@ export class RouteComponent implements OnInit {
 
   public onLoadMore() {
     this.actions$.dispatch(
-      RouteActions.loadAll({ search: this.mapRoute(this.formGroup.value), isPaginate: true })
+      RouteActions.loadAll({ search: this.mapRoute(this.formGroup.value), isSet: true })
     );
   }
 
@@ -170,7 +154,7 @@ export class RouteComponent implements OnInit {
     this.actions$.dispatch(
       OrderActions.loadAll({
         search: this.mapRoute(this.formGroup.value),
-        isPaginate: false
+        isSet: false
       })
     );
   }
@@ -180,19 +164,16 @@ export class RouteComponent implements OnInit {
   }
 
   private mapRoute(val: any) {
-    this.routeStore.update((state) => ({
-      ...state,
-      search: val
-    }));
+    if (!val.startedAt_start || !val.startedAt_end) {
+      val = _.omit(val, ['startedAt_start', 'startedAt_end']);
+    }
     if (!val.endedAt_start || !val.endedAt_end) {
-      delete val.endedAt_end;
-      delete val.endedAt_start;
+      val = _.omit(val, ['endedAt_start', 'endedAt_end']);
     }
     if (this.valueSort?.orderType) {
       Object.assign(val, this.valueSort);
     } else {
-      delete val.orderType;
-      delete val.orderBy;
+      val = _.omit(val, ['orderType', 'orderBy']);
     }
     return val;
   }

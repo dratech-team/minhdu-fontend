@@ -1,34 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RouteActions, RouteQuery } from '../../+state';
-import { PaymentType } from '@minhdu-fontend/enums';
+import { RouteActions, RouteQuery, RouteStore } from '../../state';
+import { ModeEnum, PaymentType } from '@minhdu-fontend/enums';
 import { Actions } from '@datorama/akita-ng-effects';
-import { CancelEnum } from '../../enums';
+import { CancelEnum, UpdaterRouteTypeEnum } from '../../enums';
 import { CommodityEntity } from '../../../commodity/entities';
-import { OrderActions } from '../../../order/+state';
+import { OrderActions } from '../../../order/state';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { UpdaterRouteTypeEnum } from '../../enums/updater-route-type.enum';
-import { OrderEntity } from '../../../order/enitities/order.entity';
+import { OrderEntity } from '../../../order/enitities';
 import { ModalDatePickerComponent } from '@minhdu-fontend/components';
 import { ModalDatePickerEntity } from '@minhdu-fontend/base-entity';
 import { map } from 'rxjs/operators';
 import { RouterConstants } from '../../../../shared/constants';
 import { RouteComponentService } from '../../shared';
+import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
+import { RouteEntity } from '../../entities';
+import { arrayUpdate } from '@datorama/akita';
 
 @Component({
   templateUrl: 'detail-route.component.html',
   styleUrls: ['detail-route.component.scss']
 })
 export class DetailRouteComponent implements OnInit {
+  account$ = this.accountQuery.selectCurrentUser();
   loading$ = this.routeQuery.selectLoading();
+  expandedAll$ = this.routeQuery.select((state) => state.expandedAll);
   route$ = this.routeQuery.selectEntity(this.routeId)
-    .pipe(map(route => {
-      if (route) {
-        return JSON.parse(JSON.stringify(route));
-      }
-    }));
+    .pipe(map(route => route && JSON.parse(JSON.stringify(route))));
 
+  ModeEnum = ModeEnum;
+  RouterConstants = RouterConstants;
   PaymentType = PaymentType;
   UpdaterRouteTypeEnum = UpdaterRouteTypeEnum;
 
@@ -38,9 +40,14 @@ export class DetailRouteComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
+    private readonly modal: NzModalService,
     private readonly routeQuery: RouteQuery,
-    private readonly modal: NzModalService
+    private readonly accountQuery: AccountQuery,
+    private readonly routeStore: RouteStore
   ) {
+    this.router.routeReuseStrategy.shouldReuseRoute = function() {
+      return false;
+    };
   }
 
   ngOnInit() {
@@ -49,6 +56,18 @@ export class DetailRouteComponent implements OnInit {
 
   get routeId(): number {
     return this.activatedRoute.snapshot.params.id;
+  }
+
+  public onExpandAll() {
+    const expandedAll = this.routeQuery.getValue().expandedAll;
+    const route = this.routeQuery.getEntity(this.routeId);
+    if (route) {
+      this.routeStore.update(route.id, ({ orders }) => ({
+        orders: arrayUpdate(orders, orders.map(order => order.id), { expand: !expandedAll })
+      }));
+    }
+
+    this.routeStore.update((state) => ({ ...state, expandedAll: !expandedAll }));
   }
 
   public onAddCommodity(commodity: CommodityEntity) {
@@ -71,18 +90,17 @@ export class DetailRouteComponent implements OnInit {
   }
 
   public onCompleteOrder(order: OrderEntity) {
-    this.modal
-      .create({
-        nzTitle: 'Xác nhận giao hàng',
-        nzContent: ModalDatePickerComponent,
-        nzComponentParams: <{ data: ModalDatePickerEntity }>{
-          data: {
-            type: 'date',
-            dateInit: new Date()
-          }
-        },
-        nzFooter: []
-      })
+    this.modal.create({
+      nzTitle: 'Xác nhận giao hàng',
+      nzContent: ModalDatePickerComponent,
+      nzComponentParams: <{ data: ModalDatePickerEntity }>{
+        data: {
+          type: 'date',
+          dateInit: new Date()
+        }
+      },
+      nzFooter: []
+    })
       .afterClose.subscribe((val) => {
       if (val && this.routeId) {
         this.actions$.dispatch(
@@ -137,7 +155,16 @@ export class DetailRouteComponent implements OnInit {
     });
   }
 
-  public onRoute(orderId: number) {
-    this.router.navigate([RouterConstants.ORDER.DETAIL, orderId]).then();
+  public onRoute(id: number, type: 'ORDER' | 'ROUTE') {
+    if (type === 'ORDER') {
+      this.router.navigate([RouterConstants.ORDER.DETAIL, id]).then();
+    } else {
+      this.router.navigate([RouterConstants.ROUTE.DETAIL, id]).then();
+    }
+  }
+
+  public titleTotalCommodityUniq(route: RouteEntity) {
+    return `${route.commodityUniq.reduce((a, b) => a + b.amount, 0)} Con. Trong đó:
+    ${route.commodityUniq.map((commodity) => commodity.amount + ' ' + commodity.code)} `;
   }
 }

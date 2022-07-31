@@ -16,8 +16,8 @@ import {
 import { DataModalCommodityTemplateData } from '../data/data-modal-commodity-template.data';
 import { ContextMenuEntity } from '@minhdu-fontend/data-models';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
-import { OrderActions } from '../../order/+state';
-import { startWith } from 'rxjs/operators';
+import { OrderActions } from '../../order/state';
+import { debounceTime, startWith } from 'rxjs/operators';
 import { AccountQuery } from '../../../../../../../libs/system/src/lib/state/account-management/account.query';
 import { ModeEnum } from '@minhdu-fontend/enums';
 
@@ -65,18 +65,18 @@ export class CommodityTemplateComponent implements OnInit {
     private readonly nzContextMenuService: NzContextMenuService,
     private readonly store: CommodityTemplateStore,
     private readonly query: CommodityTemplateQuery,
-    private readonly accountQuery: AccountQuery,
+    private readonly accountQuery: AccountQuery
   ) {
   }
 
   ngOnInit() {
     this.formGroup.valueChanges
-      .pipe(startWith(''))
-      .subscribe((_) => {
+      .pipe(debounceTime(500), startWith(this.formGroup.value))
+      .subscribe((formGroup) => {
         this.actions$.dispatch(
           CommodityTemplateActions.loadAll({
-            search: this.mapTemplate(this.formGroup.value, false),
-            isPaginate: false
+            search: this.mapTemplate(formGroup, false),
+            isSet: false
           })
         );
       });

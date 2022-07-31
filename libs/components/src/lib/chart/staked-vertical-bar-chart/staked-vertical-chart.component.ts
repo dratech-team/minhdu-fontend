@@ -16,8 +16,8 @@ export class StakedVerticalChartComponent implements OnChanges {
   legendPosition = LegendPosition.Below;
   width = 0;
   ngOnChanges() {
-    this.data = this.chartService.editNameChart(this.data);
-    this.width = this.chartService.fixWithChartColumn(this.data);
+    this.data = this.chartService.generateNameChart(this.data);
+    this.width = this.chartService.fitWidth(this.data);
   }
 
   constructor(private readonly chartService: ChartService) {}

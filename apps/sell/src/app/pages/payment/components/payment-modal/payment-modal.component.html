@@ -79,15 +79,8 @@
 <ng-template [ngIf]='indexStep === 1'>
   <select-order
     [formGroup]='formGroup'
-    [columns]='[
-      orderEnum.CREATED_AT,
-      orderEnum.TOTAL_COMMODITIES,
-      orderEnum.TOTAL_AMOUNT_COMMODITY,
-      orderEnum.PAYMENT,
-      orderEnum.AMOUNT_PAYMENT,
-      orderEnum.EXPLAIN
-    ]'
-    [pickOne]='true'
+    [selectOne]='true'
+    [search]='{customerId: (data?.add?.order?.customerId || data.add?.customer?.id)}'
   ></select-order>
 </ng-template>
 
@@ -108,9 +101,8 @@
         <span>
           {{
           formGroup.value.paidTotal
-            | roundingnumber: 100
-            | number: '1.0'
-            | notEmpty: '0'
+            | currency: 'VND'
+            | notEmpty: '0đ'
           }}</span
         >
       </div>
@@ -130,7 +122,6 @@
     <div class='h5 mt-2'>Đơn hàng</div>
     <nz-table
       class='mt-2'
-      style='width: 100%'
       [nzData]='[formGroup.value.order]'
       #tableOrder
       nzSize='small'
@@ -149,7 +140,7 @@
         <tr>
           <td>{{ orderPicked?.customer?.lastName }}</td>
           <td>{{ orderPicked?.createdAt | date: 'dd/MM/yyyy' }}</td>
-          <td>{{ orderPicked?.commodityTotal | number: '0.0' }}</td>
+          <td class='text-red-500'>{{ orderPicked?.priceTotal | number: '0.0' }}</td>
           <td>{{ orderPicked?.paymentHistories?.length }}</td>
         </tr>
       </ng-template>

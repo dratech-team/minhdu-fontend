@@ -60,7 +60,7 @@ export class HistoryPayrollComponent implements OnInit {
     this.actions$.dispatch(
       PayrollActions.loadAll({
         search: this.mapPayroll(this.formGroup.value),
-        isPaginate: isPagination,
+        isSet: isPagination,
       })
     );
   }

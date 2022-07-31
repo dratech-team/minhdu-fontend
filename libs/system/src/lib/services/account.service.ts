@@ -22,7 +22,7 @@ export class AccountService extends BaseService<AccountEntity> {
   }
 
   pagination(props: SearchAccountDto): Observable<any> {
-    return super.pagination(props.isPaginate);
+    return super.pagination(props.isSet);
   }
 
   getAll(props: SearchAccountDto): Observable<AccountEntity[]> {

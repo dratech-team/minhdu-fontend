@@ -109,14 +109,24 @@
       </div>
     </div>
   </form>
-  <div class='row d-flex mt-3 justify-content-center'>
+  <div class='row d-flex mt-3 ml-2 justify-content-start'>
     <button
+      class='mr-2'
       nz-button
       nzType='primary'
       [nzLoading]='(loading$ | async)'
-      (click)='onSubmit()'
+      (click)='onSubmit(false)'
     >
-      Xác nhận
+      Cập nhật
+    </button>
+    <button
+      nz-button
+      nzType='primary'
+      *ngIf='data !== null && data !== undefined && !compare()'
+      [nzLoading]='(loading$ | async)'
+      (click)='onSubmit(true)'
+    >
+      Cập nhật và lưu lịch sử
     </button>
   </div>
 </div>

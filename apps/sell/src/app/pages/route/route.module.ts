@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ComponentsModule } from '@minhdu-fontend/components';
-import { RouteEffect } from './+state';
+import { RouteEffect } from './state';
 import { CompleteRouteDialogComponent, RouteDialogComponent, VisibleRouteComponent } from './component';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -18,8 +18,8 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
-import { OrderEffect } from '../order/+state';
-import { CustomerEffect } from '../customer/+state';
+import { OrderEffect } from '../order/state';
+import { CustomerEffect } from '../customer/state';
 import { CommodityEffect } from '../commodity/state';
 import { MatSortModule } from '@angular/material/sort';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
@@ -37,6 +37,9 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { RouteComponentService } from './shared';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { UiPipe } from '../../shared/pipe';
 
 @NgModule({
   imports: [
@@ -73,7 +76,9 @@ import { RouteComponentService } from './shared';
     NzSpinModule,
     NzDropDownModule,
     NzIconModule,
-    NzSkeletonModule
+    NzSkeletonModule,
+    NzToolTipModule,
+    NzCheckboxModule
   ],
   declarations: [
     RouteComponent,
@@ -84,6 +89,7 @@ import { RouteComponentService } from './shared';
   ],
   exports: [VisibleRouteComponent],
   providers: [
+    UiPipe,
     DatePipe,
     RouteService,
     RouteComponentService,

@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { ProvinceAction } from './nation.action';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { ProvinceService } from '../../service/province.service';
+import { ProvinceService } from '@minhdu-fontend/location';
 
 @Injectable()
 export class ProvinceEffect {
@@ -31,5 +31,6 @@ export class ProvinceEffect {
   constructor(
     private readonly action: Actions,
     private readonly provinceService: ProvinceService
-  ) {}
+  ) {
+  }
 }

@@ -1,0 +1,166 @@
+<nz-table
+  #tableOrder
+  nzSize='middle'
+  [nzScroll]="{ y: '80vh' }"
+  [nzData]='orders'
+  [nzLoading]='loading'
+  [nzPageSize]='pageSizeTable'
+  [nzShowPagination]='false'
+  [nzFrontPagination]='false'
+  [nzBordered]='true'
+>
+  <thead [formGroup]='formGroup'>
+  <tr>
+    <th nzWidth='50px'>
+      STT
+    </th>
+    <th nzWidth='50px' *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>
+      ID
+    </th>
+    <th>
+      <div>Ngày tạo</div>
+      <nz-range-picker
+        formControlName='createdAt'
+        [tooltip]="tooltipRanges('createdAt')"
+      ></nz-range-picker>
+    </th>
+    <th>
+      <div class=''>Điểm đến</div>
+      <input formControlName='province' nz-input type='search' />
+    </th>
+    <th>
+      Tiền đơn hàng
+    </th>
+    <th>
+      Tiền thanh toán
+    </th>
+    <th *ngIf='type === OrderTypeEnum.DELIVERED'>
+      <div>Ngày giao hàng</div>
+      <nz-range-picker
+        formControlName='deliveredAt'
+        [tooltip]="tooltipRanges('deliveredAt')"
+      ></nz-range-picker>
+    </th>
+    <th *ngIf='type === OrderTypeEnum.DELIVERING'>
+      Diễn giải
+    </th>
+    <th *ngIf='type !== OrderTypeEnum.CANCELLED' nzWidth='100px'>
+      <div>Thanh toán</div>
+    </th>
+    <th *ngIf='type === OrderTypeEnum.CANCELLED'>
+      Ngày huỷ
+    </th>
+    <th *ngIf='type === OrderTypeEnum.CANCELLED'>
+      Lý do
+    </th>
+    <th *ngIf='type === OrderTypeEnum.DELIVERING' nzWidth='90px'>
+      Đã giao
+    </th>
+    <th [nzWidth]='type === OrderTypeEnum.DELIVERING ? "80px" : "110px"'>
+      {{type === OrderTypeEnum.DELIVERING ? 'Huỷ' : 'Khôi phục'}}
+    </th>
+    <th nzWidth='120px' *ngIf='type === OrderTypeEnum.DELIVERED'>
+      <div>Ẩn nợ</div>
+      <nz-select style='width: 100px;' formControlName='hiddenDebt'>
+        <nz-option nzLabel='Tất cả' [nzValue]='HideDebtEnum.ALL'></nz-option>
+        <nz-option nzLabel='Ẩn nợ' [nzValue]='HideDebtEnum.HIDDEN'></nz-option>
+        <nz-option nzLabel='Không nợ' [nzValue]='HideDebtEnum.NON_HIDDEN'></nz-option>
+      </nz-select>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-template ngFor let-order [ngForOf]='tableOrder.data' let-i='index'>
+    <tr class='pointer' (click)='onDetail(order.id)'>
+      <td>
+        {{ i + 1 }}
+      </td>
+      <td *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>
+        {{ order.id }}
+      </td>
+      <td>
+        {{ (order?.createdAt | date: 'dd/MM/yyyy') || 'Đang cập nhật' }}
+      </td>
+      <td>
+        {{ order?.ward ? (order.ward?.name + ' - ') : ''}}
+        {{ order?.district ? (order.district?.name + ' - ') : '' }}
+        {{ order.province.name }}
+      </td>
+      <td style='color: #f86c6b'>
+        {{ order.priceTotal | number: '1.0-0' | notEmpty: '0' }} đ
+      </td>
+      <td style='color: #20c997'>
+        {{ order?.paymentTotal | number: '1.0-0' | notEmpty: '0' }} đ
+      </td>
+      <td *ngIf='type === OrderTypeEnum.DELIVERED'>
+        {{ order?.deliveredAt | date: 'dd/MM/yyyy' }}
+      </td>
+      <td *ngIf='type === OrderTypeEnum.DELIVERING'>
+        {{ order?.explain || 'Không có nội dung' }}
+      </td>
+      <td *ngIf='type !== OrderTypeEnum.CANCELLED' (click)='$event.stopPropagation()'>
+        <i
+          class='pointer'
+          style='font-size: 1.3em; color: #3941fc'
+          nz-icon
+          nzType='dollar'
+          nzTheme='outline'
+          (click)='payment(order)'
+        ></i>
+      </td>
+      <td *ngIf='type === OrderTypeEnum.CANCELLED'>
+        {{ order?.cancelledAt | date: 'dd/MM/yyyy' }}
+      </td>
+      <td *ngIf='type === OrderTypeEnum.CANCELLED'>
+        {{ order.reason || 'Không có dữ liệu.' }}
+      </td>
+      <td *ngIf='type === OrderTypeEnum.DELIVERING' (click)='$event.stopPropagation()'>
+        <i
+          class='pointer'
+          style='font-size: 1.3em; color: #3c763d'
+          nz-icon
+          nzType='file-done'
+          nzTheme='outline'
+          (click)='onConfirm(order)'
+        ></i>
+      </td>
+      <td (click)='$event.stopPropagation()'>
+        <i
+          class='pointer'
+          style='font-size: 1.3em; color: red'
+          nz-icon
+          [nzType]="type === OrderTypeEnum.DELIVERING ? 'delete-row' : 'rollback'"
+          nzTheme='outline'
+          (click)='cancel(order)'
+        ></i>
+      </td>
+      <td *ngIf='type === OrderTypeEnum.DELIVERED' (click)='$event.stopPropagation()'>
+        <nz-switch
+          class='m-auto'
+          [ngModel]='order.hide'
+          (ngModelChange)='hide(order)'
+        ></nz-switch>
+      </td>
+    </tr>
+  </ng-template>
+  <tr *ngIf='orderRemaining()'>
+    <td colspan='10'>
+      <div
+        class='w-100 d-flex justify-content-start'
+        style='position: relative'
+      >
+        <button
+          nz-button
+          nzGhost
+          nzType='primary'
+          style='position: sticky; left: 45vw'
+          [nzLoading]='orderLoading()'
+          (click)='onLoadMore()'
+        >
+          Tải thêm {{orderRemaining()}} đơn hàng
+        </button>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>

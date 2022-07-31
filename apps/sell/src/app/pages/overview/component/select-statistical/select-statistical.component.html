@@ -1,0 +1,30 @@
+<form [formGroup]='formGroup' class='d-flex align-content-between p-2'>
+  <div class='d-flex flex-column mr-4'>
+    <span class='font-weight-bold font-sm'>Theo</span>
+    <nz-select class='mt-1' formControlName='option'>
+      <nz-option
+        [hidden]='type === filterOverview.CUSTOMER'
+        [nzValue]='optionOverview.CUSTOMER'
+        nzLabel='Khách hàng'
+      ></nz-option>
+      <nz-option [nzValue]='optionOverview.SOLD' nzLabel='Gà bán'>
+      </nz-option>
+      <nz-option [nzValue]='optionOverview.SALES' nzLabel='Doanh thu'>
+      </nz-option>
+      <nz-option
+        *ngIf='type === filterOverview.CUSTOMER'
+        [nzValue]='optionOverview.DEBT'
+        nzLabel='Công nợ'
+      ></nz-option>
+    </nz-select>
+  </div>
+  <div class='d-flex flex-column'>
+    <span class='font-weight-bold font-sm'>Bắt đầu từ</span>
+    <nz-range-picker
+      class='mt-1'
+      formControlName='range'
+      [nzRanges]='ranges'
+    >
+    </nz-range-picker>
+  </div>
+</form>

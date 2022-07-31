@@ -1,10 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityUnit } from '@minhdu-fontend/enums';
 import { CommodityAction, CommodityQuery } from '../../state';
 import { CommodityService } from '../../service';
-import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CommodityTemplateQuery } from '../../../commodity-template/state/commodity-template.query';
 import { CommodityTemplateActions } from '../../../commodity-template/state/commodity-template.action';
@@ -24,7 +23,6 @@ export class CommodityDialogComponent implements OnInit {
   formGroup!: FormGroup;
 
   constructor(
-    private readonly formBuilder: UntypedFormBuilder,
     private readonly actions$: Actions,
     private readonly dialog: MatDialog,
     private readonly modalRef: NzModalRef,
@@ -36,17 +34,14 @@ export class CommodityDialogComponent implements OnInit {
 
   ngOnInit() {
     this.actions$.dispatch(CommodityTemplateActions.loadAll({}));
-    this.formGroup = this.formBuilder.group({
-      name: [this.data?.commodity?.name, Validators.required],
-      code: [this.data?.commodity?.code, Validators.required],
-      price: [this.data?.commodity?.price],
-      unit: [
-        this.data?.commodity?.unit || CommodityUnit.CON,
-        Validators.required
-      ],
-      amount: [this.data?.commodity?.amount, Validators.required],
-      gift: [this.data?.commodity?.gift, Validators.required],
-      more: [this.data?.commodity?.more?.amount, Validators.required]
+    this.formGroup = new FormGroup({
+      name: new FormControl<string | undefined>(this.data?.commodity?.name, { validators: Validators.required }),
+      code: new FormControl<string | undefined>(this.data?.commodity?.code, { validators: Validators.required }),
+      price: new FormControl<number | undefined>(this.data?.commodity?.price, { validators: Validators.required }),
+      unit: new FormControl<CommodityUnit>(this.data?.commodity?.unit || CommodityUnit.CON, { validators: Validators.required }),
+      amount: new FormControl<number>(this.data?.commodity?.amount, { validators: Validators.required }),
+      gift: new FormControl<number>(this.data?.commodity?.gift, { validators: Validators.required }),
+      more: new FormControl<number>(this.data?.commodity?.more?.amount, { validators: Validators.required })
     });
   }
 
@@ -55,52 +50,16 @@ export class CommodityDialogComponent implements OnInit {
     this.formGroup.get('name')?.patchValue(commodity.name);
   }
 
-  onSubmit() {
-    const value = this.formGroup.value;
-    const commodity = {
-      code: value.code,
-      name: value.name,
-      price: value.price,
-      amount: value.amount,
-      gift: value.gift,
-      more: value.more,
-      unit: value.unit
-    };
+  onSubmit(logged: boolean) {
+    const commodity = this.mapToCommodity(logged);
+
     if (this.data?.isUpdate) {
-      if (this.data?.commodity?.orderId) {
-        this.dialog
-          .open(DialogSharedComponent, {
-            width: 'fit-content',
-            data: {
-              title: 'Lịch sử cập nhât hàng hoá',
-              description:
-                'bạn có muốn ghi lại lịch sử chỉnh sửa cho đơn hàng này ko'
-            }
-          })
-          .afterClosed()
-          .subscribe((val) => {
-            if (val) {
-              Object.assign(commodity, { logged: true });
-            }
-            Object.assign(commodity, {
-              closed: this.data.commodity.closed || false,
-              orderId: this.data.commodity?.orderId
-            });
-            this.actions$.dispatch(
-              CommodityAction.update({
-                id: this.data.commodity.id,
-                updates: commodity
-              })
-            );
-          });
-      } else {
-        this.actions$.dispatch(
-          CommodityAction.update({
-            id: this.data.commodity.id,
-            updates: commodity
-          })
-        );
-      }
+      this.actions$.dispatch(
+        CommodityAction.update({
+          id: this.data.commodity.id,
+          updates: commodity
+        })
+      );
     } else {
       this.actions$.dispatch(CommodityAction.addOne({ body: commodity }));
     }
@@ -109,5 +68,34 @@ export class CommodityDialogComponent implements OnInit {
         this.modalRef.close();
       }
     });
+  }
+
+  compare() {
+    const commodity = this.data?.commodity;
+    const value = this.formGroup.value;
+
+    return commodity && commodity.price === value.price &&
+      commodity.amount === value.amount &&
+      commodity.gift === value.gift &&
+      commodity.more === value.more;
+  }
+
+  private mapToCommodity(logged?: boolean) {
+    const value = this.formGroup.value;
+    if (this.compare()) {
+      logged = false;
+    }
+    return {
+      closed: this.data?.commodity?.closed || false,
+      orderId: this.data?.commodity?.orderId,
+      logged: logged,
+      code: value.code,
+      name: value.name,
+      price: value.price,
+      amount: value.amount,
+      gift: value.gift,
+      more: value.more,
+      unit: value.unit
+    };
   }
 }

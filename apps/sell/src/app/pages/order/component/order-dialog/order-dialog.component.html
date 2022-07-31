@@ -1,129 +1,131 @@
-<nz-steps *ngIf="!data?.isUpdate" nzSize="small" [nzCurrent]="stepIndex">
-  <nz-step nzTitle="Thông tin đơn hàng"></nz-step>
-  <nz-step nzTitle="Chọn khách hàng"></nz-step>
-  <nz-step nzTitle="Chọn hàng hoá"></nz-step>
+<nz-steps *ngIf='!data?.isUpdate' nzSize='small' [nzCurrent]='stepIndex'>
+  <nz-step nzTitle='Thông tin đơn hàng'></nz-step>
+  <nz-step nzTitle='Chọn khách hàng'></nz-step>
+  <nz-step nzTitle='Chọn hàng hoá'></nz-step>
 </nz-steps>
-<ng-template [ngIf]="stepIndex === 0">
-  <form [formGroup]="formGroup" class="py-4">
+<ng-template [ngIf]='stepIndex === 0'>
+  <form [formGroup]='formGroup' class='py-4'>
     <div>
       <div>
-        <div class="row">
-          <div class="col-sm">
-            <label for="createdAt"
-              >Ngày tạo đơn hàng<span class="star">*</span>
+        <div class='row'>
+          <div class='col-sm'>
+            <label for='createdAt'
+            >Ngày tạo đơn hàng<span class='star'>*</span>
             </label>
             <input
-              type="date"
-              class="form-control"
-              id="createdAt"
-              [readOnly]="data?.isUpdate"
-              formControlName="createdAt"
+              type='date'
+              class='form-control'
+              id='createdAt'
+              [readOnly]='data?.isUpdate'
+              formControlName='createdAt'
               [ngClass]="{
                 'is-invalid': submitted && checkValid.createdAt.errors?.required
               }"
             />
             <div
-              *ngIf="submitted && checkValid.createdAt.errors?.required"
-              class="invalid-feedback"
+              *ngIf='submitted && checkValid.createdAt.errors?.required'
+              class='invalid-feedback'
             >
               <div>Chưa nhập ngày tạo đơn hàng</div>
             </div>
           </div>
-          <div class="col-sm">
+          <div class='col-sm'>
             <label>Ngày hẹn giao </label>
-            <input type="date" class="form-control" formControlName="endedAt" />
+            <input type='date' class='form-control' formControlName='endedAt' />
           </div>
         </div>
-        <div class="row mt-2">
-          <div class="col-sm">
-            <label for="explain">Diễn giải</label>
+        <div class='row mt-2'>
+          <div class='col-sm'>
+            <label for='explain'>Diễn giải</label>
             <input
-              type="text"
-              class="form-control"
-              id="explain"
-              formControlName="explain"
+              type='text'
+              class='form-control'
+              id='explain'
+              formControlName='explain'
             />
           </div>
-          <div class="col-sm">
-            <label for="deliveredAt">Ngày nhận hàng</label>
+          <div class='col-sm'>
+            <label for='deliveredAt'>Ngày nhận hàng</label>
             <input
-              type="date"
-              class="form-control"
-              id="deliveredAt"
-              formControlName="deliveredAt"
+              type='date'
+              class='form-control'
+              id='deliveredAt'
+              formControlName='deliveredAt'
             />
           </div>
         </div>
         <place-selector
-          [isUpdate]="!!data?.order"
-          [province]="data?.order?.province"
-          [district]="data?.order?.district"
-          [ward]="data?.order?.ward"
-          [isRequiredDistrict]="false"
-          [isRequiredWard]="false"
-          [formGroup]="formGroup"
-          [form]="checkValid"
-          [submitting]="submitted"
+          [isUpdate]='!!data?.order'
+          [province]='data?.order?.province || customer?.province'
+          [district]='data?.order?.district'
+          [ward]='data?.order?.ward'
+          [isRequiredDistrict]='false'
+          [isRequiredWard]='false'
+          [formGroup]='formGroup'
+          [form]='checkValid'
+          [submitting]='submitted'
         >
         </place-selector>
       </div>
     </div>
   </form>
 </ng-template>
-<ng-template [ngIf]="stepIndex === 1">
-  <div class="pt-2">
-    <select-customer [pickOne]="true" [formGroup]="formGroup">
+<ng-template [ngIf]='stepIndex === 1'>
+  <div class='pt-2'>
+    <select-customer [pickOne]='true' [formGroup]='formGroup'>
     </select-customer>
   </div>
 </ng-template>
-<ng-template [ngIf]="stepIndex === 2">
-  <div class="pt-2">
-    <select-commodity [formGroup]="formGroup"> </select-commodity>
+<ng-template [ngIf]='stepIndex === 2'>
+  <div class='pt-2'>
+    <select-commodity
+      [data]='{commodities: data?.order?.commodities}'
+      (onChange)='onChangeCommodity($event)'
+    >
+    </select-commodity>
   </div>
 </ng-template>
-<div class="footer-popup mt-3 d-flex" *ngIf="data?.isUpdate; else footer">
+<div class='footer-popup mt-3 d-flex' *ngIf='data?.isUpdate; else footer'>
   <button
     nz-button
-    nzType="primary"
-    (click)="onSubmit()"
-    [nzLoading]="loading$ | async"
+    nzType='primary'
+    (click)='onSubmit()'
   >
     Xác nhận
   </button>
   <button
     nz-button
-    nzType="default"
-    data-toggle="tooltip"
-    data-placement="left"
-    title="xóa"
+    nzType='default'
+    data-toggle='tooltip'
+    data-placement='left'
+    title='xóa'
   ></button>
 </div>
 <ng-template #footer>
-  <div class="mt-2">
+  <div class='mt-2'>
     <button
-      class="mr-2"
+      class='mr-2'
       nz-button
-      nzType="dashed"
-      (click)="pre()"
-      *ngIf="stepIndex > 0"
+      nzType='dashed'
+      (click)='pre()'
+      *ngIf='stepIndex > 0'
     >
       <span>Trở lại</span>
     </button>
     <button
-      class="mr-2"
+      class='mr-2'
       nz-button
-      nzType="primary"
-      (click)="next()"
-      *ngIf="stepIndex < 2"
+      nzType='primary'
+      (click)='next()'
+      *ngIf='stepIndex < 2'
     >
       <span>Tiếp theo</span>
     </button>
     <button
       nz-button
-      nzType="primary"
-      [nzLoading]="loading$ | async"
-      (click)="onSubmit()"
-      *ngIf="stepIndex === 2"
+      nzType='primary'
+      (click)='onSubmit()'
+      *ngIf='stepIndex === 2'
     >
       <span>Xác nhận</span>
     </button>

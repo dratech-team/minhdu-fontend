@@ -28,34 +28,34 @@
       </minhdu-fontend-collapse-radios>
     </div>
     <div class='mb-2'>
-      <minhdu-fontend-collapse-datepicker
+      <md-collapse-datepicker
         [rangeDayInit]='{
           start: search.startedAt_start,
           end: search.startedAt_end
         }'
         title='Ngày tạo'
-        (onPicker)='onPickCreatedAt($event)'
-      ></minhdu-fontend-collapse-datepicker>
+        (onCalendarChange)='onPickCreatedAt($event)'
+      ></md-collapse-datepicker>
     </div>
     <div class='mb-2'>
-      <minhdu-fontend-collapse-datepicker
+      <md-collapse-datepicker
         [title]="'Ngày hẹn giao'"
         [rangeDayInit]='{
           start: search.endedAt_start,
           end: search.endedAt_end
         }'
-        (onPicker)='onPickEndedAt($event)'
-      ></minhdu-fontend-collapse-datepicker>
+        (onCalendarChange)='onPickEndedAt($event)'
+      ></md-collapse-datepicker>
     </div>
     <div class='mb-2' *ngIf="formGroup.get('status')?.value === 1">
-      <minhdu-fontend-collapse-datepicker
+      <md-collapse-datepicker
         [rangeDayInit]='{
           start: search.deliveredAt_start,
           end: search.deliveredAt_end
         }'
         title='Ngày giao hàng'
-        (onPicker)='onPickDeliveryDay($event)'
-      ></minhdu-fontend-collapse-datepicker>
+        (onCalendarChange)='onPickDeliveryDay($event)'
+      ></md-collapse-datepicker>
     </div>
     <div class='mb-2'>
       <nz-collapse>
@@ -79,7 +79,7 @@
     <div class='d-flex justify-content-between align-items-end m-2'>
       <div class='d-flex ng-star-inserted' style='overflow-x: auto'>
         <div class='commodity-total-price'>
-          <span class='font-weight-bold'>Tổng đơn hàng:</span>
+          <span class='font-weight-bold'>Tổng:</span>
           {{ (total$ | async) || 0 | number: '1.0-0' }}
         </div>
         <div class='commodity-total-price'>
@@ -138,6 +138,7 @@
       <nz-table
         #tableOrder
         nzSize='middle'
+        [nzBordered]='true'
         [nzFrontPagination]='false'
         [nzShowPagination]='false'
         [nzScroll]="{ x: '2300px', y: '70vh' }"
@@ -172,12 +173,28 @@
             ID
           </th>
           <th
+            class='text-center font-weight-bold'
+            *ngIf='ui.status.visible'
+            [nzLeft]='ui.status?.pinned || false'
+            [nzSortFn]='true'
+            (nzSortOrderChange)="onSort({ key: 'deliveredAt', directions: $event })"
+          >
+            Trạng thái đơn hàng
+          </th>
+          <th
+            class='text-center font-weight-bold'
+            *ngIf='ui.createdAt.visible'
+            [nzLeft]='ui.createdAt?.pinned || false'
+            [nzSortFn]='true'
+            (nzSortOrderChange)="onSort({ key: 'createdAt', directions: $event })"
+          >
+            Ngày tạo
+          </th>
+          <th
             *ngIf='ui.endedAt.visible'
             [nzLeft]='ui.endedAt?.pinned || false'
             class='text-center font-weight-bold'
-            (nzSortOrderChange)='
-                onSort({ orderBy: SortTypeOrderEnum.END, orderType: $event })
-              '
+            (nzSortOrderChange)="onSort({ key: 'endedAt', directions: $event })"
             [nzSortFn]='true'
           >
             Ngày hẹn giao
@@ -186,9 +203,7 @@
             *ngIf='ui.customer.visible'
             [nzLeft]='ui.customer?.pinned || false'
             [nzSortFn]='true'
-            (nzSortOrderChange)='
-                onSort({ orderBy: SortTypeOrderEnum.CUSTOMER, orderType: $event })
-              '
+            (nzSortOrderChange)="onSort({ key: 'customer', directions: $event })"
             class='text-center font-weight-bold'
           >
             Khách hàng
@@ -198,22 +213,9 @@
             [nzLeft]='ui.destination?.pinned || false'
             class='text-center font-weight-bold'
             [nzSortFn]='true'
-            (nzSortOrderChange)='
-                onSort({ orderBy: SortTypeOrderEnum.PROVINCE, orderType: $event })
-              '
+            (nzSortOrderChange)="onSort({ key: 'destination', directions: $event })"
           >
             Điểm đến
-          </th>
-          <th
-            *ngIf='ui.createdAt.visible'
-            [nzLeft]='ui.createdAt?.pinned || false'
-            class='text-center font-weight-bold'
-            [nzSortFn]='true'
-            (nzSortOrderChange)='
-                onSort({ orderBy: SortTypeOrderEnum.CREATED_AT, orderType: $event })
-              '
-          >
-            Ngày tạo
           </th>
           <th
             *ngIf='ui.vans.visible'
@@ -223,16 +225,15 @@
             Xe xuất
           </th>
           <th
-            [nzWidth]='widthConstant.amount'
+            [nzWidth]='"170px"'
             *ngIf='ui.totalCommodity.visible'
             [nzLeft]='ui.totalCommodity?.pinned || false'
             class='text-center font-weight-bold width-amount'
-            style='color: red'
           >
             Tổng số lượng
           </th>
           <th
-            [nzWidth]='widthConstant.price'
+            [nzWidth]='"200px"'
             *ngIf='ui.commodityTotal.visible'
             [nzLeft]='ui.commodityTotal?.pinned || false'
             class='text-center font-weight-bold'
@@ -253,13 +254,6 @@
           >
             Diễn giải
           </th>
-          <th
-            *ngIf='ui.status.visible'
-            [nzLeft]='ui.status?.pinned || false'
-            class='text-center font-weight-bold'
-          >
-            Trạng thái đơn hàng
-          </th>
         </tr>
         </thead>
         <tbody>
@@ -271,9 +265,9 @@
         >
           <tr
             class='pointer'
+            *ngIf='ui$ | async as ui'
             (click)='orderComponentService.onDetail(order.id)'
             (contextmenu)='onContextMenu($event, menu)'
-            *ngIf='ui$ | async as ui'
           >
             <nz-dropdown-menu #menu='nzDropdownMenu'>
               <ul class='context-menu' nz-menu>
@@ -300,6 +294,28 @@
               class='text-center'
             >
               {{ order.id }}
+            </td>
+            <td
+              *ngIf='ui.status.visible'
+              [nzLeft]='ui.status?.pinned || false'
+              [ngStyle]="{
+                  color:
+                    !order.deliveredAt && order.routes?.length ? '#32863d' : ''
+                }"
+            >
+              {{
+              (order.deliveredAt | date: 'dd/MM/YYYY') ||
+              (!order.deliveredAt && order.routes?.length
+                ? 'Đang giao'
+                : 'Chưa giao')
+              }}
+            </td>
+            <td
+              *ngIf='ui.createdAt.visible'
+              [nzLeft]='ui.createdAt?.pinned || false'
+              class='text-center'
+            >
+              {{ order?.createdAt | date: 'dd/MM/yyyy' || 'Chưa cập nhật' }}
             </td>
             <td
               *ngIf='ui.endedAt.visible'
@@ -329,20 +345,13 @@
               {{ order?.ward?.name ? ' - ' + order?.ward?.name : '' }}
             </td>
             <td
-              *ngIf='ui.createdAt.visible'
-              [nzLeft]='ui.createdAt?.pinned || false'
-              class='text-center'
-            >
-              {{ order?.createdAt | date: 'dd/MM/yyyy' || 'Chưa cập nhật' }}
-            </td>
-            <td
               class='text-center'
               *ngIf='ui.vans.visible'
               [nzLeft]='ui.vans?.pinned || false'
             >
               <div *ngIf='order?.routes?.length > 0; else notCar'>
-                  <span *ngFor='let route of order?.routes'
-                  >{{ route?.bsx }},
+                  <span *ngFor='let route of order?.routes; let i=index'>
+                    {{ route?.bsx + ((order?.routes?.length > 1 && (order?.routes?.length - 1) !== i) ? ', ' : '')}}
                   </span>
               </div>
               <ng-template #notCar>
@@ -352,23 +361,23 @@
             <td
               *ngIf='ui.totalCommodity.visible'
               [nzLeft]='ui.totalCommodity?.pinned || false'
-              class='text-center'
+              class='text-center total'
             >
-              {{ order.totalCommodity | number: '1.0-0' | notEmpty: '0' }}
+              {{ order.commodityTotal | number: '1.0-0' | notEmpty: '0' }}
             </td>
             <td
               *ngIf='ui.commodityTotal.visible'
               [nzLeft]='ui.commodityTotal?.pinned || false'
-              class='text-center'
+              class='text-center total-price'
             >
-              {{ order.commodityTotal | number: '1.0-0' | notEmpty: '0' }} đ
+              {{ order.priceTotal | number: '1.0-0' | notEmpty: '0' }} đ
             </td>
             <td
               *ngIf='ui.paymentTotal.visible'
               [nzLeft]='ui.paymentTotal?.pinned || false'
-              class='text-center'
+              class='text-center payment'
             >
-              {{ order?.paymentTotal | number: '1.0-0' | notEmpty: '0' }}
+              {{ order?.paymentTotal | currency: 'VND' | notEmpty: '0' }}
             </td>
             <td
               *ngIf='ui.explain.visible'
@@ -377,45 +386,27 @@
             >
               {{ order?.explain || 'Chưa cập nhật' }}
             </td>
-            <td
-              *ngIf='ui.status.visible'
-              [nzLeft]='ui.status?.pinned || false'
-              [ngStyle]="{
-                  color:
-                    !order.deliveredAt && order.routes?.length ? '#32863d' : ''
-                }"
-            >
-              {{
-              (order.deliveredAt | date: 'dd/MM/YYYY') ||
-              (!order.deliveredAt && order.routes?.length
-                ? 'Đang giao'
-                : 'Chưa giao')
-              }}
-            </td>
           </tr>
           <tr [nzExpand]='order.expand'>
             <nz-table
               #innerTable
-              [nzData]='order.commodities'
               nzSize='small'
+              [nzBordered]='true'
+              [nzData]='order.commodities'
               [nzShowPagination]='false'
             >
         <thead>
         <tr>
-          <th class='text-center'>Hàng hoá</th>
-          <th class='text-center' [nzWidth]='widthConstant.amount'>
-            Số lượng
-          </th>
-          <th class='text-center' [nzWidth]='widthConstant.price'>
-            Giá
+          <th class='text-center sub-table-title'>Hàng hoá</th>
+          <th class='text-center' [nzWidth]="'170px'">
+            Tổng số lượng
           </th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor='let commodity of innerTable.data'>
           <td class='text-center'>{{ commodity.name }}</td>
-          <td class='text-center'>{{ commodity.amount }}</td>
-          <td class='text-center'>{{ commodity.price }}</td>
+          <td class='text-center total'>{{ commodity.amount + (commodity?.more?.amount || 0) + commodity.gift  }}</td>
         </tr>
         </tbody>
       </nz-table>

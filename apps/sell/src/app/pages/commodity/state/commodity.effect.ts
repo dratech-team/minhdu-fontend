@@ -4,7 +4,7 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { CommodityService } from '../service';
 import { CommodityAction } from './commodity.action';
 import { of } from 'rxjs';
-import { OrderActions } from '../../order/+state';
+import { OrderActions } from '../../order/state';
 import { CommodityQuery } from './commodity.query';
 import { CommodityStore } from './commodity.store';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -42,7 +42,7 @@ export class CommodityEffect {
           this.commodityStore.update((state) => ({
             ...state,
             loading: null,
-            error: err,
+            error: err
           }));
           return of(CommodityAction.error(err));
         })
@@ -60,15 +60,15 @@ export class CommodityEffect {
       }));
       const param = Object.assign(props, Object.assign(props.search, {
         take: PaginationDto.take,
-        skip: props.isPaginate ? this.commodityQuery.getCount() : 0
+        skip: !props.isSet ? this.commodityQuery.getCount() : 0
       }));
       return this.commodityService.pagination(param)
         .pipe(
           map((res) => {
-            if (props?.isPaginate) {
-              this.commodityStore.add(res.data);
-            } else {
+            if (props?.isSet || res.total === 0) {
               this.commodityStore.set(res.data);
+            } else {
+              this.commodityStore.add(res.data);
             }
             this.commodityStore.update((state) => ({
               ...state,
@@ -135,7 +135,7 @@ export class CommodityEffect {
   );
 
   @Effect()
-  deleteCommodity$ = this.actions$.pipe(
+  removeOne$ = this.actions$.pipe(
     ofType(CommodityAction.remove),
     switchMap((props) =>
       this.commodityService.delete(props.id).pipe(

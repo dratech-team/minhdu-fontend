@@ -47,7 +47,7 @@ export class DefaultLayoutComponent implements OnInit {
     ref.afterClosed().subscribe((val) => {
       if (val && this.currentUser) {
         return this.actions$.dispatch(
-          AccountActions.logout({ id: this.currentUser.id })
+          AccountActions.signOut({ id: this.currentUser.id })
         );
       }
     });

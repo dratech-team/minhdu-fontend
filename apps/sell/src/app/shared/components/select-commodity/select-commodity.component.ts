@@ -1,22 +1,24 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityUnit, CustomerType, ModeEnum } from '@minhdu-fontend/enums';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, startWith } from 'rxjs/operators';
 import { CommodityAction, CommodityQuery } from '../../../pages/commodity/state';
 import { CommodityDialogComponent } from '../../../pages/commodity/component';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CommodityEntity } from '../../../pages/commodity/entities';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { AccountQuery } from '../../../../../../../libs/system/src/lib/state/account-management/account.query';
+import { OrderDialogComponent } from '../../../pages/order/component';
 
 @Component({
   selector: 'select-commodity',
   templateUrl: 'select-commodity.component.html'
 })
 export class SelectCommodityComponent implements OnInit {
-  @Input() commodities?: CommodityEntity[];
+  @Input() data?: Partial<{ commodities: CommodityEntity[], isUpdate: boolean }>;
+  @Output() onChange = new EventEmitter<number[]>();
 
   account$ = this.accountQuery.selectCurrentUser();
   loading$ = this.commodityQuery.selectLoading();
@@ -25,7 +27,7 @@ export class SelectCommodityComponent implements OnInit {
   commodities$ = this.commodityQuery.selectAll();
 
   setOfCheckedId = new Set<number>;
-  listOfCurrentPageData: readonly CommodityEntity[] = [];
+  listOfCurrentPageData: CommodityEntity[] = [];
   indeterminate = false;
   checked = false;
 
@@ -43,21 +45,18 @@ export class SelectCommodityComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
-    private readonly modalRef: NzModalRef,
+    private readonly modalRef: NzModalRef<OrderDialogComponent>,
     private readonly commodityQuery: CommodityQuery,
     private readonly accountQuery: AccountQuery
   ) {
   }
 
   ngOnInit(): void {
-    this.actions$.dispatch(
-      CommodityAction.loadAll({ search: {} })
-    );
     this.formGroup.valueChanges
-      .pipe(debounceTime(500))
+      .pipe(debounceTime(500), startWith(this.formGroup.value))
       .subscribe((val) => {
         this.actions$.dispatch(
-          CommodityAction.loadAll({ search: this.mapToCommodity(val) })
+          CommodityAction.loadAll({ search: this.mapToCommodity(val), isSet: true })
         );
       });
   }
@@ -98,20 +97,13 @@ export class SelectCommodityComponent implements OnInit {
     this.actions$.dispatch(
       CommodityAction.loadAll({
         search: this.mapToCommodity(value),
-        isPaginate: true
+        isSet: false
       })
     );
   }
 
-  public closeDialog() {
+  closeDialog() {
     this.modalRef.close(Array.from(this.setOfCheckedId));
-  }
-
-  public onSetAll(checked: boolean): void {
-    this.commodityQuery.getAll().forEach(({ id }) =>
-      this.updateCheckedSet(id, checked)
-    );
-    this.refreshCheckedStatus();
   }
 
   public updateCheckedSet(id: number, checked: boolean): void {
@@ -120,6 +112,7 @@ export class SelectCommodityComponent implements OnInit {
     } else {
       this.setOfCheckedId.delete(id);
     }
+    this.onChange.emit(Array.from(this.setOfCheckedId));
   }
 
   public refreshCheckedStatus(): void {
@@ -134,13 +127,6 @@ export class SelectCommodityComponent implements OnInit {
 
   public onItemChecked(id: number, checked: boolean): void {
     this.updateCheckedSet(id, checked);
-    this.refreshCheckedStatus();
-  }
-
-  public onCurrentPageDataChange(
-    listOfCurrentPageData: readonly CommodityEntity[]
-  ): void {
-    this.listOfCurrentPageData = listOfCurrentPageData;
     this.refreshCheckedStatus();
   }
 

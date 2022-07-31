@@ -3,37 +3,29 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Api, GenderTypeConstant } from '@minhdu-fontend/constants';
-import {
-  CustomerResource,
-  CustomerType,
-  GenderTypeEnum,
-  ItemContextMenu,
-  ModeEnum,
-  SortTypeCustomerEnum
-} from '@minhdu-fontend/enums';
+import { CustomerResource, CustomerType, GenderTypeEnum, ModeEnum } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { ModalExportExcelComponent, ModalExportExcelData } from '@minhdu-fontend/components';
-import { CustomerActions, CustomerQuery, CustomerStore } from '../../+state';
+import { CustomerActions, CustomerQuery } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { RadiosStatusRouteConstant } from '../../constants/gender.constant';
-import { CustomerConstant, PotentialsConstant, ResourcesConstant } from '../../constants';
-import { ContextMenuEntity, Sort } from '@minhdu-fontend/data-models';
+import { CustomerTypeConstant, PotentialsConstant, ResourcesConstant } from '../../constants';
+import { ContextMenuEntity, SortEntity } from '@minhdu-fontend/data-models';
 import * as _ from 'lodash';
-import { OrderEntity } from '../../../order/enitities/order.entity';
+import { OrderEntity } from '../../../order/enitities';
 import { CustomerEntity } from '../../entities';
-import { PotentialEnum } from '../../enums';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
 import { AccountQuery } from '../../../../../../../../libs/system/src/lib/state/account-management/account.query';
-import { startWith } from 'rxjs/operators';
+import { debounceTime, startWith } from 'rxjs/operators';
+import { PotentialEnum } from '../../enums';
 import { CustomerComponentService } from '../../shared';
+import { CustomNgSortPipe } from '../../../../shared/pipe/sort.pipe';
 
 @Component({
   templateUrl: 'customer.component.html'
 })
 export class CustomerComponent implements OnInit {
   orders?: OrderEntity;
-  valueSort?: Sort;
 
   total$ = this.customerQuery.select((state) => state.total);
   count$ = this.customerQuery.selectCount();
@@ -60,18 +52,15 @@ export class CustomerComponent implements OnInit {
     },
     {
       title: 'Thanh toán',
-      click: (data: CustomerEntity) => this.customerComponentService.onPayment(data)
+      click: () => this.customerComponentService.onPayment()
     }
   ];
 
   CustomerType = CustomerType;
   ModeEnum = ModeEnum;
-  ItemContextMenu = ItemContextMenu;
-  SortTypeCustomerEnum = SortTypeCustomerEnum;
-  RadiosStatusRouteConstant = RadiosStatusRouteConstant;
   PotentialsConstant = PotentialsConstant;
   ResourcesConstant = ResourcesConstant;
-  CustomerConstant = CustomerConstant;
+  CustomerTypeConstant = CustomerTypeConstant;
   GenderTypeConstant = GenderTypeConstant;
 
   formGroup = new FormGroup({
@@ -85,34 +74,26 @@ export class CustomerComponent implements OnInit {
   constructor(
     public readonly customerComponentService: CustomerComponentService,
     private readonly actions$: Actions,
-    private readonly customerQuery: CustomerQuery,
-    private readonly accountQuery: AccountQuery,
-    private readonly customerStore: CustomerStore,
+    private readonly nzSortPipe: CustomNgSortPipe,
     private readonly router: Router,
     private readonly dialog: MatDialog,
     private readonly exportService: ExportService,
     private readonly modal: NzModalService,
-    private readonly nzContextMenuService: NzContextMenuService
+    private readonly nzContextMenuService: NzContextMenuService,
+    private readonly customerQuery: CustomerQuery,
+    private readonly accountQuery: AccountQuery
   ) {
   }
 
   ngOnInit() {
     this.formGroup.valueChanges
-      .pipe(startWith(this.formGroup.value))
+      .pipe(debounceTime(500), startWith(this.formGroup.value))
       .subscribe((formGroup) => {
-        console.log('formGroup ', formGroup);
         this.actions$.dispatch(
-          CustomerActions.loadAll({ search: this.mapCustomer(formGroup), isPaginate: false })
+          CustomerActions.loadAll({ search: this.mapCustomer(formGroup), isSet: true })
         );
       });
-  }
 
-  public addOrder($event?: any) {
-    this.router.navigate(['/don-hang/them-don-hang'], {
-      queryParams: {
-        customerId: $event.id
-      }
-    }).then();
   }
 
   public onExport() {
@@ -146,28 +127,17 @@ export class CustomerComponent implements OnInit {
 
   public onLoadMore() {
     this.actions$.dispatch(
-      CustomerActions.loadAll({ search: this.mapCustomer(this.formGroup.value), isPaginate: true })
+      CustomerActions.loadAll({ search: this.mapCustomer(this.formGroup.value), isSet: false })
     );
   }
 
-  public onSort(sort: Sort) {
-    this.valueSort = sort;
+  public onSort(sort: SortEntity) {
     this.actions$.dispatch(
-      CustomerActions.loadAll({ search: this.mapCustomer(this.formGroup.value), isPaginate: true })
+      CustomerActions.loadAll({ search: this.mapCustomer(this.formGroup.value, sort), isSet: true })
     );
   }
 
-  private mapCustomer(search: any) {
-    this.customerStore.update((state) => ({
-      ...state,
-      search: search
-    }));
-    if (this.valueSort?.orderType) {
-      Object.assign(search, this.valueSort);
-    } else {
-      delete search.orderBy;
-      delete search.orderType;
-    }
-    return search;
+  private mapCustomer(search: any, sort?: SortEntity) {
+    return Object.assign({}, search, this.nzSortPipe.transform(sort));
   }
 }

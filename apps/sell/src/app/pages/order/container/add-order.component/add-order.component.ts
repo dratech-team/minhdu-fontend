@@ -2,23 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommodityUnit, CustomerResource, CustomerType, PaymentType } from '@minhdu-fontend/enums';
-import { OrderActions, OrderQuery } from '../../+state';
+import { CustomerResource, CustomerType, PaymentType } from '@minhdu-fontend/enums';
+import { OrderActions, OrderQuery } from '../../state';
 import { CustomerEntity } from '../../../customer/entities';
 import { DatePipe } from '@angular/common';
 import { Actions } from '@datorama/akita-ng-effects';
-import { CustomerActions, CustomerQuery } from '../../../customer/+state';
+import { CustomerActions, CustomerQuery } from '../../../customer/state';
 import { CommodityEntity } from '../../../commodity/entities';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { SelectCommodityComponent } from '../../../../shared/components/select-commodity/select-commodity.component';
-import { SelectCustomerComponent } from 'apps/sell/src/app/shared/components/select-customer/select-customer.component';
+import { SelectCommodityComponent, SelectCustomerComponent } from '../../../../shared/components';
 
 @Component({
   templateUrl: 'add-order.component.html'
 })
 export class AddOrderComponent implements OnInit {
-  commodityUnit = CommodityUnit;
   commoditiesPicked: CommodityEntity[] = [];
   numberChars = new RegExp('[^0-9]', 'g');
   customerPicked: CustomerEntity | undefined;
@@ -93,7 +91,7 @@ export class AddOrderComponent implements OnInit {
       nzTitle: 'Chon đơn hàng',
       nzContent: SelectCommodityComponent,
       nzWidth: '70vw',
-      nzComponentParams: { commodities: this.commoditiesPicked },
+      nzComponentParams: { data: { commodities: this.commoditiesPicked } },
       nzFooter: null
     }).afterClose.subscribe((val) => {
       if (val) {

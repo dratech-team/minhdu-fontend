@@ -70,7 +70,7 @@ export class SettingRankComponent implements OnInit {
     this.actions$.dispatch(
       SettingRankActions.loadAll({
         search: this.formGroup.value,
-        isPaginate,
+        isSet: isPaginate,
       })
     );
   }

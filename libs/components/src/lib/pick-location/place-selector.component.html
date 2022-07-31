@@ -21,7 +21,7 @@
         nzAllowClear
         style="width: 100%"
         formControlName="province"
-        nzPlaceHolder="chọn Tỉnh/Thành phố"
+        nzPlaceHolder="Chọn Tỉnh/Thành phố"
         [compareWith]="compareFN"
         [ngClass]="{
           'is-invalid': submitting && form.province.errors?.required
@@ -51,7 +51,7 @@
         nzAllowClear
         style="width: 100%"
         formControlName="district"
-        nzPlaceHolder="chọn Quận/Huyện"
+        nzPlaceHolder="Chọn Quận/Huyện"
         [compareWith]="compareFN"
         [ngClass]="{
           'is-invalid': submitting && form.district.errors?.required
@@ -78,7 +78,7 @@
         nzAllowClear
         style="width: 100%"
         formControlName="ward"
-        nzPlaceHolder="chọn Phường/Xã"
+        nzPlaceHolder="Chọn Phường/Xã"
         [compareWith]="compareFN"
         [ngClass]="{ 'is-invalid': submitting && form.ward.errors?.required }"
       >

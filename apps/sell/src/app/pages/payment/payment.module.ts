@@ -12,6 +12,9 @@ import { SharedModule } from '../../shared/shared.module';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { AuthModule } from '@minhdu-fontend/auth';
+import { SelectOrderComponent } from './components/select-order/select-order.component';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 @NgModule({
   imports: [
@@ -26,10 +29,16 @@ import { AuthModule } from '@minhdu-fontend/auth';
     ComponentsModule,
     NzButtonModule,
     NgxCurrencyModule,
-    AuthModule
+    AuthModule,
+    NzIconModule,
+    NzDropDownModule
   ],
   exports: [TablePaymentComponent],
-  declarations: [PaymentModalComponent, TablePaymentComponent]
+  declarations: [
+    PaymentModalComponent,
+    TablePaymentComponent,
+    SelectOrderComponent
+  ]
 })
 export class PaymentModule {
 }

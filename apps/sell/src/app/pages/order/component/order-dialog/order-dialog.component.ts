@@ -1,29 +1,36 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PaymentType } from '@minhdu-fontend/enums';
-import { OrderActions, OrderQuery } from '../../+state';
+import { OrderActions, OrderQuery } from '../../state';
 import { DatePipe } from '@angular/common';
 import { CommodityQuery } from '../../../commodity/state';
-import { CustomerQuery } from '../../../customer/+state';
+import { CustomerQuery } from '../../../customer/state';
 import { Actions } from '@datorama/akita-ng-effects';
-import { CommodityEntity } from '../../../commodity/entities';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { District, Province, Ward } from '@minhdu-fontend/data-models';
+import { BaseOrderEntity } from '../../enitities';
+import { BaseAddOrderDto, BaseUpdateOrderDto } from '../../dto';
+import { omit } from 'lodash';
+import { take } from 'rxjs/operators';
+import { CustomerEntity } from '../../../customer/entities';
 
 @Component({
   templateUrl: 'order-dialog.component.html'
 })
 export class OrderDialogComponent implements OnInit {
-  @Input() data: any;
+  @Input() data?: Partial<{
+    order: BaseOrderEntity,
+    tab: number,
+    customerId?: number,
+    isUpdate: boolean
+  }>;
 
   formGroup!: FormGroup;
   districtId!: number;
-  provinceId!: number;
 
-  loading$ = this.orderQuery.selectLoading();
-
+  customer?: CustomerEntity;
   submitted = false;
-  routes: number[] = [];
   stepIndex = 0;
 
   PaymentType = PaymentType;
@@ -41,25 +48,31 @@ export class OrderDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.formGroup = this.formBuilder.group({
-      createdAt: [
-        this.datePipe.transform(this.data?.order?.createdAt, 'yyyy-MM-dd'),
-        Validators.required
-      ],
+    this.customer = this.customerQuery.getEntity(this.data?.customerId);
+
+    this.formGroup = new FormGroup({
+      createdAt: new FormControl(
+        this.datePipe.transform(this.data?.order?.createdAt || new Date(), 'yyyy-MM-dd'),
+        { validators: Validators.required }
+      ),
       endedAt: this.data?.order?.endedAt
-        ? [this.datePipe.transform(this.data.order.endedAt, 'yyyy-MM-dd')]
-        : [],
+        ? new FormControl<string | null>(
+          this.datePipe.transform(this.data?.order?.endedAt, 'yyyy-MM-dd'),
+          { validators: Validators.required }
+        )
+        : new FormControl(),
       deliveredAt: this.data?.order?.deliveredAt
-        ? [this.datePipe.transform(this.data?.order?.deliveredAt, 'yyyy-MM-dd')]
-        : [],
-      explain: [this.data?.order?.explain],
-      province: [this.data?.order?.province, Validators.required],
-      district: [this.data?.order?.district],
-      ward: [this.data?.order?.ward],
-      customerId: [this.data?.order?.customerId],
-      commodityIds: [
-        this.data?.order?.commodities?.map((val: CommodityEntity) => val?.id)
-      ]
+        ? new FormControl<string | null>(
+          this.datePipe.transform(this.data?.order?.deliveredAt, 'yyyy-MM-dd'),
+          { validators: Validators.required }
+        )
+        : new FormControl(),
+      explain: new FormControl<string | undefined>(this.data?.order?.explain),
+      province: new FormControl<Province | undefined>(this.data?.order?.province, { validators: Validators.required }),
+      district: new FormControl<District | undefined>(this.data?.order?.district),
+      ward: new FormControl<Ward | undefined>(this.data?.order?.ward),
+      customerId: new FormControl<number | undefined>(this.data?.customerId),
+      commodityIds: new FormControl<number[] | undefined>(this.data?.order?.commodities?.map(commodity => commodity.id))
     });
   }
 
@@ -67,52 +80,40 @@ export class OrderDialogComponent implements OnInit {
     return this.formGroup.controls;
   }
 
+  onChangeCommodity(commodityIds: number[]) {
+    this.formGroup.setControl('commodityIds', new FormControl(commodityIds));
+  }
+
   onSubmit(): any {
-    if (!this.data?.isUpdate) {
-      if (this.formGroup.value.commodityIds.length == 0) {
-        return this.message.warning('Chưa chọn hàng hoá');
-      }
+    if (this.formGroup.value.commodityIds.length == 0) {
+      return this.message.warning('Chưa chọn hàng hoá');
     }
-    const val = this.formGroup.value;
-    const order = {
-      customerId: val.customerId,
-      commodityIds: Array.from<number>(val.commodityIds),
-      wardId: val?.ward?.id,
-      districtId: val?.district?.id,
-      provinceId: val.province.id,
-      explain: val.explain,
-      deliveredAt: val.deliveredAt,
-      createdAt: val.createdAt,
-      endedAt: val.endedAt
-    };
-    if (!val.deliveredAt) {
-      delete order.deliveredAt;
-    }
-    if (!order.districtId) {
-      delete order.districtId;
-    }
-    if (!order.wardId) {
-      delete order.wardId;
-    }
-    if (this.data?.isUpdate) {
+
+    if (this.data?.order && this.data?.isUpdate) {
       this.actions$.dispatch(
         OrderActions.update({
           id: this.data.order.id,
-          updates: order
+          updates: this.mapToOrder(this.formGroup.value)
         })
       );
     } else {
-      this.actions$.dispatch(OrderActions.addOne({ body: order }));
+      this.actions$.dispatch(OrderActions.addOne({
+        body: this.mapToOrder(this.formGroup.value)
+      }));
     }
-    this.loading$.subscribe((loading) => {
-      if (!loading) {
+    this.orderQuery.select().pipe(take(1)).subscribe((state) => {
+      if (!(state.loading && state.error)) {
         this.modalRef.close();
       }
     });
   }
 
   pre(): void {
-    this.stepIndex -= 1;
+    if (this.data?.customerId) {
+      this.stepIndex = 0;
+    } else {
+      this.stepIndex -= 1;
+    }
   }
 
   next(): any {
@@ -124,6 +125,28 @@ export class OrderDialogComponent implements OnInit {
     if (this.stepIndex > 0 && !this.formGroup.value.customerId) {
       return this.message.warning('Chưa chọn khách hàng');
     }
-    this.stepIndex += 1;
+    if (this.data?.customerId) {
+      this.stepIndex = 2;
+    } else {
+      this.stepIndex += 1;
+    }
+  }
+
+  private mapToOrder(val: any): BaseAddOrderDto | BaseUpdateOrderDto {
+    if (!val.deliveredAt) {
+      val = omit(val, 'deliveredAt');
+    }
+    if (!val.districtId) {
+      val = omit(val, 'districtId');
+    }
+    if (!val.wardId) {
+      val = omit(val, 'wardId');
+    }
+    return {
+      ...val,
+      wardId: val?.ward?.id,
+      districtId: val?.district?.id,
+      provinceId: val.province.id
+    };
   }
 }

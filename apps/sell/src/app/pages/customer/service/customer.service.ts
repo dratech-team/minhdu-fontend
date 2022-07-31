@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { BaseSearchCustomerDto, CustomerEntity } from '../entities';
 import { AddCustomerDto, UpdateCustomerDto } from '../dto';
+import { VersionEnum } from '@minhdu-fontend/enums';
 
 @Injectable({ providedIn: 'root' })
 export class CustomerService extends BaseService<CustomerEntity> {
@@ -33,5 +34,9 @@ export class CustomerService extends BaseService<CustomerEntity> {
 
   delete(id: number): Observable<void> {
     return super.delete(id);
+  }
+
+  syncDebt(id: number): Observable<CustomerEntity> {
+    return this.http.get<CustomerEntity>(VersionEnum.V1 + Api.SELL.CUSTOMER.CUSTOMER + `/${id}/debt/sync`);
   }
 }

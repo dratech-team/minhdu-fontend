@@ -20,7 +20,7 @@ import { PickStatisticalTypeComponent } from './component/pick-statistical-type/
 import { StatisticalSellComponent } from './containers/statiscal-sell/statistical-sell.component';
 import { StatisticalSellRoutingModule } from './statistical-sell-routing.module';
 import { StatisticalSellService } from './service/statistical-sell.service';
-import { StatisticalModule } from '../../../../../sell/src/app/pages/statistical/statistical.module';
+import { OverviewModule } from '../../../../../sell/src/app/pages/statistical/overview.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
@@ -38,7 +38,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     ReactiveFormsModule,
     FormsModule,
     StoreModule.forFeature(FeatureName.ADMIN, AdminReducer),
-    StatisticalModule,
+    OverviewModule,
     MatDatepickerModule,
   ],
   declarations: [

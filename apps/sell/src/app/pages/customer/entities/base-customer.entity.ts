@@ -23,5 +23,5 @@ export interface BaseCustomerEntity extends BaseEntity {
   readonly gender?: GenderTypeEnum;
   readonly isPotential?: boolean;
   readonly note?: string;
-  readonly debt?: number;
+  readonly debt: number;
 }

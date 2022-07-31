@@ -1,28 +1,32 @@
 <nz-collapse>
-  <nz-collapse-panel nzHeader="{{ title }}" nzActive="true">
-    <nz-radio-group [formControl]="formRadio">
-      <label nz-radio [nzValue]="0">
+  <nz-collapse-panel nzHeader='{{ title }}' nzActive='true'>
+    <nz-radio-group [formControl]='formRadio'>
+      <label nz-radio [nzValue]='0'>
         <input
-          style="width: 190px"
-          [formControl]="formTitlePicker"
-          nz-input
-          nz-popover
-          class="mb-2"
-          nzType="primary"
+          class='mb-2'
+          style='width: 190px'
           readonly
-          [(nzPopoverVisible)]="visible"
-          nzPopoverTrigger="click"
-          [nzPopoverContent]="contentTemplate"
+          nz-popover
+          nz-input
+          nz-tooltip
+          [nzTooltipTitle]="this.formRadio.value === 0 ? tooltip : ''"
+          nzType='primary'
+          nzPopoverTrigger='click'
+          [formControl]='formTitlePicker'
+          [(nzPopoverVisible)]='visible'
+          [nzPopoverContent]='contentTemplate'
         />
       </label>
-      <label nz-radio [nzValue]="1">
+      <label nz-radio [nzValue]='1'>
         <nz-range-picker
-          [formControl]="formRange"
-          [ngModel]="
+          nz-tooltip
+          [ngModel]='
             rangeDayInit?.start && rangeDayInit?.end
               ? [rangeDayInit?.start, rangeDayInit?.end]
               : []
-          "
+          '
+          [nzTooltipTitle]="this.formRadio.value === 1 ? tooltip : ''"
+          (nzOnCalendarChange)='onChange($event)'
         >
         </nz-range-picker>
       </label>
@@ -31,15 +35,8 @@
 </nz-collapse>
 
 <ng-template #contentTemplate>
-  <i nz-icon nzType="check"></i>
-  <minhdu-fontend-title-datepicker
-    (pickTitle)="onTitlePicker($event)"
-  ></minhdu-fontend-title-datepicker>
-</ng-template>
-
-<ng-template #contentRange>
-  <i nz-icon nzType="check"></i>
-  <minhdu-fontend-title-datepicker
-    (pickTitle)="onTitlePicker($event)"
-  ></minhdu-fontend-title-datepicker>
+  <i nz-icon nzType='check'></i>
+  <md-title-datepicker
+    (pickTitle)='onTitlePicker($event)'
+  ></md-title-datepicker>
 </ng-template>

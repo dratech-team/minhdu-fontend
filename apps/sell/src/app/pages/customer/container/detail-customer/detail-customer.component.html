@@ -1,15 +1,22 @@
-<div class='animated fadeIn container ng-star-inserted'>
-  <div class='row' *ngIf='customer$ | async as customer'>
-    <div class='row col-12 mt-5'>
-      <div class='col-5 d-flex'>
-        <div class='main-title mr-5'>Thông tin Khách hàng</div>
-        <div class='col d-flex flex-column'>
+<nz-skeleton *ngIf='(loading$ | async); else loaded' [nzActive]='true'></nz-skeleton>
+<ng-template #loaded>
+  <div
+    class='animated fadeIn container ng-star-inserted'
+    *ngIf='customer$ | async as customer'
+  >
+    <div *ngIf='fullScreen === null'>
+      <div class='d-flex justify-content-between ml-lg-5'>
+        <div>
           <img
             class='rounded-circle row'
             alt='50x50'
-            src='{{ customer.avt }}'
+            src='{{
+              customer.avt || (customer.gender === GenderTypeEnum.MALE ? "https://bit.ly/3owMJR4" : customer.gender === GenderTypeEnum.FEMALE ? "https://bit.ly/3zhQzTs" : "https://bit.ly/3S2e0sn")
+               }}'
             data-holder-rendered='true'
             height='160px'
+            width='160px'
+            style='align-self: center'
           />
           <div class='d-flex flex-column justify-content-center'>
             <button
@@ -29,296 +36,353 @@
             </button>
           </div>
         </div>
-      </div>
-      <div class='col-7 d-flex justify-content-end align-items-start'>
-        <div class='align-items-center'>
-          <div
-            class='mr-2 p-1'
-            style='border: solid 1px'
+        <div class='d-flex'>
+          <button
+            class='mr-2'
+            nz-button
+            nzType='default'
             [ngStyle]="{
-              'border-color':
-                customer.debt && customer.debt < 0 ? 'red' : 'green'
-            }"
+                        'border-color': customer.debt && customer.debt < 0 ? 'red' : 'green',
+                        'color': customer.debt && customer.debt < 0 ? 'red' : 'green'
+                      }"
+            (click)='onSyncDebt(customer)'
           >
-            <span
-              class='title-detail'
-              style='padding: 8px'
-              [ngStyle]="{
-                color: customer.debt && customer.debt < 0 ? 'red' : 'green'
-              }"
-            >
-              {{ customer.debt | number: '1.0-0' }}
-            </span>
-          </div>
+            <i nz-icon nzType='sync' [nzSpin]='isSyncDebt'></i>
+            {{ customer.debt | number: '1.0-0' }}
+          </button>
+          <button
+            nz-button
+            nzType='primary'
+            (click)='onPayment(customer)'
+          >
+            Thanh toán
+          </button>
         </div>
-        <button
-          nz-button
-          nzType='primary'
-          (click)='customerComponentService.onPayment(customer)'
-        >
-          Thanh toán
-        </button>
       </div>
-    </div>
-  </div>
-  <div
-    class='row mt-3'
-    style='color: #80828b'
-    *ngIf='customer$ | async as customer'
-  >
-    <div class='col-12 justify-content-center'>
-      <div class='row d-flex align-items-center'>
-        <div class='col-2 align-items-center title-table'>Thông tin chung</div>
-        <button
-          data-toggle='tooltip'
-          data-placement='top'
-          title='chỉnh sửa'
-          class='edit animated'
-          (click)='customerComponentService.onUpdate(customer)'
-        >
-          <img
-            style='height: 15px'
-            src='/assets/icon/share/pencil-fill.svg'
-            alt='edit icon'
-          />
-        </button>
-      </div>
-      <div class='row mt-3'>
-        <div class='col-6 mr-5 form-group'>
-          <div class='row ml-1 align-items-center'>
-            <div class='col-md-3 py-2 title-detail'>
-              <span>Họ và tên:</span>
-            </div>
-            <div class='col-md-8 py-2 border-bottom'>
+      <div
+        class='row mt-5'
+        style='color: #80828b'
+      >
+        <div class='col-12 justify-content-center'>
+          <div class='row d-flex align-items-center'>
+            <div class='col-2 align-items-center title-table'>Thông tin chung</div>
+            <button
+              data-toggle='tooltip'
+              data-placement='top'
+              title='chỉnh sửa'
+              class='edit animated'
+              (click)='customerComponentService.onUpdate(customer)'
+            >
+              <img
+                style='height: 15px'
+                src='/assets/icon/share/pencil-fill.svg'
+                alt='edit icon'
+              />
+            </button>
+          </div>
+          <div class='row mt-3'>
+            <div class='col-6 mr-5 form-group'>
+              <div class='row ml-1 align-items-center'>
+                <div class='col-md-3 py-2 title-detail'>
+                  <span>Họ và tên:</span>
+                </div>
+                <div class='col-md-8 py-2 border-bottom'>
               <span class='title-detail' style='color: #3c3b54'>
                 {{ customer.lastName }}
               </span>
-            </div>
-          </div>
-          <div class='row ml-1 align-items-center'>
-            <div class='col-md-3 py-2 title-detail'>
-              <span>Giới tính:</span>
-            </div>
-            <div class='col-md-8 py-2 border-bottom title-detail'>
-              {{
-              customer.gender === 'MALE'
-                ? 'Nam'
-                : customer.gender === 'FEMALE'
-                  ? 'Nữ'
-                  : 'Chưa cập nhật'
-              }}
-            </div>
-          </div>
-          <div class='row ml-1 align-items-center'>
-            <div class='col-md-3 py-2 title-detail'>
-              <span>Ngày sinh:</span>
-            </div>
-            <div class='col-md-8 py-2 border-bottom title-detail'>
-              {{ (customer.birthday | date: 'dd/MM/yyyy') || 'Chưa cập nhật' }}
-            </div>
-          </div>
-          <div class='row ml-1 align-items-center'>
-            <div class='col-md-3 py-2 title-detail'>
-              <span>Nguyên quán:</span>
-            </div>
-            <div class='col-md-8 py-2 border-bottom'>
+                </div>
+              </div>
+              <div class='row ml-1 align-items-center'>
+                <div class='col-md-3 py-2 title-detail'>
+                  <span>Giới tính:</span>
+                </div>
+                <div class='col-md-8 py-2 border-bottom title-detail'>
+                  {{
+                  customer.gender === 'MALE'
+                    ? 'Nam'
+                    : customer.gender === 'FEMALE'
+                      ? 'Nữ'
+                      : 'Chưa cập nhật'
+                  }}
+                </div>
+              </div>
+              <div class='row ml-1 align-items-center'>
+                <div class='col-md-3 py-2 title-detail'>
+                  <span>Ngày sinh:</span>
+                </div>
+                <div class='col-md-8 py-2 border-bottom title-detail'>
+                  {{ (customer.birthday | date: 'dd/MM/yyyy') || 'Chưa cập nhật' }}
+                  {{ customer.birthday ? '(' + calculatorAge(customer.birthday) + ' tuổi' + ')' : '' }}
+                </div>
+              </div>
+              <div class='row ml-1 align-items-center'>
+                <div class='col-md-3 py-2 title-detail'>
+                  <span>Nguyên quán:</span>
+                </div>
+                <div class='col-md-8 py-2 border-bottom'>
               <span class='title-detail' style='color: #3c3b54'>
                 {{ customer.birthplace || 'Chưa cập nhật' }}
               </span>
-            </div>
-          </div>
-          <div class='row ml-1 align-items-center'>
-            <div class='col-md-3 py-2 title-detail'>
-              <span>CMND Số:</span>
-            </div>
-            <div class='col-md-8 py-2 border-bottom'>
+                </div>
+              </div>
+              <div class='row ml-1 align-items-center'>
+                <div class='col-md-3 py-2 title-detail'>
+                  <span>CMND Số:</span>
+                </div>
+                <div class='col-md-8 py-2 border-bottom'>
               <span class='title-detail'>
                 {{ customer.identify || 'Chưa cập nhật' }}
               </span>
-            </div>
-          </div>
-          <div class='row ml-1 align-items-center'>
-            <div class='col-md-3 py-2 title-detail'>
-              <span>Ngày cấp:</span>
-            </div>
-            <div class='col-md-8 py-2 border-bottom title-detail'>
-              {{ (customer.idCardAt | date: 'dd/MM/yyy') || 'Chưa cập nhật' }}
-            </div>
-          </div>
-          <div class='row ml-1 align-items-center'>
-            <div class='col-md-3 py-2 title-detail'>
-              <span>Nơi cấp:</span>
-            </div>
-            <div class='col-md-8 py-2 border-bottom'>
+                </div>
+              </div>
+              <div class='row ml-1 align-items-center'>
+                <div class='col-md-3 py-2 title-detail'>
+                  <span>Ngày cấp:</span>
+                </div>
+                <div class='col-md-8 py-2 border-bottom title-detail'>
+                  {{ (customer.idCardAt | date: 'dd/MM/yyy') || 'Chưa cập nhật' }}
+                </div>
+              </div>
+              <div class='row ml-1 align-items-center'>
+                <div class='col-md-3 py-2 title-detail'>
+                  <span>Nơi cấp:</span>
+                </div>
+                <div class='col-md-8 py-2 border-bottom'>
               <span class='title-detail'>
                 {{ customer?.issuedBy || 'Chưa cập nhật' }}
               </span>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class='row ml-1 align-items-center'>
-            <div class='col-md-3 py-2 title-detail'>
-              <span> Dân tộc:</span>
-            </div>
-            <div class='col-md-8 py-2 border-bottom'>
+            <div class='col-5'>
+              <div class='row align-items-center'>
+                <div class='col-md-3 py-2 title-detail'>
+                  <span> Dân tộc:</span>
+                </div>
+                <div class='col-md-8 py-2 border-bottom'>
               <span class='title-detail' style='color: #3c3b54'>
                 {{ customer.ethnicity || 'Chưa cập nhật' }}
               </span>
-            </div>
-          </div>
-        </div>
-        <div class='col-5 form-group'>
-          <div class='row align-items-center'>
-            <div class='col-md-3 py-2 title-detail'>
-              <span>Tỉnh thành:</span>
-            </div>
-            <div class='col py-2 border-bottom'>
-              <div class='title-detail'>
-                {{
-                customer?.ward?.district?.province?.name ||
-                customer.province.name
-                }}
+                </div>
               </div>
-            </div>
-          </div>
-          <div class='row align-items-center'>
-            <div class='col-md-3 py-2 title-detail'>
-              <span>Quận/huyện:</span>
-            </div>
-            <div class='col py-2 border-bottom'>
-              <div class='title-detail'>
-                {{ customer?.ward?.district?.name || 'Chưa cập nhật' }}
-              </div>
-            </div>
-          </div>
-          <div class='row align-items-center'>
-            <div class='col-md-3 py-2 title-detail'>
-              <span>Phường/xã:</span>
-            </div>
-            <div class='col py-2 border-bottom'>
-              <div class='title-detail'>
-                <div>{{ customer?.ward?.name || 'Chưa cập nhật' }}</div>
-              </div>
-            </div>
-          </div>
-          <div class='row align-items-start'>
-            <div class='col-md-3 py-2 title-detail'>
-              <span>Địa chỉ:</span>
-            </div>
-            <div class='col-md-9 py-2 border-bottom'>
-              <span class='title-detail'>
-                {{ customer.address || 'Chưa cập nhật' }}
-              </span>
-            </div>
-          </div>
-          <div class='row align-items-center'>
-            <div class='col-md-3 py-2 title-detail'>
-              <span>Tôn giáo:</span>
-            </div>
-            <div class='col-md-9 py-2 border-bottom'>
+              <div class='row align-items-center'>
+                <div class='col-md-3 py-2 title-detail'>
+                  <span>Tôn giáo:</span>
+                </div>
+                <div class='col-md-9 py-2 border-bottom'>
               <span class='title-detail' style='color: #3c3b54'>
                 {{ customer?.religion || 'Chưa cập nhật' }}
               </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class='col-12 mt-5'>
-      <div class='row'>
-        <div class='col-6 mr-5'>
-          <div class='row d-flex align-items-start'>
-            <div class='align-items-center title-table mr-4'>
-              Thông tin Liên hệ
-            </div>
-          </div>
-          <div class='ml-3'>
-            <div class='mt-3 row align-items-center'>
-              <div class='col-md-3 py-2 title-detail'>
-                <span>Địa chỉ:</span>
+        <div class='col-12 mt-5'>
+          <div class='row'>
+            <div class='col-6 mr-5'>
+              <div class='row d-flex align-items-start'>
+                <div class='align-items-center title-table mr-4'>
+                  Thông tin Liên hệ
+                </div>
               </div>
-              <div class='col-md-8 py-2 border-bottom'>
-                <span class='title-detail'>
-                  {{ customer?.address || 'Chưa cập nhật' }}
-                </span>
-              </div>
-            </div>
-            <div class='row align-items-center'>
-              <div class='col-md-3 py-2 title-detail'>
-                <span>Số điện thoại:</span>
-              </div>
-              <div class='col-md-8 py-2 border-bottom'>
-                <span style='color: #7749f8'>
-                  {{ customer?.phone || 'Chưa cập nhật' }}
-                </span>
-              </div>
-            </div>
-            <div class='row align-items-center'>
-              <div class='col-md-3 py-2 title-detail'>
-                <span>FaceBook:</span>
-              </div>
-              <div class='col-md-8 py-2 border-bottom'>
+              <div class='ml-3'>
+                <div class='row align-items-center'>
+                  <div class='col-md-3 py-2 title-detail'>
+                    <span>Địa chỉ:</span>
+                  </div>
+                  <div class='col py-2 border-bottom'>
+                    <a
+                      style='color: #7749f8'
+                      href="https://maps.google.com/?q={{
+                  (customer?.address ? (customer.address + ' ') : '') +
+                  (customer.ward?.name ? (customer.ward?.name + ' ') : '') +
+                  (customer.district?.name ? (customer.district?.name + ' ') : '') +
+                  (customer.province.name)
+                }}"
+                      target='_blank'
+                    >
+                      {{customer.address ? customer.address + ' - ' : ''}}
+                      {{customer.ward?.name ? (customer.ward.name + ' - ') : ''}}
+                      {{customer.district?.name ? (customer.district.name + ' - ') : ''}}
+                      {{customer.province.name}}
+                    </a>
+                  </div>
+                </div>
+                <div class='row align-items-center'>
+                  <div class='col-md-3 py-2 title-detail'>
+                    <span>Số điện thoại:</span>
+                  </div>
+                  <div class='col-md-8 py-2 border-bottom'>
+                    <a style='color: #7749f8' href='tel:{{customer?.phone}}'>
+                      {{ customer?.phone || 'Chưa cập nhật' }}
+                    </a>
+                  </div>
+                </div>
+                <div class='row align-items-center'>
+                  <div class='col-md-3 py-2 title-detail'>
+                    <span>Facebook:</span>
+                  </div>
+                  <div class='col-md-8 py-2 border-bottom'>
                 <span class='title-detail'>
                   {{ customer?.facebook || 'Chưa cập nhật' }}
                 </span>
-              </div>
-            </div>
-            <div class='row align-items-center'>
-              <div class='col-md-3 py-2 title-detail'>
-                <span>Zalo:</span>
-              </div>
-              <div class='col-md-8 py-2 border-bottom'>
+                  </div>
+                </div>
+                <div class='row align-items-center'>
+                  <div class='col-md-3 py-2 title-detail'>
+                    <span>Zalo:</span>
+                  </div>
+                  <div class='col-md-8 py-2 border-bottom'>
                 <span class='title-detail'>
                   {{ customer?.zalo || 'Chưa cập nhật' }}
                 </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <div class='col-12 mt-5'>
+          <div class='d-flex align-items-center justify-content-between mb-2'>
+            <div class='d-flex flex-row align-items-center'>
+              <div class='title-table'>
+                Đơn hàng đang giao
+              </div>
+              <i
+                *ngIf='customer.delivering?.length'
+                class='pointer ml-2'
+                nz-icon
+                nzType='fullscreen'
+                nzTheme='outline'
+                (click)='onFullScreenOrder(OrderTypeEnum.DELIVERING)'
+              ></i>
+            </div>
+            <div>
+              <button
+                nz-button
+                nzGhost
+                nzType='primary'
+                (click)='onAddOrder()'
+              >
+                Thêm đơn hàng
+              </button>
+            </div>
+          </div>
+          <order-list
+            [type]='OrderTypeEnum.DELIVERING'
+            [customerId]='getId'
+            [loading]='orderLoading(OrderTypeEnum.DELIVERED) || false'
+            [orders]='customer.delivering | notEmpty: []'
+            (onValueChanged)='onOrderChanged($event, OrderTypeEnum.DELIVERING)'
+            (onPayment)='onPayment(customer, $event)'
+            (onDelivered)='onDelivered($event)'
+            (onCancelOrRestore)='onCancelOrRestoreOrder($event, "cancel")'
+          >
+          </order-list>
+        </div>
+        <div class='col-12 mt-5'>
+          <div class='d-flex flex-row align-items-center mb-2'>
+            <div class='title-table'>
+              Đơn hàng đã giao
+            </div>
+            <i
+              *ngIf='customer.delivered?.length'
+              class='pointer ml-2'
+              nz-icon
+              nzType='fullscreen'
+              nzTheme='outline'
+              (click)='onFullScreenOrder(OrderTypeEnum.DELIVERED)'
+            ></i>
+          </div>
+          <order-list
+            [type]='OrderTypeEnum.DELIVERED'
+            [customerId]='getId'
+            [loading]='orderLoading(OrderTypeEnum.DELIVERED) || false'
+            [orders]='customer.delivered | notEmpty: []'
+            (onValueChanged)='onOrderChanged($event, OrderTypeEnum.DELIVERED)'
+            (onPayment)='onPayment(customer, $event)'
+            (onHide)='onHideOrder($event)'
+            (onCancelOrRestore)='onCancelOrRestoreOrder($event, "restore")'
+          ></order-list>
+        </div>
+        <div class='col-12 mt-5'>
+          <div class='d-flex flex-row align-items-center mb-2'>
+            <div class='title-table'>
+              Đơn hàng đã huỷ
+            </div>
+            <i
+              *ngIf='customer.cancelled?.length'
+              class='pointer ml-2'
+              nz-icon
+              nzType='fullscreen'
+              nzTheme='outline'
+              (click)='onFullScreenOrder(OrderTypeEnum.CANCELLED)'
+            ></i>
+          </div>
+          <order-list
+            [type]='OrderTypeEnum.CANCELLED'
+            [customerId]='getId'
+            [loading]='orderLoading(OrderTypeEnum.DELIVERED) || false'
+            [orders]='customer.cancelled | notEmpty: []'
+            (onValueChanged)='onOrderChanged($event, OrderTypeEnum.CANCELLED)'
+            (onCancelOrRestore)='onCancelOrRestoreOrder($event, "restore")'
+          ></order-list>
+        </div>
+        <div class='col-12 mt-5'>
+          <div class='row d-flex align-items-center'>
+            <div class='align-items-center title-table'>Lịch sử thanh toán</div>
+            <i
+              *ngIf='customer.delivering?.length'
+              class='pointer ml-2'
+              nz-icon
+              nzType='fullscreen'
+              nzTheme='outline'
+              (click)='onFullScreenOrder("payment")'
+            ></i>
+          </div>
+          <div class='my-3'>
+            <minhdu-fontend-table-payment [customerId]='customer.id'>
+            </minhdu-fontend-table-payment>
+          </div>
+        </div>
       </div>
     </div>
-    <div class='col-12 mt-5'>
-      <div class='d-flex align-items-center justify-content-between mb-2'>
-        <div class='row align-items-center title-table ml-1'>
-          Đơn hàng đang giao
-        </div>
-        <button
-          nz-button
-          nzGhost
-          nzType='primary'
-          (click)='onAddOrder()'
-        >
-          Thêm đơn hàng
-        </button>
+    <div *ngIf='fullScreen !== null'>
+      <div class='d-flex flex-row justify-content-end  my-2 mr-4'>
+        <i
+          class='pointer'
+          style='font-size: 1.5em'
+          nz-icon
+          nzType='fullscreen-exit'
+          nzTheme='outline'
+          (click)='onFullScreenExit()'
+        ></i>
       </div>
       <order-list
-        [delivered]='false'
-        [loading$]='deliveringLoading$'
+        *ngIf="fullScreen !== 'payment'; else fullScreenPayment"
+        [type]='fullScreen'
         [customerId]='getId'
-        [orders]='delivering$ | async | notEmpty: []'
+        [loading]='orderLoading(OrderTypeEnum.DELIVERED) || false'
+        [orders]='fullScreen === OrderTypeEnum.DELIVERING
+         ? customer.delivering
+          : fullScreen === OrderTypeEnum.DELIVERED
+           ? customer.delivered
+           : fullScreen === OrderTypeEnum.CANCELLED
+            ? customer.cancelled
+            : customer[fullScreen]'
+        (onValueChanged)='onOrderChanged($event, fullScreen)'
+        (onPayment)='onPayment(customer, $event)'
+        (onDelivered)='onDelivered($event)'
+        (onCancelOrRestore)='onCancelOrRestoreOrder($event, (fullScreen === OrderTypeEnum.CANCELLED || fullScreen === OrderTypeEnum.DELIVERED) ? "restore" : "cancel")'
+        (onHide)='onHideOrder($event)'
       >
       </order-list>
-    </div>
-    <div class='col-12 mt-5'>
-      <div class='row d-flex align-items-center'>
-        <div class='row align-items-center title-table ml-1 mb-2'>
-          Đơn hàng đã giao
-        </div>
-      </div>
-      <order-list
-        [delivered]='true'
-        [loading$]='deliveredLoading$'
-        [customerId]='getId'
-        [orders]='delivered$ | async | notEmpty: []'
-      ></order-list>
-    </div>
-    <div class='col-12 mt-5'>
-      <div class='row d-flex align-items-center'>
-        <div class='align-items-center title-table'>Lịch sử thanh toán</div>
-      </div>
-      <div class='my-3'>
+      <ng-template #fullScreenPayment>
         <minhdu-fontend-table-payment [customerId]='customer.id'>
         </minhdu-fontend-table-payment>
-      </div>
+      </ng-template>
     </div>
   </div>
-</div>
+</ng-template>
+

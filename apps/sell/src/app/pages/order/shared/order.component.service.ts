@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { OrderDialogComponent } from '../component';
-import { SelectCommodityComponent } from '../../../shared/components/select-commodity/select-commodity.component';
-import { OrderActions } from '../+state';
-import { OrderEntity } from '../enitities/order.entity';
+import { SelectCommodityComponent } from '../../../shared/components';
+import { OrderActions } from '../state';
+import { BaseOrderEntity, OrderEntity } from '../enitities';
 import {
   DialogDatePickerComponent
 } from '../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { Router } from '@angular/router';
+import { RichTextComponent } from '../../../../../../../libs/components/src/lib/rich-text/rich-text.component';
 
 @Injectable()
 export class OrderComponentService {
@@ -32,7 +33,7 @@ export class OrderComponentService {
     this.router.navigate(['don-hang/chi-tiet-don-hang', id]).then();
   }
 
-  onUpdate(order: OrderEntity, type?: 'GENERAL' | 'COMMODITY') {
+  onUpdate(order: BaseOrderEntity, type?: 'GENERAL' | 'COMMODITY') {
     if (type === 'GENERAL') {
       this.modal.create({
         nzTitle: 'Sửa đơn hàng',
@@ -40,15 +41,15 @@ export class OrderComponentService {
         nzComponentParams: {
           data: { order: order, tab: 0, isUpdate: true }
         },
-        nzFooter: [],
         nzWidth: '65vw',
-        nzMaskClosable: false
+        nzMaskClosable: false,
+        nzFooter: []
       });
     } else {
       this.modal.create({
         nzTitle: 'Chọn hàng hoá',
         nzContent: SelectCommodityComponent,
-        nzComponentParams: { commodities: order.commodities },
+        nzComponentParams: { data: { commodities: order.commodities, isUpdate: true } },
         nzWidth: '70vw',
         nzFooter: []
       }).afterClose.subscribe((commodityIds: number[]) => {
@@ -89,11 +90,12 @@ export class OrderComponentService {
   onCancel(order: OrderEntity) {
     this.modal.warning({
       nzTitle: 'Huỷ đơn hàng',
-      nzContent: `Bạn có chắc chắn muốn huỷ đơn hàng đến ${order.province.name} của khách hàng ${order.customer.lastName} không`,
+      nzContent: RichTextComponent,
+      nzComponentParams: { description: `Bạn có chắc chắn muốn huỷ đơn hàng đến ${order.province.name} của khách hàng ${order.customer.lastName} không? \n Nếu có thể hãy cho chúng tôi biết lý do ở bên dưới nhé` },
       nzOkDanger: true,
-      nzOnOk: () => {
+      nzOnOk: (res) => {
         this.actions$.dispatch(
-          OrderActions.cancel({ orderId: order.id })
+          OrderActions.cancel({ id: order.id, reason: res.formGroup.value.reason || undefined })
         );
       }
     });
@@ -104,6 +106,7 @@ export class OrderComponentService {
       nzTitle: 'Xác nhận ngày giao hàng',
       nzContent: DialogDatePickerComponent,
       nzMaskClosable: false,
+      nzComponentParams: { datetime: new Date() },
       nzFooter: []
     }).afterClose.subscribe((res: { date: Date }) => {
       if (res) {

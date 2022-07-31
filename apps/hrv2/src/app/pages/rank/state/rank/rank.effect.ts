@@ -29,19 +29,19 @@ export class RankEffect {
           {
             ...state,
           },
-          props.isPaginate ? { loadMore: true } : { loading: true }
+          props.isSet ? { loadMore: true } : { loading: true }
         )
       );
       Object.assign(props.search, {
         take: PaginationDto.take,
-        skip: props.isPaginate ? this.rankQuery.getCount() : PaginationDto.skip,
+        skip: props.isSet ? this.rankQuery.getCount() : PaginationDto.skip,
       });
       return this.rankService.pagination(props).pipe(
         map((res) => {
           if (res.data.length === 0) {
             this.message.info('Đã lấy hết xếp hạng');
           }
-          if (props.isPaginate) {
+          if (props.isSet) {
             this.rankStore.add(res.data);
           } else {
             this.rankStore.set(res.data);
@@ -53,7 +53,7 @@ export class RankEffect {
                 total: res.total,
                 remain: res.total - this.rankQuery.getCount(),
               },
-              props.isPaginate ? { loadMore: false } : { loading: false }
+              props.isSet ? { loadMore: false } : { loading: false }
             )
           );
         }),
@@ -63,7 +63,7 @@ export class RankEffect {
               {
                 ...state,
               },
-              props.isPaginate ? { loadMore: false } : { loading: false }
+              props.isSet ? { loadMore: false } : { loading: false }
             )
           );
           return of(RankActions.error(err));

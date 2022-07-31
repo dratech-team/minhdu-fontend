@@ -1,15 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormGroup } from '@angular/forms';
 import { PaidType } from 'libs/enums/paidType.enum';
-import { OrderActions, OrderQuery } from '../../../pages/order/+state';
+import { OrderActions, OrderQuery } from '../../../pages/order/state';
 import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CommodityEntity } from '../../../pages/commodity/entities';
-import { OrderEntity } from '../../../pages/order/enitities/order.entity';
-import { PaginationDto } from '@minhdu-fontend/constants';
+import { OrderEntity } from '../../../pages/order/enitities';
 import { ModeEnum, SortTypeOrderEnum } from '@minhdu-fontend/enums';
-import { BaseSearchOrderDto } from '../../../pages/order/dto';
 import { AccountQuery } from '../../../../../../../libs/system/src/lib/state/account-management/account.query';
+import { RouterConstants } from '../../constants';
+import * as _ from 'lodash';
+import { debounceTime, startWith } from 'rxjs/operators';
+import { BaseSearchOrderDto } from '../../../pages/order/dto';
 
 @Component({
   selector: 'select-order',
@@ -17,11 +19,9 @@ import { AccountQuery } from '../../../../../../../libs/system/src/lib/state/acc
   styleUrls: ['select-order.component.scss']
 })
 export class SelectOrderComponent implements OnInit {
-  @Input() columns!: SortTypeOrderEnum[];
   @Input() formGroup!: UntypedFormGroup;
-  @Input() pickOne = false;
-  @Input() customerId?: number;
-  @Input() disableReselect = false;
+  @Input() selectOne = false;
+  @Input() search?: Partial<BaseSearchOrderDto>;
 
   account$ = this.accountQuery.selectCurrentUser();
   total$ = this.orderQuery.selectCount();
@@ -29,25 +29,25 @@ export class SelectOrderComponent implements OnInit {
   loading$ = this.orderQuery.select((state) => state.loading);
 
   orders: OrderEntity[] = [];
-  eventSearch = true;
-  checked = false;
+  checked = true;
   indeterminate = false;
-  setOfCheckedOrder = new Set<OrderEntity>();
-  setOfCheckedCommodity = new Set<CommodityEntity>();
+  orderSelected = new Set<OrderEntity>();
+  commoditySelected = new Set<CommodityEntity>();
 
+  RouterConstants = RouterConstants;
   ModeEnum = ModeEnum;
   PaidType = PaidType;
   SortTypeOrderEnum = SortTypeOrderEnum;
 
-  formGroupTable = new UntypedFormGroup({
-    filterRoute: new UntypedFormControl(false),
-    customer: new UntypedFormControl(''),
-    startedAt: new UntypedFormControl([
+  formGroupTable = new FormGroup({
+    filterRoute: new FormControl<boolean>(false),
+    search: new FormControl<string>(''),
+    startedAt: new FormControl<Date[] | null>([
       getFirstDayInMonth(new Date()),
       getLastDayInMonth(new Date())
     ]),
-    paidType: new UntypedFormControl(''),
-    explain: new UntypedFormControl('')
+    paidType: new FormControl<PaidType | string>(''),
+    explain: new FormControl<string>('')
   });
 
   constructor(
@@ -55,33 +55,32 @@ export class SelectOrderComponent implements OnInit {
     private readonly orderQuery: OrderQuery,
     private readonly accountQuery: AccountQuery
   ) {
-    this.orderQuery.selectAll().subscribe((val) => {
-      this.orders = JSON.parse(JSON.stringify(val));
-    });
   }
 
   ngOnInit(): void {
-    this.onLoad(false);
+    this.orderQuery.selectAll().subscribe((val) => {
+      this.orders = JSON.parse(JSON.stringify(val));
+    });
     this.formGroup.value.orders?.map((item: OrderEntity) => {
-      this.setOfCheckedOrder.add(item);
+      this.orderSelected.add(item);
     });
-    this.formGroupTable.valueChanges.subscribe((_) => {
-      this.onLoad(false);
-    });
+    this.formGroupTable.valueChanges
+      .pipe(debounceTime(500), startWith(this.formGroupTable.value))
+      .subscribe((_) => {
+        this.actions$.dispatch(
+          OrderActions.loadAll({
+            search: this.mapOrder(this.formGroupTable.value),
+            isSet: true
+          })
+        );
+      });
   }
 
   onLoadMore() {
-    this.onLoad(true);
-  }
-
-  onLoad(pagination: boolean) {
     this.actions$.dispatch(
       OrderActions.loadAll({
-        search: this.mapOrder(
-          this.formGroupTable.value,
-          pagination
-        ) as BaseSearchOrderDto,
-        isPaginate: pagination
+        search: this.mapOrder(this.formGroupTable.value),
+        isSet: false
       })
     );
   }
@@ -90,31 +89,35 @@ export class SelectOrderComponent implements OnInit {
     this.formGroup.get('order')?.setValue(order);
   }
 
+  isOrderSelected(order: OrderEntity): boolean {
+    return order.commodities.every(commodity => commodity.routeId !== null);
+  }
+
   updateCheckedSet(order: OrderEntity, checked: boolean): void {
     if (checked) {
-      if (this.pickOne) {
-        this.setOfCheckedOrder.clear();
-        this.setOfCheckedOrder.add(order);
+      if (this.selectOne) {
+        this.orderSelected.clear();
+        this.orderSelected.add(order);
       } else {
-        this.setOfCheckedOrder.add(order);
+        this.orderSelected.add(order);
         order.commodities.map((item) => {
-          if (!item.route && !this.setOfCheckedCommodity.has(item)) {
-            this.setOfCheckedCommodity.add(item);
+          if (!item.route && !this.commoditySelected.has(item)) {
+            this.commoditySelected.add(item);
           }
         });
       }
     } else {
       order.commodities.map((item) => {
-        if (this.setOfCheckedCommodity.has(item)) {
-          this.setOfCheckedCommodity.delete(item);
+        if (this.commoditySelected.has(item)) {
+          this.commoditySelected.delete(item);
         }
       });
-      this.setOfCheckedOrder.delete(order);
+      this.orderSelected.delete(order);
     }
-    this.formGroup.get('orders')?.setValue(Array.from(this.setOfCheckedOrder));
+    this.formGroup.get('orders')?.setValue(Array.from(this.orderSelected));
     this.formGroup
       .get('commodities')
-      ?.setValue(Array.from(this.setOfCheckedCommodity));
+      ?.setValue(Array.from(this.commoditySelected));
   }
 
   onAllChecked(checked: boolean) {
@@ -129,57 +132,57 @@ export class SelectOrderComponent implements OnInit {
 
   private refreshCheckedStatus(): void {
     this.checked = this.orders.every((order) =>
-      this.setOfCheckedOrder.has(order)
+      this.orderSelected.has(order)
     );
     this.indeterminate =
-      this.orders.some((order) => this.setOfCheckedOrder.has(order)) &&
+      this.orders.some((order) => this.orderSelected.has(order)) &&
       !this.checked;
-  }
-
-  private mapOrder(val: any, isPagination: boolean) {
-    const param = {
-      take: PaginationDto.take,
-      skip: isPagination ? this.orderQuery.getCount() : PaginationDto.skip,
-      paidType: val.paidType || '',
-      filterRoute: val.filterRoute || '',
-      customer: val.customer || '',
-      explain: val.explain || '',
-      startedAt_start: val.startedAt
-        ? val.startedAt[0]
-        : getFirstDayInMonth(new Date()),
-      startedAt_end: val.startedAt
-        ? val.startedAt[1]
-        : getLastDayInMonth(new Date())
-    };
-    return Object.assign(
-      {},
-      param,
-      this.customerId ? { customerId: this.customerId } : {}
-    );
   }
 
   onItemCheckedCommodity(commodity: any, order: OrderEntity, checked: boolean) {
     if (checked) {
-      if (!this.setOfCheckedOrder.has(order)) {
-        this.setOfCheckedOrder.add(order);
+      if (!this.orderSelected.has(order)) {
+        this.orderSelected.add(order);
       }
-      this.setOfCheckedCommodity.add(commodity);
+      this.commoditySelected.add(commodity);
     } else {
-      this.setOfCheckedCommodity.delete(commodity);
-      if (
-        order.commodities.every((item) => !this.setOfCheckedCommodity.has(item))
-      ) {
-        this.setOfCheckedOrder.delete(order);
+      this.commoditySelected.delete(commodity);
+      const all = order.commodities.every((item) => !this.commoditySelected.has(item));
+      if (all) {
+        this.orderSelected.delete(order);
       }
     }
-    this.refreshCheckedStatus();
-    this.formGroup.get('orders')?.setValue(Array.from(this.setOfCheckedOrder));
+    this.formGroup.get('orders')?.setValue(Array.from(this.orderSelected));
     this.formGroup
       .get('commodities')
-      ?.setValue(Array.from(this.setOfCheckedCommodity));
+      ?.setValue(Array.from(this.commoditySelected));
+    this.refreshCheckedStatus();
   }
 
   checkOrderSelect(order: OrderEntity): boolean {
-    return Array.from(this.setOfCheckedOrder).some((e) => e.id === order.id);
+    return Array.from(this.orderSelected).some((e) => e.id === order.id) && this.isOrderSelected(order);
+  }
+
+  commodityTotal = (commodities: CommodityEntity[]) => {
+    return commodities.reduce((acc, cur) => {
+      return acc + (cur.amount || 0) + (cur.more?.amount || 0) + (cur.gift || 0);
+    }, 0);
+  };
+
+  private mapOrder(val: any) {
+    val = {
+      ...this.search,
+      paidType: val.paidType || '',
+      filterRoute: val.filterRoute || '',
+      search: val.search || '',
+      explain: val.explain || '',
+      startedAt_start: val.startedAt[0],
+      startedAt_end: val.startedAt[1],
+      status: -1
+    };
+    if (val && !(val.startedAt_start && val.startedAt_end)) {
+      val = _.omit(val, ['startedAt_start', 'startedAt_end']);
+    }
+    return val;
   }
 }

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { RouteEntity } from '../entities';
 import { RouteDialogComponent } from '../component';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { UpdaterRouteTypeEnum } from '../enums/updater-route-type.enum';
-import { RouteActions, RouteQuery } from '../+state';
+import { UpdaterRouteTypeEnum } from '../enums';
+import { RouteActions, RouteQuery } from '../state';
 import { Router } from '@angular/router';
 import { Actions } from '@datorama/akita-ng-effects';
 import { ModalDatePickerComponent } from '@minhdu-fontend/components';
@@ -101,6 +101,16 @@ export class RouteComponentService {
         this.actions$.dispatch(
           RouteActions.update({ id: route.id, updates: { endedAt: res.date } })
         );
+      }
+    });
+  }
+
+  onRestore(route: RouteEntity) {
+    this.modal.warning({
+      nzTitle: 'Bạn có chắc chắn muốn khôi phục chuyến xe?',
+      nzContent: `Sau khi khôi phục chuyến xe ${route.name} có biển số ${route.bsx}. Mọi thao tác trên chuyến xe này sẽ được khôi phục..!!`,
+      nzOnOk: () => {
+        this.actions$.dispatch(RouteActions.restore({ id: route.id }));
       }
     });
   }

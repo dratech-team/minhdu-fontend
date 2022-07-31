@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { CustomerEntity } from '../entities';
 import { CustomerModalComponent, PaymentModalComponent } from '../component';
-import { ModalCustomerData } from '../data/modal-customer.data';
-import { CustomerActions, CustomerQuery } from '../+state';
-import { ModalAddOrUpdatePayment } from '../data/modal-payment.data';
+import { ModalAddOrUpdatePayment, ModalCustomerData } from '../data';
+import { CustomerActions, CustomerQuery } from '../state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { Router } from '@angular/router';
 import { RouterConstants } from '../../../shared/constants';
+import { OrderEntity } from '../../order/enitities';
 
 @Injectable()
 export class CustomerComponentService {
@@ -60,23 +60,19 @@ export class CustomerComponentService {
     });
   }
 
-  onPayment(customer: CustomerEntity) {
-    this.modal.create({
-      nzWidth: '70vw',
+  onPayment(order?: OrderEntity) {
+    return this.modal.create({
+      nzWidth: 'fit-content',
       nzTitle: 'Thanh toán',
       nzContent: PaymentModalComponent,
       nzComponentParams: <{ data: ModalAddOrUpdatePayment }>{
         data: {
           add: {
-            customer: customer
+            order: order
           }
         }
       },
-      nzFooter: []
-    }).afterClose.subscribe((val) => {
-      if (val) {
-        this.actions$.dispatch(CustomerActions.loadOne({ id: customer.id }));
-      }
+      nzFooter: null
     });
   }
 }

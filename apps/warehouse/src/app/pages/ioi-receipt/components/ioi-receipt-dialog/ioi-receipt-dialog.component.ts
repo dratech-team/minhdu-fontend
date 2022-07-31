@@ -163,7 +163,7 @@ export class IoiReceiptDialogComponent implements OnInit {
       this.actions$.dispatch(
         ProductActions.loadAll({
           search: { take: PaginationDto.take, skip: count },
-          isPaginate: true,
+          isSet: true,
         })
       );
     }

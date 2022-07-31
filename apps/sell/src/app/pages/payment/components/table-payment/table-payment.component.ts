@@ -1,72 +1,78 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { debounceTime, tap } from 'rxjs/operators';
-import { ItemContextMenu, PaymentType } from '@minhdu-fontend/enums';
+import { debounceTime, startWith } from 'rxjs/operators';
+import { PaymentType } from '@minhdu-fontend/enums';
 import { PaymentModalComponent } from '../payment-modal/payment-modal.component';
-import { PaymentQuery } from '../../payment/payment.query';
+import { PaymentActions, PaymentQuery, PaymentStore } from '../../state';
 import { Actions } from '@datorama/akita-ng-effects';
-import { PaymentActions } from '../../payment';
-import { PaymentStore } from '../../payment/payment.store';
-import { PaymentEntity } from '../../entities/payment.entity';
+import { PaymentEntity } from '../../entities';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { DatePipe } from '@angular/common';
-import { ModalAddOrUpdatePayment } from '../../../customer/data/modal-payment.data';
+import { CurrencyPipe, DatePipe } from '@angular/common';
+import { ModalAddOrUpdatePayment } from '../../../customer/data';
+import { ContextMenuEntity } from '@minhdu-fontend/data-models';
+import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
 
 @Component({
   selector: 'minhdu-fontend-table-payment',
-  templateUrl: 'table-payment.component.html',
+  templateUrl: 'table-payment.component.html'
 })
 export class TablePaymentComponent implements OnInit {
   @Input() customerId!: number;
 
   paymentHistories$ = this.paymentQuery.selectAll();
   loading$ = this.paymentQuery.select((state) => state.loading);
+  remain$ = this.paymentQuery.select((state) => state.remain);
 
-  pageSizeTable = 10;
-  pageTypeEnum = ItemContextMenu;
   payType = PaymentType;
 
-  formGroup = new UntypedFormGroup({
-    name: new UntypedFormControl(''),
-    paidAt: new UntypedFormControl(''),
-    createdAt: new UntypedFormControl(''),
+  menus: ContextMenuEntity[] = [
+    {
+      title: 'Sửa',
+      click: (data: PaymentEntity) => this.onUpdate(data)
+    },
+    {
+      title: 'Xoá',
+      click: (data: PaymentEntity) => this.onRemove(data)
+    }
+  ];
+
+  formGroup = new FormGroup({
+    name: new FormControl<string>(''),
+    paidAt: new FormControl<PaymentType>(PaymentType.ALL),
+    ranges: new FormControl<Date[] | null>(null)
   });
 
   constructor(
     private readonly actions$: Actions,
     private readonly modal: NzModalService,
     private readonly datePipe: DatePipe,
+    private readonly currencyPipe: CurrencyPipe,
     private readonly router: Router,
     private readonly paymentQuery: PaymentQuery,
-    private readonly paymentStore: PaymentStore
-  ) {}
+    private readonly paymentStore: PaymentStore,
+    private readonly nzContextMenuService: NzContextMenuService
+  ) {
+  }
 
   ngOnInit() {
-    this.onLoad(false);
-    this.formGroup.valueChanges
-      .pipe(
-        debounceTime(1000),
-        tap((_) => {
-          this.onLoad(false);
+    this.formGroup.valueChanges.pipe(
+      debounceTime(1000), startWith(this.formGroup.value)
+    ).subscribe((formGroup) => {
+      this.actions$.dispatch(
+        PaymentActions.loadAll({
+          search: this.mapPayment(formGroup),
+          isSet: true
         })
-      )
-      .subscribe();
+      );
+    });
   }
 
-  onLoadMore(pageIndex: number) {
-    const count = this.paymentQuery.getCount();
-    if (pageIndex * this.pageSizeTable >= count) {
-      this.onLoad(true);
-    }
-    this.onLoad(true);
-  }
-
-  onLoad(isPaginate: boolean) {
+  onLoadMore() {
     this.actions$.dispatch(
       PaymentActions.loadAll({
         search: this.mapPayment(this.formGroup.value),
-        isPaginate,
+        isSet: false
       })
     );
   }
@@ -74,33 +80,24 @@ export class TablePaymentComponent implements OnInit {
   mapPayment(value: any) {
     this.paymentStore.update((state) => ({
       ...state,
-      search: value,
+      search: value
     }));
     return Object.assign({}, value, { customerId: this.customerId });
   }
 
-  onDelete(payment: PaymentEntity) {
+  onRemove(payment: PaymentEntity) {
     this.modal.warning({
       nzTitle: 'Xoá lịch sử thanh toán',
       nzContent: `bạn có chắc chắn xoá lịch sử thanh toán ngày ${this.datePipe.transform(
         payment.paidAt,
         'dd/MM/yyyy'
-      )} không`,
+      )} với số tiền là ${this.currencyPipe.transform(payment.total, "VND")} không`,
       nzOkDanger: true,
       nzOnOk: () => {
         this.actions$.dispatch(
-          PaymentActions.remove({
-            id: payment.id,
-            customerId: payment.customerId,
-            paidTotal: payment.total,
-          })
+          PaymentActions.remove({ id: payment.id })
         );
-        this.loading$.subscribe((loading) => {
-          if (loading === false) {
-            this.onLoad(false);
-          }
-        });
-      },
+      }
     });
   }
 
@@ -112,11 +109,17 @@ export class TablePaymentComponent implements OnInit {
       nzComponentParams: <{ data: ModalAddOrUpdatePayment }>{
         data: {
           update: {
-            payment: payment,
-          },
-        },
+            payment: payment
+          }
+        }
       },
-      nzFooter: [],
+      nzFooter: []
     });
+  }
+
+  public onContextMenu($event: MouseEvent, item: any): void {
+    this.nzContextMenuService.create($event, item);
+    $event.preventDefault();
+    $event.stopPropagation();
   }
 }

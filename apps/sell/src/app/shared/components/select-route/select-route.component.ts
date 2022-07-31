@@ -4,7 +4,7 @@ import { UntypedFormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RouteEntity } from '../../../pages/route/entities';
 import { RouteDialogComponent } from '../../../pages/route/component';
-import { RouteActions, RouteQuery } from '../../../pages/route/+state';
+import { RouteActions, RouteQuery } from '../../../pages/route/state';
 import { Actions } from '@datorama/akita-ng-effects';
 
 @Component({
@@ -51,7 +51,7 @@ export class SelectRouteComponent implements OnInit {
     this.actions$.dispatch(
       RouteActions.loadAll({
         search: value,
-        isPaginate: true
+        isSet: true
       })
     );
     this.assignIsSelect();

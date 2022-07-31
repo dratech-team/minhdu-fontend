@@ -89,7 +89,7 @@ export class BranchComponent implements OnInit {
     this.actions$.dispatch(
       BranchActions.loadAll({
         search: this.mapBranch(this.formGroup.value, true),
-        isPaginate: true,
+        isSet: true,
       })
     );
   }

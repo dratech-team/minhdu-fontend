@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { OrderRoutingModule } from './order-routing.module';
-import { OrderEffect } from './+state';
+import { OrderEffect } from './state';
 import { MatInputModule } from '@angular/material/input';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ComponentsModule } from '@minhdu-fontend/components';
@@ -20,9 +20,9 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
-import { CustomerEffect } from '../customer/+state';
+import { CustomerEffect } from '../customer/state';
 import { CommodityEffect } from '../commodity/state';
-import { RouteEffect } from '../route/+state';
+import { RouteEffect } from '../route/state';
 import { MatSortModule } from '@angular/material/sort';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -35,12 +35,12 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { OrderService } from './service';
-import {
-  ModalUpdateClosedCommodityComponent
-} from '../commodity/component/modal-update-closed-commodity/modal-update-closed-commodity.component';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { OrderComponentService } from './shared';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { CustomNgSortPipe } from '../../shared/pipe/sort.pipe';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @NgModule({
   imports: [
@@ -81,7 +81,9 @@ import { OrderComponentService } from './shared';
     NzStepsModule,
     MatDatepickerModule,
     NzSpinModule,
-    NzDropDownModule
+    NzDropDownModule,
+    NzToolTipModule,
+    NzIconModule
   ],
   declarations: [
     PaymentHistoryComponent,
@@ -89,8 +91,7 @@ import { OrderComponentService } from './shared';
     DetailOrderComponent,
     OrderDialogComponent,
     AddOrderComponent,
-    VisibleOrderComponent,
-    ModalUpdateClosedCommodityComponent
+    VisibleOrderComponent
   ],
   providers: [
     { provide: MatDialogRef, useValue: {} },
@@ -98,7 +99,8 @@ import { OrderComponentService } from './shared';
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     DatePipe,
     OrderComponentService,
-    OrderService
+    OrderService,
+    CustomNgSortPipe
   ],
   exports: []
 })
