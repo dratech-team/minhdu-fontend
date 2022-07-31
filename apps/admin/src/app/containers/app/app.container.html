@@ -8,7 +8,7 @@
   ></div>
   <div style="z-index: 2; min-width: 500px" class="grid-container">
     <a
-      *ngFor="let item of(appMinhDuConstant$|async) "
+      *ngFor="let item of(apps$ | async) "
       class="app-icon d-flex flex-column justify-content-center align-items-center"
       href="{{item.link}}"
     >
