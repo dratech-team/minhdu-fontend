@@ -245,6 +245,7 @@ export class RouteEffect {
         return {
           ...order,
           commodities: order.commodities.sort((a: CommodityEntity, b: CommodityEntity) => a.id - b.id),
+          commodityTotal: order.commodities.reduce((a, b) => a + b.amount + (b.more?.amount || 0) + (b.gift || 0), 0),
           expand: expandedAll
         };
       })

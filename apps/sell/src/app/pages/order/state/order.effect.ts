@@ -327,6 +327,9 @@ export class OrderEffect {
       ...order,
       expand: expandedAll,
       priceTotal: order.deliveredAt ? priceTotal : (order.total || 0), // total != 0 when order is delivered
+      commodityTotal: order.commodities.reduce((a, commodity) => {
+        return a + commodity.amount + (commodity.more?.amount || 0) + (commodity.gift || 0);
+      }, 0),
       routes: routes,
       orderHistories: []
     };

@@ -200,7 +200,7 @@
         {{ commodity.id }}
       </td>
       <td class='text-center'>{{ commodity.name }}</td>
-      <td class='text-center'>{{ commodity.amount }}</td>
+      <td class='text-center'>{{ commodity.amount + (commodity.gift || 0) + (commodity.more?.amount || 0) }}</td>
       <td class='text-center'>{{ commodity.price | currency: "VND" | notEmpty: 'Theo thời giá' }}</td>
       <td
         [nzShowCheckbox]='!commodity?.route'

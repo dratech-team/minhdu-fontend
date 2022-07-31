@@ -1,5 +1,4 @@
 <nz-skeleton *ngIf='loading$ | async' class='loading'></nz-skeleton>
-taik
 <div
   class='animated fadeIn container'
   *ngIf='(route$ | async) as route'
@@ -115,7 +114,7 @@ taik
             </div>
             <div class='col-md-8 py-2 border-bottom'>
               <span class='title-detail text-danger font-weight-bold'>
-                {{ totalCommodity(route)}}
+                {{ titleTotalCommodityUniq(route)}}
               </span>
             </div>
           </div>
@@ -160,38 +159,42 @@ taik
               <th>Khách hàng</th>
               <th>Ngày tạo</th>
               <th>Điểm đến</th>
+              <th>Trạng thái</th>
               <th>Diễn giải</th>
               <th>Tổng số lượng</th>
               <th>Nhận hàng</th>
-              <th>Huỷ đơn hàng</th>
+              <th>Loại bỏ đơn hàng</th>
             </tr>
             </thead>
             <tbody>
             <ng-template ngFor let-order let-i='index' [ngForOf]='nestedTable.data'>
-              <tr (click)='onRoute(order.id, "ORDER")'>
+              <tr class='pointer' (click)='onRoute(order.id, "ORDER")' >
                 <td
                   (click)='$event.stopPropagation()'
                   [(nzExpand)]='order.expand'
                 ></td>
                 <td>{{i + 1}}</td>
                 <td *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>{{order.id}}</td>
-                <td class='pointer'>
+                <td>
                   {{ order?.customer?.lastName || 'Đang cập nhật' }}
                 </td>
-                <td class='pointer'>
+                <td>
                   {{
                   (order?.createdAt | date: 'dd/MM/yyyy') ||
                   'Đang cập nhật'
                   }}
                 </td>
-                <td class='pointer'>
+                <td>
                   {{ order.province.name }}
                 </td>
-                <td class='pointer'>
+                <td [ngStyle]="{'color': order.cancelledAt ? 'red' : 'green'}">
+                  {{ order.cancelledAt ? 'Bị huỷ bỏ' : 'Đang hoạt động' }}
+                </td>
+                <td>
                   {{ order.explain || "Chưa có dữ liệu" }}
                 </td>
-                <td class='pointer' style='color: red'>
-                  {{ order.totalCommodity | number: '1.0-0' | notEmpty: '0' }}
+                <td style='color: red'>
+                  {{ order.commodityTotal | number: '1.0-0' | notEmpty: '0' }}
                 </td>
                 <td>
                   <div
@@ -219,10 +222,10 @@ taik
                       nzType='primary'
                       nzDanger
                       nz-tooltip
-                      [nzTooltipTitle]="'Trên chuyến xe hiện tại'"
+                      [nzTooltipTitle]="'Loại bỏ đơn hàng này ra khỏi chuyến xe hiện tại'"
                       (click)='onCancelOrder(order); $event.stopPropagation()'
                     >
-                      Huỷ
+                      Loại bỏ
                     </button>
                   </div>
                 </td>
@@ -242,7 +245,7 @@ taik
               <th class='text-center'>Hàng hoá</th>
               <th class='text-center'>Số lượng</th>
               <th class='text-center'>Giá</th>
-              <th class='text-center'>Huỷ hàng hoá</th>
+              <th class='text-center'>Loại bỏ hàng hoá</th>
             </tr>
             </thead>
             <tbody>
@@ -251,7 +254,7 @@ taik
               <td *ngIf='(account$ | async)?.mode === ModeEnum.INFO'>{{commodity.id}}</td>
               <td class='text-center'>{{ commodity.name }}</td>
               <td class='text-center'>
-                {{ commodity.amount | number: '1.0-0' }}
+                {{ commodity.amount + (commodity.more?.amount || 0) + (commodity.gift || 0) | number: '1.0-0' }}
               </td>
               <td class='text-center'>
                 {{ commodity.price | number: '1.0-0' }}đ
@@ -266,10 +269,10 @@ taik
                     nzType='default'
                     nzDanger
                     nz-tooltip
-                    [nzTooltipTitle]="'Tuyến xe ' + commodity?.route?.name + '. BSX: ' + commodity?.route?.bsx + '. Nhấn huỷ để huỷ bỏ cho tuyến xe trên'"
+                    [nzTooltipTitle]="'Tuyến xe ' + commodity?.route?.name + '. BSX: ' + commodity?.route?.bsx + '. Nhấn loại bỏ để loại bỏ hàng hoá cho tuyến xe trên'"
                     (click)='onCancelCommodity(commodity)'
                   >
-                    Huỷ
+                    Loại bỏ
                   </button>
                 </div>
                 <ng-template #bsx>

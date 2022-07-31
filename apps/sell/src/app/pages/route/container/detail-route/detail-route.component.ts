@@ -163,7 +163,7 @@ export class DetailRouteComponent implements OnInit {
     }
   }
 
-  totalCommodity(route: RouteEntity) {
+  public titleTotalCommodityUniq(route: RouteEntity) {
     return `${route.commodityUniq.reduce((a, b) => a + b.amount, 0)} Con. Trong đó:
     ${route.commodityUniq.map((commodity) => commodity.amount + ' ' + commodity.code)} `;
   }
