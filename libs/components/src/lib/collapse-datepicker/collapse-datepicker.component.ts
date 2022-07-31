@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { RangeDay } from '@minhdu-fontend/data-models';
 import { DatePipe } from '@angular/common';
@@ -8,7 +8,7 @@ import { TitleDatetime } from '@minhdu-fontend/constants';
   selector: 'md-collapse-datepicker',
   templateUrl: 'collapse-datepicker.component.html'
 })
-export class CollapseDatepickerComponent {
+export class CollapseDatepickerComponent implements OnInit {
   @Input() title: string = '';
   @Input() rangeDayInit?: RangeDay;
   @Output() onCalendarChange = new EventEmitter<Pick<TitleDatetime, 'start' | 'end'>>();
@@ -22,6 +22,12 @@ export class CollapseDatepickerComponent {
   constructor(
     private readonly datePipe: DatePipe
   ) {
+  }
+
+  ngOnInit() {
+    if (this.rangeDayInit?.start && this.rangeDayInit?.end) {
+      this.tooltip = `Từ ${this.datePipe.transform(this.rangeDayInit.start, 'dd/MM/YYYY')} tới ${this.datePipe.transform(this.rangeDayInit.end, 'dd/MM/YYYY')}`;
+    }
   }
 
   onTitlePicker(picker: TitleDatetime) {
