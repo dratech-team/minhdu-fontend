@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { BranchStore } from './branch.store';
 import { BranchQuery } from './branch.query';
 import { BranchService } from '../services/branch.service';
@@ -10,16 +9,16 @@ import { BranchActions } from './branch.actions';
 import { SearchBranchDto } from '../dto';
 import { PositionStore } from '../../position/state';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class BranchEffects {
   constructor(
     private readonly action$: Actions,
     private readonly branchStore: BranchStore,
     private readonly branchQuery: BranchQuery,
     private readonly positionStore: PositionStore,
-    private readonly branchService: BranchService,
-    private readonly message: NzMessageService
-  ) {}
+    private readonly branchService: BranchService
+  ) {
+  }
 
   @Effect()
   loadAll$ = this.action$.pipe(
@@ -27,14 +26,14 @@ export class BranchEffects {
     switchMap((props) => {
       this.branchStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.branchService.pagination(props as SearchBranchDto).pipe(
         map((response) => {
           this.branchStore.update((state) => ({
             ...state,
             loading: false,
-            total: response.total,
+            total: response.total
           }));
           if (response.data.length === 1 && response.data[0].positions) {
             this.positionStore.set(response.data[0].positions);
@@ -48,7 +47,7 @@ export class BranchEffects {
         catchError((err) => {
           this.branchStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(BranchActions.error(err));
         })
@@ -62,21 +61,20 @@ export class BranchEffects {
     switchMap((props) => {
       this.branchStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.branchService.addOne(props).pipe(
         tap((res) => {
-          this.message.success('Thêm đơn vị thành công');
           this.branchStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           this.branchStore.add(res);
         }),
         catchError((err) => {
           this.branchStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(BranchActions.error(err));
         })
@@ -101,20 +99,20 @@ export class BranchEffects {
     switchMap((props) => {
       this.branchStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.branchService.update(props).pipe(
         tap((response) => {
           this.branchStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           this.branchStore.update(response.id, response);
         }),
         catchError((err) => {
           this.branchStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(BranchActions.error(err));
         })
@@ -128,21 +126,20 @@ export class BranchEffects {
     switchMap((props) => {
       this.branchStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.branchService.delete(props.id).pipe(
         map(() => {
           this.branchStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
-          this.message.success('Xoá đơn vị thành công');
           return this.branchStore.remove(props.id);
         }),
         catchError((err) => {
           this.branchStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(BranchActions.error(err));
         })
@@ -156,7 +153,6 @@ export class BranchEffects {
     switchMap((props) =>
       this.branchService.deleteAllowanceInBranch(props.salaryId).pipe(
         map((branch) => {
-          this.message.success('Xoá Phụ cấp cho đơn vị thành công');
           return this.branchStore.update(branch.id, branch);
         }),
         catchError((err) => of(BranchActions.error(err)))

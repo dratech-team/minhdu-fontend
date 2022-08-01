@@ -2,20 +2,18 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { PositionStore } from './position.store';
 import { PositionQuery } from './position.query';
 import { PositionActions } from './position.actions';
 import { PositionService } from '../services/position.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PositionEffects {
   constructor(
     private readonly action$: Actions,
     private readonly positionStore: PositionStore,
     private readonly positionQuery: PositionQuery,
-    private readonly branchService: PositionService,
-    private readonly message: NzMessageService
+    private readonly branchService: PositionService
   ) {
   }
 
@@ -66,7 +64,6 @@ export class PositionEffects {
       }));
       return this.branchService.addOne(props).pipe(
         tap((res) => {
-          this.message.success('Thêm đơn vị thành công');
           this.positionStore.update((state) => ({
             ...state,
             loading: false
@@ -128,7 +125,6 @@ export class PositionEffects {
     switchMap((props) =>
       this.branchService.delete(props.id).pipe(
         map(() => {
-          this.message.success('Xoá chức vụ thành công');
           return this.positionStore.remove(props.id);
         }),
         catchError((err) => of(PositionActions.error(err)))

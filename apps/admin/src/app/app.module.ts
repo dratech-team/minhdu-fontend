@@ -7,7 +7,6 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/mater
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppFooterModule } from '@coreui/angular';
-import { OrgchartModule } from '@minhdu-fontend/orgchart';
 import { NxModule } from '@nrwl/angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,10 +15,12 @@ import { AdminLayoutComponent } from './containers/layout-admin/admin-layout.com
 import { AuthModule } from '@minhdu-fontend/auth';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
 import { AccountEffects } from '../../../../libs/system/src/lib/state/account-management/account.effects';
+import { OrgchartV2Module } from '@minhdu-fontend/orgchart-v2';
+import { AppService } from './containers/app/app.service';
 
 @NgModule({
   imports: [
-    OrgchartModule,
+    OrgchartV2Module,
     MatSnackBarModule,
     MatDialogModule,
     AppRoutingModule,
@@ -37,6 +38,7 @@ import { AccountEffects } from '../../../../libs/system/src/lib/state/account-ma
   bootstrap: [AppComponent],
   providers: [
     HashLocationStrategy,
+    AppService,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }
   ]
 })

@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { AppInterface } from './app.interface';
 import { VersionEnum } from '@minhdu-fontend/enums';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class AppService {
   constructor(private readonly http: HttpClient) {}
 

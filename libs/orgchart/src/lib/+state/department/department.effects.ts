@@ -6,8 +6,14 @@ import { throwError } from 'rxjs';
 import { DepartmentService } from '../../services/department.service';
 import { OrgchartActions } from '@minhdu-fontend/orgchart';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class DepartmentEffects {
+  constructor(
+    private actions$: Actions,
+    private departmentService: DepartmentService
+  ) {
+  }
+
   loadDepartments$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DepartmentAction.loadDepartment),
@@ -65,8 +71,4 @@ export class DepartmentEffects {
       )
     )
   );
-  constructor(
-    private actions$: Actions,
-    private departmentService: DepartmentService
-  ) {}
 }

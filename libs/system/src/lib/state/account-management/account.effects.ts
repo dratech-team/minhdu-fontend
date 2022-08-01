@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AccountService } from '../../services/account.service';
 import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AccountActions } from './account.actions';
@@ -16,12 +15,11 @@ import { SignInDto } from '../../dto/account/sign-in.dto';
 import { AccountEntity } from '../../entities/account.entity';
 import { resetStores } from '@datorama/akita';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AccountEffects {
   constructor(
     private readonly actions$: Actions,
     private readonly accountService: AccountService,
-    private readonly message: NzMessageService,
     private readonly accountStore: AccountStore,
     private readonly accountQuery: AccountQuery,
     private readonly router: Router
@@ -38,7 +36,6 @@ export class AccountEffects {
       }));
       return this.accountService.signUp(props).pipe(
         tap((res) => {
-          this.message.success('Thêm tài khoản thành công');
           this.accountStore.update((state) => ({
             ...state,
             loading: false
@@ -101,7 +98,6 @@ export class AccountEffects {
     switchMap((props) => {
       return this.accountService.getOne(props).pipe(
         map((res) => {
-          this.message.success('Tải tài khoản thành công');
           this.accountStore.upsert(res.id, res);
         }),
         catchError((err) => {
@@ -127,7 +123,6 @@ export class AccountEffects {
             active: user.id
           }));
           this.accountStore.add(user);
-          this.message.success('Đăng nhập thành công');
           this.router.navigate(['/']).then();
         }),
         catchError((err) => {
@@ -155,7 +150,6 @@ export class AccountEffects {
             ...state,
             loading: false
           }));
-          this.message.success('Cập nhật tài khoản thành công');
           this.accountStore.update(res.id, res);
         }),
         catchError((err) => {
@@ -183,7 +177,6 @@ export class AccountEffects {
             ...state,
             loading: false
           }));
-          this.message.success('Xoá tài khoản thành công');
           this.accountStore.remove(props.id);
         }),
         catchError((err) => {

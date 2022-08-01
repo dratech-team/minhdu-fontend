@@ -10,7 +10,7 @@ import { AccountQuery } from '../../../../../../libs/system/src/lib/state/accoun
 @Component({
   selector: 'app-admin-layout',
   templateUrl: 'admin-layout.component.html',
-  styleUrls: ['admin-layout.component.scss'],
+  styleUrls: ['admin-layout.component.scss']
 })
 export class AdminLayoutComponent implements OnInit {
   role = localStorage.getItem('role');
@@ -20,12 +20,14 @@ export class AdminLayoutComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly dialog: MatDialog,
     private readonly router: Router,
-    private ref: ChangeDetectorRef,
-    private modal: NzModalService,
-    private accountQuery: AccountQuery
-  ) {}
+    private readonly ref: ChangeDetectorRef,
+    private readonly modal: NzModalService,
+    private readonly accountQuery: AccountQuery
+  ) {
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   logout() {
     this.modal.warning({
@@ -36,13 +38,13 @@ export class AdminLayoutComponent implements OnInit {
         if (currentUser) {
           return this.actions$.dispatch(
             AccountActions.signOut({
-              id: currentUser.id,
+              id: currentUser.id
             })
           );
         } else {
           this.router.navigate(['auth/login']).then();
         }
-      },
+      }
     });
   }
 }

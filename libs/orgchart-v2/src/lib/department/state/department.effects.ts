@@ -2,21 +2,20 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { DepartmentStore } from './department.store';
 import { DepartmentQuery } from './department.query';
 import { DepartmentService } from '../services/department.service';
 import { DepartmentActions } from './department.actions';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class DepartmentEffects {
   constructor(
     private readonly action$: Actions,
     private readonly departmentStore: DepartmentStore,
     private readonly departmentQuery: DepartmentQuery,
-    private readonly departmentService: DepartmentService,
-    private readonly message: NzMessageService
-  ) {}
+    private readonly departmentService: DepartmentService
+  ) {
+  }
 
   @Effect()
   loadAll$ = this.action$.pipe(
@@ -24,14 +23,14 @@ export class DepartmentEffects {
     switchMap((props) => {
       this.departmentStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.departmentService.pagination(props).pipe(
         map((response) => {
           this.departmentStore.update((state) => ({
             ...state,
             loading: false,
-            total: response.total,
+            total: response.total
           }));
           if (props.isSet) {
             this.departmentStore.set(response.data);
@@ -42,7 +41,7 @@ export class DepartmentEffects {
         catchError((err) => {
           this.departmentStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           return of(DepartmentActions.error(err));
         })
@@ -56,21 +55,20 @@ export class DepartmentEffects {
     switchMap((props) => {
       this.departmentStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.departmentService.addOne(props).pipe(
         tap((res) => {
-          this.message.success('Thêm đơn vị thành công');
           this.departmentStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           this.departmentStore.add(res);
         }),
         catchError((err) => {
           this.departmentStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(DepartmentActions.error(err));
         })
@@ -95,20 +93,20 @@ export class DepartmentEffects {
     switchMap((props) => {
       this.departmentStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.departmentService.update(props).pipe(
         tap((response) => {
           this.departmentStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           this.departmentStore.update(response.id, response);
         }),
         catchError((err) => {
           this.departmentStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(DepartmentActions.error(err));
         })
@@ -122,7 +120,6 @@ export class DepartmentEffects {
     switchMap((props) =>
       this.departmentService.delete(props.id).pipe(
         map(() => {
-          this.message.success('Xoá khách hàng thành công');
           return this.departmentStore.remove(props.id);
         }),
         catchError((err) => of(DepartmentActions.error(err)))
@@ -136,20 +133,19 @@ export class DepartmentEffects {
     switchMap((props) => {
       this.departmentStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.departmentService.removeEmployee(props.id, props.body).pipe(
         map((_) => {
           this.departmentStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
-          this.message.success('Xoá nhân viên khỏi phòng ban thành công');
         }),
         catchError((err) => {
           this.departmentStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(DepartmentActions.error(err));
         })
