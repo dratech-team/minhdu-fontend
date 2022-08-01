@@ -1,16 +1,11 @@
 import { Injectable } from '@angular/core';
-import {
-  EmployeeAction,
-  selectorEmployeeTotal,
-} from '@minhdu-fontend/employee';
+import { EmployeeAction, selectorEmployeeTotal } from '@minhdu-fontend/employee';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { throwError } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { DegreeService, EmployeeService, RelativeService } from './service';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { PayrollAction } from '../../../../../apps/hr/src/app/pages/payroll/+state/payroll/payroll.action';
-import { ConvertBooleanFrontEnd } from '@minhdu-fontend/enums';
 
 @Injectable()
 export class EmployeeEffect {
@@ -21,7 +16,8 @@ export class EmployeeEffect {
     private readonly degreeService: DegreeService,
     private readonly message: NzMessageService,
     private readonly store: Store
-  ) {}
+  ) {
+  }
 
   loadEmployees$ = createEffect(() =>
     this.action$.pipe(
@@ -32,7 +28,7 @@ export class EmployeeEffect {
             {},
             props.employee,
             props?.employee?.isFlatSalary === undefined ||
-              props?.employee?.isFlatSalary === null
+            props?.employee?.isFlatSalary === null
               ? { isFlatSalary: -1 }
               : {}
           )
@@ -42,7 +38,7 @@ export class EmployeeEffect {
         this.message.success('Tải nhân viên thành công');
         return EmployeeAction.LoadEmployeesSuccess({
           employees: responsePagination.data,
-          total: responsePagination.total,
+          total: responsePagination.total
         });
       }),
       catchError((err) => throwError(err))
@@ -60,7 +56,7 @@ export class EmployeeEffect {
             props.employee?.isFlatSalary === undefined ||
             props?.employee?.isFlatSalary === null
               ? -1
-              : props.employee.isFlatSalary,
+              : props.employee.isFlatSalary
         })
       ),
       switchMap((props) => {
@@ -72,7 +68,7 @@ export class EmployeeEffect {
         }
         return EmployeeAction.LoadMoreEmployeesSuccess({
           employees: responsePagination.data,
-          total: responsePagination.total,
+          total: responsePagination.total
         });
       }),
       catchError((err) => {
@@ -253,7 +249,7 @@ export class EmployeeEffect {
           map((_) => {
             this.message.success('Xóa bằng hợp đồng thành công');
             return EmployeeAction.deleteContractSuccess({
-              employeeId: props.employeeId,
+              employeeId: props.employeeId
             });
           })
         )
@@ -270,7 +266,7 @@ export class EmployeeEffect {
           map((_) => {
             this.message.success('Xóa Lịch sử công tác thành công');
             return EmployeeAction.getEmployee({
-              id: props.employeeId,
+              id: props.employeeId
             });
           })
         )
@@ -285,11 +281,11 @@ export class EmployeeEffect {
       switchMap((props) =>
         this.employeeService.updateHistorySalary(props.id, props.salary).pipe(
           map((salary) => {
-            this.store.dispatch(
-              PayrollAction.updateStatePayroll({
-                added: ConvertBooleanFrontEnd.TRUE,
-              })
-            );
+            // this.store.dispatch(
+            //   PayrollAction.updateStatePayroll({
+            //     added: ConvertBooleanFrontEnd.TRUE,
+            //   })
+            // );
             this.message.success('Sửa lịch sửa lương thành công');
             return EmployeeAction.getEmployee({ id: props.employeeId });
           })
