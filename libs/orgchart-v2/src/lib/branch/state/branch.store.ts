@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BaseSearchBranchDto } from '../dto';
 import { BranchEntity } from '../entities';
 import { StorageName } from '@minhdu-fontend/constants';
-import { BranchStatusEnum } from '../enums';
+import { BranchStatusEnum } from '../enums/branch-status.enum';
 
 export interface BranchState extends EntityState<BranchEntity> {
   loading?: boolean;
