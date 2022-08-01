@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared';
 import { debounceTime } from 'rxjs/operators';
 import { SupplierEntity } from '../../entities';
 import { SupplierActions, SupplierQuery } from '../../state';
@@ -12,14 +12,14 @@ import { PaginationDto } from '@minhdu-fontend/constants';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
-  templateUrl: 'supplier.component.html',
+  templateUrl: 'supplier.component.html'
 })
 export class SupplierComponent implements OnInit {
   supplier$ = this.supplierQuery.selectAll();
   formGroup = new UntypedFormGroup({
     search: new UntypedFormControl(),
     startedAt: new UntypedFormControl(),
-    endedAt: new UntypedFormControl(),
+    endedAt: new UntypedFormControl()
   });
   total$ = this.supplierQuery.selectCount();
   loading$ = this.supplierQuery.select((state) => state.loading);
@@ -30,7 +30,8 @@ export class SupplierComponent implements OnInit {
     public readonly supplierQuery: SupplierQuery,
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.actions$.dispatch(
@@ -39,7 +40,7 @@ export class SupplierComponent implements OnInit {
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe((val) => {
       this.actions$.dispatch(
         SupplierActions.loadAll({
-          search: this.mapSupplier(false),
+          search: this.mapSupplier(false)
         })
       );
     });
@@ -50,7 +51,7 @@ export class SupplierComponent implements OnInit {
       nzWidth: 'fit-content',
       nzTitle: 'Thêm nhà cung cấp',
       nzContent: DialogSupplierComponent,
-      nzFooter: null,
+      nzFooter: null
     });
   }
 
@@ -62,10 +63,10 @@ export class SupplierComponent implements OnInit {
       nzComponentParams: {
         data: {
           supplier: supplier,
-          isUpdate: true,
-        },
+          isUpdate: true
+        }
       },
-      nzFooter: null,
+      nzFooter: null
     });
   }
 
@@ -75,8 +76,8 @@ export class SupplierComponent implements OnInit {
         width: 'fit-content',
         data: {
           title: 'Xoá nhà cung cấp',
-          description: `bạn có muốn xoá nhà cung cấp ${provider.name}`,
-        },
+          description: `bạn có muốn xoá nhà cung cấp ${provider.name}`
+        }
       })
       .afterClosed()
       .subscribe((val) => {
@@ -89,7 +90,7 @@ export class SupplierComponent implements OnInit {
   mapSupplier(isPagination: boolean): BaseSearchSupplierDto {
     return Object.assign({}, this.formGroup.value, {
       take: PaginationDto.take,
-      skip: isPagination ? this.supplierQuery.getCount() : PaginationDto.skip,
+      skip: isPagination ? this.supplierQuery.getCount() : PaginationDto.skip
     }) as BaseSearchSupplierDto;
   }
 
@@ -98,7 +99,7 @@ export class SupplierComponent implements OnInit {
       this.actions$.dispatch(
         SupplierActions.loadAll({
           search: this.mapSupplier(true),
-          isSet: true,
+          isSet: true
         })
       );
     }

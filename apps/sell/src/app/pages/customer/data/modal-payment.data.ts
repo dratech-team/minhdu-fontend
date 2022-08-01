@@ -1,7 +1,7 @@
 import { PaymentEntity } from '../../payment/entities';
 import { CustomerEntity } from '../entities';
-import { RequireOnlyOne } from '../../../../../../hrv2/src/shared/types';
 import { OrderEntity } from '../../order/enitities';
+import { RequireOnlyOne } from '@minhdu-fontend/types';
 
 export interface ModalPaymentData {
   add?: {

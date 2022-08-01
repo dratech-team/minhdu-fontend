@@ -1,24 +1,19 @@
-import {
-  AfterContentChecked,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.component/register.component';
-import { Role } from 'libs/enums/hr/role.enum';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppStore } from '../../state/app.store';
-import { AppQuery } from '../../state/app.query';
-import { MenuWarehouseConstant } from '../../../shared/constant';
+import { AppStore } from '../state/app.store';
+import { AppQuery } from '../state/app.query';
+import { MenuWarehouseConstant } from '../../shared/constant';
 import { Actions } from '@datorama/akita-ng-effects';
-import { AccountActions } from '../../../../../../libs/system/src/lib/state/account-management/account.actions';
+import { AccountActions } from '../../../../../libs/system/src/lib/state/account-management/account.actions';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { AccountQuery } from '../../../../../../libs/system/src/lib/state/account-management/account.query';
+import { AccountQuery } from '../../../../../libs/system/src/lib/state/account-management/account.query';
+import { Role } from '@minhdu-fontend/enums';
 
 @Component({
   templateUrl: './warehouse-layout.component.html',
-  styleUrls: ['./warehouse-layout.component.scss'],
+  styleUrls: ['./warehouse-layout.component.scss']
 })
 export class WarehouseLayoutComponent implements OnInit {
   role = localStorage.getItem('role');
@@ -37,7 +32,8 @@ export class WarehouseLayoutComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly modal: NzModalService,
     private readonly accountQuery: AccountQuery
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     if (!this.role) {
@@ -58,13 +54,13 @@ export class WarehouseLayoutComponent implements OnInit {
         if (currentUser) {
           return this.actions$.dispatch(
             AccountActions.signOut({
-              id: currentUser.id,
+              id: currentUser.id
             })
           );
         } else {
           this.router.navigate(['auth/login']).then();
         }
-      },
+      }
     });
   }
 
@@ -76,7 +72,7 @@ export class WarehouseLayoutComponent implements OnInit {
     this.router.navigate([href]).then();
     this.appStore.update((state) => ({
       ...state,
-      appName: appName,
+      appName: appName
     }));
   }
 }

@@ -5,16 +5,10 @@ import { RouterModule } from '@angular/router';
 import { PageLayoutComponent } from './container/base/page-layout.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MatMenuModule } from '@angular/material/menu';
-import {
-  AppBreadcrumbModule,
-  AppFooterModule,
-  AppHeaderModule,
-  AppSidebarModule,
-} from '@coreui/angular';
+import { AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule } from '@coreui/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { RouteGuard } from '../../../warehouse/src/app/route.guard';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthModule } from '@minhdu-fontend/auth';
 import { HashLocationStrategy, registerLocaleData } from '@angular/common';
@@ -34,6 +28,7 @@ import { NgxCurrencyModule } from 'ngx-currency';
 import { customCurrencyMaskConfig2 } from '@minhdu-fontend/config';
 import { AccountEffects } from '../../../../libs/system/src/lib/state/account-management/account.effects';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
+import { RouteGuard } from './route.guard';
 
 registerLocaleData(localeVi);
 
@@ -69,7 +64,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
     NzModalModule,
     NzMessageModule,
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig2),
-    NzIconModule,
+    NzIconModule
   ],
   providers: [
     RouteGuard,
@@ -78,11 +73,12 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
     { provide: LOCALE_ID, useValue: 'vi-VN' },
     {
       provide: NZ_CONFIG,
-      useValue: { message: { nzMaxStack: 1 } } as NzConfig,
+      useValue: { message: { nzMaxStack: 1 } } as NzConfig
     },
     { provide: NZ_I18N, useValue: vi_VN },
-    { provide: NZ_CONFIG, useValue: { modal: { nzMaskClosable: false } } },
+    { provide: NZ_CONFIG, useValue: { modal: { nzMaskClosable: false } } }
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}

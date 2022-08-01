@@ -1,7 +1,5 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
-import { AddSupplierDto, UpdateSupplierDto } from '../dto';
-import { SearchSupplierDto } from '../dto/search-supplier.dto';
-import { SupplierEntity } from '../entities';
+import { AddSupplierDto, SearchSupplierDto, UpdateSupplierDto } from '../dto';
 import { RemoveSupplierDto } from '../dto/remove-supplier.dto';
 
 const addOne = createAction('[SUPPLIER] Add One', props<AddSupplierDto>());

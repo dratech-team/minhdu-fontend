@@ -77,10 +77,10 @@
               {{ branch.name }}
             </td>
             <td>
-              {{ branch?.address | existpipe }}
+              {{ branch?.address || 'Chưa cập nhật' }}
             </td>
             <td>
-              {{ branch?.phone | existpipe }}
+              {{ branch?.phone || 'Chưa cập nhật' }}
             </td>
             <td>Đang phát triển</td>
             <td>

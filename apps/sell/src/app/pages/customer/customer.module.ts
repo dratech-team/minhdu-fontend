@@ -35,7 +35,6 @@ import { CustomerService, PaymentService } from './service';
 import { OrderService } from '../order/service';
 import { OrderModule } from '../order/order.module';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { EmployeeModule } from '../../../../../hrv2/src/app/pages/employee/employee.module';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
@@ -87,7 +86,6 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     NzPopoverModule,
     OrderModule,
     NzSpinModule,
-    EmployeeModule,
     NzSelectModule,
     NzStepsModule,
     NzDatePickerModule,

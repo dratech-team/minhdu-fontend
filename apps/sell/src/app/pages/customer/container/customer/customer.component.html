@@ -216,13 +216,13 @@
           *ngIf='ui.phone?.visible'
           [nzLeft]='ui.phone?.pinned || false'
         >
-          {{ customer?.phone | existpipe }}
+          {{ customer?.phone || 'Chưa có dữ liệu' }}
         </td>
         <td
           *ngIf='ui.birthday?.visible'
           [nzLeft]='ui.birthday?.pinned || false'
         >
-          {{ customer?.birthday | existpipe }}
+          {{ customer?.birthday || 'Chưa có dữ liệu' }}
         </td>
         <td
           *ngIf='ui.gender?.visible'
@@ -256,7 +256,7 @@
           *ngIf='ui.email?.visible'
           [nzLeft]='ui.email?.pinned || false'
         >
-          {{ customer?.email | existpipe }}
+          {{ customer?.email || 'Chưa có dữ liệu' }}
         </td>
         <td
           *ngIf='ui.address?.visible'
@@ -273,7 +273,7 @@
           }}
         </td>
         <td *ngIf='ui.note?.visible' [nzLeft]='ui.note?.pinned || false'>
-          {{ customer?.note | existpipe }}
+          {{ customer?.note || 'Chưa có dữ liệu' }}
         </td>
       </tr>
       <tr *ngIf='(remain$ | async)'>
