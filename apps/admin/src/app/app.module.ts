@@ -16,7 +16,8 @@ import { AuthModule } from '@minhdu-fontend/auth';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
 import { AccountEffects } from '../../../../libs/system/src/lib/state/account-management/account.effects';
 import { OrgchartV2Module } from '@minhdu-fontend/orgchart-v2';
-import { AppService } from './containers/app/app.service';
+import { AppService } from './services/app.service';
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { AppService } from './containers/app/app.service';
     NxModule.forRoot(),
     AppFooterModule,
     MatMenuModule,
-    AuthModule
+    AuthModule,
+    AkitaNgDevtools.forRoot(),
   ],
   declarations: [AdminLayoutComponent, AppComponent, AppContainer],
   bootstrap: [AppComponent],

@@ -1,6 +1,6 @@
 import { App } from '@minhdu-fontend/enums';
 
-export interface AppInterface {
+export interface AppEntity {
   name: string;
   app: App;
   link: string;
