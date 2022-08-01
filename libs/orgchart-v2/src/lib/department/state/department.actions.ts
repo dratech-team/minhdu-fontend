@@ -4,9 +4,8 @@ import {
   LoadOneDepartmentDto,
   RemoveDepartmentDto,
   SearchDepartmentDto,
-  UpdateDepartmentDto,
+  UpdateDepartmentDto
 } from '../dto';
-import { EmployeeEntity } from '@minhdu-fontend/employee-v2';
 import { DepartmentEntity } from '../entities/department.entity';
 
 const addOne = createAction('[Department] Add One', props<AddDepartmentDto>());
@@ -37,7 +36,7 @@ const removeEmployee = createAction(
   '[Department] Delete Allowance',
   props<{
     id: DepartmentEntity['id'];
-    body: { employeeId: EmployeeEntity['id'] };
+    body: { employeeId: number };
   }>()
 );
 
@@ -48,5 +47,5 @@ export const DepartmentActions = {
   update,
   remove,
   error,
-  removeEmployee,
+  removeEmployee
 };

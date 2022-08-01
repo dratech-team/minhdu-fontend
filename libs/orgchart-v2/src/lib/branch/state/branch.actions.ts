@@ -6,7 +6,6 @@ import {
   SearchBranchDto,
   UpdateBranchDto,
 } from '../dto';
-import { AllowanceSalaryEntity } from '../../../../../../apps/hrv2/src/app/pages/salary/entities';
 
 const addOne = createAction('[Branch] Add One', props<AddBranchDto>());
 
@@ -25,7 +24,7 @@ const error = createAction('[Branch] Error', props<{ error: string }>());
 
 const deleteAllowance = createAction(
   '[BRANCH] Delete Allowance',
-  props<{ salaryId: AllowanceSalaryEntity['id'] }>()
+  props<{ salaryId: number }>()
 );
 
 export const BranchActions = {

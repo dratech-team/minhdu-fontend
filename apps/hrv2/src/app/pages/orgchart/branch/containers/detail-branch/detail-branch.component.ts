@@ -15,8 +15,8 @@ import { ModalAlertComponent } from '@minhdu-fontend/components';
 import { ModalAlertEntity } from '@minhdu-fontend/base-entity';
 import { AllowanceBranchComponent } from '../../components/modal-allowance-branch/allowance-branch.component';
 import { DataAddOrUpAllowanceBranch } from '../../data/modal-allowance-branch.data';
-import { AllowanceBranchEntity } from '../../entities/allowance-branch.entity';
 import { AccountQuery } from '../../../../../../../../../libs/system/src/lib/state/account-management/account.query';
+import { AllowanceBranchEntity } from '../../../../../../../../../libs/orgchart-v2/src/lib/branch/entities';
 
 @Component({
   templateUrl: 'detail-branch.component.html',

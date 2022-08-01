@@ -1,5 +1,5 @@
 import { BaseEntity } from '@minhdu-fontend/base-entity';
-import { BranchStatusEnum } from '../../../../../../apps/warehouse/src/app/pages/branch/enums/branch-status.enum';
+import { BranchStatusEnum } from '../enums';
 
 export interface BaseBranchEntity extends BaseEntity {
   code?: string;

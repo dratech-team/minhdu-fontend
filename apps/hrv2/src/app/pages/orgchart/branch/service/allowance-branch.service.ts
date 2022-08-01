@@ -1,11 +1,11 @@
 import { BaseService } from '@minhdu-fontend/service';
-import { AllowanceBranchEntity } from '../entities/allowance-branch.entity';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { AddAllowanceBranchDto } from '../dto/add-allowance-branch.dto';
 import { UpdateAllowanceBranchDto } from '../dto/update-allowance-branch.dto';
 import { Injectable } from '@angular/core';
+import { AllowanceBranchEntity } from '../../../../../../../../libs/orgchart-v2/src/lib/branch/entities';
 
 @Injectable({ providedIn: 'root' })
 export class AllowanceBranchService extends BaseService<AllowanceBranchEntity> {

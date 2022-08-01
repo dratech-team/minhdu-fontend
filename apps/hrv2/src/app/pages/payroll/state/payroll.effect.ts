@@ -117,7 +117,7 @@ export class PayrollEffect {
         .paginationPayroll(
           Object.assign({}, props.search, {
             take: PaginationDto.take,
-            skip: props.isPaginate
+            skip: !props.isSet
               ? this.payrollQuery.getCount()
               : PaginationDto.skip,
           })
@@ -143,10 +143,10 @@ export class PayrollEffect {
             });
           }),
           tap((res) => {
-            if (props.isPaginate) {
-              this.payrollStore.upsertMany(res.data);
-            } else {
+            if (props.isSet) {
               this.payrollStore.set(res.data);
+            } else {
+              this.payrollStore.upsertMany(res.data);
             }
 
             this.payrollStore.update((state) => ({

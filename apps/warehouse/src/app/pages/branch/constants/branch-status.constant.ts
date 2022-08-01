@@ -1,4 +1,4 @@
-import { BranchStatusEnum } from '../enums/branch-status.enum';
+import { BranchStatusEnum } from "libs/orgchart-v2/src/lib/branch/enums";
 
 export const BranchStatusConstant = [
   {
