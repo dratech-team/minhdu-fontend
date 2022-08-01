@@ -62,10 +62,10 @@ export class ConsignmentEffect {
           if (res.data.length === 0) {
             this.message.warning('Đã lấy hết hàng hoá');
           }
-          if (props.isPaginate) {
-            this.consignmentStore.add(res.data);
-          } else {
+          if (props.isSet) {
             this.consignmentStore.set(res.data);
+          } else {
+            this.consignmentStore.add(res.data);
           }
         }),
         catchError((err) => {

@@ -6,7 +6,6 @@ import { SettingSalaryStore } from './setting-salary.store';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { SalarySettingService } from '../services';
 import { SettingSalaryActions } from './setting-salary.action';
-import { SearchSalarySettingDto } from '../dto';
 import { SettingSalaryQuery } from './setting-salary.query';
 import { SalarySettingEntity } from '../entities';
 
@@ -18,7 +17,8 @@ export class SettingSalaryEffect {
     private readonly settingSalaryStore: SettingSalaryStore,
     private readonly settingSalaryQuery: SettingSalaryQuery,
     private readonly message: NzMessageService
-  ) {}
+  ) {
+  }
 
   @Effect()
   addOne$ = this.action$.pipe(
@@ -26,7 +26,7 @@ export class SettingSalaryEffect {
     switchMap((props) => {
       this.settingSalaryStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.service.addOne(props).pipe(
         map((res) => {
@@ -37,14 +37,14 @@ export class SettingSalaryEffect {
           this.settingSalaryStore.update((state) => ({
             ...state,
             loading: false,
-            total: state.total + 1,
+            total: state.total + 1
           }));
           this.settingSalaryStore.upsert(res.id, res);
         }),
         catchError((err) => {
           this.settingSalaryStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(SettingSalaryActions.error(err));
         })
@@ -58,16 +58,16 @@ export class SettingSalaryEffect {
     switchMap((props) => {
       this.settingSalaryStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       if (props?.search) {
         Object.assign(
           props.search,
           props.search?.orderType
             ? {
-                orderType:
-                  props.search?.orderType === 'ascend' ? 'asc' : 'desc',
-              }
+              orderType:
+                props.search?.orderType === 'ascend' ? 'asc' : 'desc'
+            }
             : {}
         );
       }
@@ -80,22 +80,22 @@ export class SettingSalaryEffect {
           if (res.data.length === 0) {
             this.message.warning('Đã lấy hết bảng mẫu');
           }
-          if (props.isPaginate) {
-            this.settingSalaryStore.add(res.data);
-          } else {
+          if (props.isSet) {
             this.settingSalaryStore.set(res.data);
+          } else {
+            this.settingSalaryStore.add(res.data);
           }
           this.settingSalaryStore.update((state) => ({
             ...state,
             total: res.total,
             loading: false,
-            remain: res.total - this.settingSalaryQuery.getCount(),
+            remain: res.total - this.settingSalaryQuery.getCount()
           }));
         }),
         catchError((err) => {
           this.settingSalaryStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(SettingSalaryActions.error(err));
         })
@@ -128,7 +128,7 @@ export class SettingSalaryEffect {
     switchMap((props) => {
       this.settingSalaryStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.service.update(props).pipe(
         map((res) => {
@@ -138,14 +138,14 @@ export class SettingSalaryEffect {
         tap((res) => {
           this.settingSalaryStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           this.settingSalaryStore.update(res?.id, res);
         }),
         catchError((err) => {
           this.settingSalaryStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(SettingSalaryActions.error(err));
         })
@@ -159,14 +159,14 @@ export class SettingSalaryEffect {
     switchMap((props) => {
       this.settingSalaryStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.service.delete(props.id).pipe(
         tap((_) => {
           this.settingSalaryStore.update((state) => ({
             ...state,
             loading: false,
-            total: state.total - 1,
+            total: state.total - 1
           }));
           this.message.success('Xoá bản mẫu thành công');
           this.settingSalaryStore.remove(props?.id);
@@ -174,7 +174,7 @@ export class SettingSalaryEffect {
         catchError((err) => {
           this.settingSalaryStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(SettingSalaryActions.error(err));
         })

@@ -1,9 +1,9 @@
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
 import { BaseSearchBranchDto } from '../dto';
-import { BranchEntity } from '../entities/branch.entity';
+import { BranchEntity } from '../entities';
 import { StorageName } from '@minhdu-fontend/constants';
-import { BranchStatusEnum } from '../../../../../../apps/warehouse/src/app/pages/branch/enums/branch-status.enum';
+import { BranchStatusEnum } from '../enums/branch-status.enum';
 
 export interface BranchState extends EntityState<BranchEntity> {
   loading?: boolean;
@@ -18,8 +18,8 @@ function createInitState(): BranchState {
     search: {
       name: '',
       code: '',
-      status: BranchStatusEnum.ALL,
-    },
+      status: BranchStatusEnum.ALL
+    }
   };
 }
 

@@ -1,5 +1,5 @@
-import { BaseAllowanceBranchEntity } from '../base/base-allowance-branch.entity';
 import { BaseAddDto } from '@minhdu-fontend/base-dto';
+import { BaseAllowanceBranchEntity } from '../../../../../../../../libs/orgchart-v2/src/lib/branch/entities';
 
 export interface BaseAddAllowanceBranchDto extends BaseAllowanceBranchEntity {}
 

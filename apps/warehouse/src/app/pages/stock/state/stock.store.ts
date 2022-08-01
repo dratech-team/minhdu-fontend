@@ -1,8 +1,8 @@
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
 import { StockEntity, StockVisibleEntity } from '../entities';
-import { updateStateUiUtil } from '../../../../../../sell/src/app/utils/update-state-ui.util';
 import { BaseSearchStockDto } from '../dto';
+import { updateStateUiUtil } from '@minhdu-fontend/utils';
 
 export interface StockState extends EntityState<StockEntity> {
   loading?: boolean;
@@ -16,33 +16,33 @@ export function createInitialState(): StockState {
     ui: {
       stt: {
         pinned: true,
-        visible: true,
+        visible: true
       },
       code: {
         pinned: false,
-        visible: true,
+        visible: true
       },
       name: {
         pinned: true,
-        visible: true,
+        visible: true
       },
       unit: {
         pinned: false,
-        visible: true,
+        visible: true
       },
       note: {
         pinned: false,
-        visible: true,
+        visible: true
       },
       supplier: {
         pinned: false,
-        visible: true,
+        visible: true
       },
       category: {
         pinned: false,
-        visible: true,
-      },
-    },
+        visible: true
+      }
+    }
   };
 }
 
@@ -59,10 +59,10 @@ export class StockStore extends EntityStore<StockState> {
         ...state,
         ui: state.ui
           ? Object.assign(
-              JSON.parse(JSON.stringify(state.ui)),
-              updateStateUiUtil<StockVisibleEntity>(newState, type)
-            )
-          : state.ui,
+            JSON.parse(JSON.stringify(state.ui)),
+            updateStateUiUtil<StockVisibleEntity>(newState, type)
+          )
+          : state.ui
       };
     });
   }

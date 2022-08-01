@@ -1,0 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Role = void 0;
+var Role;
+(function (Role) {
+    Role["ADMIN"] = "ADMIN";
+    Role["CHIEF_ACCOUNTANT"] = "CHIEF_ACCOUNTANT";
+    Role["ACCOUNTANT_CASH_FUND"] = "ACCOUNTANT_CASH_FUND";
+    Role["ACCOUNTANT_MODERATION"] = "ACCOUNTANT_MODERATION";
+    Role["SALESMAN"] = "SALESMAN";
+    Role["SALESMAN_EGG"] = "SALESMAN_EGG";
+    Role["IMPORTER_EXPORTER"] = "IMPORTER_EXPORTER";
+    Role["CONSTRUCTION_DEPARTMENT"] = "CONSTRUCTION_DEPARTMENT";
+    Role["HUMAN_RESOURCE"] = "HUMAN_RESOURCE";
+    Role["CAMP_ACCOUNTING"] = "CAMP_ACCOUNTING";
+    Role["CAMP_MANAGER"] = "CAMP_MANAGER";
+    Role["CAMP_DIRECTOR"] = "CAMP_DIRECTOR";
+    Role["HATCHERY_ACCOUNTING"] = "HATCHERY_ACCOUNTING";
+    Role["HATCHERY_MANAGEMENT"] = "HATCHERY_DIRECTOR";
+    Role["NONE"] = "NONE";
+})(Role = exports.Role || (exports.Role = {}));

@@ -1,0 +1,25 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sortEmployeeTypeEnum = void 0;
+var sortEmployeeTypeEnum;
+(function (sortEmployeeTypeEnum) {
+    sortEmployeeTypeEnum["NAME"] = "NAME";
+    sortEmployeeTypeEnum["STT"] = "STT";
+    sortEmployeeTypeEnum["BRANCH"] = "BRANCH";
+    sortEmployeeTypeEnum["POSITION"] = "POSITION";
+    sortEmployeeTypeEnum["RECIPE"] = "RECIPE";
+    sortEmployeeTypeEnum["BIRTHDAY"] = "BIRTHDAY";
+    sortEmployeeTypeEnum["PHONE"] = "PHONE";
+    sortEmployeeTypeEnum["IDENTITY"] = "IDENTITY";
+    sortEmployeeTypeEnum["ADDRESS"] = "ADDRESS";
+    sortEmployeeTypeEnum["PROVINCE"] = "PROVINCE";
+    sortEmployeeTypeEnum["DISTRICT"] = "DISTRICT";
+    sortEmployeeTypeEnum["WARD"] = "WARD";
+    sortEmployeeTypeEnum["GENDER"] = "GENDER";
+    sortEmployeeTypeEnum["WORKED_AT"] = "WORKED_AT";
+    sortEmployeeTypeEnum["FLAT_SALARY"] = "FLAT_SALARY";
+    sortEmployeeTypeEnum["EMPLOYEE_TYPE"] = "EMPLOYEE_TYPE";
+    sortEmployeeTypeEnum["CODE"] = "CODE";
+    sortEmployeeTypeEnum["NOTE"] = "NOTE";
+    sortEmployeeTypeEnum["CREATE"] = "CREATE";
+})(sortEmployeeTypeEnum = exports.sortEmployeeTypeEnum || (exports.sortEmployeeTypeEnum = {}));

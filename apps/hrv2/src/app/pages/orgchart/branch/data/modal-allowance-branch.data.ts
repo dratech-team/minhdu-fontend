@@ -1,7 +1,6 @@
 import { RequireOnlyOne } from '../../../../../shared/types';
 import { BranchEntity } from '@minhdu-fontend/orgchart-v2';
-import { AllowanceSalaryEntity } from '../../../salary/entities';
-import { AllowanceBranchEntity } from '../entities/allowance-branch.entity';
+import { AllowanceBranchEntity } from '../../../../../../../../libs/orgchart-v2/src/lib/branch/entities';
 
 export interface ModalAllowanceBranchData {
   add?: {

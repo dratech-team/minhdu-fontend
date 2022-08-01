@@ -1,15 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { AdminAction } from '../../../../states/admin.action';
-import { MenuWarehouseEum } from '@minhdu-fontend/enums';
-import { Store } from '@ngrx/store';
-import { FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, startWith } from 'rxjs/operators';
 import { SalaryPaymentService } from '../service/salary-payment.service';
 import { ActivatedRoute } from '@angular/router';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  templateUrl: 'detail-overview.component.html',
+  templateUrl: 'detail-overview.component.html'
 })
 export class DetailOverviewComponent implements OnInit {
   type = 'MONTH';
@@ -19,11 +14,11 @@ export class DetailOverviewComponent implements OnInit {
   totalSalary: number = 0;
 
   constructor(
-    private readonly store: Store,
     private readonly activatedRoute: ActivatedRoute,
     private readonly salaryPaymentService: SalaryPaymentService,
     @Inject(MAT_DIALOG_DATA) public data?: any
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.title = this.data.title;

@@ -36,7 +36,8 @@
       "@minhdu-fontend/pipes": ["libs/pipes/src/index.ts"],
       "@minhdu-fontend/service": ["libs/service/index.ts"],
       "@minhdu-fontend/system": ["libs/system/src/index.ts"],
-      "@minhdu-fontend/utils": ["libs/utils/index.ts"]
+      "@minhdu-fontend/utils": ["libs/utils/index.ts"],
+      "@minhdu-fontend/types": ["libs/types/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

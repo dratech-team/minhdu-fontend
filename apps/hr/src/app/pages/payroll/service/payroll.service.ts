@@ -6,7 +6,6 @@ import { BaseService } from 'libs/service/base.service';
 import { Observable } from 'rxjs';
 import { Payroll } from '../+state/payroll/payroll.interface';
 import { VersionEnum } from '@minhdu-fontend/enums';
-import { PayslipEntity } from '../../../../../../hrv2/src/app/pages/payroll/entities';
 
 type Params =
   | HttpParams

@@ -1,16 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BranchComponent } from './container/branch/branch.component';
+import { BranchComponent } from './container';
 
 const routes: Routes = [
   {
     path: '',
-    component: BranchComponent,
-  },
+    component: BranchComponent
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
-export class BranchRoutingModule {}
+export class BranchRoutingModule {
+}

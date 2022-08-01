@@ -1,8 +1,8 @@
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
 import { IoiReceiptEntity, IoiReceiptVisibleEntity } from '../entities';
-import { updateStateUiUtil } from '../../../../../../sell/src/app/utils/update-state-ui.util';
 import { SupplierEntity } from '../../supplier/entities';
+import { updateStateUiUtil } from '@minhdu-fontend/utils';
 
 export interface IoiReceiptState extends EntityState<IoiReceiptEntity> {
   loading?: boolean;

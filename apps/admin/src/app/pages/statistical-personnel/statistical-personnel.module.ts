@@ -8,7 +8,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { StatisticalPersonnelComponent } from './container/statistical-personnel/statistical-personnel.component';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { MatNativeDateModule } from '@angular/material/core';
-import { OverviewHrModule } from '../../../../../hr/src/app/pages/overview/overview-hr.module';
 
 @NgModule({
   imports: [
@@ -19,10 +18,10 @@ import { OverviewHrModule } from '../../../../../hr/src/app/pages/overview/overv
     MatButtonModule,
     CommonModule,
     MatFormFieldModule,
-    MatSelectModule,
-    OverviewHrModule,
+    MatSelectModule
   ],
   declarations: [StatisticalPersonnelComponent],
-  exports: [],
+  exports: []
 })
-export class StatisticalPersonnelModule {}
+export class StatisticalPersonnelModule {
+}

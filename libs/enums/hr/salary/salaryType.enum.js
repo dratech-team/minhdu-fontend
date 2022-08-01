@@ -1,0 +1,23 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SalaryTypeEnum = void 0;
+var SalaryTypeEnum;
+(function (SalaryTypeEnum) {
+    SalaryTypeEnum["BASIC"] = "BASIC";
+    SalaryTypeEnum["HISTORY"] = "HISTORY";
+    SalaryTypeEnum["BASIC_INSURANCE"] = "BASIC_INSURANCE";
+    SalaryTypeEnum["STAY"] = "STAY";
+    SalaryTypeEnum["ALLOWANCE"] = "ALLOWANCE";
+    SalaryTypeEnum["OVERTIME"] = "OVERTIME";
+    SalaryTypeEnum["ABSENT"] = "ABSENT";
+    SalaryTypeEnum["DEDUCTION"] = "DEDUCTION";
+    SalaryTypeEnum["EARLY"] = "EARLY";
+    SalaryTypeEnum["LATE"] = "LATE";
+    SalaryTypeEnum["BASIC_TRUST"] = "BASIC_TRUST";
+    SalaryTypeEnum["DAY_OFF"] = "DAY_OFF";
+    SalaryTypeEnum["ALL"] = "";
+    SalaryTypeEnum["PART_TIME"] = "PART_TIME";
+    SalaryTypeEnum["BASIC_TRUST_MANAGER"] = "BASIC_TRUST_MANAGER";
+    SalaryTypeEnum["WFH"] = "WFH";
+    SalaryTypeEnum["HOLIDAY"] = "HOLIDAY";
+})(SalaryTypeEnum = exports.SalaryTypeEnum || (exports.SalaryTypeEnum = {}));

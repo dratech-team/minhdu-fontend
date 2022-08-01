@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
 import { SupplierStore } from './supplier.store';
-import { SupplierService } from '../services/supplier.service';
+import { SupplierService } from '../services';
 import { SupplierActions } from './supplier.action';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -14,7 +14,8 @@ export class SupplierEffect {
     private readonly service: SupplierService,
     private readonly message: NzMessageService,
     private readonly supplierStore: SupplierStore
-  ) {}
+  ) {
+  }
 
   @Effect({ dispatch: false })
   loadSupplier$ = this.action$.pipe(
@@ -22,25 +23,25 @@ export class SupplierEffect {
     switchMap((props) => {
       this.supplierStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.service.pagination(props).pipe(
         tap((res) => {
           this.supplierStore.update((state) => ({
             ...state,
             total: res.total,
-            loading: false,
+            loading: false
           }));
-          if (props.isPaginate) {
-            this.supplierStore.add(res.data);
-          } else {
+          if (props.isSet) {
             this.supplierStore.set(res.data);
+          } else {
+            this.supplierStore.add(res.data);
           }
         }),
         catchError((err) => {
           this.supplierStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(SupplierActions.error(err));
         })
@@ -54,21 +55,21 @@ export class SupplierEffect {
     switchMap((provider) => {
       this.supplierStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.service.addOne(provider).pipe(
         map((provider) => {
           this.message.success('Thêm nhà cung cấp thành công');
           this.supplierStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           return this.supplierStore.add(provider);
         }),
         catchError((err) => {
           this.supplierStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(SupplierActions.error(err));
         })
@@ -82,21 +83,21 @@ export class SupplierEffect {
     switchMap((props) => {
       this.supplierStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.service.update(props).pipe(
         map((provider) => {
           this.message.success('Cập nhật nhà cung cấp thành công');
           this.supplierStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           return this.supplierStore.update(provider.id, provider);
         }),
         catchError((err) => {
           this.supplierStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(SupplierActions.error(err));
         })
@@ -110,13 +111,13 @@ export class SupplierEffect {
     switchMap((props) => {
       this.supplierStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.service.delete(props.id).pipe(
         map((provider) => {
           this.supplierStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           this.message.success('Xoá nhà cung cấp thành công');
           return this.supplierStore.remove(props.id);
@@ -124,7 +125,7 @@ export class SupplierEffect {
         catchError((err) => {
           this.supplierStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(SupplierActions.error(err));
         })

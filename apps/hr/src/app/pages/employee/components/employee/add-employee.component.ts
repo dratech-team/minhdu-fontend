@@ -1,36 +1,21 @@
-import {
-  Component,
-  ElementRef,
-  Inject,
-  Input,
-  LOCALE_ID,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { Component, ElementRef, Inject, Input, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { EmployeeType, FlatSalary, RecipeType } from '@minhdu-fontend/enums';
-import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { getAllOrgchart, OrgchartActions, PositionService } from '@minhdu-fontend/orgchart';
 import { DatePipe } from '@angular/common';
-import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
+import { CategoryService, EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
 import { Branch, Employee, Position } from '@minhdu-fontend/data-models';
-import { PositionService } from '@minhdu-fontend/orgchart';
 import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
 import { checkInputNumber } from '@minhdu-fontend/utils';
 import { RecipeTypesConstant } from '@minhdu-fontend/constants';
-import { CategoryService } from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { map } from 'rxjs/operators';
-import { EmployeeTypeConstant } from '../../../../../../../hrv2/src/app/pages/setting/salary/constants/employee-type.constant';
 
 @Component({
-  templateUrl: 'add-employee.component.html',
+  templateUrl: 'add-employee.component.html'
 })
 export class AddEmployeeComponent implements OnInit {
   @ViewChild('positionInput') inputPosition!: ElementRef;
@@ -57,7 +42,16 @@ export class AddEmployeeComponent implements OnInit {
   recipeType = RecipeType;
   typeEmployee = EmployeeType;
   recipeTypesConstant = RecipeTypesConstant;
-  employeeTypeConstant = EmployeeTypeConstant;
+  employeeTypeConstant = [
+    {
+      name: 'Nhân viên chính thức',
+      value: EmployeeType.FULL_TIME
+    },
+    {
+      name: 'Nhân viên thời vụ',
+      value: EmployeeType.SEASONAL
+    }
+  ];
 
   formGroup!: UntypedFormGroup;
 
@@ -71,7 +65,8 @@ export class AddEmployeeComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly categoryService: CategoryService,
     private readonly modalRef: NzModalRef
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.store.dispatch(OrgchartActions.init());
@@ -88,7 +83,7 @@ export class AddEmployeeComponent implements OnInit {
       idCardAt: [
         this.employeeInit?.idCardAt
           ? this.datePipe.transform(this?.employeeInit?.idCardAt, 'yyyy-MM-dd')
-          : '',
+          : ''
       ],
       email: [this.employeeInit?.email],
       workday: [this.employeeInit?.workday],
@@ -98,18 +93,18 @@ export class AddEmployeeComponent implements OnInit {
       workedAt: [
         this.employeeInit?.workedAt
           ? this.datePipe.transform(this.employeeInit?.workedAt, 'yyyy-MM-dd')
-          : '',
+          : ''
       ],
       createdAt: [
         this.employeeInit?.createdAt
           ? this.datePipe.transform(this.employeeInit?.createdAt, 'yyyy-MM-dd')
           : '',
-        Validators.required,
+        Validators.required
       ],
       isFlatSalary: [
         this.employeeInit?.isFlatSalary
           ? this.flatSalary.FLAT_SALARY
-          : this.flatSalary.NOT_FLAT_SALARY,
+          : this.flatSalary.NOT_FLAT_SALARY
       ],
       lastName: [this.employeeInit?.lastName, Validators.required],
       address: [this.employeeInit?.address, Validators.required],
@@ -118,7 +113,7 @@ export class AddEmployeeComponent implements OnInit {
         this.employeeInit?.birthday
           ? this.datePipe.transform(this.employeeInit?.birthday, 'yyyy-MM-dd')
           : '',
-        Validators.required,
+        Validators.required
       ],
       ethnicity: [this.employeeInit?.ethnicity],
       religion: [this.employeeInit?.religion],
@@ -129,17 +124,17 @@ export class AddEmployeeComponent implements OnInit {
       recipeType: [this.employeeInit?.recipeType || this.recipeType.CT2],
       employeeType: [
         this.employeeInit ? this.employeeInit.type : EmployeeType.FULL_TIME,
-        Validators.required,
+        Validators.required
       ],
       category: [this.employeeInit?.category?.id],
       province: [
         this.employeeInit?.ward?.district?.province,
-        Validators.required,
+        Validators.required
       ],
       district: [this.employeeInit?.ward?.district, Validators.required],
       ward: [this.employeeInit?.ward, Validators.required],
       branch: [this.employeeInit?.branch, Validators.required],
-      position: [this.employeeInit?.position, Validators.required],
+      position: [this.employeeInit?.position, Validators.required]
     });
 
     this.formGroup.get('branch')?.valueChanges.subscribe((val: Branch) => {
@@ -179,7 +174,7 @@ export class AddEmployeeComponent implements OnInit {
       this.store.dispatch(
         EmployeeAction.updateEmployee({
           id: this.employeeInit.id,
-          employee: employee,
+          employee: employee
         })
       );
     } else {
@@ -236,10 +231,10 @@ export class AddEmployeeComponent implements OnInit {
           : undefined,
         expiredAt: value.expiredAtContract
           ? new Date(value.expiredAtContract)
-          : undefined,
+          : undefined
       },
       recipeType: value.recipeType,
-      categoryId: value.category,
+      categoryId: value.category
     };
   }
 }

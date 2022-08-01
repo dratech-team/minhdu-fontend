@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { WarehouseLayoutComponent } from './container/base/warehouse-layout.component';
+import { WarehouseLayoutComponent } from './container/warehouse-layout.component';
 import { RouteGuard } from './route.guard';
 
 const routes: Routes = [

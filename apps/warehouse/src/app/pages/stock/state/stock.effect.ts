@@ -5,16 +5,15 @@ import { of } from 'rxjs';
 import { StockActions } from './stock.actions';
 import { StockStore } from './stock.store';
 import { StockService } from '../services';
-import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable()
 export class StockEffect {
   constructor(
     private readonly action$: Actions,
     private readonly service: StockService,
-    private readonly stockStore: StockStore,
-    private readonly message: NzMessageService
-  ) {}
+    private readonly stockStore: StockStore
+  ) {
+  }
 
   @Effect()
   addOne$ = this.action$.pipe(
@@ -22,20 +21,20 @@ export class StockEffect {
     switchMap((props) => {
       this.stockStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.service.addOne(props).pipe(
         tap((res) => {
           this.stockStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           this.stockStore.upsert(res.id, res);
         }),
         catchError((err) => {
           this.stockStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(StockActions.error(err));
         })
@@ -49,24 +48,24 @@ export class StockEffect {
     switchMap((props) => {
       this.stockStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.service.pagination(props).pipe(
         tap((res) => {
           this.stockStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
-          if (props.isPaginate) {
-            this.stockStore.add(res.data);
-          } else {
+          if (props.isSet) {
             this.stockStore.set(res.data);
+          } else {
+            this.stockStore.add(res.data);
           }
         }),
         catchError((err) => {
           this.stockStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(StockActions.error(err));
         })
@@ -95,20 +94,20 @@ export class StockEffect {
     switchMap((props) => {
       this.stockStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.service.update(props).pipe(
         tap((res) => {
           this.stockStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           this.stockStore.update(res?.id, res);
         }),
         catchError((err) => {
           this.stockStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(StockActions.error(err));
         })
@@ -122,20 +121,20 @@ export class StockEffect {
     switchMap((props) => {
       this.stockStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.service.delete(props.id).pipe(
         tap((_) => {
           this.stockStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           this.stockStore.remove(props?.id);
         }),
         catchError((err) => {
           this.stockStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(StockActions.error(err));
         })
