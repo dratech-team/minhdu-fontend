@@ -1,0 +1,28 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.InputSearchEnum = void 0;
+var InputSearchEnum;
+(function (InputSearchEnum) {
+    InputSearchEnum["NAME"] = "name";
+    InputSearchEnum["CODE"] = "code";
+    InputSearchEnum["POSITION"] = "position";
+    InputSearchEnum["BRANCH"] = "branch";
+    InputSearchEnum["CREATED_AT"] = "createdAt";
+    InputSearchEnum["WORKDAY"] = "workday";
+    InputSearchEnum["ACTUAL_DAY"] = "actualDay";
+    InputSearchEnum["WORK_DAY_NOT_IN_HOLIDAY"] = "workdayNotInHoliday";
+    InputSearchEnum["WORKS_IN_HOLIDAY"] = "worksInHoliday";
+    InputSearchEnum["WORKS_NOT_IN_HOLIDAY"] = "worksNotInHoliday";
+    InputSearchEnum["WORKS_OVERTIME_DAY"] = "workOvertimeDay";
+    InputSearchEnum["ABSENT_DAY"] = "absentDay";
+    InputSearchEnum["TOTAL_WORK_DAY"] = "totalWorkday";
+    InputSearchEnum["BASIC"] = "basic";
+    InputSearchEnum["STAY"] = "stay";
+    InputSearchEnum["ALLOWANCE"] = "allowance";
+    InputSearchEnum["OVERTIME"] = "overtime";
+    InputSearchEnum["PAYSLIP_IN_HOLIDAY"] = "payslipInHoliday";
+    InputSearchEnum["PAYSLIP_IN_NOT_HOLIDAY"] = "payslipNotInHoliday";
+    InputSearchEnum["DEDUCTION"] = "deduction";
+    InputSearchEnum["TAX"] = "tax";
+    InputSearchEnum["TOTAL"] = "total";
+})(InputSearchEnum = exports.InputSearchEnum || (exports.InputSearchEnum = {}));
