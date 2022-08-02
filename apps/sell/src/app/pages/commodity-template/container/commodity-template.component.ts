@@ -75,8 +75,8 @@ export class CommodityTemplateComponent implements OnInit {
       .subscribe((formGroup) => {
         this.actions$.dispatch(
           CommodityTemplateActions.loadAll({
-            search: this.mapTemplate(formGroup, false),
-            isSet: false
+            search: this.mapTemplate(formGroup),
+            isSet: true
           })
         );
       });
@@ -130,7 +130,7 @@ export class CommodityTemplateComponent implements OnInit {
 
   public onLoadMore() {
     this.actions$.dispatch(
-      OrderActions.loadAll(this.mapTemplate(this.formGroup.value, true))
+      OrderActions.loadAll(this.mapTemplate(this.formGroup.value))
     );
   }
 
@@ -140,14 +140,7 @@ export class CommodityTemplateComponent implements OnInit {
     $event.stopPropagation();
   }
 
-  private mapTemplate(dataFG: any, isPagination: boolean) {
-    this.store.update((state) => ({
-      ...state,
-      search: dataFG
-    }));
-    return Object.assign({}, dataFG, {
-      take: PaginationDto.take,
-      skip: isPagination ? this.query.getCount() : PaginationDto.skip
-    });
+  private mapTemplate(dataFG: any) {
+    return dataFG;
   }
 }

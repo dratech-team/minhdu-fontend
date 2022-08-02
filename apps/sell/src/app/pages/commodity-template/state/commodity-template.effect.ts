@@ -8,6 +8,7 @@ import { CommodityTemplateStore } from './commodity-template.store';
 import { CommodityTemplateActions } from './commodity-template.action';
 import { UpdateCommodityTemplateDto } from '../dto/update-commodity-template.dto';
 import { CommodityTemplateQuery } from './commodity-template.query';
+import { PaginationDto } from '@minhdu-fontend/constants';
 
 @Injectable()
 export class CommodityTemplateEffect {
@@ -58,7 +59,10 @@ export class CommodityTemplateEffect {
         ...state,
         loading: true
       }));
-      return this.service.pagination(props).pipe(
+      return this.service.pagination(Object.assign(props, {
+        take: PaginationDto.take,
+        skip: props.isSet ? PaginationDto.skip : this.query.getCount()
+      })).pipe(
         tap((res) => {
           if (props.isSet) {
             this.store.set(res.data);
