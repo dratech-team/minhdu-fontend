@@ -1,8 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { PickMenuComponent } from '../components/pick-menu-mobile/pick-menu.component';
-import { DevelopmentComponent } from 'libs/components/src/lib/development/development.component';
-import { LogoutComponent } from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
 import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.component/register.component';
 import { Router } from '@angular/router';
 import { Role } from 'libs/enums/hr/role.enum';
@@ -12,6 +8,8 @@ import { map } from 'rxjs/operators';
 import { AccountActions } from '../../../../../libs/system/src/lib/state/account-management/account.actions';
 import { Actions } from '@datorama/akita-ng-effects';
 import { AccountQuery } from '../../../../../libs/system/src/lib/state/account-management/account.query';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,7 +25,8 @@ export class SellLayoutComponent implements OnInit {
     .pipe(map((active) => '/' + active));
 
   constructor(
-    private readonly dialog: MatDialog,
+    private readonly message: NzMessageService,
+    private readonly modal: NzModalService,
     private readonly actions$: Actions,
     private readonly router: Router,
     private readonly appQuery: AppQuery,
@@ -41,12 +40,8 @@ export class SellLayoutComponent implements OnInit {
     // }
   }
 
-  pickMenuMobile() {
-    this.dialog.open(PickMenuComponent, { width: '100%' });
-  }
-
-  setting() {
-    this.dialog.open(DevelopmentComponent, { width: '25%' });
+  development() {
+    this.message.warning('Chức năng đang phát triển');
   }
 
   // changeTab(event: any) {
@@ -63,9 +58,10 @@ export class SellLayoutComponent implements OnInit {
   // }
 
   logout() {
-    const ref = this.dialog.open(LogoutComponent, { width: '30%' });
-    ref.afterClosed().subscribe((val) => {
-      if (val) {
+    this.modal.warning({
+      nzTitle: 'Đăng xuất',
+      nzContent: 'Bạn có chắc chắn muốn đăng xuất?',
+      nzOnOk: () => {
         const currentUser = this.accountQuery.getCurrentUser();
         if (currentUser) {
           this.actions$.dispatch(
@@ -81,6 +77,9 @@ export class SellLayoutComponent implements OnInit {
   }
 
   signUp() {
-    this.dialog.open(RegisterComponent, { width: '40%' });
+    this.modal.create({
+      nzContent: RegisterComponent,
+      nzFooter: null
+    });
   }
 }
