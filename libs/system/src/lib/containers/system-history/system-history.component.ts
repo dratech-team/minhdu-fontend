@@ -36,9 +36,8 @@ export class systemHistoryComponent implements OnInit {
     ip: new FormControl(''),
     createdAt: new FormControl('')
   });
-  pageSizeTable = 15;
-  compareFN = (o1: any, o2: any) =>
-    o1 && o2 ? o1.value == o2.value : o1 === o2;
+
+  compareFN = (o1: any, o2: any) => o1 === o2;
 
   constructor(
     private readonly actions$: Actions,
@@ -54,7 +53,7 @@ export class systemHistoryComponent implements OnInit {
       .subscribe((formGroup) => {
         this.actions$.dispatch(
           SystemHistoryActions.loadAll({
-            search: formGroup as any,
+            search: this.mapToLogger(formGroup),
             isSet: true
           })
         );
@@ -62,9 +61,23 @@ export class systemHistoryComponent implements OnInit {
   }
 
   onLoadMore() {
-    SystemHistoryActions.loadAll({
-      search: this.formGroup.value as any,
-      isSet: true
-    });
+    this.actions$.dispatch(
+      SystemHistoryActions.loadAll({
+        search: this.mapToLogger(this.formGroup.value),
+        isSet: false
+      })
+    );
+  }
+
+  private mapToLogger(value: any) {
+    return {
+      id: value.id,
+      appName: value.appName,
+      name: value.name,
+      activity: value.activity,
+      description: value.description,
+      ip: value.ip,
+      createdAt: value.createdAt
+    };
   }
 }
