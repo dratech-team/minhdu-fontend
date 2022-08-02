@@ -12,11 +12,15 @@ export class AppContainer {
   account = this.accountQuery.getEntity(this.accountQuery.getActiveId());
   apps$ = this.appService.getAll().pipe(
     map(res => {
-      return res.filter(e => e.app === this.account?.role.appName);
+      if (this.account?.role?.role !== 'SUPPER_ADMIN' && this.account?.role?.role !== 'ADMIN') {
+        return res.filter(e => e.app === this.account?.role.appName);
+      }
+      return res;
+
     }),
     tap(res => {
       if (res.length === 1) {
-        window.open(res[0].link, '_self', 'replace' );
+        window.open(res[0].link, '_self', 'replace');
       }
     })
   );

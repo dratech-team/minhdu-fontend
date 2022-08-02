@@ -13,11 +13,11 @@ import { AppComponent } from './app.component';
 import { AppContainer } from './containers/app/app.container';
 import { AdminLayoutComponent } from './containers/layout-admin/admin-layout.component';
 import { AuthModule } from '@minhdu-fontend/auth';
-import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
-import { AccountEffects } from '../../../../libs/system/src/lib/state/account-management/account.effects';
 import { OrgchartV2Module } from '@minhdu-fontend/orgchart-v2';
 import { AppService } from './services/app.service';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
+import { AccountEffects } from '../../../../libs/system/src/lib/state/account-management/account.effects';
 
 @NgModule({
   imports: [
@@ -34,7 +34,7 @@ import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
     AppFooterModule,
     MatMenuModule,
     AuthModule,
-    AkitaNgDevtools.forRoot(),
+    AkitaNgDevtools.forRoot()
   ],
   declarations: [AdminLayoutComponent, AppComponent, AppContainer],
   bootstrap: [AppComponent],
