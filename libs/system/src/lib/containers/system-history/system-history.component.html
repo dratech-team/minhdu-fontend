@@ -116,7 +116,7 @@
             <td nzLeft class="text-center">
               {{
                 systemHistory?.appName
-                  ? (systemHistory.appName | transformApp: apps)
+                  ? (systemHistory.appName | appname)
                   : 'Chưa xác định'
               }}
             </td>
@@ -124,7 +124,7 @@
               {{ systemHistory.name }}
             </td>
             <td class="text-center">
-              {{ systemHistory.activity | transformMethod: methods }}
+              {{ systemHistory.activity | method }}
             </td>
             <td>
               {{ systemHistory.description }}

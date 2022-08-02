@@ -18,7 +18,7 @@ export const MethodConstant = [
     value: ActivityType.GET,
   },
   {
-    name: 'tất cả',
+    name: 'Tất cả',
     value: '',
   },
 ];

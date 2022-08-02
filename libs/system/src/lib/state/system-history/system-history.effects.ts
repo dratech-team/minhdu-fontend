@@ -20,7 +20,8 @@ export class SystemHistoryEffects {
     private readonly message: NzMessageService,
     private readonly systemHistoryStore: SystemHistoryStore,
     private readonly systemHistoryQuery: SystemHistoryQuery
-  ) {}
+  ) {
+  }
 
   @Effect()
   addOne$ = this.actions$.pipe(
@@ -28,21 +29,21 @@ export class SystemHistoryEffects {
     switchMap((props: AddSystemHistoryDto) => {
       this.systemHistoryStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.accountService.addOne(props).pipe(
         tap((res) => {
           this.message.success('Thêm lịch sử hệ thống thành công');
           this.systemHistoryStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           this.systemHistoryStore.add(res);
         }),
         catchError((err) => {
           this.systemHistoryStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(SystemHistoryActions.error(err));
         })
@@ -56,32 +57,32 @@ export class SystemHistoryEffects {
     switchMap((props: SearchSystemHistoryDto) => {
       this.systemHistoryStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       Object.assign(props.search, {
         take: PaginationDto.take,
         skip: props.isSet
-          ? this.systemHistoryQuery.getCount()
-          : PaginationDto.skip,
+          ? PaginationDto.skip
+          : this.systemHistoryQuery.getCount()
       });
       return this.accountService.pagination(props).pipe(
-        map((res) => {
+        tap((res) => {
           if (props.isSet) {
-            this.systemHistoryStore.add(res.data);
-          } else {
             this.systemHistoryStore.set(res.data);
+          } else {
+            this.systemHistoryStore.add(res.data);
           }
           this.systemHistoryStore.update((state) => ({
             ...state,
             loading: false,
             total: res.total,
-            remain: res.total - this.systemHistoryQuery.getCount(),
+            remain: res.total - this.systemHistoryQuery.getCount()
           }));
         }),
         catchError((err) => {
           this.systemHistoryStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(SystemHistoryActions.error(err));
         })
@@ -111,13 +112,13 @@ export class SystemHistoryEffects {
     switchMap((props) => {
       this.systemHistoryStore.update((state) => ({
         ...state,
-        loading: true,
+        loading: true
       }));
       return this.accountService.update(props).pipe(
         map((res) => {
           this.systemHistoryStore.update((state) => ({
             ...state,
-            loading: false,
+            loading: false
           }));
           this.message.success('Cập nhật lịch sử hệ thống thành công');
           this.systemHistoryStore.update(res.id, res);
@@ -125,7 +126,7 @@ export class SystemHistoryEffects {
         catchError((err) => {
           this.systemHistoryStore.update((state) => ({
             ...state,
-            loading: undefined,
+            loading: undefined
           }));
           return of(SystemHistoryActions.error(err));
         })

@@ -8,10 +8,10 @@ import { AccountManagementComponent } from './containers/account-management/acco
 import { AccountEffects } from './state/account-management/account.effects';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { SystemRoutingModule } from './system-routing.module';
-import { TransformRolePipe } from './pipes/transform-role.pipe';
+import { RolePipe } from './pipes/role.pipe';
 import { systemHistoryComponent } from './containers/system-history/system-history.component';
-import { TransformAppPipe } from './pipes/transform-app.pipe';
-import { TransformMethodPipe } from './pipes/transform-method.pipe';
+import { AppNamePipePipe } from './pipes/app-name.pipe';
+import { MethodPipe } from './pipes/method.pipe';
 import { LimitedAccessComponent } from './containers/limited-access/limited-access.component';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -47,12 +47,12 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
   declarations: [
     systemHistoryComponent,
     AccountManagementComponent,
-    TransformRolePipe,
-    TransformAppPipe,
-    TransformMethodPipe,
+    RolePipe,
+    AppNamePipePipe,
+    MethodPipe,
     LimitedAccessComponent,
   ],
-  exports: [TransformAppPipe],
+  exports: [AppNamePipePipe],
   providers: [],
 })
 export class SystemModule {}

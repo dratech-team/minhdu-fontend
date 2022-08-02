@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { App, ModeEnum } from '@minhdu-fontend/enums';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { appConstant, MethodConstant } from '@minhdu-fontend/constants';
 import { Actions } from '@datorama/akita-ng-effects';
 import { SystemHistoryQuery } from '../../state/system-history/system-history.query';
 import { SystemHistoryActions } from '../../state/system-history/system-history.actions';
 import { SystemHistoryStore } from '../../state/system-history/system-history.store';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, startWith } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { AccountQuery } from '../../state/account-management/account.query';
 
 @Component({
-  templateUrl: 'system-history.component.html',
+  templateUrl: 'system-history.component.html'
 })
 export class systemHistoryComponent implements OnInit {
   systemHistory$ = this.systemHistoryQuery.selectAll();
@@ -22,22 +22,19 @@ export class systemHistoryComponent implements OnInit {
   currentUser$ = this.accountQuery.selectCurrentUser();
 
   app = App;
-  apps = appConstant;
+  apps = appConstant.filter((app) => app.value === this.accountQuery.getCurrentUser()?.role?.appName);
   methods = MethodConstant;
-  pageSize = 30;
-  pageIndexInit = 0;
   modeEnum = ModeEnum;
 
-  stateSearch = this.systemHistoryQuery.getValue().search;
-  formGroup = new UntypedFormGroup({
-    search: new UntypedFormControl(this.stateSearch?.search || ''),
-    id: new UntypedFormControl(this.stateSearch?.id || ''),
-    appName: new UntypedFormControl(this.stateSearch?.appName || ''),
-    name: new UntypedFormControl(this.stateSearch?.name || ''),
-    activity: new UntypedFormControl(this.stateSearch?.activity || ''),
-    description: new UntypedFormControl(this.stateSearch?.description || ''),
-    ip: new UntypedFormControl(this.stateSearch?.ip || ''),
-    createdAt: new UntypedFormControl(this.stateSearch?.createdAt || ''),
+  formGroup = new FormGroup({
+    search: new FormControl(''),
+    id: new FormControl(''),
+    appName: new FormControl(this.accountQuery.getCurrentUser()?.role?.appName || ''),
+    name: new FormControl(''),
+    activity: new FormControl(''),
+    description: new FormControl(''),
+    ip: new FormControl(''),
+    createdAt: new FormControl('')
   });
   pageSizeTable = 15;
   compareFN = (o1: any, o2: any) =>
@@ -49,30 +46,25 @@ export class systemHistoryComponent implements OnInit {
     private readonly systemHistoryStore: SystemHistoryStore,
     private readonly activeRouter: ActivatedRoute,
     private readonly accountQuery: AccountQuery
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
-    this.onLoad(false);
-    this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe((_) => {
-      this.onLoad(false);
-    });
+    this.formGroup.valueChanges.pipe(debounceTime(500), startWith(this.formGroup.value))
+      .subscribe((formGroup) => {
+        this.actions$.dispatch(
+          SystemHistoryActions.loadAll({
+            search: formGroup as any,
+            isSet: true
+          })
+        );
+      });
   }
 
   onLoadMore() {
-    this.onLoad(true);
-  }
-
-  onLoad(isPaginate: boolean) {
-    const val = this.formGroup.value;
-    this.systemHistoryStore.update((state) => ({
-      ...state,
-      search: val,
-    }));
-    this.actions$.dispatch(
-      SystemHistoryActions.loadAll({
-        search: val,
-        isSet: isPaginate,
-      })
-    );
+    SystemHistoryActions.loadAll({
+      search: this.formGroup.value as any,
+      isSet: true
+    });
   }
 }
